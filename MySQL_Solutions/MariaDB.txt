@@ -1,0 +1,38 @@
+regex replace in MariaDB
+
+http://listen.bible.is/MCAWYI/Matt/1/D
+
+with
+
+UPDATE `links` SET `URL` = REGEXP_REPLACE(`URL`, "http:\\/\\/listen\\.bible\\.is\\/(.*)\\/([A-Za-z]{3})[A-Za-z]\\/([0-9]+)\\/[ND]", "https:\\/\\/live\\.bible\\.is\\/bible\\/\\1\\/\\2\\/\\3") WHERE `company` = 'Bible.is'
+
+
+copy a table to another table with the same fields:
+INSERT INTO `alt_lang_names_copy` (`ISO`, `ROD_Code`, `Variant_Code`, `ISO_ROD_index`, `alt_lang_name`)
+SELECT `ISO`, `ROD_Code`, `Variant_Code`, `ISO_ROD_index`, `alt_lang_name` FROM `alt_lang_names_temp`
+
+
+links table:
+
+search for: LIKE %YouVersion.com%
+
+replace with: Bible.com (YouVersion)
+
+UPDATE `links` SET `company_title`= REPLACE(`company_title`, 'YouVersion.com', 'Bible.com (YouVersion)') WHERE `company_title` LIKE '%YouVersion.com%' AND `YouVersion` = 1
+
+
+UPDATE `countries` SET `countries`.`German` = (
+    SELECT DISTINCT `temp`.`German`
+    FROM `temp`
+    WHERE `countries`.`ISO_Country`=`temp`.`ISO_Country`
+)
+
+
+SELECT `Book_Chapter_HTML` FROM `sab` WHERE `SAB_Chapter` = 1 AND `ISO_ROD_index` = 'zzz' ORDER BY `SAB_Book` ASC limit 10 [?]
+	or
+SELECT `Book_Chapter_HTML` FROM `sab` WHERE `Book_Chapter_HTML` regexp 'wra[0-9A-Z]*-.*' AND `ISO_ROD_index` = '2428' ORDER BY `SAB_Chapter`, `SAB_Book` ASC limit 10 [?]
+iterate to find each [ISO][qqq]-*
+
+SELECT `Book_Chapter_HTML`, COUNT(*) FROM `sab` WHERE `ISO_ROD_index` = '2428' GROUP BY `Book_Chapter_HTML` regexp 'wra[0-9A-Z]*-.*'
+
+SELECT `Book_Chapter_HTML`, COUNT(*) FROM `sab` WHERE `ISO_ROD_index` = '2428' AND `Book_Chapter_HTML` REGEXP 'wra[0-9A-Z]*-.*' GROUP BY LENGTH(`Book_Chapter_HTML`)

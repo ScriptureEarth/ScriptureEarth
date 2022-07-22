@@ -1,0 +1,945 @@
+@charset "utf-8";
+
+/* 00-Scripturee.css
+	Scripture css
+	Created by Scott Starker
+	March 2019
+*/
+
+body {
+    font: 100% Verdana, Arial, Helvetica, sans-serif;
+    background-color: black;
+    margin: 0;
+    /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
+    padding: 0;
+    text-align: center;
+    /* this centers the container in IE 5* browsers. The text is then set to the left aligned default in the #container selector */
+    /*background-image: url('images/00i-BackgroundFistPage.jpg');*/
+    /*height: 700px;  You must set a specified height */
+    /*background-position: center;  Center the image */
+    /* background-repeat: no-repeat; Do not repeat the image */
+    height: 100%;
+}
+
+h1 {
+    font-weight: normal;
+    margin-top: 50px;
+    margin-bottom: 0px;
+    font-size: 1.8em;
+}
+
+h2 {
+    margin: 0 auto 8px auto;
+    width: 80%;
+    font-size: 1em;
+}
+
+h3 {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+fieldset {
+    border: 0;
+}
+
+label {
+    display: block;
+    margin: 30px 0 0 0;
+}
+
+select {
+    width: 50px;
+    width: auto;
+    height: auto;
+}
+
+option {
+    text-align: left;
+    margin: 0;
+    font-size: .8em;
+}
+
+textarea {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .84em;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: white;
+}
+
+::placeholder {
+    color: #ccc;
+    opacity: 1;
+    /* Firefox */
+}
+
+:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #ccc;
+}
+
+::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: #ccc;
+}
+
+div.eng-header {
+    background-image: url('../images/00eng-BackgroundFistPage.jpg');
+    background-repeat: no-repeat;
+}
+
+div.spa-header {
+    background-image: url('../images/00spa-BackgroundFistPage.jpg');
+    background-repeat: no-repeat;
+}
+
+div.por-header {
+    background-image: url('../images/00por-BackgroundFistPage.jpg');
+    background-repeat: no-repeat;
+}
+
+div.dut-header {
+    background-image: url('../images/00dut-BackgroundFistPage.jpg');
+    background-repeat: no-repeat;
+}
+
+div.fre-header {
+    background-image: url('../images/00fre-BackgroundFistPage.jpg');
+    background-repeat: no-repeat;
+}
+
+div.deu-header {
+    background-image: url('../images/00deu-BackgroundFistPage.jpg');
+    background-repeat: no-repeat;
+}
+
+div.countryCounter {
+    position: relative;
+    top: -680px;
+    width: 30%;
+    display: inline-block;
+    border: thin solid black;
+    padding: 10px;
+    background-color: lightgray;
+}
+
+#background {
+    margin-top: 20px;
+    /*max-width: 100%;*/
+    /*height: auto;
+	text-align: center;*/
+    background-position: center;
+    /* Center the image */
+    background-repeat: no-repeat;
+    /* Do not repeat the image */
+    position: relative;
+    /*width: 720px;*/
+    z-index: -15;
+    height: 840px;
+    /*min-height: 640px;*/
+    width: 100%;
+    background-size: 64%;
+    overflow: auto;
+}
+
+
+/********************************************************************************
+ 		Begin default 3 input text lines from 00-MainScript.inc.php
+********************************************************************************/
+
+
+/*
+		first section
+*/
+
+.enter {
+    margin-top: -580px;
+    /*font-weight: bold;*/
+    /*width: 1000px;*/
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.enter>div {
+    margin-bottom: 22px;
+    /* all of the 3 entry inputs */
+}
+
+
+/*#showLanguageID {}*/
+
+
+/*#showCountryID {}*/
+
+
+/*#listCountriesID {}*/
+
+
+/* div for "List by Country" button */
+
+#listCountriesID>button {
+    border: solid 2px #33628d;
+    vertical-align: middle;
+    width: 60%;
+    box-sizing: border-box;
+    border-radius: 12px;
+    font-size: 1.5em;
+    background-color: #4079b0;
+    color: white;
+    background-image: url('../images/listCountry.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    background-position: right;
+    padding: 12px 20px 12px 20px;
+    text-align: left;
+}
+
+input[type=text] {
+    border: solid 2px #33628d;
+    vertical-align: middle;
+    width: 60%;
+    box-sizing: border-box;
+    border-radius: 12px;
+    font-size: 1.5em;
+    background-color: #4079b0;
+    color: white;
+    background-image: url('../images/search.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 20px;
+    background-position: right;
+}
+
+
+/* "Home" botton */
+
+button.homeAllCountries {
+    position: relative;
+    left: -40%;
+    top: -145px;
+    display: none;
+    margin-left: 0;
+    max-width: 20%;
+    color: white;
+    background-color: #4079b0;
+    text-decoration: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+
+/* countries list */
+
+#countryList {
+    margin-top: -36px;
+    display: none;
+}
+
+.OpaqueWhite {
+    height: 276px;
+    margin-top: -266px;
+    width: 65%;
+    background-color: white;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center top;
+    border-radius: 25px;
+    opacity: 0.5;
+    margin-right: auto;
+    margin-left: auto;
+    position: relative;
+    z-index: -5;
+}
+
+
+/*
+		second section
+*/
+
+#container {
+    /*width: 46em;*/
+    margin: 0 auto;
+    /* the auto margins (in conjunction with a width) center the page */
+    text-align: center;
+}
+
+#mainContent {
+    padding: 0;
+    /* remember that padding is the space inside the div box and margin is the space outside the div box */
+    margin: 0;
+    margin-top: 160px;
+}
+
+
+/* 'About this site' botton */
+
+div.button {
+    color: white;
+    background-color: #4079b0;
+    text-decoration: none;
+    padding: 10px;
+    display: inline;
+    cursor: pointer;
+}
+
+div.button:hover,
+div.button:focus {
+    background-color: #4d92d3;
+}
+
+
+/* "Home" button */
+
+#statements {
+    position: relative;
+    left: -40%;
+    top: -260px;
+    display: none;
+}
+
+button.homeAbout {
+    color: white;
+    background-color: #4079b0;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 1em;
+    padding: 6px 10px;
+}
+
+
+/* 6 navigational languages: 5 options */
+
+div.site {
+    display: none;
+    /*margin-left: -40px;*/
+}
+
+ul.ulEnglish,
+ul.ulSpanish,
+ul.ulPortuguese,
+ul.ulDutch,
+ul.ulFrench,
+ul.ulGerman,
+ul.ulChinese {
+    /*padding-left: 230px;*/
+    /* use padding-left and width to make the words correct position */
+    /*display: block;
+	display: inline;*/
+    text-align: center;
+    font-size: .86em;
+    font-weight: bold;
+    /*margin-top: -180px;*/
+    /*clear: both;*/
+    margin-left: -40px;
+}
+
+img.myShadow {
+    width: 10%;
+    height: 0;
+    display: inline;
+}
+
+#feedback {
+    cursor: pointer;
+    position: relative;
+    top: -610px;
+    width: 140px;
+    margin-left: auto;
+    margin-right: auto;
+    /*display: inline;*/
+    /*height: 30px;*/
+    /*vertical-align: bottom;*/
+    /*border: 1px solid black;
+	padding-top: 10px;
+	background-color: #4079b0;
+	z-index: 20;
+	float: left;
+	left: 5px;*/
+}
+
+#feedback div {
+    color: white;
+    background-color: #4079b0;
+    font-size: 1em;
+    font-weight: normal;
+    line-height: 20px;
+    /* button height */
+    margin-left: -6px;
+    padding: 6px 8px 6px 8px;
+    border-radius: 16px;
+    -moz-border-radius: 16px;
+    -webkit-box-shadow: 16px;
+}
+
+#copyright {
+    position: relative;
+    top: -520px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 30px;
+}
+
+#copyright div {
+    color: #777;
+    font-size: .8em;
+}
+
+
+/********************************************************************************
+ 		End default 3 input text lines from 00-MainScript.inc.php
+********************************************************************************/
+
+
+/********************************************************************************
+ 		Begin function showCountry from LangSearch.js
+********************************************************************************/
+
+.countryTitle {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 480px;
+}
+
+.countryTitleLine {
+    line-height: 40px;
+    color: #4079b0;
+    background-color: white;
+    font-weight: bold;
+    font-size: 110%;
+    margin-bottom: 10px;
+}
+
+
+/********************************************************************************
+ 		End function showCountry from LangSearch.js
+********************************************************************************/
+
+
+/**************************************************************************************************************
+ 		Begin from LangSearch.js, 00-CountryTable.inc.php and 00_BegList.php
+***************************************************************************************************************/
+
+.pick {
+    color: navy;
+    display: block;
+    margin-bottom: -20px;
+}
+
+.pick:hover {
+    color: #A82120;
+    background-color: #FFFFCC;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.pickCountry:hover {
+    color: #A82120;
+    background-color: #FFFFCC;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.pickCountry {
+    border-top: solid thin black;
+    background-color: white;
+    color: #A82120;
+    line-height: 50px;
+    font-size: 110%;
+    width: 480px;
+    margin: 0 auto;
+}
+
+
+/**************************************************************************************************************
+ 		End from LangSearch.js, 00-CountryTable.inc.php and 00_BegList.php
+***************************************************************************************************************/
+
+
+/********************************************************************
+		Begin 00-MainScript.inc.php in 00-MajorLanguageAbout.inc.php
+********************************************************************/
+
+li.aboutText {
+    text-decoration: none;
+    /*margin-left: auto;
+	margin-right: auto;*/
+    /*display: block;*/
+    display: inline;
+    /*width: 440px;*/
+    background-color: lightgray;
+    padding: 10px 20px;
+    border: solid thin black;
+    color: #A82120;
+    cursor: pointer;
+}
+
+li.aboutText:hover {
+    background-color: #FFFFCC;
+}
+
+
+/********************************************************************
+		End 00-MainScript.inc.php in 00-MajorLanguageAbout.inc.php
+********************************************************************/
+
+
+/********************************************************************
+		Begin one Country from 00-MainScript.inc.php
+********************************************************************/
+
+
+/* "Home" botton */
+
+#homeCountry {
+    /*display: block;*/
+    position: relative;
+    /*left: 0px;
+	top: 50px;*/
+    left: 11%;
+    top: -670px;
+    /*position: relative;
+	top: -140px;
+	left: 0;*/
+    /*margin: 0;*/
+    max-width: 0px;
+}
+
+button.homeCountryButton {
+    display: inline;
+    margin: 0 auto;
+    /*max-width: 90px;*/
+    color: white;
+    background-color: #4079b0;
+    text-decoration: none;
+    padding: 5px 6px 2px 6px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+
+/* navigational languages drop-down */
+
+div.FormCountry {
+    position: relative;
+    max-width: 20%;
+    left: 70%;
+    top: -700px;
+    margin: 0;
+}
+
+#sC {
+    font-size: .9em;
+    padding: 6px;
+    margin-right: -40px;
+}
+
+
+/********************************************************************
+		End one Country from 00-MainScript.inc.php
+********************************************************************/
+
+
+/********************************************************************
+		Begin Language Name from 00-MainScript.inc.php
+********************************************************************/
+
+div.menuBar {
+    border-top-color: #777;
+    border-top-style: solid;
+    border-top-width: thin;
+    border-bottom-color: #000;
+    border-bottom-style: solid;
+    border-bottom-width: thin;
+}
+
+div.MajorLanguages {
+    background-color: #333;
+    /*position: relative;
+	top: 0px;
+	width: 70%;
+	margin: 0 auto;*/
+}
+
+
+/* "Home" botton */
+
+div.MajorLanguages button {
+    /*float: left;*/
+    /*margin-top: 20px;*/
+    /*margin-top: 2px;*/
+    margin-left: 0%;
+    /*color: white;
+	background-color: #4079b0;*/
+    color: #4079b0;
+    background-color: #FFF;
+    /*padding: 5px 6px 2px 6px;*/
+    padding-top: 6px;
+    padding-bottom: 3px;
+    padding-left: 12px;
+    padding-right: 12px;
+    border-style: none;
+    font-size: 100%;
+    cursor: pointer;
+    display: inline;
+}
+
+
+/* navigational languages drop-down */
+
+#sL {
+    font-size: 100%;
+    padding: 3px;
+    /*float: right;*/
+    /*margin-top: 20px;*/
+    color: #4079b0;
+    margin-left: 60%;
+    border-style: none;
+    /*background-repeat: no-repeat;
+	background-position: right;*/
+    background-color: #FFF;
+}
+
+
+/********************************************************************
+		End Language Name from 00-MainScript.inc.php
+********************************************************************/
+
+
+/****************************************************************************************************************************************************
+	Begin "Language Search" on function showLanguage (LangSearch.js) and "Country Search" in 00-CountryTable.inc.php and 00_BegList.php
+*****************************************************************************************************************************************************/
+
+#countryTable {
+    /* 00-CountryTable.inc.php */
+    position: relative;
+    top: -700px;
+    /*display: table;
+	text-align: left;*/
+    height: 100px;
+    /*min-height: 100px;*/
+    width: 80%;
+    margin: 0 auto;
+}
+
+div.langCol {
+    height: 100px;
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+}
+
+div.langCol::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+
+/******************
+	first section
+******************/
+
+div.colFirst,
+div.countryFirst {
+    border: none;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    overflow: auto;
+    color: #000082;
+    background-color: white;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+p.colLN1,
+p.colAlt1,
+p.colCode1,
+p.colCountry1,
+div.countryLN1,
+div.countryAlt1,
+div.countryCode1,
+div.countryCountry1 {
+    border: none;
+}
+
+p.colLN1,
+div.countryLN1 {
+    float: left;
+    width: 30%;
+}
+
+p.colCode1,
+div.countryCode1 {
+    float: right;
+    width: 10%;
+}
+
+p.colCountry1,
+div.countryCountry1 {
+    float: right;
+    width: 20%;
+}
+
+p.colAlt1,
+div.countryAlt1 {
+    float: left;
+    width: 40%;
+}
+
+
+/*********************
+	second sections
+*********************/
+
+div.colSecond,
+div.countrySecond,
+div.moreThanOneRODCode {
+    color: navy;
+    clear: both;
+    border: none;
+    width: 100%;
+    text-align: left;
+    overflow: hidden;
+    font-size: .9em;
+}
+
+div.langCol>div.colSecond:nth-of-type(odd):hover,
+div.langCol>p.colSecond:nth-of-type(odd):hover,
+div.langCol>div.colSecond:nth-of-type(even):hover,
+div.langCol>p.colSecond:nth-of-type(even):hover,
+#CT>div.countrySecond:nth-of-type(odd):hover,
+#CT>p.countrySecond:nth-of-type(odd):hover,
+#CT>div.countrySecond:nth-of-type(even):hover,
+#CT>p.countrySecond:nth-of-type(even):hover,
+div.MTORODCode>div.moreThanOneRODCode:nth-of-type(odd):hover,
+div.MTORODCode>div.moreThanOneRODCode:nth-of-type(even):hover {
+    color: #A82120;
+    background-color: #ffc;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+/* to color odd children in parent-container with children of type div */
+
+div.langCol>div.colSecond:nth-of-type(odd),
+div.langCol>p.colSecond:nth-of-type(odd),
+#CT>div.countrySecond:nth-of-type(odd),
+#CT>p.countrySecond:nth-of-type(odd),
+div.MTORODCode>div.moreThanOneRODCode:nth-of-type(odd),
+div.MTORODCode>p.moreThanOneRODCode:nth-of-type(odd) {
+    background-color: #fff;
+}
+
+
+/* to color odd children in parent-container with children of type div */
+
+div.langCol>div.colSecond:nth-of-type(even),
+div.langCol>p.colSecond:nth-of-type(even),
+#CT>div.countrySecond:nth-of-type(even),
+#CT>p.countrySecond:nth-of-type(even),
+div.MTORODCode>div.moreThanOneRODCode:nth-of-type(even),
+div.MTORODCode>p.moreThanOneRODCode:nth-of-type(even) {
+    background-color: #eef1f2;
+}
+
+div.colLN2,
+div.colAlt2,
+div.colCode2,
+p.colCountry2,
+div.countryLN2,
+div.countryAlt2,
+div.countryCode2,
+p.countryCountry2 {
+    border: none;
+}
+
+div.colLN2,
+div.countryLN2,
+div.moreThanLN2 {
+    float: left;
+    width: 30%;
+}
+
+div.colLN2>div,
+div.countryLN2>div {
+    font-style: italic;
+    font-size: 8pt;
+}
+
+div.colCode2,
+div.countryCode2,
+div.moreThanCode2 {
+    float: right;
+    width: 9%;
+}
+
+a.indivCountry,
+a.indivCountry:hover {
+    text-decoration: none;
+    color: black;
+}
+
+p.colCountry2,
+p.countryCountry2,
+p.moreThanCountry2 {
+    float: right;
+    width: 17%;
+    overflow: auto;
+}
+
+div.colAlt2,
+div.countryAlt2,
+div.moreThanAlt2 {
+    float: left;
+    width: 38%;
+    overflow: auto;
+}
+
+div.colLN2,
+div.countryLN2,
+div.countryCode2,
+div.colCode2,
+div.moreThanLN2,
+div.moreThanCode2 {
+    height: 34px;
+    padding-left: 10px;
+    padding-bottom: 18px;
+    padding-top: 24px;
+}
+
+p.colCountry2,
+p.countryCountry2,
+p.moreThanCountry2 {
+    height: 34px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    padding-top: 24px;
+}
+
+div.colAlt2,
+div.countryAlt2,
+div.moreThanAlt2 {
+    height: 34px;
+    padding-left: 10px;
+    padding-bottom: 18px;
+    padding-top: 16px;
+}
+
+
+/**************************************************************************************************************************************************
+	End "Language Search" on function showLanguage (LangSearch.js) and "Country Search" in 00-CountryTable.inc.php and 00_BegList.php
+***************************************************************************************************************************************************/
+
+.aboutButton {
+    color: white;
+    margin-top: -450px;
+    margin-left: 3px;
+}
+
+.aboutMyButton {
+    position: relative;
+    top: -580px;
+    left: -240px;
+}
+
+.myFormButton {
+    margin-top: -500px;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-image: url('../images/listCountry.png');
+    background-color: #4079b0;
+}
+
+div.MajorLanguagesCountries {
+    position: relative;
+    top: -700px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+div.MajorLanguagesCountries button {
+    float: left;
+    margin-top: 20px;
+    color: white;
+    background-color: #4079b0;
+    padding: 5px 6px 2px 6px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+div.MajorLanguagesCountries form {
+    float: right;
+    margin-top: 20px;
+    color: white;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-color: #4079b0;
+}
+
+div.langCounter {
+    color: #444;
+    border: thin solid #888;
+    padding: 5px;
+    background-color: #ddd;
+    margin: 0 auto;
+    font-size: small;
+}
+
+#langBackground {
+    width: 100%;
+    background-color: black;
+    background-position: inherit;
+}
+
+
+/* just the header icon */
+
+img.langHeader {
+    position: relative;
+    top: 0px;
+    z-index: 1;
+    width: 40%;
+    height: 40%;
+}
+
+#langEmpty {
+    width: 100%;
+    max-height: 85px;
+}
+
+#empty {
+    width: 100%;
+    max-height: 100px;
+}
+
+.overflow {
+    height: 200px;
+}
+
+
+/*table.langTable {
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	color: black;
+	display: table;
+	height: 100px;
+	min-height: 100px;
+}*/

@@ -1,0 +1,15 @@
+UPDATE `grn_lang_no` SET `GRN_Similar` = (SELECT `ROD_Code` FROM `scripture_main` WHERE `scripture_main`.`ISO`=`grn_lang_no`.`ISO` AND `scripture_main`.`ROD_Code` = '00000') WHERE `used` = 0
+
+
+SELECT on INNER JOIN:
+SELECT * FROM `PlaylistVideo` `t1` INNER JOIN `scripture_main` `t2` ON `t1`.`ISO` = `t2`.`ISO` AND `t1`.`ROD_Code` = `t2`.`ROD_Code` AND `t1`.`Variant_Code` = `t2`.`Variant_Code`
+WHERE `t2`.`Variant_Code` <> ''
+AND `t2`.`Variant_Code` IS NOT NULL
+ORDER BY `t1`.`ISO` ASC
+
+
+SELECT records that from ebible_temp that are not in ebible_list:
+SELECT * FROM `ebible_temp` WHERE NOT EXISTS (SELECT * FROM `ebible_list` WHERE `ebible_list`.`languageCode` = `ebible_temp`.`languageCode`)
+
+eBible:
+(ISO_ROD_index,languageCode,Variant_Code,translationIdPrimary,languageName,languageNameInEnglish,dialect,homeDomain,title,description,Redistributable,Copyright,UpdateDate,publicationURL,OTbooks,OTchapters,OTverses,NTbooks,NTchapters,NTverses,DCbooks,DCchapters,DCverses,FCBHID,Certified,inScript,swordName,rodCode,textDirection,downloadable,font,shortTitle,PODISBN,script)
