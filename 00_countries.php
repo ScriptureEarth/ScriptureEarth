@@ -22,7 +22,7 @@
 								$MajorLanguage = "LN_Portuguese";
 								$SpecificCountry = "countries.Portuguese";
 								break;
-						case "fre":
+						case "fra":
 								$MajorLanguage = "LN_French";
 								$SpecificCountry = "countries.French";
 								break;

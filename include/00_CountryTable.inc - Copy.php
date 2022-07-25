@@ -269,7 +269,7 @@ switch ($st) {
 		$FacebookCountry = "en_US";
 		$MajorCountryAbbr = "en";
 		break;
-	case 'fre':
+	case 'fra':
 		$MajorLanguage = 'LN_French';
 		$Variant_major = 'Variant_Fre';
 		$Scriptname = '00f-Ecritures_Indice.php';

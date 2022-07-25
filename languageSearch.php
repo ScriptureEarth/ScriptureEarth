@@ -16,7 +16,7 @@
 			$MajorLanguage = 'LN_Spanish';
 			$Variant_major = 'Variant_Spa';
 			break;
-		case 'fre':
+		case 'fra':
 			$MajorLanguage = 'LN_French';
 			$Variant_major = 'Variant_Fre';
 			break;

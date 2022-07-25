@@ -13,7 +13,7 @@
 				case "por":
 					echo '<img src="./images/00p-mobile-top-baner.jpg" />';
 					break;
-				case "fre":
+				case "fra":
 					echo '<img src="./images/00f-mobile-top-baner.jpg" />';
 					break;
 				case "nld":

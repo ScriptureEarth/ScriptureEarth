@@ -17,7 +17,7 @@
 	else {
 		echo '<option class="languageChoiceDefault" value="Por">Português</option>';
 	}
-	if ($st == "fre") {
+	if ($st == "fra") {
 		echo '<option selected="selected">Français</option>';
 	}
 	else {
@@ -27,6 +27,6 @@
 		echo '<option selected="selected">Nederlands</option>';
 	}
 	else {
-		echo '<option class="languageChoiceDefault" value="Dut">Nederlands</option>';
+		echo '<option class="languageChoiceDefault" value="Nld">Nederlands</option>';
 	}
 ?>

@@ -21,7 +21,7 @@ switch ($st) {
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('i', 'H', 'Window')\">Ajuda</a></li>";
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('i', 'CU', 'Window')\">Contate-nos</a></li>";
 		break;
-	case "fre":
+	case "fra":
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('f', 'CR', 'Window')\">Droits d'auteur</a></li>";
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('i', 'TC', 'Window')\">Conditions d'utilisation</a></li>";
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('i', 'P', 'Window')\">Confidentialité de l'information</a></li>";
