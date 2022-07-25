@@ -13,9 +13,9 @@ switch ($st) {
 		break;
 	case "por":
 		break;
-	case "fre":
+	case "fra":
 		break;
-	case "dut":
+	case "nld":
 		break;
 }
 ?>

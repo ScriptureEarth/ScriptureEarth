@@ -93,7 +93,7 @@ div.container {
 			}
 		</style>";
 		echo '<div style="width: 100%; background-color: black; ">';
-			echo "<img src='images/00dut-ScriptureEarth_header.jpg' style='position: relative; top: 0px; z-index: 1; width: 30%; ' />";
+			echo "<img src='images/00nld-ScriptureEarth_header.jpg' style='position: relative; top: 0px; z-index: 1; width: 30%; ' />";
 		echo '</div>';
 		echo "<div id='all'>";
 			echo "<div class='container'>";

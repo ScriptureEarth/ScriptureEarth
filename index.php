@@ -1,4 +1,8 @@
 <?php
+// Start the session
+session_start();
+?>
+<?php
 // by Jesse Skinner modified by Scott Starker; Parse Accept-Language to detect a user's language; May 2008
 // Updated by Lærke Roager
 $langs = array();

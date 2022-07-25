@@ -42,7 +42,7 @@
 			die ("<br />$st wasn’t found.</body></html>");
 		}
 		$st = $match[0];
-		if ($st != 'eng' && $st != 'spa' && $st != 'por' && $st != 'dut' && $st != 'fre' && $st != 'deu') {
+		if ($st != 'eng' && $st != 'spa' && $st != 'por' && $st != 'nld' && $st != 'fra' && $st != 'deu') {
 			die ("<br />$st wasn’t found.</body></html>");
 		}
 	}
@@ -128,7 +128,7 @@
             <?php
 				$ML = "p";
 				break;
-			case "dut":
+			case "nld":
 			?>
 				<div style='color: #A82120; font-weight: bold; font-size: 1.2em; margin-bottom: 20px; '>
 					Over deze website
@@ -151,7 +151,7 @@
             <?php
 				$ML = "d";
 				break;
-			case "fre":
+			case "fra":
 			?>
 				<div style='color: #A82120; font-weight: bold; font-size: 1.2em; margin-bottom: 20px; '>
 					À propos de ce site

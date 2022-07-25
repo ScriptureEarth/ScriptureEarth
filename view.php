@@ -341,7 +341,7 @@ switch ($st) {
 		 'IDX'=>'Topical index'
 		 );
 		break;
-	case "fre":
+	case "fra":
 		$MajorLanguage = "LN_French";
 		$bookDescription = array(
 		 '1CH'=>'1 Chroniques',
@@ -421,7 +421,7 @@ switch ($st) {
 		 'IDX'=>'Topical index'
 		 );
 		break;
-	case "dut":
+	case "nld":
 		$MajorLanguage = "LN_Dutch";
 		$bookDescription = array(
 		 '1CH'=>'1 Kronieken',
