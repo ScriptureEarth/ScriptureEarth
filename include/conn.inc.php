@@ -15,6 +15,7 @@ function get_my_db() {
 		type "quit;"
 		Just execute this 1 time for each machine and your good to go!
 */
+
 	//set the database connection variables
 	// The OOP is different than the procedual code. The port needs to be seperate from $dbHost and put in mysqli (3306).
 	// localhost needs to be 127.0.0.1 for php 5.3+!
