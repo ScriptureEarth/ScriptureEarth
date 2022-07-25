@@ -273,7 +273,7 @@ if ($result2) {
 							$ML_Interest=$row_Goto_ISO["$MajorLanguage"];										// boolean
 							$def_LN_Interest=$row_Goto_ISO['Def_LN'];											// default langauge (a 2 digit number for the national langauge)
 							if (!$ML_Interest) {																// if the country then the major default langauge name
-								foreach ($nav_ln_array as $code => $nav_ln_temp_array){
+								foreach ($_SESSION['nav_ln_array'] as $code => $nav_ln_temp_array){
 									if ($nav_ln_temp_array[3] == $def_LN_Interest){
 										$query="SELECT LN_".$nav_ln_temp_array[1]." FROM LN_".$nav_ln_temp_array[1]." WHERE ISO_ROD_index = '$Goto_ISO_ROD_index'";
 										$result_LN=$db->query($query);

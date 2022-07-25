@@ -122,8 +122,7 @@
 		$query="UPDATE isop SET ROD_Code = '$Trod' WHERE ISO = '$iso' AND ROD_Code = '$Frod'";
 		$result=$db->query($query);
 		
-		include './include/nav_ln_array.php';							// Master Array
-		foreach($nav_ln_array as $code => $array){
+		foreach($_SESSION['nav_ln_array'] as $code => $array){
 			$query="UPDATE LN_".$array[1]." SET ROD_Code = '$Trod' WHERE ISO = '$iso' AND ROD_Code = '$Frod'";
 			$result=$db->query($query);
 		}

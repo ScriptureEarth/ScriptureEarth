@@ -27,11 +27,15 @@
         text-align: right;
     }
 </style>
+<?php
+// Start the session
+session_start();
+?>
 <script type="text/javascript" language="javascript">
-	var MajorLang = "Fre";
+	var MajorLang = "Fra";
 </script>
 	<?php
-		$st = 'fre';
+		$st = 'fra';
 		if (isset($_GET['st'])) {
 			$st = $_GET['st'];
 			$test = preg_match('/^[a-z]{3}/', $st);

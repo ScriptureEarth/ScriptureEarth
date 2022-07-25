@@ -383,7 +383,6 @@ function NT_Test($PDF, $NT_Index) {
 		}
 		$SM_row = $result->fetch_assoc();
 		//$num=mysql_num_rows($result);
-		include './include/nav_ln_array.php';							// Master Array
 		
 		$iso = $SM_row['ISO'];									// ISO
 		$rod = $SM_row['ROD_Code'];								// ROD_Code
@@ -392,14 +391,14 @@ function NT_Test($PDF, $NT_Index) {
 		$AddTheBibleIn = $SM_row['AddTheBibleIn'];				// boolean
 		$AddTheScriptureIn = $SM_row['AddTheScriptureIn'];		// boolean
 		$BibleIs = $SM_row['BibleIs'];							// 1, 2 or 3
-		foreach ($nav_ln_array as $code => $array){
+		foreach ($_SESSION['nav_ln_array'] as $code => $array){
 			${"LN_".$array[1]} = $SM_row['LN_'.$array[1]];		// boolean
 			${$array[1]."_lang_name"}='';
 		} // What to do with the chinese one??
 		
 		$def_LN = $SM_row['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
 		
-		foreach ($nav_ln_array as $code => $array){
+		foreach ($_SESSION['nav_ln_array'] as $code => $array){
 			if (${"LN_".$array[1]}) {							// if the English then the default langauge
 				$query="SELECT LN_".$array[1]." FROM LN_".$array[1]." WHERE ISO_ROD_index = $idx";
 				$result_LN=$db->query($query);
@@ -541,7 +540,7 @@ function NT_Test($PDF, $NT_Index) {
 		<br /><br />
 
 		<?php
-		foreach ($nav_ln_array as $code => $array){
+		foreach ($_SESSION['nav_ln_array'] as $code => $array){
 			$html = "<div class='enter' style='font-size: 10pt; '>In <span style='font-size: 12pt; font-weight: bold; '>".strtoupper($array[1])."</span>, enter the Language Name: <input type='text' name='".$array[1]."_lang_name' id='".$array[1]."_lang_name' size='35' style='color: navy; font-weight: bold; ' value=\"switch\" /></div>";
 			if (isset($_POST[$array[1].'_lang_name'])){
 				$result = str_replace('switch', $_POST[$array[1].'_lang_name'], $html);
@@ -556,7 +555,7 @@ function NT_Test($PDF, $NT_Index) {
 		<p>Select the default major langauge <span style="font-size: 10pt; ">(i.e. the major language from above)</span>: 
 		<select name="DefaultLang" id="DefaultLang">
 		<?php if (isset($_POST['DefaultLang'])) { 
-			foreach ($nav_ln_array as $code => $array){
+			foreach ($_SESSION['nav_ln_array'] as $code => $array){
 				$html = "<option value=\"".$array[1]."Lang\" switch >".$array[1]."</option>";
 				if ($_POST['DefaultLang'] == $array[1].'Lang'){
 					$result = str_replace('switch', " selected='yes'", $html);
@@ -567,7 +566,7 @@ function NT_Test($PDF, $NT_Index) {
 			}
 		}
 		else {
-			foreach ($nav_ln_array as $code => $array){
+			foreach ($_SESSION['nav_ln_array'] as $code => $array){
 				$html = "<option value=\"".$array[1]."Lang\" switch >".$array[1]."</option>";
 				if ($def_LN == $array[3]){
 					$result = str_replace('switch', " selected='yes'", $html);

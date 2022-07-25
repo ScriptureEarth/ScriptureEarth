@@ -83,7 +83,7 @@
                     <img src='./images/00p-AboutExplanation.jpg' style='height: 80%; width: 80%; ' />
                 <?php
 						break;
-					case "dut":
+					case "nld":
 				?>
                      <div style='margin-left: 20px; margin-right: 20px; padding-top: 20px; padding-bottom: 40px; text-align: left; '>
                         <div style='color: #A82120; font-weight: bold; font-size: 1.2em; margin-bottom: 20px; '>
@@ -109,7 +109,7 @@
                     <img src='./images/00d-AboutExplanation.jpg' style='height: 80%; width: 80%; ' />
 				<?php
 						break;
-					case "fre":
+					case "fra":
 				?>
                     <div style='margin-left: 20px; margin-right: 20px; padding-top: 20px; padding-bottom: 40px; text-align: left; '>
                         <div style='color: #A82120; font-weight: bold; font-size: 1.2em; margin-bottom: 20px; '>

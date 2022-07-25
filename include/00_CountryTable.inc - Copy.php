@@ -253,7 +253,7 @@ else {
 }
 
 switch ($st) {
-	case 'dut':
+	case 'nld':
 		$MajorLanguage = 'LN_Dutch';
 		$Variant_major = 'Variant_Dut';
 		$Scriptname = '00d-Bijbel_Indice.php';
@@ -269,7 +269,7 @@ switch ($st) {
 		$FacebookCountry = "en_US";
 		$MajorCountryAbbr = "en";
 		break;
-	case 'fre':
+	case 'fra':
 		$MajorLanguage = 'LN_French';
 		$Variant_major = 'Variant_Fre';
 		$Scriptname = '00f-Ecritures_Indice.php';

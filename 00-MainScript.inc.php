@@ -102,9 +102,26 @@ include './OT_Books.php';										// $OT_array
 include './NT_Books.php';										// $NT_array
 include './translate/functions.php';							// translation function
 include './include/00-MainPHPFunctions.inc.php';				// main PHP functions
-include './include/nav_ln_array.php';							// Master Array
 require_once './include/conn.inc.php';							// connect to the database named 'scripture'
 $db = get_my_db();
+
+// Master list of languages for the site to run in
+$_SESSION['nav_ln_array'] = [];
+$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `translation_code`";
+$ln_result=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
+if ($ln_result->num_rows == 0) {
+	die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
+}
+
+while ($ln_row = $ln_result->fetch_array()){
+	$ln_temp[0] = $ln_row['translation_code'];
+	$ln_temp[1] = $ln_row['name'];
+	$ln_temp[2] = $ln_row['nav_fileName'];
+	$ln_temp[3] = $ln_row['ln_number'];
+	$ln_temp[4] = $ln_row['ln_abbreviation'];
+	$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;
+}
+
 ?>
 
 <style>
@@ -371,7 +388,7 @@ $db = get_my_db();
 // Changed to work with the master array -- Laerke
 							?>
                             <select id="sL" onchange="langChange('<?php echo $ISO_ROD_index; ?>', '<?php echo $LN; ?>', '<?php echo $ISO; ?>')">
-								<?php foreach ($nav_ln_array as $code => $array){
+								<?php foreach ($_SESSION['nav_ln_array'] as $code => $array){
 									$html = "<option value='".$array[2]."' here>".translate($array[1], $array[0], 'sys')."</option>";
 									if ($st == $array[0]){
 										$result = str_replace("here",'selected="selected"',$html);
@@ -534,7 +551,7 @@ $db = get_my_db();
           		<div class="FormCountry">
                     <form action="#">
 						<select id="sC" onchange="countryChange('<?php echo $GetName; ?>')">
-							<?php foreach ($nav_ln_array as $code => $array){
+							<?php foreach ($_SESSION['nav_ln_array'] as $code => $array){
 								$html = "<option value='".$array[2]."' here>".translate($array[1], $array[0], 'sys')."</option>";
 								if ($st == $array[0]){
 									$result = str_replace("here",'selected="selected"',$html);
@@ -707,7 +724,7 @@ $db = get_my_db();
 					?>
 					<form id="myForm" style='display: inline; ' action="#">
 						<select id="sM" style="font-size: 1em; padding: 6px; " title="<?php echo translate('Click here to choose the interface language.', $st, 'sys'); ?>">
-							<?php foreach ($nav_ln_array as $code => $array){
+							<?php foreach ($_SESSION['nav_ln_array'] as $code => $array){
 								$html = "<option value='".$array[2]."' here>".translate($array[1], $array[0], 'sys')."</option>";
 								if ($st == $array[0]){
 									$result = str_replace("here",'selected="selected"',$html);

@@ -94,9 +94,8 @@ function check_input($value) {
 			}
 
 // major language
-			include './include/nav_ln_array.php';							// Master Array
 
-			foreach ($nav_ln_array as $code => $array){
+			foreach ($_SESSION['nav_ln_array'] as $code => $array){
 				$inputs[$array[1].'_lang_name'] = check_input($_POST[$array[1]."_lang_name"]);
 				if ($inputs[$array[1].'_lang_name'] != '') $inputs['LN_'.$array[1].'Bool'] = 1; else $inputs['LN_'.$array[1].'Bool'] = 0;
 			}
@@ -129,20 +128,20 @@ function check_input($value) {
 				$inputs['ISO_countries'] = --$z;
 			}
 			$no_ln_missing = 0;
-			foreach ($nav_ln_array as $code => $array){
+			foreach ($_SESSION['nav_ln_array'] as $code => $array){
 				if (!$inputs['LN_'.$array[1].'Bool']){
 					$no_ln_missing++;
 				}
 			}
 
-			if ($no_ln_missing == count($nav_ln_array)) {
+			if ($no_ln_missing == $_SESSION['nav_ln_array']) {
 				$count_failed++;
 				$messages[] = "No Language Names are found.";
 			}
 			
 			$DefaultLang = $_POST["DefaultLang"];
 			//$DefLang = 0;
-			foreach ($nav_ln_array as $code => $array){
+			foreach ($_SESSION['nav_ln_array'] as $code => $array){
 				if ($DefaultLang == $array[1]."Lang") {
 					$inputs['DefLangName'] = $array[3];
 					if (!$inputs['LN_'.$array[1].'Bool']) {
