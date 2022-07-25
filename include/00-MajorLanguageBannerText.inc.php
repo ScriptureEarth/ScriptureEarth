@@ -1,5 +1,6 @@
 <?php
-foreach($_SESSION['nav_ln_array'] as $code => $array){
+include './include/nav_ln_array.php';							// Master Array
+foreach($nav_ln_array as $code => $array){
 	if ($st == $array[0]){
 		echo "<li class=\"bottomBannerText\"><a class=\"bottomBannerWord\" href=\"#\" onmouseup=\"loadWindow('".$array[4]."', 'CR', 'Window')\">" . translate('Copyright', $st, 'sys') . "</a></li>";
 		echo "<li class=\"bottomBannerText\">|</li>";

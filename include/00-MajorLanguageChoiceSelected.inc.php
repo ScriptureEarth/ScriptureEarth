@@ -17,13 +17,13 @@
 	else {
 		echo '<option class="languageChoiceDefault" value="Por">Português</option>';
 	}
-	if ($st == "fra") {
+	if ($st == "fre") {
 		echo '<option selected="selected">Français</option>';
 	}
 	else {
 		echo '<option class="languageChoiceDefault" value="Fra">Français</option>';
 	}
-	if ($st == "nld") {
+	if ($st == "dut") {
 		echo '<option selected="selected">Nederlands</option>';
 	}
 	else {

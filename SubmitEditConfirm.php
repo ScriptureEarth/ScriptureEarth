@@ -47,7 +47,8 @@
 	}
 
 	// major languages - LN
-	foreach ($_SESSION['nav_ln_array'] as $code => $array){
+	include './include/nav_ln_array.php';							// Master Array
+	foreach ($nav_ln_array as $code => $array){
 		if ($inputs['LN_'.$array[1].'Bool']) {
 			$query="DELETE FROM LN_".$array[1]." WHERE ISO_ROD_index = $inputs[idx]";
 			$db->query($query);

@@ -1,8 +1,4 @@
 <?php
-// Start the session
-session_start();
-?>
-<?php
 /*
 Created by Scott Starker
 
@@ -42,11 +38,11 @@ else {
 $st = substr($st, 0, 3);
 
 
-
+include './include/nav_ln_array.php';							// Master Array
 $response = '';
 $MajorLanguage = '';
 $Variant_major = '';
-foreach($_SESSION['nav_ln_array'] as $code => $array){
+foreach($nav_ln_array as $code => $array){
 	if ($st == $array[0]){
 		$MajorLanguage = 'LN_'.$array[1];
 		$Variant_major = 'Variant_'.$array[0];
@@ -60,8 +56,8 @@ if ($Variant_major == ''){
 
 $hint = 0;
 
-include './include/conn.inc.php';
-$db = get_my_db();
+//include './include/conn.inc.php';
+//$db = get_my_db();
 include './translate/functions.php';							// translation function
 
 $query="SELECT DISTINCT ISO_Country, $SpecificCountry FROM countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND countries.$SpecificCountry LIKE '".$TryCountry."%' ORDER BY $SpecificCountry";														// create a prepared statement

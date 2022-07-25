@@ -382,8 +382,9 @@
 					$result_country->data_seek(0);
 					$r_Temp = $result_country->fetch_assoc();
 					
+					include './include/nav_ln_array.php';							// Master Array
 					
-					foreach ($_SESSION['nav_ln_array'] as $code => $array){
+					foreach ($nav_ln_array as $code => $array){
 						$html = "<div class='MajorLang'>In <span>".strtoupper($array[1])."</span>, enter the Language Name: <input type='text' name='".$array[1]."_lang_name' id='".$array[1]."_lang_name' size='35' style='color: navy; font-weight: bold; ' value=\"switch\" /></div>";
 						if (isset($_POST[$array[1].'_lang_name'])){
 							$result = str_replace('switch', $_POST[$array[1].'_lang_name'], $html);
@@ -396,7 +397,7 @@
 				<br />
 				<p>Select the default major langauge <span style="font-size: 10pt; ">(i.e. the major language from above)</span>: 
 				<select name="DefaultLang">
-					<?php foreach ($_SESSION['nav_ln_array'] as $code => $array){
+					<?php foreach ($nav_ln_array as $code => $array){
 						$html = '<option value="'.$array[1].'Lang" switch>'.$array[1].'</option>';
 						if ($code == "es"){
 							$result = str_replace("switch", " selected='yes'", $html);
@@ -486,7 +487,8 @@
 				<br /><br />
 				
 				<?php
-				foreach ($_SESSION['nav_ln_array'] as $code => $array){
+				include './include/nav_ln_array.php';							// Master Array
+				foreach ($nav_ln_array as $code => $array){
 					${$array[1]."_lang_name"}='';
 					$query="SELECT LN_".$array[1]." FROM LN_".$array[1]." WHERE ISO = '$iso' AND ROD_Code = '$RODCode'";
 					$result=$db->query($query);
@@ -513,7 +515,7 @@
                 <p>Select the default major langauge <span style="font-size: 10pt; ">(i.e. the major language from above)</span>:
 				<select name="DefaultLang">
 					<?php
-					foreach ($_SESSION['nav_ln_array'] as $code => $array){
+					foreach ($nav_ln_array as $code => $array){
 						$html = "<option value=\"EnglishLang\" switch >".$array[1]."</option>";
 						if ($def_LN == $array[3]) {
 							$result = str_replace('switch', " selected='yes'", $html);

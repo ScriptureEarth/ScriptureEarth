@@ -26,15 +26,11 @@
         text-align: right;
     }
 </style>
-<?php
-// Start the session
-session_start();
-?>
 <script type="text/javascript" language="javascript">
-	var MajorLang = "Nld";
+	var MajorLang = "Dut";
 </script>
 	<?php
-        $st = 'nld';
+        $st = 'dut';
         if (isset($_GET['st'])) {
             $st = $_GET['st'];
             $test = preg_match('/^[a-z]{3}/', $st);

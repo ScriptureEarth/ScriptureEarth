@@ -62,11 +62,11 @@ switch ($st) {
 		$MajorLanguage = "LN_Portuguese";
 		$SpecificCountry = "countries.Portuguese";
 		break;
-	case "fra":
+	case "fre":
 		$MajorLanguage = "LN_French";
 		$SpecificCountry = "countries.French";
 		break;
-	case "nld":
+	case "dut":
 		$MajorLanguage = "LN_Dutch";
 		$SpecificCountry = "countries.Dutch";
 		break;

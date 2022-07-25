@@ -128,7 +128,7 @@
             <?php
 				$ML = "p";
 				break;
-			case "nld":
+			case "dut":
 			?>
 				<div style='color: #A82120; font-weight: bold; font-size: 1.2em; margin-bottom: 20px; '>
 					Over deze website
@@ -151,7 +151,7 @@
             <?php
 				$ML = "d";
 				break;
-			case "fra":
+			case "fre":
 			?>
 				<div style='color: #A82120; font-weight: bold; font-size: 1.2em; margin-bottom: 20px; '>
 					À propos de ce site

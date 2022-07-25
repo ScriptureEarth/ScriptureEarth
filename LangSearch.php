@@ -81,7 +81,7 @@ button {
 	include ('translate/functions.php');			// translation function
 	
 	switch ($st) {
-		case 'nld':
+		case 'dut':
 			$MajorLanguage = 'LN_Dutch';
 			$Variant_major = 'Variant_Dut';
 			$SpecificCountry = 'Dutch';
@@ -93,7 +93,7 @@ button {
 			$SpecificCountry = 'Spanish';
 			$Scriptname = '00e-Escrituras_Indice.php';
 			break;
-		case 'fra':
+		case 'fre':
 			$MajorLanguage = 'LN_French';
 			$Variant_major = 'Variant_Fre';
 			$SpecificCountry = 'French';

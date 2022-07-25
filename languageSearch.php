@@ -8,7 +8,7 @@
 	$Variant_major = '';
 	
 	switch ($st) {
-		case 'nld':
+		case 'dut':
 			$MajorLanguage = 'LN_Dutch';
 			$Variant_major = 'Variant_Dut';
 			break;
@@ -16,7 +16,7 @@
 			$MajorLanguage = 'LN_Spanish';
 			$Variant_major = 'Variant_Spa';
 			break;
-		case 'fra':
+		case 'fre':
 			$MajorLanguage = 'LN_French';
 			$Variant_major = 'Variant_Fre';
 			break;

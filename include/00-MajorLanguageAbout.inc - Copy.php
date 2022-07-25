@@ -21,14 +21,14 @@ switch ($st) {
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('i', 'H', 'Window')\">Ajuda</a></li>";
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('i', 'CU', 'Window')\">Contate-nos</a></li>";
 		break;
-	case "fra":
+	case "fre":
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('f', 'CR', 'Window')\">Droits d'auteur</a></li>";
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('i', 'TC', 'Window')\">Conditions d'utilisation</a></li>";
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('i', 'P', 'Window')\">Confidentialité de l'information</a></li>";
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('i', 'H', 'Window')\">Aide</a></li>";
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('i', 'CU', 'Window')\">Nous contacter</a></li>";
 		break;
-	case "nld":
+	case "dut":
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('d', 'CR', 'Window')\">Auteursrecht</a></li>";
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('i', 'TC', 'Window')\">Voorwaarden</a></li>";
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('i', 'P', 'Window')\">Privacy</a></li>";

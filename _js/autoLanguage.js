@@ -95,13 +95,13 @@
 		}
 		var root = '';
 		switch (st) {
-			case 'nld':
+			case 'dut':
 				root = '00d-Bijbel_Indice.php';
 				break;
 			case 'spa':
 				root = '00e-Escrituras_Indice.php';
 				break;
-			case 'fra':
+			case 'fre':
 				root = '00f-Ecritures_Indice.php';
 				break;
 			case 'eng':

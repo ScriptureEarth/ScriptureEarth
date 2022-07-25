@@ -43,6 +43,7 @@ function check_input($value) {							// used for ' and " that find it in the inp
 
 	//require_once './include/conn.inc.php';
 	//$db = get_my_db();
+	include './include/nav_ln_array.php';							// Master Array
 	include './translate/functions.php';
 	
 	if ($asset === 0) {
@@ -77,7 +78,7 @@ function check_input($value) {							// used for ' and " that find it in the inp
 		//$LN_Dutch=$r['LN_Dutch'];						// boolean
 		$def_LN=$row['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
 		if (!$ML) {										// if the English then the default langauge
-			foreach ($_SESSION['nav_ln_array'] as $code => $nav_ln_temp_array){
+			foreach ($nav_ln_array as $code => $nav_ln_temp_array){
 				if ($nav_ln_temp_array[3] == $def_LN){
 					$query="SELECT LN_".$nav_ln_temp_array[1]." FROM LN_".$nav_ln_temp_array[1]." WHERE ISO_ROD_index = '$ISO_ROD_index'";
 					$result_LN=$db->query($query);

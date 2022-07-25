@@ -13,14 +13,14 @@
 				case "por":
 					echo '<img src="./images/00p-mobile-top-baner.jpg" />';
 					break;
-				case "fra":
+				case "fre":
 					echo '<img src="./images/00f-mobile-top-baner.jpg" />';
 					break;
-				case "nld":
+				case "dut":
 					echo '<img src="./images/00d-mobile-top-baner.jpg" />';
 					break;
 				default:
-					echo 'This isnï¿½t suppossed to happen (mobile - switch code). Spanish language is selected.';
+					echo 'This isn’t suppossed to happen (mobile - switch code). Spanish language is selected.';
 					echo '<img src="./images/00e-mobile-top-baner.jpg" />';
 			}
 		?>
