@@ -28,7 +28,7 @@ switch ($st) {
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('i', 'H', 'Window')\">Aide</a></li>";
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('i', 'CU', 'Window')\">Nous contacter</a></li>";
 		break;
-	case "dut":
+	case "nld":
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('d', 'CR', 'Window')\">Auteursrecht</a></li>";
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('i', 'TC', 'Window')\">Voorwaarden</a></li>";
 		echo "<li class=\"aboutText\"><a class=\"aboutWord\" href=\"#\" onmouseup=\"loadWindow('i', 'P', 'Window')\">Privacy</a></li>";

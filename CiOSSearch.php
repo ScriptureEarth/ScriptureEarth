@@ -61,7 +61,7 @@ switch ($st) {
 		$Variant_major = 'Variant_Fre';
 		$SpecificCountry = 'French';
 		break;
-	case 'dut':
+	case 'nld':
 		$MajorLanguage = 'LN_Dutch';
 		$Variant_major = 'Variant_Dut';
 		$SpecificCountry = 'Dutch';

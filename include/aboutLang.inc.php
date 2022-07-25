@@ -128,7 +128,7 @@
             <?php
 				$ML = "p";
 				break;
-			case "dut":
+			case "nld":
 			?>
 				<div style='color: #A82120; font-weight: bold; font-size: 1.2em; margin-bottom: 20px; '>
 					Over deze website

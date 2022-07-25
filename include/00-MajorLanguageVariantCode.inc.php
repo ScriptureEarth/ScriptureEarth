@@ -15,7 +15,7 @@ switch ($st) {
 		break;
 	case "fre":
 		break;
-	case "dut":
+	case "nld":
 		break;
 }
 ?>

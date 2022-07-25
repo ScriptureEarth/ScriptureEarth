@@ -321,12 +321,9 @@
 // re-display the ISO countries, navigational languages, alternate language name(s), and "The Bible in..." with the actual default data
         $db->query("DROP TABLE IF EXISTS ISO_Temp");
         $result_Temp = $db->query("CREATE TEMPORARY TABLE ISO_Temp (iso VARCHAR(3), rod VARCHAR(5)) ENGINE = MEMORY") or die ("Query failed: " . $db->error . "</body></html>");
-        $db->query("INSERT INTO ISO_Temp (iso, rod) SELECT DISTINCT ISO, ROD_Code FROM LN_English WHERE ISO = '$iso' AND ROD_Code = '$RODCode'");
-        $db->query("INSERT INTO ISO_Temp (iso, rod) SELECT DISTINCT ISO, ROD_Code FROM LN_Spanish WHERE ISO = '$iso' AND ROD_Code = '$RODCode'");
-        $db->query("INSERT INTO ISO_Temp (iso, rod) SELECT DISTINCT ISO, ROD_Code FROM LN_Portuguese WHERE ISO = '$iso' AND ROD_Code = '$RODCode'");
-        $db->query("INSERT INTO ISO_Temp (iso, rod) SELECT DISTINCT ISO, ROD_Code FROM LN_French WHERE ISO = '$iso' AND ROD_Code = '$RODCode'");
-        $db->query("INSERT INTO ISO_Temp (iso, rod) SELECT DISTINCT ISO, ROD_Code FROM LN_Dutch WHERE ISO = '$iso' AND ROD_Code = '$RODCode'");
-        $db->query("INSERT INTO ISO_Temp (iso, rod) SELECT DISTINCT ISO, ROD_Code FROM LN_German WHERE ISO = '$iso' AND ROD_Code = '$RODCode'");
+        foreach ($_SESSION['nav_ln_array'] as $code => $array){
+			$db->query("INSERT INTO ISO_Temp (iso, rod) SELECT DISTINCT ISO, ROD_Code FROM LN_".$array[1]." WHERE ISO = '$iso' AND ROD_Code = '$RODCode'");
+		}
         $query="SELECT DISTINCT iso, rod FROM ISO_Temp WHERE iso = '$iso' AND rod = '$RODCode'";
         $result = $db->query($query);
 		$num = $result->num_rows;

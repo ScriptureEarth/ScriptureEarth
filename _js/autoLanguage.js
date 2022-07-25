@@ -95,7 +95,7 @@
 		}
 		var root = '';
 		switch (st) {
-			case 'dut':
+			case 'nld':
 				root = '00d-Bijbel_Indice.php';
 				break;
 			case 'spa':

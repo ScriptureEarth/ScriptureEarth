@@ -23,7 +23,7 @@
 	else {
 		echo '<option class="languageChoiceDefault" value="Fra">Français</option>';
 	}
-	if ($st == "dut") {
+	if ($st == "nld") {
 		echo '<option selected="selected">Nederlands</option>';
 	}
 	else {

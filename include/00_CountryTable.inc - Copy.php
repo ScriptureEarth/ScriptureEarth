@@ -253,7 +253,7 @@ else {
 }
 
 switch ($st) {
-	case 'dut':
+	case 'nld':
 		$MajorLanguage = 'LN_Dutch';
 		$Variant_major = 'Variant_Dut';
 		$Scriptname = '00d-Bijbel_Indice.php';
