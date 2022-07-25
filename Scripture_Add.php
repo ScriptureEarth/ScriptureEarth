@@ -148,9 +148,9 @@ include ('./NT_Books.php');			// include the books of the NT
 	Language Names
 *************************************************/-->
 			<?php
-			include './include/nav_ln_array.php';							// Master Array		
 
-			foreach ($nav_ln_array as $code => $array){
+
+			foreach ($_SESSION['nav_ln_array'] as $code => $array){
 				$html = "<div class='MajorLang'>In <span>".strtoupper($array[1])."</span>, enter the Language Name: <input type='text' name='".$array[1]."_lang_name' id='".$array[1]."_lang_name' size='35' value=\"switch\" /></div>";
 				if (isset($_POST[$array[1].'_lang_name'])){
 					$result = str_replace('switch', $_POST[$array[1].'_lang_name'], $html);
@@ -162,7 +162,7 @@ include ('./NT_Books.php');			// include the books of the NT
 			<br />
 			<p>Select the default major langauge <span style="font-size: 10pt; ">(i.e. the major language from above)</span>: 
 			<select name="DefaultLang" id="DefaultLang">
-				<?php foreach ($nav_ln_array as $code => $array){
+				<?php foreach ($_SESSION['nav_ln_array'] as $code => $array){
 					$html = '<option value="'.$array[1].'Lang" switch>'.$array[1].'</option>';
 					if (isset($_POST['DefaultLang'])){
 						if ($_POST['DefaultLang'] == 'EnglishLang'){

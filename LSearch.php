@@ -1,4 +1,8 @@
 <?php
+// Start the session
+session_start();
+?>
+<?php
 /*
 Created by Scottt Starker
 AJAX
@@ -40,11 +44,10 @@ else {
 	 die('Hack!');
 }
 
-include './include/nav_ln_array.php';							// Master Array
 $response = '';
 $MajorLanguage = '';
 $Variant_major = '';
-foreach($nav_ln_array as $code => $array){
+foreach($_SESSION['nav_ln_array'] as $code => $array){
 	if ($st == $array[0]){
 		$MajorLanguage = 'LN_'.$array[1];
 		$Variant_major = 'Variant_'.$array[0];
@@ -58,8 +61,8 @@ if ($Variant_major == ''){
 
 if (strlen($TryLanguage) > 2) {
 	$hint = 0;
-	//include './include/conn.inc.php';
-	//$db = get_my_db();
+	include './include/conn.inc.php';
+	$db = get_my_db();
 	include './translate/functions.php';							// translation function
 	
 	$langISOrod = [];
@@ -351,7 +354,7 @@ if (strlen($TryLanguage) > 2) {
 		while ($r = $result->fetch_assoc()) {
 			$ISO_ROD_index = $r['ISO_ROD_index'];
 			$ln_result = '';
-			foreach($nav_ln_array as $code => $array){
+			foreach($_SESSION['nav_ln_array'] as $code => $array){
 				$ln_result .= 'LN_'.$array[1].', ';
 			}
 			$query="SELECT ISO, ROD_Code, Variant_Code, ".$ln_result."Def_LN FROM scripture_main WHERE ISO_ROD_index = $ISO_ROD_index";

@@ -17,14 +17,13 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 	$redirectTo = '';
 	$ln_code = '';
 
-	include './include/nav_ln_array.php';							// Master Array
 	include './translate/functions.php';                            // translation function
 
 	foreach($langs as $lang => $val){
 		$lang_code = explode("-",$lang)[0];
-		if (array_key_exists($lang_code, $nav_ln_array)){
-			$redirectTo = $nav_ln_array[$lang_code][2];			// assigns the matching site to the language found
-			$ln_code = $nav_ln_array[$lang_code][0];				// assigns the language code to a variable for later use
+		if (array_key_exists($lang_code, $_SESSION['nav_ln_array'])){
+			$redirectTo = $_SESSION['nav_ln_array'][$lang_code][2];			// assigns the matching site to the language found
+			$ln_code = $_SESSION['nav_ln_array'][$lang_code][0];				// assigns the language code to a variable for later use
 		}
 	}
 	
@@ -349,7 +348,7 @@ indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre H
               	click to enter
               </div>
               <?php 
-			  		foreach ($nav_ln_array as $code => $array){
+			  		foreach ($_SESSION['nav_ln_array'] as $code => $array){
 						echo '<div style="margin: 13px 0px; ">
 						<a id="a'.$array[1].'" class="alink '.$array[0].'" href="'.$array[2].'" onMouseOver="hover()">'.translate($array[1], $array[0], 'sys').'</a>
 						</div>';
@@ -363,7 +362,7 @@ indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre H
           </iframe>
           <a href="metadata/metadata.htm" style="text-decoration: none; display: none; "></a>
 			<?php
-				foreach ($nav_ln_array as $code => $array){
+				foreach ($_SESSION['nav_ln_array'] as $code => $array){
 					echo '<div id="hover'.$array[1].'" class="hover '.$array[0].'">
 					<div class="middleText">
 						'.$Dummy_Data[$array[3]].'
@@ -385,13 +384,13 @@ indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre H
 				echo Counter2();
 			?>
 			<?php
-				foreach ($nav_ln_array as $code => $array){
+				foreach ($_SESSION['nav_ln_array'] as $code => $array){
 					echo '<div class="visit '.$array[0].'" style="display: none; "> '.translate('visits', $array[0], 'sys').'</div>';
 				}
 			?>
         </div>
 		<?php
-			foreach ($nav_ln_array as $code => $array){
+			foreach ($_SESSION['nav_ln_array'] as $code => $array){
 				echo '<ul id="ul'.$array[1].'" class="list '.$array[0].'">
 				<li class="bottomBannerText"><a class="bottomBannerWord" href="#" onMouseUp="loadIFrame(\''.$array[4].'\', \'CR\')">'.translate('Copyright', $array[0], 'sys').'</a></li>
 				<li class="bottomBannerText">|</li>
