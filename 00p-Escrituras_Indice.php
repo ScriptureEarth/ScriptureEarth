@@ -1,3 +1,7 @@
+<?php
+// Start the session
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,10 +30,6 @@
         text-align: right;
     }
 </style>
-<?php
-// Start the session
-session_start();
-?>
 <script type="text/javascript" language="javascript">
 	var MajorLang = "Port";
 </script>
