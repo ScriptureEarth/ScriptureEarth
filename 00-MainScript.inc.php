@@ -27,7 +27,7 @@ Can't use <div id="langBackground" in FireFox 84.0.1 with cursor: pointer; insid
 <meta name="ObjectType" 					content="Document" />
 <meta http-equiv="Window-target" 			content="_top" />
 <meta name="Created-by" 					content="Scott Starker" />
-<meta name="Updated-by"                     content="Lærke Roager" />
+<meta name="Updated-by"                     content="Scott Starker, Lærke Roager" />
 <meta name="Maintained-by" 					content="Website" />
 <meta name="Approved-by" 					content="Bill Dyck, Access Coordinator" />
 <meta name="Copyright" 						content="6.2009 - <?php echo date("Y"); ?>" />		<!-- auto_copyright("2009") -->
@@ -58,8 +58,8 @@ Can't use <div id="langBackground" in FireFox 84.0.1 with cursor: pointer; insid
 <script type="text/javascript" language="javascript"	src="_js/jquery.jplayer-2.9.2.min.js"></script>
 <script type="text/javascript" language="javascript"	src="_js/jplayer.playlist.min.js"></script>
 <script type="text/javascript" language="javascript" 	src="_js/user_events.js?v=1.0.0"></script>
-<script type="text/javascript" language="javascript" 	src="_js/SpecificLanguage.js?v=1.0.0"></script>
-<script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.0"></script>
+<script type="text/javascript" language="javascript" 	src="_js/SpecificLanguage.js?v=1.0.1"></script>
+<script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.1"></script>
 <!--script type='text/javascript' language='javascript'	src="_js/LangSearch.js?v=1.0.3"></script-->
 <!--link rel='stylesheet' type='text/css' 	href='_css/boilerplate.css' /-->
 <link rel='stylesheet' type='text/css' 		href='_css/FGL.css' />
@@ -107,7 +107,7 @@ $db = get_my_db();
 
 // Master list of languages for the site to run in
 $_SESSION['nav_ln_array'] = [];
-$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `translation_code`";
+$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `ln_number`";
 $ln_result=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
 if ($ln_result->num_rows == 0) {
 	die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
@@ -121,8 +121,6 @@ while ($ln_row = $ln_result->fetch_array()){
 	$ln_temp[4] = $ln_row['ln_abbreviation'];
 	$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;
 }
-
-
 ?>
 
 <style>
@@ -138,35 +136,17 @@ while ($ln_row = $ln_result->fetch_array()){
 		$("#sM").selectmenu ({
 			width: 150
 		});
-		/*$("#sM").css('background-color', 'navy');		won't work because it's a 'selectmenu' */
 	});
 	function setTitle(text) {
-		<!-- document.title = '< ?php echo $title_text; ?> ' + text; -->
 		document.title = 'Scripture Earth: ' + text;
 	}
-	<?php
-	/*$(function() {
-		$("#sC").selectmenu ({
-			width: 150
-		});
-		$("#sC").css('background-color', 'navy');		won't work because it's a 'selectmenu' 
-	});*/
-	/*$(function() {
-		$("#sL").selectmenu ({
-			width: 150
-		});
-		$("#sL").css('background-color', 'navy');		won't work because it's a 'selectmenu'
-	});*/
-	?>
 </script>
 
 </head>
 <body>
 <div class="gridContainer clearfix">
 	<div id="div1" class="fluid">
-
 		<?php
-        
         /*
             *************************************************************************************************************
                 Main program
@@ -236,9 +216,6 @@ while ($ln_row = $ln_result->fetch_array()){
 							preg_match('/^([a-zA-Z0-9]{0,5})/', $ROD_Code, $matches);
 							$ROD_Code = $matches[1];
 						}
-//						else {
-//							$ROD_Code = '00000';
-//						}
 						if (isset($_GET['Variant_Code']) || isset($_GET['var'])) {
 							//$Variant_Code = $_GET['Variant_Code'];
 							$Variant_Code = isset($_GET['Variant_Code']) ? $_GET['Variant_Code'] : $_GET['var'];
@@ -254,9 +231,6 @@ while ($ln_row = $ln_result->fetch_array()){
 								}
 							}
 						}
-///						else {
-//							$Variant_Code = '';
-//						}
 // here - check						
 						if (isset($asset) && $asset === 1) {
 							if (!isset($ROD_Code) && !isset($Variant_Code)) {
@@ -728,11 +702,11 @@ while ($ln_row = $ln_result->fetch_array()){
 							<?php foreach ($_SESSION['nav_ln_array'] as $code => $array){
 								$html = "<option value='".$array[2]."' here>".translate($array[1], $array[0], 'sys')."</option>";
 								if ($st == $array[0]){
-									$result = str_replace("here",'selected="selected"',$html);
+									$result_nav = str_replace("here",'selected="selected"',$html);
 								} else{
-									$result = str_replace("here",'',$html);
+									$result_nav = str_replace("here",'',$html);
 								}
-								echo $result;
+								echo $result_nav;
 								}?>
 						</select>
 					</form>
