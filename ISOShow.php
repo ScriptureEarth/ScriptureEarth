@@ -512,7 +512,7 @@
 				<select name="DefaultLang">
 					<?php
 					foreach ($_SESSION['nav_ln_array'] as $code => $array){
-						$html = "<option value=\"EnglishLang\" switch >".$array[1]."</option>";
+						$html = "<option value=\"".$array[1]."Lang\" switch >".$array[1]."</option>";
 						if ($def_LN == $array[3]) {
 							$result = str_replace('switch', " selected='yes'", $html);
 						} else {

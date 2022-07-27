@@ -40,7 +40,12 @@
 	$db = get_my_db();
 	
 	echo "<div style='background-color: white; padding: 20px; width: 1020px; margin-left: auto; margin-right: auto; border-radius: 15px; -moz-border-radius: 15px; -webkit-box-shadow: 15px; '>";
-	$query="UPDATE scripture_main SET Variant_Code = '$inputs[var]', LN_English = '$inputs[LN_EnglishBool]', LN_Spanish = '$inputs[LN_SpanishBool]', LN_Portuguese = '$inputs[LN_PortugueseBool]', LN_French = '$inputs[LN_FrenchBool]', LN_Dutch = '$inputs[LN_DutchBool]', LN_German = '$inputs[LN_GermanBool]', Def_LN = '$inputs[DefLangName]', OT_PDF = '$inputs[OT_PDF]', NT_PDF = '$inputs[NT_PDF]', FCBH = 0, OT_Audio = '$inputs[OT_Audio]', NT_Audio = '$inputs[NT_Audio]', links = '$inputs[links]', other_titles = '$inputs[other_titles]', watch = '$inputs[watch]', buy = '$inputs[buy]', study = '$inputs[study]', viewer = '$inputs[viewer]', CellPhone  = '$inputs[CellPhone]', AddNo = '$inputs[AddNo]', AddTheBibleIn = '$inputs[AddTheBibleIn]', AddTheScriptureIn = '$inputs[AddTheScriptureIn]', BibleIs = '$inputs[BibleIs]', `Bibles_org` = '$inputs[Biblesorg]', YouVersion = '$inputs[YouVersion]', PlaylistAudio = '$inputs[AudioPlaylist]', PlaylistVideo = '$inputs[VideoPlaylist]', SAB = '$inputs[SAB]', eBible = '$inputs[eBible]', SILlink = '$inputs[SILlink]', `GRN` = '$inputs[GRN]' WHERE ISO_ROD_index = $inputs[idx]";
+//Change here??
+	$ln_result = '';
+	foreach($_SESSION['nav_ln_array'] as $code => $array){
+		$ln_result .= "LN_".$array[1]." = '$inputs[LN_".$array[1]."Bool]', ";
+	}
+	$query="UPDATE scripture_main SET Variant_Code = '$inputs[var]', ".$ln_result."Def_LN = '$inputs[DefLangName]', OT_PDF = '$inputs[OT_PDF]', NT_PDF = '$inputs[NT_PDF]', FCBH = 0, OT_Audio = '$inputs[OT_Audio]', NT_Audio = '$inputs[NT_Audio]', links = '$inputs[links]', other_titles = '$inputs[other_titles]', watch = '$inputs[watch]', buy = '$inputs[buy]', study = '$inputs[study]', viewer = '$inputs[viewer]', CellPhone  = '$inputs[CellPhone]', AddNo = '$inputs[AddNo]', AddTheBibleIn = '$inputs[AddTheBibleIn]', AddTheScriptureIn = '$inputs[AddTheScriptureIn]', BibleIs = '$inputs[BibleIs]', `Bibles_org` = '$inputs[Biblesorg]', YouVersion = '$inputs[YouVersion]', PlaylistAudio = '$inputs[AudioPlaylist]', PlaylistVideo = '$inputs[VideoPlaylist]', SAB = '$inputs[SAB]', eBible = '$inputs[eBible]', SILlink = '$inputs[SILlink]', `GRN` = '$inputs[GRN]' WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if (!$result) {
 		die('Could not update the data in "scripture_main": ' . $db->error);

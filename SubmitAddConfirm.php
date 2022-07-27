@@ -43,7 +43,14 @@
 	echo "</div></br />";
 	
 	echo "<div style='background-color: white; padding: 20px; width: 1020px; margin-left: auto; margin-right: auto; border-radius: 15px; -moz-border-radius: 15px; -webkit-box-shadow: 15px; '>";
-	$query="INSERT INTO scripture_main (ISO, ROD_Code, Variant_Code, LN_English, LN_Spanish, LN_Portuguese, LN_French, LN_Dutch, LN_German, Def_LN, OT_PDF, NT_PDF, FCBH, OT_Audio, NT_Audio, links, other_titles, watch, buy, study, viewer, CellPhone, AddNo, AddTheBibleIn, AddTheScriptureIn, BibleIs, YouVersion, Bibles_org, PlaylistAudio, PlaylistVideo, SAB, eBible, SILlink, GRN) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', '$inputs[LN_EnglishBool]', '$inputs[LN_SpanishBool]', '$inputs[LN_PortugueseBool]', '$inputs[LN_FrenchBool]', '$inputs[LN_DutchBool]', '$inputs[LN_GermanBool]', '$inputs[DefLangName]', '$inputs[OT_PDF]', '$inputs[NT_PDF]', 0, '$inputs[OT_Audio]','$inputs[NT_Audio]', '$inputs[links]', '$inputs[other_titles]', '$inputs[watch]', '$inputs[buy]', '$inputs[study]', '$inputs[viewer]', '$inputs[CellPhone]', '$inputs[AddNo]', '$inputs[AddTheBibleIn]', '$inputs[AddTheScriptureIn]', '$inputs[BibleIs]', '$inputs[YouVersion]', '$inputs[Biblesorg]', '$inputs[AudioPlaylist]', '$inputs[VideoPlaylist]', '$inputs[SAB]', '$inputs[eBible]', '$inputs[SILlink]', '$inputs[GRN]')";
+//Change this???
+	$ln_result = '';
+	$ln_string = '';
+	foreach($_SESSION['nav_ln_array'] as $code => $array){
+		$ln_result .= "LN_".$array[1].", ";
+		$ln_string .= "'$inputs[LN_".$array[1]."Bool]', ";
+	}
+	$query="INSERT INTO scripture_main (ISO, ROD_Code, Variant_Code, ".$ln_result."Def_LN, OT_PDF, NT_PDF, FCBH, OT_Audio, NT_Audio, links, other_titles, watch, buy, study, viewer, CellPhone, AddNo, AddTheBibleIn, AddTheScriptureIn, BibleIs, YouVersion, Bibles_org, PlaylistAudio, PlaylistVideo, SAB, eBible, SILlink, GRN) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', ".$ln_string."'$inputs[DefLangName]', '$inputs[OT_PDF]', '$inputs[NT_PDF]', 0, '$inputs[OT_Audio]','$inputs[NT_Audio]', '$inputs[links]', '$inputs[other_titles]', '$inputs[watch]', '$inputs[buy]', '$inputs[study]', '$inputs[viewer]', '$inputs[CellPhone]', '$inputs[AddNo]', '$inputs[AddTheBibleIn]', '$inputs[AddTheScriptureIn]', '$inputs[BibleIs]', '$inputs[YouVersion]', '$inputs[Biblesorg]', '$inputs[AudioPlaylist]', '$inputs[VideoPlaylist]', '$inputs[SAB]', '$inputs[eBible]', '$inputs[SILlink]', '$inputs[GRN]')";
 	$result=$db->query($query);
 	if (!$result) {
 		die('Could not insert the data in "scripture_main": ' . $db->error);
