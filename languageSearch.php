@@ -28,6 +28,10 @@
 			$MajorLanguage = 'LN_Portuguese';
 			$Variant_major = 'Variant_Por';
 			break;
+		case 'cmn':
+			$MajorLanguage = 'LN_Chinese';
+			$Variant_major = 'Variant_Chi';
+			break;
 		default:
 			$response = '"st" never found.';
 			exit();
