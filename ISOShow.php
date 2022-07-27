@@ -501,7 +501,7 @@
 
 				
 				<?php
-				$query="SELECT Def_LN FROM scripture_main WHERE ISO = '$iso' AND ROD_Code = '$RODCode'";
+				$query="SELECT Def_LN FROM nav_ln WHERE ISO = '$iso' AND ROD_Code = '$RODCode'";
 				$result=$db->query($query);
 				$row = $result->fetch_array();
 				$def_LN=$row['Def_LN'];
