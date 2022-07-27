@@ -77,11 +77,12 @@ if (strlen($TryLanguage) > 2) {
 
 	// ISO
 	if (strlen($TryLanguage) == 3) {
+print_r($MajorLanguage . ' ' . $Variant_major . ' ' . $SpecificCountry);
 		$ln_result = '';
 		foreach($_SESSION['nav_ln_array'] as $code => $array){
 			$ln_result .= 'LN_'.$array[1].', ';
 		}
-		$query="SELECT DISTINCT ISO_ROD_index, ISO, ROD_Code, Variant_Code, ".$ln_result.", Def_LN FROM scripture_main WHERE ISO = '$TryLanguage'";
+		$query="SELECT DISTINCT ISO_ROD_index, ISO, ROD_Code, Variant_Code, ".$ln_result."Def_LN FROM scripture_main WHERE ISO = '$TryLanguage'";
 		if ($result = $db->query($query)) {
 			$LN = '';
 			while ($row = $result->fetch_assoc()) {
@@ -221,7 +222,7 @@ if (strlen($TryLanguage) > 2) {
 	foreach($_SESSION['nav_ln_array'] as $code => $array){
 		$ln_result .= 'LN_'.$array[1].', ';
 	}
-	$query="SELECT DISTINCT ISO_ROD_index, ISO, ROD_Code, Variant_Code, ".$ln_result.", Def_LN FROM scripture_main ORDER BY ISO";
+	$query="SELECT DISTINCT ISO_ROD_index, ISO, ROD_Code, Variant_Code, ".$ln_result."Def_LN FROM scripture_main ORDER BY ISO";
 	if ($result = $db->query($query)) {
 		$LN = '';
 		while ($row = $result->fetch_assoc()) {													// All ISOs + ROD codes + variants
@@ -366,7 +367,7 @@ if (strlen($TryLanguage) > 2) {
 			foreach($_SESSION['nav_ln_array'] as $code => $array){
 				$ln_result .= 'LN_'.$array[1].', ';
 			}
-			$query="SELECT ISO, ROD_Code, Variant_Code, ".$ln_result.", Def_LN FROM scripture_main WHERE ISO_ROD_index = $ISO_ROD_index";
+			$query="SELECT ISO, ROD_Code, Variant_Code, ".$ln_result."Def_LN FROM scripture_main WHERE ISO_ROD_index = $ISO_ROD_index";
 			if ($result_SM = $db->query($query)) {
 				if ($row = $result_SM->fetch_assoc()) {
 					$ISO = $row['ISO'];
