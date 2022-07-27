@@ -91,17 +91,17 @@ function showLanguage(str, st, Internet, asset) { // get the names of the langua
     if (lnxmlhttp == null) {
         return;
     }
-    
-    Scriptname = '';
-    
-    lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + st, true)
-    lnxmlhttp.send(null)
-    lnxmlhttp.onreadystatechange = function(){
-        if (lnxmlhttp.readyState == 3){
+
+    Scriptname = window.location.href;
+
+    /*lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + st, true);
+    lnxmlhttp.send(null);
+    lnxmlhttp.onreadystatechange = function() {
+        if (lnxmlhttp.readyState == 4) {
             // Get hold of the array and change scriptname?
             Scriptname = lnxmlhttp.responseText;
         }
-    }
+    }*/
 
     /****************************************************************************************************************
     	AJAX - languageSearch.php
@@ -179,15 +179,15 @@ function send(sel) {
     // languageName = 'block'; which = 2
     // languageCode = 'block'; which = 1
     var which = 0;
-    try{
-        window.open("LangSearch.php?st="+sel.options[sel.selectedIndex].value.toLowerCase(), "_self");
-    } catch(err){
+    try {
+        window.open("LangSearch.php?st=" + sel.options[sel.selectedIndex].value.toLowerCase(), "_self");
+    } catch (err) {
         window.open("LangSearch.php?st=eng", "_self");
     }
 }
 
 function showCountry(str, st, Internet, asset) { // get the names of the country
-    
+
     if (str.length == 0) {
         document.getElementById("CountSearch").innerHTML = '';
         $("#showLanguageID").show();
@@ -226,18 +226,18 @@ function showCountry(str, st, Internet, asset) { // get the names of the country
     if (lnxmlhttp == null) {
         return;
     }
-    
+
     Scriptname = '';
-    
+
     lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + st, true)
     lnxmlhttp.send(null)
-    lnxmlhttp.onreadystatechange = function(){
-        if (lnxmlhttp.readyState == 3){
+    lnxmlhttp.onreadystatechange = function() {
+        if (lnxmlhttp.readyState == 3) {
             // Get hold of the array and change scriptname?
             Scriptname = lnxmlhttp.responseText;
         }
     }
-    
+
     Countryxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
     if (Countryxmlhttp == null) {
         return;
@@ -356,7 +356,7 @@ function about(st) {
     var w;
     NavLang = st;
     if (typeof(w) == "undefined") {
-        w = new Worker("./_js/about_"+st+"_workers.js");
+        w = new Worker("./_js/about_" + st + "_workers.js");
     }
     w.onmessage = function(event) {
         document.getElementById("results").innerHTML = event.data;
@@ -510,18 +510,18 @@ function showiOSLanguage(str, st, Internet) { // get the names of the languages
         return;
     }
     Scriptname = '';
-    
+
     lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + st, true)
     lnxmlhttp.send(null)
-    lnxmlhttp.onreadystatechange = function(){
-        if (lnxmlhttp.readyState == 3){
-            // Get hold of the array and change scriptname?
-            Scriptname = lnxmlhttp.responseText;
+    lnxmlhttp.onreadystatechange = function() {
+            if (lnxmlhttp.readyState == 3) {
+                // Get hold of the array and change scriptname?
+                Scriptname = lnxmlhttp.responseText;
+            }
         }
-    }
-    /****************************************************************************************************************
-    	AJAX - LiOSSearch.php
-    ****************************************************************************************************************/
+        /****************************************************************************************************************
+        	AJAX - LiOSSearch.php
+        ****************************************************************************************************************/
     var url = "LiOSSearch.php";
     url = url + "?language=" + str;
     url = url + "&st=" + st;
@@ -614,18 +614,18 @@ function showiOSCountry(str, st, Internet) { // get the names of the country
         return;
     }
     Scriptname = '';
-    
+
     lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + st, true)
     lnxmlhttp.send(null)
-    lnxmlhttp.onreadystatechange = function(){
-        if (lnxmlhttp.readyState == 3){
-            // Get hold of the array and change scriptname?
-            Scriptname = lnxmlhttp.responseText;
+    lnxmlhttp.onreadystatechange = function() {
+            if (lnxmlhttp.readyState == 3) {
+                // Get hold of the array and change scriptname?
+                Scriptname = lnxmlhttp.responseText;
+            }
         }
-    }
-    /****************************************************************************************************************
-    	AJAX - CiOSSearch.php
-    ****************************************************************************************************************/
+        /****************************************************************************************************************
+        	AJAX - CiOSSearch.php
+        ****************************************************************************************************************/
     var url = "CiOSSearch.php";
     url = url + "?country=" + str;
     url = url + "&st=" + st;
@@ -718,7 +718,7 @@ function iOSLanguage(st, idx, LN, URL) {
             window.open(URL, '_blank');
         }
     } else if (URL.startsWith("asset://")) {
-//        URL = URL.replace("asset://", "https://");
+        //        URL = URL.replace("asset://", "https://");
         const link = document.createElement("a");
         //		link.href = 'data:application/zip,'+URL;
         link.href = URL;
@@ -735,11 +735,11 @@ function iOSLanguage(st, idx, LN, URL) {
         return;
     }
     Scriptname = '';
-    
+
     lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + st, true)
     lnxmlhttp.send(null)
-    lnxmlhttp.onreadystatechange = function(){
-        if (lnxmlhttp.readyState == 3){
+    lnxmlhttp.onreadystatechange = function() {
+        if (lnxmlhttp.readyState == 3) {
             // Get hold of the array and change scriptname?
             Scriptname = lnxmlhttp.responseText;
         }

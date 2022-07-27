@@ -56,15 +56,11 @@ function setHeight() {
 function LinkedCounter(c, URL) { // Bible.is, Jesus Film
     var filename = "counter/" + c + ".link";
     $(document).ready(function() {
-        //$("#btn").click(function() {
         $.ajax({
             url: "LinkedCounter.php",
             data: { "LC": filename },
-            success: function(result) {
-                //alert( result );
-            }
+            success: function(result) {}
         });
-        //});
     });
     window.open(URL, "_blank");
 }
@@ -134,13 +130,9 @@ function OTAudio(st, iso, rod, mobile, text) {
         var left = (screen.width / 2) - (440 / 2);
         var top = (screen.height / 2) - (360 / 2);
         var w = window.open(url, "_normal", "toolbar=no, location=no, directories=no, status=yes, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=440, height=360, top=" + top + ", left=" + left);
-        //w.document.write("<title>Save Audio Zip</title>")
-        //w.document.write("<h1 style='color: white; background-color: brown; text-align: center; '>Creating the zip file. Please wait...</h1>")
         w.document.body.innerHTML = "<div style='position: absolute; top: 0px; left: 0px; padding: 20px; background-color: #008ff7; width: 400px; height: 320px; '><h2 style='font-family: Arial, Helvetica, sans-serif; padding: 20px; margin-top: 80px; text-align: center; border: 4px solid white; background-color: #002f78; color: white; '>" + text + "</h2></div>";
     } else {
         var w = window.open(url, "_normal");
-        //w.document.write("<title>Save Audio Zip</title>");
-        //w.document.write("<h1 style='color: white; background-color: brown; text-align: center; '>Creating the zip file. Please wait...</h1>");
         w.document.body.innerHTML = "<div style='padding: 1.4em; background-color: #008ff7; width: 100%; height: 100%; '><h2 style='font-size: 2.6em; font-weight: bold; font-family: Arial, Helvetica, sans-serif; padding: 1.4em; margin-top: 4em; text-align: center; border: .4em solid white; background-color: #002f78; color: white; '>" + text + "</h2></div>";
     }
     return false; //cancels href action 
@@ -164,13 +156,9 @@ function NTAudio(st, iso, rod, mobile, text) {
         var left = (screen.width / 2) - (440 / 2);
         var top = (screen.height / 2) - (360 / 2);
         var w = window.open(url, "_normal", "toolbar=no, location=no, directories=no, status=yes, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=440, height=360, top=" + top + ", left=" + left);
-        //w.document.write("<title>Save Audio Zip</title>");
-        //w.document.write("<h1 style='color: white; background-color: brown; text-align: center; '>Creating the zip file. Please wait...</h1>");
         w.document.body.innerHTML = "<div style='position: absolute; top: 0px; left: 0px; padding: 20px; background-color: #008ff7; width: 400px; height: 320px; '><h2 style='font-family: Arial, Helvetica, sans-serif; padding: 20px; margin-top: 80px; text-align: center; border: 4px solid white; background-color: #002f78; color: white; '>" + text + "</h2></div>";
     } else {
         var w = window.open(url, "_normal");
-        //w.document.write("<title>Save Audio Zip</title>");
-        //w.document.write("<h1 style='color: white; background-color: brown; text-align: center; '>Creating the zip file. Please wait...</h1>");
         w.document.body.innerHTML = "<div style='padding: 1.4em; background-color: #008ff7; width: 100%; height: 100%; '><h2 style='font-size: 2.6em; font-weight: bold; font-family: Arial, Helvetica, sans-serif; padding: 1.4em; margin-top: 4em; text-align: center; border: .4em solid white; background-color: #002f78; color: white; '>" + text + "</h2></div>";
     }
     return false; //cancels href action 
@@ -180,15 +168,11 @@ function PlaylistAudioZip(st, iso, rod, PlaylistGroupIndex, PlaylistIndexMax, mo
     "use strict";
     var a_index = "";
     var PL = "";
-    //var arr = array_map(function($val) { return explode('^', $val); }, explode('|', $homepage));		// put the string into 2D array
-    //var arr = PlaylistString.split("|");
     var temp = "";
     for (var a = 1; a <= PlaylistIndexMax; a++) {
         a_index = 'Playlist_audio_' + PlaylistGroupIndex + '_' + a.toString();
         if (document.getElementById(a_index) !== null) {
             if (document.getElementById(a_index).checked === true) {
-                //PL = PL + arr[a-1].substring(arr[a-1].indexOf("^")+1).replace("data/"+iso+"/audio/", "")  + "|";
-                //PL = PL + arr[a-1] + "|";
                 temp = document.getElementById(a_index).value;
                 PL = PL + temp.substr(temp.lastIndexOf("/") + 1) + "|";
             }
@@ -200,13 +184,9 @@ function PlaylistAudioZip(st, iso, rod, PlaylistGroupIndex, PlaylistIndexMax, mo
         var left = (screen.width / 2) - (440 / 2);
         var top = (screen.height / 2) - (360 / 2);
         var w = window.open(url, "_normal", "toolbar=no, location=no, directories=no, status=yes, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=440, height=360, top=" + top + ", left=" + left);
-        //w.document.write("<title>Save Audio Zip</title>");
-        //w.document.write("<h1 style='color: white; background-color: brown; text-align: center; '>Creating the zip file. Please wait...</h1>");
         w.document.body.innerHTML = "<div style='position: absolute; top: 0px; left: 0px; padding: 20px; background-color: #008ff7; width: 400px; height: 320px; '><h2 style='font-family: Arial, Helvetica, sans-serif; padding: 20px; margin-top: 80px; text-align: center; border: 4px solid white; background-color: #002f78; color: white; '>" + text + "</h2></div>";
     } else {
         var w = window.open(url, "_normal");
-        //w.document.write("<title>Save Audio Zip</title>")
-        //w.document.write("<h1 style='color: white; background-color: brown; text-align: center; '>Creating the zip file. Please wait...</h1>")
         w.document.body.innerHTML = "<div style='padding: 1.4em; background-color: #008ff7; width: 100%; height: 100%; '><h2 style='font-size: 2.6em; font-weight: bold; font-family: Arial, Helvetica, sans-serif; padding: 1.4em; margin-top: 4em; text-align: center; border: .4em solid white; background-color: #002f78; color: white; '>" + text + "</h2></div>";
     }
     return false; //cancels href action 
@@ -315,10 +295,7 @@ function ListenAudio(mp3Info, autostart, whichListenTo, OTNT) {
         newHTML = "<span id='NTBookChapter' style='vertical-align: top; '>" + listenBook + " " + listenChapter + "</span> &nbsp;&nbsp; ";
         jQuery_jPlayer = "#jquery_jplayer_1";
         cssSelector = "#jp_container_1";
-    } else {
-        //newHTML = newHTML + '<object id="myFlash" type="application/x-shockwave-flash" data="player_mp3_maxi.swf" width="320" height="20">';
-    }
-    //$(document).ready(function(){
+    } else {}
     $(jQuery_jPlayer).jPlayer({ // create jPlayer
         ready: function(event) {
             $(this).jPlayer("setMedia", {
@@ -334,43 +311,22 @@ function ListenAudio(mp3Info, autostart, whichListenTo, OTNT) {
         smoothPlayBar: true,
         keyEnabled: true,
         ended: function(event) { // "ended" event automatically fired every time the chapter is ended
-                // Add 1 to the chapter and then continue to play.
-            }
-            //$(jQuery_jPlayer).unbind($.jPlayer.event.repeat + ".jPlayer");
-            //$(jQuery_jPlayer).unbind(".jPlayerRepeat");
+            // Add 1 to the chapter and then continue to play.
+        }
     });
-    //});
 
     if (whichListenTo === 'OTListenNow') {
         document.getElementById('OTBookChapter').innerHTML = newHTML;
         if (document.getElementById('OTListenNow').style.display !== "block") {
             document.getElementById('OTListenNow').style.marginLeft = "0px";
             $('#OTListenNow').show();
-            //divHeight = 32;
-        } else {
-            //divHeight = -2;
-        }
-        /*$(document).ready(function() {
-        	divHeight += document.getElementById("container").offsetHeight;
-        	document.getElementById("container").style.height = divHeight + "px";
-        	// if the table is long enough IE goes to dark black (blur and opacity). I don't know why.
-        	$("#container").redrawShadow({left: 5, top: 5, blur: 2, opacity: 0.5, color: "black", swap: false});
-        });*/
+        } else {}
     } else if (whichListenTo === 'NTListenNow') {
         document.getElementById('NTBookChapter').innerHTML = newHTML;
         if (document.getElementById('NTListenNow').style.display !== "block") {
             document.getElementById('NTListenNow').style.marginLeft = "0px";
             $('#NTListenNow').show();
-            //divHeight = 32;
-        } else {
-            //divHeight = -2;
-        }
-        /*$(document).ready(function() {
-        	divHeight += document.getElementById("container").offsetHeight;
-        	document.getElementById("container").style.height = divHeight + "px";
-        	if the table is long enough IE goes to dark black (blur and opacity). I don't know why.
-        	$("#container").redrawShadow({left: 5, top: 5, blur: 2, opacity: 0.5, color: "black", swap: false});
-        });*/
+        } else {}
     } else {
         document.getElementById('ListenNow').style.marginLeft = "0px";
         $('"#ListenNow').show();
@@ -451,11 +407,8 @@ function ListenVideo(mp3Info, autostart, whichListenTo, OTNT) {
         newHTML = "<span id='NTBookChapter' style='vertical-align: top; '>" + listenBook + " " + listenChapter + "</span> &nbsp;&nbsp; ";
         jQuery_jPlayer = "#jquery_jplayer_11";
         cssSelector = "#jp_container_11";
-    } else {
-        //newHTML = newHTML + '<object id="myFlash" type="application/x-shockwave-flash" data="player_mp3_maxi.swf" width="320" height="20">';
-    }
+    } else {}
 
-    //$(document).ready(function(){
     $(jQuery_jPlayer).jPlayer({ // create jPlayer
         ready: function(event) {
             $(this).jPlayer("setMedia", {
@@ -471,22 +424,19 @@ function ListenVideo(mp3Info, autostart, whichListenTo, OTNT) {
         smoothPlayBar: true,
         keyEnabled: true,
         ended: function(event) { // "ended" event automatically fired every time the chapter is ended
-                // Add 1 to the chapter and then continue to play.
-                if ((mp3Info.selectedIndex + 1) < mp3Info.options.length) { // selected item option + 1 < total number of options
-                    mp3Info.selectedIndex = mp3Info.selectedIndex + 1; // the next chapter
-                    AudioFileName = mp3Info.value.split('^'); // split the mp3Info into an array where the '^' are separators
-                    listenBook = AudioFileName[0]; // the number of the book of the Bible 
-                    listenFilename = AudioFileName[1]; // audio filename
-                    listenChapter = mp3Info.options[mp3Info.selectedIndex].text; // name of the chapter
-                    $(this).jPlayer("setMedia", { // play the next chap;ter
-                        mp3: listenFilename // audio filename
-                    }).jPlayer("play");
-                }
+            // Add 1 to the chapter and then continue to play.
+            if ((mp3Info.selectedIndex + 1) < mp3Info.options.length) { // selected item option + 1 < total number of options
+                mp3Info.selectedIndex = mp3Info.selectedIndex + 1; // the next chapter
+                AudioFileName = mp3Info.value.split('^'); // split the mp3Info into an array where the '^' are separators
+                listenBook = AudioFileName[0]; // the number of the book of the Bible 
+                listenFilename = AudioFileName[1]; // audio filename
+                listenChapter = mp3Info.options[mp3Info.selectedIndex].text; // name of the chapter
+                $(this).jPlayer("setMedia", { // play the next chap;ter
+                    mp3: listenFilename // audio filename
+                }).jPlayer("play");
             }
-            //$(jQuery_jPlayer).unbind($.jPlayer.event.repeat + ".jPlayer");
-            //$(jQuery_jPlayer).unbind(".jPlayerRepeat");
+        }
     });
-    //});
 
     if (whichListenTo === 'OTListenNow') {
         document.getElementById('OTBookChapter').innerHTML = newHTML;
@@ -525,56 +475,6 @@ function ListenVideo(mp3Info, autostart, whichListenTo, OTNT) {
     }
 }
 
-/* SAB with chapters
-function SABChangeChapters(WhichTestament, iso, rod, BookNumber) {			// The array NumberOfChapters won't work. Hmmm...
-	var Testament = "NT_SAB_Chapters";
-	if (WhichTestament == "OT") {
-		Testament = "OT_SAB_Chapters";
-	}
-	var elSel = document.getElementById(Testament);
-	var i = 0;
-	for (i = elSel.length - 1; i >= 0; i--) {
-		elSel.remove(i);								// first, delete all the 'option's
-	}
-	var Chapters = new Array();
-	Chapters = BookNumber.split(',');					// Split the BookNumber into an array where the ',' are separators
-	var BookNumber = Chapters[0];						// The number of the Book of the Bible
-	var Book = Major_NT_array[BookNumber];
-	if (WhichTestament == "OT") {
-		Book = Major_OT_array[BookNumber];
-	}
-	/*
-		This is not neccessary EXCEPT if the audio was not complete. I.e., if the books of the Bible
-		did not have all of the chapters. However, the chapter SAB filenames have to be there.
-	* /
-	for (i=1; i < Chapters.length; i=i+2) {
-		var eNew = document.createElement('option');	// The 'var' needs to be there!
-		eNew.text = Chapters[i];
-		eNew.value = Book + "^data/" + iso + "/sab/" + Chapters[i+1];
-		try {
-			elSel.add(eNew, null);						// standards compliant; doesn't work in IE
-		}
-		catch (ex) {
-			elSel.add(eNew);							// IE only
-		}
-	}
-}
-*/
-
-/* SAB with chapters
-function GoSAB(SABInfo) {
-	if (SABwin && !SABwin.closed) SABwin.close();
-	var SABFileName = new Array();
-	SAB = SABInfo.value.split('^');						// split the SABInfo into an array where the '^' are separators
-	//var SABBook = SAB[0];								// the number of the book of the Bible
-	var SABFilename = SAB[1];							// SAB filename
-	//var SABChapter = SABInfo.options[SABInfo.selectedIndex].text;	// the number of the book of the Bible
-	SABwin = window.open(SABFilename, 'SABPage');
-	//setTimeout(function() { SABwin.focus(); }, 1000);
-	SABwin.focus();
-	return false;										// cancels href action 
-}*/
-
 // SAB without chapters
 function GoSAB(iso, Book_Chapter_HTML) {
     "use strict";
@@ -595,7 +495,6 @@ function GoSAB_subfolder(iso, Book_HTML, subfolder) {
 function PlaylistVideo(orgVideoPixels, getElById, mobile) { // passing argument by reference (this.)
     "use strict";
     // I need windows height to go here
-    var divHeight = 0;
     // The extra styles are for the mobile Andoid to work! (6/17/17)
     if (mobile == 1) {
         if (document.getElementById(getElById).style.display === "table-row") {
@@ -610,28 +509,17 @@ function PlaylistVideo(orgVideoPixels, getElById, mobile) { // passing argument 
             document.getElementById(getElById).style.lineHeight = "100%";
         }
     } else {
-        ////// $(document).ready(function() {
         if (document.getElementById(getElById).style.display === "table-row") {
             document.getElementById(getElById).style.display = "none";
             document.getElementById(getElById).style.overflow = "hidden";
             document.getElementById(getElById).style.float = "left";
             document.getElementById(getElById).style.lineHeight = "0px";
-            //divHeight = -585;
-            ////// divHeight = this.orgVideoPixels;
         } else {
-            ////// this.orgVideoPixels = document.body.scrollHeight - 42;
-            //divHeight = 581;
             document.getElementById(getElById).style.display = "table-row";
             document.getElementById(getElById).style.overflow = "visible";
             document.getElementById(getElById).style.float = "none";
             document.getElementById(getElById).style.lineHeight = "100%";
-            ///// divHeight = document.body.scrollHeight - 26;
         }
-        //divHeight += document.getElementById("container").offsetHeight;
-        ////// document.getElementById("container").style.height = divHeight + "px";
-        // if the table is long enough IE goes to dark black (blur and opacity). I don't know why.
-        ////// $("#container").redrawShadow({left: 5, top: 5, blur: 2, opacity: 0.5, color: "black", swap: false});
-        /////// });
     }
 }
 
@@ -682,49 +570,6 @@ function eBibleShow(URL, st, mobile) { // the AJAX for the live search on the is
     }
 }
 
-/*// Get the HTTP Object
-function videoHTTPObject() {								// get the AJAX object; can be used more than once
-	try {
-		// IE 7+, Opera 8.0+, Firefox, Safari
-		return new XMLHttpRequest();
-	}
-	catch (e) {
-		// Internet Explorer browsers
-		try {
-			return new ActiveXObject("Msxml2.XMLHTTP");
-		}
-		catch (e) {
-			try {
-				return new ActiveXObject("Microsoft.XMLHTTP");
-			}
-			catch (e) {
-				// Something went wrong
-				alert("XML HTTP Request is not able to be set. Maybe the version of the web browser is old?");
-				return null;
-			}
-		}
-	}
-}
-
-function saveAsVideo(SaveAsVideo) {							// the AJAX for the live search on the iso input
-	videoSaveAs = videoHTTPObject();						// the eBible object (see JavaScript function getHTTPObject() above)
-	if (videoSaveAs == null) {
-		return;
-	}
-	var saveAs = "SaveAsVideo.php";
-	saveAs = saveAs + "?SaveAsVideo=" + SaveAsVideo;
-	saveAs = saveAs + "&sid=" + Math.random();
-	videoSaveAs.open("GET", saveAs, true);					// open the AJAX object
-	videoSaveAs.send(null);
-	videoSaveAs.onreadystatechange = function() {			// the function that returns for AJAX object
-		if (videoSaveAs.readyState == 4) {					// if the readyState = 4 then eBible is displayed
-			document.getElementById("ff").innerHTML = videoSaveAs.responseText;
-			alert('hi');
-		}
-	}
-}
-*/
-
 function saveAsVideo(iso, st, mobile, saveAsVideo, text) {
     "use strict";
     var url = "00-SaveAsVideoZip.php" + "?st=" + st + "&iso=" + iso + "&saveAsVideo=" + saveAsVideo;
@@ -732,13 +577,9 @@ function saveAsVideo(iso, st, mobile, saveAsVideo, text) {
         var left = (screen.width / 2) - (440 / 2);
         var top = (screen.height / 2) - (360 / 2);
         var w = window.open(url, "_normal", "toolbar=no, location=no, directories=no, status=yes, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=440, height=360, top=" + top + ", left=" + left);
-        //w.document.write("<title>Save Audio Zip</title>");
-        //w.document.write("<h1 style='color: white; background-color: brown; text-align: center; '>Creating the zip file. Please wait...</h1>");
         w.document.body.innerHTML = "<div style='position: absolute; top: 0px; left: 0px; padding: 20px; background-color: #008ff7; width: 400px; height: 320px; '><h2 style='font-family: Arial, Helvetica, sans-serif; padding: 20px; margin-top: 80px; text-align: center; border: 4px solid white; background-color: #002f78; color: white; '>" + text + "</h2></div>";
     } else {
         var w = window.open(url, "_normal");
-        //w.document.write("<title>Save Audio Zip</title>");
-        //w.document.write("<h1 style='color: white; background-color: brown; text-align: center; '>Creating the zip file. Please wait...</h1>");
         w.document.body.innerHTML = "<div style='padding: 1.4em; background-color: #008ff7; width: 100%; height: 100%; '><h2 style='font-size: 2.6em; font-weight: bold; font-family: Arial, Helvetica, sans-serif; padding: 1.4em; margin-top: 4em; text-align: center; border: .4em solid white; background-color: #002f78; color: white; '>" + text + "</h2></div>";
     }
     return false; //cancels href action 
@@ -762,13 +603,9 @@ function DownloadVideoPlaylistZip(st, iso, PlaylistVideoFilename, idNumber, mobi
         var left = (screen.width / 2) - (440 / 2);
         var top = (screen.height / 2) - (360 / 2);
         var w = window.open(url, "_normal", "toolbar=no, location=no, directories=no, status=yes, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=440, height=360, top=" + top + ", left=" + left);
-        //w.document.write("<title>Save Audio Zip</title>");
-        //w.document.write("<h1 style='color: white; background-color: brown; text-align: center; '>Creating the zip file. Please wait...</h1>");
         w.document.body.innerHTML = "<div style='position: absolute; top: 0px; left: 0px; padding: 20px; background-color: #008ff7; width: 400px; height: 320px; '><h2 style='font-family: Arial, Helvetica, sans-serif; padding: 20px; margin-top: 80px; text-align: center; border: 4px solid white; background-color: #002f78; color: white; '>" + message + "</h2></div>";
     } else {
         var w = window.open(url, "_normal");
-        //w.document.write("<title>Save Audio Zip</title>");
-        //w.document.write("<h1 style='color: white; background-color: brown; text-align: center; '>Creating the zip file. Please wait...</h1>");
         w.document.body.innerHTML = "<div style='padding: 1.4em; background-color: #008ff7; width: 100%; height: 100%; '><h2 style='font-size: 2.6em; font-weight: bold; font-family: Arial, Helvetica, sans-serif; padding: 1.4em; margin-top: 4em; text-align: center; border: .4em solid white; background-color: #002f78; color: white; '>" + message + "</h2></div>";
     }
     return false; //cancels href action 
