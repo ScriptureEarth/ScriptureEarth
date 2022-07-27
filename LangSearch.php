@@ -117,6 +117,12 @@ button {
 			$SpecificCountry = 'German';
 			$Scriptname = '00de-Sprachindex.php';
 			break;
+		case 'cmn':
+			$MajorLanguage = 'LN_Chinese';
+			$Variant_major = 'Variant_Chi';
+			$SpecificCountry = 'Chinese';
+			$Scriptname = '00cmn.php';
+			break;
 		default:
 			$response = '"st" never found.';
 			exit();

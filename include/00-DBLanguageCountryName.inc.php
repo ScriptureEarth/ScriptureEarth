@@ -6,8 +6,8 @@
 */
 // Updated by Lærke Roager
 
-require_once './include/conn.inc.php';							// connect to the database named 'scripture'
-$db = get_my_db();
+//require_once './include/conn.inc.php';							// connect to the database named 'scripture'
+//$db = get_my_db();
 
 
 
