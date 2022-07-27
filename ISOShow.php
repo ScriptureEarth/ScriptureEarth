@@ -501,7 +501,7 @@
 
 				
 				<?php
-				$query="SELECT Def_LN FROM scripture_main WHERE ISO = '$iso' AND ROD_Code = '$RODCode'";
+				$query="SELECT Def_LN FROM nav_ln WHERE ISO = '$iso' AND ROD_Code = '$RODCode'";
 				$result=$db->query($query);
 				$row = $result->fetch_array();
 				$def_LN=$row['Def_LN'];
@@ -512,7 +512,7 @@
 				<select name="DefaultLang">
 					<?php
 					foreach ($_SESSION['nav_ln_array'] as $code => $array){
-						$html = "<option value=\"EnglishLang\" switch >".$array[1]."</option>";
+						$html = "<option value=\"".$array[1]."Lang\" switch >".$array[1]."</option>";
 						if ($def_LN == $array[3]) {
 							$result = str_replace('switch', " selected='yes'", $html);
 						} else {
