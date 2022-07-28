@@ -1,4 +1,8 @@
 <?php
+// Start the session
+session_start();
+?>
+<?php
 // Change PHP.ini from max_input_vars = 1000 to max_input_vars = 3000 because POST has to be set for 3000!
 include './include/session.php';
 global $session;
