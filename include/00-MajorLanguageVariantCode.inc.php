@@ -13,6 +13,8 @@ switch ($st) {
 		break;
 	case "por":
 		break;
+	case "deu":
+		break;
 	case "fra":
 		break;
 	case "nld":

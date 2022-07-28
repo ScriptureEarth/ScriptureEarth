@@ -107,7 +107,7 @@ $db = get_my_db();
 
 // Master list of languages for the site to run in
 $_SESSION['nav_ln_array'] = [];
-$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `ln_number`";
+$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `translation_code`";
 $ln_result=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
 if ($ln_result->num_rows == 0) {
 	die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
