@@ -1,4 +1,8 @@
 <?php
+// Start the session
+session_start();
+?>
+<?php
 	// Called from Scripture_Add.php in JavaScript function ISOShow(iso, rod, var)
 	
 	// locate the iso and display it and all of the rod codes and var codes
