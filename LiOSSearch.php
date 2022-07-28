@@ -98,7 +98,11 @@ if (strlen($TryLanguage) > 2) {
 	// ISO
 	if (strlen($TryLanguage) == 3) {
 // here 1/2 lines - check
-		$query="SELECT DISTINCT `scripture_main`.`ISO_ROD_index`, `scripture_main`.`ISO`, `scripture_main`.`ROD_Code`, `scripture_main`.`Variant_Code`, `LN_Dutch`, `LN_Spanish`, `LN_French`, `LN_English`, `LN_Portuguese`, `LN_German`, `Def_LN`, `Cell_Phone_File`, `optional` FROM `scripture_main`, `CellPhone` WHERE `scripture_main`.`ISO` = '$TryLanguage' AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `scripture_main`.`ROD_Code` = `CellPhone`.`ROD_Code` AND `scripture_main`.`Variant_Code` = `CellPhone`.`Variant_Code` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' ORDER BY `scripture_main`.`ISO`";
+		$ln_result = '';
+		foreach($_SESSION['nav_ln_array'] as $code => $array){
+			$ln_result .= '`LN_'.$array[1].'`, ';
+		}
+		$query="SELECT DISTINCT `nav_ln`.`ISO_ROD_index`, `nav_ln`.`ISO`, `nav_ln`.`ROD_Code`, `nav_ln`.`Variant_Code`, ".$ln_result."`Def_LN`, `Cell_Phone_File`, `optional` FROM `nav_ln`, `CellPhone` WHERE `nav_ln`.`ISO` = '$TryLanguage' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `nav_ln`.`ROD_Code` = `CellPhone`.`ROD_Code` AND `nav_ln`.`Variant_Code` = `CellPhone`.`Variant_Code` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' ORDER BY `nav_ln`.`ISO`";
 		if ($result = $db->query($query)) {
 			$LN = '';
 			while ($row = $result->fetch_assoc()) {
@@ -235,7 +239,11 @@ if (strlen($TryLanguage) > 2) {
 	// Try languages names:
 	//$query="SELECT DISTINCT $MajorLanguage, ISO, ROD_Code, Variant_Code, ISO_ROD_index FROM LN_English WHERE ISO_ROD_index IS NOT NULL ORDER BY $MajorLanguage";
 // here 1/2 line - check
-	$query="SELECT DISTINCT `scripture_main`.`ISO_ROD_index`, `scripture_main`.`ISO`, `scripture_main`.`ROD_Code`, `scripture_main`.`Variant_Code`, `LN_Dutch`, `LN_Spanish`, `LN_French`, `LN_English`, `LN_Portuguese`, `LN_German`, `Def_LN`, `Cell_Phone_File`, `optional` FROM `scripture_main`, `CellPhone` WHERE `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `scripture_main`.`ROD_Code` = `CellPhone`.`ROD_Code` AND `scripture_main`.`Variant_Code` = `CellPhone`.`Variant_Code` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' ORDER BY `scripture_main`.`ISO`";
+	$ln_result = '';
+	foreach($_SESSION['nav_ln_array'] as $code => $array){
+		$ln_result .= '`LN_'.$array[1].'`, ';
+	}
+	$query="SELECT DISTINCT `nav_ln`.`ISO_ROD_index`, `nav_ln`.`ISO`, `nav_ln`.`ROD_Code`, `nav_ln`.`Variant_Code`, ".$ln_result."`Def_LN`, `Cell_Phone_File`, `optional` FROM `nav_ln`, `CellPhone` WHERE `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `nav_ln`.`ROD_Code` = `CellPhone`.`ROD_Code` AND `nav_ln`.`Variant_Code` = `CellPhone`.`Variant_Code` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' ORDER BY `nav_ln`.`ISO`";
 	if ($result = $db->query($query)) {
 		$LN = '';
 		while ($row = $result->fetch_assoc()) {													// All ISOs + ROD codes + variants + (`Cell_Phone_Title` = 'iOS Asset Package')
@@ -378,7 +386,11 @@ if (strlen($TryLanguage) > 2) {
 	if ($result = $db->query($query)) {
 		while ($r = $result->fetch_assoc()) {
 			$ISO_ROD_index = $r['ISO_ROD_index'];
-			$query="SELECT scripture_main.ISO, scripture_main.ROD_Code, scripture_main.Variant_Code, LN_Dutch, LN_Spanish, LN_French, LN_English, LN_Portuguese, LN_German, Def_LN, Cell_Phone_File, optional FROM scripture_main, CellPhone WHERE scripture_main.ISO_ROD_index = $ISO_ROD_index AND scripture_main.ISO_ROD_index = CellPhone.ISO_ROD_index AND CellPhone.Cell_Phone_Title = 'iOS Asset Package'";
+			$ln_result = '';
+			foreach($_SESSION['nav_ln_array'] as $code => $array){
+				$ln_result .= 'LN_'.$array[1].', ';
+			}
+			$query="SELECT nav_ln.ISO, nav_ln.ROD_Code, nav_ln.Variant_Code, ".$ln_result."Def_LN, Cell_Phone_File, optional FROM nav_ln, CellPhone WHERE nav_ln.ISO_ROD_index = $ISO_ROD_index AND nav_ln.ISO_ROD_index = CellPhone.ISO_ROD_index AND CellPhone.Cell_Phone_Title = 'iOS Asset Package'";
 			if ($result_SM = $db->query($query)) {
 				if ($row = $result_SM->fetch_assoc()) {
 					$ISO = $row['ISO'];

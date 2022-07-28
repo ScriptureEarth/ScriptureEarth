@@ -1,4 +1,8 @@
 <?php
+// Start the session
+session_start();
+?>
+<?php
 
 if (isset($_REQUEST["q"])){
     $q = $_REQUEST["q"];

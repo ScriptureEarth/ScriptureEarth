@@ -41,9 +41,12 @@
 		$hint = 0;
 		include './include/conn.inc.php';
 		$db = get_my_db();
-		
+		$ln_result = '';
+		foreach($_SESSION['nav_ln_array'] as $code => $array){
+			$ln_result .= 'LN_'.$array[1].', ';
+		}
 		//$query="SELECT DISTINCT $MajorLanguage, ISO, ROD_Code, Variant_Code, ISO_ROD_index FROM LN_English WHERE ISO_ROD_index IS NOT NULL ORDER BY $MajorLanguage";
-		$query="SELECT DISTINCT ISO_ROD_index, ISO, ROD_Code, Variant_Code, LN_English, LN_Spanish, LN_Portuguese, LN_French, LN_Dutch, Def_LN FROM scripture_main";
+		$query="SELECT DISTINCT ISO_ROD_index, ISO, ROD_Code, Variant_Code, ".$ln_result."Def_LN FROM nav_ln";
 		if ($result = $db->query($query)) {
 			$LN = '';
 			while ($row = $result->fetch_assoc()) {

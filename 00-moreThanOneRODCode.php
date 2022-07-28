@@ -13,7 +13,11 @@
 	$stmt_alt = $db->prepare("SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = ?");
 	$stmt_asset = $db->prepare("SELECT Cell_Phone_File, optional FROM CellPhone WHERE ISO_ROD_index = ? AND Cell_Phone_Title = 'iOS Asset Package'");
 	$i = 0;
-	$query="SELECT DISTINCT ISO_ROD_index, ISO, ROD_Code, Variant_Code, LN_Dutch, LN_Spanish, LN_French, LN_English, LN_Portuguese, LN_German, Def_LN FROM scripture_main WHERE ISO = '$ISO'";
+	$ln_result = '';
+	foreach($_SESSION['nav_ln_array'] as $code => $array){
+		$ln_result .= 'LN_'.$array[1].', ';
+	}
+	$query="SELECT DISTINCT ISO_ROD_index, ISO, ROD_Code, Variant_Code, ".$ln_result."Def_LN FROM nav_ln WHERE ISO = '$ISO'";
 	if ($result = $db->query($query)) {
 		$LN = '';
 		echo '<br /><div style="color: navy; background-color: white; font-size: 20pt; ">'.translate('Choose one...', $st, 'sys').'</div><br />';
