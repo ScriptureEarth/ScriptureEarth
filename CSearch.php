@@ -3,6 +3,7 @@
 session_start();
 /*
 Created by Scott Starker
+AJAX from LangSearch.js
 
 MySQL: utf8_general_ci flattens accents as well as lower-casing:
 You must ensure that all parties (your app, mysql connection, your table or column) have set utf8 as charset.
