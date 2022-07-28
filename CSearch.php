@@ -1,8 +1,6 @@
 <?php
 // Start the session
 session_start();
-?>
-<?php
 /*
 Created by Scott Starker
 
@@ -41,8 +39,6 @@ else {
 }
 $st = substr($st, 0, 3);
 
-
-
 $response = '';
 $MajorLanguage = '';
 $Variant_major = '';
@@ -51,6 +47,7 @@ foreach($_SESSION['nav_ln_array'] as $code => $array){
 		$MajorLanguage = 'LN_'.$array[1];
 		$Variant_major = 'Variant_'.$array[0];
 		$SpecificCountry = $array[1];
+		break;
 	}
 }
 if ($Variant_major == ''){

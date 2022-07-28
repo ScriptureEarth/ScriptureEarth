@@ -187,7 +187,6 @@ function send(sel) {
 }
 
 function showCountry(str, st, Internet, asset) { // get the names of the country
-
     if (str.length == 0) {
         document.getElementById("CountSearch").innerHTML = '';
         $("#showLanguageID").show();
@@ -222,12 +221,13 @@ function showCountry(str, st, Internet, asset) { // get the names of the country
         showiOSCountry(str, st, Internet); // go to showiOSLanguage
         return;
     }
-    lnxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
+
+    Scriptname = window.location.href;
+
+    /*lnxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
     if (lnxmlhttp == null) {
         return;
     }
-
-    Scriptname = '';
 
     lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + st, true)
     lnxmlhttp.send(null)
@@ -236,7 +236,7 @@ function showCountry(str, st, Internet, asset) { // get the names of the country
             // Get hold of the array and change scriptname?
             Scriptname = lnxmlhttp.responseText;
         }
-    }
+    }*/
 
     Countryxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
     if (Countryxmlhttp == null) {
@@ -268,7 +268,7 @@ function showCountry(str, st, Internet, asset) { // get the names of the country
                 var firstSplit = splits[i].split('|'); // split the 2: specific country and two uppercase code for the country
                 var Country = firstSplit[0];
                 var ISO_Country = firstSplit[1];
-                Country_Total += '<div class="pickCountry" onclick="window.open(\'./' + Scriptname + '?sortby=country&name=' + ISO_Country + '\', \'_self\')">' + Country + '</div>';
+                Country_Total += '<div class="pickCountry" onclick="window.open(\'' + Scriptname + '?sortby=country&name=' + ISO_Country + '\', \'_self\')">' + Country + '</div>';
             }
             Country_Total += '</div>';
             document.getElementById("CountSearch").innerHTML = Country_Total;
