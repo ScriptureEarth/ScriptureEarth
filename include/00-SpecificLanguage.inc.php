@@ -48,11 +48,14 @@ div.linePointer {
 	cursor: pointer;
 	display: inline;
 }
+div.linePointer:hover{
+    border-bottom:2px solid red;
+}
 </style>
 
 <?php
 // Created by Scott Starker
-// Updated by Lærke Roager
+// Updated by Scott Starker, Lærke Roager
 
 /*************************************************************************************************************************************
 *
@@ -72,13 +75,6 @@ if (preg_match('/Macintosh|iPhone|iPod|iPad/', $_SERVER['HTTP_USER_AGENT'])) {
 	/* This is iOS */
 	$check_iOS = 1;
 }
-/*
-$check_Android = 0;
-if (preg_match('/android/i', $_SERVER['HTTP_USER_AGENT'])) {
-	/ * This is Android * /
-	$check_Android = 1;
-}
-*/
 
 $mobile=0;
 
@@ -206,7 +202,6 @@ if ($result_alt && $result_alt->num_rows > 0) {
 */
 $query="SELECT $SpecificCountry, ISO_countries FROM ISO_countries, countries WHERE ISO_countries.ISO_ROD_index = '$ISO_ROD_index' AND ISO_countries.ISO_countries = countries.ISO_Country";
 $result_ISO_countries=$db->query($query);
-//$num_ISO_countries=mysql_num_rows($result_ISO_countries);
 $r_ISO_countries = $result_ISO_countries->fetch_array(MYSQLI_ASSOC);
 $countryTemp = $SpecificCountry;
 if (strpos("$SpecificCountry", '.')) $countryTemp = substr("$SpecificCountry", strpos("$SpecificCountry", '.')+1);					// In case there's a "." in the "country"
@@ -329,31 +324,29 @@ if ($SAB) {
 /*
 	Note: the js sessionStorage is extended to any new tabs and windows when they are opened from the parent window!
 */
-//echo '#'.$ISO_ROD_index.'#<br />';
 	$SABindex=0;
 	$query="SELECT url, subfolder, description, pre_scriptoria FROM SAB_scriptoria WHERE ISO_ROD_index = '$ISO_ROD_index'";			// parent table of SAB table
 	$result_sub=$db->query($query);
 	$num_sub=$result_sub->num_rows;
-//echo '#'.$num_sub.'#<br />';
 	if ($result_sub && $num_sub > 0) {
 		while ($row_sub=$result_sub->fetch_array(MYSQLI_ASSOC)) {
 			$SABurl=trim($row_sub['url']);
 			$subfolder=trim($row_sub['subfolder']);
 			$description=trim($row_sub['description']);
 			$preScriptoria=trim($row_sub['pre_scriptoria']);
-//echo $preScriptoria . '<br />';
 			if ($SABurl != '') {
 				echo '<tr>';
 					echo '<td>';
-						echo "<a href='#' onclick='SAB_Scriptoria_Other(\"$SABurl\")'><img class='iconActions' ";
-						echo "src='../images/SAB-readListen-icon.png' alt='".translate('Read/Listen/View', $st, 'sys')."' title='".translate('Read/Listen/View', $st, 'sys')."'";
-						echo "/></a>";
+						echo "<div class='linePointer' onclick='SAB_Scriptoria_Other(\"$SABurl\")'><img ";
+						echo "src='../images/SAB-readListen-icon.png' alt='".translate('Read/Listen/View', $st, 'sys')."' title='".translate('Read/Listen/View', $st, 'sys')."' ";
+						echo "/></div>";
 					echo '</td>';
 					echo '<td>';
-						echo "<a href='#' onclick='SAB_Scriptoria_Other(\"$SABurl\")'><span class='lineAction'>" . translate('Read/Listen/View', $st, 'sys') . "</span></a> ";
+						echo "<div class='linePointer' onclick='SAB_Scriptoria_Other(\"$SABurl\")'>" . translate('Read/Listen/View', $st, 'sys');
 						if ($description != '') {
 							echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
 						}
+						echo '</div>';
 					echo '</td>';
 				echo '</tr>';
 			}
@@ -361,10 +354,7 @@ if ($SAB) {
 				$SAB_Path = './data/'.$ISO.'/sab/';
 				if (file_exists("./data/$ISO/sab/js/".(strlen($preScriptoria) == 3 ? '' : $preScriptoria.'-') . 'book-names.js')) {			// not on the PHP server but my office/home oomputer
 					$SAB_Read = file("./data/$ISO/sab/js/".(strlen($preScriptoria) == 3 ? '' : $preScriptoria.'-') . 'book-names.js');		// read the '[ISO][SABnum]-book-names.js' file
-//echo file_exists("./data/$ISO/sab/js/".$preScriptoria."-book-names.js");
-					//echo '1<br />';
 					foreach ($SAB_Read as $line_num => $line) {													// read through the lines
-//echo $line . '<br />';
 						$l = '';
 						$l = preg_replace('/.*-([0-9]{2}-[A-Z0-9][A-Z]{2})-.*/', "$1", $line);					// set $l to e.g. '01-GEN'
 						if ($l == $line) continue;																// if not $ln = $line
@@ -378,7 +368,6 @@ if ($SAB) {
 						else {
 							// this line perminently left empty
 						}
-//echo $ln . '<br />';
 					}
 				}
 				else {
@@ -401,7 +390,7 @@ if ($SAB) {
 					<tr>
 						<td>
 							<?php
-							echo "<a href='#' id='OT_SABRL_a'><img class='iconActions' ";
+							echo "<div class='linePointer' id='OT_SABRL_a'><img class='iconActions' ";
 							if ($SAB & 2) {
 								echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text with audio', $st, 'sys')."' title='".translate('Text with audio', $st, 'sys')."'";
 								$SynchronizedTextAndAudio = 1;
@@ -412,62 +401,26 @@ if ($SAB) {
 							else {				// $SAB & 32
 								echo "src='../images/SAB-text-icon.jpg' alt='".translate('View text', $st, 'sys')."' title='".translate('View text', $st, 'sys')."'";
 							}
-							echo "/></a>";
+							echo "/></div>";
 						echo "</td>";
 						echo "<td>";
 							?>
 							<div class='SABReadListen'>
 								<?php
-								echo "<a href='#' id='OT_SABRL_b'><span ";
+								echo "<div class='linePointer' id='OT_SABRL_b'>";
 								if ($SAB & 2) {
-									echo "class='lineAction'>" . translate('Text with audio', $st, 'sys') . "</span></a>:";
+									translate('Text with audio', $st, 'sys') . "</div>:";
 								}
 								else if ($SAB & 8) {
-									echo "class='lineAction'>" . translate('Text (with audio where available)', $st, 'sys') . "</span></a>:";
+									translate('Text (with audio where available)', $st, 'sys') . "</div>:";
 								}
 								else {		// $SAB & 32
-									echo "class='lineAction'>" . translate('View text', $st, 'sys') . "</span></a>:";
+									translate('View text', $st, 'sys') . "</div>:";
 								}
-								echo "<div id='OTSABSelects' style='display: inline; '>";
-									/*
-									// Get and display Books
-									$query_array="SELECT * FROM SAB WHERE ISO_ROD_index = '$ISO_ROD_index' AND SAB_Book = ? AND (Book_Chapter_HTML IS NOT null AND trim(Book_Chapter_HTML) <> '') ORDER BY Book_Chapter_HTML ASC";
-									$stmt = $db->prepare($query_array);										// create a prepared statement
-									echo "<form name='form_OT_SAB_Books' id='form_OT_SAB_Books' style='display: inline; '>";
-									echo "<select name='OT_SAB_Book' id='OT_SAB_Book' class='selectOption'>";
-									echo "<option>".translate('Choose One...', $st, 'sys')."</option>";
-									foreach ($OT_array[OT_EngBook] as $a) {									// display the OT books in the English language. i.e. $a = 'Genesis', etc.
-										if (!empty($SAB_OT_lists)) {										// not on the PHP server but my office/home oomputer OR if $temp_Book_Chapter_HTML == ''
-											$t = 1;
-											foreach ($SAB_OT_lists as $SAB_OT_list) {						// go through the 'book-names.js' array from above
-												if ((int)$OT_array[0][$t] == ($SAB_OT_list + 0)) {			// see if the number of the book 'book-names.js' array matches the number of the $OT_array[0] book number
-													break;
-												}
-												$t++;
-											}
-											if ($t > count($OT_array[0])) continue;							// if the match is not found then continue
-										}
-										$temp = ($OT_SAB_a_index)+1;
-										$stmt->bind_param("i", $temp);										// bind parameters for markers
-										$stmt->execute();													// execute query
-										$result_array = $stmt->get_result();								// instead of bind_result (used for only 1 record):
-										$num_array=$result_array->num_rows;
-										if ($result_array && $num_array > 0) {
-											$OT_SAB_Book[] = $OT_SAB_a_index;
-											$r_array = $result_array->fetch_array(MYSQLI_ASSOC);			// now you can fetch the results into an array for 'for' - NICE (as oppossed to bind_result)
-											$OT_Book_Chapter_HTML = trim($r_array['Book_Chapter_HTML']);	// 1st chapter
-											$SAB_Audio = $r_array['SAB_Audio'];								// is there audio in the 1st chapter?
-											echo "<option id='OT_SAB_Book_${OT_SAB_a_index}' name='OT_SAB_Book_${OT_SAB_a_index}' class='speaker' value='${OT_Book_Chapter_HTML}'>".($SAB_Audio ? '&#128266; ' : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;').$a."</option>";
-										}
-										$OT_SAB_a_index++;
-									}
-									echo "</select>";
-									echo "</form>";
-									$stmt->close();															// close statement
-									*/
-									if ($description != '') {
-                                    	echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
-									}
+								echo "<div class='linePointer' id='OTSABSelects' style='display: inline; '>";
+								if ($description != '') {
+									echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
+								}
 								echo "</div>";
 								?>
 							</div>
@@ -489,7 +442,7 @@ if ($SAB) {
 					<tr>
 						<td>
 							<?php
-							echo "<div class='linePointer' id='NT_SABRL_a'><img class='iconActions' ";
+							echo "<div class='linePointer' class='linePointer' id='NT_SABRL_a'><img class='iconActions' ";
 							if ($SAB & 1) {
 								echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text with audio', $st, 'sys')."' title='".translate('Text with audio', $st, 'sys')."'";
 								$SynchronizedTextAndAudio = 1;
@@ -506,52 +459,17 @@ if ($SAB) {
 							?>
 							<div class='SABReadListen'>
 								<?php
-								echo "<div class='linePointer' id='NT_SABRL_b'><span ";
+								echo "<div class='linePointer' class='linePointer' id='NT_SABRL_b'>";
 								if ($SAB & 1) {
-									echo "class='lineAction'>" . translate('Text with audio', $st, 'sys') . "</span></div>";
+									translate('Text with audio', $st, 'sys') . "</div>";
 								}
 								else if ($SAB & 4) {
-									echo "class='lineAction'>" . translate('Text (with audio where available)', $st, 'sys') . "</span></div>";
+									translate('Text (with audio where available)', $st, 'sys') . "</div>";
 								}
 								else {		// $SAB & 16
-									echo "class='lineAction'>" . translate('View text', $st, 'sys') . "</span></div>";
+									translate('View text', $st, 'sys') . "</div>";
 								}
-								echo "<div id='NTSABSelects' style='display: inline; '>";
-									/*
-									$query_array="SELECT * FROM SAB WHERE ISO_ROD_index = '$ISO_ROD_index' AND SAB_Book = ? AND (Book_Chapter_HTML IS NOT null AND trim(Book_Chapter_HTML) <> '') ORDER BY Book_Chapter_HTML ASC";
-									$stmt = $db->prepare($query_array);										// create a prepared statement
-									echo "<form name='form_NT_SAB_Books' id='form_NT_SAB_Books' style='display: inline; '>";
-									echo "<select name='NT_SAB_Book' id='NT_SAB_Book' class='selectOption'>";
-									echo "<option>".translate('Choose One...', $st, 'sys')."</option>";
-									foreach ($NT_array[NT_EngBook] as $a) {									// display the NT books in the MAJOR language!
-										if (!empty($SAB_NT_lists)) {										// not on the PHP server but my office/home oomputer OR if $temp_Book_Chapter_HTML == ''
-											$t = 1;
-											foreach ($SAB_NT_lists as $SAB_NT_list) {						// go through the 'book-names.js' array from above
-												if ((int)$NT_array[0][$t] == ($SAB_NT_list - 40)) {			// see if the number of the book 'book-names.js' array matches the number of the $OT_array[0] book number
-													break;
-												}
-												$t++;
-											}
-											if ($t > count($NT_array[0])) continue;							// if the match is not found then continue
-										}
-										$temp = ($NT_SAB_a_index)+41;
-										$stmt->bind_param("i", $temp);										// bind parameters for markers
-										$stmt->execute();													// execute query
-										$result_array = $stmt->get_result();								// instead of bind_result (used for only 1 record):
-										$num_array=$result_array->num_rows;
-										if ($result_array && $num_array > 0) {
-											$NT_SAB_Book[] = $NT_SAB_a_index;
-											$r_array = $result_array->fetch_array(MYSQLI_ASSOC);			// now you can fetch the results into an array for 'for' - NICE (as oppossed to bind_result)
-											$NT_Book_Chapter_HTML = trim($r_array['Book_Chapter_HTML']);	// 1st chapter
-											$SAB_Audio = $r_array['SAB_Audio'];								// is there audio in the 1st chapter?
-											echo "<option id='NT_SAB_Book_".$NT_SAB_a_index."' name='NT_SAB_Book_".$NT_SAB_a_index."' class='speaker' value='".$NT_Book_Chapter_HTML."'>".($SAB_Audio ? '&#128266; ' : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;').$a."</option>";
-										}
-										$NT_SAB_a_index++;
-									}
-									echo "</select>";
-									echo "</form>";
-									$stmt->close();															// close statement
-									*/
+								echo "<div class='linePointer' id='NTSABSelects' style='display: inline; '>";
 									if ($description != '') {
                                     	echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
 									}
@@ -564,85 +482,19 @@ if ($SAB) {
 				}
 			}
 			else {
-				/*
-					 Scriptoria: Scripture App Builder (SAB) HTML
-				*/
-				/*
-				if (file_exists("./data/$ISO/".$subfolder."js/book-names.js")) {								// ./data/$ISO/sab/". the subfolder \/(.*)\/$ ."/js/book-names.js
-					$SAB_Read = file("./data/$ISO/".$subfolder."js/book-names.js");								// read the 'book-names.js' file
-					$SAB_lists = [];
-					// books => name: and ref:
-					foreach ($SAB_Read as $line_num => $line) {													// read through the lines
-						$ln = '';
-						$bks = '';
-						// The preg_replace shows a space (" ") at the end of each $ln! That's not right! I don't know why. So, I had to add as "s" pattern modifier. Then it works.
-						// I have to use preg_match to make it work rigth. https://www.php.net/manual/en/reference.pcre.pattern.modifiers.php
-						if (preg_match('/-([A-Z1-3][A-Z]{2})-/', $line, $match)) {								// set $l to e.g. 'MAT'
-							$ln = $match[1];
-						}
-						else {
-							continue;
-						}
-						if (preg_match('/ref:\s*[\"\'](.*)"\s*\},/', $line, $match)) {							// the ref: string
-							$bks = $match[1];
-						}
-						else {
-							continue;
-						}
-						//echo bin2hex($ln[strlen($ln)-1]) . '# ';
-						$SAB_lists[$bks] = $ln;
-					}
-				}
-				else {
-					continue;
-				}
-				*/
 				$SABindex++;
 				echo '<tr>';
 					echo '<td>';
-						echo "<a href='#' onclick='SAB_Scriptoria_Index(\"$subfolder\")'><img class='iconActions' ";
+						echo "<div class='linePointer' onclick='SAB_Scriptoria_Index(\"$subfolder\")'><img class='iconActions' ";
 						echo "src='../images/SAB-readListen-icon.png' alt='".translate('Read/Listen/View', $st, 'sys')."' title='".translate('Read/Listen/View', $st, 'sys')."'";
-						echo "/></a>";
+						echo "/></div>";
 					echo '</td>';
 					echo '<td>';
-						echo "<a href='#' onclick='SAB_Scriptoria_Index(\"$subfolder\")'><span class='lineAction'>" . translate('Read/Listen/View', $st, 'sys') . "</span></a> ";
-						/*
-						echo "<form id='form_SAB_Books_$SABindex' name='form_SAB_Books' style='display: inline; '>";
-						echo "<select id='SAB_Book_$SABindex' name='SAB_Book' class='selectOption' onchange='SAB_Scriptoria($SABindex, \"$subfolder\")'>";
-						echo "<option>".translate('Choose One...', $st, 'sys')."</option>";
-						foreach ($SAB_lists as $main_key => $SAB_value) {									// display the NT books in the MAJOR language! $main_key used in option element.
-							//echo $SAB_value.'|';
-							//var_dump($NT_array[5]);
-							$t = 0;
-							foreach ($NT_array[5] as $key => $SAB_line) {									// iterate through NT (NT book abbreviation)
-								//echo $SAB_line . '<br />';
-								//echo strlen($SAB_value) . ' ' . strlen($SAB_line) . '<br />';
-								if ($SAB_line == $SAB_value) {												// see if the number of the book 'book-names.js' array matches the number of the $OT_array[0] book number
-									$t=1;
-									$line = $NT_array[2][$key];												// English NT book name
-									break;
-								}
-							}
-							if ($t == 0) {
-								foreach ($OT_array[5] as $key => $SAB_line) {								// iterate through OT (OT book abbreviation)
-									if ($SAB_line == $SAB_value) {
-										$t=1;
-										$line = $OT_array[2][$key];											// English OT book name
-										break;
-									}
-								}
-							}
-							if ($t == 1) {
-								//echo 'main key: ' . $main_key . ' vaule: '.translate($line, $st, 'sys').'<br />';
-								echo "<option id='SAB_Book_${SABindex}_${line}' name='SAB_Book_${SABindex}_${line}' class='speaker' value='".$main_key."'>".translate($line, $st, 'sys')."</option>";
-							}
-						}
-						echo "</select>";
-						echo "</form>";
-						*/
+						echo "<div class='linePointer' onclick='SAB_Scriptoria_Index(\"$subfolder\")'>" . translate('Read/Listen/View', $st, 'sys') . " ";
 						if ($description != '') {
 							echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
 						}
+						echo '</div>';
 					echo '</td>';
 				echo '</tr>';
 			}
@@ -693,11 +545,11 @@ if ($Internet && $BibleIs && !$SAB) {
 			<tr>
 				<td>
 					<?php
-					echo "<a href='#' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'><img class='iconActions' src='../images/".$BibleIsIcon."' alt='".$BibleIsActText."' title='".$BibleIsActText."' />";
-					echo "</a>";
+					echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'><img class='iconActions' src='../images/".$BibleIsIcon."' alt='".$BibleIsActText."' title='".$BibleIsActText."' />";
+					echo "</div>";
 				echo "</td>";
 				echo "<td>";
-					echo "<a href='#' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'><span class='lineAction'>" . $BibleIsActText . "</span> ";
+					echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'>" . $BibleIsActText . " ";
 					//if (stripos($URL, '/Gen/') !== false)
 					/*if ($BibleIsLink == 1)
 						echo translate('to the New Testament', $st, 'sys');
@@ -706,10 +558,10 @@ if ($Internet && $BibleIs && !$SAB) {
 					else	// $BibleIs == 3
 						echo translate('to the Bible', $st, 'sys');*/
 					echo translate('on Bible.is', $st, 'sys');
-					echo "</a>";
 					if ($BibleIsVersion!='') {
 						echo ' ' . $BibleIsVersion;
 					}
+					echo "</div>";
 					?>
 				</td>
 			</tr>
@@ -729,14 +581,9 @@ if ($viewer && !($YouVersion && $Biblesorg && $SAB && $BibleIs) && $Internet) {
 	$query="SELECT viewer_ROD_Variant, rtl FROM viewer WHERE ISO_ROD_index = '$ISO_ROD_index' AND Variant_Code = '$Variant_Code'";						// check if there is a viewer
 	$resultViewer=$db->query($query);
 	if ($resultViewer && $resultViewer->num_rows >= 1) {
-		//if (mysql_num_rows($resultViewer) > 0) {
-			//$numViewer=mysql_num_rows($resultViewer);
-			//if ($numViewer > 0) {
-				$r_Viewer = $resultViewer->fetch_array(MYSQLI_ASSOC);
-				$ROD_Var=trim($r_Viewer['viewer_ROD_Variant']);
-				$rtl=trim($r_Viewer['rtl']);
-			//}
-		//}
+		$r_Viewer = $resultViewer->fetch_array(MYSQLI_ASSOC);
+		$ROD_Var=trim($r_Viewer['viewer_ROD_Variant']);
+		$rtl=trim($r_Viewer['rtl']);
 	}
 	?>
 	<tr>
@@ -746,7 +593,7 @@ if ($viewer && !($YouVersion && $Biblesorg && $SAB && $BibleIs) && $Internet) {
 			echo "</a>";
 		echo "</td>";
 		echo "<td>";
-			echo "<a href='./viewer/views.php?iso=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code&ROD_Var=$ROD_Var&rtl=$rtl&st=$st' title='".translate('Viewer for the Language Name', $st, 'sys')."' target='_blank'><span class='lineAction'>".translate('Go to', $st, 'sys')."</span> ".translate('the online viewer', $st, 'sys')."</a>";
+			echo "<a href='./viewer/views.php?iso=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code&ROD_Var=$ROD_Var&rtl=$rtl&st=$st' title='".translate('Viewer for the Language Name', $st, 'sys')."' target='_blank'>".translate('Go to', $st, 'sys')." ".translate('the online viewer', $st, 'sys')."</a>";
 			?>
 		</td>
 	</tr>
@@ -758,247 +605,230 @@ if ($viewer && !($YouVersion && $Biblesorg && $SAB && $BibleIs) && $Internet) {
 		Is it PDF?
 	*************************************************************************************************************
 */
-//if (!$BibleIs) {
-	$SB_PDF=0;														// boolean
-	$query_SB="SELECT Item, Scripture_Bible_Filename FROM Scripture_and_or_Bible WHERE ISO_ROD_index = '$ISO_ROD_index'";		// then look to the Scripture_and_or_Bible table
-	$result_SB=$db->query($query_SB);
-	if (!$result_SB)
-		$SB_PDF = 0;
-	else
-		$SB_PDF=$result_SB->num_rows;
-	if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
-		if ($SB_PDF > 0) {
-			//$i_SB=0;
-			while ($r_SB = $result_SB->fetch_array(MYSQLI_ASSOC)) {
+$SB_PDF=0;														// boolean
+$query_SB="SELECT Item, Scripture_Bible_Filename FROM Scripture_and_or_Bible WHERE ISO_ROD_index = '$ISO_ROD_index'";		// then look to the Scripture_and_or_Bible table
+$result_SB=$db->query($query_SB);
+if (!$result_SB)
+	$SB_PDF = 0;
+else
+	$SB_PDF=$result_SB->num_rows;
+if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
+	if ($SB_PDF > 0) {
+		while ($r_SB = $result_SB->fetch_array(MYSQLI_ASSOC)) {
+			?>
+			<tr>
+				<td>
+					<?php
+					$Item = $r_SB['Item'];
+					if ($Item == 'B') {
+						$whole_Bible=trim($r_SB['Scripture_Bible_Filename']);
+						echo "<a href='./data/$ISO/PDF/$whole_Bible' title='".translate('Read the Bible.', $st, 'sys')."' target='_blank'><img class='iconActions' src='images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' />";
+						echo "</a>";
+						echo "</td>";
+						echo "<td>";
+						echo "<a href='./data/$ISO/PDF/$whole_Bible' title='".translate('Read the Bible.', $st, 'sys')."' target='_blank'>".translate('Read', $st, 'sys')." ".translate('the Bible', $st, 'sys')." (PDF)"."</a>";
+					}
+					else {
+						$complete_Scripture=trim($r_SB['Scripture_Bible_Filename']);
+						echo "<a href='./data/$ISO/PDF/$complete_Scripture' title='".translate('Read a Scripture portion.', $st, 'sys')."' target='_blank'><img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' />";
+						echo "</a>";
+						echo "</td>";
+						echo "<td>";
+						echo "<a href='./data/$ISO/PDF/$complete_Scripture' title='".translate('Read a Scripture portion.', $st, 'sys')."' target='_blank'>".translate('Read', $st, 'sys')." ".translate('a Scripture portion', $st, 'sys')." (PDF)"."</a>";
+					}
+					?>
+				</td>
+			</tr>
+			<?php
+		}
+	}
+	if ($OT_PDF) {
+		$query="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF = 'OT'";			// check if there is a OT
+		$result1=$db->query($query);
+		$num=$result1->num_rows;
+		if ($result1 && $num > 0) {
+			if ($r1 = $result1->fetch_array(MYSQLI_ASSOC)) {
+				$OT_PDF_Filename = trim($r1['OT_PDF_Filename']);												// there is a OT
 				?>
 				<tr>
 					<td>
 						<?php
-						$Item = $r_SB['Item'];
-						if ($Item == 'B') {
-							$whole_Bible=trim($r_SB['Scripture_Bible_Filename']);
-							echo "<a href='./data/$ISO/PDF/$whole_Bible' title='".translate('Read the Bible.', $st, 'sys')."' target='_blank'><img class='iconActions' src='images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' />";
-							echo "</a>";
-							echo "</td>";
-							echo "<td>";
-							echo "<a href='./data/$ISO/PDF/$whole_Bible' title='".translate('Read the Bible.', $st, 'sys')."' target='_blank'><span class='lineAction'>".translate('Read', $st, 'sys')."</span> ".translate('the Bible', $st, 'sys')." (PDF)"."</a>";
-						}
-						else {
-							$complete_Scripture=trim($r_SB['Scripture_Bible_Filename']);
-							echo "<a href='./data/$ISO/PDF/$complete_Scripture' title='".translate('Read a Scripture portion.', $st, 'sys')."' target='_blank'><img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' />";
-							echo "</a>";
-							echo "</td>";
-							echo "<td>";
-							echo "<a href='./data/$ISO/PDF/$complete_Scripture' title='".translate('Read a Scripture portion.', $st, 'sys')."' target='_blank'><span class='lineAction'>".translate('Read', $st, 'sys')."</span> ".translate('a Scripture portion', $st, 'sys')." (PDF)"."</a>";
-						}
+						echo "<a href='./data/$ISO/PDF/$OT_PDF_Filename' title='".translate('Read the Old Testament.', $st, 'sys')."' target='_blank'><img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' />";
+						echo "</a>";
+					echo "</td>";
+					echo "<td>";
+						echo "<a href='./data/$ISO/PDF/$OT_PDF_Filename' title='".translate('Read the Old Testament.', $st, 'sys')."' target='_blank'>".translate('Read', $st, 'sys')." ".translate('the Old Testament', $st, 'sys')." (PDF)"."</a>";
 						?>
 					</td>
 				</tr>
 				<?php
-				//$i_SB++;
 			}
 		}
-		if ($OT_PDF) {
-			$query="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF = 'OT'";		// check if there is a OT
+		if ($num <= 0) {
+			$query="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF != 'OT'";		// check if there is any other book but the OT
 			$result1=$db->query($query);
 			$num=$result1->num_rows;
 			if ($result1 && $num > 0) {
 				if ($r1 = $result1->fetch_array(MYSQLI_ASSOC)) {
-					$OT_PDF_Filename = trim($r1['OT_PDF_Filename']);									// there is a OT
+					$a_index = 0;
 					?>
 					<tr>
 						<td>
 							<?php
-							echo "<a href='./data/$ISO/PDF/$OT_PDF_Filename' title='".translate('Read the Old Testament.', $st, 'sys')."' target='_blank'><img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' />";
-							echo "</a>";
+							echo "<img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')."' title='".translate('Read', $st, 'sys')."' />";
 						echo "</td>";
 						echo "<td>";
-							echo "<a href='./data/$ISO/PDF/$OT_PDF_Filename' title='".translate('Read the Old Testament.', $st, 'sys')."' target='_blank'><span class='lineAction'>".translate('Read', $st, 'sys')."</span> ".translate('the Old Testament', $st, 'sys')." (PDF)"."</a>";
-							?>
-						</td>
-					</tr>
-					<?php
-				}
-			}
-			if ($num <= 0) {
-				$query="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF != 'OT'";		// check if there is any other book but the OT
-				$result1=$db->query($query);
-				$num=$result1->num_rows;
-				if ($result1 && $num > 0) {
-					if ($r1 = $result1->fetch_array(MYSQLI_ASSOC)) {
-						//$i=0;
-						$a_index = 0;
-						?>
-						<tr>
-							<td>
-								<?php
-								echo "<img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')."' title='".translate('Read', $st, 'sys')."' />";
-							echo "</td>";
-							echo "<td>";
-								echo "<form name='PDF_OT' id='PDF_OT'>";
-								echo "<span class='lineAction'>".translate('Read', $st, 'sys')."</span> ".translate('a book from the Old Testament:', $st, 'sys');
-								if (isset($mobile) && $mobile == 1) {
-									echo "<br />";
-								}
-								else {
-									echo " ";
-								}
-								//echo "<select class='selectOption' name='OT_PDF' id='OT_PDF' onchange='OT_PDF_Change()'>";
-								echo "<select class='selectOption' name='OT_PDF' onchange='if (this.options[this.selectedIndex].text != \"".translate('Choose One...', $st, 'sys')."\") { window.open(this.options[this.selectedIndex].value, \"_blank\"); }'>";
-								echo "<option>".translate('Choose One...', $st, 'sys')."</option>";
-								$query_array="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF = ?";
-								$stmt = $db->prepare($query_array);										// create a prepared statement
-								foreach ($OT_array[OT_EngBook] as $a) {									// there is/are book(s)
-									//$query_array="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF = '$a_index'";
-									//$result_array=$db->query($query_array);
-									$stmt->bind_param("i", $a_index);									// bind parameters for markers								// 
-									$stmt->execute();													// execute query
-									$result_array = $stmt->get_result();								// instead of bind_result (used for only 1 record):
-									//$num=mysql_num_rows($result_array);
-									if ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {
+							echo "<form name='PDF_OT' id='PDF_OT'>";
+							echo translate('Read', $st, 'sys')." ".translate('a book from the Old Testament:', $st, 'sys');
+							if (isset($mobile) && $mobile == 1) {
+								echo "<br />";
+							}
+							else {
+								echo " ";
+							}
+							echo "<select class='selectOption' name='OT_PDF' onchange='if (this.options[this.selectedIndex].text != \"".translate('Choose One...', $st, 'sys')."\") { window.open(this.options[this.selectedIndex].value, \"_blank\"); }'>";
+							echo "<option>".translate('Choose One...', $st, 'sys')."</option>";
+							$query_array="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF = ?";
+							$stmt = $db->prepare($query_array);													// create a prepared statement
+							foreach ($OT_array[OT_EngBook] as $a) {												// there is/are book(s)
+								$stmt->bind_param("i", $a_index);												// bind parameters for markers
+								$stmt->execute();																// execute query
+								$result_array = $stmt->get_result();											// instead of bind_result (used for only 1 record):
+								if ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {
+									$OT_PDF = $r_array['OT_PDF'];
+									while ($OT_PDF !== null && !is_numeric($OT_PDF)) {							// important: not 'int' but 'numeric'! Any number and except not 'OT' ('OT' which is 0 in bind_param("i", $a_index)), etc.
+										$r_array = $result_array->fetch_array(MYSQLI_ASSOC);
 										$OT_PDF = $r_array['OT_PDF'];
-										while ($OT_PDF !== null && !is_numeric($OT_PDF)) {									// important: not 'int' but 'numeric'! Any number and except not 'OT' ('OT' which is 0 in bind_param("i", $a_index)), etc.
-											$r_array = $result_array->fetch_array(MYSQLI_ASSOC);
-											$OT_PDF = $r_array['OT_PDF'];
-										}
-										$OT_PDF_Filename = trim($r_array['OT_PDF_Filename']);
-										$a = str_replace(" ", "&nbsp;", $a);
-										if (!empty($OT_PDF_Filename)) {
-											echo "<option id='OT_PDF_Media_$a' value='./data/$ISO/PDF/$OT_PDF_Filename'>$a</option>";
-										}
 									}
-									$a_index++;
-								}
-								$stmt->close();															// close statement
-								$query_array="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF = '100'";	// appendice
-								$result_array=$db->query($query_array);
-								//$num=mysql_num_rows($result_array);
-								if ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {
 									$OT_PDF_Filename = trim($r_array['OT_PDF_Filename']);
+									$a = str_replace(" ", "&nbsp;", $a);
 									if (!empty($OT_PDF_Filename)) {
-										echo "<option value='./data/$ISO/PDF/$OT_PDF_Filename'>".translate('Appendix', $st, 'sys')."</option>";
+										echo "<option id='OT_PDF_Media_$a' value='./data/$ISO/PDF/$OT_PDF_Filename'>$a</option>";
 									}
 								}
-								$query_array="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF = '101'";	// glossary
-								$result_array=$db->query($query_array);
-								//$num=mysql_num_rows($result_array);
-								if ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {
-									$OT_PDF_Filename = trim($r_array['OT_PDF_Filename']);
-									if (!empty($OT_PDF_Filename)) {
-										echo "<option value='./data/$ISO/PDF/$OT_PDF_Filename'>".translate('Glossary', $st, 'sys')."</option>";
-									}
+								$a_index++;
+							}
+							$stmt->close();																		// close statement
+							$query_array="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF = '100'";	// appendice
+							$result_array=$db->query($query_array);
+							if ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {
+								$OT_PDF_Filename = trim($r_array['OT_PDF_Filename']);
+								if (!empty($OT_PDF_Filename)) {
+									echo "<option value='./data/$ISO/PDF/$OT_PDF_Filename'>".translate('Appendix', $st, 'sys')."</option>";
 								}
-								echo "</select>";
-								echo "</form>";
-								?>
-							</td>
-						</tr>
-						<?php
-					}
-				}
-			}
-		}
-		if ($NT_PDF > 0) {
-			$query="SELECT * FROM NT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_PDF = 'NT'";		// check if there is a NT
-			$result1=$db->query($query);
-			$num=$result1->num_rows;
-			if ($result1 && $num > 0) {
-				if ($r_NT = $result1->fetch_array(MYSQLI_ASSOC)) {
-					$NT_PDF_Filename = trim($r_NT['NT_PDF_Filename']);								// there is a NT
-					?>
-					<tr>
-						<td>
-							<?php
-							echo "<a href='./data/$ISO/PDF/$NT_PDF_Filename' title='".translate('Read the New Testament.', $st, 'sys')."' target='_blank'><img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' />";
-							echo "</a>";
-						echo "</td>";
-						echo "<td>";
-							echo "<a href='./data/$ISO/PDF/$NT_PDF_Filename' title='".translate('Read the New Testament.', $st, 'sys')."' target='_blank'><span class='lineAction'>".translate('Read', $st, 'sys')."</span> ".translate('the New Testament', $st, 'sys')." (PDF)"."</a>";
+							}
+							$query_array="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF = '101'";	// glossary
+							$result_array=$db->query($query_array);
+							if ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {
+								$OT_PDF_Filename = trim($r_array['OT_PDF_Filename']);
+								if (!empty($OT_PDF_Filename)) {
+									echo "<option value='./data/$ISO/PDF/$OT_PDF_Filename'>".translate('Glossary', $st, 'sys')."</option>";
+								}
+							}
+							echo "</select>";
+							echo "</form>";
 							?>
 						</td>
 					</tr>
 					<?php
-				}
-			}
-			if ($num <= 0) {
-				$query="SELECT * FROM NT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_PDF != 'NT'";		// check if there is any other book but the NT
-				$result1=$db->query($query);
-				$num=$result1->num_rows;
-				if ($result1 && $num > 0) {
-					if ($r_NT_PDF = $result1->fetch_array(MYSQLI_ASSOC)) {
-						//$i=0;
-						$a_index = 0;
-						?>
-						<tr>
-							<td>
-								<?php
-								echo "<img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')."' title='".translate('Read', $st, 'sys')."' />";
-							echo "</td>";
-							echo "<td>";
-								echo "<form name='PDF_NT'>";
-								echo "<span class='lineAction'>".translate('Read', $st, 'sys')."</span> ".translate('a book from the New Testament:', $st, 'sys');
-								if (isset($mobile) && $mobile == 1) {
-									echo "<br />";
-								}
-								else {
-									echo " ";
-								}
-								echo "<select class='selectOption' name='NT_PDF' onchange='if (this.options[this.selectedIndex].text != \"".translate('Choose One...', $st, 'sys')."\") { window.open(this.options[this.selectedIndex].value, \"_blank\"); }'>";
-								echo "<option>".translate('Choose One...', $st, 'sys')."</option>";
-								$query_array="SELECT * FROM NT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_PDF = ?";
-								$stmt = $db->prepare($query_array);										// create a prepared statement
-								foreach ($NT_array[NT_EngBook] as $a) {									// there is/are book(s) (from NT_Books.php)
-									//$query_array="SELECT * FROM NT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_PDF = '$a_index'";
-									//$result_array=$db->query($query_array);
-									$stmt->bind_param("i", $a_index);									// bind parameters for markers								// 
-									$stmt->execute();													// execute query
-									$result_array = $stmt->get_result();								// instead of bind_result (used for only 1 record):
-									//$num=mysql_num_rows($result_array);
-									if ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {
-										$NT_PDF = $r_array['NT_PDF'];
-										while ($NT_PDF !== null && !is_numeric($NT_PDF)) {				// important: not 'int' but 'numeric'! Any number and except not 'NT' ('NT' which is 0 in bind_param("i", $a_index)), etc.
-											$r_array = $result_array->fetch_array(MYSQLI_ASSOC);
-											$NT_PDF = $r_array['NT_PDF'];
-										}
-										$NT_PDF_Filename = trim($r_array['NT_PDF_Filename']);
-										$a = str_replace(" ", "&nbsp;", $a);
-										if (!empty($NT_PDF_Filename)) {
-											echo "<option value='../data/$ISO/PDF/$NT_PDF_Filename'>$a</option>";
-										}
-									}
-									$a_index++;
-								}
-								$stmt->close();															// close statement
-								$query_array="SELECT * FROM NT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_PDF = '200'";	// appendice
-								$result_array=$db->query($query_array);
-								//$num=mysql_num_rows($result_array);
-								if ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {
-									$NT_PDF_Filename = trim($r_array['NT_PDF_Filename']);
-									if (!empty($NT_PDF_Filename)) {
-										echo "<option value='../data/$ISO/PDF/$NT_PDF_Filename'>".translate('Appendix', $st, 'sys')."</option>";
-									}
-								}
-								$query_array="SELECT * FROM NT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_PDF = '201'";	// glossary
-								$result_array=$db->query($query_array);
-								//$num=mysql_num_rows($result_array);
-								if ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {
-									$NT_PDF_Filename = trim($r_array['NT_PDF_Filename']);
-									if (!empty($NT_PDF_Filename)) {
-										echo "<option value='../data/$ISO/PDF/$NT_PDF_Filename'>".translate('Glossary', $st, 'sys')."</option>";
-									}
-								}
-								echo "</select>";
-								echo "</form>";
-								?>
-							</td>
-						</tr>
-						<?php
-					}
 				}
 			}
 		}
 	}
-//}
+	if ($NT_PDF > 0) {
+		$query="SELECT * FROM NT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_PDF = 'NT'";		// check if there is a NT
+		$result1=$db->query($query);
+		$num=$result1->num_rows;
+		if ($result1 && $num > 0) {
+			if ($r_NT = $result1->fetch_array(MYSQLI_ASSOC)) {
+				$NT_PDF_Filename = trim($r_NT['NT_PDF_Filename']);											// there is a NT
+				?>
+				<tr>
+					<td>
+						<?php
+						echo "<a href='./data/$ISO/PDF/$NT_PDF_Filename' title='".translate('Read the New Testament.', $st, 'sys')."' target='_blank'><img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' />";
+						echo "</a>";
+					echo "</td>";
+					echo "<td>";
+						echo "<a href='./data/$ISO/PDF/$NT_PDF_Filename' title='".translate('Read the New Testament.', $st, 'sys')."' target='_blank'>".translate('Read', $st, 'sys')." ".translate('the New Testament', $st, 'sys')." (PDF)"."</a>";
+						?>
+					</td>
+				</tr>
+				<?php
+			}
+		}
+		if ($num <= 0) {
+			$query="SELECT * FROM NT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_PDF != 'NT'";		// check if there is any other book but the NT
+			$result1=$db->query($query);
+			$num=$result1->num_rows;
+			if ($result1 && $num > 0) {
+				if ($r_NT_PDF = $result1->fetch_array(MYSQLI_ASSOC)) {
+					$a_index = 0;
+					?>
+					<tr>
+						<td>
+							<?php
+							echo "<img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')."' title='".translate('Read', $st, 'sys')."' />";
+						echo "</td>";
+						echo "<td>";
+							echo "<form name='PDF_NT'>";
+							echo translate('Read', $st, 'sys')." ".translate('a book from the New Testament:', $st, 'sys');
+							if (isset($mobile) && $mobile == 1) {
+								echo '<br />';
+							}
+							else {
+								echo ' ';
+							}
+							echo "<select class='selectOption' name='NT_PDF' onchange='if (this.options[this.selectedIndex].text != \"".translate('Choose One...', $st, 'sys')."\") { window.open(this.options[this.selectedIndex].value, \"_blank\"); }'>";
+							echo "<option>".translate('Choose One...', $st, 'sys')."</option>";
+							$query_array="SELECT * FROM NT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_PDF = ?";
+							$stmt = $db->prepare($query_array);										// create a prepared statement
+							foreach ($NT_array[NT_EngBook] as $a) {									// there is/are book(s) (from NT_Books.php)
+								$stmt->bind_param("i", $a_index);									// bind parameters for markers								// 
+								$stmt->execute();													// execute query
+								$result_array = $stmt->get_result();								// instead of bind_result (used for only 1 record):
+								if ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {
+									$NT_PDF = $r_array['NT_PDF'];
+									while ($NT_PDF !== null && !is_numeric($NT_PDF)) {				// important: not 'int' but 'numeric'! Any number and except not 'NT' ('NT' which is 0 in bind_param("i", $a_index)), etc.
+										$r_array = $result_array->fetch_array(MYSQLI_ASSOC);
+										$NT_PDF = $r_array['NT_PDF'];
+									}
+									$NT_PDF_Filename = trim($r_array['NT_PDF_Filename']);
+									$a = str_replace(" ", "&nbsp;", $a);
+									if (!empty($NT_PDF_Filename)) {
+										echo "<option value='../data/$ISO/PDF/$NT_PDF_Filename'>$a</option>";
+									}
+								}
+								$a_index++;
+							}
+							$stmt->close();															// close statement
+							$query_array="SELECT * FROM NT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_PDF = '200'";	// appendice
+							$result_array=$db->query($query_array);
+							if ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {
+								$NT_PDF_Filename = trim($r_array['NT_PDF_Filename']);
+								if (!empty($NT_PDF_Filename)) {
+									echo "<option value='../data/$ISO/PDF/$NT_PDF_Filename'>".translate('Appendix', $st, 'sys')."</option>";
+								}
+							}
+							$query_array="SELECT * FROM NT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_PDF = '201'";	// glossary
+							$result_array=$db->query($query_array);
+							if ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {
+								$NT_PDF_Filename = trim($r_array['NT_PDF_Filename']);
+								if (!empty($NT_PDF_Filename)) {
+									echo "<option value='../data/$ISO/PDF/$NT_PDF_Filename'>".translate('Glossary', $st, 'sys')."</option>";
+								}
+							}
+							echo "</select>";
+							echo "</form>";
+							?>
+						</td>
+					</tr>
+					<?php
+				}
+			}
+		}
+	}
+}
 
 /*
 	*************************************************************************************************************
@@ -1009,48 +839,28 @@ if ($links) {
 	$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND GooglePlay = 1";
 	$result2=$db->query($query);
 	if ($result2) {
-/*		if (!$check_Android) {
+		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
+			$company_title=trim($r2['company_title']);
+			$company=trim($r2['company']);
+			$URL=trim($r2['URL']);
 			?>
 			<tr>
 				<td style='width: 45px; '>
 					<?php
-					echo "<img class='iconActions' src='../images/Google_Play-icon.jpg' alt='".translate('Google Play', $st, 'sys')."' title='".translate('Google Play', $st, 'sys')."' />";
+					echo "<a href='$URL' title='".translate('Link to organization.', $st, 'sys')."' target='_blank'><img class='iconActions' src='../images/Google_Play-icon.jpg' alt='".translate('Google Play', $st, 'sys')."' title='".translate('Google Play', $st, 'sys')."' />";
+					echo "</a>";
 				echo "</td>";
 				echo "<td>";
-					echo translate('The ScriptureEarth App is available in the Google Play Store.', $st, 'sys');
+					echo "<a href='$URL' title='".translate('Link to organization.', $st, 'sys')."' target='_blank'>".translate('Link', $st, 'sys')." : ";
+					if ($company_title != "" && $company_title != NULL) {
+						echo "$company_title: ";
+					}
+					echo "$company</a>";
 					?>
 				</td>
 			</tr>
 			<?php
 		}
-		//$num=mysql_num_rows($result2);
-		//$i=0;
-		else {
-*/
-			while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
-				$company_title=trim($r2['company_title']);
-				$company=trim($r2['company']);
-				$URL=trim($r2['URL']);
-				?>
-				<tr>
-					<td style='width: 45px; '>
-						<?php
-						echo "<a href='$URL' title='".translate('Link to organization.', $st, 'sys')."' target='_blank'><img class='iconActions' src='../images/Google_Play-icon.jpg' alt='".translate('Google Play', $st, 'sys')."' title='".translate('Google Play', $st, 'sys')."' />";
-						echo "</a>";
-					echo "</td>";
-					echo "<td>";
-						echo "<a href='$URL' title='".translate('Link to organization.', $st, 'sys')."' target='_blank'><span class='lineAction'>".translate('Link', $st, 'sys')."</span> : ";
-						if ($company_title != "" && $company_title != NULL) {
-							echo "$company_title: ";
-						}
-						echo "$company</a>";
-						?>
-					</td>
-				</tr>
-				<?php
-				//$i++;
-			}
-/*		}*/
 	}
 }
 
@@ -1089,13 +899,10 @@ $c = 0;
 				$optional=trim($r2['optional']);
 				$pos = strpos($Cell_Phone_File, '://');															// check to see if "://" is present (https;//zzzzz)
 	$c++;
-	//echo $c . ') pos: ' . $pos . '#<br />';
 				if ($pos === false) {
-	//echo $c . ') file_exists: ' . file_exists('./data/' . $ISO . '/study/' . $Cell_Phone_File) . '#<br />';
 					if (!file_exists('./data/' . $ISO . '/study/' . $Cell_Phone_File)) {
 						$matches = [];
 						preg_match('/(.*-)[0-9.]+\.apk/', $Cell_Phone_File, $matches);							// SE (keep track of everything but the number)
-	//echo $c . ') Cell_Phone_File: ' . $Cell_Phone_File . '; apk: ' . $matches[1] . '#<br />';
 						//echo $matches[1] . '<br />
 						$list = [];
 						$list = glob('./data/' . $ISO . '/study/' . $matches[1] . '*.apk');						// server (glob = find a file based on wildcards)
@@ -1106,11 +913,6 @@ $c = 0;
 							//echo $list[0] . '<br />';
 							$matches = [];
 							preg_match('/.*\/(.*\.apk)/', $list[0], $matches);									// server
-	//echo 'count: ' . count($list) . '<br />';
-	//for ($d=0; $d < count($list); $d++) {
-	//	echo '&nbsp;&nbsp;&nbsp;&nbsp;'.$d.') '.$list[$d]. '<br />';
-	//}
-							//echo $matches[1] . '<br />';
 							if (empty($matches)) {
 								echo 'WARNING: Android App (apk) downloadable cell phone file is not there!';
 							}
@@ -1138,7 +940,7 @@ $c = 0;
 							echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/android_module-icon.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
 						echo "</td>";
 						echo "<td>";
-							echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><span class='lineAction'>" . translate('Download', $st, 'sys') . "</span> " . translate('the app for', $st, 'sys') . ' ' . ($Cell_Phone_Title == 'Android App' ? 'Android' : $Cell_Phone_Title);
+							echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the app for', $st, 'sys') . ' ' . ($Cell_Phone_Title == 'Android App' ? 'Android' : $Cell_Phone_Title);
 						echo ' ' . $optional . '</div>';
 							?>
 						</td>
@@ -1157,7 +959,7 @@ $c = 0;
 							echo "<div class='linePointer' title='" . translate('Download the Scripture Earth app for iOS', $st, 'sys') . "' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
 						echo "</td>";
 						echo "<td>";
-							echo "<div class='linePointer' title='" . translate('Download the Scripture Earth app for iOS', $st, 'sys') . "' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'><span class='lineAction'>" . translate('Download', $st, 'sys') . "</span> " . translate('the Scripture Earth app for iOS', $st, 'sys');
+							echo "<div class='linePointer' title='" . translate('Download the Scripture Earth app for iOS', $st, 'sys') . "' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'>" . translate('Download', $st, 'sys') . " " . translate('the Scripture Earth app for iOS', $st, 'sys');
 						echo ' ' . $optional . '</div>';
 							?>
 						</td>
@@ -1188,8 +990,6 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 			if ($OT_Audio) {
 				$query="SELECT * FROM OT_Audio_Media WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code'";	// ISO_ROD_index = '$ISO_ROD_index'";
 				$result2=$db->query($query);
-				//$num2=mysql_num_rows($result2);
-				//<div style='margin-left: 6px; '>
 				if ($result2) {
 					$OTNT = $NT_Audio + $OT_Audio;
 					echo '<tr>';
@@ -1204,7 +1004,7 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 					?>
 					<div class='OTAudio'>
 					<?php
-					echo "<div class='linePointer' title='".translate('Listen to the Old Testament.', $st, 'sys')."' onclick='ListenAudio(document.form_OT_Chapters_mp3.OT_Chapters_mp3, true, \"OTListenNow\", $OTNT)'><span class='lineAction'>".translate('Listen', $st, 'sys')."</span></a> ".translate('to the audio Old Testament:', $st, 'sys');
+					echo "<div class='linePointer' title='".translate('Listen to the Old Testament.', $st, 'sys')."' onclick='ListenAudio(document.form_OT_Chapters_mp3.OT_Chapters_mp3, true, \"OTListenNow\", $OTNT)'>".translate('Listen', $st, 'sys')." ".translate('to the audio Old Testament:', $st, 'sys').'</a>';
 					echo '</div>';
 					?>
 					<div id='OTAudioSelects' style='display: inline; '>
@@ -1220,8 +1020,6 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 					$stmt_OT = $db->prepare($query_array);											// create a prepared statement
 					echo "<select id='OT_Book_mp3' name='OT_Book_mp3' class='selectOption' onchange='AudioChangeChapters(\"OT\", \"$ISO\", \"$ROD_Code\", this.options[this.selectedIndex].value); ListenAudio(document.form_OT_Chapters_mp3.OT_Chapters_mp3, true, \"OTListenNow\", $OTNT)'>";
 					foreach ($OT_array[OT_EngBook] as $a) {											// display the OT books in the MAJOR language!
-						//$query_array="SELECT * FROM OT_Audio_Media WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND OT_Audio_Book = '$a_index' AND (OT_Audio_Filename IS NOT NULL AND trim(OT_Audio_Filename) <> '')";		// ISO_ROD_index = '$ISO_ROD_index'
-						//$result_array=$db->query($query_array);
 						$stmt_OT->bind_param("i", $a_index);										// bind parameters for markers; $a_index increaments by 1 starting at 0
 						$stmt_OT->execute();														// execute query
 						$result_array = $stmt_OT->get_result();										// instead of bind_result (used for only 1 record):
@@ -1254,8 +1052,6 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 					$query_array="SELECT * FROM OT_Audio_Media WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND Variant_Code = '$Variant_Code' AND OT_Audio_Book = ? AND (OT_Audio_Filename IS NOT NULL AND trim(OT_Audio_Filename) <> '')";		// ISO_ROD_index = '$ISO_ROD_index'
 					$stmt_OT = $db->prepare($query_array);												// create a prepared statement
 					foreach ($OT_array[OT_EngBook] as $a) {											// display the OT books in the MAJOR language!
-						//$query_array="SELECT * FROM OT_Audio_Media WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND OT_Audio_Book = '$a_index' AND (OT_Audio_Filename IS NOT NULL AND trim(OT_Audio_Filename) <> '')";		// ISO_ROD_index = '$ISO_ROD_index'
-						//$result_array=$db->query($query_array);
 						$stmt_OT->bind_param("i", $a_index);											// bind parameters for markers								// 
 						$stmt_OT->execute();															// execute query
 						$result_array = $stmt_OT->get_result();										// instead of bind_result (used for only 1 record):
@@ -1336,11 +1132,6 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
                                         }
                                         ?>
                                     </div>
-                                    <!--div class="jp-title">
-                                        <ul>
-                                            <li>NT - John 1</li>
-                                        </ul>
-                                    </div-->
                                     <div class="jp-no-solution">
                                         <span>Update Required</span>
                                         To play the media you will need to either update your browser to a recent version or update your <a href="https://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
@@ -1357,7 +1148,6 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 						}
 						?>
 						</div>
-					<!--/div-->
 					</td>
 					</tr>
 					<?php
@@ -1367,13 +1157,11 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 			if ($NT_Audio) {
 				$query="SELECT * FROM NT_Audio_Media WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code'";	// ISO_ROD_index = '$ISO_ROD_index'";
 				$result2=$db->query($query);
-				//$num2=mysql_num_rows($result2);
 				if ($result2) {
 					$OTNT = $NT_Audio + $OT_Audio;
 					?>
 					<tr>
 					<td>
-					<!--div style='margin-left: 6px; '-->
 					<?php
 					$NT_Book = array();
 					$NT_Book_Chapter = array();
@@ -1385,7 +1173,7 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 					?>
 					<div class='NTAudio'>
 					<?php
-					echo "<div class='linePointer' title='".translate('Listen to the New Testament.', $st, 'sys')."' onclick='ListenAudio(document.form_NT_Chapters_mp3.NT_Chapters_mp3, true, \"NTListenNow\", $OTNT)'><span class='lineAction'>".translate('Listen', $st, 'sys')."</span></a> ".translate('to the audio New Testament:', $st, 'sys');
+					echo "<div class='linePointer' title='".translate('Listen to the New Testament.', $st, 'sys')."' onclick='ListenAudio(document.form_NT_Chapters_mp3.NT_Chapters_mp3, true, \"NTListenNow\", $OTNT)'>".translate('Listen', $st, 'sys')." ".translate('to the audio New Testament:', $st, 'sys').'</a>';
 					echo '</div>';
 					?>
 					<div id='NTAudioSelects' style='display: inline; '>
@@ -1401,15 +1189,12 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 					$query_array="SELECT * FROM NT_Audio_Media WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND Variant_Code = '$Variant_Code' AND NT_Audio_Book = ? AND (NT_Audio_Filename is not null AND trim(NT_Audio_Filename) <> '')";		// ISO_ROD_index = '$ISO_ROD_index'
 					$stmt = $db->prepare($query_array);												// create a prepared statement
 					foreach ($NT_array[NT_EngBook] as $a) {											// display the NT books in the MAJOR language!
-						//$query_array="SELECT * FROM NT_Audio_Media WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND NT_Audio_Book = '$a_index' AND (NT_Audio_Filename is not null AND trim(NT_Audio_Filename) <> '')";		// ISO_ROD_index = '$ISO_ROD_index'
-						//$result_array=$db->query($query_array);
 						$stmt->bind_param("i", $a_index);											// bind parameters for markers								// 
 						$stmt->execute();															// execute query
 						$result_array = $stmt->get_result();										// instead of bind_result (used for only 1 record):
 						$num_array=$result_array->num_rows;
 						if ($result_array && $num_array > 0) {
 							$NT_Book[] = $a_index;
-							//$i=0;
 							$j=(string)$a_index;
 							while ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {						// display the chapters
 								$NT_Audio_Filename = trim($r_array['NT_Audio_Filename']);
@@ -1418,7 +1203,6 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 									$NT_Book_Chapter[$a_index][] = $NT_Audio_Chapter;
 									$j = $j . "," . $NT_Audio_Chapter . "," . $NT_Audio_Filename;
 								}
-								//$i++;
 							}
 							echo "<option id='NT_Book_$a_index' name='NT_Book_$a_index' value='$j'>$a</option>";
 						}
@@ -1435,8 +1219,6 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 					$query_array="SELECT * FROM NT_Audio_Media WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND Variant_Code = '$Variant_Code' AND NT_Audio_Book = ? AND (NT_Audio_Filename is not null AND trim(NT_Audio_Filename) <> '')";		// ISO_ROD_index = '$ISO_ROD_index'
 					$stmt = $db->prepare($query_array);												// create a prepared statement
 					foreach ($NT_array[NT_EngBook] as $a) {											// display the NT books in the MAJOR language!
-						//$query_array="SELECT * FROM NT_Audio_Media WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND NT_Audio_Book = '$a_index' AND (NT_Audio_Filename is not null AND trim(NT_Audio_Filename) <> '')";		// ISO_ROD_index = '$ISO_ROD_index'
-						//$result_array=$db->query($query_array);
 						$stmt->bind_param("i", $a_index);											// bind parameters for markers								// 
 						$stmt->execute();															// execute query
 						$result_array = $stmt->get_result();										// instead of bind_result (used for only 1 record):
@@ -1518,11 +1300,6 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
                                         }
                                         ?>
                                     </div>
-                                    <!--div class="jp-title">
-                                        <ul>
-                                            <li>NT - John 1</li>
-                                        </ul>
-                                    </div-->
                                     <div class="jp-no-solution">
                                         <span>Update Required</span>
                                         To play the media you will need to either update your browser to a recent version or update your <a href="https://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
@@ -1565,7 +1342,7 @@ if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 					echo "</div>";
 				echo "</td>";
 				echo "<td>";
-					echo "<div class='linePointer' title='".translate('Download the audio Old Testament files.', $st, 'sys')."' onclick='OTTableClick()'><span class='lineAction'>".translate('Download', $st, 'sys')."</span> ".translate('the Old Testament audio files (MP3)', $st, 'sys')."</div>";
+					echo "<div class='linePointer' title='".translate('Download the audio Old Testament files.', $st, 'sys')."' onclick='OTTableClick()'>".translate('Download', $st, 'sys')." ".translate('the Old Testament audio files (MP3)', $st, 'sys')."</div>";
 					?>
                 </td>
             </tr>
@@ -1598,8 +1375,6 @@ if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 						$query_array="SELECT * FROM OT_Audio_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_Audio_Book = ? AND (OT_Audio_Filename IS NOT NULL AND trim(OT_Audio_Filename) <> '')";
 						$stmt = $db->prepare($query_array);												// create a prepared statement
 						foreach ($OT_array[OT_EngBook] as $a) {											// display Eng. NT books
-							//$query_array="SELECT * FROM OT_Audio_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_Audio_Book = '$a_index' AND (OT_Audio_Filename IS NOT NULL AND trim(OT_Audio_Filename) <> '')";
-							//$result_array=$db->query($query_array);
 							$stmt->bind_param("i", $a_index);											// bind parameters for markers								// 
 							$stmt->execute();															// execute query
 							$result_array = $stmt->get_result();										// instead of bind_result (used for only 1 record):
@@ -1616,7 +1391,6 @@ if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 								<td width='<?php echo $num_array_col; ?>' colspan='<?php echo $col_span; ?>'>
 								<?php
 								$ZipFile = 0;
-								//$ii=0;
 								while ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {						// display the chapters
 									$OT_Audio_Filename = trim($r_array['OT_Audio_Filename']);
 									if (file_exists("./data/$ISO/audio/$OT_Audio_Filename")) {
@@ -1625,7 +1399,6 @@ if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 										$ZipFile += round($temp/1024, 2);
 										$ZipFile = round($ZipFile, 1);
 									}
-									//$ii++;
 								}
 								echo "<input type='checkbox' id='OT_audio_$a_index' name='OT_audio_$a_index' onclick='OTAudioClick(\"$a_index\", $ZipFile)' />&nbsp;&nbsp;$a<span style='font-size: .9em; font-weight: normal; '> (~$ZipFile MB)</span>";
 								?>
@@ -1660,7 +1433,7 @@ if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 					echo "</div>";
 				echo "</td>";
 				echo "<td>";
-					echo "<div class='linePointer' title='".translate('Download the audio New Testament files.', $st, 'sys')."' onclick='NTTableClick()'><span class='lineAction'>".translate('Download', $st, 'sys')."</span> ".translate('the New Testament audio files (MP3)', $st, 'sys')."</div>";
+					echo "<div class='linePointer' title='".translate('Download the audio New Testament files.', $st, 'sys')."' onclick='NTTableClick()'>".translate('Download', $st, 'sys')." ".translate('the New Testament audio files (MP3)', $st, 'sys')."</div>";
 					?>
                 </td>
             </tr>
@@ -1693,8 +1466,6 @@ if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 						$query_array="SELECT * FROM NT_Audio_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_Audio_Book = ? AND (NT_Audio_Filename IS NOT NULL AND trim(NT_Audio_Filename) <> '')";
 						$stmt = $db->prepare($query_array);												// create a prepared statement
 						foreach ($NT_array[NT_EngBook] as $a) {											// display Eng. NT books
-							//$query_array="SELECT * FROM NT_Audio_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_Audio_Book = '$a_index' AND (NT_Audio_Filename IS NOT NULL AND trim(NT_Audio_Filename) <> '')";
-							//$result_array=$db->query($query_array);
 							$stmt->bind_param("i", $a_index);											// bind parameters for markers
 							$stmt->execute();															// execute query
 							$result_array = $stmt->get_result();										// instead of bind_result (used for only 1 record):
@@ -1752,7 +1523,6 @@ if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 if ($PlaylistVideo) {															//  test for $Internet is 1 1/2 screens down
 	$query="SELECT PlaylistVideoTitle, PlaylistVideoFilename FROM PlaylistVideo WHERE ISO_ROD_index = '$ISO_ROD_index' AND PlaylistVideoDownload = 0";
 	$result_Playlist=$db->query($query);
-	//$num3=mysql_num_rows($result_Playlist);
 	$z=0;
 	$SEVideoPlaylist=10;
 	while ($r_Playlist = $result_Playlist->fetch_array(MYSQLI_ASSOC)) {
@@ -1761,27 +1531,21 @@ if ($PlaylistVideo) {															//  test for $Internet is 1 1/2 screens down
 		$SEVideoPlaylistIndex=0;
 		$SEVideoPlaylistArray = [];
 		
-		//preg_match('/^([a-zA-Z]+)-/i', $PlaylistVideoFilename, $matches);		// get the left most letters before the '-'
-		//$PLVideo = strtolower($matches[1]);									// to lower case
 		$PLVideo = $PlaylistVideoFilename;
 		$ISO_dialect = $ISO;
-		//echo 'ISO = ' . $ISO . '<br />';
 
 		/*******************************************************************************************************************
 				set $PLVideo in order to set $PlaylistVideoTitle for the 'tool tip' (see about 100 lines below)
 		********************************************************************************************************************/
-// JESUSFilm-bzs.txt, etc.
+		// JESUSFilm-bzs.txt, etc.
 		if (preg_match('/^[a-zA-Z]+-('.$ISO.'[a-zA-Z0-9]*)(-|\.)/', $PlaylistVideoFilename, $matches)) {	// get the ISO code and if there is anything attached before the '-'
 			$ISO_dialect = $matches[1];
-			//echo '1 ISO_dialect #' . $ISO_dialect . '#<br />';
 			preg_match('/^([a-zA-Z]+)-/i', $PlaylistVideoFilename, $matches);	// get the left most letters before the '-'
 			$PLVideo = strtolower($matches[1]);									// to lower case ('jesusfilm', etc.)
-			//echo '#' . $PLVideo . '#<br />';
 		}
-// bzj-ScriptureAnim.txt, etc.
+		// bzj-ScriptureAnim.txt, etc.
 		elseif (preg_match('/^('.$ISO.'[a-zA-Z0-9]*)-/', $PlaylistVideoFilename, $matches)) {	// get the ISO code and if there is anything attached before the '-'
 			$ISO_dialect = $matches[1];
-			//echo '2 ISO_dialect #' . $ISO_dialect . '#<br />';
 			if (preg_match('/-([a-zA-Z]+)(-|\.)/i', $PlaylistVideoFilename, $matches)) {	// get the left most letters before the '-'
 				if (empty($matches[1])) {
 					//die('ERROR. Non-alphabetic characters in '.$matches[0]);		// produces "PHP Warning:  Undefined array key 1 in /home/se/public_html/include/00-SpecificLanguage.inc.php"
@@ -1793,7 +1557,6 @@ if ($PlaylistVideo) {															//  test for $Internet is 1 1/2 screens down
 			else {
 				//die('ERROR. Non-alphabetic characters in ' . $PlaylistVideoFilename . '.');
 			}
-			//echo '#' . $PLVideo . '#<br />';
 		}
 		
 		/*******************************************************************************************************************
@@ -1801,8 +1564,6 @@ if ($PlaylistVideo) {															//  test for $Internet is 1 1/2 screens down
 		********************************************************************************************************************/
 		$filename = './data/'.$ISO.'/video/' . substr($PlaylistVideoFilename, 0, strlen($PlaylistVideoFilename)-3) . $MajorCountryAbbr . '.txt';
 		if (!file_exists($filename)) {
-			//echo "The text file $filename does not exist.";
-			//continue;
 			$filename = './data/'.$ISO.'/video/' . $PlaylistVideoFilename;
 			if (!file_exists($filename)) {
 				echo '<div>Warning: '.$PlaylistVideoTitle.' filename does not exist.</div>';
@@ -1851,19 +1612,12 @@ if (count($tempArray) < 3) {
 				set $PlaylistVideoTitle for 'tool tip'
 		********************************************************************************************************************/
 		if ($PLVideo == 'jesusfilm' || $PLVideo == 'magdalena' || $PLVideo == 'scriptureanim' || $PLVideo == 'johnanim' || $PLVideo == 'johnslide' || $PLVideo == 'lukevid' || $PLVideo == 'actsvid' || $PLVideo == 'genvid' || $PLVideo == 'johnmovie' || substr($PlaylistVideoFilename, 0, strlen('scripture-videos')) == 'scripture-videos') {																		// first word of the first line (The Jesus Film, etc.) of txt file
-			//echo '#' . $PLVideo . '#<br />';
 			$VT = '';																				// get everything after "-" from $PlaylistVideoTitle
-			//if (preg_match("/- *(.*)/", $PlaylistVideoTitle, $match)) {
 			if (preg_match("/- *(.*)/", $VideoConvertContents[0], $match)) {
 				$VT = $match[1];
-				//$PlaylistVideoTitle = $PlaylistVideoTitle . ' - ' . $VT;
-				//$PlaylistVideoTitle = $PlaylistVideoTitle;
 			}
 			if (preg_match("/\t(.*) — /", $VideoConvertContents[0], $match)) {
-				//echo '#' . $PLVideo . '#<br />';
-				//echo '#' . $PlaylistVideoTitle . '#<br />';
 				$PlaylistVideoTitle = $match[1];
-				//echo '#' . $PlaylistVideoTitle . '#<br />';
 			}
 			else if (preg_match("/\t(.*)\t.*\timages/", $VideoConvertContents[0], $match)) {
 				$PlaylistVideoTitle = $match[1];
@@ -1871,9 +1625,6 @@ if (count($tempArray) < 3) {
 			else {
 				// just $PlaylistVideoTitle
 			}
-			//if ($VT != '') {																		// set everything after "-" to $PlaylistVideoTitle
-			//	$PlaylistVideoTitle = $PlaylistVideoTitle . ' - ' . $VT;
-			//}
 		}
 		
 		for (; $i < count($VideoConvertContents); $i++) {							// iterate through $VideoConvertContents looking for a 0 and 1 or a letter (the very first line of the txt file).
@@ -1908,7 +1659,7 @@ if (count($tempArray) < 3) {
 			</td>
 			<td>
 				<?php
-				echo "<div class='linePointer' title='".translate('View', $st, 'sys')." $PlaylistVideoTitle' onclick='PlaylistVideo(orgVideoPixels_$z, \"PlaylistVideoNow_$z\", $mobile)'><span class='lineAction'>".translate('View', $st, 'sys')."</span> $PlaylistVideoTitle</div>";
+				echo "<div class='linePointer' title='".translate('View', $st, 'sys')." $PlaylistVideoTitle' onclick='PlaylistVideo(orgVideoPixels_$z, \"PlaylistVideoNow_$z\", $mobile)'>".translate('View', $st, 'sys')." $PlaylistVideoTitle</div>";
 				// Get and display Playlist
 				?>
 			</td>
@@ -1937,13 +1688,6 @@ if (count($VideoConvertWithTab) < 3) {
                     	echo "<div style='text-align: center; '><div style='cursor: pointer; display: inline; text-align: center; ' title='".$VideoName."'";
                         echo " onclick='window.open(\"".$VideoConvertWithTab[3]."\",\"_blank\")'>";
 					}
-					/*
-					else {
-						$SEVideoPlaylist++;
-						$SEVideoPlaylistArray[$SEVideoPlaylistIndex] = $VideoConvertWithTab[1]. '|' . $VideoConvertWithTab[2] . '|' . $VideoConvertWithTab[3];
-						echo " id='PV_".$SEVideoPlaylist."_".$SEVideoPlaylistIndex."' onclick='PlaylistVideo_$SEVideoPlaylist($SEVideoPlaylistIndex)'>";
-						$SEVideoPlaylistIndex++;
-					}*/
 					if ($image != 2) {																			// != 2 ScriptureAnim to make sure the first picture is skipped
 						if ($image == 1) {
 							echo "<img src='./data/~images/$bookName/";
@@ -1959,11 +1703,6 @@ if (count($VideoConvertWithTab) < 3) {
 						//}
 					}
 				}
-//				else {
-//					$SEVideoPlaylist++;
-//					$SEVideoPlaylistArray[$SEVideoPlaylistIndex] = $VideoConvertWithTab[1]. '|' . $VideoConvertWithTab[2] . '|' . $VideoConvertWithTab[3];
-//					$SEVideoPlaylistIndex++;
-//				}
 				$resource = '';
 				?>
 				<table style='width: 100%'>
@@ -2019,7 +1758,6 @@ if (count($VideoConvertWithTab) < 3) {
 					</tr>
 				</table>
 				<?php
-				//$VideoConvertWithTab = explode("\t", $VideoConvertContents[2]);								// split the line up by tabs
 				// $VideoConvertWithTab[0] = number; $VideoConvertWithTab[1] = text; $VideoConvertWithTab[2] = data filename for png or jpg; $VideoConvertWithTab[3] = URL
 				
 				/**************************************************************************************************************************************
@@ -2108,7 +1846,6 @@ if (count($VideoConvertWithTab) < 3) {
                                     // if the table is long enough IE goes to dark black (blur and opacity). I don't know why.
                                     $("#container").redrawShadow({left: 5, top: 5, blur: 2, opacity: 0.5, color: "black", swap: false});
                                 });
-								//alert(totalNumber);
 								//$("#jquery_jplayer_< ?php echo $SEVideoPlaylist; ?>").jPlayer("play("+futureNumber+")");
                             }
                         </script>
@@ -2178,7 +1915,6 @@ if (count($VideoConvertWithTab) < 3) {
 		</tr>
 		<?php
 		$z++;
-//		$SEVideoPlaylist++;
 	}
 }
 /*
@@ -2189,7 +1925,6 @@ if (count($VideoConvertWithTab) < 3) {
 if ($PlaylistVideo) {																//  test for $Internet is 1 1/2 screens down
 	$query="SELECT PlaylistVideoTitle, PlaylistVideoFilename FROM PlaylistVideo WHERE ISO_ROD_index = '$ISO_ROD_index' AND PlaylistVideoDownload = 1";
 	$result_Playlist=$db->query($query);
-	//$num3=mysql_num_rows($result_Playlist);
 	$z=0;
 	$SEVideoPlaylist=0;
 	while ($r_Playlist = $result_Playlist->fetch_array(MYSQLI_ASSOC)) {
@@ -2198,40 +1933,29 @@ if ($PlaylistVideo) {																//  test for $Internet is 1 1/2 screens dow
 		$SEVideoPlaylistIndex=0;
 		$SEVideoPlaylistArray = [];
 
-		//preg_match('/^([a-zA-Z]+)-/i', $PlaylistVideoFilename, $matches);			// get the left most letters before the '-'
-		//$PLVideo = strtolower($matches[1]);										// to lower case
 		$PLVideo = $PlaylistVideoFilename;
 		$ISO_dialect = $ISO;
-//echo 'ISO = ' . $ISO . '<br />';
-// JESUSFilm-bzs.txt or
+		// JESUSFilm-bzs.txt or
 		$found = preg_match('/^[a-zA-Z]+-('.$ISO.'[a-zA-Z0-9]*)(-|\.)/', $PlaylistVideoFilename, $matches);	// get the ISO code and if there is anything attached before the '-'
 		if ($found) {
 			$ISO_dialect = $matches[1];
-//echo '1 ISO_dialect #' . $ISO_dialect . '#<br />';
 			preg_match('/^([a-zA-Z]+)-/i', $PlaylistVideoFilename, $matches);		// get the left most letters before the '-'
 			$PLVideo = strtolower($matches[1]);										// to lower case
-//echo '#' . $PLVideo . '#<br />';
 		}
-// bzj-ScriptureAnim.txt
+		// bzj-ScriptureAnim.txt
 		$found = preg_match('/^('.$ISO.'[a-zA-Z0-9]*)-/', $PlaylistVideoFilename, $matches);	// get the ISO code and if there is anything attached before the '-'
 		if ($found) {
 			$ISO_dialect = $matches[1];
-//echo '2 ISO_dialect #' . $ISO_dialect . '#<br />';
 			if (preg_match('/-([a-zA-Z0-9ñáéíóú]+)(-|\.)/i', $PlaylistVideoFilename, $matches)) {	// get the left most letters before the '-'
 				$PLVideo = strtolower($matches[1]);										// to lower case
 			}
 			else {
 				die('ERROR. Non-alphabetic characters in '.$PlaylistVideoFilename);
 			}
-//echo '#' . $PLVideo . '#<br />';
 		}
 		
 		$filename = './data/'.$ISO.'/video/' . substr($PlaylistVideoFilename, 0, strlen($PlaylistVideoFilename)-3) . $MajorCountryAbbr . '.txt';
 		if (!file_exists($filename)) {
-		//$file_headers = @get_headers($filename);									// Fetches all 9 of the headers sent by the server in response to an HTTP request.
-		//if ($file_headers[0] == 'HTTP/1.1 404 Not Found' || $file_headers[0] == 'HTTP/1.1 302 Moved Temporarily') {
-			//echo "The text file $filename does not exist.";
-			//continue;
 			$filename = './data/'.$ISO.'/video/' . $PlaylistVideoFilename;
 		}
 		else {
@@ -2299,7 +2023,7 @@ if ($PlaylistVideo) {																//  test for $Internet is 1 1/2 screens dow
 			</td>
 			<td>
 				<?php
-				echo "<div class='linePointer' title='".translate('Download', $st, 'sys')." $PlaylistVideoTitle' onclick='PlaylistVideo(orgVideoPixels_$z, \"PlaylistVideoDownload_$z\", $mobile)'><span class='lineAction'>".translate('Download', $st, 'sys')."</span> $PlaylistVideoTitle</div>";
+				echo "<div class='linePointer' title='".translate('Download', $st, 'sys')." $PlaylistVideoTitle' onclick='PlaylistVideo(orgVideoPixels_$z, \"PlaylistVideoDownload_$z\", $mobile)'>".translate('Download', $st, 'sys')." $PlaylistVideoTitle</div>";
 				// Get and display Playlist Download
 				?>
 			</td>
@@ -2421,92 +2145,6 @@ if ($PlaylistVideo) {																//  test for $Internet is 1 1/2 screens dow
 		disabled: Is thw PDF downloadable?
 	*************************************************************************************************************
 */
-/*
-$query="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF = 'OT'";				// check if there is a OT
-$result_OT=$db->query($query);
-$PDF_OT=$result_OT->num_rows;
-$query="SELECT * FROM NT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_PDF = 'NT'";				// check if there is a NT
-$result_NT=$db->query($query);
-$PDF_NT=$result_NT->num_rows;
-if ($PDF_NT > 0 || $PDF_OT > 0 || $SB_PDF > 0) {
-	if ($SB_PDF > 0) {
-		?>
-		<form>
-		<?php
-		//$i_SB=0;
-		$result_SB->data_seek(0);																			// from above
-		while ($r_SB = $result_SB->fetch_array(MYSQLI_ASSOC)) {
-			$Item = $r_SB['Item'];
-			?>
-			<tr style='margin-top: -2px; '>
-			<td style='width: 45px; '>
-			<?php
-			if ($Item == 'B') {
-				$whole_Bible=trim($r_SB['Scripture_Bible_Filename']);
-				echo "<div class='linePointer' title='".translate('Download the Bible.', $st, 'sys')."' onclick='BPDF(\"$st\", \"$ISO\", \"$ROD_Code\", \"$whole_Bible\")'><img class='iconActions' src='../images/download-icon.jpg' alt='".translate('Download', $st, 'sys')."' title='".translate('Download', $st, 'sys')."' />";
-				echo "</div>";
-				echo "</td>";
-				echo "<td>";
-				echo "<div class='linePointer' title='".translate('Download the Bible.', $st, 'sys')."' onclick='BPDF(\"$st\", \"$ISO\", \"$ROD_Code\", \"$whole_Bible\")'><span class='lineAction'>".translate('Download', $st, 'sys')."</span> ".translate('the Bible', $st, 'sys')."</div> (PDF)";
-			}
-			else {
-				$complete_Scripture=trim($r_SB['Scripture_Bible_Filename']);
-				echo "<div class='linePointer' title='".translate('Download Scripture text.', $st, 'sys')."' onclick='SPDF(\"$st\", \"$ISO\",\"$ROD_Code\", \"$complete_Scripture\")'><img class='iconActions' src='../images/download-icon.jpg' alt='".translate('Download', $st, 'sys')."' title='".translate('Download', $st, 'sys')."' />";
-				echo "</div>";
-				echo "</td>";
-				echo "<td>";
-				echo "<div class='linePointer' title='".translate('Download Scripture text.', $st, 'sys')."' onclick='SPDF(\"$st\", \"$ISO\",\"$ROD_Code\", \"$complete_Scripture\")'><span class='lineAction'>".translate('Download', $st, 'sys')."</span> ".translate('Scripture text', $st, 'sys')."</div> (PDF)";
-			}
-			?>
-			</td>
-			</tr>
-			<?php
-			//$i_SB++;
-		}
-		?>
-		</form>
-		<?php
-	}
-	if ($PDF_OT > 0) {
-		$r_OT = $result_OT->fetch_array(MYSQLI_ASSOC);
-		$OT_PDF_Filename = trim($r_OT['OT_PDF_Filename']);													// there is a OT
-		?>
-		<form>
-			<tr style='margin-top: -2px; '>
-				<td style='width: 45px; '>
-					<?php
-					echo "<div class='linePointer' title='".translate('Download the PDF Old Testament.', $st, 'sys')."' onclick='OTPDF(\"$st\", \"$ISO\",\"$ROD_Code\", \"$OT_PDF_Filename\")'><img class='iconActions' src='../images/download-icon.jpg' alt='".translate('Download', $st, 'sys')."' title='".translate('Download', $st, 'sys')."' />";
-					echo "</div>";
-				echo "</td>";
-				echo "<td>";
-					echo "<div class='linePointer' title='".translate('Download the PDF Old Testament.', $st, 'sys')."' onclick='OTPDF(\"$st\", \"$ISO\",\"$ROD_Code\", \"$OT_PDF_Filename\")'><span class='lineAction'>".translate('Download', $st, 'sys')."</span> ".translate('the Old Testament (PDF)', $st, 'sys')."</div>";
-					?>
-				</td>
-			</tr>
-		</form>
-		<?php
-	}
-	if ($PDF_NT > 0) {
-		$r_NT = $result_NT->fetch_array(MYSQLI_ASSOC);
-		$NT_PDF_Filename = trim($r_NT['NT_PDF_Filename']);													// there is a NT
-		?>
-		<form>
-			<tr style='margin-top: -2px; '>
-				<td style='width: 45px; '>
-					<?php
-					echo "<div class='linePointer' title='".translate('Download the New Testament.', $st, 'sys')."' onclick='NTPDF(\"$st\", \"$ISO\", \"$ROD_Code\", \"$NT_PDF_Filename\")'><img class='iconActions' src='../images/download-icon.jpg' alt='".translate('Download', $st, 'sys')."' title='".translate('Download', $st, 'sys')."' />";
-					echo "</div>";
-				echo "</td>";
-				echo "<td>";
-					echo "<div class='linePointer' title='".translate('Download the New Testament.', $st, 'sys')."' onclick='NTPDF(\"$st\", \"$ISO\", \"$ROD_Code\", \"$NT_PDF_Filename\")'><span class='lineAction'>".translate('Download', $st, 'sys')."</span> ".translate('the New Testament (PDF)', $st, 'sys')."</div>";
-					?>
-				</td>
-			</tr>
-		</form>
-        <?php
-	}
-}
-*/
 
 /*
 	*************************************************************************************************************
@@ -2555,7 +2193,7 @@ if ($Internet && $BibleIs && $SAB) {
 					echo "</a>";
 				echo "</td>";
 				echo "<td>";
-					echo "<a href='#' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'><span class='lineAction'>" . $BibleIsActText . "</span> ";
+					echo "<a href='#' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'>" . $BibleIsActText . " ";
 					//if (stripos($URL, '/Gen/') !== false)
 					/*if ($BibleIsLink == 1)
 						echo translate('to the New Testament', $st, 'sys');
@@ -2618,7 +2256,7 @@ if ($YouVersion && $Internet) {
 						echo "</a>";
 					echo "</td>";
 					echo "<td>";
-						echo "<a href='$URL' target='_blank'><span class='lineAction'>" . translate($text1, $st, 'sys') . '</span> ' . translate($text2, $st, 'sys') . ': ' . $organization . '</a>';
+						echo "<a href='$URL' target='_blank'>" . translate($text1, $st, 'sys') . ' ' . translate($text2, $st, 'sys') . ': ' . $organization . '</a>';
 						?>
 					</td>
 				</tr>
@@ -2673,7 +2311,7 @@ if ($Biblesorg && $Internet) {
 						echo "</a>";
 					echo "</td>";
 					echo "<td>";
-						echo "<a href='$URL' target='_blank'><span class='lineAction'>" . translate($text1, $st, 'sys') . '</span> ' . translate($text2, $st, 'sys') . ': ' . $organization . '</a>';
+						echo "<a href='$URL' target='_blank'>" . translate($text1, $st, 'sys') . ' ' . translate($text2, $st, 'sys') . ': ' . $organization . '</a>';
 						?>
 					</td>
 				</tr>
@@ -2687,37 +2325,6 @@ if ($Biblesorg && $Internet) {
 	*************************************************************************************************************
 		disabled: Can it be viewed? (if (Bible.is || YouVersion || Bibles.org || "Text with audio") then here otherwise below)
 	*************************************************************************************************************
-*/
-/*
-if ($viewer && ($YouVersion || $Biblesorg || $SAB || $BibleIs) && $Internet) {
-	$ROD_Var='';
-	$rtl = 0;
-	$query="SELECT viewer_ROD_Variant, rtl FROM viewer WHERE ISO_ROD_index = '$ISO_ROD_index' AND Variant_Code = '$Variant_Code'";						// check if there is a viewer
-	$resultViewer=$db->query($query);
-	if ($resultViewer) {
-		//if (mysql_num_rows($resultViewer) > 0) {
-			//$numViewer=mysql_num_rows($resultViewer);
-			//if ($numViewer > 0) {
-				$r_Viewer = $resultViewer->fetch_array(MYSQLI_ASSOC);
-				$ROD_Var=trim($r_Viewer['viewer_ROD_Variant']);
-				$rtl=trim($r_Viewer['rtl']);
-			//}
-		//}
-	}
-	?>
-	<tr>
-		<td style='width: 45px; '>
-			<?php
-			echo "<a href='./viewer/views.php?iso=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code&ROD_Var=$ROD_Var&rtl=$rtl&st=$st' title='".translate('Viewer for the Language Name', $st, 'sys')."' target='_blank'><img class='iconActions' src='../images/study-icon.jpg' alt='".translate('Study', $st, 'sys')."' title='".translate('Study', $st, 'sys')."' />";
-			echo "</a>";
-		echo "</td>";
-		echo "<td>";
-			echo "<a href='./viewer/views.php?iso=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code&ROD_Var=$ROD_Var&rtl=$rtl&st=$st' title='".translate('Viewer for the Language Name', $st, 'sys')."' target='_blank'><span class='lineAction'>".translate('Go to', $st, 'sys')."</span> ".translate('the online viewer', $st, 'sys')."</a>";
-			?>
-		</td>
-	</tr>
-	<?php
-}
 */
 
 /*
@@ -2760,11 +2367,11 @@ if ($CellPhone) {
 				echo '<td>';
 					if ($Cell_Phone_Title == 'MySword (Android)')
 						if ($Internet)
-							echo "<div class='linePointer' title='" . translate('Download the cell phone module for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><span class='lineAction'>" . translate('Download', $st, 'sys') . "</span></a> " . translate('the cell phone module for', $st, 'sys') . " <a href='https://www.mysword.info/' target='_blank'><span class='lineAction'>$Cell_Phone_Title</span></a>";
+							echo "<div class='linePointer' title='" . translate('Download the cell phone module for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the cell phone module for', $st, 'sys') . " <a href='https://www.mysword.info/' target='_blank'><span class='lineAction'>$Cell_Phone_Title</span></a>";
 						else
-							echo "<div class='linePointer' title='" . translate('Download the cell phone module for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><span class='lineAction'>" . translate('Download', $st, 'sys') . "</span></a> " . translate('the cell phone module for', $st, 'sys') . " $Cell_Phone_Title";
+							echo "<div class='linePointer' title='" . translate('Download the cell phone module for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the cell phone module for', $st, 'sys') . " $Cell_Phone_Title";
 					else
-						echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><span class='lineAction'>" . translate('Download', $st, 'sys') . "</span> " . translate('the app for', $st, 'sys') . " $Cell_Phone_Title";
+						echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the app for', $st, 'sys') . " $Cell_Phone_Title";
 					echo ' ' . $optional . '</div>';
 					?>
 				</td>
@@ -2828,7 +2435,7 @@ if ($GRN && $Internet) {
 						echo "</a>";
 					echo "</td>";
 					echo "<td>";
-						echo "<a href='$URL' target='_blank'><span class='lineAction'>" . translate($text1, $st, 'sys') . '</span> ' . translate($text2, $st, 'sys') . ': ' . $organization . '</a>';
+						echo "<a href='$URL' target='_blank'>" . translate($text1, $st, 'sys') . ' ' . translate($text2, $st, 'sys') . ': ' . $organization . '</a>';
 						?>
 					</td>
 				</tr>
@@ -2867,16 +2474,16 @@ if ($watch && $Internet) {
                         // JESUS Film
                         if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
                             ?>
-                                <a href='#' onClick="window.open('JESUSFilmView.php?<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300'); return false;" title="<?php echo $LN ?>">
+                                <div class='linePointer' onClick="window.open('JESUSFilmView.php?<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300'); return false;" title="<?php echo $LN ?>">
                             	<img class='iconActions' src='../images/JESUS-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
-		                    	</a>
+						</div>
 							<?php
                         }
                         else {
                             ?>
-                                <a href='#' onclick="window.open('<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300'); return false;" title="<?php echo $LN ?>">
+                                <div class='linePointer' onclick="window.open('<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300'); return false;" title="<?php echo $LN ?>">
                             	<img class='iconActions' src='../images/JESUS-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
-		                    	</a>
+						</div>
 							<?php
                         }
                     }
@@ -2903,10 +2510,10 @@ if ($watch && $Internet) {
                     if ($JesusFilm) {
                         // JESUS Film
                         if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
-                             echo "<a href='#' onclick='window.open(\"JESUSFilmView.php?$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300\"); return false;' title='$LN'>";
+                             echo "<div class='linePointer' onclick='window.open(\"JESUSFilmView.php?$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300\"); return false;' title='$LN'>";
                         }
                         else {
-							echo "<a href='#' onclick='window.open(\"$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300\"); return false;' title='$LN'>";
+							echo "<div class='linePointer' onclick='window.open(\"$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300\"); return false;' title='$LN'>";
                         }
                     }
                     elseif ($YouTube) {
@@ -2917,25 +2524,18 @@ if ($watch && $Internet) {
                     else {
                         echo "<a href='$URL' title='translate(\"View\", $st, \"sys\")' target='_blank'>";
                     }
-                    ?>
-                    <span class='lineAction'>
-                    <?php
                     if ($JesusFilm) {
                         // JESUS Film
                         //echo $watch_what;
 						echo translate('View the JESUS Film', $st, 'sys');
-                        ?>
-                        </span>
-                        <?php
                     }
                     else if ($YouTube) {
                         // YouTube
-						
-                        echo translate('View', $st, 'sys').' (YouTube)'."</span>&nbsp;: $organization $watch_what";
+                        echo translate('View', $st, 'sys').' (YouTube)'."&nbsp;: $organization $watch_what";
                     }
                     else {
                         //echo translate('View', $st, 'sys')."</span> ".translate('by', $st, 'sys')." $organization:&nbsp;$watch_what";
-						echo translate('View', $st, 'sys')."</span> $organization:&nbsp;$watch_what";
+						echo translate('View', $st, 'sys')." $organization:&nbsp;$watch_what";
                     }
                     ?>
                     </a>
@@ -2968,7 +2568,7 @@ if ($DV_num > 0) {
 		echo "</a>";
 		echo "</td>";
 		echo "<td>";
-		echo "<a href='./data/".$ISO.'/video/'.$download_video."' title='".translate('Download the video.', $st, 'sys')."' download><span class='lineAction'>".translate('Download', $st, 'sys').'</span> '.$other. ' ' . $other_title . ' ' .translate('video', $st, 'sys').' (MP4)</a>';
+		echo "<a href='./data/".$ISO.'/video/'.$download_video."' title='".translate('Download the video.', $st, 'sys')."' download>".translate('Download', $st, 'sys').' '.$other. ' ' . $other_title . ' ' .translate('video', $st, 'sys').' (MP4)</a>';
 		?>
 		</td>
 		</tr>
@@ -3000,7 +2600,7 @@ if ($PlaylistAudio && $Internet) {
 			</td>
 			<td>
 				<?php
-				echo "<div class='linePointer' title='".translate('Listen', $st, 'sys')." $PlaylistAudioTitle' onclick='PlaylistAudio_$z($z, $num3)'><span class='lineAction'>".translate('Listen', $st, 'sys').":</span> $PlaylistAudioTitle</div>";
+				echo "<div class='linePointer' title='".translate('Listen', $st, 'sys')." $PlaylistAudioTitle' onclick='PlaylistAudio_$z($z, $num3)'>".translate('Listen', $st, 'sys').": $PlaylistAudioTitle</div>";
 				// Get and display Playlist
 				?>
 				<div id="PlaylistAudioListenNow_<?php echo $z; ?>" class='ourPlaylistAudioNow' style='margin-top: 0px; '>
@@ -3095,7 +2695,7 @@ if ($PlaylistAudio && $Internet) {
 				echo "</div>";
 			echo "</td>";
 			echo "<td>";
-				echo "<div style='cursor: pointer; display: inline; ' title='".translate('Download', $st, 'sys')." $PlaylistAudioTitle' onclick='PlaylistTableClick_$z()'><span class='lineAction'>".translate('Download', $st, 'sys').":</span> ". $PlaylistAudioTitle ."</div>";
+				echo "<div class='linePointer' title='".translate('Download', $st, 'sys')." $PlaylistAudioTitle' onclick='PlaylistTableClick_$z()'>".translate('Download', $st, 'sys').": ". $PlaylistAudioTitle ."</div>";
 				//$homepage = preg_replace('/{\s*title:\s*[\'"]([^\'"]+)[\'"],\s*mp3:\s*[\'"]([^\'"]+)[\'"]\s*},?\s*/', '$1^$2|', $homepage);
 				$homepage = '';
 				foreach ($ArrayPlaylistAudio as $APLA) {
@@ -3239,7 +2839,7 @@ if ($buy && $Internet) {
 				echo '</a>';
 			echo '</td>';
 			echo '<td>';
-				echo "<a href='$URL' title='".translate('Buy from organization.', $st, 'sys')."' target='_blank'><span class='lineAction'>".translate('Buy from', $st, 'sys')."</span> $organization: $buy_what</a>";
+				echo "<a href='$URL' title='".translate('Buy from organization.', $st, 'sys')."' target='_blank'>".translate('Buy from', $st, 'sys')." $organization: $buy_what</a>";
 				?>
 			</td>
 		</tr>
@@ -3260,7 +2860,7 @@ if ($buy && $Internet) {
 				echo '</a>';
 			echo '</td>';
 			echo '<td>';
-				echo "<a href='$URL' title='".translate('Buy from organization.', $st, 'sys')."' target='_blank'><span class='lineAction'>".translate('Buy from', $st, 'sys')."</span> ".translate('to', $st, 'sys')." ";
+				echo "<a href='$URL' title='".translate('Buy from organization.', $st, 'sys')."' target='_blank'>".translate('Buy from', $st, 'sys')." ".translate('to', $st, 'sys')." ";
 				if ($company_title != '' && $company_title != NULL) {
 					echo "$company_title: ";
 				}
@@ -3311,8 +2911,7 @@ if ($study) {
                     echo "</td>";
                     echo "<td>";
                         echo "<div class='linePointer' title='$LN: ".translate('Download the module.', $st, 'sys')."' onclick='Study(\"$st\", \"$ISO\", \"ROD_Code\", \"$ScriptureURL\")'>";
-                        echo "<span class='lineAction'>";
-                        echo translate('Download', $st, 'sys')."</span> ";
+                        echo translate('Download', $st, 'sys')." ";
                         switch ($Testament) {
                             case "New Testament":				// NT
                                 echo translate('the New Testament', $st, 'sys');
@@ -3389,14 +2988,14 @@ if ($other_titles) {
 							echo "</a>";
 							echo "</td>";
 							echo "<td>";
-							echo "<a href='./data/$ISO/PDF/$other_PDF' title='".translate('Read this title.', $st, 'sys')."' target='_blank'><span class='lineAction'>".translate('Read', $st, 'sys')."</span>";
+							echo "<a href='./data/$ISO/PDF/$other_PDF' title='".translate('Read this title.', $st, 'sys')."' target='_blank'>".translate('Read', $st, 'sys');
 						}
 						else {
 							echo "<a href='./data/$ISO/audio/$other_audio' title='".translate('Listen this title.', $st, 'sys')."' target='_blank'><img class='iconActions' src='../images/listen-icon.jpg' alt='".translate('Books', $st, 'sys')."' title='".translate('Books', $st, 'sys')."' />";
 							echo "</a>";
 							echo "</td>";
 							echo "<td>";
-							echo "<a href='./data/$ISO/audio/$other_audio' title='".translate('Listen this title.', $st, 'sys')."' target='_blank'><span class='lineAction'>".translate('Listen', $st, 'sys')."</span>";
+							echo "<a href='./data/$ISO/audio/$other_audio' title='".translate('Listen this title.', $st, 'sys')."' target='_blank'>".translate('Listen', $st, 'sys');
 						}
 						echo "&nbsp;$other:&nbsp;$other_title</a>";
 						?>
@@ -3448,7 +3047,7 @@ if ($links && $Internet) {
 						echo "</a>";
 					echo "</td>";
 					echo "<td>";
-						echo "<a href='$URL' title='".translate('Link to the organization.', $st, 'sys')."' target='_blank'><span class='lineAction'>".translate('Link', $st, 'sys')."</span> : ";
+						echo "<a href='$URL' title='".translate('Link to the organization.', $st, 'sys')."' target='_blank'>".translate('Link', $st, 'sys')." : ";
 						if ($company_title != "" && $company_title != NULL) {
 							echo "$company_title: ";
 						}
@@ -3510,7 +3109,7 @@ if ($eBible && $Internet) {
 						echo "</div>";
 					echo "</td>";
 					echo "<td>";
-						echo "<div class='linePointer' title='".translate('Scripture Resources from eBible.org', $st, 'sys')."' onclick='eBibleClick()'><span class='lineAction'>".translate('Scripture Resources from eBible.org', $st, 'sys').'</span></div><br />';
+						echo "<div class='linePointer' title='".translate('Scripture Resources from eBible.org', $st, 'sys')."' onclick='eBibleClick()'>".translate('Scripture Resources from eBible.org', $st, 'sys').'</div><br />';
 						echo '<div id="eBibleClick">';
 						echo '<br />';
 						// start of eBible AJAX
@@ -3543,7 +3142,7 @@ if ($SILlink && $Internet) {
 			echo "</a>";
 		echo "</td>";
 		echo "<td>";
-			echo "<a href='$URL' title='".translate('Check SIL.org', $st, 'sys')."' target='_blank'><span class='lineAction'>".translate('Check SIL.org', $st, 'sys')."</span> ".translate('for language and culture resources in this language.', $st, 'sys')." ";
+			echo "<a href='$URL' title='".translate('Check SIL.org', $st, 'sys')."' target='_blank'>".translate('Check SIL.org', $st, 'sys')." ".translate('for language and culture resources in this language.', $st, 'sys')." ";
 			//if ($company_title != "" && $company_title != NULL) {
 			 //   echo "$company_title: ";
 			//}
@@ -3574,7 +3173,7 @@ if ($links && $Internet) {
 					echo '</a>';
 				echo "</td>";
 				echo "<td>";
-					echo "<a href='$URL' title='".translate('Link to the organization.', $st, 'sys')."' target='_blank'><span class='lineAction'>".translate('Link', $st, 'sys')."</span> : ";
+					echo "<a href='$URL' title='".translate('Link to the organization.', $st, 'sys')."' target='_blank'>".translate('Link', $st, 'sys')." : ";
 					if ($company_title != "" && $company_title != NULL) {
 						if ($company_title == 'language map') {
 							echo translate('language map', $st, 'sys').': ';
