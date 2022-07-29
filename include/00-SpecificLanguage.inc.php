@@ -678,7 +678,7 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 							echo "<img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')."' title='".translate('Read', $st, 'sys')."' />";
 						echo "</td>";
 						echo "<td>";
-							echo "<form name='PDF_OT' id='PDF_OT'>";
+							echo "<form name='PDF_OT' id='PDF_OT' accept-charset='utf-8'>";
 							echo translate('Read', $st, 'sys')." ".translate('a book from the Old Testament:', $st, 'sys');
 							if (isset($mobile) && $mobile == 1) {
 								echo "<br />";
@@ -701,7 +701,7 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 										$OT_PDF = $r_array['OT_PDF'];
 									}
 									$OT_PDF_Filename = trim($r_array['OT_PDF_Filename']);
-									$a = str_replace(" ", "&nbsp;", $a);
+									//$a = str_replace(" ", "&nbsp;", $a);
 									if (!empty($OT_PDF_Filename)) {
 										echo "<option id='OT_PDF_Media_$a' value='./data/$ISO/PDF/$OT_PDF_Filename'>$a</option>";
 									}
