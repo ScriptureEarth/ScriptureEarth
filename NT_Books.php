@@ -272,33 +272,33 @@ utf8_encode("Offenbarung des Johannes")
 
 // Chinese
 $Chinese_NT_array = array(
-utf8_encode("马太福音"),
-utf8_encode("马可福音"),
-utf8_encode("路加福音"),
-utf8_encode("约翰福音"),
-utf8_encode("使徒行传"),
-utf8_encode("罗马书"),
-utf8_encode("哥林多前书"),
-utf8_encode("哥林多后书"),
-utf8_encode("加拉太书"),
-utf8_encode("以弗所书"),
-utf8_encode("腓立比书"),
-utf8_encode("歌罗西书"),
-utf8_encode("帖撒罗尼迦前书"),
-utf8_encode("帖撒罗尼迦后书"),
-utf8_encode("提摩太前书"),
-utf8_encode("提摩太后书"),
-utf8_encode("提多书"),
-utf8_encode("腓利门书"),
-utf8_encode("希伯来书"),
-utf8_encode("雅各书"),
-utf8_encode("彼得前书"),
-utf8_encode("彼得后书"),
-utf8_encode("约翰1书"),
-utf8_encode("约翰2书"),
-utf8_encode("约翰3书"),
-utf8_encode("犹大书"),
-utf8_encode("启示录")
+"马太福音",
+"马可福音",
+"路加福音",
+"约翰福音",
+"使徒行传",
+"罗马书",
+"哥林多前书",
+"哥林多后书",
+"加拉太书",
+"以弗所书",
+"腓立比书",
+"歌罗西书",
+"帖撒罗尼迦前书",
+"帖撒罗尼迦后书",
+"提摩太前书",
+"提摩太后书",
+"提多书",
+"腓利门书",
+"希伯来书",
+"雅各书",
+"彼得前书",
+"彼得后书",
+"约翰1书",
+"约翰2书",
+"约翰3书",
+"犹大书",
+"启示录"
 );
 
 $NT_array = array(
@@ -313,6 +313,7 @@ $NT_array = array(
 	8 => $Deu_NT_array,
 	9 => $Chinese_NT_array
 );
+
 
 //print_r($NT_array[0]);
 

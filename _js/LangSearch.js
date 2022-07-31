@@ -203,17 +203,22 @@ function showCountry(str, st, Internet, asset) { // get the names of the country
         $("#mainContent").hide();
         $("#whiteOpaque").hide();
     }
-    // saltillo: ꞌ; U+A78C
-    var re = /[-. ,'ꞌ()A-Za-záéíóúÑñçãõâêîôûäëöüï&]/;
-    var foundArray = re.exec(str.substring(str.length - 1)); // the last character of the str
-    if (!foundArray) { // is the value of the last character of the str isn't A-Za - z then it returns
-        document.getElementById("CID").value = document.getElementById("CID").value.substring(0, document.getElementById("CID").value.length - 1);
-        alert(str.substring(str.length - 1) + " is an invalid character. Use an alphabetic character.");
-        str = str.substring(0, str.length - 1);
-        if (str.length == 0) {
-            document.getElementById("CID").innerHTML = "";
+    var nonLatinScript = 0;
+    if (/\p{Script=Han}/u.test(str.substring(str.length - 1)) || /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/.test(str.substring(str.length - 1))) { // https://stackoverflow.com/questions/21109011/javascript-unicode-string-chinese-character-but-no-punctuation
+        nonLatinScript = 1;
+    } else {
+        // saltillo: ꞌ; U+A78C
+        var re = /[-. ,'ꞌ()A-Za-záéíóúÑñçãõâêîôûäëöüï&]/;
+        var foundArray = re.exec(str.substring(str.length - 1)); // the last character of the str
+        if (!foundArray) { // is the value of the last character of the str isn't A-Za - z then it returns
+            document.getElementById("CID").value = document.getElementById("CID").value.substring(0, document.getElementById("CID").value.length - 1);
+            alert(str.substring(str.length - 1) + " is an invalid character. Use an alphabetic character.");
+            str = str.substring(0, str.length - 1);
+            if (str.length == 0) {
+                document.getElementById("CID").innerHTML = "";
+            }
+            return;
         }
-        return;
     }
 
     // iOS Asset Package
@@ -222,7 +227,7 @@ function showCountry(str, st, Internet, asset) { // get the names of the country
         return;
     }
 
-    Scriptname = window.location.href;
+    Scriptname = window.location.href; // e.g. https://www.scriptureearth.org/00i-Scripture_Index.php, http://localhost:90/00cmn.php, etc.
 
     /*lnxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
     if (lnxmlhttp == null) {
@@ -247,7 +252,11 @@ function showCountry(str, st, Internet, asset) { // get the names of the country
     ****************************************************************************************************************/
     var url = "CSearch.php";
     url = url + "?country=" + str;
-    url = url + "&st=" + st;
+    if (st == 'cmn' && nonLatinScript == 0) { // test to see if st = Chinese and if it's Latin
+        url = url + "&st=eng";
+    } else {
+        url = url + "&st=" + st;
+    }
     url = url + "&sid=" + Math.random();
     Countryxmlhttp.open("GET", url, true); // open the AJAX object
     Countryxmlhttp.send(null);

@@ -52,8 +52,8 @@ session_start();
 	$FacebookCountry = 'zh-Hans';
 	$MajorCountryAbbr = 'zh';
 	
-	define ('OT_ChineseBook', 9);						// Chinese Bible book names
-	define ('NT_ChineseBook', 9);
+	define ('OT_EngBook', 9);						// Chinese Bible book names
+	define ('NT_EngBook', 9);
 	
 	include ('./00-MainScript.inc.php');				// THE MAIN SCRIPT!!!!!
 	?>
