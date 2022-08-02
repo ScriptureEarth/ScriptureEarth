@@ -51,6 +51,43 @@ div.linePointer {
 div.linePointer:hover{
     border-bottom:2px solid red;
 }
+
+
+ /* Style the tab */
+ .tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+} 
 </style>
 
 <?php
@@ -227,8 +264,22 @@ while ($r_ISO_countries = $result_ISO_countries->fetch_array(MYSQLI_ASSOC)) {
 </h2>
 &nbsp;<br />
 
-<table id='individualLanguage'>
+<table class='individualLanguage'>
 <?php
+$read_array = [];
+$listen_array = [];
+$view_array = [];
+$app_array = [];
+$other_array = [];
+$all_array = [];
+
+$string_temp = "<table class='individualLanguage'>";
+array_push($read_array, $string_temp);
+array_push($listen_array, $string_temp);
+array_push($view_array, $string_temp);
+array_push($app_array, $string_temp);
+array_push($other_array, $string_temp);
+array_push($all_array, $string_temp);
 /*
 	*************************************************************************************************************
 		interested?
@@ -244,10 +295,13 @@ if ($result2) {
 			$GotoInterest = $result2->num_rows;
 			if ($GotoInterest > 0) {
 				$i_GI=0;
-				?>
-				<tr>
-					<td colspan="2">
-						<?php
+						$string_temp = '<tr> <td colspan="2">';
+						array_push($read_array, $string_temp);
+						array_push($listen_array, $string_temp);
+						array_push($view_array, $string_temp);
+						array_push($app_array, $string_temp);
+						array_push($other_array, $string_temp);
+						array_push($all_array, $string_temp);
 						echo translate('Speakers of this language may be able to use media in', $st, 'sys');
 						while ($row_Goto = $result2->fetch_array(MYSQLI_ASSOC)) {
 							$Goto_ISO_ROD_index=trim($row_Goto['Goto_ISO_ROD_index']);
@@ -285,15 +339,24 @@ if ($result2) {
 							}
 
 							if ($i_GI > 0) 
-								echo ", " . translate('or', $st, 'sys');
-							echo " <a href='https://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $_SERVER['PHP_SELF'] . "?sortby=lang&name=".$Goto_ISO."&ROD_Code=".$Goto_ROD_Code."&Variant_Code=".$Goto_Variant_Code."' style='text-decoration: underline; color: red; '>" . $LN . "</a> (" . $Percentage . ")";
+								$string_temp .= ", " . translate('or', $st, 'sys');
+							$string_temp = " <a href='https://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $_SERVER['PHP_SELF'] . "?sortby=lang&name=".$Goto_ISO."&ROD_Code=".$Goto_ROD_Code."&Variant_Code=".$Goto_Variant_Code."' style='text-decoration: underline; color: red; '>" . $LN . "</a> (" . $Percentage . ")";
 							$i_GI++;
 						}
-						echo ".";
-						?>
-					</td>
-				</tr>
-				<?php
+						$string_temp .= ".";
+						array_push($read_array, $string_temp);
+						array_push($listen_array, $string_temp);
+						array_push($view_array, $string_temp);
+						array_push($app_array, $string_temp);
+						array_push($other_array, $string_temp);
+						array_push($all_array, $string_temp);
+				$string_temp = '</td> </tr>';
+				array_push($read_array, $string_temp);
+				array_push($listen_array, $string_temp);
+				array_push($view_array, $string_temp);
+				array_push($app_array, $string_temp);
+				array_push($other_array, $string_temp);
+				array_push($all_array, $string_temp);
 			}
 		}
 	}
@@ -335,19 +398,23 @@ if ($SAB) {
 			$description=trim($row_sub['description']);
 			$preScriptoria=trim($row_sub['pre_scriptoria']);
 			if ($SABurl != '') {
-				echo '<tr>';
-					echo '<td>';
-						echo "<div class='linePointer' onclick='SAB_Scriptoria_Other(\"$SABurl\")'><img class='iconActions'";
-						echo "src='../images/SAB-readListen-icon.png' alt='".translate('Read/Listen/View', $st, 'sys')."' title='".translate('Read/Listen/View', $st, 'sys')."' /></div>";
-					echo '</td>';
-					echo '<td>';
-						echo "<div class='linePointer' title='".translate('Read/Listen/View', $st, 'sys')."' onclick='SAB_Scriptoria_Other(\"$SABurl\")'>" . translate('Read/Listen/View', $st, 'sys');
+				$string_temp = '<tr>';
+					$string_temp .= '<td>';
+						$string_temp .= "<div class='linePointer' onclick='SAB_Scriptoria_Other(\"$SABurl\")'><img class='iconActions'";
+						$string_temp .= "src='../images/SAB-readListen-icon.png' alt='".translate('Read/Listen/View', $st, 'sys')."' title='".translate('Read/Listen/View', $st, 'sys')."' /></div>";
+					$string_temp .= '</td>';
+					$string_temp .= '<td>';
+						$string_temp .= "<div class='linePointer' title='".translate('Read/Listen/View', $st, 'sys')."' onclick='SAB_Scriptoria_Other(\"$SABurl\")'>" . translate('Read/Listen/View', $st, 'sys');
 						if ($description != '') {
-							echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
+							$string_temp .= '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
 						}
-						echo '</div>';
-					echo '</td>';
-				echo '</tr>';
+						$string_temp .= '</div>';
+					$string_temp .= '</td>';
+				$string_temp .= '</tr>';
+				array_push($read_array, $string_temp);
+				array_push($listen_array, $string_temp);
+				array_push($view_array, $string_temp);
+				array_push($all_array, $string_temp);
 			}
 			elseif ($preScriptoria != '') {																			// field set with preScriptoria
 				$SAB_Path = './data/'.$ISO.'/sab/';
@@ -385,47 +452,42 @@ if ($SAB) {
 					$OT_SAB_Book = [];
 					$OT_SAB_Book_Chapter = [];
 					$OT_SAB_a_index = 0;
-					?>
-					<tr>
-						<td>
-							<?php
-							echo "<div class='linePointer' id='OT_SABRL_a'><img class='iconActions'";
+							$string_temp = '<tr>';
+							$string_temp .= '<td>';
+							$string_temp .= "<div class='linePointer' id='OT_SABRL_a'><img class='iconActions'";
 							if ($SAB & 2) {
-								echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text with audio', $st, 'sys')."' title='".translate('Text with audio', $st, 'sys')."'";
+								$string_temp .= "src='../images/SAB-readListen-icon.png' alt='".translate('Text with audio', $st, 'sys')."' title='".translate('Text with audio', $st, 'sys')."'";
 								$SynchronizedTextAndAudio = 1;
 							}
 							else if ($SAB & 8) {
-								echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text (with audio where available)', $st, 'sys')."' title='".translate('Text (with audio where available)', $st, 'sys')."'";
+								$string_temp .= "src='../images/SAB-readListen-icon.png' alt='".translate('Text (with audio where available)', $st, 'sys')."' title='".translate('Text (with audio where available)', $st, 'sys')."'";
 							}
 							else {				// $SAB & 32
-								echo "src='../images/SAB-text-icon.jpg' alt='".translate('View text', $st, 'sys')."' title='".translate('View text', $st, 'sys')."'";
+								$string_temp .= "src='../images/SAB-text-icon.jpg' alt='".translate('View text', $st, 'sys')."' title='".translate('View text', $st, 'sys')."'";
 							}
-							echo "/></div>";
-						echo "</td>";
-						echo "<td>";
-							?>
-							<div class='SABReadListen'>
-								<?php
-								echo "<div class='linePointer' id='OT_SABRL_b'>";
+							$string_temp .= "/></div>";
+						$string_temp .= "</td>";
+						$string_temp .= "<td>";
+								$string_temp .= "<div class='SABReadListen'>";
+								$string_temp .= "<div class='linePointer' id='OT_SABRL_b'>";
 								if ($SAB & 2) {
-									translate('Text with audio', $st, 'sys') . "</div>:";
+									$string_temp .= translate('Text with audio', $st, 'sys') . "</div>:";
 								}
 								else if ($SAB & 8) {
-									translate('Text (with audio where available)', $st, 'sys') . "</div>:";
+									$string_temp .= translate('Text (with audio where available)', $st, 'sys') . "</div>:";
 								}
 								else {		// $SAB & 32
-									translate('View text', $st, 'sys') . "</div>:";
+									$string_temp .= translate('View text', $st, 'sys') . "</div>:";
 								}
-								echo "<div class='linePointer' id='OTSABSelects' style='display: inline; '>";
+								$string_temp .= "<div class='linePointer' id='OTSABSelects' style='display: inline; '>";
 								if ($description != '') {
-									echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
+									$string_temp .= '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
 								}
-								echo "</div>";
-								?>
-							</div>
-						</td>
-					 </tr>
-					<?php
+								$string_temp .= "</div>";
+					$string_temp .= "</div> </td> </tr>";
+					array_push($read_array, $string_temp);
+					array_push($listen_array, $string_temp);
+					array_push($all_array, $string_temp);
 				}
 				/*
 					 NT Scripture App Builder (SAB) HTML
@@ -437,64 +499,63 @@ if ($SAB) {
 					$NT_SAB_Book = [];
 					$NT_SAB_Book_Chapter = [];
 					$NT_SAB_a_index = 0;
-					?>
-					<tr>
-						<td>
-							<?php
-							echo "<div class='linePointer' id='NT_SABRL_a'><img class='iconActions'";
+							$string_temp = '<tr>';
+							$string_temp .= '<td>';
+							$string_temp .= "<div class='linePointer' id='NT_SABRL_a'><img class='iconActions'";
 							if ($SAB & 1) {
-								echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text with audio', $st, 'sys')."' title='".translate('Text with audio', $st, 'sys')."'";
+								$string_temp .= "src='../images/SAB-readListen-icon.png' alt='".translate('Text with audio', $st, 'sys')."' title='".translate('Text with audio', $st, 'sys')."'";
 								$SynchronizedTextAndAudio = 1;
 							}
 							else if ($SAB & 4) {
-								echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text (with audio where available)', $st, 'sys')."' title='".translate('Text (with audio where available)', $st, 'sys')."'";
+								$string_temp .= "src='../images/SAB-readListen-icon.png' alt='".translate('Text (with audio where available)', $st, 'sys')."' title='".translate('Text (with audio where available)', $st, 'sys')."'";
 							}
 							else {		// $SAB & 16
-								echo "src='../images/SAB-text-icon.jpg' alt='".translate('View text', $st, 'sys')."' title='".translate('View text', $st, 'sys')."'";
+								$string_temp .= "src='../images/SAB-text-icon.jpg' alt='".translate('View text', $st, 'sys')."' title='".translate('View text', $st, 'sys')."'";
 							}
-							echo "/></div>";
-						echo "</td>";
-						echo "<td>";
-							?>
-							<div class='SABReadListen'>
-								<?php
-								echo "<div class='linePointer' class='linePointer' id='NT_SABRL_b'>";
+							$string_temp .= "/></div>";
+						$string_temp .= "</td>";
+						$string_temp .= "<td>";
+								$string_temp .= "<div class='SABReadListen'>";
+								$string_temp .= "<div class='linePointer' class='linePointer' id='NT_SABRL_b'>";
 								if ($SAB & 1) {
-									translate('Text with audio', $st, 'sys') . "</div>";
+									$string_temp .= translate('Text with audio', $st, 'sys') . "</div>";
 								}
 								else if ($SAB & 4) {
-									translate('Text (with audio where available)', $st, 'sys') . "</div>";
+									$string_temp .= translate('Text (with audio where available)', $st, 'sys') . "</div>";
 								}
 								else {		// $SAB & 16
-									translate('View text', $st, 'sys') . "</div>";
+									$string_temp .= translate('View text', $st, 'sys') . "</div>";
 								}
-								echo "<div class='linePointer' id='NTSABSelects' style='display: inline; '>";
+								$string_temp .= "<div class='linePointer' id='NTSABSelects' style='display: inline; '>";
 									if ($description != '') {
-                                    	echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
+                                    	$string_temp .= '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
 									}
-								echo "</div>";
-                                ?>
-							</div>
-						</td>
-					</tr>
-					<?php
+									$string_temp .= "</div>";
+					$string_temp .= "</div> </td> </tr>";
+					array_push($read_array, $string_temp);
+					array_push($listen_array, $string_temp);
+					array_push($all_array, $string_temp);
 				}
 			}
 			else {
 				$SABindex++;
-				echo '<tr>';
-					echo '<td>';
-						echo "<div class='linePointer' onclick='SAB_Scriptoria_Index(\"$subfolder\")'><img class='iconActions'";
-						echo "src='../images/SAB-readListen-icon.png' alt='".translate('Read/Listen/View', $st, 'sys')."' title='".translate('Read/Listen/View', $st, 'sys')."'/></div>";
-					echo '</td>';
-					echo '<td>';
-						echo "<div class='linePointer' onclick='SAB_Scriptoria_Index(\"$subfolder\")'>" . translate('Read/Listen/View', $st, 'sys') . " ";
+				$string_temp = '<tr>';
+					$string_temp .= '<td>';
+						$string_temp .= "<div class='linePointer' onclick='SAB_Scriptoria_Index(\"$subfolder\")'><img class='iconActions'";
+						$string_temp .= "src='../images/SAB-readListen-icon.png' alt='".translate('Read/Listen/View', $st, 'sys')."' title='".translate('Read/Listen/View', $st, 'sys')."'/></div>";
+					$string_temp .= '</td>';
+					$string_temp .= '<td>';
+						$string_temp .= "<div class='linePointer' onclick='SAB_Scriptoria_Index(\"$subfolder\")'>" . translate('Read/Listen/View', $st, 'sys') . " ";
 						if ($description != '') {
-							echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
+							$string_temp .= '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
 						}
-						echo '</div>';
-					echo '</td>';
-				echo '</tr>';
+						$string_temp .= '</div>';
+					$string_temp .= '</td>';
+				$string_temp .= '</tr>';
+				array_push($read_array, $string_temp);
+				array_push($listen_array, $string_temp);
+				array_push($view_array, $string_temp);
+				array_push($all_array, $string_temp);
 			}
 		}
 	}
@@ -539,14 +600,12 @@ if ($Internet && $BibleIs && !$SAB) {
 				default:
 					break;
 			}
-			?>
-			<tr>
-				<td>
-					<?php
-					echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'><img class='iconActions' src='../images/".$BibleIsIcon."' alt='".$BibleIsActText."' title='".$BibleIsActText."' /></div>";
-				echo "</td>";
-				echo "<td>";
-					echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'>" . $BibleIsActText . " ";
+					$string_temp = '<tr>';
+					$string_temp .= '<td>';
+					$string_temp .= "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'><img class='iconActions' src='../images/".$BibleIsIcon."' alt='".$BibleIsActText."' title='".$BibleIsActText."' /></div>";
+				$string_temp .= "</td>";
+				$string_temp .= "<td>";
+					$string_temp .= "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'>" . $BibleIsActText . " ";
 					//if (stripos($URL, '/Gen/') !== false)
 					/*if ($BibleIsLink == 1)
 						echo translate('to the New Testament', $st, 'sys');
@@ -554,15 +613,34 @@ if ($Internet && $BibleIs && !$SAB) {
 						echo translate('to the Old Testament', $st, 'sys');
 					else	// $BibleIs == 3
 						echo translate('to the Bible', $st, 'sys');*/
-					echo translate('on Bible.is', $st, 'sys');
+					$string_temp .= translate('on Bible.is', $st, 'sys');
 					if ($BibleIsVersion!='') {
-						echo ' ' . $BibleIsVersion;
+						$string_temp .= ' ' . $BibleIsVersion;
 					}
-					echo "</div>";
-					?>
-				</td>
-			</tr>
-			<?php
+					$string_temp .= "</div>";
+			$string_temp .= '</td>';
+			$string_temp .= '</tr>';
+			switch ($BibleIsLink) {
+				case 1:
+					array_push($read_array, $string_temp);
+					array_push($listen_array, $string_temp);
+					break;
+				case 2:
+					array_push($read_array, $string_temp);
+					break;			
+				case 3:
+					array_push($read_array, $string_temp);
+					array_push($listen_array, $string_temp);
+					break;			
+				case 4:
+					array_push($read_array, $string_temp);
+					array_push($listen_array, $string_temp);
+					array_push($view_array, $string_temp);
+					break;			
+				default:
+					break;
+			}
+			array_push($all_array, $string_temp);
 		}
 	}
 }
@@ -582,18 +660,16 @@ if ($viewer && !($YouVersion && $Biblesorg && $SAB && $BibleIs) && $Internet) {
 		$ROD_Var=trim($r_Viewer['viewer_ROD_Variant']);
 		$rtl=trim($r_Viewer['rtl']);
 	}
-	?>
-	<tr>
-		<td style='width: 45px; '>
-			<?php
-			echo "<div class='linePointer' onclick=\"window.open('./viewer/views.php?iso=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code&ROD_Var=$ROD_Var&rtl=$rtl&st=$st')\"><img class='iconActions' src='../images/study-icon.jpg' alt='".translate('Study', $st, 'sys')."' title='".translate('Study', $st, 'sys')."' /></div>";
-		echo "</td>";
-		echo "<td>";
-			echo "<div class='linePointer' onclick=\"window.open('./viewer/views.php?iso=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code&ROD_Var=$ROD_Var&rtl=$rtl&st=$st')\" title='".translate('Viewer for the Language Name', $st, 'sys')."'>".translate('Go to', $st, 'sys')." ".translate('the online viewer', $st, 'sys')."</div>";
-			?>
-		</td>
-	</tr>
-	<?php
+			$string_temp = '<tr>';
+			$string_temp .= "<td style='width: 45px;'>";
+			$string_temp .= "<div class='linePointer' onclick=\"window.open('./viewer/views.php?iso=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code&ROD_Var=$ROD_Var&rtl=$rtl&st=$st')\"><img class='iconActions' src='../images/study-icon.jpg' alt='".translate('Study', $st, 'sys')."' title='".translate('Study', $st, 'sys')."' /></div>";
+		$string_temp .= "</td>";
+		$string_temp .= "<td>";
+			$string_temp .= "<div class='linePointer' onclick=\"window.open('./viewer/views.php?iso=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code&ROD_Var=$ROD_Var&rtl=$rtl&st=$st')\" title='".translate('Viewer for the Language Name', $st, 'sys')."'>".translate('Go to', $st, 'sys')." ".translate('the online viewer', $st, 'sys')."</div>";
+	$string_temp .= '</td>';
+	$string_temp .= '</tr>';
+	array_push($view_array, $string_temp);
+	array_push($all_array, $string_temp);
 }
 
 /*
@@ -611,29 +687,27 @@ else
 if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 	if ($SB_PDF > 0) {
 		while ($r_SB = $result_SB->fetch_array(MYSQLI_ASSOC)) {
-			?>
-			<tr>
-				<td>
-					<?php
+					$string_temp = '<tr>';
+					$string_temp .= '<td>';
 					$Item = $r_SB['Item'];
 					if ($Item == 'B') {
 						$whole_Bible=trim($r_SB['Scripture_Bible_Filename']);
-						echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$whole_Bible')\"><img class='iconActions' src='images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' /></div>";
-						echo "</td>";
-						echo "<td>";
-						echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$whole_Bible')\" title='".translate('Read the Bible.', $st, 'sys')."'>".translate('Read', $st, 'sys')." ".translate('the Bible', $st, 'sys')." (PDF)</div>";
+						$string_temp .= "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$whole_Bible')\"><img class='iconActions' src='images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' /></div>";
+						$string_temp .= "</td>";
+						$string_temp .= "<td>";
+						$string_temp .= "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$whole_Bible')\" title='".translate('Read the Bible.', $st, 'sys')."'>".translate('Read', $st, 'sys')." ".translate('the Bible', $st, 'sys')." (PDF)</div>";
 					}
 					else {
 						$complete_Scripture=trim($r_SB['Scripture_Bible_Filename']);
-						echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$complete_Scripture')\"><img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' /></div>";
-						echo "</td>";
-						echo "<td>";
-						echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$complete_Scripture')\" title='".translate('Read a Scripture portion.', $st, 'sys')."' target='_blank'>".translate('Read', $st, 'sys')." ".translate('a Scripture portion', $st, 'sys')." (PDF)</div>";
+						$string_temp .= "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$complete_Scripture')\"><img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' /></div>";
+						$string_temp .= "</td>";
+						$string_temp .= "<td>";
+						$string_temp .= "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$complete_Scripture')\" title='".translate('Read a Scripture portion.', $st, 'sys')."' target='_blank'>".translate('Read', $st, 'sys')." ".translate('a Scripture portion', $st, 'sys')." (PDF)</div>";
 					}
-					?>
-				</td>
-			</tr>
-			<?php
+			$string_temp .= '</td>';
+			$string_temp .= '</tr>';
+			array_push($read_array, $string_temp);
+			array_push($all_array, $string_temp);
 		}
 	}
 	if ($OT_PDF) {
@@ -643,18 +717,16 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 		if ($result1 && $num > 0) {
 			if ($r1 = $result1->fetch_array(MYSQLI_ASSOC)) {
 				$OT_PDF_Filename = trim($r1['OT_PDF_Filename']);												// there is a OT
-				?>
-				<tr>
-					<td>
-						<?php
-						echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$OT_PDF_Filename')\"><img  class='iconActions'src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' /></div>";
-					echo "</td>";
-					echo "<td>";
-						echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$OT_PDF_Filename')\" title='".translate('Read the Old Testament.', $st, 'sys')."' target='_blank'>".translate('Read', $st, 'sys')." ".translate('the Old Testament', $st, 'sys')." (PDF)</div>";
-						?>
-					</td>
-				</tr>
-				<?php
+						$string_temp = '<tr>';
+						$string_temp .= '<td>';
+						$string_temp .= "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$OT_PDF_Filename')\"><img  class='iconActions'src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' /></div>";
+					$string_temp .= "</td>";
+					$string_temp .= "<td>";
+						$string_temp .= "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$OT_PDF_Filename')\" title='".translate('Read the Old Testament.', $st, 'sys')."' target='_blank'>".translate('Read', $st, 'sys')." ".translate('the Old Testament', $st, 'sys')." (PDF)</div>";
+				$string_temp .= '</td>';
+				$string_temp .= '</tr>';
+				array_push($read_array, $string_temp);
+				array_push($all_array, $string_temp);
 			}
 		}
 		if ($num <= 0) {
@@ -664,23 +736,21 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 			if ($result1 && $num > 0) {
 				if ($r1 = $result1->fetch_array(MYSQLI_ASSOC)) {
 					$a_index = 0;
-					?>
-					<tr>
-						<td>
-							<?php
-							echo "<img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')."' title='".translate('Read', $st, 'sys')."' />";
-						echo "</td>";
-						echo "<td>";
-							echo "<form name='PDF_OT' id='PDF_OT'>";
-							echo translate('Read', $st, 'sys')." ".translate('a book from the Old Testament:', $st, 'sys');
+							$string_temp = '<tr>';
+							$string_temp .= '<td>';
+							$string_temp .= "<img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')."' title='".translate('Read', $st, 'sys')."' />";
+						$string_temp .= "</td>";
+						$string_temp .= "<td>";
+							$string_temp .= "<form name='PDF_OT' id='PDF_OT'>";
+							$string_temp .= translate('Read', $st, 'sys')." ".translate('a book from the Old Testament:', $st, 'sys');
 							if (isset($mobile) && $mobile == 1) {
-								echo "<br />";
+								$string_temp .= "<br />";
 							}
 							else {
-								echo " ";
+								$string_temp .= " ";
 							}
-							echo "<select class='selectOption' name='OT_PDF' onchange='if (this.options[this.selectedIndex].text != \"".translate('Choose One...', $st, 'sys')."\") { window.open(this.options[this.selectedIndex].value, \"_blank\"); }'>";
-							echo "<option>".translate('Choose One...', $st, 'sys')."</option>";
+							$string_temp .= "<select class='selectOption' name='OT_PDF' onchange='if (this.options[this.selectedIndex].text != \"".translate('Choose One...', $st, 'sys')."\") { window.open(this.options[this.selectedIndex].value, \"_blank\"); }'>";
+							$string_temp .= "<option>".translate('Choose One...', $st, 'sys')."</option>";
 							$query_array="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF = ?";
 							$stmt = $db->prepare($query_array);													// create a prepared statement
 							foreach ($OT_array[OT_EngBook] as $a) {												// there is/are book(s)
@@ -696,7 +766,7 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 									$OT_PDF_Filename = trim($r_array['OT_PDF_Filename']);
 									//$a = str_replace(" ", "&nbsp;", $a);
 									if (!empty($OT_PDF_Filename)) {
-										echo "<option id='OT_PDF_Media_$a' value='./data/$ISO/PDF/$OT_PDF_Filename'>$a</option>";
+										$string_temp .= "<option id='OT_PDF_Media_$a' value='./data/$ISO/PDF/$OT_PDF_Filename'>$a</option>";
 									}
 								}
 								$a_index++;
@@ -707,7 +777,7 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 							if ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {
 								$OT_PDF_Filename = trim($r_array['OT_PDF_Filename']);
 								if (!empty($OT_PDF_Filename)) {
-									echo "<option value='./data/$ISO/PDF/$OT_PDF_Filename'>".translate('Appendix', $st, 'sys')."</option>";
+									$string_temp .= "<option value='./data/$ISO/PDF/$OT_PDF_Filename'>".translate('Appendix', $st, 'sys')."</option>";
 								}
 							}
 							$query_array="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF = '101'";	// glossary
@@ -715,15 +785,15 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 							if ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {
 								$OT_PDF_Filename = trim($r_array['OT_PDF_Filename']);
 								if (!empty($OT_PDF_Filename)) {
-									echo "<option value='./data/$ISO/PDF/$OT_PDF_Filename'>".translate('Glossary', $st, 'sys')."</option>";
+									$string_temp .= "<option value='./data/$ISO/PDF/$OT_PDF_Filename'>".translate('Glossary', $st, 'sys')."</option>";
 								}
 							}
-							echo "</select>";
-							echo "</form>";
-							?>
-						</td>
-					</tr>
-					<?php
+							$string_temp .= "</select>";
+							$string_temp .= "</form>";
+					$string_temp .= '</td>';
+					$string_temp .= '</tr>';
+					array_push($read_array, $string_temp);
+					array_push($all_array, $string_temp);
 				}
 			}
 		}
@@ -735,18 +805,16 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 		if ($result1 && $num > 0) {
 			if ($r_NT = $result1->fetch_array(MYSQLI_ASSOC)) {
 				$NT_PDF_Filename = trim($r_NT['NT_PDF_Filename']);											// there is a NT
-				?>
-				<tr>
-					<td>
-						<?php
-						echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$NT_PDF_Filename')\"><img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' /></div>";
-					echo "</td>";
-					echo "<td>";
-						echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$NT_PDF_Filename')\" title='".translate('Read the New Testament.', $st, 'sys')."'>".translate('Read', $st, 'sys')." ".translate('the New Testament', $st, 'sys')." (PDF)</div>";
-						?>
-					</td>
-				</tr>
-				<?php
+						$string_temp = '<tr>';
+						$string_temp .= '<td>';
+						$string_temp .= "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$NT_PDF_Filename')\"><img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' /></div>";
+					$string_temp .= "</td>";
+					$string_temp .= "<td>";
+						$string_temp .= "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$NT_PDF_Filename')\" title='".translate('Read the New Testament.', $st, 'sys')."'>".translate('Read', $st, 'sys')." ".translate('the New Testament', $st, 'sys')." (PDF)</div>";
+				$string_temp .= '</td>';
+				$string_temp .= '</tr>';
+				array_push($read_array, $string_temp);
+				array_push($all_array, $string_temp);
 			}
 		}
 		if ($num <= 0) {
@@ -756,23 +824,21 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 			if ($result1 && $num > 0) {
 				if ($r_NT_PDF = $result1->fetch_array(MYSQLI_ASSOC)) {
 					$a_index = 0;
-					?>
-					<tr>
-						<td>
-							<?php
-							echo "<img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')."' title='".translate('Read', $st, 'sys')."' />";
-						echo "</td>";
-						echo "<td>";
-							echo "<form name='PDF_NT'>";
-							echo translate('Read', $st, 'sys')." ".translate('a book from the New Testament:', $st, 'sys');
+							$string_temp = '<tr>';
+							$string_temp .= '<td>';
+							$string_temp .= "<img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')."' title='".translate('Read', $st, 'sys')."' />";
+						$string_temp .= "</td>";
+						$string_temp .= "<td>";
+							$string_temp .= "<form name='PDF_NT'>";
+							$string_temp .= translate('Read', $st, 'sys')." ".translate('a book from the New Testament:', $st, 'sys');
 							if (isset($mobile) && $mobile == 1) {
-								echo '<br />';
+								$string_temp .= '<br />';
 							}
 							else {
-								echo ' ';
+								$string_temp .= ' ';
 							}
-							echo "<select class='selectOption' name='NT_PDF' onchange='if (this.options[this.selectedIndex].text != \"".translate('Choose One...', $st, 'sys')."\") { window.open(this.options[this.selectedIndex].value, \"_blank\"); }'>";
-							echo "<option>".translate('Choose One...', $st, 'sys')."</option>";
+							$string_temp .= "<select class='selectOption' name='NT_PDF' onchange='if (this.options[this.selectedIndex].text != \"".translate('Choose One...', $st, 'sys')."\") { window.open(this.options[this.selectedIndex].value, \"_blank\"); }'>";
+							$string_temp .= "<option>".translate('Choose One...', $st, 'sys')."</option>";
 							$query_array="SELECT * FROM NT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_PDF = ?";
 							$stmt = $db->prepare($query_array);										// create a prepared statement
 							foreach ($NT_array[NT_EngBook] as $a) {									// there is/are book(s) (from NT_Books.php)
@@ -788,7 +854,7 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 									$NT_PDF_Filename = trim($r_array['NT_PDF_Filename']);
 									$a = str_replace(" ", "&nbsp;", $a);
 									if (!empty($NT_PDF_Filename)) {
-										echo "<option value='../data/$ISO/PDF/$NT_PDF_Filename'>$a</option>";
+										$string_temp .= "<option value='../data/$ISO/PDF/$NT_PDF_Filename'>$a</option>";
 									}
 								}
 								$a_index++;
@@ -799,7 +865,7 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 							if ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {
 								$NT_PDF_Filename = trim($r_array['NT_PDF_Filename']);
 								if (!empty($NT_PDF_Filename)) {
-									echo "<option value='../data/$ISO/PDF/$NT_PDF_Filename'>".translate('Appendix', $st, 'sys')."</option>";
+									$string_temp .= "<option value='../data/$ISO/PDF/$NT_PDF_Filename'>".translate('Appendix', $st, 'sys')."</option>";
 								}
 							}
 							$query_array="SELECT * FROM NT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_PDF = '201'";	// glossary
@@ -807,15 +873,15 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 							if ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {
 								$NT_PDF_Filename = trim($r_array['NT_PDF_Filename']);
 								if (!empty($NT_PDF_Filename)) {
-									echo "<option value='../data/$ISO/PDF/$NT_PDF_Filename'>".translate('Glossary', $st, 'sys')."</option>";
+									$string_temp .= "<option value='../data/$ISO/PDF/$NT_PDF_Filename'>".translate('Glossary', $st, 'sys')."</option>";
 								}
 							}
-							echo "</select>";
-							echo "</form>";
-							?>
-						</td>
-					</tr>
-					<?php
+							$string_temp .= "</select>";
+							$string_temp .= "</form>";
+					$string_temp .= '</td>';
+					$string_temp .= '</tr>';
+					array_push($read_array, $string_temp);
+					array_push($all_array, $string_temp);
 				}
 			}
 		}
@@ -835,22 +901,20 @@ if ($links) {
 			$company_title=trim($r2['company_title']);
 			$company=trim($r2['company']);
 			$URL=trim($r2['URL']);
-			?>
-			<tr>
-				<td style='width: 45px; '>
-					<?php
-					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to organization.', $st, 'sys')."'><img class='iconActions' src='../images/Google_Play-icon.jpg' alt='".translate('Google Play', $st, 'sys')."' title='".translate('Google Play', $st, 'sys')."' /></div>";
-				echo "</td>";
-				echo "<td>";
-					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to organization.', $st, 'sys')."'>".translate('Link', $st, 'sys')." : ";
+					$string_temp = '<tr>';
+					$string_temp .= "<td style='width: 45px; '>";
+					$string_temp .= "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to organization.', $st, 'sys')."'><img class='iconActions' src='../images/Google_Play-icon.jpg' alt='".translate('Google Play', $st, 'sys')."' title='".translate('Google Play', $st, 'sys')."' /></div>";
+				$string_temp .= "</td>";
+				$string_temp .= "<td>";
+					$string_temp .= "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to organization.', $st, 'sys')."'>".translate('Link', $st, 'sys')." : ";
 					if ($company_title != "" && $company_title != NULL) {
-						echo "$company_title: ";
+						$string_temp .= "$company_title: ";
 					}
-					echo "$company</div>";
-					?>
-				</td>
-			</tr>
-			<?php
+					$string_temp .= "$company</div>";
+			$string_temp .= '</td>';
+			$string_temp .= '</tr>';
+			array_push($app_array, $string_temp);
+			array_push($all_array, $string_temp);
 		}
 	}
 }
@@ -871,18 +935,16 @@ $c = 0;
 		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
 			$Cell_Phone_Title=$r2['Cell_Phone_Title'];
 			if (!$check_iOS && $Cell_Phone_Title=='iOS Asset Package') {
-				?>
-				<tr>
-					<td style='width: 45px; '>
-						<?php
-						echo "<img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
-					echo "</td>";
-					echo "<td>";
-						echo translate('The ScriptureEarth App is available in the Apple Store.', $st, 'sys');
-						?>
-					</td>
-				</tr>
-				<?php
+						$string_temp = '<tr>';
+						$string_temp .= "<td style='width: 45px; '>";
+						$string_temp .= "<img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
+					$string_temp .= "</td>";
+					$string_temp .= "<td>";
+						$string_temp .= translate('The ScriptureEarth App is available in the Apple Store.', $st, 'sys');
+				$string_temp .= '</td>';
+				$string_temp .= '</tr>';
+				array_push($app_array, $string_temp);
+				array_push($all_array, $string_temp);
 			}
 			else {
 				$Cell_Phone_File=trim($r2['Cell_Phone_File']);
@@ -924,38 +986,34 @@ $c = 0;
 					}
 				}
 				if ($Cell_Phone_Title == 'Android App') {
-					?>
-					<tr>
-						<td style='width: 45px; '>
-							<?php
-							echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/android_module-icon.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
-						echo "</td>";
-						echo "<td>";
-							echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the app for', $st, 'sys') . ' ' . ($Cell_Phone_Title == 'Android App' ? 'Android' : $Cell_Phone_Title);
-						echo ' ' . $optional . '</div>';
-							?>
-						</td>
-					</tr>
-					<?php
+							$string_temp = '<tr>';
+							$string_temp .= "<td style='width: 45px; '>";
+							$string_temp .= "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/android_module-icon.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
+						$string_temp .= "</td>";
+						$string_temp .= "<td>";
+							$string_temp .= "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the app for', $st, 'sys') . ' ' . ($Cell_Phone_Title == 'Android App' ? 'Android' : $Cell_Phone_Title);
+							$string_temp .= ' ' . $optional . '</div>';
+					$string_temp .= '</td>';
+					$string_temp .= '</tr>';
+					array_push($app_array, $string_temp);
+					array_push($all_array, $string_temp);
 				}
 				else {
-					?>
-					<tr>
-						<td style='width: 45px; '>
-							<?php
+							$string_temp = '<tr>';
+							$string_temp .= "<td style='width: 45px; '>";
 							$query = "SELECT Cell_Phone_File FROM CellPhone WHERE ISO_ROD_index = $ISO_ROD_index AND Cell_Phone_Title = 'iOS Asset Package'";
 							$result_iOS = $db->query($query);
 							$row_iOS = $result_iOS->fetch_array(MYSQLI_ASSOC);
 							$Cell_Phone_File = $row_iOS['Cell_Phone_File'];
-							echo "<div class='linePointer' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /><div>";
-						echo "</td>";
-						echo "<td>";
-							echo "<div class='linePointer' title='" . translate('Download the Scripture Earth app for iOS', $st, 'sys') . "' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'>" . translate('Download', $st, 'sys') . " " . translate('the Scripture Earth app for iOS', $st, 'sys');
-						echo ' ' . $optional . '</div>';
-							?>
-						</td>
-					</tr>
-					<?php
+							$string_temp .= "<div class='linePointer' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /><div>";
+						$string_temp .= "</td>";
+						$string_temp .= "<td>";
+							$string_temp .= "<div class='linePointer' title='" . translate('Download the Scripture Earth app for iOS', $st, 'sys') . "' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'>" . translate('Download', $st, 'sys') . " " . translate('the Scripture Earth app for iOS', $st, 'sys');
+						$string_temp .= ' ' . $optional . '</div>';
+					$string_temp .= '</td>';
+					$string_temp .= '</tr>';
+					array_push($app_array, $string_temp);
+					array_push($all_array, $string_temp);
 				}
 			}
 		}
@@ -983,31 +1041,27 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 				$result2=$db->query($query);
 				if ($result2) {
 					$OTNT = $NT_Audio + $OT_Audio;
-					echo '<tr>';
-					echo '<td>';
+					$string_temp = '<tr>';
+					$string_temp .= '<td>';
 						$OT_Book = array();
 						$OT_Book_Chapter = array();
 						$a_index = 0;
-						echo "<div class='linePointer' title='".translate('Listen to the Old Testament.', $st, 'sys')."' onclick='ListenAudio(document.form_OT_Chapters_mp3.OT_Chapters_mp3, true, \"OTListenNow\", $OTNT)'><img  class='iconActions' src='../images/listen-icon.jpg' alt='".translate('Listen', $st, 'sys')."' title='".translate('Listen', $st, 'sys')."' /></div>";
-					echo '</td>';
-					echo '<td>';
-					?>
-					<div class='OTAudio'>
-					<?php
-					echo "<div class='linePointer' title='".translate('Listen to the Old Testament.', $st, 'sys')."' onclick='ListenAudio(document.form_OT_Chapters_mp3.OT_Chapters_mp3, true, \"OTListenNow\", $OTNT)'>".translate('Listen', $st, 'sys')." ".translate('to the audio Old Testament:', $st, 'sys').'</div>';
-					?>
-					<div id='OTAudioSelects' style='display: inline; '>
-					<?php
+						$string_temp .= "<div class='linePointer' title='".translate('Listen to the Old Testament.', $st, 'sys')."' onclick='ListenAudio(document.form_OT_Chapters_mp3.OT_Chapters_mp3, true, \"OTListenNow\", $OTNT)'><img  class='iconActions' src='../images/listen-icon.jpg' alt='".translate('Listen', $st, 'sys')."' title='".translate('Listen', $st, 'sys')."' /></div>";
+					$string_temp .= '</td>';
+					$string_temp .= '<td>';
+					$string_temp .= "<div class='OTAudio'>";
+					$string_temp .= "<div class='linePointer' title='".translate('Listen to the Old Testament.', $st, 'sys')."' onclick='ListenAudio(document.form_OT_Chapters_mp3.OT_Chapters_mp3, true, \"OTListenNow\", $OTNT)'>".translate('Listen', $st, 'sys')." ".translate('to the audio Old Testament:', $st, 'sys').'</div>';
+					$string_temp .= "<div id='OTAudioSelects' style='display: inline; '>";
 					if (isset($mobile) && $mobile == 1) {
-						echo "<br />";
+						$string_temp .= "<br />";
 					}
 					else {
-						echo " ";
+						$string_temp .= " ";
 					}
 					// Get and display Books
 					$query_array="SELECT * FROM OT_Audio_Media WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND Variant_Code = '$Variant_Code' AND OT_Audio_Book = ? AND (OT_Audio_Filename IS NOT NULL AND trim(OT_Audio_Filename) <> '')";		// ISO_ROD_index = '$ISO_ROD_index'
 					$stmt_OT = $db->prepare($query_array);											// create a prepared statement
-					echo "<select id='OT_Book_mp3' name='OT_Book_mp3' class='selectOption' onchange='AudioChangeChapters(\"OT\", \"$ISO\", \"$ROD_Code\", this.options[this.selectedIndex].value); ListenAudio(document.form_OT_Chapters_mp3.OT_Chapters_mp3, true, \"OTListenNow\", $OTNT)'>";
+					$string_temp .= "<select id='OT_Book_mp3' name='OT_Book_mp3' class='selectOption' onchange='AudioChangeChapters(\"OT\", \"$ISO\", \"$ROD_Code\", this.options[this.selectedIndex].value); ListenAudio(document.form_OT_Chapters_mp3.OT_Chapters_mp3, true, \"OTListenNow\", $OTNT)'>";
 					foreach ($OT_array[OT_EngBook] as $a) {											// display the OT books in the MAJOR language!
 						$stmt_OT->bind_param("i", $a_index);										// bind parameters for markers; $a_index increaments by 1 starting at 0
 						$stmt_OT->execute();														// execute query
@@ -1026,17 +1080,15 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 								}
 								$i++;
 							}
-							echo "<option id='OT_Book_$a_index' name='OT_Book_$a_index' value='$j'>$a</option>";
+							$string_temp .= "<option id='OT_Book_$a_index' name='OT_Book_$a_index' value='$j'>$a</option>";
 						}
 						$a_index++;
 					}
-					echo "</select>";
+					$string_temp .= "</select>";
 					$stmt_OT->close();																	// close statement
 					// Get and display chapters
-					?>
-					<form name='form_OT_Chapters_mp3' id='form_OT_Chapters_mp3' style='display: inline; '>
-					<select name='OT_Chapters_mp3' id='OT_Chapters_mp3' class='selectOption' onchange='ListenAudio(this, true, "OTListenNow", <?php echo $OTNT; ?>)'>
-					<?php
+					$string_temp .= "<form name='form_OT_Chapters_mp3' id='form_OT_Chapters_mp3' style='display: inline; '>";
+					$string_temp .= "<select name='OT_Chapters_mp3' id='OT_Chapters_mp3' class='selectOption' onchange='ListenAudio(this, true, 'OTListenNow', ".$OTNT.")'>";
 					$a_index = 0;
 					$query_array="SELECT * FROM OT_Audio_Media WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND Variant_Code = '$Variant_Code' AND OT_Audio_Book = ? AND (OT_Audio_Filename IS NOT NULL AND trim(OT_Audio_Filename) <> '')";		// ISO_ROD_index = '$ISO_ROD_index'
 					$stmt_OT = $db->prepare($query_array);												// create a prepared statement
@@ -1051,7 +1103,7 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 								$OT_Audio_Filename = trim($r_array['OT_Audio_Filename']);
 								if (!empty($OT_Audio_Filename)) {
 									$OT_Audio_Chapter = trim($r_array['OT_Audio_Chapter']);
-									echo "<option id='OT_Audio_Chapters_$i' name='OT_Audio_Chapters_$i' value='$a^./data/$ISO/audio/$OT_Audio_Filename'>$OT_Audio_Chapter</option>";
+									$string_temp .= "<option id='OT_Audio_Chapters_$i' name='OT_Audio_Chapters_$i' value='$a^./data/$ISO/audio/$OT_Audio_Filename'>$OT_Audio_Chapter</option>";
 								}
 								$i++;
 							}
@@ -1060,86 +1112,57 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 						$a_index++;
 					}
 					$stmt_OT->close();																	// close statement
-					?>
-					</select>
-					</form>
-					</div>
-					</div>
-					<div id='OTListenNow' class='ourListenNow' style='margin-top: 0px; '>
-						<?php
+						$string_temp .= "</select> </form> </div> </div> <div id='OTListenNow' class='ourListenNow' style='margin-top: 0px; '>";
 						if (isset($mobile) && $mobile == 1) {
 						}
 						else {
-						?>
-							<div class='ourFlashPlayer'>
-						<?php
+						$string_temp .= "<div class='ourFlashPlayer'>";
 						}
-						?>
-                            <span id='OTBookChapter' style='vertical-align: top; '> listenBook " " listenChapter </span> &nbsp;&nbsp; 
-                            <div id="jquery_jplayer_<?php echo ( $OT_Audio > 0 ? '2' : '1' ) ?>" class="jp-jplayer"></div>
-                            <div id="jp_container_<?php echo ( $OT_Audio > 0 ? '2' : '1' ) ?>" class="jp-audio">
-                                <div class="jp-type-single">
-                                    <div class="jp-gui jp-interface">
-                                        <ul class="jp-controls">
-                                            <li><a href="#" class="jp-play" tabindex="1">play</a></li>
-                                            <li><a href="#" class="jp-pause" tabindex="1">pause</a></li>
-                                            <li><a href="#" class="jp-stop" tabindex="1">stop</a></li>
-                                            <?php
+											$string_temp .= "<span id='OTBookChapter' style='vertical-align: top; '> listenBook \" \" listenChapter </span> &nbsp;&nbsp; ";
+											if ($OT_Audio > 0){
+												$string_temp .= '<div id="jquery_jplayer_2" class="jp-jplayer"></div>';
+												$string_temp .= '<div id="jquery_container_2" class="jp-audio"></div>';
+											} else {
+												$string_temp .= '<div id="jquery_jplayer_1" class="jp-jplayer"></div>';
+												$string_temp .= '<div id="jquery_container_1" class="jp-audio"></div>';
+											}
+											$string_temp .= "<div class='jp-type-single'>";
+											$string_temp .= '<div class="jp-gui jp-interface">';
+											$string_temp .= '<ul class="jp-controls">';
+											$string_temp .= '<li><a href="#" class="jp-play" tabindex="1">play</a></li>';
+											$string_temp .= '<li><a href="#" class="jp-pause" tabindex="1">pause</a></li>';
+											$string_temp .= '<li><a href="#" class="jp-stop" tabindex="1">stop</a></li>';
 											if (isset($mobile) && $mobile == 1) {
 											}
 											else {
-												?>
-                                                <li><a href="#" class="jp-mute" tabindex="1" title="mute">mute</a></li>
-                                                <li><a href="#" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
-                                                <li><a href="#" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
-                                                <?php
+												$string_temp .= '<li><a href="#" class="jp-mute" tabindex="1" title="mute">mute</a></li>';
+												$string_temp .= '<li><a href="#" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>';
+												$string_temp .= '<li><a href="#" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>';
 											}
-											?>
-                                        </ul>
-                                        <div class="jp-progress">
-                                            <div class="jp-seek-bar">
-                                                <div class="jp-play-bar"></div>
-                                            </div>
-                                        </div>
-										<?php
+										$string_temp .= '</ul> <div class="jp-progress"> <div class="jp-seek-bar"> <div class="jp-play-bar"></div> </div> </div>';
                                         if (isset($mobile) && $mobile == 1) {
                                         }
                                         else {
-                                            ?>
-                                            <div style="margin-top: 14px; margin-left: 340px; " class="jp-volume-bar">
-                                                <div class="jp-volume-bar-value"></div>
-                                            </div>
-                                            <div class="jp-time-holder">
-                                                <div class="jp-current-time"></div>
-                                                <div class="jp-duration"></div>
-                                                <!--ul class="jp-toggles">
-                                                    <li><a href="#" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
-                                                    <li><a href="#" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
-                                                </ul-->
-                                            </div>
-											<?php
+											$string_temp .= '<div style="margin-top: 14px; margin-left: 340px; " class="jp-volume-bar">';
+											$string_temp .= '<div class="jp-volume-bar-value"></div> </div>';
+											$string_temp .= '<div class="jp-time-holder">';
+											$string_temp .= '<div class="jp-current-time"></div>';
+											$string_temp .= '<div class="jp-duration"></div> </div>';
                                         }
-                                        ?>
-                                    </div>
-                                    <div class="jp-no-solution">
-                                        <span>Update Required</span>
-                                        To play the media you will need to either update your browser to a recent version or update your <a href="https://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-                                    </div>
-                                </div>
-                            </div>
-						<?php
+						$string_temp .= '</div> <div class="jp-no-solution">';
+						$string_temp .= '<span>Update Required</span>';
+						$string_temp .= 'To play the media you will need to either update your browser to a recent version or update your <a href="https://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.';
+						$string_temp .= '</div> </div> </div>';
 						if (isset($mobile) && $mobile == 1) {
 						}
 						else {
-						?>
-							</div>
-						<?php
+						$string_temp .= "</div>";
 						}
-						?>
-						</div>
-					</td>
-					</tr>
-					<?php
+					$string_temp .= "</div>";
+					$string_temp .= '</td>';
+					$string_temp .= '</tr>';
+					array_push($listen_array, $string_temp);
+					array_push($all_array, $string_temp);
 				}
 			}
 		
@@ -1148,33 +1171,27 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 				$result2=$db->query($query);
 				if ($result2) {
 					$OTNT = $NT_Audio + $OT_Audio;
-					?>
-					<tr>
-					<td>
-					<?php
+					$string_temp = '<tr>';
+					$string_temp .= '<td>';
 					$NT_Book = array();
 					$NT_Book_Chapter = array();
 					$a_index = 0;
-					echo "<div class='linePointer' title='".translate('Listen to the New Testament.', $st, 'sys')."' onclick='ListenAudio(document.form_NT_Chapters_mp3.NT_Chapters_mp3, true, \"NTListenNow\", $OTNT)'><img class='iconActions' src='../images/listen-icon.jpg' alt='".translate('Listen', $st, 'sys')."' title='".translate('Listen', $st, 'sys')."' />";
-					echo "</div>";
-					echo "</td>";
-					echo "<td>";
-					?>
-					<div class='NTAudio'>
-					<?php
-					echo "<div class='linePointer' title='".translate('Listen to the New Testament.', $st, 'sys')."' onclick='ListenAudio(document.form_NT_Chapters_mp3.NT_Chapters_mp3, true, \"NTListenNow\", $OTNT)'>".translate('Listen', $st, 'sys')." ".translate('to the audio New Testament:', $st, 'sys').'</a>';
-					echo '</div>';
-					?>
-					<div id='NTAudioSelects' style='display: inline; '>
-					<?php
+					$string_temp .= "<div class='linePointer' title='".translate('Listen to the New Testament.', $st, 'sys')."' onclick='ListenAudio(document.form_NT_Chapters_mp3.NT_Chapters_mp3, true, \"NTListenNow\", $OTNT)'><img class='iconActions' src='../images/listen-icon.jpg' alt='".translate('Listen', $st, 'sys')."' title='".translate('Listen', $st, 'sys')."' />";
+					$string_temp .= "</div>";
+					$string_temp .= "</td>";
+					$string_temp .= "<td>";
+					$string_temp .= "<div class='NTAudio'>";
+					$string_temp .= "<div class='linePointer' title='".translate('Listen to the New Testament.', $st, 'sys')."' onclick='ListenAudio(document.form_NT_Chapters_mp3.NT_Chapters_mp3, true, \"NTListenNow\", $OTNT)'>".translate('Listen', $st, 'sys')." ".translate('to the audio New Testament:', $st, 'sys').'</a>';
+					$string_temp .= '</div>';
+					$string_temp .= "<div id='NTAudioSelects' style='display: inline; '>";
 					if (isset($mobile) && $mobile == 1) {
-						echo '<br />';
+						$string_temp .= '<br />';
 					}
 					else {
-						echo ' ';
+						$string_temp .= ' ';
 					}
 					// Get and display Books
-					echo "<select id='NT_Book_mp3' name='NT_Book_mp3' class='selectOption' onchange='AudioChangeChapters(\"NT\", \"$ISO\", \"$ROD_Code\", this.options[this.selectedIndex].value); ListenAudio(document.form_NT_Chapters_mp3.NT_Chapters_mp3, true, \"NTListenNow\", $OTNT)'>";
+					$string_temp .= "<select id='NT_Book_mp3' name='NT_Book_mp3' class='selectOption' onchange='AudioChangeChapters(\"NT\", \"$ISO\", \"$ROD_Code\", this.options[this.selectedIndex].value); ListenAudio(document.form_NT_Chapters_mp3.NT_Chapters_mp3, true, \"NTListenNow\", $OTNT)'>";
 					$query_array="SELECT * FROM NT_Audio_Media WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND Variant_Code = '$Variant_Code' AND NT_Audio_Book = ? AND (NT_Audio_Filename is not null AND trim(NT_Audio_Filename) <> '')";		// ISO_ROD_index = '$ISO_ROD_index'
 					$stmt = $db->prepare($query_array);												// create a prepared statement
 					foreach ($NT_array[NT_EngBook] as $a) {											// display the NT books in the MAJOR language!
@@ -1193,17 +1210,15 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 									$j = $j . "," . $NT_Audio_Chapter . "," . $NT_Audio_Filename;
 								}
 							}
-							echo "<option id='NT_Book_$a_index' name='NT_Book_$a_index' value='$j'>$a</option>";
+							$string_temp .= "<option id='NT_Book_$a_index' name='NT_Book_$a_index' value='$j'>$a</option>";
 						}
 						$a_index++;
 					}
 					$stmt->close();																	// close statement
-					echo "</select>";
+					$string_temp .= "</select>";
 					// Get and display chapters
-					?>
-					<form name='form_NT_Chapters_mp3' id='form_NT_Chapters_mp3' style='display: inline; '>
-					<select name='NT_Chapters_mp3' id='NT_Chapters_mp3' class='selectOption' onchange='ListenAudio(this, true, "NTListenNow", <?php echo $OTNT; ?>)'>
-					<?php
+					$string_temp .= "<form name='form_NT_Chapters_mp3' id='form_NT_Chapters_mp3' style='display: inline; '>";
+					$string_temp .= "<select name='NT_Chapters_mp3' id='NT_Chapters_mp3' class='selectOption' onchange='ListenAudio(this, true, 'NTListenNow', ".$OTNT.")'>";
 					$a_index = 0;
 					$query_array="SELECT * FROM NT_Audio_Media WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND Variant_Code = '$Variant_Code' AND NT_Audio_Book = ? AND (NT_Audio_Filename is not null AND trim(NT_Audio_Filename) <> '')";		// ISO_ROD_index = '$ISO_ROD_index'
 					$stmt = $db->prepare($query_array);												// create a prepared statement
@@ -1218,7 +1233,7 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 								$NT_Audio_Filename = trim($r_array['NT_Audio_Filename']);
 								if (!empty($NT_Audio_Filename)) {
 									$NT_Audio_Chapter = trim($r_array['NT_Audio_Chapter']);
-									echo "<option id='NT_Audio_Chapters_$i' name='NT_Audio_Chapters_$i' value='$a^./data/$ISO/audio/$NT_Audio_Filename'>$NT_Audio_Chapter</option>";
+									$string_temp .= "<option id='NT_Audio_Chapters_$i' name='NT_Audio_Chapters_$i' value='$a^./data/$ISO/audio/$NT_Audio_Filename'>$NT_Audio_Chapter</option>";
 								}
 								$i++;
 							}
@@ -1227,88 +1242,52 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 						$a_index++;
 					}
 					$stmt->close();																	// close statement
-					?>
-					</select>
-					</form>
-					</div>
-					</div>
-					<div id='NTListenNow' class='ourListenNow' style='margin-top: 0px; '>
-						<?php
+						$string_temp .= "</select> </form> </div> </div> <div id='NTListenNow' class='ourListenNow' style='margin-top: 0px; '>";
 						if (isset($mobile) && $mobile == 1) {
 						}
 						else {
-						?>
-							<div class='ourFlashPlayer'>
-						<?php
+						$string_temp .= "<div class='ourFlashPlayer'>";
 						}
-						?>
-							<!--div id="slideshow"></div test for 00-SpecificLanguage.js for function ListenAudio(mp3Info, autostart, whichListenTo, OTNT)-->
-                            <span id='NTBookChapter' style='vertical-align: top; '> listenBook " " listenChapter </span> &nbsp;&nbsp; 
-                            <div id="jquery_jplayer_1" class="jp-jplayer"></div>
-                            <div id="jp_container_1" class="jp-audio">
-                                <div class="jp-type-single">
-                                    <div class="jp-gui jp-interface">
-                                        <ul class="jp-controls">
-                                            <li><a href="#" class="jp-play" tabindex="1">play</a></li>
-                                            <li><a href="#" class="jp-pause" tabindex="1">pause</a></li>
-                                            <li><a href="#" class="jp-stop" tabindex="1">stop</a></li>
-                                            <?php
+											$string_temp .= "<span id='NTBookChapter' style='vertical-align: top; '> listenBook \" \" listenChapter </span> &nbsp;&nbsp;";
+											$string_temp .= '<div id="jquery_jplayer_1" class="jp-jplayer"></div>';
+											$string_temp .= '<div id="jp_container_1" class="jp-audio">';
+											$string_temp .= "<div class='jp-type-single'>";
+											$string_temp .= '<div class="jp-gui jp-interface">';
+											$string_temp .= '<ul class="jp-controls">';
+											$string_temp .= '<li><a href="#" class="jp-play" tabindex="1">play</a></li>';
+											$string_temp .= '<li><a href="#" class="jp-pause" tabindex="1">pause</a></li>';
+											$string_temp .= '<li><a href="#" class="jp-stop" tabindex="1">stop</a></li>';
 											if (isset($mobile) && $mobile == 1) {
 											}
 											else {
-												?>
-                                                <li><a href="#" class="jp-mute" tabindex="1" title="mute">mute</a></li>
-                                                <li><a href="#" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
-                                                <li><a href="#" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
-                                                <?php
+												$string_temp .= '<li><a href="#" class="jp-mute" tabindex="1" title="mute">mute</a></li>';
+												$string_temp .= '<li><a href="#" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>';
+												$string_temp .= '<li><a href="#" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>';
 											}
-											?>
-                                        </ul>
-                                        <div class="jp-progress">
-                                            <div class="jp-seek-bar">
-                                                <div class="jp-play-bar"></div>
-                                            </div>
-                                        </div>
-										<?php
+										$string_temp .= '</ul> <div class="jp-progress"> <div class="jp-seek-bar"> <div class="jp-play-bar"></div> </div> </div>';
                                         if (isset($mobile) && $mobile == 1) {
                                         }
                                         else {
-                                            ?>
-                                            <div style="margin-top: 14px; margin-left: 340px; " class="jp-volume-bar">
-                                                <div class="jp-volume-bar-value"></div>
-                                            </div>
-                                            <div class="jp-time-holder">
-                                                <div class="jp-current-time"></div>
-                                                <div class="jp-duration"></div>
-                                                <!--ul class="jp-toggles">
-                                                    <li><a href="#" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
-                                                    <li><a href="#" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
-                                                </ul-->
-                                            </div>
-											<?php
+											$string_temp .= '<div style="margin-top: 14px; margin-left: 340px; " class="jp-volume-bar">';
+											$string_temp .= '<div class="jp-volume-bar-value"></div> </div>';
+											$string_temp .= '<div class="jp-time-holder">';
+											$string_temp .= '<div class="jp-current-time"></div>';
+											$string_temp .= '<div class="jp-duration"></div> </div>';
                                         }
-                                        ?>
-                                    </div>
-                                    <div class="jp-no-solution">
-                                        <span>Update Required</span>
-                                        To play the media you will need to either update your browser to a recent version or update your <a href="https://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-                                    </div>
-                                </div>
-                            </div>
-						<?php
+						$string_temp .= '</div> <div class="jp-no-solution">';
+						$string_temp .= '<span>Update Required</span>';
+						$string_temp .= 'To play the media you will need to either update your browser to a recent version or update your <a href="https://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.';
+						$string_temp .= '</div> </div> </div>';
 						if (isset($mobile) && $mobile == 1) {
 						}
 						else {
-						?>
-							</div>
-						<?php
+							$string_temp .= "</div>";
 						}
-						?>
-						</div>
-					<!--/div-->
-					</td>
-					</tr>
-					<?php
+					$string_temp .= "</div>";
+					$string_temp .= '</td>';
+					$string_temp .= '</tr>';
+					array_push($listen_array, $string_temp);
+					array_push($all_array, $string_temp);
 				}
 			}
 		}
@@ -1322,31 +1301,16 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 */
 if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 	if ($OT_Audio > 0) {
-		?>
-			<div id='otaudiofiles' class='otaudiofiles' style='display: block; '>
-			<tr style='margin-top: -2px; '>
-				<td style='width: 45px; '>
-					<?php
-					echo "<div class='linePointer' onclick='OTTableClick()'><img class='iconActions' src='../images/download-icon.jpg' alt='".translate('Download', $st, 'sys')."' title='".translate('Download', $st, 'sys')."' /></div>";
-				echo "</td>";
-				echo "<td>";
-					echo "<div class='linePointer' title='".translate('Download the audio Old Testament files.', $st, 'sys')."' onclick='OTTableClick()'>".translate('Download', $st, 'sys')." ".translate('the Old Testament audio files (MP3)', $st, 'sys')."</div>";
-					?>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" width="100%">
-				<form>
-				<table id='OTTable'>
-					<tr>
-						<td colspan='4' width='100%'>
-							<?php
-							echo "<input style='float: right; margin-top: 0px; margin-right: 20px; font-size: 11pt; font-weight: bold; ' type='button' value='".translate('Download Selected OT Audio', $st, 'sys')."' onclick='OTAudio(\"$st\", \"$ISO\", \"$ROD_Code\", \"$mobile\", \"".translate('Please wait!<br />Creating the ZIP file<br />which will take a while.', $st, 'sys')."\")' />";
-							?>
-							<div id='OT_Download_MB' style='float: right; vertical-align: bottom; margin-top: 6px; '></div>
-						</td>
-					</tr>
-					<?php
+					$string_temp = "<div id='otaudiofiles' class='otaudiofiles' style='display: block; '>";
+					$string_temp .= "<tr style='margin-top: -2px; '>";
+					$string_temp .= "<td style='width: 45px; '>";
+					$string_temp .= "<div class='linePointer' onclick='OTTableClick()'><img class='iconActions' src='../images/download-icon.jpg' alt='".translate('Download', $st, 'sys')."' title='".translate('Download', $st, 'sys')."' /></div>";
+				$string_temp .= "</td>";
+				$string_temp .= "<td>";
+					$string_temp .= "<div class='linePointer' title='".translate('Download the audio Old Testament files.', $st, 'sys')."' onclick='OTTableClick()'>".translate('Download', $st, 'sys')." ".translate('the Old Testament audio files (MP3)', $st, 'sys')."</div>";
+							$string_temp .= "</td> </tr> <tr> <td colspan='2' width='100%'> <form> <table id='OTTable'> <tr> <td colspan='4' width='100%'>";
+							$string_temp .= "<input style='float: right; margin-top: 0px; margin-right: 20px; font-size: 11pt; font-weight: bold; ' type='button' value='".translate('Download Selected OT Audio', $st, 'sys')."' onclick='OTAudio(\"$st\", \"$ISO\", \"$ROD_Code\", \"$mobile\", \"".translate('Please wait!<br />Creating the ZIP file<br />which will take a while.', $st, 'sys')."\")' />";
+					$string_temp .= "<div id='OT_Download_MB' style='float: right; vertical-align: bottom; margin-top: 6px; '></div> </td> </tr>";
 					$media_index = 4;
 					$num_array_col = "25%";
 					$col_span = 1;
@@ -1357,9 +1321,7 @@ if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 					}
 					$a_index = 0;
 					$j = 0;
-					?>
-					<tr>
-						<?php
+						$string_temp .= "<tr>";
 						$query_array="SELECT * FROM OT_Audio_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_Audio_Book = ? AND (OT_Audio_Filename IS NOT NULL AND trim(OT_Audio_Filename) <> '')";
 						$stmt = $db->prepare($query_array);												// create a prepared statement
 						foreach ($OT_array[OT_EngBook] as $a) {											// display Eng. NT books
@@ -1369,15 +1331,10 @@ if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 							$num_array=$result_array->num_rows;
 							if ($result_array && $num_array > 0) {
 								if ($j == $media_index) {
-									?>
-									</tr>
-									<tr>
-									<?php
+									$string_temp .= "</tr> <tr>";
 									$j = 0;
 								}
-								?>
-								<td width='<?php echo $num_array_col; ?>' colspan='<?php echo $col_span; ?>'>
-								<?php
+								$string_temp .= "<td width='".$num_array_col."' colspan='".$col_span."'>";
 								$ZipFile = 0;
 								while ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {						// display the chapters
 									$OT_Audio_Filename = trim($r_array['OT_Audio_Filename']);
@@ -1388,55 +1345,30 @@ if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 										$ZipFile = round($ZipFile, 1);
 									}
 								}
-								echo "<input type='checkbox' id='OT_audio_$a_index' name='OT_audio_$a_index' onclick='OTAudioClick(\"$a_index\", $ZipFile)' />&nbsp;&nbsp;$a<span style='font-size: .9em; font-weight: normal; '> (~$ZipFile MB)</span>";
-								?>
-								</td>
-								<?php
+								$string_temp .= "<input type='checkbox' id='OT_audio_$a_index' name='OT_audio_$a_index' onclick='OTAudioClick(\"$a_index\", $ZipFile)' />&nbsp;&nbsp;$a<span style='font-size: .9em; font-weight: normal; '> (~$ZipFile MB)</span> </td>";
 								$j++;
 							}
 							$a_index++;
 						}
 						$stmt->close();																	// close statement
 						for (; $j <= $media_index; $j++) {
-							?>
-							<td width='<?php echo $num_array_col; ?>' colspan='<?php echo $col_span; ?>'>&nbsp;</td>
-							<?php
+							$string_temp .= "<td width='".$num_array_col."' colspan='".$col_span."'>&nbsp;</td>";
 						}
-						?>
-					</tr>
-				</table>
-				</form>
-				</td>
-			</tr>
-			</div>
-        <?php
+		$string_temp .= "</tr> </table> </form> </td> </tr> </div>";
+		array_push($listen_array, $string_temp);
+		array_push($all_array, $string_temp);
 	}
 	if ($NT_Audio > 0) {
-		?>
-			<div id='ntaudiofiles' class='ntaudiofiles'>
-			<tr>
-				<td style='width: 45px; '>
-					<?php
-					echo "<div class='linePointer' onclick='NTTableClick()'><img class='iconActions' src='../images/download-icon.jpg' alt='".translate('Download', $st, 'sys')."' title='".translate('Download', $st, 'sys')."' /></div>";
-				echo "</td>";
-				echo "<td>";
-					echo "<div class='linePointer' title='".translate('Download the audio New Testament files.', $st, 'sys')."' onclick='NTTableClick()'>".translate('Download', $st, 'sys')." ".translate('the New Testament audio files (MP3)', $st, 'sys')."</div>";
-					?>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" width="100%" style='margin-bottom: -50px; '>
-				<form>
-				<table id='NTTable' style='margin-bottom: 15px; width: 100%; '>
-					<tr>
-						<td colspan='4' width='100%'>
-							<?php
-							echo "<input style='float: right; margin-top: 0px; margin-right: 20px; font-size: 11pt; font-weight: bold; ' type='button' value='".translate('Download Selected NT Audio', $st, 'sys')."' onclick='NTAudio(\"$st\", \"$ISO\", \"$ROD_Code\", \"$mobile\", \"".translate('Please wait!<br />Creating the ZIP file<br />which will take a while.', $st, 'sys')."\")' />";
-							?>
-							<div id='NT_Download_MB' style='float: right; vertical-align: bottom; margin-top: 6px; '></div>
-						</td>
-					</tr>
-					<?php
+					$string_temp = "<div id='ntaudiofiles' class='ntaudiofiles'>";
+					$string_temp .= "<tr>";
+					$string_temp .= "<td style='width: 45px; '>";
+					$string_temp .= "<div class='linePointer' onclick='NTTableClick()'><img class='iconActions' src='../images/download-icon.jpg' alt='".translate('Download', $st, 'sys')."' title='".translate('Download', $st, 'sys')."' /></div>";
+				$string_temp .= "</td>";
+				$string_temp .= "<td>";
+					$string_temp .= "<div class='linePointer' title='".translate('Download the audio New Testament files.', $st, 'sys')."' onclick='NTTableClick()'>".translate('Download', $st, 'sys')." ".translate('the New Testament audio files (MP3)', $st, 'sys')."</div>";
+							$string_temp .= "</td> </tr> <tr> <td colspan='2' width='100%' style='margin-bottom: -50px; '> <form> <table id='NTTable' style='margin-bottom: 15px; width: 100%; '> <tr> <td colspan='4' width='100%'>";
+							$string_temp .= "<input style='float: right; margin-top: 0px; margin-right: 20px; font-size: 11pt; font-weight: bold; ' type='button' value='".translate('Download Selected NT Audio', $st, 'sys')."' onclick='NTAudio(\"$st\", \"$ISO\", \"$ROD_Code\", \"$mobile\", \"".translate('Please wait!<br />Creating the ZIP file<br />which will take a while.', $st, 'sys')."\")' />";
+					$string_temp .= "<div id='NT_Download_MB' style='float: right; vertical-align: bottom; margin-top: 6px; '></div> </td> </tr>";
 					$media_index = 4;
 					$num_array_col = "25%";
 					$col_span = 1;
@@ -1447,9 +1379,7 @@ if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 					}
 					$a_index = 0;
 					$j = 0;																				// mod
-					?>
-					<tr>
-						<?php
+						$string_temp .= "<tr>";
 						$query_array="SELECT * FROM NT_Audio_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_Audio_Book = ? AND (NT_Audio_Filename IS NOT NULL AND trim(NT_Audio_Filename) <> '')";
 						$stmt = $db->prepare($query_array);												// create a prepared statement
 						foreach ($NT_array[NT_EngBook] as $a) {											// display Eng. NT books
@@ -1459,15 +1389,10 @@ if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 							$num_array=$result_array->num_rows;
 							if ($result_array && $num_array > 0) {										// if ISO_ROD_index and NT_Audio_Book exist
 								if ($j == $media_index) {
-									?>
-									</tr>
-									<tr>
-									<?php
+									$string_temp .= "</tr> <tr>";
 									$j = 0;
 								}
-								?>
-								<td style='width: <?php echo $num_array_col; ?>; ' colspan='<?php echo $col_span; ?>'>
-								<?php
+								$string_temp .= "<td style='width: ".$num_array_col."' colspan='".$col_span."'>";
 								$ZipFile = 0;
 								while ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {			// get all of the chapters in a single book
 									$NT_Audio_Filename = trim($r_array['NT_Audio_Filename']);
@@ -1478,28 +1403,19 @@ if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 										$ZipFile = round($ZipFile, 1);
 									}
 								}
-								echo "<input type='checkbox' id='NT_audio_$a_index' name='NT_audio_$a_index' onclick='NTAudioClick(\"$a_index\", $ZipFile)' />&nbsp;&nbsp;$a<span style='font-size: .9em; font-weight: normal; '> (~$ZipFile MB)</span>";
-								?>
-								</td>
-								<?php
+								$string_temp .= "<input type='checkbox' id='NT_audio_$a_index' name='NT_audio_$a_index' onclick='NTAudioClick(\"$a_index\", $ZipFile)' />&nbsp;&nbsp;$a<span style='font-size: .9em; font-weight: normal; '> (~$ZipFile MB)</span>";
+								$string_temp .= "</td>";
 								$j++;
 							}
 							$a_index++;
 						}
 						$stmt->close();																	// close statement
 						for (; $j <= $media_index; $j++) {
-							?>
-							<td style='width: <?php echo $num_array_col; ?>; ' colspan='<?php echo $col_span; ?>'>&nbsp;</td>
-							<?php
+							$string_temp .= "<td style='width: ".$num_array_col."' colspan='".$col_span."'>&nbsp;</td>";
 						}
-						?>
-					</tr>
-				</table>
-				</form>
-				</td>
-			</tr>
-			</div>
-        <?php
+		$string_temp .= "</tr> </table> </form> </td> </tr> </div>";
+		array_push($listen_array, $string_temp);
+		array_push($all_array, $string_temp);
 	}
 }
 /*
@@ -1634,28 +1550,14 @@ if (count($tempArray) < 3) {
 			if ($PlaylistVideoTitle == 'the Acts Video') $PlaylistVideoTitle = 'el video de Hechos';
 		}
 		// $i = the number of rows beginning with the number 1 in the first column
-		?>
-		<script>
-			var orgVideoPixels_<?php echo $z; ?> = 0;
-		</script>
-		<tr>
-			<td style='width: 45px; '>
-				<?php
-				echo "<div class='linePointer' onclick='PlaylistVideo(orgVideoPixels_$z, \"PlaylistVideoNow_$z\", $mobile)'><img class='iconActions' src='../images/youtube-icon.jpg' alt='".translate('View', $st, 'sys')."' title='".translate('View', $st, 'sys')."' /></div>";
-				?>
-			</td>
-			<td>
-				<?php
-				echo "<div class='linePointer' title='".translate('View', $st, 'sys')." $PlaylistVideoTitle' onclick='PlaylistVideo(orgVideoPixels_$z, \"PlaylistVideoNow_$z\", $mobile)'>".translate('View', $st, 'sys').' '.$PlaylistVideoTitle . "</div>";
+		$string_temp = "<script> var orgVideoPixels_".$z." = 0; </script>";
+		$string_temp .= "<tr> <td style='width: 45px; '>";
+		$string_temp .= "<div class='linePointer' onclick='PlaylistVideo(orgVideoPixels_$z, \"PlaylistVideoNow_$z\", $mobile)'><img class='iconActions' src='../images/youtube-icon.jpg' alt='".translate('View', $st, 'sys')."' title='".translate('View', $st, 'sys')."' /></div>";
+				$string_temp .= "</td> <td>";
+				$string_temp .= "<div class='linePointer' title='".translate('View', $st, 'sys')." $PlaylistVideoTitle' onclick='PlaylistVideo(orgVideoPixels_$z, \"PlaylistVideoNow_$z\", $mobile)'>".translate('View', $st, 'sys').' '.$PlaylistVideoTitle . "</div>";
 				// Get and display Playlist
-				?>
-			</td>
-		</tr>
-		<tr id="PlaylistVideoNow_<?php echo $z; ?>" style="display: none; overflow: hidden; float: left; line-height: 0px; ">	<?php // The extra styles are for the mobile Andoid to work! (6/17/17) ?>
-			<td style='width: 45px; '>&nbsp;
-			</td>
-			<td>
-				<?php
+				$string_temp .= "</td> </tr> <tr id='PlaylistVideoNow_".$z."' style='display: none; overflow: hidden; float: left; line-height: 0px; '>"; // The extra styles are for the mobile Andoid to work! (6/17/17)
+				$string_temp .= "<td style='width: 45px; '>&nbsp; </td> <td>";
 				if ($BibleStory != 0 ) {
 					$VideoConvertContents[$BibleStory] = str_replace("\r", "", $VideoConvertContents[$BibleStory]);		// Windows text files have a carrage return at the end.
 					$VideoConvertWithTab = explode("\t", $VideoConvertContents[$BibleStory]);							// split the line up by tabs
@@ -1672,28 +1574,25 @@ if (count($VideoConvertWithTab) < 3) {
 	file_put_contents('SpecificLanguage.txt', 'filename: #'.$filename.'#; count($VideoConvertWithTab): ' . count($VideoConvertWithTab) . '; $BibleStory: #' . $BibleStory . '#; $VideoConvertContents[$BibleStory]: #'.$VideoConvertContents[$BibleStory]."#\n", FILE_APPEND | LOCK_EX);
 }
                     if (stripos($VideoConvertWithTab[3], 'http', 0) === 0) {									// returns 0 means 'http' starts at column 0. === needs to be this way (and not ==) because jPlayer wont work.
-                    	echo "<div style='text-align: center; '><div style='cursor: pointer; display: inline; text-align: center; '";
-                        echo " onclick='window.open(\"$VideoConvertWithTab[3]\")'>";
+                    	$string_temp .= "<div style='text-align: center; '><div style='cursor: pointer; display: inline; text-align: center; '";
+                        $string_temp .= " onclick='window.open(\"$VideoConvertWithTab[3]\")'>";
 					}
 					if ($image != 2) {																			// != 2 ScriptureAnim to make sure the first picture is skipped
 						if ($image == 1) {
-							echo "<img src='./data/~images/$bookName/";
+							$string_temp .= "<img src='./data/~images/$bookName/";
 						}
 						else if ($image == 0) {
-							echo "<img src='./data/$ISO/video/";
+							$string_temp .= "<img src='./data/$ISO/video/";
 						}
 						else {
 						}
-						echo $VideoConvertWithTab[2]."' alt='".translate('View', $st, 'sys')." ".$VideoName."' title='".translate('View', $st, 'sys')." ".$VideoName."' /></div></div>";
-						echo '<div style="text-align: center; font-size: .9em; margin-bottom: 10px; font-weight: normal; ">'.$VideoName.'</div>';
-						echo '<hr style="color: navy; text-align: center; width: 75%; " />';
+						$string_temp .= $VideoConvertWithTab[2]."' alt='".translate('View', $st, 'sys')." ".$VideoName."' title='".translate('View', $st, 'sys')." ".$VideoName."' /></div></div>";
+						$string_temp .= '<div style="text-align: center; font-size: .9em; margin-bottom: 10px; font-weight: normal; ">'.$VideoName.'</div>';
+						$string_temp .= '<hr style="color: navy; text-align: center; width: 75%; " />';
 					}
 				}
 				$resource = '';
-				?>
-				<table style='width: 100%'>
-					<tr style="margin-top: 8px; margin-bottom: 8px; ">
-						<?php
+						$string_temp .= "<table style='width: 100%'> <tr style='margin-top: 8px; margin-bottom: 8px; '>";
 						$c = 0;
 						for ($a = $i; $i < count($VideoConvertContents); $i++, $c++) {							// continue using $i to iterate through $VideoConvertContents
 							if (trim($VideoConvertContents[$i]) == "") {										// test for blank line at the end of the txt file
@@ -1701,49 +1600,46 @@ if (count($VideoConvertWithTab) < 3) {
 							}
 							if ($c % 4 == 0) {
 								if ($a != $i) {
-									echo '</tr>';
-									echo '<tr style="margin-top: 8px; margin-bottom: 8px; ">';
+									$string_temp .= '</tr>';
+									$string_temp .= '<tr style="margin-top: 8px; margin-bottom: 8px; ">';
 								}
 							}
 							$VideoConvertContents[$i] = str_replace("\r", "", $VideoConvertContents[$i]);		// Windows text files have a carrage return at the end.
 							$VideoConvertWithTab = explode("\t", $VideoConvertContents[$i]);					// split the line up by tabs
 							// $VideoConvertWithTab[0] = number; $VideoConvertWithTab[1] = text; $VideoConvertWithTab[2] = data filename for png or jpg; $VideoConvertWithTab[3] = URL
-							echo '<td style="width: 25%; text-align: center; vertical-align: top; ">';
-								echo "<div class='linePointer' title='".$VideoConvertWithTab[1]."'";
+							$string_temp .= '<td style="width: 25%; text-align: center; vertical-align: top; ">';
+							$string_temp .= "<div class='linePointer' title='".$VideoConvertWithTab[1]."'";
 								if (stripos($VideoConvertWithTab[3], 'http', 0) === 0) {						// returns 0 means 'http' starts at column 0. === needs to be this way (and not ==) because jPlayer wont work.
 									$resource = preg_replace(array('/^the /i', '/^a /i', '/^el /i'), '', $PlaylistVideoFilename);	// not needed but...
 									$resource = preg_replace('/^(.*[^-])+\-.*/', '$1', $resource);									// delete the first ungreedy "-" and from through $
 									$resource = preg_replace('/^(.*[^_])+_.*/', '$1', $resource);									// delete the first ungreedy "_" and from through $
 									$resource = preg_replace('/^(.*[^.])+\..*/', '$1', $resource);									// delete the first ungreedy "." and from through $
-									echo " onclick='LinkedCounter(\"".$resource."_".$counterName."_".$GetName."_".$ISO."\", \"".$VideoConvertWithTab[3]."\")'>";	// $resource = like "JESUSFilm"
+									$string_temp .= " onclick='LinkedCounter(\"".$resource."_".$counterName."_".$GetName."_".$ISO."\", \"".$VideoConvertWithTab[3]."\")'>";	// $resource = like "JESUSFilm"
 									//echo " onclick='window.open(\"".$VideoConvertWithTab[3]."\",\"_blank\")'>";
 									// onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'
 								}
 								else {
 									$SEVideoPlaylistArray[$SEVideoPlaylistIndex] = $VideoConvertWithTab[1]. '|' . $VideoConvertWithTab[2] . '|' . $VideoConvertWithTab[3];
-									echo " id='PV_".$SEVideoPlaylist."_".$SEVideoPlaylistIndex."' onclick='PlaylistVideo_$SEVideoPlaylist($SEVideoPlaylistIndex)'>";
+									$string_temp .= " id='PV_".$SEVideoPlaylist."_".$SEVideoPlaylistIndex."' onclick='PlaylistVideo_$SEVideoPlaylist($SEVideoPlaylistIndex)'>";
 									$SEVideoPlaylistIndex++;
 								}
 								if ($image == 1) {
-									echo "<img src='./data/~images/$bookName/";
+									$string_temp .= "<img src='./data/~images/$bookName/";
 								}
 								else if ($image == 0) {
-									echo "<img src='./data/$ISO/video/";
+									$string_temp .= "<img src='./data/$ISO/video/";
 								}
 								else {
-									echo "<img src='./data/~images/ScriptureAnim/";
+									$string_temp .= "<img src='./data/~images/ScriptureAnim/";
 								}
-								echo $VideoConvertWithTab[2]."' alt='".translate('View', $st, 'sys')." ".$VideoConvertWithTab[1]."' title='".translate('View', $st, 'sys')." ".$VideoConvertWithTab[1]."' /></div>";
-								echo '<div style="text-align: center; font-size: .7em; font-weight: normal; ">'.$VideoConvertWithTab[1].'</div>';
-							echo '</td>';
+								$string_temp .= $VideoConvertWithTab[2]."' alt='".translate('View', $st, 'sys')." ".$VideoConvertWithTab[1]."' title='".translate('View', $st, 'sys')." ".$VideoConvertWithTab[1]."' /></div>";
+								$string_temp .= '<div style="text-align: center; font-size: .7em; font-weight: normal; ">'.$VideoConvertWithTab[1].'</div>';
+							$string_temp .= '</td>';
 						}
 						for (; $c % 4 != 0; $c++) {
-							echo "<td>&nbsp;</td>";
+							$string_temp .= "<td>&nbsp;</td>";
 						}
-						?>
-					</tr>
-				</table>
-				<?php
+				$string_temp .= "</tr> </table>";
 				// $VideoConvertWithTab[0] = number; $VideoConvertWithTab[1] = text; $VideoConvertWithTab[2] = data filename for png or jpg; $VideoConvertWithTab[3] = URL
 				
 				/**************************************************************************************************************************************
@@ -1751,6 +1647,11 @@ if (count($VideoConvertWithTab) < 3) {
 				**************************************************************************************************************************************/
 				if (stripos($VideoConvertWithTab[3], 'http', 0) === false) {									// returns FALSE if it is not there
 					$j = 0;
+					$string_temp .= "<div id='PlaylistVideoListenNow_".$SEVideoPlaylist."' class='ourPlaylistVideoNow' style='margin-top: 0px; '>";
+					$string_temp .= "<script type='text/javascript'>";
+					$string_temp .= "$(document).ready(function(){ var currentpath = '';";
+					$string_temp .= "var myPlaylist_".$SEVideoPlaylist." = new jPlayerPlaylist({ jPlayer: '#jquery_jplayer_".$SEVideoPlaylist."', cssSelectorAncestor: '#jp_container_".$SEVideoPlaylist."'}, [";
+
 				?>
 					<div id="PlaylistVideoListenNow_<?php echo $SEVideoPlaylist; ?>" class='ourPlaylistVideoNow' style='margin-top: 0px; '>
 						<script type="text/javascript">
@@ -1763,13 +1664,7 @@ if (count($VideoConvertWithTab) < 3) {
 										<?php
 										foreach ($SEVideoPlaylistArray as $key => $SEVP) {
 											$pieces = explode('|', $SEVP);
-											?>
-											{
-												title: "<?php echo $pieces[0]; ?>",
-												m4v: "<?php echo $pieces[2]; ?>",
-												poster: "./data/~images/ScriptureAnim/<?php echo $pieces[1]; ?>"
-											},
-											<?php
+											$string_temp .= '{title: "'.$pieces[0].'", m4v: "'.$pieces[2].'", poster: "./data/~images/ScriptureAnim/'.$pieces[1].'"},';
 											$j++;
 										}
 										?>
@@ -1792,6 +1687,8 @@ if (count($VideoConvertWithTab) < 3) {
 								//myPlaylist.play(0);															// Option 1 : Plays the 1st item
 								//myPlaylist.pause(0);
 								<?php
+								$string_temp .= '], {swfPath: "_js", supplied: "m4v", size: { width: "640px", height: "360px", cssClass: "jp-video-360p" },';
+								$string_temp .= 'useStateClassSkin: true, autoBlur: false, smoothPlayBar: true, keyEnabled: true, remainingDuration: true, toggleDuration: true}); myPlaylist_<?php echo $SEVideoPlaylist; ?>.select(0);';
 								for ($a=0; $a < $j; $a++) {
 									?>
 									$("#PV_<?php echo $SEVideoPlaylist; ?>_<?php echo $a; ?>").click( function() {
@@ -1802,6 +1699,10 @@ if (count($VideoConvertWithTab) < 3) {
 										$( "#VideoDownloadButton<?php echo $SEVideoPlaylist; ?>" ).html( "<button type='button' tabindex='0' onclick='saveAsVideo(\"<?php echo $ISO; ?>\", \"<?php echo $st; ?>\", <?php echo $mobile; ?>, \"<?php echo $VideoConvertWithTab[3]; ?>\", \"<?php echo translate("Please wait!<br>Creating the ZIP file<br>which will take a while.", $st, 'sys'); ?>\")'><?php echo translate("Download this video", $st, 'sys'); ?><\/button>" );
 									});
 									<?php
+									$string_temp .= '$("#PV_'.$SEVideoPlaylist.'_'.$a.'").click( function() {myPlaylist_'.$SEVideoPlaylist.'.play('.$a.');';
+									$VideoConvertWithTab = explode("\t", $VideoConvertContents[$a+2]); 						// split the line up by tabs. $VideoConvertContents[$a+1] with title. $VideoConvertContents[$a+2] without title.
+									$string_temp .= '$( "#videoTitle'.$SEVideoPlaylist.'" ).html( "'.$VideoConvertWithTab[1].'" );';
+									$string_temp .= '$( "#VideoDownloadButton'.$SEVideoPlaylist.'" ).html( "<button type=\'button\' tabindex=\'0\' onclick=\'saveAsVideo("'.$ISO.'", "'.$st.'", '.$mobile.', "'.$VideoConvertWithTab[3].'", "'.translate("Please wait!<br>Creating the ZIP file<br>which will take a while.", $st, 'sys').'")\'>'.translate("Download this video", $st, 'sys').'<\/button>" );';
 								}
 								?>
 							});
@@ -1901,6 +1802,9 @@ if (count($VideoConvertWithTab) < 3) {
 		</tr>
 		<?php
 		$z++;
+
+
+
 	}
 }
 /*
@@ -3146,6 +3050,48 @@ if ($links && $Internet) {
 
 ?>
 </table>
+
+ <!-- Tab links -->
+<div class="tab individualLanguage">
+ 	<button class="tablinks" onclick="openTab(event, 'Read')">Read</button>
+ 	<button class="tablinks" onclick="openTab(event, 'Listen')">Listen</button>
+ 	<button class="tablinks" onclick="openTab(event, 'View')">View</button>
+	<button class="tablinks" onclick="openTab(event, 'App')">App</button>
+	<button class="tablinks" onclick="openTab(event, 'Other')">Other</button>
+	<button class="tablinks" onclick="openTab(event, 'All')">All</button>
+</div>
+
+<!-- Tab content -->
+<div id="Read" class="tabcontent">
+  	<h3>Read</h3>
+  	<p>This is where the files will be displayed, just lilke they are now.</p>
+</div>
+
+<div id="Listen" class="tabcontent">
+	<h3>Listen</h3>
+  	<p>This is where the files will be displayed, just lilke they are now.</p>
+</div>
+
+<div id="View" class="tabcontent">
+  	<h3>View</h3>
+  	<p>This is where the files will be displayed, just lilke they are now.</p>
+</div>
+
+<div id="App" class="tabcontent">
+  	<h3>App</h3>
+  	<p>This is where the files will be displayed, just lilke they are now.</p>
+</div> 
+
+<div id="Other" class="tabcontent">
+  	<h3>Other</h3>
+  	<p>This is where the files will be displayed, just lilke they are now.</p>
+</div> 
+
+<div id="All" class="tabcontent">
+  	<h3>All</h3>
+  	<p>This is where all the files will be displayed, just lilke they are now.</p>
+</div> 
+
 <br />
 </div>
 </div>
@@ -3211,6 +3157,28 @@ if ($links && $Internet) {
 			window.open("./data/<?php echo $ISO; ?>/" + subfolder + "index.html", "SABPage");
 		}
 	}
+
+
+	function openTab(evt, tabName) {
+  		// Declare all variables
+  		var i, tabcontent, tablinks;
+
+  		// Get all elements with class="tabcontent" and hide them
+  		tabcontent = document.getElementsByClassName("tabcontent");
+  		for (i = 0; i < tabcontent.length; i++) {
+  		  tabcontent[i].style.display = "none";
+  		}
+	
+  		// Get all elements with class="tablinks" and remove the class "active"
+  		tablinks = document.getElementsByClassName("tablinks");
+  		for (i = 0; i < tablinks.length; i++) {
+  		  tablinks[i].className = tablinks[i].className.replace(" active", "");
+  		}
+	
+  		// Show the current tab, and add an "active" class to the button that opened the tab
+  		document.getElementById(tabName).style.display = "block";
+  		evt.currentTarget.className += " active";
+	} 
 </script>
 
 <script type='text/javascript' language='javascript'	src="_js/user_events.js"></script>
