@@ -2925,7 +2925,7 @@ array_push($all_array, $string_temp);
 
 <br />
 </div>
-</div>
+
 
 <script>
 	function iOSAssetPackage(URL) {
