@@ -2,6 +2,10 @@
 	if (!isset($LN)) die('Hacked!');
 ?>
 
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
 <!-- These css have to be on this page! -->
 <style>
 body {
@@ -2866,12 +2870,12 @@ array_push($all_array, $string_temp);
 
  <!-- Tab links -->
 <div class="tab individualLanguage">
- 	<button class="tablinks" onclick="openTab(event, 'Read')">Read</button>
- 	<button class="tablinks" onclick="openTab(event, 'Listen')">Listen</button>
- 	<button class="tablinks" onclick="openTab(event, 'View')">View</button>
-	<button class="tablinks" onclick="openTab(event, 'App')">App</button>
-	<button class="tablinks" onclick="openTab(event, 'Other')">Other</button>
-	<button class="tablinks" onclick="openTab(event, 'All')">All</button>
+ 	<button class="tablinks" onclick="openTab(event, 'Read')"><i class="fa fa-book" style="font-size:24px;"></i></button>
+ 	<button class="tablinks" onclick="openTab(event, 'Listen')"><i class="fa fa-headphones" style="font-size:24px;"></i></button>
+ 	<button class="tablinks" onclick="openTab(event, 'View')"><i class="fa fa-television" style="font-size:24px;"></i></button>
+	<button class="tablinks" onclick="openTab(event, 'App')"><i class="fa fa-mobile" style="font-size:24px;"></i></button>
+	<button class="tablinks" onclick="openTab(event, 'Other')"><i class="fa fa-link" style="font-size:24px;"></i></button>
+	<button class="tablinks" onclick="openTab(event, 'All')" id="defaultOpen"><i class="fa fa-globe" style="font-size:24px;"></i></button>
 </div>
 
 <!-- Tab content -->
@@ -3009,7 +3013,9 @@ array_push($all_array, $string_temp);
   		// Show the current tab, and add an "active" class to the button that opened the tab
   		document.getElementById(tabName).style.display = "block";
   		evt.currentTarget.className += " active";
-	} 
+	}
+
+	document.getElementById("defaultOpen").click();
 </script>
 
 <script type='text/javascript' language='javascript'	src="_js/user_events.js"></script>
