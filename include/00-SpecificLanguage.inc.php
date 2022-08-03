@@ -2928,7 +2928,7 @@ array_push($all_array, $string_temp);
 </div> 
 
 <br />
-</div>
+
 
 
 <script>
