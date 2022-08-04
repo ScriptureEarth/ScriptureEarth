@@ -3,6 +3,7 @@
 session_start();
 /*
 Created by Scottt Starker
+Updated by Scott Starker, Lærke Roager
 AJAX from LangSearch.js
 
 Problems: TryLanguage ' should be \' 
@@ -46,6 +47,7 @@ if (strlen($TryLanguage) > 2) {
 	$response = '';
 	$MajorLanguage = '';
 	$Variant_major = '';
+
 	$ln_result = '';												// get all of the navigigatioal language fields
 	foreach($_SESSION['nav_ln_array'] as $code => $array){
 		if ($st == $array[0]){
@@ -69,7 +71,7 @@ if (strlen($TryLanguage) > 2) {
 	$ISO_only = '';
 	$Country_Total = [];
 
-	$stmt_SC = $db->prepare("SELECT DISTINCT $SpecificCountry, ISO_Country FROM scripture_main, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO_ROD_index = ?");														// create a prepared statement
+	$stmt_SC = $db->prepare("SELECT DISTINCT $SpecificCountry, ISO_Country FROM nav_ln, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO_ROD_index = ?");														// create a prepared statement
 	$stmt_c = $db->prepare("SELECT ISO_Country FROM countries WHERE $SpecificCountry = ?");
 	$stmt_Var = $db->prepare("SELECT $Variant_major FROM Variants WHERE Variant_Code = ?");
 	$stmt_alt = $db->prepare("SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = ?");
@@ -90,8 +92,10 @@ if (strlen($TryLanguage) > 2) {
 			$ROD_Code = $row['ROD_Code'];
 			$Variant_Code = $row['Variant_Code'];
 			$VD = '';
+//echo 'ISO_ROD_index: ' . $ISO_ROD_index . '<br />';
 			include './include/00-DBLanguageCountryName.inc.php';							// returns $LN
 //echo $LN . '#<br />';
+//exit;
 			//$LN = htmlspecialchars($LN, ENT_QUOTES, 'UTF-8');								// The results are wrong because it changes ' to &#039;
 			
 			//$query = "SELECT DISTINCT $SpecificCountry, ISO_countries FROM scripture_main, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO_ROD_index = $ISO_ROD_index";
@@ -193,6 +197,7 @@ if (strlen($TryLanguage) > 2) {
 			$ISO_only = $ISO;
 		}
 	}
+//echo $country . '#<br />';
 	
 	$RD = ['�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'ae', '�' => 'AE', '�' => 'ae', '�' => 'AE', '�' => 'c', '�' => 'C', '�' => 'D', '�' => 'dh', '�' => 'Dh', '�' => 'e', '�' => 'E', '�' => 'e', '�' => 'E', '�' => 'e', '�' => 'E', '�' => 'e', '�' => 'E', '�' => 'i', '�' => 'I', '�' => 'i', '�' => 'I', '�' => 'i', '�' => 'I', '�' => 'i', '�' => 'I', '�' => 'n', '�' => 'N', '�' => 'o', '�' => 'O', '�' => 'o', '�' => 'O', '�' => 'o', '�' => 'O', '�' => 'o', '�' => 'O', '�' => 'oe', '�' => 'OE', '�' => 'oe', '�' => 'OE', '�' => 's', '�' => 'S', '�' => 'SS', '�' => 'u', '�' => 'U', '�' => 'u', '�' => 'U', '�' => 'u', '�' => 'U', '�' => 'ue', '�' => 'UE', '�' => 'y', '�' => 'Y', '�' => 'y', '�' => 'Y', '�' => 'z', '�' => 'Z'];
 	if (preg_match('/[��������������������������]/', $TryLanguage)) {							// diacritic removal
@@ -203,14 +208,15 @@ if (strlen($TryLanguage) > 2) {
 
 	// Try languages names:
 	//$query="SELECT DISTINCT $MajorLanguage, ISO, ROD_Code, Variant_Code, ISO_ROD_index FROM LN_English WHERE ISO_ROD_index IS NOT NULL ORDER BY $MajorLanguage";
-	$query="SELECT DISTINCT ISO_ROD_index, ISO, ROD_Code, Variant_Code, ".$ln_result."Def_LN FROM nav_ln ORDER BY ISO";
+//echo $ln_result . '<br />';
+	$query="SELECT * FROM nav_ln ORDER BY ISO";
 	if ($result = $db->query($query)) {
 		$LN = '';
 		while ($row = $result->fetch_assoc()) {													// All ISOs + ROD codes + variants
 			$ISO_ROD_index = $row['ISO_ROD_index'];
 			include './include/00-DBLanguageCountryName.inc.php';								// returns LN
+//echo $result->num_rows . '<br />';
 			//$LN = htmlspecialchars($LN, ENT_QUOTES, 'UTF-8');									// language name. The results are wrong because it changes ' to &#039;
-
 			// Author: 'ChickenFeet'
 			$temp_LN = CheckLetters($LN);														// diacritic removal
 			
@@ -221,6 +227,8 @@ if (strlen($TryLanguage) > 2) {
 			$temp_TL = str_replace('.', '\.', $temp_TL);
 			$test = preg_match("/\b".$temp_TL.'/ui', $temp_LN, $match);						// match the beginning of the word(s) with TryLanguage from the user
 
+//echo '$LN: '.$LN . '<br />';
+//exit;
 			if ($test === 1) {
 				$ISO = $row['ISO'];
 				if (strlen($TryLanguage) == 3 && $ISO == $ISO_only) {							// if the length of $TryLanguage is 3 and the top section is there
@@ -323,7 +331,6 @@ if (strlen($TryLanguage) > 2) {
 			}
 		}
 	}
-
 	// Try alt_lang_names:
 	// REGEXP '[[:<:]]... = in PHP '\b... (word boundries)
 	if (empty($langISOrod)) {

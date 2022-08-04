@@ -383,7 +383,6 @@ session_start();
 					$result_country->data_seek(0);
 					$r_Temp = $result_country->fetch_assoc();
 					
-					
 					foreach ($_SESSION['nav_ln_array'] as $code => $array){
 						$html = "<div class='MajorLang'>In <span>".strtoupper($array[1])."</span>, enter the Language Name: <input type='text' name='".$array[1]."_lang_name' id='".$array[1]."_lang_name' size='35' style='color: navy; font-weight: bold; ' value=\"switch\" /></div>";
 						if (isset($_POST[$array[1].'_lang_name'])){

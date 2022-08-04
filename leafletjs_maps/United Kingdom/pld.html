@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Language map of United Kingdom - Leaflet</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" type="../../image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="../../_css/leaflet.css" />
+    <script src="../../_js/leaflet.min.js"></script>
+</head>
+<body>
+<div id="mapid" style="width: 600px; height: 400px; margin: auto; margin-right: auto; margin-top: 100px; "></div>
+<script>
+	var mymap = L.map('mapid').setView([51.7866, -1.39091], 9);
+
+// blue icon is the default
+
+	var myRedIcon = L.icon({
+		iconUrl: '../../images/myRedIcon.png'
+	});
+
+	var myPurpleIcon = L.icon({
+		iconUrl: '../../images/myPurpleIcon.png'
+	});
+
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 16,
+		attribution: 'Map languages: © <a href="https://www.scriptureearth.org/00i-Scripture_Index.php">Scripture Earth</a>, ' +
+			'Map data: © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery: © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/streets-v11'
+	}).addTo(mymap);
+		L.marker([51.6688, -0.4431]).addTo(mymap)
+	.bindPopup("<b>British Sign Language - ISO 639-3: bfi</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=bfi'>British Sign Language</a>)")
+	L.marker([50.5233, -4.18619]).addTo(mymap)
+	.bindPopup("<b>Cornish - ISO 639-3: cor</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=cor'>Cornish</a>)")
+	L.marker([52, -4]).addTo(mymap)
+	.bindPopup("<b>Welsh - ISO 639-3: cym</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=cym'>Welsh</a>)")
+	L.marker([53, -1]).addTo(mymap)
+	.bindPopup("<b>English - ISO 639-3: eng</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=eng'>English</a>)")
+	L.marker([48, 2]).addTo(mymap)
+	.bindPopup("<b>French - ISO 639-3: fra</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=fra'>French</a>)")
+	L.marker([56.7574, -5.24366], {icon: myPurpleIcon}).addTo(mymap)
+	.bindPopup("<b>Gaelic, Scottish - ISO 639-3: gla</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=gla'>Gaelic, Scottish</a>)")
+	L.marker([53.2186, -7.61509]).addTo(mymap)
+	.bindPopup("<b>Gaelic, Irish - ISO 639-3: gle</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=gle'>Gaelic, Irish</a>)")
+	L.marker([51.7866, -1.39091], {icon: myRedIcon}).addTo(mymap)
+	.bindPopup("<b>Polari - ISO 639-3: pld</b>")
+	L.marker([51.75, -2.56]).addTo(mymap)
+	.bindPopup("<b>Angloromani - ISO 639-3: rme</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=rme'>Angloromani</a>)")
+	L.marker([52.1166, -3.7888]).addTo(mymap)
+	.bindPopup("<b>Welsh Romani - ISO 639-3: rmw</b>")
+	L.marker([46.09, 18.16]).addTo(mymap)
+	.bindPopup("<b>Romani, Vlach - ISO 639-3: rmy</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=rmy'>Romani, Vlach</a>)")
+	L.marker([55.886945, -3.710133]).addTo(mymap)
+	.bindPopup("<b>Scots - ISO 639-3: sco</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=sco'>Scots</a>)")
+	L.marker([55.9829, -4.38593]).addTo(mymap)
+	.bindPopup("<b>Traveller Scottish - ISO 639-3: trl</b>")
+
+	var popup = L.popup();
+</script>
+</body>
+</html>

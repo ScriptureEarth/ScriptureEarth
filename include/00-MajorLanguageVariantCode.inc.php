@@ -19,5 +19,9 @@ switch ($st) {
 		break;
 	case "nld":
 		break;
+	case "cmn":
+		break;
+	case "default":
+		break;
 }
 ?>

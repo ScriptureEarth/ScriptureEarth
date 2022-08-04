@@ -1,6 +1,5 @@
-// JavaScript Document
 // Created by Scott Starker
-// Updated by Lærke Roager
+// Updated by Scott Starker, Lærke Roager
 
 /*
 	variables are defined in LSearch.php:

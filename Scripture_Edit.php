@@ -1,8 +1,4 @@
 <?php
-// Start the session
-session_start();
-?>
-<?php
 // Change PHP.ini from max_input_vars = 1000 to max_input_vars = 3000 because POST has to be set for 3000!
 
 /*************************************************************************************************************************************
@@ -142,7 +138,7 @@ function NT_Test($PDF, $NT_Index) {
         <div id='iso_response'></div>
 		<?php
 		echo "<h2><span style='color: red; font-size: bold; '>Or</span> Choose the 'pencil' to edit</h2>";
-		$query = "SELECT DISTINCT * FROM scripture_main";
+		$query = "SELECT DISTINCT * FROM nav_ln ORDER BY ISO, ROD_Code";			// get all of the navigational language names
 		$result = $db->query($query);
 		//$num = $result->num_rows;
 		/**********************************************************************************************************************
@@ -153,14 +149,14 @@ function NT_Test($PDF, $NT_Index) {
 		$db->query('CREATE TEMPORARY TABLE LN_Temp (iso VARCHAR(3) NOT NULL, rod VARCHAR(5) NOT NULL, idx INT NULL, LN VARCHAR(50) NOT NULL) ENGINE = MEMORY CHARSET = utf8') or die ('Query failed: ' . $db->error . '</body></html>');
 
 		$stmt = $db->prepare("INSERT INTO LN_Temp (iso, rod, idx, LN) VALUES (?, ?, ?, ?)");
-		// $result->data_seek(0);					// just to make sure the record was on the first one
+		// $result->data_seek(0);									// just to make sure the record was on the first one
 		while($row = $result->fetch_assoc()) {
 			$iso = $row['ISO'];									// ISO
 			$rod = $row['ROD_Code'];							// ROD_Code
 			$var = $row['Variant_Code'];						// Variant_Code
 			$idx = $row['ISO_ROD_index'];						// ISO_ROD_index
 			
-			$ISO_ROD_index = (string)$idx;						// make sure that00-DBLanguageCountryName.inc.php will work correctly
+			$ISO_ROD_index = (string)$idx;								// make sure that 00-DBLanguageCountryName.inc.php will work correctly
 			include './include/00-DBLanguageCountryName.inc.php';
 	
 			//$LN = check_input($LN);
@@ -376,9 +372,30 @@ function NT_Test($PDF, $NT_Index) {
 			// Displays a list of error messages
 			echo '<ul style="color: red; "><li>'.implode('</li><li>', $messages).'</li></ul>';
 		}
-		//echo "<br />";
-		//echo "'".$count_failed."'";
-		echo '<br />';
+
+$query="SELECT DISTINCT * FROM nav_ln WHERE ISO_ROD_index = $idx";			// boolean for navigational languagae names
+$result_nav_ln=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
+if ($db->error) {
+	die ("navigational language name is not found.<br />" . $db->error . '</body></html>');
+}
+$nav_ln_row = $result_nav_ln->fetch_assoc();
+
+$def_LN = $nav_ln_row['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
+		
+foreach ($_SESSION['nav_ln_array'] as $code => $array){
+	${"LN_".$array[1]} = $nav_ln_row['LN_'.$array[1]];		// boolean
+	${$array[1]."_lang_name"}='';
+	if (${"LN_".$array[1]}) {								// if the English then the default langauge
+		$query="SELECT LN_".$array[1]." FROM LN_".$array[1]." WHERE ISO_ROD_index = $idx";
+		$result_LN=$db->query($query);
+		if ($result_LN->num_rows > 0) {
+			$temp_LN = $result_LN->fetch_assoc();
+			${$array[1]."_lang_name"} = $temp_LN['LN_'.$array[1]];
+			// Cross Site Scripting (XSS) attack happens where client side code (usually JavaScript) gets injected into the output of your PHP script. The next line cleans it up.
+			${$array[1]."_lang_name"} = htmlspecialchars(${$array[1]."_lang_name"}, ENT_QUOTES, 'UTF-8');
+		}
+	}
+}
 		
 		$query="SELECT DISTINCT * FROM scripture_main WHERE ISO_ROD_index = $idx";
 		$result=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
@@ -386,9 +403,6 @@ function NT_Test($PDF, $NT_Index) {
 			die ("'scripture_main' ISO_ROD_index is not found.<br />" . $db->error . '</body></html>');
 		}
 		$SM_row = $result->fetch_assoc();
-		//$num=mysql_num_rows($result);
-
-		
 		$iso = $SM_row['ISO'];									// ISO
 		$rod = $SM_row['ROD_Code'];								// ROD_Code
 		$var = $SM_row['Variant_Code'];							// Variant_Code to the language name
@@ -396,26 +410,9 @@ function NT_Test($PDF, $NT_Index) {
 		$AddTheBibleIn = $SM_row['AddTheBibleIn'];				// boolean
 		$AddTheScriptureIn = $SM_row['AddTheScriptureIn'];		// boolean
 		$BibleIs = $SM_row['BibleIs'];							// 1, 2 or 3
-		foreach ($_SESSION['nav_ln_array'] as $code => $array){
-			${"LN_".$array[1]} = $SM_row['LN_'.$array[1]];		// boolean
-			${$array[1]."_lang_name"}='';
-		} // What to do with the chinese one??
-		
-		$def_LN = $SM_row['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
-		
-		foreach ($_SESSION['nav_ln_array'] as $code => $array){
-			if (${"LN_".$array[1]}) {							// if the English then the default langauge
-				$query="SELECT LN_".$array[1]." FROM LN_".$array[1]." WHERE ISO_ROD_index = $idx";
-				$result_LN=$db->query($query);
-				if ($result_LN->num_rows > 0) {
-					$temp_LN = $result_LN->fetch_assoc();
-					${$array[1]."_lang_name"} = $temp_LN['LN_'.$array[1]];
-					// Cross Site Scripting (XSS) attack happens where client side code (usually JavaScript) gets injected into the output of your PHP script. The next line cleans it up.
-					${$array[1]."_lang_name"} = htmlspecialchars(${$array[1]."_lang_name"}, ENT_QUOTES, 'UTF-8');
-				}
-			}
-		}
 		?>
+
+		<br />
 		<form name='myForm' action='Scripture_Edit.php?idx=<?php echo $idx; ?>' method='post'>
 		<div class='enter' style='color: navy; font-weight: bold; '>ISO ROD Code: <?php echo $iso . " " . $rod; ?>&nbsp;&nbsp;&nbsp;&nbsp;(idx: <?php echo $idx; ?>)
         <?php
@@ -538,49 +535,53 @@ function NT_Test($PDF, $NT_Index) {
 			else {
 			}
 /************************************************
-	Language Names
+	Navigational Language Names
 *************************************************/
 			?>
 		</table>
 		<br /><br />
 
 		<?php
-		foreach ($_SESSION['nav_ln_array'] as $code => $array){
-			$html = "<div class='enter' style='font-size: 10pt; '>In <span style='font-size: 12pt; font-weight: bold; '>".strtoupper($array[1])."</span>, enter the Language Name: <input type='text' name='".$array[1]."_lang_name' id='".$array[1]."_lang_name' size='35' style='color: navy; font-weight: bold; ' value=\"switch\" /></div>";
-			if (isset($_POST[$array[1].'_lang_name'])){
-				$result = str_replace('switch', $_POST[$array[1].'_lang_name'], $html);
-			} else {
-				$result = str_replace('switch', ${$array[1].'_lang_name'}, $html);
-			}
-			echo $result;
-		}
-		?>
-		
+foreach ($_SESSION['nav_ln_array'] as $code => $array){
+	$html = "<div class='enter' style='font-size: 10pt; '>In <span style='font-size: 12pt; font-weight: bold; '>".strtoupper($array[1])."</span>, enter the Language Name: <input type='text' name='".$array[1]."_lang_name' id='".$array[1]."_lang_name' size='35' style='color: navy; font-weight: bold; ' value=\"switch\" /></div>";
+	if (isset($_POST[$array[1].'_lang_name'])){
+		$result = str_replace('switch', $_POST[$array[1].'_lang_name'], $html);
+	} else {
+		$result = str_replace('switch', ${$array[1].'_lang_name'}, $html);
+	}
+	echo $result;
+}
+
+/************************************************
+	Default Navigational Language Name
+*************************************************/
+?>
 		<br />
 		<p>Select the default major langauge <span style="font-size: 10pt; ">(i.e. the major language from above)</span>: 
 		<select name="DefaultLang" id="DefaultLang">
-		<?php if (isset($_POST['DefaultLang'])) { 
-			foreach ($_SESSION['nav_ln_array'] as $code => $array){
-				$html = "<option value=\"".$array[1]."Lang\" switch >".$array[1]."</option>";
-				if ($_POST['DefaultLang'] == $array[1].'Lang'){
-					$result = str_replace('switch', " selected='yes'", $html);
-				} else {
-					$result = str_replace('switch', '', $html);
-				}
-				echo $result;
-			}
+<?php
+if (isset($_POST['DefaultLang'])) { 
+	foreach ($_SESSION['nav_ln_array'] as $code => $array){
+		$html = "<option value=\"".$array[1]."Lang\" switch >".$array[1]."</option>";
+		if ($_POST['DefaultLang'] == $array[1].'Lang'){
+			$result = str_replace('switch', " selected='yes'", $html);
+		} else {
+			$result = str_replace('switch', '', $html);
 		}
-		else {
-			foreach ($_SESSION['nav_ln_array'] as $code => $array){
-				$html = "<option value=\"".$array[1]."Lang\" switch >".$array[1]."</option>";
-				if ($def_LN == $array[3]){
-					$result = str_replace('switch', " selected='yes'", $html);
-				} else {
-					$result = str_replace('switch', '', $html);
-				}
-				echo $result;
-			}
+		echo $result;
+	}
+}
+else {
+	foreach ($_SESSION['nav_ln_array'] as $code => $array){
+		$html = "<option value=\"".$array[1]."Lang\" switch >".$array[1]."</option>";
+		if ($def_LN == $array[3]){
+			$result = str_replace('switch', " selected='yes'", $html);
+		} else {
+			$result = str_replace('switch', '', $html);
 		}
+		echo $result;
+	}
+}
 		?>
 		</select>
 		</p>
@@ -4274,7 +4275,7 @@ function Switch(number, Beg) {
 			}
 		}
 	}
-	ajaxCountryRequest.open("GET", "00-BegList.Edit.php?st=<?php echo $st; ?>&MajorLanguage=<?php echo $MajorLanguage; ?>&SpecificCountry=<?php echo $SpecificCountry; ?>&Scriptname=<?php echo $Scriptname; ?>&b=" + Beg + "&gn=" + GN + "&n="+number, true);
+	ajaxCountryRequest.open("GET", "LN_English);
 	ajaxCountryRequest.send(null);
 	$("#wait").css("display","none");
 }

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Language map of Netherlands - Leaflet</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" type="../../image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="../../_css/leaflet.css" />
+    <script src="../../_js/leaflet.min.js"></script>
+</head>
+<body>
+<div id="mapid" style="width: 600px; height: 400px; margin: auto; margin-right: auto; margin-top: 100px; "></div>
+<script>
+	var mymap = L.map('mapid').setView([51.0754, 3.11345], 9);
+
+// blue icon is the default
+
+	var myRedIcon = L.icon({
+		iconUrl: '../../images/myRedIcon.png'
+	});
+
+	var myPurpleIcon = L.icon({
+		iconUrl: '../../images/myPurpleIcon.png'
+	});
+
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 16,
+		attribution: 'Map languages: © <a href="https://www.scriptureearth.org/00i-Scripture_Index.php">Scripture Earth</a>, ' +
+			'Map data: © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery: © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/streets-v11'
+	}).addTo(mymap);
+		L.marker([52.1251, 4.91133]).addTo(mymap)
+	.bindPopup("<b>Dutch Sign Language - ISO 639-3: dse</b>")
+	L.marker([53.143, 5.86091]).addTo(mymap)
+	.bindPopup("<b>Frisian - ISO 639-3: fry</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=fry'>Frisian</a>)")
+	L.marker([53.2842, 6.698]).addTo(mymap)
+	.bindPopup("<b>Gronings - ISO 639-3: gos</b>")
+	L.marker([51.015, 5.87705]).addTo(mymap)
+	.bindPopup("<b>Limburgish - ISO 639-3: lim</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=lim'>Limburgish</a>)")
+	L.marker([52, 5]).addTo(mymap)
+	.bindPopup("<b>Dutch - ISO 639-3: nld</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=nld'>Dutch</a>)")
+	L.marker([48.7, 9.4], {icon: myPurpleIcon}).addTo(mymap)
+	.bindPopup("<b>Romani, Sinti - ISO 639-3: rmo</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=rmo'>Romani, Sinti</a>)")
+	L.marker([46.09, 18.16]).addTo(mymap)
+	.bindPopup("<b>Romani, Vlach - ISO 639-3: rmy</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=rmy'>Romani, Vlach</a>)")
+	L.marker([51.0754, 3.11345], {icon: myRedIcon}).addTo(mymap)
+	.bindPopup("<b>Western Flemish - ISO 639-3: vls</b>")
+	L.marker([51.4981, 3.85428]).addTo(mymap)
+	.bindPopup("<b>Zeeuws - ISO 639-3: zea</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=zea'>Zeeuws</a>)")
+
+	var popup = L.popup();
+</script>
+</body>
+</html>

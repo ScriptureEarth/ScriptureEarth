@@ -93,23 +93,33 @@ function check_input($value) {
 				}
 			}
 
-// major language
-
-			foreach ($_SESSION['nav_ln_array'] as $code => $array){
+// Specific Language Name for the navigational Language Names
+			$no_ln_missing = 0;
+			foreach ($_SESSION['nav_ln_array'] as $code => $array){									// $array[1] = English, Chinese, etc.
 				$inputs[$array[1].'_lang_name'] = check_input($_POST[$array[1]."_lang_name"]);
-				if ($inputs[$array[1].'_lang_name'] != '') $inputs['LN_'.$array[1].'Bool'] = 1; else $inputs['LN_'.$array[1].'Bool'] = 0;
+				if ($inputs[$array[1].'_lang_name'] != '') {
+					$inputs['LN_'.$array[1].'Bool'] = 1;
+				}
+				else {
+					$inputs['LN_'.$array[1].'Bool'] = 0;
+					$no_ln_missing++;
+				}
 			}
 
+			if ($no_ln_missing == count($_SESSION['nav_ln_array'])) {
+				$count_failed++;
+				$messages[] = "No Language Names are found.";
+			}
 			
 			$z = 1;
-			if ($inputs['Eng_country-1'] != "") {
+			if ($inputs['Eng_country-1'] != '') {
 				$query="SELECT ISO_Country FROM countries WHERE English=?";
 				$stmt=$db->prepare($query);															// create a prepared statement
 				while ($z < $i) {
 					$temp=$inputs["Eng_country-".(string)$z];
 					//$query="SELECT ISO_Country FROM countries WHERE English='$temp'";
 					//$result=$db->query($query);
-					$stmt->bind_param("s", $temp);													// bind parameters for markers								// 
+					$stmt->bind_param("s", $temp);													// bind parameters for markers
 					$stmt->execute();																// execute query
 					$result = $stmt->get_result();													// instead of bind_result (used for only 1 record):
 					$num=$result->num_rows;
@@ -126,17 +136,6 @@ function check_input($value) {
 				}
 				$stmt->close();
 				$inputs['ISO_countries'] = --$z;
-			}
-			$no_ln_missing = 0;
-			foreach ($_SESSION['nav_ln_array'] as $code => $array){
-				if (!$inputs['LN_'.$array[1].'Bool']){
-					$no_ln_missing++;
-				}
-			}
-
-			if ($no_ln_missing == count($_SESSION['nav_ln_array'])) {
-				$count_failed++;
-				$messages[] = "No Language Names are found.";
 			}
 			
 			$DefaultLang = $_POST["DefaultLang"];
