@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Language map of Armenia - Leaflet</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" type="../../image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="../../_css/leaflet.css" />
+    <script src="../../_js/leaflet.min.js"></script>
+</head>
+<body>
+<div id="mapid" style="width: 600px; height: 400px; margin: auto; margin-right: auto; margin-top: 100px; "></div>
+<script>
+	var mymap = L.map('mapid').setView([40.1002, 44.4767], 9);
+
+// blue icon is the default
+
+	var myRedIcon = L.icon({
+		iconUrl: '../../images/myRedIcon.png'
+	});
+
+	var myPurpleIcon = L.icon({
+		iconUrl: '../../images/myPurpleIcon.png'
+	});
+
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 16,
+		attribution: 'Map languages: © <a href="https://www.scriptureearth.org/00i-Scripture_Index.php">Scripture Earth</a>, ' +
+			'Map data: © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery: © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/streets-v11'
+	}).addTo(mymap);
+		L.marker([40.1002, 44.4767], {icon: myRedIcon}).addTo(mymap)
+	.bindPopup("<b>Armenian Sign Language - ISO 639-3: aen</b>")
+	L.marker([36.75, 43]).addTo(mymap)
+	.bindPopup("<b>Assyrian - ISO 639-3: aii</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=aii'>Assyrian</a>)")
+	L.marker([40.97768, 46.4737]).addTo(mymap)
+	.bindPopup("<b>Azerbaijani, North - ISO 639-3: azj</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=azj'>Azerbaijani, North</a>)")
+	L.marker([40, 45], {icon: myPurpleIcon}).addTo(mymap)
+	.bindPopup("<b>Armenian - ISO 639-3: hye</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=hye'>Armenian</a>)")
+	L.marker([37, 43]).addTo(mymap)
+	.bindPopup("<b>Kurdish Kurmanji - ISO 639-3: kmr</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=kmr'>Kurdish Kurmanji</a>)")
+	L.marker([52.8548, 45.3901]).addTo(mymap)
+	.bindPopup("<b>Erzya - ISO 639-3: myv</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=myv'>Erzya</a>)")
+	L.marker([41.599419, 44.094985]).addTo(mymap)
+	.bindPopup("<b>Lomavren - ISO 639-3: rmi</b>")
+	L.marker([40.1897, 44.4839], {icon: myPurpleIcon}).addTo(mymap)
+	.bindPopup("<b>Armenian, Western - ISO 639-3: hyw</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=hyw'>Armenian, Western</a>)")
+
+	var popup = L.popup();
+</script>
+</body>
+</html>

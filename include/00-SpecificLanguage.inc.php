@@ -2870,13 +2870,13 @@ array_push($all_array, $string_temp);
 
  <!-- Tab links -->
 <div class="tab individualLanguage">
- 	<button class="tablinks" onclick="openTab(event, 'Read')"><i class="fa fa-file-text-o" style="font-size:28px;"></i></button>
- 	<button class="tablinks" onclick="openTab(event, 'Listen')"><i class="fa fa-headphones" style="font-size:28px;"></i></button>
- 	<button class="tablinks" onclick="openTab(event, 'View')"><i class="fa fa-film" style="font-size:28px;"></i></button>
-	<button class="tablinks" onclick="openTab(event, 'App')"><i class="fa fa-mobile" style="font-size:28px;"></i></button>
-	<button class="tablinks" onclick="openTab(event, 'Other')"><i class="fa fa-link" style="font-size:28px;"></i></button>
-	<button class="tablinks" onclick="openTab(event, 'All')" id="defaultOpen"><i class="fa fa-th" style="font-size:28px;"></i></button>
-	<!--button class="tablinks" onclick="openTab(event, 'Map')" id="defaultOpen"><i class="fa fa-map-marker" style="font-size:28px;"></i></button-->
+ 	<button class="tablinks" onclick="openTab(event, 'Read')"><i class="fa fa-file-text-o" style="font-size:28px;"></i><br/>Text</button>
+ 	<button class="tablinks" onclick="openTab(event, 'Listen')"><i class="fa fa-headphones" style="font-size:28px;"></i><br/>Audio</button>
+ 	<button class="tablinks" onclick="openTab(event, 'View')"><i class="fa fa-film" style="font-size:28px;"></i><br/>Video</button>
+	<button class="tablinks" onclick="openTab(event, 'App')"><i class="fa fa-mobile" style="font-size:28px;"></i><br/>App</button>
+	<button class="tablinks" onclick="openTab(event, 'Other')"><i class="fa fa-link" style="font-size:28px;"></i><br/>Other</button>
+	<button class="tablinks" onclick="openTab(event, 'All')" id="defaultOpen"><i class="fa fa-th" style="font-size:28px;"></i><br/>All</button>
+	<button class="tablinks" onclick="openTab(event, 'Map')" id="defaultOpen"><i class="fa fa-map-marker" style="font-size:28px;"></i><br/>Map</button>
 </div>
 
 <!-- Tab content -->
@@ -2928,9 +2928,9 @@ array_push($all_array, $string_temp);
 	?>
 </div> 
 
-<!--div id="Map" class="tabcontent">
-	<embed type="text/html" src="https://scriptureearth.org/leafletjs_maps/Mexico/cnl.html"  width="500" height="200">	
-</div-->
+<div id="Map" class="tabcontent" style="align-content:center">
+	<iframe src="..\leafletjs_maps\Mexico\cnl.html" title="Map" width="60%" height="60%" ></iframe> 
+</div>
 
 <br />
 

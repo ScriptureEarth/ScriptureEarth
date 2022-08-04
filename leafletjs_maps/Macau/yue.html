@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Language map of Macau - Leaflet</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" type="../../image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="../../_css/leaflet.css" />
+    <script src="../../_js/leaflet.min.js"></script>
+</head>
+<body>
+<div id="mapid" style="width: 600px; height: 400px; margin: auto; margin-right: auto; margin-top: 100px; "></div>
+<script>
+	var mymap = L.map('mapid').setView([23, 113], 9);
+
+// blue icon is the default
+
+	var myRedIcon = L.icon({
+		iconUrl: '../../images/myRedIcon.png'
+	});
+
+	var myPurpleIcon = L.icon({
+		iconUrl: '../../images/myPurpleIcon.png'
+	});
+
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 16,
+		attribution: 'Map languages: © <a href="https://www.scriptureearth.org/00i-Scripture_Index.php">Scripture Earth</a>, ' +
+			'Map data: © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery: © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/streets-v11'
+	}).addTo(mymap);
+		L.marker([40.0209, 116.228]).addTo(mymap)
+	.bindPopup("<b>Chinese, Mandarin - ISO 639-3: cmn</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=cmn'>Chinese, Mandarin</a>)")
+	L.marker([22.1902, 113.5379]).addTo(mymap)
+	.bindPopup("<b>Macanese - ISO 639-3: mzs</b>")
+	L.marker([24.5, 118.17]).addTo(mymap)
+	.bindPopup("<b>Taiwanese (Min Nan) - ISO 639-3: nan</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=nan'>Taiwanese (Min Nan)</a>)")
+	L.marker([39.91, -8.1]).addTo(mymap)
+	.bindPopup("<b>Portuguese - ISO 639-3: por</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=por'>Portuguese</a>)")
+	L.marker([23, 113], {icon: myRedIcon}).addTo(mymap)
+	.bindPopup("<b>Chinese, Cantonese - ISO 639-3: yue</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=yue'>Chinese, Cantonese</a>)")
+
+	var popup = L.popup();
+</script>
+</body>
+</html>
