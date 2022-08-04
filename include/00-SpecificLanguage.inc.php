@@ -1311,7 +1311,7 @@ if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 				$string_temp .= "</td>";
 				$string_temp .= "<td>";
 					$string_temp .= "<div class='linePointer' title='".translate('Download the audio Old Testament files.', $st, 'sys')."' onclick='OTTableClick()'>".translate('Download', $st, 'sys')." ".translate('the Old Testament audio files (MP3)', $st, 'sys')."</div>";
-							$string_temp .= "</td> </tr> <tr> <td colspan='2' width='100%'> <form> <table id='OTTable'> <tr> <td colspan='4' width='100%'>";
+							$string_temp .= "</td> </tr> <tr> <td style='width: 45px; '> <form> <table id='OTTable'> <tr> <td colspan='4' width='100%'>";
 							$string_temp .= "<input style='float: right; margin-top: 0px; margin-right: 20px; font-size: 11pt; font-weight: bold; ' type='button' value='".translate('Download Selected OT Audio', $st, 'sys')."' onclick='OTAudio(\"$st\", \"$ISO\", \"$ROD_Code\", \"$mobile\", \"".translate('Please wait!<br />Creating the ZIP file<br />which will take a while.', $st, 'sys')."\")' />";
 					$string_temp .= "<div id='OT_Download_MB' style='float: right; vertical-align: bottom; margin-top: 6px; '></div> </td> </tr>";
 					$media_index = 4;
@@ -1369,7 +1369,7 @@ if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 				$string_temp .= "</td>";
 				$string_temp .= "<td>";
 					$string_temp .= "<div class='linePointer' title='".translate('Download the audio New Testament files.', $st, 'sys')."' onclick='NTTableClick()'>".translate('Download', $st, 'sys')." ".translate('the New Testament audio files (MP3)', $st, 'sys')."</div>";
-							$string_temp .= "</td> </tr> <tr> <td colspan='2' width='100%' style='margin-bottom: -50px; '> <form> <table id='NTTable' style='margin-bottom: 15px; width: 100%; '> <tr> <td colspan='4' width='100%'>";
+							$string_temp .= "</td> </tr> <tr> <td style='width: 45px; '> <form> <table id='NTTable' style='margin-bottom: 15px; width: 100%; '> <tr> <td colspan='4' width='100%'>";
 							$string_temp .= "<input style='float: right; margin-top: 0px; margin-right: 20px; font-size: 11pt; font-weight: bold; ' type='button' value='".translate('Download Selected NT Audio', $st, 'sys')."' onclick='NTAudio(\"$st\", \"$ISO\", \"$ROD_Code\", \"$mobile\", \"".translate('Please wait!<br />Creating the ZIP file<br />which will take a while.', $st, 'sys')."\")' />";
 					$string_temp .= "<div id='NT_Download_MB' style='float: right; vertical-align: bottom; margin-top: 6px; '></div> </td> </tr>";
 					$media_index = 4;
@@ -2875,7 +2875,7 @@ array_push($all_array, $string_temp);
  	<button class="tablinks" onclick="openTab(event, 'View')"><i class="fa fa-film" style="font-size:28px;"></i><br/>Video</button>
 	<button class="tablinks" onclick="openTab(event, 'App')"><i class="fa fa-mobile" style="font-size:28px;"></i><br/>App</button>
 	<button class="tablinks" onclick="openTab(event, 'Other')"><i class="fa fa-link" style="font-size:28px;"></i><br/>Other</button>
-	<button class="tablinks" onclick="openTab(event, 'All')" id="defaultOpen"><i class="fa fa-th" style="font-size:28px;"></i><br/>All</button>
+	<button class="tablinks" onclick="openTab(event, 'All')" ><i class="fa fa-th" style="font-size:28px;"></i><br/>All</button>
 	<button class="tablinks" onclick="openTab(event, 'Map')" id="defaultOpen"><i class="fa fa-map-marker" style="font-size:28px;"></i><br/>Map</button>
 </div>
 
@@ -2928,8 +2928,8 @@ array_push($all_array, $string_temp);
 	?>
 </div> 
 
-<div id="Map" class="tabcontent" style="align-content:center">
-	<iframe src="..\leafletjs_maps\Mexico\cnl.html" title="Map" width="60%" height="60%" ></iframe> 
+<div id="Map" class="tabcontent" >
+	<iframe src="..\leafletjs_maps\Mexico\cnl.html" title="Map" width="100%" height="550"></iframe> 
 </div>
 
 <br />
