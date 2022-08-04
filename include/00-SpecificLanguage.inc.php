@@ -402,7 +402,7 @@ if ($SAB) {
 			$preScriptoria=trim($row_sub['pre_scriptoria']);
 			if ($SABurl != '') {
 				$string_temp = '<tr>';
-					$string_temp .= '<td>';
+					$string_temp .= '<td style="width: 45px">';
 						$string_temp .= "<div class='linePointer' onclick='SAB_Scriptoria_Other(\"$SABurl\")'><img class='iconActions'";
 						$string_temp .= "src='../images/SAB-readListen-icon.png' alt='".translate('Read/Listen/View', $st, 'sys')."' title='".translate('Read/Listen/View', $st, 'sys')."' /></div>";
 					$string_temp .= '</td>';
@@ -456,7 +456,7 @@ if ($SAB) {
 					$OT_SAB_Book_Chapter = [];
 					$OT_SAB_a_index = 0;
 							$string_temp = '<tr>';
-							$string_temp .= '<td>';
+							$string_temp .= '<td style="width: 45px;">';
 							$string_temp .= "<div class='linePointer' id='OT_SABRL_a'><img class='iconActions'";
 							if ($SAB & 2) {
 								$string_temp .= "src='../images/SAB-readListen-icon.png' alt='".translate('Text with audio', $st, 'sys')."' title='".translate('Text with audio', $st, 'sys')."'";
@@ -503,7 +503,7 @@ if ($SAB) {
 					$NT_SAB_Book_Chapter = [];
 					$NT_SAB_a_index = 0;
 							$string_temp = '<tr>';
-							$string_temp .= '<td>';
+							$string_temp .= '<td style="width: 45px;">';
 							$string_temp .= "<div class='linePointer' id='NT_SABRL_a'><img class='iconActions'";
 							if ($SAB & 1) {
 								$string_temp .= "src='../images/SAB-readListen-icon.png' alt='".translate('Text with audio', $st, 'sys')."' title='".translate('Text with audio', $st, 'sys')."'";
@@ -543,7 +543,7 @@ if ($SAB) {
 			else {
 				$SABindex++;
 				$string_temp = '<tr>';
-					$string_temp .= '<td>';
+					$string_temp .= '<td style="width: 45px;">';
 						$string_temp .= "<div class='linePointer' onclick='SAB_Scriptoria_Index(\"$subfolder\")'><img class='iconActions'";
 						$string_temp .= "src='../images/SAB-readListen-icon.png' alt='".translate('Read/Listen/View', $st, 'sys')."' title='".translate('Read/Listen/View', $st, 'sys')."'/></div>";
 					$string_temp .= '</td>';
@@ -604,7 +604,7 @@ if ($Internet && $BibleIs && !$SAB) {
 					break;
 			}
 					$string_temp = '<tr>';
-					$string_temp .= '<td>';
+					$string_temp .= '<td style="width: 45px;">';
 					$string_temp .= "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'><img class='iconActions' src='../images/".$BibleIsIcon."' alt='".$BibleIsActText."' title='".$BibleIsActText."' /></div>";
 				$string_temp .= "</td>";
 				$string_temp .= "<td>";
@@ -671,7 +671,7 @@ if ($viewer && !($YouVersion && $Biblesorg && $SAB && $BibleIs) && $Internet) {
 			$string_temp .= "<div class='linePointer' onclick=\"window.open('./viewer/views.php?iso=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code&ROD_Var=$ROD_Var&rtl=$rtl&st=$st')\" title='".translate('Viewer for the Language Name', $st, 'sys')."'>".translate('Go to', $st, 'sys')." ".translate('the online viewer', $st, 'sys')."</div>";
 	$string_temp .= '</td>';
 	$string_temp .= '</tr>';
-	array_push($view_array, $string_temp);
+	array_push($read_array, $string_temp);
 	array_push($all_array, $string_temp);
 }
 
@@ -691,7 +691,7 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 	if ($SB_PDF > 0) {
 		while ($r_SB = $result_SB->fetch_array(MYSQLI_ASSOC)) {
 					$string_temp = '<tr>';
-					$string_temp .= '<td>';
+					$string_temp .= '<td style="width: 45px;">';
 					$Item = $r_SB['Item'];
 					if ($Item == 'B') {
 						$whole_Bible=trim($r_SB['Scripture_Bible_Filename']);
@@ -721,7 +721,7 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 			if ($r1 = $result1->fetch_array(MYSQLI_ASSOC)) {
 				$OT_PDF_Filename = trim($r1['OT_PDF_Filename']);												// there is a OT
 						$string_temp = '<tr>';
-						$string_temp .= '<td>';
+						$string_temp .= '<td style="width: 45px;">';
 						$string_temp .= "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$OT_PDF_Filename')\"><img  class='iconActions'src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' /></div>";
 					$string_temp .= "</td>";
 					$string_temp .= "<td>";
@@ -740,7 +740,7 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 				if ($r1 = $result1->fetch_array(MYSQLI_ASSOC)) {
 					$a_index = 0;
 							$string_temp = '<tr>';
-							$string_temp .= '<td>';
+							$string_temp .= '<td style="width: 45px;">';
 							$string_temp .= "<img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')."' title='".translate('Read', $st, 'sys')."' />";
 						$string_temp .= "</td>";
 						$string_temp .= "<td>";
@@ -809,7 +809,7 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 			if ($r_NT = $result1->fetch_array(MYSQLI_ASSOC)) {
 				$NT_PDF_Filename = trim($r_NT['NT_PDF_Filename']);											// there is a NT
 						$string_temp = '<tr>';
-						$string_temp .= '<td>';
+						$string_temp .= '<td style="width: 45px;">';
 						$string_temp .= "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$NT_PDF_Filename')\"><img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' /></div>";
 					$string_temp .= "</td>";
 					$string_temp .= "<td>";
@@ -828,7 +828,7 @@ if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 				if ($r_NT_PDF = $result1->fetch_array(MYSQLI_ASSOC)) {
 					$a_index = 0;
 							$string_temp = '<tr>';
-							$string_temp .= '<td>';
+							$string_temp .= '<td style="width: 45px;">';
 							$string_temp .= "<img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')."' title='".translate('Read', $st, 'sys')."' />";
 						$string_temp .= "</td>";
 						$string_temp .= "<td>";
@@ -1045,7 +1045,7 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 				if ($result2) {
 					$OTNT = $NT_Audio + $OT_Audio;
 					$string_temp = '<tr>';
-					$string_temp .= '<td>';
+					$string_temp .= '<td style="width: 45px;">';
 						$OT_Book = array();
 						$OT_Book_Chapter = array();
 						$a_index = 0;
@@ -1175,7 +1175,7 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 				if ($result2) {
 					$OTNT = $NT_Audio + $OT_Audio;
 					$string_temp = '<tr>';
-					$string_temp .= '<td>';
+					$string_temp .= '<td style="width: 45px;">';
 					$NT_Book = array();
 					$NT_Book_Chapter = array();
 					$a_index = 0;
@@ -1305,7 +1305,7 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
 	if ($OT_Audio > 0) {
 					$string_temp = "<div id='otaudiofiles' class='otaudiofiles' style='display: block; '>";
-					$string_temp .= "<tr style='margin-top: -2px; '>";
+					$string_temp .= "<tr>";
 					$string_temp .= "<td style='width: 45px; '>";
 					$string_temp .= "<div class='linePointer' onclick='OTTableClick()'><img class='iconActions' src='../images/download-icon.jpg' alt='".translate('Download', $st, 'sys')."' title='".translate('Download', $st, 'sys')."' /></div>";
 				$string_temp .= "</td>";
@@ -1989,7 +1989,7 @@ if ($Internet && $BibleIs && $SAB) {
 				default:
 					break;
 			}
-					$string_temp = "<tr> <td>";
+					$string_temp = "<tr> <td style='width: 45px;'>";
 					$string_temp .= "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'><img class='iconActions' src='../images/".$BibleIsIcon."' alt='".$BibleIsActText."' title='".$BibleIsActText."' /></div>";
 				$string_temp .= "</td>";
 				$string_temp .= "<td>";
@@ -2339,7 +2339,7 @@ if ($DV_num > 0) {
 		$other = $r_DV['other'];
 		$other_title = $r_DV['other_title'];
 		$download_video = $r_DV['download_video'];
-		$string_temp = "<tr style='margin-top: -2px; '> <td style='width: 45px; '>";
+		$string_temp = "<tr> <td style='width: 45px; '>";
 		$string_temp .= "<div class='linePointer' onclick=\"window.open('./data/".$ISO.'/video/'.$download_video."')\" download><img class='iconActions' src='../images/download-icon.jpg' alt='".translate('Download', $st, 'sys')."' title='".translate('Download', $st, 'sys')."' /></div>";
 		$string_temp .= "</td> <td>";
 		$string_temp .= "<div class='linePointer' onclick=\"window.open('./data/".$ISO.'/video/'.$download_video."')\" title='".translate('Download the video.', $st, 'sys')."' download>".translate('Download', $st, 'sys').' '.$other. ' ' . $other_title . ' ' .translate('video', $st, 'sys').' (MP4)</div>';
@@ -2467,7 +2467,7 @@ if ($PlaylistAudio && $Internet) {
 					$j = 0;
                     foreach ($arr as $single) {
                         if ($i == 0) {
-                            $string_temp .= "<tr style='vertical-align: top; '>";
+                            $string_temp .= "<tr>";
                         }
                         $string_temp .= "<td style='width: ${width}px; vertical-align: top; '>";
                             // $single[0] = text name
@@ -2870,12 +2870,13 @@ array_push($all_array, $string_temp);
 
  <!-- Tab links -->
 <div class="tab individualLanguage">
- 	<button class="tablinks" onclick="openTab(event, 'Read')"><i class="fa fa-book" style="font-size:24px;"></i></button>
- 	<button class="tablinks" onclick="openTab(event, 'Listen')"><i class="fa fa-headphones" style="font-size:24px;"></i></button>
- 	<button class="tablinks" onclick="openTab(event, 'View')"><i class="fa fa-television" style="font-size:24px;"></i></button>
-	<button class="tablinks" onclick="openTab(event, 'App')"><i class="fa fa-mobile" style="font-size:24px;"></i></button>
-	<button class="tablinks" onclick="openTab(event, 'Other')"><i class="fa fa-link" style="font-size:24px;"></i></button>
-	<button class="tablinks" onclick="openTab(event, 'All')" id="defaultOpen"><i class="fa fa-globe" style="font-size:24px;"></i></button>
+ 	<button class="tablinks" onclick="openTab(event, 'Read')"><i class="fa fa-file-text-o" style="font-size:28px;"></i></button>
+ 	<button class="tablinks" onclick="openTab(event, 'Listen')"><i class="fa fa-headphones" style="font-size:28px;"></i></button>
+ 	<button class="tablinks" onclick="openTab(event, 'View')"><i class="fa fa-film" style="font-size:28px;"></i></button>
+	<button class="tablinks" onclick="openTab(event, 'App')"><i class="fa fa-mobile" style="font-size:28px;"></i></button>
+	<button class="tablinks" onclick="openTab(event, 'Other')"><i class="fa fa-link" style="font-size:28px;"></i></button>
+	<button class="tablinks" onclick="openTab(event, 'All')" id="defaultOpen"><i class="fa fa-th" style="font-size:28px;"></i></button>
+	<!--button class="tablinks" onclick="openTab(event, 'Map')" id="defaultOpen"><i class="fa fa-map-marker" style="font-size:28px;"></i></button-->
 </div>
 
 <!-- Tab content -->
@@ -2927,9 +2928,13 @@ array_push($all_array, $string_temp);
 	?>
 </div> 
 
+<!--div id="Map" class="tabcontent">
+	<embed type="text/html" src="https://scriptureearth.org/leafletjs_maps/Mexico/cnl.html"  width="500" height="200">	
+</div-->
+
 <br />
 
-
+</div>
 
 <script>
 	function iOSAssetPackage(URL) {
