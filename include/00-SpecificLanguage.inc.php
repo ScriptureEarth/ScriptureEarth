@@ -246,9 +246,9 @@ $result_ISO_countries=$db->query($query);
 $r_ISO_countries = $result_ISO_countries->fetch_array(MYSQLI_ASSOC);
 $countryTemp = $SpecificCountry;
 if (strpos("$SpecificCountry", '.')) $countryTemp = substr("$SpecificCountry", strpos("$SpecificCountry", '.')+1);					// In case there's a "." in the "country"
-$country = trim($r_ISO_countries["$countryTemp"]);											// name of the country in the language version
+$countryName = trim($r_ISO_countries["$countryTemp"]);										// name of the country in the language version
 $ISO_countries = trim($r_ISO_countries["ISO_countries"]);									// 2 upper case letters
-$country = '<a href="'.$Scriptname.'?sortby=country&name=' . $ISO_countries . '">' . $country . '</a>';
+$country = '<a href="'.$Scriptname.'?sortby=country&name=' . $ISO_countries . '">' . $countryName . '</a>';
 while ($r_ISO_countries = $result_ISO_countries->fetch_array(MYSQLI_ASSOC)) {
 	$country = $country.',&nbsp;<a href="'.$Scriptname.'?sortby=country&name=' . trim($r_ISO_countries["ISO_countries"]) . '">'.trim($r_ISO_countries["$countryTemp"]).'</a>';			// name of the country in the language version
 }
@@ -2929,7 +2929,7 @@ array_push($all_array, $string_temp);
 </div> 
 
 <div id="Map" class="tabcontent" >
-	<iframe src="..\leafletjs_maps\Mexico\cnl.html" title="Map" width="100%" height="550"></iframe> 
+	<iframe src=<?php echo "../leafletjs_maps/".$countryName."/".$ISO.".html" ?> title="Map" width="100%" height="550"></iframe> 
 </div>
 
 <br />
