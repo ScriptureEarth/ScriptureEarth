@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Language map of Switzerland - Leaflet</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" type="../../image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="../../_css/leaflet.css" />
+    <script src="../../_js/leaflet.min.js"></script>
+</head>
+<body>
+<div id="mapid" style="width: 600px; height: 400px; margin: auto; margin-right: auto; margin-top: 100px; "></div>
+<script>
+	var mymap = L.map('mapid').setView([48, 2], 9);
+
+// blue icon is the default
+
+	var myRedIcon = L.icon({
+		iconUrl: '../../images/myRedIcon.png'
+	});
+
+	var myPurpleIcon = L.icon({
+		iconUrl: '../../images/myPurpleIcon.png'
+	});
+
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 16,
+		attribution: 'Map languages: � <a href="https://www.scriptureearth.org/00i-Scripture_Index.php">Scripture Earth</a>, ' +
+			'Map data: � <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery: � <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/streets-v11'
+	}).addTo(mymap);
+		L.marker([48.649, 12.4676]).addTo(mymap)
+	.bindPopup("<b>German, Standard - ISO 639-3: deu</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=deu'>German, Standard</a>)")
+	L.marker([48, 2], {icon: myRedIcon}).addTo(mymap)
+	.bindPopup("<b>French - ISO 639-3: fra</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=fra'>French</a>)")
+	L.marker([45.8051, 6.48152]).addTo(mymap)
+	.bindPopup("<b>Arpitan - ISO 639-3: frp</b>")
+	L.marker([47.0516, 8.46419]).addTo(mymap)
+	.bindPopup("<b>Central Alemannic - ISO 639-3: gsw</b>")
+	L.marker([43.0464, 12.6489]).addTo(mymap)
+	.bindPopup("<b>Italian - ISO 639-3: ita</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=ita'>Italian</a>)")
+	L.marker([45.8817, 9.39509]).addTo(mymap)
+	.bindPopup("<b>Lombard - ISO 639-3: lmo</b>")
+	L.marker([48.7, 9.4]).addTo(mymap)
+	.bindPopup("<b>Romani, Sinti - ISO 639-3: rmo</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=rmo'>Romani, Sinti</a>)")
+	L.marker([46.5538, 9.92812]).addTo(mymap)
+	.bindPopup("<b>Romansh - ISO 639-3: roh</b>")
+	L.marker([47.1069, 9.07557], {icon: myPurpleIcon}).addTo(mymap)
+	.bindPopup("<b>Swiss-German Sign Language - ISO 639-3: sgg</b>")
+	L.marker([46.3076, 8.79111]).addTo(mymap)
+	.bindPopup("<b>Swiss-Italian Sign Language - ISO 639-3: slf</b>")
+	L.marker([46.72252, 6.78425], {icon: myPurpleIcon}).addTo(mymap)
+	.bindPopup("<b>Swiss-French Sign Language - ISO 639-3: ssr</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=ssr'>Swiss-French Sign Language</a>)")
+	L.marker([46.6995, 9.18266]).addTo(mymap)
+	.bindPopup("<b>Walser - ISO 639-3: wae</b>")
+
+	var popup = L.popup();
+</script>
+</body>
+</html>

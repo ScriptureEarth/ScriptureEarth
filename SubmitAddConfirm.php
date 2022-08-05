@@ -19,13 +19,8 @@
 *
 **************************************************************************************************************************************/
 
-	//define ("PATHScripture", "");
 	include("OT_Books.php");
-	// $OT_array;							// from OT_Books.php
 	include("NT_Books.php");
-	// $NT_array;							// from NT_Books.php
-	//include './include/conn.inc.php';
-	//$db = get_my_db();
 ?>
 
 <!DOCTYPE html>
@@ -735,11 +730,6 @@
 	var v = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
 	setTimeout(function() { v.close(); }, 1000);
 	//w.close();
-	//url = "metadata/LanguageSetup.php?noDisplay=1";
-	//var z = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
-	//setTimeout(function() { z.close(); }, 1000);
-	//w.close();
-//	return false; //cancels href action 
 </script>
 </body>
 </html>

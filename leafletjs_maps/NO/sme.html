@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Language map of Norway - Leaflet</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" type="../../image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="../../_css/leaflet.css" />
+    <script src="../../_js/leaflet.min.js"></script>
+</head>
+<body>
+<div id="mapid" style="width: 600px; height: 400px; margin: auto; margin-right: auto; margin-top: 100px; "></div>
+<script>
+	var mymap = L.map('mapid').setView([68.725, 22.1113], 9);
+
+// blue icon is the default
+
+	var myRedIcon = L.icon({
+		iconUrl: '../../images/myRedIcon.png'
+	});
+
+	var myPurpleIcon = L.icon({
+		iconUrl: '../../images/myPurpleIcon.png'
+	});
+
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 16,
+		attribution: 'Map languages: � <a href="https://www.scriptureearth.org/00i-Scripture_Index.php">Scripture Earth</a>, ' +
+			'Map data: � <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery: � <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/streets-v11'
+	}).addTo(mymap);
+		L.marker([69.3772, 29.5434]).addTo(mymap)
+	.bindPopup("<b>Kven Finnish - ISO 639-3: fkv</b>")
+	L.marker([59.92, 10.71]).addTo(mymap)
+	.bindPopup("<b>Norwegian, Bokmal - ISO 639-3: nor</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=nor'>Norwegian, Bokmal</a>)")
+	L.marker([60.7733, 10.242]).addTo(mymap)
+	.bindPopup("<b>Norwegian Sign Language - ISO 639-3: nsl</b>")
+	L.marker([62.6217, 9.48913]).addTo(mymap)
+	.bindPopup("<b>Traveller Norwegian - ISO 639-3: rmg</b>")
+	L.marker([46.09, 18.16]).addTo(mymap)
+	.bindPopup("<b>Romani, Vlach - ISO 639-3: rmy</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=rmy'>Romani, Vlach</a>)")
+	L.marker([66.4011, 17.4261], {icon: myPurpleIcon}).addTo(mymap)
+	.bindPopup("<b>Pite Saami - ISO 639-3: sje</b>")
+	L.marker([62.8801, 13.7006]).addTo(mymap)
+	.bindPopup("<b>South Saami - ISO 639-3: sma</b>")
+	L.marker([68.725, 22.1113], {icon: myRedIcon}).addTo(mymap)
+	.bindPopup("<b>North Saami - ISO 639-3: sme</b>")
+	L.marker([67.2759, 17.8057], {icon: myPurpleIcon}).addTo(mymap)
+	.bindPopup("<b>Lule Saami - ISO 639-3: smj</b>")
+	L.marker([24.4793, 94.3421]).addTo(mymap)
+	.bindPopup("<b>Naga, Moyon - ISO 639-3: nmo</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=nmo'>Naga, Moyon</a>)")
+
+	var popup = L.popup();
+</script>
+</body>
+</html>

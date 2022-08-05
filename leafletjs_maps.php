@@ -56,10 +56,10 @@ $first_e =
 
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 16,
-		attribution: 'Map languages: © <a href="https://www.scriptureearth.org/00i-Scripture_Index.php">Scripture Earth</a>, ' +
-			'Map data: © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+		attribution: 'Map languages: ÔøΩ <a href="https://www.scriptureearth.org/00i-Scripture_Index.php">Scripture Earth</a>, ' +
+			'Map data: ÔøΩ <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
 			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-			'Imagery: © <a href="https://www.mapbox.com/">Mapbox</a>',
+			'Imagery: ÔøΩ <a href="https://www.mapbox.com/">Mapbox</a>',
 		id: 'mapbox/streets-v11'
 	}).addTo(mymap);
 	
@@ -100,10 +100,6 @@ while ($row = $result->fetch_array()) {
 	$ISO=$row['ISO'];														// ISO
 	$ISO_Country=$row['ISO_Country'];										// ISO_Country - ZZ
 	$English_Country=$row['English'];										// English Country name
-//if ($previous_CC == 'AD') {
-//	echo '1) ' . $previous_CC . '<br />';
-//	echo '1) ' . $previous_CName . '<br />';
-//}
 	if ($i == 0) {
 		$i = 1;
 		$previous_CC = $ISO_Country;
@@ -121,8 +117,8 @@ while ($row = $result->fetch_array()) {
 			/*****************************************************************
 			*		get the arrays of $maps_array, $lat_long_value, and $save_lat_long
 			*****************************************************************/
-			if (!is_dir('leafletjs_maps/'.$previous_CName)) {
-				mkdir('leafletjs_maps/'.$previous_CName);
+			if (!is_dir('leafletjs_maps/'.$previous_CC)) {
+				mkdir('leafletjs_maps/'.$previous_CC);
 			}
 
 			/**********************************************************************
@@ -149,8 +145,6 @@ while ($row = $result->fetch_array()) {
 					$L_ISO = $key_maps_array[0];							// get ISO
 					$value_maps_array = array_values($maps_array[$k]);		// create $value_maps_array from $maps_array only in (0 => value1, 1 => value2, etc.)
 					$L_LN = $value_maps_array[0];							// get language name
-					//$query="SELECT ISO FROM LN_English WHERE ISO = '$L_ISO'";			// add the language name to $maps_array
-					//$result_temp=$db->query($query);
 					$stmt_ISO->bind_param('s', $L_ISO);						// bind parameters for markers
 					$stmt_ISO->execute();									// execute query
 					$result_ISO = $stmt_ISO->get_result();
@@ -190,36 +184,23 @@ while ($row = $result->fetch_array()) {
 			$temp_value_array = [];
 			foreach($maps_array as $key => $value) {										// country html files output. $maps_array[z][y] = individual ISO with all of the lat. and long. there
 				$L_ISO = array_keys($value)[0];												// ISO and more
-//echo '<br />count($value) = '.count($value).'<br />';
-
 				for ($ISO_index=0; $ISO_index < count($value)-1; $ISO_index++) {			// for each ISO for one country
 					if (strpos($value[$ISO_index], '{icon: myRedIcon}).addTo(mymap)')) {
 						//$enter .= $value[$ISO_index];
-						
 						$J_LN = '';
 						// /s modifier a dot (.) metacharacter in the pattern matches all characters, including newlines.
 						// The /u modifier makes both the pattern and subject be interpreted as UTF-8 but the captured offsets are still counted in bytes.
 						// But try (*UTF8) before the RegEx pattern which I havn't done now.
-						//$J_LN = preg_replace('/.+\s+\.bindPopup\("[\<b\>]{0,3}([-_,\.!\' a-zA-Z‡·‚‰ËÈÎÏÌÔÚÛˆ˘˙¸—Ò\(\)]+) - ISO 639-3: [a-z]{3}.*/s', "$1", $value[$ISO_index]);
-						//$J_LN = preg_replace('/.+\("[\<b\>]{0,3}(.*) - ISO.+/su', "$1", $value[$ISO_index]);
 						// select language name by deleting everything around it!
 						$J_LN = preg_replace('/(.+\s+\.bindPopup\("[\<b\>]{0,3})/su', "", $value[$ISO_index]);
 						$J_LN = preg_replace('/[^-](- ISO 639-3: [a-z]{3}.*)/su', "", $J_LN);
-//echo '<br /><br />main LN: '.$J_LN . '<br />';
 						$temp_value_array = [];
 						$match = [];
 						preg_match_all('/(\w+)[-\,\(\)]?/u', $J_LN, $match);				// get the word $J_LN
 						foreach ($match[1] as $temp) {
-//echo $temp . '<br />';
 							if (preg_match('/^(on|the|and|of|south|north|northwest|northeast|Northwestern|Southwestern|Northeastern|Southeastern|southwest|southeast|southern|northern|Eastern|Western|central|Norte|sur|Sureste|Valley|river|Noroeste|Highland|Standard|Modern|de|del|Sta|santa|san|la|Alta|[0-9]+|Dos|west|east|^.)$/i', $temp)) continue;
-//echo $temp . '<br />';
 							$temp_value_array[] = $temp;									// words from value
 						}
-//			if (count($temp_value_array) > 4) {
-//				echo '1) <pre>';
-//				print_r($temp_value_array);
-//				echo '</pre>';
-//			}
 						continue;
 					}
 					
@@ -227,12 +208,9 @@ while ($row = $result->fetch_array()) {
 						if (strpos($value[$ISO_index], '{icon: myRedIcon}).addTo(mymap)')) continue;	// if myRedIcon continue
 						
 						$temp_J_LN = '';
-						//$temp_J_LN = preg_replace('/.+\s+\.bindPopup\("[\<b\>]{0,3}([-_,\.!\' a-zA-Z‡·‚‰ËÈÎÏÌÔÚÛˆ˘˙¸—Ò\(\)]+) - ISO 639-3: [a-z]{3}.*/su', "$1", $value[$latlong_index]);
-						//$temp_J_LN = preg_replace('/.+\("[\<b\>]{0,3}(.*) - ISO.+/su', "$1", $value[$latlong_index]);
 						// select language name by deleting everything around it!
 						$temp_J_LN = preg_replace('/(.+\s+\.bindPopup\("[\<b\>]{0,3})/su', "", $value[$latlong_index]);
 						$temp_J_LN = preg_replace('/[^-](- ISO 639-3: [a-z]{3}.*)/su', "", $temp_J_LN);
-//echo '<br /><br />2) compare LN: '.$temp_J_LN . '<br />';
 						preg_match_all('/(\w+)[-\,\(\)]?/u', $temp_J_LN, $match);			// get the word $value[$latlong_index]
 						$temp_latlong_array = [];
 						foreach ($match[1] as $temp) {
@@ -243,12 +221,6 @@ while ($row = $result->fetch_array()) {
 							//$enter .= $value[$ISO_index];
 							continue;
 						}
-//			if (count($temp_latlong_array) > 4) {
-//				echo '2) <pre>';
-//				print_r($temp_latlong_array);
-//				echo '</pre>';
-//			}
-						
 						$array_result = [];
 						$array_result = array_intersect($temp_value_array, $temp_latlong_array);		// compare two arrays
 						if (empty($array_result)) {
@@ -257,7 +229,6 @@ while ($row = $result->fetch_array()) {
 						else {
 							$value[$latlong_index] = str_replace("]).addTo(mymap)", "], {icon: myPurpleIcon}).addTo(mymap)", $value[$latlong_index]);
 						}
-					//$enter .= $value[$ISO_index];
 					}
 				}		// end for
 				
@@ -274,11 +245,14 @@ while ($row = $result->fetch_array()) {
 				$first_b = $first_a . "	<title>Language map of ".$previous_CName." - Leaflet</title>";							// write out just 1 ISO
 				$first_d = $first_b . $first_c . "	var mymap = L.map('mapid').setView([".$save_lat_long[$key]."], 9);";
 				$first = $first_d  . $first_e;
-
-				file_put_contents('leafletjs_maps/'.$previous_CName.'/'.$L_ISO.'.html', $first, LOCK_EX);
-				file_put_contents('leafletjs_maps/'.$previous_CName.'/'.$L_ISO.'.html', $enter, FILE_APPEND | LOCK_EX);
+				//file_put_contents('leafletjs_maps/'.$previous_CName.'/'.$L_ISO.'.html', $first, LOCK_EX);
+				//file_put_contents('leafletjs_maps/'.$previous_CName.'/'.$L_ISO.'.html', $enter, FILE_APPEND | LOCK_EX);
 				// bottom of this html file
-				file_put_contents('leafletjs_maps/'.$previous_CName.'/'.$L_ISO.'.html', $end, FILE_APPEND | LOCK_EX);
+				//file_put_contents('leafletjs_maps/'.$previous_CName.'/'.$L_ISO.'.html', $end, FILE_APPEND | LOCK_EX);
+				file_put_contents('leafletjs_maps/'.$previous_CC.'/'.$L_ISO.'.html', $first, LOCK_EX);
+				file_put_contents('leafletjs_maps/'.$previous_CC.'/'.$L_ISO.'.html', $enter, FILE_APPEND | LOCK_EX);
+				// bottom of this html file
+				file_put_contents('leafletjs_maps/'.$previous_CC.'/'.$L_ISO.'.html', $end, FILE_APPEND | LOCK_EX);
 				$first = '';
 				$enter = '';
 			}
@@ -287,11 +261,8 @@ while ($row = $result->fetch_array()) {
 			$save_lat_long = [];
 			$previous_CC = $ISO_Country;
 			$previous_CName = $English_Country;
-			
-//if ($ISO_Country == 'AG') exit;
 		}
 	}
-
 
 	/**************************************************************************************************
 	*
@@ -299,8 +270,6 @@ while ($row = $result->fetch_array()) {
 	*
 	***************************************************************************************************/
 
-	//$query="SELECT latitude, longitude, name, hid FROM leafletjs_maps WHERE hid = '$ISO'";
-	//$result_map=$db->query($query);
 	$stmt_lat_long->bind_param('s', $ISO);									// bind parameters for markers
 	$stmt_lat_long->execute();												// execute query
 	$result_map = $stmt_lat_long->get_result();
@@ -317,8 +286,6 @@ while ($row = $result->fetch_array()) {
 		$save_lat_long[] = "$latitude, $longitude";							// save $latitude, $longitude for this ISO
 	}
 	
-	//$query="SELECT LN_English FROM LN_English WHERE ISO = '$ISO'";		// select the language name to $maps_array
-	//$result_LN=$db->query($query);
 	$stmt_LN->bind_param('s', $ISO);										// bind parameters for markers
 	$stmt_LN->execute();													// execute query
 	$result_LN = $stmt_LN->get_result();
@@ -336,8 +303,8 @@ while ($row = $result->fetch_array()) {
 
 
 // Last step for the last country
-if (!is_dir('leafletjs_maps/'.$English_Country)) {
-	mkdir('leafletjs_maps/'.$English_Country);
+if (!is_dir('leafletjs_maps/'.$ISO_Country)) {
+	mkdir('leafletjs_maps/'.$ISO_Country);
 }
 
 $temp = count($maps_array[0])-1;											// the previous column of the $maps_array
@@ -348,12 +315,9 @@ for ($z=0; $z < count($maps_array); $z++) {									// add all of the lat.'s and
 		$L_ISO = $key_maps_array[0];
 		$value_maps_array = array_values($maps_array[$k]);					// create $value_maps_array from $maps_array only in (0 => value1, 1 => value2, etc.)
 		$L_LN = $value_maps_array[0];
-		//$query="SELECT ISO FROM LN_English WHERE ISO = '$L_ISO'";			// add the language name to $maps_array
-		//$result_temp=$db->query($query);
 		$stmt_ISO->bind_param('s', $L_ISO);									// bind parameters for markers
 		$stmt_ISO->execute();												// execute query
 		$result_ISO = $stmt_ISO->get_result();
-		//$row_ = $result_ISO->fetch_assoc();
 		if ($L_ISO == $ISO_map[0]) {
 			if ($result_ISO->num_rows == 0) {
 				$lat_long = "	L.marker([$lat_long_value], {icon: myRedIcon}).addTo(mymap)\n";
@@ -382,18 +346,12 @@ $enter = '';
 $temp_value_array = [];
 foreach($maps_array as $key => $value) {										// country html files output. $maps_array[z][y] = individual ISO with all of the lat. and long. there
 	$L_ISO = array_keys($value)[0];												// ISO and more
-
 	for ($ISO_index=0; $ISO_index < count($value)-1; $ISO_index++) {			// for each ISO for one country
 		if (strpos($value[$ISO_index], '{icon: myRedIcon}).addTo(mymap)')) {
-			//$enter .= $value[$ISO_index];
-			
 			$J_LN = '';
-			//$J_LN = preg_replace('/.+\s+\.bindPopup\("[\<b\>]{0,3}([-_,\.!\' a-zA-Z‡·‚‰ËÈÎÏÌÔÚÛˆ˘˙¸—Ò\(\)]+) - ISO 639-3: [a-z]{3}.*/su', "$1", $value[$ISO_index]);
-			//$J_LN = preg_replace('/.+\("[\<b\>]{0,3}(.*) - .+/su', "$1", $value[$ISO_index]);
 			// select language name by deleting everything around it!
 			$J_LN = preg_replace('/(.+\s+\.bindPopup\("[\<b\>]{0,3})/su', "", $value[$ISO_index]);
 			$J_LN = preg_replace('/[^-](- ISO 639-3: [a-z]{3}.*)/su', "", $J_LN);
-//echo '<br /><br />main LN: '.$J_LN . '<br />';
 			$temp_value_array = [];
 			$match = [];
 			preg_match_all('/(\w+)[-\,\(\)]?/u', $J_LN, $match);				// get the word $J_LN
@@ -401,24 +359,15 @@ foreach($maps_array as $key => $value) {										// country html files output. 
 				if (preg_match('/^(on|the|and|of|south|north|northwest|northeast|Northwestern|Southwestern|Northeastern|Southeastern|southwest|southeast|southern|northern|Eastern|Western|central|Norte|sur|Sureste|Valley|river|Noroeste|Highland|Standard|Modern|de|del|Sta|santa|san|la|Alta|[0-9]*|Dos|west|east|^.)$/i', $temp)) continue;
 				$temp_value_array[] = $temp;									// words from value
 			}
-//			if (count($match[1]) >= 3) {
-//				echo '1) <pre>';
-//				print_r($temp_value_array);
-//				echo '</pre>';
-//			}
 			continue;
 		}
 		
 		for ($latlong_index=0; $latlong_index < count($value)-1; $latlong_index++) {		// iterate all the way through latitude and longitude
 			if (strpos($value[$ISO_index], '{icon: myRedIcon}).addTo(mymap)')) continue;	// if myRedIcon continue
-			
 			$temp_J_LN = '';
-			//$temp_J_LN = preg_replace('/.+\s+\.bindPopup\("[\<b\>]{0,3}([-_,\.!\' a-zA-Z‡·‚‰ËÈÎÏÌÔÚÛˆ˘˙¸—Ò\(\)]+) - ISO 639-3: [a-z]{3}.*/su', "$1", $value[$latlong_index]);
-			//$temp_J_LN = preg_replace('/.+\("[\<b\>]{0,3}(.*) - .+/su', "$1", $value[$latlong_index]);
 			// select language name by deleting everything around it!
 			$temp_J_LN = preg_replace('/(.+\s+\.bindPopup\("[\<b\>]{0,3})/su', "", $value[$latlong_index]);
 			$temp_J_LN = preg_replace('/[^-](- ISO 639-3: [a-z]{3}.*)/su', "", $temp_J_LN);
-//echo '<br /><br />2) compare LN: '.$temp_J_LN . '<br />';
 			preg_match_all('/(\w+)[-\,\(\)]?/u', $temp_J_LN, $match);			// get the word $value[$latlong_index]
 			$temp_latlong_array = [];
 			foreach ($match[1] as $temp) {
@@ -426,32 +375,16 @@ foreach($maps_array as $key => $value) {										// country html files output. 
 				$temp_latlong_array[] = $temp;									// words from value
 			}
 			if ($temp_value_array === $temp_latlong_array) {					// if arrays = each other
-				//$enter .= $value[$ISO_index];
 				continue;
 			}
-//			if (count($match[1]) >= 3) {
-//				echo '2) <pre>';
-//				print_r($temp_latlong_array);
-//				echo '</pre>';
-//			}
-			
 			$array_result = [];
 			$array_result = array_intersect($temp_value_array, $temp_latlong_array);		// compare two arrays
-//$array_result = array_filter(
-//	$temp_value_array,
-//	function ($var) use($temp_latlong_array){
-//		if (in_array($var, $temp_latlong_array)) {
-//		   return $var;
-//		}
-//	}
-//);
 			if (empty($array_result)) {
 			
 			}
 			else {
 				$value[$latlong_index] = str_replace("]).addTo(mymap)", "], {icon: myPurpleIcon}).addTo(mymap)", $value[$latlong_index]);
 			}
-			//$enter .= $value[$ISO_index];
 		}
 	}		// end for
 	
@@ -465,16 +398,17 @@ foreach($maps_array as $key => $value) {										// country html files output. 
 		$enter .= $I_ISO;
 	}
 	
-//echo 'enter: ' . $enter . '<br />';
-
 	$first_b = $first_a . "	<title>Language map of ".$English_Country." - Leaflet</title>";
 	$first_d = $first_b . $first_c . "	var mymap = L.map('mapid').setView([".$save_lat_long[$key]."], 9);";
 	$first = $first_d  . $first_e;
-
-	file_put_contents('leafletjs_maps/'.$English_Country.'/'.$L_ISO.'.html', $first, LOCK_EX);
-	file_put_contents('leafletjs_maps/'.$English_Country.'/'.$L_ISO.'.html', $enter, FILE_APPEND | LOCK_EX);
+	//file_put_contents('leafletjs_maps/'.$English_Country.'/'.$L_ISO.'.html', $first, LOCK_EX);
+	//file_put_contents('leafletjs_maps/'.$English_Country.'/'.$L_ISO.'.html', $enter, FILE_APPEND | LOCK_EX);
 	// bottom of this html file
-	file_put_contents('leafletjs_maps/'.$English_Country.'/'.$L_ISO.'.html', $end, FILE_APPEND | LOCK_EX);
+	//file_put_contents('leafletjs_maps/'.$English_Country.'/'.$L_ISO.'.html', $end, FILE_APPEND | LOCK_EX);
+	file_put_contents('leafletjs_maps/'.$ISO_Country.'/'.$L_ISO.'.html', $first, LOCK_EX);
+	file_put_contents('leafletjs_maps/'.$ISO_Country.'/'.$L_ISO.'.html', $enter, FILE_APPEND | LOCK_EX);
+	// bottom of this html file
+	file_put_contents('leafletjs_maps/'.$ISO_Country.'/'.$L_ISO.'.html', $end, FILE_APPEND | LOCK_EX);
 	$first = '';
 	$enter = '';
 }

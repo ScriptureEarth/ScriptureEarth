@@ -19,7 +19,6 @@ global $session;
 /* Login attempt */
 $retval = $session->checklogin();
 if (!$retval) {
-//	echo "<br /><div style='text-align: center; font-size: 16pt; font-weight: bold; padding: 10px; color: navy; background-color: #dddddd; '>You are not logged in!</div>";
 	/* Link back to the main page */
 	header('Location: login.php');
 	exit;
@@ -36,7 +35,7 @@ if (!$retval) {
 <title>Scripture Edit</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Edit.css" />
 <script type="text/javascript" language="javascript" src="_js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.0.2"></script>
+<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.0.3"></script>
 <!-- see the bottom of this html file for CMS_events.js -->
 </head>
 <body>
@@ -61,24 +60,13 @@ include './OT_Books.php';
 include './NT_Books.php';
 include './include/conn.inc.php';
 $db = get_my_db();
-	 
-//if (isset($_POST)) {
-	//foreach ($_POST as $key => $value) {
-		//$_POST[$key] =  trim(addslashes($value));
-		//echo $key . ': ' . $value . '<br />';
-	//}
-//}
 
 // Checks that the form was submitted after Scripture_Edit.php submitted.
 if (isset($_POST['btnSubmit'])) {
-	// print_r($_POST);
 	// Runs the validation script which only returns to the form page if validation fails.
 	require_once './Edit_Lang_Validation.php';
 	// Returns from Edit_Lang_Validation.php if the validation failed.
 }
-//else {
-//	echo 'No sumbit!<br />';
-//}
 
 function OT_Test($PDF, $OT_Index) {
 	global $OT_array;
@@ -102,17 +90,12 @@ function NT_Test($PDF, $NT_Index) {
 	return false;
 }
 
-//	$Beg = $_GET["b"];
-//	$GN = $_GET["gn"];
-//	$number = $_GET["n"];
-
 	$GetName = 'all';
 	$which = 'Name';
 	$st = 'en';
 
 	$MajorLanguage = "LN_English";
 	$SpecificCountry = "countries.English";
-	//$Scriptname = end(explode('/', $_SERVER["SCRIPT_NAME"]));
 	$Scriptname = basename($_SERVER["SCRIPT_NAME"]);
 	$counterName = "English";
 	$MajorCountryAbbr = "en";
@@ -140,7 +123,6 @@ function NT_Test($PDF, $NT_Index) {
 		echo "<h2><span style='color: red; font-size: bold; '>Or</span> Choose the 'pencil' to edit</h2>";
 		$query = "SELECT DISTINCT * FROM nav_ln ORDER BY ISO, ROD_Code";			// get all of the navigational language names
 		$result = $db->query($query);
-		//$num = $result->num_rows;
 		/**********************************************************************************************************************
 				select the default primary language name to be used by displaying the Countries and indigenous langauge names
 		**********************************************************************************************************************/
@@ -149,19 +131,16 @@ function NT_Test($PDF, $NT_Index) {
 		$db->query('CREATE TEMPORARY TABLE LN_Temp (iso VARCHAR(3) NOT NULL, rod VARCHAR(5) NOT NULL, idx INT NULL, LN VARCHAR(50) NOT NULL) ENGINE = MEMORY CHARSET = utf8') or die ('Query failed: ' . $db->error . '</body></html>');
 
 		$stmt = $db->prepare("INSERT INTO LN_Temp (iso, rod, idx, LN) VALUES (?, ?, ?, ?)");
-		// $result->data_seek(0);									// just to make sure the record was on the first one
 		while($row = $result->fetch_assoc()) {
 			$iso = $row['ISO'];									// ISO
 			$rod = $row['ROD_Code'];							// ROD_Code
 			$var = $row['Variant_Code'];						// Variant_Code
 			$idx = $row['ISO_ROD_index'];						// ISO_ROD_index
 			
-			$ISO_ROD_index = (string)$idx;								// make sure that 00-DBLanguageCountryName.inc.php will work correctly
+			$ISO_ROD_index = (string)$idx;												// make sure that 00-DBLanguageCountryName.inc.php will work correctly
 			include './include/00-DBLanguageCountryName.inc.php';
 	
-			//$LN = check_input($LN);
-			//$db->query("INSERT INTO LN_Temp (iso, rod, idx, LN) VALUES ('$iso', '$rod', $idx, '$LN')");
-			$stmt->bind_param("ssis", $iso, $rod, $idx, $LN);			// bind parameters for markers								// 
+			$stmt->bind_param("ssis", $iso, $rod, $idx, $LN);							// bind parameters for markers
 			$stmt->execute();															// execute query
 		}
 		$stmt->close();
@@ -177,7 +156,6 @@ function NT_Test($PDF, $NT_Index) {
                         $BegLetters=str_replace(' ', '&nbsp;', 'Select the beginning of the Language Name:') . '&nbsp;&nbsp;';
                         $query = 'SELECT DISTINCT UPPER(LEFT(LN, 1)) AS Beg FROM LN_Temp ORDER BY LN';
                         $resultLetter = $db->query($query);
-                        //$numLetter=mysql_num_rows($resultLetter);
                         while ($row = $resultLetter->fetch_assoc()) {
                             $BegLetter = $row['Beg'];
                             if (!isset($_GET["Beg"]) || $_GET["Beg"] == "" || $_GET["Beg"] == $BegLetter) {
@@ -273,10 +251,6 @@ function NT_Test($PDF, $NT_Index) {
 			echo "<tr valign='middle' style='color: black; background-color: #$color; margin: 0px; padding: 0px; '>";
 			echo "<td width='6%' style='cursor: pointer; ' onclick='parent.location=\"Scripture_Edit.php?idx=$idx\"'><img style='margin-bottom: 3px; margin-left: 13px; cursor: hand; ' src='images/pencil_edit.png' /></td>";
 			echo "<td width='28%' style='background-color: #$color; margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>$LN</td>";
-			//$alt_lang_names=mysql_result($result,$i,"scripture_main.alt_lang_names");
-			//if ($alt_lang_names > 0) {
-			//$query_alt="SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = $idx";		// alt_lang_names
-			//$result_alt=$db->query($query_alt);
 			$stmt_alt->bind_param("i", $idx);													// bind parameters for markers								// 
 			$stmt_alt->execute();																// execute query
 			$result_alt = $stmt_alt->get_result();												// instead of bind_result (used for only 1 record):
@@ -299,16 +273,9 @@ function NT_Test($PDF, $NT_Index) {
 			else
 				echo "<td width='31%'style='margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>&nbsp;</td>";
 	
-			//$result_alt->free();
-			
-			//$iso=mysql_result($result,$i,"scripture_main.ISO");								// ISO
-			//$rod=mysql_result($result,$i,"scripture_main.ROD_Code");						// ROD_Code
-			//$var=mysql_result($result,$i,"scripture_main.Variant_Code");				// Variant_Code to the language name
 			$VD = '';
 			if (!is_null($var) && $var != '') {
-				//$query = "SELECT Variant_Eng FROM Variants WHERE Variant_Code = '$var'";
-				//$resultVar=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
-				$stmt_Var->bind_param("s", $var);										// bind parameters for markers								// 
+				$stmt_Var->bind_param("s", $var);												// bind parameters for markers								// 
 				$stmt_Var->execute();															// execute query
 				$resultVar = $stmt_Var->get_result();											// instead of bind_result (used for only 1 record):
 				$numVar=$resultVar->num_rows;
@@ -316,28 +283,22 @@ function NT_Test($PDF, $NT_Index) {
 					$VD_Temp = $resultVar->fetch_assoc();
 					$VD = $VD_Temp['Variant_Eng'];
 				}
-				//$resultVar->free();
 			}		
 			echo "<td width='15%' style='margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>" . $iso . " " . $rod;
 			if ($VD != '') {
-				//include './include/00-MajorLanguageVariantCode.inc.php';
 				echo "<br /><span style='font-style: italic; font-size: 8pt; '>($VD)</span>";
 			}
 			echo '</td>';
 	
-			//$query="SELECT countries.English FROM ISO_countries, countries WHERE ISO_countries.ISO_ROD_index = $idx AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY countries.English";
-			//$result_ISO_countries=$db->query($query);
-			$stmt_ISO_countries->bind_param("i", $idx);								// bind parameters for markers								// 
+			$stmt_ISO_countries->bind_param("i", $idx);											// bind parameters for markers
 			$stmt_ISO_countries->execute();														// execute query
 			$result_ISO_countries = $stmt_ISO_countries->get_result();							// instead of bind_result (used for only 1 record):
-			//$num_ISO_countries=$result_ISO_countries->num_rows;
 			$temp_ISO_countries = $result_ISO_countries->fetch_assoc();
 			$Eng_country = str_replace("'", "&#x27;", $temp_ISO_countries['English']);			// name of the country in the language version
 			while ($temp_ISO_countries = $result_ISO_countries->fetch_assoc()) {
 				$Eng_country = $Eng_country.', '.str_replace("'", "&#x27;", $temp_ISO_countries['English']);		// name of the country in the language version
 			}
 			$result_ISO_countries->free();
-			//echo "<td width='20%' style='background-color: #$color; margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>$Eng_country</td>";
 			echo "<td width='20%'style='margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>$Eng_country</td>";
 			echo '</tr>';
 			$i++;
@@ -542,15 +503,15 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		<br /><br />
 
 		<?php
-foreach ($_SESSION['nav_ln_array'] as $code => $array){
-	$html = "<div class='enter' style='font-size: 10pt; '>In <span style='font-size: 12pt; font-weight: bold; '>".strtoupper($array[1])."</span>, enter the Language Name: <input type='text' name='".$array[1]."_lang_name' id='".$array[1]."_lang_name' size='35' style='color: navy; font-weight: bold; ' value=\"switch\" /></div>";
-	if (isset($_POST[$array[1].'_lang_name'])){
-		$result = str_replace('switch', $_POST[$array[1].'_lang_name'], $html);
-	} else {
-		$result = str_replace('switch', ${$array[1].'_lang_name'}, $html);
-	}
-	echo $result;
-}
+		foreach ($_SESSION['nav_ln_array'] as $code => $array){
+			$html = "<div class='enter' style='font-size: 10pt; '>In <span style='font-size: 12pt; font-weight: bold; '>".strtoupper($array[1])."</span>, enter the Language Name: <input type='text' name='".$array[1]."_lang_name' id='".$array[1]."_lang_name' size='35' style='color: navy; font-weight: bold; ' value=\"switch\" /></div>";
+			if (isset($_POST[$array[1].'_lang_name'])){
+				$result = str_replace('switch', $_POST[$array[1].'_lang_name'], $html);
+			} else {
+				$result = str_replace('switch', ${$array[1].'_lang_name'}, $html);
+			}
+			echo $result;
+		}
 
 /************************************************
 	Default Navigational Language Name
@@ -559,29 +520,29 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		<br />
 		<p>Select the default major langauge <span style="font-size: 10pt; ">(i.e. the major language from above)</span>: 
 		<select name="DefaultLang" id="DefaultLang">
-<?php
-if (isset($_POST['DefaultLang'])) { 
-	foreach ($_SESSION['nav_ln_array'] as $code => $array){
-		$html = "<option value=\"".$array[1]."Lang\" switch >".$array[1]."</option>";
-		if ($_POST['DefaultLang'] == $array[1].'Lang'){
-			$result = str_replace('switch', " selected='yes'", $html);
-		} else {
-			$result = str_replace('switch', '', $html);
+		<?php
+		if (isset($_POST['DefaultLang'])) { 
+			foreach ($_SESSION['nav_ln_array'] as $code => $array){
+				$html = "<option value=\"".$array[1]."Lang\" switch >".$array[1]."</option>";
+				if ($_POST['DefaultLang'] == $array[1].'Lang'){
+					$result = str_replace('switch', " selected='yes'", $html);
+				} else {
+					$result = str_replace('switch', '', $html);
+				}
+				echo $result;
+			}
 		}
-		echo $result;
-	}
-}
-else {
-	foreach ($_SESSION['nav_ln_array'] as $code => $array){
-		$html = "<option value=\"".$array[1]."Lang\" switch >".$array[1]."</option>";
-		if ($def_LN == $array[3]){
-			$result = str_replace('switch', " selected='yes'", $html);
-		} else {
-			$result = str_replace('switch', '', $html);
+		else {
+			foreach ($_SESSION['nav_ln_array'] as $code => $array){
+				$html = "<option value=\"".$array[1]."Lang\" switch >".$array[1]."</option>";
+				if ($def_LN == $array[3]){
+					$result = str_replace('switch', " selected='yes'", $html);
+				} else {
+					$result = str_replace('switch', '', $html);
+				}
+				echo $result;
+			}
 		}
-		echo $result;
-	}
-}
 		?>
 		</select>
 		</p>
@@ -752,7 +713,6 @@ else {
 			$result1=$db->query($query);
 			$num=$result1->num_rows;
 			if ($result1 && $num > 0) {
-				//$i = 0;
 				while ($r = $result1->fetch_assoc()) {
 					$Item = $r['Item'];
 					if ($Item == 'B') {																	// "B"ible
@@ -761,7 +721,6 @@ else {
 					else {																				// else = "S"cripture
 						$complete_Scripture = $r['Scripture_Bible_Filename'];
 					}
-					//$i++;
 				}
 			}
 			$result1->free();
@@ -875,10 +834,8 @@ else {
 									$OT_glossary = -1;					// must be initialized to -1!
 									$temp_t = 0;
 									$temp = 0;
-									//for ($i = 0; $i < 39; $i++) {
 									while ($i < $num) {
 										$r = $result1->fetch_assoc();
-										//${'OT_PDF_Book-$i'} = mysql_result($result1,$i,"OT_PDF");				// $i is the actual OT_PDF (book number) in the row (ISO)!
 										$temp_t = $r['OT_PDF'];
 										if (preg_match("/^[0-9][0-9][0-9]$/", $temp_t)) {
 											if ($temp_t == 100) $OT_appendix = $i;
@@ -887,9 +844,6 @@ else {
 											continue;
 										}
 										$temp = $temp_t;
-										//echo "OT_PDF_Book-".(string)$i." = ".${'OT_PDF_Book-$i'}."<br />";
-										//${'0T_PDF_Filename-$i'} = mysql_result($result1,$i,"OT_PDF_Filename");	// $i is the actual OT_PDF_Filename in the row (ISO)!
-										//echo "OT_PDF_Filename-".(string)$i." = ".${'OT_PDF_Filename-$i'}."<br />";
 										for (; $j <= $temp; $j++) {
 											$item_from_array = $OT_array[2][$j];
 											if ($j % 2)
@@ -897,12 +851,9 @@ else {
 											else
 												$color = "f0f4f0";
 											echo "<tr style='background-color: #$color;'><td width='30%'>";
-											//echo "'".$_POST['OT_PDF_Book-'.(string)$i]."'";
 											if ($j == $temp) {
-												//echo "&nbsp;&nbsp;<input type='checkbox' name='OT_PDF_Book-$j' id='OT_PDF_Book-$j'" . (isset($_POST['OT_PDF_Book-'.(string)$i]) ? ' checked' : '') . "' />&nbsp;$item_from_array";
 												echo "&nbsp;&nbsp;<input type='checkbox' name='OT_PDF_Book-$j' id='OT_PDF_Book-$j' checked />&nbsp;$item_from_array";
 												echo "</td><td width='70%'>";
-												//echo "PDF filename:&nbsp;<input type='text' name='OT_PDF_Filename-$j' id='OT_PDF_Filename-$j' size='50' value='" . (isset($_POST['OT_PDF_Filename-'.(string)$i]) ? $_POST['OT_PDF_Filename-'.(string)$i] : '') . "' />";
 												${'OT_PDF_Filename-$i'} = $r['OT_PDF_Filename'];	// $i is the actual OT_PDF_Filename in the row (ISO)!
 												echo "OT PDF Filename:&nbsp;<input type='text' name='OT_PDF_Filename-$j' id='OT_PDF_Filename-$j' size='50' value=\"${'OT_PDF_Filename-$i'}\" />";
 											}
@@ -1022,8 +973,6 @@ else {
 /************************************************
 	NT PDF books
 *************************************************/
-		//$query="SELECT * FROM scripture_main WHERE ISO_ROD_index = $idx";
-		//$result=$db->query($query);
 		if ($SM_row['NT_PDF']) {
 			$query="SELECT * FROM NT_PDF_Media WHERE ISO_ROD_index = $idx AND NT_PDF = 'NT'";
 			$result1=$db->query($query);
@@ -1120,10 +1069,8 @@ else {
 									$NT_glossary = -1;					// must be initialized to -1!
 									$temp_t = 0;
 									$temp = 0;
-									//for ($i = 0; $i < 27; $i++) {
-										while ($i < $num) {
+									while ($i < $num) {
 										$r = $result1->fetch_assoc();
-										//${'NT_PDF_Book-$i'} = mysql_result($result1,$i,"NT_PDF_Book");				// $i is the actual PDF (book number) in the row (ISO)!
 										$temp_t = $r['NT_PDF'];
 										if (preg_match("/^[0-9][0-9][0-9]$/", $temp_t)) {
 											if ($temp_t == 200) $NT_appendix = $i;
@@ -1132,9 +1079,6 @@ else {
 											continue;
 										}
 										$temp = $temp_t;
-										//echo "NT_PDF_Book-".(string)$i." = ".${'NT_PDF_Book-$i'}."<br />";
-										//${'NT_PDF_Filename-$i'} = mysql_result($result1,$i,"NT_PDF_Filename");	// $i is the actual NT_PDF_Filename in the row (ISO)!
-										//echo "NT_PDF_Filename-".(string)$i." = ".${'NT_PDF_Filename-$i'}."<br />";
 										for (; $j <= $temp; $j++) {
 											$item_from_array = $NT_array[2][$j];
 											if ($j % 2)
@@ -1142,12 +1086,9 @@ else {
 											else
 												$color = "f0f4f0";
 											echo "<tr style='background-color: #$color;'><td width='30%'>";
-											//echo "'".$_POST['NT_PDF_Book-'.(string)$i]."'";
 											if ($j == $temp) {
-												//echo "&nbsp;&nbsp;<input type='checkbox' name='NT_PDF_Book-$j' id='NT_PDF_Book-$j'" . (isset($_POST['NT_PDF_Book-'.(string)$i]) ? ' checked' : '') . "' />&nbsp;$item_from_array";
 												echo "&nbsp;&nbsp;<input type='checkbox' name='NT_PDF_Book-$j' id='NT_PDF_Book-$j' checked />&nbsp;$item_from_array";
 												echo "</td><td width='70%'>";
-												//echo "NT PDF Filename:&nbsp;<input type='text' name='NT_PDF_Filename-$j' id='NT_PDF_Filename-$j' size='50' value='" . (isset($_POST['NT_PDF_Filename-'.(string)$i]) ? $_POST['NT_PDF_Filename-'.(string)$i] : '') . "' />";
 												${'NT_PDF_Filename-$i'} = $r['NT_PDF_Filename'];	// $i is the actual NT_PDF_Filename in the row (ISO)!
 												echo "NT PDF filename:&nbsp;<input type='text' name='NT_PDF_Filename-$j' id='NT_PDF_Filename-$j' size='50' value=\"${'NT_PDF_Filename-$i'}\" />";
 											}
@@ -1546,8 +1487,6 @@ else {
 			</div>
             <div class='enter' id='OT_Audio'>		<!-- The id has to the same because of function classChange in AddorChange.js! -->
 				<input type='button' id="Close_OT_audio" value="Close OT audio" /> Here are the books in the Old Testament in audio (mp3) by chapters:<br />
-				<!--input type='button' id='OT_Audio_All' value='Click All On' onclick="All_Audio_On_Or_Off('table3', true)" />&nbsp;&nbsp;
-				<input type='button' id='OT_Audio_None' value='Click All Off' onclick="All_Audio_On_Or_Off('table3', false)" /><br /-->
 				<input type='button' id='OT_Audio_Chapters' value='All Audio OT Chapters' /><span style='font-size: 9pt; font-weight: bold; '> Enter the audio filename for Genesis chapter 1 and click on this button to have all of the rest of the OT filled in.</span><br />
 				<input type='button' id='No_OT_Audio_Chapters' value='No Audio OT Chapters' /><span style='font-size: 9pt; font-weight: bold; '> Delete the audio filename for Genesis chapter 1 and click on this button to have none of the rest of the OT deleted.</span>
 				<br />
@@ -1617,8 +1556,6 @@ else {
 			</div>
             <div class='enter' id='NT_Audio'>		<!-- The id has to the same because of function classChange in AddorChange.js! -->
 				<input type='button' id="Close_NT_audio" value="Close NT audio" /> Here are the books in the New Testament in audio (mp3) by chapters:<br />
-				<!--input type='button' id='NT_Audio_All' value='Click All On' onclick="All_Audio_On_Or_Off('table3', true)" />&nbsp;&nbsp;
-				<input type='button' id='NT_Audio_None' value='Click All Off' onclick="All_Audio_On_Or_Off('table3', false)" /><br /-->
 				<input type='button' id='NT_Audio_Chapters' value='All Audio NT Chapters' /><span style='font-size: 9pt; font-weight: bold; '> Enter the audio filename for Matthew chapter 1 and click on this button to have all of the rest of the NT filled in.</span><br />
 				<input type='button' id='No_NT_Audio_Chapters' value='No Audio NT Chapters' /><span style='font-size: 9pt; font-weight: bold; '> Delete the audio filename for Matthew chapter 1 and click on this button to have none of the rest of the NT deleted.</span>
 				<br />
@@ -1633,8 +1570,6 @@ else {
 									echo "<tr style='vertical-align: top; '>";
 									echo "<td width='10%' style='padding: 12px; '>";
 									echo "&nbsp;$item_from_array:<br />";
-									//echo "<input style='font-size: 8pt; ' type='button' id='NT_Audio_On-$i' value='Click On' onclick='Audio_On_Or_Off(\"table3-$i\", true)' />";
-									//echo "&nbsp;&nbsp;<input style='font-size: 8pt; ' type='button' id='NT_Audio_None-$i' value='Click Off' onclick='Audio_On_Or_Off(\"table3-$i\", false)' /><br />";
 									if ($item2_from_array > 1) {
 										echo "<input style='font-size: 8pt; ' type='button' id='One_NT_Audio_Chapters-$i' value='Audio NT Chapters in $item_from_array' onclick='One_NT_Audio_Chapters($i)' />";
 										echo "<br /><span style='font-size: 8pt; '>Enter the audio filename for $item_from_array chapter 1 and click on this button to have all of the rest of $item_from_array filled in.</span>";
@@ -1643,7 +1578,6 @@ else {
 									}
 									echo "</td>";
 									echo "<td width='90%' style='line-height: 18px; padding: 12px; '>";
-									//echo "NT_Audio_Table3-$i<br />";
 									echo "<table id='NT_Audio_Table3-$i' width='100%'>";
 									echo "<tr>";
 									for ($z = 0; $z < $item2_from_array; $z++) {
@@ -1714,12 +1648,10 @@ else {
 												echo "<input style='font-size: 8pt; ' type='button' id='One_NT_Audio_Chapters-${book_num_sel}' value='Audio NT Chapters in $item_from_array' onclick='One_NT_Audio_Chapters($book_num_sel)' />";
 												echo "<br /><span style='font-size: 8pt; '>Enter the audio filename for $item_from_array chapter 1 and click on this button to have all of the rest of $item_from_array filled in.</span>";
 												echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_NT_Audio_Chapters-${book_num_sel}' value='No Audio NT Chapters in $item_from_array' onclick='One_No_NT_Audio_Chapters(${book_num_sel})' />";
-												//echo 'Z) ' . $book_num_sel . ' ';
 												echo "<br /><span style='font-size: 8pt; '>Delete the NT audio filename for $item_from_array chapter 1 and click on this button to have none of the rest of $item_from_array filled in.</span>";
 											}
 											echo "</td>";
 											echo "<td width='90%' style='line-height: 18px; padding: 12px; '>";
-											//echo "NT_Audio_Table3-${book_num_sel}<br />";
 											echo "<table id='NT_Audio_Table3-${book_num_sel}' width='100%'>";
 											echo "<tr>";
 											for ($z = 0; $z < $item2_from_array; $z++) {						// max. chapter number for the book
@@ -1728,7 +1660,6 @@ else {
 												}
 												$y = $z + 1;
 												echo "<td width='10%'>";
-												// $item_from_array-$y doesn't work. The only thing you get is the number!
 												echo "<input style='font-size: 9pt; ' type='checkbox' name='NT_Audio_Index-${book_num_sel}-$z' id='NT_Audio_Index-${book_num_sel}-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
 												echo "</td><td width='20%'>";
 												echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"NT_Audio_Index-${book_num_sel}-$z\").checked = true;' name='NT_Audio_Filename-${book_num_sel}-$z' id='NT_Audio_Filename-${book_num_sel}-$z' size='19' value='' />";
@@ -1757,12 +1688,10 @@ else {
 											echo "<input style='font-size: 8pt; ' type='button' id='One_NT_Audio_Chapters-${book_num_sel}' value='Audio NT Chapters in $item_from_array' onclick='One_NT_Audio_Chapters(${book_num_sel})' />";
 											echo "<br /><span style='font-size: 8pt; '>Enter the audio filename for $item_from_array chapter 1 and click on this button to have all of the rest of $item_from_array filled in.</span>";
 											echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_NT_Audio_Chapters-${book_num_sel}' value='No Audio NT Chapters in $item_from_array' onclick='One_No_NT_Audio_Chapters(${book_num_sel})' />";
-											//echo 'Y) ' . $book_num_sel . ' ';
 											echo "<br /><span style='font-size: 8pt; '>Delete the NT audio filename for $item_from_array chapter 1 and click on this button to have none of the rest of $item_from_array filled in.</span>";
 										}
 										echo "</td>";
 										echo "<td width='90%' style='line-height: 18px; padding: 12px; '>";
-										//echo "NT_Audio_Table3-${book_num_sel}<br />";
 										echo "<table id='NT_Audio_Table3-${book_num_sel}' width='100%'>";
 										echo "<tr>";
 										$w=0;
@@ -1835,8 +1764,6 @@ else {
 									echo "<tr style='vertical-align: top; '>";
 									echo "<td width='10%' style='padding: 12px; '>";
 									echo "&nbsp;$item_from_array:<br />";
-									//echo "<input style='font-size: 8pt; ' type='button' id='NT_Audio_On-$i' value='Click On' onclick='Audio_On_Or_Off(\"table3-$i\", true)' />";
-									//echo "&nbsp;&nbsp;<input style='font-size: 8pt; ' type='button' id='NT_Audio_None-$i' value='Click Off' onclick='Audio_On_Or_Off(\"table3-$i\", false)' /><br />";
 									if ($item2_from_array > 1) {
 										echo "<input type='button' style='font-size: 8pt; ' id='One_NT_Audio_Chapters-${w}' value='Audio NT Chapters in $item_from_array' onclick='One_NT_Audio_Chapters($w)' />";
 										echo "<br /><span style='font-size: 8pt; '>Enter the audio filename for $item_from_array chapter 1 and click on this button to have all of the rest of $item_from_array filled in.</span>";
@@ -1845,7 +1772,6 @@ else {
 									}
 									echo "</td>";
 									echo "<td width='90%' style='line-height: 18px; padding: 12px; '>";
-									//echo "NT_Audio_Table3-$w<br />";
 									echo "<table id='NT_Audio_Table3-$w' width='100%'>";
 									echo "<tr>";
 									for ($z = 0; $z < $item2_from_array; $z++) {
@@ -1890,8 +1816,6 @@ else {
 			</div>
             <div class='enter' id='NT_Audio'>		<!-- The id has to the same because of function classChange in AddorChange.js! -->
 				<input type='button' id="Close_NT_audio" value="Close NT audio" /> Here are the books in the New Testament in audio (mp3) by chapters:<br />
-				<!--input type='button' id='NT_Audio_All' value='Click All On' onclick="All_Audio_On_Or_Off('table3', true)" />&nbsp;&nbsp;
-				<input type='button' id='NT_Audio_None' value='Click All Off' onclick="All_Audio_On_Or_Off('table3', false)" /><br /-->
 				<input type='button' id='NT_Audio_Chapters' value='All Audio NT Chapters' /><span style='font-size: 9pt; font-weight: bold; '> Enter the audio filename for Matthew chapter 1 and click on this button to have all of the rest of the NT filled in.</span><br />
 				<input type='button' id='No_NT_Audio_Chapters' value='No Audio NT Chapters' /><span style='font-size: 9pt; font-weight: bold; '> Delete the audio filename for Matthew chapter 1 and click on this button to have none of the rest of the NT deleted.</span>
 				<br />
@@ -1906,8 +1830,6 @@ else {
 									echo "<tr style='vertical-align: top; '>";
 									echo "<td width='10%' style='padding: 12px; '>";
 									echo "&nbsp;$item_from_array:<br />";
-									//echo "<input style='font-size: 8pt; ' type='button' id='NT_Audio_On-$i' value='Click On' onclick='Audio_On_Or_Off(\"table3-$i\", true)' />";
-									//echo "&nbsp;&nbsp;<input style='font-size: 8pt; ' type='button' id='NT_Audio_None-$i' value='Click Off' onclick='Audio_On_Or_Off(\"table3-$i\", false)' /><br />";
 									if ($item2_from_array > 1) {
 										echo "<input style='font-size: 8pt; ' type='button' id='One_NT_Audio_Chapters-${book_num_sel}' value='Audio NT Chapters in $item_from_array' onclick='One_NT_Audio_Chapters($book_num_sel)' />";	//'NT_Audio_testing($book_num_sel)' />";	//
 										echo "<br /><span style='font-size: 8pt; '>Enter the audio filename for $item_from_array chapter 1 and click on this button to have all of the rest of $item_from_array filled in.</span>";
@@ -1916,7 +1838,6 @@ else {
 									}
 									echo "</td>";
 									echo "<td width='90%' style='line-height: 18px; padding: 12px; '>";
-									//echo "NT_Audio_Table3-${book_num_sel}" . '<br />';
 									echo "<table id='NT_Audio_Table3-${book_num_sel}' width='100%'>";
 									echo "<tr>";
 									for ($z = 0; $z < $item2_from_array; $z++) {
@@ -1925,11 +1846,9 @@ else {
 										}
 										$y = $z + 1;
 										echo "<td width='10%'>";
-										// $item_from_array-$y doesn't work. The only thing you get is the number!
 										echo "<input style='font-size: 9pt; ' type='checkbox' name='NT_Audio_Index-${book_num_sel}-$z' id='NT_Audio_Index-${book_num_sel}-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
 										echo "</td><td width='20%'>";
 										echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"NT_Audio_Index-${book_num_sel}-$z\").checked = true;' name='NT_Audio_Filename-${book_num_sel}-$z' id='NT_Audio_Filename-${book_num_sel}-$z' size='19' value='' />";
-										//echo "<br />"."NT_Audio_Filename-".$i."-".$z;
 										echo "</td>";
 									}
 									if (($z % 3) != 0) {
@@ -2001,7 +1920,6 @@ else {
             ${'txtSABurl-1'} = $_POST['txtSABurl-1'];
             ${'txtSABdescription-1'} = $_POST['txtSABdescription-1'];
             ${'txtSABpreScriptoria-1'} = $_POST['txtSABpreScriptoria-1'];
-//echo '0) First path: ' . ${'txtSABsubFirstPath-1'} . '; subfolder: ' . ${'txtSABsubfolder-1'} . '%<br />';
 		}
 		elseif ($SM_row['SAB'] >= 1) {														// if data comes from sab_scriptoria table
             $query="SELECT url, subfolder, description, pre_scriptoria FROM SAB_scriptoria WHERE ISO_ROD_index = $idx";
@@ -2037,8 +1955,6 @@ else {
             ${'txtSABpreScriptoria-1'}='';
 			${'txtSABsubFirstPath-1'}='sab';
         }
-//echo '1) First path: ' . ${'txtSABsubFirstPath-1'} . '; subfolder: ' . ${'txtSABsubfolder-1'} . '%<br />';
-		
 		${'txtSABsubFirstPath-1'} = '';
 		if (${'txtSABpreScriptoria-1'} !== '') {										// if data is in preScriptoria-1 (old)
             ${'txtSABurl-1'}='';
@@ -2048,7 +1964,6 @@ else {
 		elseif (${'txtSABsubfolder-1'} !== '') {											// if there is data in subfolder-1
 				${'txtSABsubFirstPath-1'} = substr(${'txtSABsubfolder-1'}, 0, strpos(${'txtSABsubfolder-1'}, '/'));
 				${'txtSABsubfolder-1'} = substr(${'txtSABsubfolder-1'}, strpos(${'txtSABsubfolder-1'}, '/')+1, -1);		// remove first "path" and remove last "/"
-//echo '2) First path: ' . ${'txtSABsubFirstPath-1'} . '; subfolder: ' . ${'txtSABsubfolder-1'} . '%<br />';
 		}
 		else {		// url != ''
 		}
@@ -2099,7 +2014,6 @@ else {
 						echo "</td>";
 						echo "<td width='13%'>";
 							echo "<input type='text' name='txtSABsubfolder-$i' id='txtSABsubfolder-$i' style='color: navy; ' size='15' value='".${"txtSABsubfolder-$i"}."' />";
-							//echo "<input type='hidden' name='txtSABsubFirstPath-$i' id='txtSABsubFirstPath-$i' value='".${'txtSABsubFirstPath-$i'}."' />";
 						echo "</td>";
 						echo "<td width='24%'>";
 							echo "<input type='text' name='txtSABurl-$i' id='txtSABurl-$i' style='color: navy; ' size='31' value='" . ( isset($_POST['txtSABurl-'.(string)$i]) ? $_POST['txtSABurl-'.(string)$i] : '' ) . "' />";
@@ -2243,7 +2157,6 @@ else {
                         Text
                         Audio
                         Video
-					<input type='text' style='color: navy; ' size='11' name='txtLinkBibleIs-1' id='txtLinkBibleIs-1' value="< ?php if (isset($_POST['txtLinkBibleIs-1'])) echo $_POST['txtLinkBibleIs-1']; else echo ${'txtLinkBibleIs-1'}; ?>" />
                     -->
                     <select name="txtLinkBibleIs-1" id="txtLinkBibleIs-1" style='color: navy; '>
                         <option value="BibleIsDefault-1" <?php echo ( isset($_POST['BibleIsDefault-1']) ? ($_POST['BibleIsDefault-1'] == 1 ? " selected='selected'" : "") : (${'BibleIsDefault-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Default</option>
@@ -2275,7 +2188,6 @@ else {
 							echo "<input type='text' name='txtLinkBibleIsTitle-$i' id='txtLinkBibleIsTitle-$i' style='color: navy; ' size='30' value='" . ( isset($_POST['txtLinkBibleIsTitle-'.(string)$i]) ? $_POST['txtLinkBibleIsTitle-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='8%'>";
-							//echo "<input type='text' name='txtLinkBibleIs-$i' id='txtLinkBibleIs-$i' style='color: navy; ' size='11' value='" . ( isset($_POST['txtLinkBibleIs-'.(string)$i]) ? $_POST['txtLinkBibleIs-'.(string)$i] : '' ) . "' />";
 							if ($_POST['BibleIsDefault-'.(string)$i] == 'BibleIsDefault-'.$i) ${'BibleIsDefault-$i'}=1; else ${'BibleIsDefault-$i'}=0;
 							if ($_POST['BibleIsText-'.(string)$i] == 'BibleIsText-'.$i) ${'BibleIsText-$i'}=2; else ${'BibleIsText-$i'}=0;
 							if ($_POST['BibleIsAudio-'.(string)$i] == 'BibleIsAudio-'.$i) ${'BibleIsAudio-$i'}=3; else ${'BibleIsAudio-$i'}=0;
@@ -2318,7 +2230,6 @@ else {
 								echo "<input type='text' name='txtLinkBibleIsTitle-$i' id='txtLinkBibleIsTitle-$i' style='color: navy; ' size='30' value='" . ${'txtLinkBibleIsTitle-$i'} . "' />";
 							echo "</td>";
 							echo "<td width='8%'>";
-								//echo "<input type='text' name='txtLinkBibleIs-$i' id='txtLinkBibleIs-$i' style='color: navy; ' size='11' value='" . ${'txtLinkBibleIs-$i'} . "' />";
 								?>
 								<select name="txtLinkBibleIs-<?php echo $i ?>" id="txtLinkBibleIs-<?php echo $i ?>" style='color: navy; '>
 									<option value="BibleIsDefault-<?php echo $i ?>" <?php echo ( ${'BibleIsDefault-$i'} == 1 ? " selected='selected'" : '' ) ?>>Default</option>
@@ -2727,7 +2638,6 @@ else {
 		elseif ($SM_row['viewer']) {
 			$query="SELECT viewer_ROD_Variant FROM viewer WHERE ISO_ROD_index = $idx";
 			$resultViewer=$db->query($query);
-			//$numViewer=$resultViewer->num_rows;
 			$viewerText = '';
 			if ($resultViewer->num_rows > 0) {
 				$r = $resultViewer->fetch_assoc();
@@ -2827,7 +2737,6 @@ else {
 			$result1=$db->query($query);
 			$num=$result1->num_rows;
 			$r = $result1->fetch_assoc();
-			//${'txtCellPhoneTitle-$i'}=mysql_result($result1,0,'Cell_Phone_Title');
 			${'txtCellPhoneTitle-$i'}=1;
 			$temp1 = $r['Cell_Phone_Title'];
 			if ($temp1 == 'GoBible (Java)') ${'CPJava-$i'}=1; else ${'CPJava-$i'}=0;
@@ -2861,7 +2770,6 @@ else {
 					<span style="font-size: 10pt; ">Enter Cell Phone<br />Module:</span>
 				</td>
 				<td width="16%">
-					<!--input type='text' style='color: navy; ' size='39' name='txtCellPhoneTitle-1' id='txtCellPhoneTitle-1' value="< ?php if (isset($_POST['txtCellPhoneTitle-1'])) echo $_POST['txtCellPhoneTitle-1']; else echo ${'txtCellPhoneTitle-$i'}; ?>" /-->
                     <!--
                         GoBible (Java)
                         MySword (Android)
@@ -2963,7 +2871,6 @@ else {
 								echo "&nbsp;";
 							echo "</td>";
 							echo "<td width='16%'>";
-								//echo "<input type='text' name='txtCellPhoneTitle-$i' id='txtCellPhoneTitle-$i' style='color: navy; ' size='39' value='" . ${'txtCellPhoneTitle-$i'} . "' />";
 								?>
 								<select name="txtCellPhoneTitle-<?php echo $i ?>" id="txtCellPhoneTitle-<?php echo $i ?>" style='color: navy; '>
 									<option value="CPJava-<?php echo $i ?>" <?php echo ( ${'CPJava-$i'} == 1 ? " selected='selected'" : '' ) ?>>GoBible (Java)</option>
@@ -3073,7 +2980,6 @@ else {
 				</td>
 			</tr>
 			<?php
-					//<input type='checkbox' style='font-size: 9pt; ' name='NT_Audio_Index-$book_num_sel-$z' id='NT_Audio_Index-$book_num_sel-$z' />
 			$i = 2;
 			if (isset($_POST['txtWatchWebSource-'.(string)$i]) || isset($_POST['txtWatchWebSource-'.(string)$i]) || isset($_POST['txtWatchURL-'.(string)$i])) {
 				while (isset($_POST['txtWatchResource-'.(string)$i]) || isset($_POST['txtWatchResource-'.(string)$i]) || isset($_POST['txtWatchURL-'.(string)$i])) {
@@ -3110,7 +3016,6 @@ else {
 				}
 			}
 			else {
-				//for (; $i <= $num; $i++) {															// $i = 2!!!!!!!!!!!!
 				if ($num > 1) {
 					while ($r = $result1->fetch_assoc()) {
 						${'txtWatchWebSource-$i'}=$r['organization'];
@@ -3251,7 +3156,6 @@ else {
                     <br /><span style="font-size: 8pt; ">Download New<br />Testament</span>
 				</td>
 				<td width="132px">
-					<!--input type='text' style='color: navy; ' size='10' name='txtTestament-1' id='txtTestament-1' value="< ? php if (isset($_POST['txtTestament-1'])) echo $_POST['txtTestament-1']; else echo ${'txtTestament-$i'}; ?>" /-->
                     <!--
                     	New Testament
                         Old Testament
@@ -3265,7 +3169,6 @@ else {
                    <br /><span style="font-size: 10pt; ">New Testament</span>
 				</td>
 				<td width="156px">
-					<!--input type='text' style='color: navy; ' size='10' name='txtAlphabet-1' id='txtAlphabet-1' value="< ? php if (isset($_POST['txtAlphabet-1'])) echo $_POST['txtAlphabet-1']; else echo ${'txtAlphabet-$i'}; ?>" /-->
                     <!--
                     	Standard alphabet
                         Traditional alphabet
@@ -3312,7 +3215,6 @@ else {
 							echo "<input type='text' name='txtScriptureDescription-$i' id='txtScriptureDescription-$i' style='color: navy; ' size='14' value='" . ( isset($_POST['txtScriptureDescription-'.(string)$i]) ? $_POST['txtScriptureDescription-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='132px'>";
-							//echo "<input type='text' name='txtTestament-$i' id='txtTestament-$i' style='color: navy; ' size='10' value='" . ( isset($_POST['txtTestament-'.(string)$i]) ? $_POST['txtTestament-'.(string)$i] : '' ) . "' />";
 							if ($_POST['txtTestament-'.(string)$i] == 'SNT-'.$i) ${'SNT-$i'}=1; else ${'SNT-$i'}=0;
 							if ($_POST['txtTestament-'.(string)$i] == 'SOT-'.$i) ${'SOT-$i'}=1; else ${'SOT-$i'}=0;
 							if ($_POST['txtTestament-'.(string)$i] == 'SBible-'.$i) ${'SBible-$i'}=1; else ${'SBible-$i'}=0;
@@ -3325,7 +3227,6 @@ else {
                             <?php
 						echo "</td>";
 						echo "<td width='156px'>";
-							//echo "<input type='text' name='txtAlphabet-$i' id='txtAlphabet-$i' style='color: navy; ' size='10' value='" . ( isset($_POST['txtAlphabet-'.(string)$i]) ? $_POST['txtAlphabet-'.(string)$i] : '' ) . "' />";
 							if ($_POST['txtAlphabet-'.(string)$i] == 'SStandAlphabet-'.$i) $_POST['SStandAlphabet-'.(string)$i]=1; else $_POST['SStandAlphabet-'.(string)$i]=0;
 							if ($_POST['txtAlphabet-'.(string)$i] == 'STradAlphabet-'.$i) $_POST['STradAlphabet-'.(string)$i]=1; else $_POST['STradAlphabet-'.(string)$i]=0;
 							if ($_POST['txtAlphabet-'.(string)$i] == 'SNewAlphabet-'.$i) $_POST['SNewAlphabet-'.(string)$i]=1; else $_POST['SNewAlphabet-'.(string)$i]=0;
@@ -3357,17 +3258,14 @@ else {
 				}
 			}
 			else {
-				// for (; $i <= $num; $i++) {
 				if ($num > 1) {
 					while ($r = $result1->fetch_assoc()) {
 						${'txtScriptureDescription-$i'}=$r['ScriptureDescription'];
-						//${'txtTestament-$i'}=mysql_result($result1,$i-1,'Testament');
 						${'txtTestament-$i'}=1;
 						$temp1 = $r['Testament'];
 						if ($temp1 == 'New Testament') ${'SNT-$i'}=1; else ${'SNT-$i'}=0;
 						if ($temp1 == 'Old Testament') ${'SOT-$i'}=1; else ${'SOT-$i'}=0;
 						if ($temp1 == 'Bible') ${'SBible-$i'}=1; else ${'SBible-$i'}=0;
-						//${'txtAlphabet-$i'}=mysql_result($result1,$i-1,'alphabet');
 						${'txtAlphabet-$i'}=1;
 						$temp1 = $r['alphabet'];
 						if ($temp1 == 'Standard alphabet') ${'SStandAlphabet-$i'}=1; else ${'SStandAlphabet-$i'}=0;
@@ -3385,7 +3283,6 @@ else {
 								echo "<input type='text' name='txtScriptureDescription-$i' id='txtScriptureDescription-$i' style='color: navy; ' size='14' value='" . ${'txtScriptureDescription-$i'} . "' />";
 							echo "</td>";
 							echo "<td width='132px'>";
-								//echo "<input type='text' name='txtTestament-$i' id='txtTestament-$i' style='color: navy; ' size='10' value='" . ${'txtTestament-$i'} . "' />";
 								?>
 								<select name="txtTestament-<?php echo $i ?>" id="Testament-<?php echo $i ?>" style='color: navy; '>
 									<option value="SNT-<?php echo $i ?>" <?php echo ( ${'SNT-$i'} == 1 ? " selected='selected'" : '' ) ?>>New Testament</option>
@@ -3395,7 +3292,6 @@ else {
 								<?php
 							echo "</td>";
 							echo "<td width='156px'>";
-								//echo "<input type='text' name='txtAlphabet-$i' id='txtAlphabet-$i' style='color: navy; ' size='10' value='" . ${'txtAlphabet-$i'} . "' />";
 								?>
 								<select name="txtAlphabet-<?php echo $i ?>" id="txtAlphabet-<?php echo $i ?>" style='color: navy; '>
 									<option value="SStandAlphabet-<?php echo $i ?>" <?php echo ( ${'SStandAlphabet-$i'} == 1 ? " selected='selected'" : '' ) ?>>Standard alphabet</option>
@@ -3544,7 +3440,6 @@ else {
 				}
 			}
 			else {
-				// for (; $i <= $num; $i++) {
 				if ($num > 1) {
 					while ($r = $result1->fetch_assoc()) {
 						${'txtOther-$i'}=$r['other'];
@@ -3675,7 +3570,6 @@ else {
 				}
 			}
 			else {
-				//for (; $i <= $num; $i++) {
 				if ($num > 1) {
 					while ($r = $result1->fetch_assoc()) {
 						${'txtBuyWebSource-$i'}=$r['organization'];
@@ -3840,7 +3734,6 @@ else {
 				}
 			}
 			else {
-				//for (; $i <= $num; $i++) {
 				if ($num > 1) {
 					while ($r = $result1->fetch_assoc()) {
 						${'txtLinkCompany-$i'}=$r['company'];
@@ -4035,7 +3928,6 @@ else {
 			$r = $result1->fetch_assoc();
 			${'txtPlaylistVideoTitle-1'}=$r['PlaylistVideoTitle'];
 			${'txtPlaylistVideoFilename-1'}=$r['PlaylistVideoFilename'];
-			//${'PlaylistVideoDownload-$i'}=$r['PlaylistVideoDownload'];
 			if ($r['PlaylistVideoDownload'] == 1) {
 				${'PlaylistVideoView-1'} = 0;
 				${'PlaylistVideoDownload-1'} = 1;
@@ -4202,8 +4094,6 @@ else {
 	echo "</div>";
 	echo "<br />";
 	echo "<div style='text-align: center; background-color: #333333; margin: 0px auto 0px auto; padding: 20px; width: 1020px; border-radius: 15px; -moz-border-radius: 15px; -webkit-box-shadow: 15px; '>";
-	//echo "<img src='images/top_wbtc_logo.gif' />";
-	//echo "<br /><br />";
 	echo "<div class='nav' style='font-weight: normal; color: white; font-size: 10pt; '><sup>©</sup>2009 - ".date('Y')." <span style='color: #99FF99; '>ScriptureEarth.org</span></div>";
 	echo "</div>";
 	$db->close();
@@ -4275,7 +4165,7 @@ function Switch(number, Beg) {
 			}
 		}
 	}
-	ajaxCountryRequest.open("GET", "LN_English);
+	ajaxCountryRequest.open("GET", "LN_English");
 	ajaxCountryRequest.send(null);
 	$("#wait").css("display","none");
 }

@@ -80,8 +80,6 @@ if (strlen($TryLanguage) > 2) {
 
 	// ISO
 	if (strlen($TryLanguage) == 3) {
-//print_r($MajorLanguage . ' ' . $Variant_major . ' ' . $SpecificCountry . ' ' . $ln_result . '<br />');
-		//$query="SELECT DISTINCT ISO_ROD_index, ISO, ROD_Code, Variant_Code, ".$ln_result."Def_LN FROM nav_ln WHERE ISO = '$TryLanguage'";
 		$stmt_nav_ln_iso->bind_param('s', $TryLanguage);										// bind parameters for markers
 		$stmt_nav_ln_iso->execute();															// execute query
 		$result=$stmt_nav_ln_iso->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
@@ -92,13 +90,7 @@ if (strlen($TryLanguage) > 2) {
 			$ROD_Code = $row['ROD_Code'];
 			$Variant_Code = $row['Variant_Code'];
 			$VD = '';
-//echo 'ISO_ROD_index: ' . $ISO_ROD_index . '<br />';
 			include './include/00-DBLanguageCountryName.inc.php';							// returns $LN
-//echo $LN . '#<br />';
-//exit;
-			//$LN = htmlspecialchars($LN, ENT_QUOTES, 'UTF-8');								// The results are wrong because it changes ' to &#039;
-			
-			//$query = "SELECT DISTINCT $SpecificCountry, ISO_countries FROM scripture_main, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO_ROD_index = $ISO_ROD_index";
 			$stmt_SC->bind_param('i', $ISO_ROD_index);										// bind parameters for markers
 			$stmt_SC->execute();															// execute query
 			$result_con=$stmt_SC->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
@@ -108,8 +100,6 @@ if (strlen($TryLanguage) > 2) {
 			$country = '';
 			$temp_Country = '';
 			while ($row_con = $result_con->fetch_array()) {
-				//$countryTemp = $SpecificCountry;
-				//if (strpos("$SpecificCountry", '.')) $countryTemp = substr("$SpecificCountry", strpos("$SpecificCountry", '.')+1);		// In case there's a "." in the "country"
 				$temp_Country = trim($row_con["$SpecificCountry"]);							// name of the country in the language version
 				if (strpos($temp_Country, ',')) {											// if $temp_Country contains a ','
 					$temp_c = FALSE;
@@ -124,9 +114,6 @@ if (strlen($TryLanguage) > 2) {
 							else {
 								$country .= ', ' . $value;									// name of the country in the language version
 							}
-							//$GetName=trim($row_c["ISO_Country"]);
-							// SELECT ISO_Country [2 uppercase letters] FROM $SpecificCountry:
-							//$query="SELECT ISO_Country FROM countries WHERE $SpecificCountry = '$value'";
 							$stmt_c->bind_param('s', $value);								// bind parameters for markers
 							$stmt_c->execute();												// execute query
 							$result_c=$stmt_c->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
@@ -153,7 +140,6 @@ if (strlen($TryLanguage) > 2) {
 				$VD = '';
 			}
 			else {
-				//$resultVar = $db->query("SELECT $Variant_major FROM Variants WHERE Variant_Code = '$Variant_Code'");
 				$stmt_Var->bind_param('s', $Variant_Code);									// bind parameters for markers								// 
 				$stmt_Var->execute();														// execute query
 				$result_Var = $stmt_Var->get_result();
@@ -165,7 +151,6 @@ if (strlen($TryLanguage) > 2) {
 					alternate language names
 			*******************************************************************************/
 			$alt = '';
-			//$query="SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = $ISO_ROD_index";
 			$stmt_alt->bind_param('i', $ISO_ROD_index);										// bind parameters for markers
 			$stmt_alt->execute();															// execute query
 			if ($result_alt = $stmt_alt->get_result()) {
@@ -207,16 +192,12 @@ if (strlen($TryLanguage) > 2) {
 	$TryLanguage = str_replace("'", "\'", $TryLanguage);
 
 	// Try languages names:
-	//$query="SELECT DISTINCT $MajorLanguage, ISO, ROD_Code, Variant_Code, ISO_ROD_index FROM LN_English WHERE ISO_ROD_index IS NOT NULL ORDER BY $MajorLanguage";
-//echo $ln_result . '<br />';
 	$query="SELECT * FROM nav_ln ORDER BY ISO";
 	if ($result = $db->query($query)) {
 		$LN = '';
 		while ($row = $result->fetch_assoc()) {													// All ISOs + ROD codes + variants
 			$ISO_ROD_index = $row['ISO_ROD_index'];
 			include './include/00-DBLanguageCountryName.inc.php';								// returns LN
-//echo $result->num_rows . '<br />';
-			//$LN = htmlspecialchars($LN, ENT_QUOTES, 'UTF-8');									// language name. The results are wrong because it changes ' to &#039;
 			// Author: 'ChickenFeet'
 			$temp_LN = CheckLetters($LN);														// diacritic removal
 			
@@ -226,9 +207,6 @@ if (strlen($TryLanguage) > 2) {
 			$temp_TL = str_replace(')', '\)', $temp_TL);
 			$temp_TL = str_replace('.', '\.', $temp_TL);
 			$test = preg_match("/\b".$temp_TL.'/ui', $temp_LN, $match);						// match the beginning of the word(s) with TryLanguage from the user
-
-//echo '$LN: '.$LN . '<br />';
-//exit;
 			if ($test === 1) {
 				$ISO = $row['ISO'];
 				if (strlen($TryLanguage) == 3 && $ISO == $ISO_only) {							// if the length of $TryLanguage is 3 and the top section is there
@@ -237,8 +215,6 @@ if (strlen($TryLanguage) > 2) {
 				$ROD_Code = $row['ROD_Code'];
 				$Variant_Code = $row['Variant_Code'];
 				$VD = '';
-				
-				//$query = "SELECT DISTINCT $SpecificCountry FROM scripture_main, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO_ROD_index = $ISO_ROD_index";
 				$stmt_SC->bind_param('i', $ISO_ROD_index);										// bind parameters for markers
 				$stmt_SC->execute();															// execute query
 				$result_con=$stmt_SC->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
@@ -262,8 +238,6 @@ if (strlen($TryLanguage) > 2) {
 								else {
 									$country .= ', ' . $value;									// name of the country in the language version
 								}
-								// SELECT ISO_Country [2 uppercase letters] FROM $SpecificCountry:
-								//$query="SELECT ISO_Country FROM countries WHERE $SpecificCountry = '$value'";
 								$stmt_c->bind_param("s", $value);								// bind parameters for markers								// 
 								$stmt_c->execute();												// execute query
 								$result_c=$stmt_c->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
@@ -290,7 +264,6 @@ if (strlen($TryLanguage) > 2) {
 					$VD = '';
 				}
 				else {
-					//$resultVar = $db->query("SELECT $Variant_major FROM Variants WHERE Variant_Code = '$Variant_Code'");
 					$stmt_Var->bind_param('s', $Variant_Code);									// bind parameters for markers								// 
 					$stmt_Var->execute();														// execute query
 					$result_Var = $stmt_Var->get_result();
@@ -302,7 +275,6 @@ if (strlen($TryLanguage) > 2) {
 						alternate language names
 				*******************************************************************************/
 				$alt = '';
-				//$query="SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = $ISO_ROD_index";
 				$stmt_alt->bind_param('i', $ISO_ROD_index);										// bind parameters for markers								// 
 				$stmt_alt->execute();															// execute query
 				if ($result_alt = $stmt_alt->get_result()) {
@@ -344,7 +316,6 @@ if (strlen($TryLanguage) > 2) {
 	if ($result = $db->query($query)) {
 		while ($r = $result->fetch_assoc()) {
 			$ISO_ROD_index = $r['ISO_ROD_index'];
-			// $query="SELECT ISO, ROD_Code, Variant_Code, ".$ln_result."Def_LN FROM nav_ln WHERE ISO_ROD_index = $ISO_ROD_index";
 			$stmt_nav_ln_idx->bind_param('i', $ISO_ROD_index);									// bind parameters for markers								// 
 			$stmt_nav_ln_idx->execute();														// execute query
 			$result_SM = $stmt_nav_ln_idx->get_result();
@@ -354,8 +325,6 @@ if (strlen($TryLanguage) > 2) {
 				$Variant_Code = $row['Variant_Code'];
 				$VD = '';
 				include './include/00-DBLanguageCountryName.inc.php';							// returns LN
-				//$LN = htmlspecialchars($LN, ENT_QUOTES, 'UTF-8');
-				//$query = "SELECT DISTINCT $SpecificCountry, ISO_countries FROM scripture_main, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO_ROD_index = $ISO_ROD_index";
 				$stmt_SC->bind_param("i", $ISO_ROD_index);										// bind parameters for markers
 				$stmt_SC->execute();															// execute query
 				$result_con=$stmt_SC->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
@@ -365,8 +334,6 @@ if (strlen($TryLanguage) > 2) {
 				$country = '';
 				$temp_Country = '';
 				while ($row_con = $result_con->fetch_array()) {
-					//$countryTemp = $SpecificCountry;
-					//if (strpos("$SpecificCountry", '.')) $countryTemp = substr("$SpecificCountry", strpos("$SpecificCountry", '.')+1);					// In case there's a "." in the "country"
 					$temp_Country = trim($row_con["$SpecificCountry"]);							// name of the country in the language version
 					if (strpos($temp_Country, ',')) {											// if $temp_Country contains a ','
 						$temp_c = FALSE;
@@ -381,9 +348,6 @@ if (strlen($TryLanguage) > 2) {
 								else {
 									$country .= ', ' . $value;									// name of the country in the language version
 								}
-								//$GetName=trim($row_c["ISO_Country"]);
-								// SELECT ISO_Country [2 uppercase letters] FROM $SpecificCountry:
-								//$query="SELECT ISO_Country FROM countries WHERE $SpecificCountry = '$value'";
 								$stmt_c->bind_param('s', $value);								// bind parameters for markers
 								$stmt_c->execute();												// execute query
 								$result_c=$stmt_c->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
@@ -422,15 +386,12 @@ if (strlen($TryLanguage) > 2) {
 						alternate language names
 				*******************************************************************************/
 				$alt = '';
-				//$query="SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = $ISO_ROD_index";
 				$stmt_alt->bind_param('i', $ISO_ROD_index);										// bind parameters for markers
 				$stmt_alt->execute();															// execute query
 				if ($result_alt = $stmt_alt->get_result()) {
 					$bool = 0;
 					while ($row_alt = $result_alt->fetch_assoc()) {
 						$alt_temp = $row_alt['alt_lang_name'];
-//echo 'alt_temp: ' . $alt_temp . '<br />';
-//echo 'TryLanguage: ' . $TryLanguage . '<br />';
 						$temp_TL = str_replace('(', '\(', $TryLanguage);
 						$temp_TL = str_replace(')', '\)', $temp_TL);
 						$temp_TL = str_replace('.', '\.', $temp_TL);

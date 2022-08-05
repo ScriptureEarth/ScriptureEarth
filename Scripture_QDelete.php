@@ -69,7 +69,7 @@ if (!$retval) {
 	}
 </style>
 <script type="text/javascript" language="javascript1.2">
-<!--
+//<!--
 	function del(ISO, ROD_Code, ISO_ROD_index) {
 		var answer = confirm("This is you LAST try! Are you SURE you want to delete "+ISO+" "+ROD_Code+" from the Datebase?");
 		if (answer) {
@@ -122,9 +122,9 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 	$value = trim($value);
     /* Automatic escaping is highly deprecated, but many sites do it anyway. */
 	// Stripslashes
-	if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
+	//()) {
 	  $value = stripslashes($value);
-	}
+	//}
 	$db = get_my_db();
 	// Quote if not a number
 	if (!is_numeric($value)) {
@@ -161,13 +161,13 @@ echo "<div style='background-color: white; padding: 20px; width: 1020px; margin-
 		echo "</form>";*/
 		echo "<br /><br />";
 		$query = "SELECT DISTINCT * FROM nav_ln";
-		$result=$db->query($query) or die ("Query failed: " . $db->error() . "</body></html>");
+		$result=$db->query($query) or die ("Query failed: " . $db->error . "</body></html>");
 		if (!$result || ($result->num_rows < 1)) {
 			die ("'nav_ln' is not found.</body></html>");
 		}
 
 		$db->query("DROP TABLE IF EXISTS LN_Temp");							// Get the names of all of the English languages or else get the default names
-		$result_Temp = $db->query("CREATE TEMPORARY TABLE LN_Temp (ISO VARCHAR(3) NOT NULL, ROD_Code VARCHAR(5) NOT NULL, ISO_ROD_index INT NULL, LN VARCHAR(50) NOT NULL) ENGINE = MEMORY CHARSET = utf8")  or die ("Query failed: " . $db->error() . "</body></html>");
+		$result_Temp = $db->query("CREATE TEMPORARY TABLE LN_Temp (ISO VARCHAR(3) NOT NULL, ROD_Code VARCHAR(5) NOT NULL, ISO_ROD_index INT NULL, LN VARCHAR(50) NOT NULL) ENGINE = MEMORY CHARSET = utf8")  or die ("Query failed: " . $db->error . "</body></html>");
 		$i=0;
 		$num=$result->num_rows;
 		while ($row = $result->fetch_assoc()) {
@@ -242,7 +242,7 @@ echo "<div style='background-color: white; padding: 20px; width: 1020px; margin-
 		}
 		echo "<div style='text-align: center; font-weight: bold; '>Select the beginning of the Language Name:";
 		$query = "SELECT DISTINCT LEFT(LN, 1) FROM LN_Temp ORDER BY LN";
-		$result=$db->query($query) or die ("Query failed: " . $result->error() . "</body></html>");
+		$result=$db->query($query) or die ("Query failed: " . $db->error . "</body></html>");
 		if (!$result || ($result->num_rows < 1)) {
 			die ("'LN_Temp' is not found.</body></html>");
 		}
@@ -338,7 +338,7 @@ echo "<div style='background-color: white; padding: 20px; width: 1020px; margin-
 		}
 		else {
 			$query = "SELECT DISTINCT * FROM scripture_main WHERE ISO_ROD_index = '$ISO_ROD_index'";
-			$result=$db->query($query) or die ("Query failed: " . $db->error() . "</body></html>");
+			$result=$db->query($query) or die ("Query failed: " . $db->error . "</body></html>");
 			if (!$result || ($result->num_rows < 1)) {
 				die ("'$ISO_ROD_index' is not found.</body></html>");
 			}
@@ -402,6 +402,12 @@ echo "<div style='background-color: white; padding: 20px; width: 1020px; margin-
 						$row_LN = $result_LN->fetch_assoc();
 						$LN=trim($row_LN['LN_German']);
 						break; 	
+					case 7:
+						$query="SELECT LN_Chinese FROM LN_Chinese WHERE ISO_ROD_index = '$ISO_ROD_index'";
+						$result_LN=$db->query($query);
+						$row_LN = $result_LN->fetch_assoc();
+						$LN=trim($row_LN['LN_Chinese']);
+						break; 	
 					default:
 						echo "Isn't supposed to happen! The default language isn't here.";
 						break;
@@ -459,7 +465,7 @@ echo "<div style='background-color: white; padding: 20px; width: 1020px; margin-
 				$query="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF = 'OT'";
 				$result1=$db->query($query);
 				if (!$result1) {
-					die('Could not insert the data "OT_PDF_Media": ' .$db->error());
+					die('Could not insert the data "OT_PDF_Media": ' .$db->error);
 				}
 				else {
 					$num=$result1->num_rows;
@@ -511,7 +517,7 @@ echo "<div style='background-color: white; padding: 20px; width: 1020px; margin-
 				$query="SELECT * FROM NT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND NT_PDF = 'NT'";
 				$result1=$db->query($query);
 				if (!$result1) {
-					die('Could not insert the data "NT_PDF_Media": ' . $result1->error());
+					die('Could not insert the data "NT_PDF_Media": ' . $db->error);
 				}
 				else {
 					$num=$result1->num_rows;
@@ -740,7 +746,7 @@ echo "<div style='background-color: white; padding: 20px; width: 1020px; margin-
 				echo "<br />";
 				$query="SELECT * FROM other_titles WHERE ISO_ROD_index = '$ISO_ROD_index'";
 				$result2=$db->query($query);
-				$num=mysql_num_rows($result2);
+				$num=$result2->num_rows;
 				if ($result2 && $num > 0) {
 					echo "<div style='color: black; font-size: 15pt; font-weight: bold; '>Other Titles:</div>";
 					while ($row_other_titles = $result2->fetch_assoc()) {

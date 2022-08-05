@@ -93,15 +93,6 @@ function showLanguage(str, st, Internet, asset) { // get the names of the langua
 
     Scriptname = window.location.href;
 
-    /*lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + st, true);
-    lnxmlhttp.send(null);
-    lnxmlhttp.onreadystatechange = function() {
-        if (lnxmlhttp.readyState == 4) {
-            // Get hold of the array and change scriptname?
-            Scriptname = lnxmlhttp.responseText;
-        }
-    }*/
-
     /****************************************************************************************************************
     	AJAX - languageSearch.php
     ****************************************************************************************************************/
@@ -140,7 +131,6 @@ function showLanguage(str, st, Internet, asset) { // get the names of the langua
             for (var i = 0; i < splits.length - 4; i++) {
                 table += "<p style='line-height: 2px; '>&nbsp;</p>"; // empty line between records
                 var firstSplit = splits[i].split('|');
-                // $LN.'|'.$alt.'|'.$iso.'|'.$country.'|'.$rod.'|'.$VD.'|'.$idx;
                 var LN = firstSplit[0];
                 var alt = firstSplit[1];
                 var iso = firstSplit[2];
@@ -227,20 +217,6 @@ function showCountry(str, st, Internet, asset) { // get the names of the country
     }
 
     Scriptname = window.location.href; // e.g. https://www.scriptureearth.org/00i-Scripture_Index.php, http://localhost:90/00cmn.php, etc.
-
-    /*lnxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
-    if (lnxmlhttp == null) {
-        return;
-    }
-
-    lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + st, true)
-    lnxmlhttp.send(null)
-    lnxmlhttp.onreadystatechange = function() {
-        if (lnxmlhttp.readyState == 3) {
-            // Get hold of the array and change scriptname?
-            Scriptname = lnxmlhttp.responseText;
-        }
-    }*/
 
     Countryxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
     if (Countryxmlhttp == null) {
@@ -390,7 +366,6 @@ $('#sM').on('selectmenuchange', function() {
 });*/
 
 /*$('#sL').on('selectmenuchange', function() {
-alert("Z");
 	var Scriptname = $('#sL').val();
 	window.open(Scriptname, "_self");
 });*/
@@ -586,7 +561,6 @@ function showiOSLanguage(str, st, Internet) { // get the names of the languages
                     var tempCountry = countrySplit[k].substring(0, countrySplit[k].length - 3); // full country name (split ':')
                     var tempAbbCountry = countrySplit[k].substring(countrySplit[k].length - 2); // ZZ abbreviated country name (split ':')
                     // here - check
-                    //table += '<span style="font-size: .9em; cursor: pointer; " onclick="window.open(\'./' + Scriptname + '?sortby=country&name=' + tempAbbCountry + '\', \'_self\')">' + tempCountry + '</span>, ';
                     table += tempCountry + ', ';
                 }
                 table = table.substring(0, table.length - 2); // take out the last ', '
@@ -735,8 +709,6 @@ function iOSLanguage(st, idx, LN, URL) {
     } else {
         alert('This isnt suppose to happen! (LangSearch.js function iOSLanguage)');
     }
-
-    //alert('Asset package was downloaded for '+LN+'.');
 
     lnxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
     if (lnxmlhttp == null) {

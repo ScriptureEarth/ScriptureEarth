@@ -5,18 +5,8 @@
 		exit;
 	}
 	 
-	//define ("PATHScripture", "");
-	//include 'OT_Books.php';
-	//include 'NT_Books.php';
-	//include './include/conn.inc.php';
-	//$db = get_my_db();
-	//global $NT_array;		// from NT_Books.php
-
 	// The number of failed validations
 	$count_failed = 0;
-	//$iso = $_GET["iso"];
-	//$rod = $_GET["rod"];
-	//$idx = $_GET["idx"];
 	$inputs['iso'] = check_input($_POST["iso"]);
 	$inputs['rod'] = check_input($_POST["rod"]);
 	$inputs['var'] = check_input($_POST["var"]);
@@ -36,7 +26,6 @@
 	else {
 		while (isset($_POST["Eng_country-$i"])) {
 			$inputs["Eng_country-$i"] = check_input($_POST["Eng_country-$i"]);
-			//$inputs["Eng_country-$i"] = $_POST["Eng_country-$i"];
 			$i++;
 		}
 	}
@@ -83,7 +72,6 @@
 
 // major language
 	$DefaultLang = $_POST["DefaultLang"];
-	//$DefLang = 0;
 	foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		if ($DefaultLang == $array[1]."Lang") {
 			$inputs['DefLangName'] = $array[3];
@@ -145,12 +133,7 @@
 	while (isset($_POST["txtLinkBibleIsURL-".(string)$i])) {
 		if (check_input($_POST["txtLinkBibleIsURL-".(string)$i]) != '') $inputs["BibleIs"] = 1;
 		if (empty($_POST["txtLinkBibleIsURL-".(string)$i])) {
-			//$count_failed++;
-			//$messages[] = "Bible.is URL is blank.";
 		}
-		//}
-		//$inputs["txtLinkBibleIsName-1"] = check_input($_POST["txtLinkBibleIsName-1"]);
-		//$inputs["txtLinkBibleIsTitle-1"] = check_input($_POST["txtLinkBibleIsTitle-1"]);
 		else {
 			$inputs["txtLinkBibleIsURL-".(string)$i] = check_input($_POST["txtLinkBibleIsURL-".(string)$i]);
 			$inputs["txtLinkBibleIsTitle-".(string)$i] = check_input($_POST["txtLinkBibleIsTitle-".(string)$i]);
@@ -160,15 +143,12 @@
 			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsAudio-'.$i) $inputs["BibleIsAudio-$BibleIsIndex"] = 3; else $inputs["BibleIsAudio-$BibleIsIndex"] = 0;
 			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsVideo-'.$i) $inputs["BibleIsVideo-$BibleIsIndex"] = 4; else $inputs["BibleIsVideo-$BibleIsIndex"] = 0;
 			$BibleIsIndex++;
-			/*if ($_POST['BibleIsTestament-'.(string)$i] == 'BibleIsNT-'.$i) $inputs["BibleIsNT-$i"] = 1; else $inputs["BibleIsNT-$i"] = 0;
-			if ($_POST['BibleIsTestament-'.(string)$i] == 'BibleIsOT-'.$i) $inputs["BibleIsOT-$i"] = 1; else $inputs["BibleIsOT-$i"] = 0;
-			if ($_POST['BibleIsTestament-'.(string)$i] == 'BibleIsBible-'.$i) $inputs["BibleIsBible-$i"] = 1; else $inputs["BibleIsBible-$i"] = 0;
-			if ($_POST['BibleIsTestament-'.(string)$i] == 'BiblePortions-'.$i) $inputs["BiblePortions-$i"] = 1; else $inputs["BiblePortions-$i"] = 0;*/
 		}
 		$i++;
 	}
 
 // SAB
+
 /*
 		SAB_scriptoria
 url		subfolder	description		pre_scriptoria
@@ -178,19 +158,10 @@ url		subfolder	description		pre_scriptoria
 txtSABurl		txtSABsubfolder		txtSABdescription		txtSABpreScriptoria
 (hidden) txtSABsubFirstPath
 */
-//echo '1) FirstPath: '.$_POST["txtSABsubFirstPath-".(string)$i].'#'.strlen($_POST["txtSABsubFirstPath-".(string)$i]).'<br />';
-//echo '1) subfolder: '.$_POST["txtSABsubfolder-".(string)$i].'@'.strlen($_POST["txtSABsubfolder-".(string)$i]).'<br />';
 	$inputs["SAB"] = 0;
 	$i = 1;
-//	while ((isset($_POST["txtSABsubFirstPath-".(string)$i]) && (strlen($_POST["txtSABsubFirstPath-".(string)$i]) > 4)) || (isset($_POST["txtSABpreScriptoria-".(string)$i]) && ($_POST["txtSABpreScriptoria-".(string)$i] != ''))) {
 	while (isset($_POST["txtSABsubfolder-".(string)$i]) && (trim($_POST["txtSABsubfolder-".(string)$i]) != '') || (isset($_POST["txtSABurl-".(string)$i]) && (trim($_POST["txtSABurl-".(string)$i]) != ''))) {
-//echo '2) FirstPath: '.$_POST["txtSABsubFirstPath-".(string)$i].'#'.strlen($_POST["txtSABsubFirstPath-".(string)$i]).'<br />';
-//echo '2) subfolder: '.$_POST["txtSABsubfolder-".(string)$i].'@'.strlen($_POST["txtSABsubfolder-".(string)$i]).'<br />';
 		$inputs["SAB"] = 1;
-		//$inputs["txtSABsubFirstPath-".(string)$i] = check_input($_POST["txtSABsubFirstPath-".(string)$i]);
-		//if ($inputs["txtSABsubFirstPath-".(string)$i] === '') {
-		//	$inputs["txtSABsubFirstPath-".(string)$i] = 'sab/';
-		//}
 		if (isset($_POST["txtSABsubfolder-".(string)$i]) && (trim($_POST["txtSABsubfolder-".(string)$i]) != '')) {
 			$inputs["txtSABurl-".(string)$i] = '';
 			$inputs["txtSABdescription-".(string)$i] = check_input($_POST["txtSABdescription-".(string)$i]);
@@ -201,33 +172,16 @@ txtSABurl		txtSABsubfolder		txtSABdescription		txtSABpreScriptoria
 			else {
 				$inputs["txtSABpreScriptoria-".(string)$i] = '';
 			}
-	//echo "inputs[txtSABpreScriptoria-".(string)$i  . "] = " . $inputs["txtSABpreScriptoria-".(string)$i] . '<br />';
-	//echo "_POST[txtSABsubfolder-".(string)$i . "]  = " . $_POST["txtSABsubfolder-".(string)$i] . '<br />';
-	////echo "_POST[txtSABsubFirstPath-".(string)$i . "]  = " . $_POST["txtSABsubFirstPath-".(string)$i] . '<br />';
 			if ($inputs["txtSABpreScriptoria-".(string)$i] !== '') {
 				$inputs["txtSABsubfolder-".(string)$i] = 'sab/'.$inputs["txtSABpreScriptoria-".(string)$i];
 				$inputs["txtSABsubFirstPath-".(string)$i] = '';
 			}
 			else {
-				//if ($inputs["txtSABsubFirstPath-".(string)$i] !== '') {
-				//$inputs["txtSABsubfolder-".(string)$i] = $_POST["txtSABsubFirstPath-".(string)$i].'/'.$_POST["txtSABsubfolder-".(string)$i].'/';
-				//$inputs["txtSABsubFirstPath-".(string)$i] = substr($_POST["txtSABsubfolder-".(string)$i], 0, strpos($_POST["txtSABsubfolder-".(string)$i], '/'));		// save first "path"
-				//$inputs["txtSABsubfolder-".(string)$i] = trim($_POST["txtSABsubfolder-".(string)$i]);		// remove first "path" and remove last "/"
-				//$inputs["txtSABsubFirstPath-".(string)$i] = trim($_POST["txtSABsubFirstPath-".(string)$i]);
-				//}
-				//else {
-					$inputs["txtSABsubfolder-".(string)$i] = 'sab/'.$_POST["txtSABsubfolder-".(string)$i].'/';
-					$inputs["txtSABsubFirstPath-".(string)$i] = '';
-				//}
+				$inputs["txtSABsubfolder-".(string)$i] = 'sab/'.$_POST["txtSABsubfolder-".(string)$i].'/';
+				$inputs["txtSABsubFirstPath-".(string)$i] = '';
 			}
-			//$_POST["txtSABsubfolder-".(string)$i] = $inputs["txtSABsubfolder-".(string)$i];
-	//echo "inputs[txtSABsubfolder-".(string)$i . "]  = " . $inputs["txtSABsubfolder-".(string)$i] . '<br />';
-	//echo "inputs[txtSABsubFirstPath-".(string)$i."] = " . $inputs["txtSABsubFirstPath-".(string)$i] . '<br /><br />';
-	////echo $inputs["txtSABsubfolder-".(string)$i] . '!!!!<br />';
 		}
 		else {			// else isset($_POST["txtSABurl-".(string)$i]) && (trim($_POST["txtSABurl-".(string)$i]) != '')
-//echo trim($_POST["txtSABsubfolder-".(string)$i]).'#<br />';
-//echo trim($_POST["txtSABurl-".(string)$i]).'#<br />';
 			$inputs["txtSABdescription-".(string)$i] = check_input($_POST["txtSABdescription-".(string)$i]);
 			$inputs["txtSABurl-".(string)$i] = check_input($_POST["txtSABurl-".(string)$i]);
 			$inputs["txtSABsubfolder-".(string)$i] = '';
@@ -237,14 +191,6 @@ txtSABurl		txtSABsubfolder		txtSABdescription		txtSABpreScriptoria
 		$i++;
 	}
 	
-	/*$inputs["SABnum"] = '';
-	//if ((isset($_POST["SABer"]) && $_POST["SABer"] == "on") || $_POST["SAB"]) {
-	//	$inputs["SABer"] = 'on';			// checkbox = checked
-	if (isset($_POST["SAB"]) && $_POST["SAB"] == 'on') {
-		$inputs["SAB"] = 1;					// checkbox = checked
-		if (isset($_POST["SABnum"]) && $_POST["SABnum"] != '') $inputs["SABnum"] = check_input($_POST["SABnum"]);
-	}*/
-
 // Bible PDF
 	$inputs["Bible_PDF"] = 0;
 	if (check_input($_POST["whole_Bible"]) != "") {
@@ -285,12 +231,10 @@ txtSABurl		txtSABsubfolder		txtSABdescription		txtSABpreScriptoria
 		$item_from_array = $OT_array[2][$i];		// English book name
 		if (isset($_POST["OT_PDF_Book-$i"]) && check_input($_POST["OT_PDF_Filename-$i"]) == "") {
 			$count_failed++;
-			//$messages[] = "OT PDF filename for " . $item_from_array+1 . " is blank.";
 			$messages[] = "OT PDF filename for " . $item_from_array . " is blank.";
 		}
 		if (!isset($_POST["OT_PDF_Book-$i"]) && check_input($_POST["OT_PDF_Filename-$i"]) != "") {
 			$count_failed++;
-			//$messages[] = "Check box OT PDF for " .$item_from_array+1 . " is blank.";
 			$messages[] = "Check box OT PDF for " .$item_from_array . " is blank.";
 		}
 		$inputs["OT_PDF_Filename-$i"] = check_input($_POST["OT_PDF_Filename-$i"]);
@@ -338,15 +282,12 @@ txtSABurl		txtSABsubfolder		txtSABdescription		txtSABpreScriptoria
 		$item_from_array = $NT_array[2][$i];		// English book name
 		if (isset($_POST["NT_PDF_Book-$i"]) && check_input($_POST["NT_PDF_Filename-$i"]) == "") {
 			$count_failed++;
-			//$messages[] = "NT PDF filename for " . $item_from_array+1 . " is blank.";
 			$messages[] = "NT PDF filename for " . $item_from_array . " is blank.";
 		}
 		if (!isset($_POST["NT_PDF_Book-$i"]) && check_input($_POST["NT_PDF_Filename-$i"]) != "") {
 			$count_failed++;
-			//$messages[] = "Check box PDF for " .$item_from_array+1 . " is blank.";
 			$messages[] = "Check box PDF for " .$item_from_array . " is blank.";
 		}
-		//$inputs["NT_PDF_Book-".$i] = isset($_POST["NT_PDF_Book-".$i]);
 		$inputs["NT_PDF_Filename-$i"] = check_input($_POST["NT_PDF_Filename-$i"]);
 	}
 	$inputs["NT_PDF_appendix"] = 200;
@@ -372,13 +313,6 @@ txtSABurl		txtSABsubfolder		txtSABdescription		txtSABpreScriptoria
 	}
 	$inputs["NT_PDF_Filename_glossary"] = check_input($_POST["NT_PDF_Filename_glossary"]);
 	
-	/* removed 4/27/15 because FCBH no longer supports it.
-	$inputs["FCBH"] = 0;
-	if (isset($_POST["FCBH"])) {
-		if ($_POST["FCBH"] != "") $inputs["FCBH"] = 1;		// checkbox = checked
-	}
-	*/
-
 // OT_Audio
 	$inputs["OT_Audio"] = 0;
 	for ($i = 0; $i < 39; $i++) {					// number of books in the OT
@@ -403,32 +337,25 @@ txtSABurl		txtSABsubfolder		txtSABdescription		txtSABpreScriptoria
 
 // NT_Audio
 	$inputs["NT_Audio"] = 0;
-	//if ($_POST["Audio_Button"] == "Yes") {
-		for ($i = 0; $i < 27; $i++) {					// number of books in the NT
-			$item_from_array = $NT_array[2][$i];		// English book name
-			$item2_from_array = $NT_array[1][$i];		// how many chapers in each book
-			$inputs["NT_Audio_Book-".$i] = $i;
-			for ($z = 0; $z < $item2_from_array; $z++) {
-				$y = $z + 1;
-				$inputs["NT_Audio_Chapter-".$i."-".$z] = $y;
-				if ($_POST["NT_Audio_Filename-".$i."-".$z] != "") $inputs["NT_Audio"] = 1;
-				//else {
-					//$count_failed++;
-					//$messages[] = $i . " NT Audio Filename = " . $_POST["NT_Audio_Filename-".$i."-".$z];
-				//}
-				if (isset($_POST["NT_Audio_Index-".$i."-".$z]) && $_POST["NT_Audio_Filename-".$i."-".$z] == "") {
-					$count_failed++;
-					$messages[] = "NT Audio filename for " . $item_from_array . " chapter " . $y . " is blank.";
-				}
-				if (!isset($_POST["NT_Audio_Index-".$i."-".$z]) && $_POST["NT_Audio_Filename-".$i."-".$z] != "") {
-					$count_failed++;
-					$messages[] = "Check box for audio of " . $item_from_array . " chapter " . $y . " is blank.";
-				}
-				//$inputs["NT_Audio_Index-".$i."-".$z] = (isset($_POST["NT_Audio_Index-".$i."-".$z]) ? 1 : 0);
-				$inputs["NT_Audio_Filename-".$i."-".$z] = $_POST["NT_Audio_Filename-".$i."-".$z];
+	for ($i = 0; $i < 27; $i++) {					// number of books in the NT
+		$item_from_array = $NT_array[2][$i];		// English book name
+		$item2_from_array = $NT_array[1][$i];		// how many chapers in each book
+		$inputs["NT_Audio_Book-".$i] = $i;
+		for ($z = 0; $z < $item2_from_array; $z++) {
+			$y = $z + 1;
+			$inputs["NT_Audio_Chapter-".$i."-".$z] = $y;
+			if ($_POST["NT_Audio_Filename-".$i."-".$z] != "") $inputs["NT_Audio"] = 1;
+			if (isset($_POST["NT_Audio_Index-".$i."-".$z]) && $_POST["NT_Audio_Filename-".$i."-".$z] == "") {
+				$count_failed++;
+				$messages[] = "NT Audio filename for " . $item_from_array . " chapter " . $y . " is blank.";
 			}
+			if (!isset($_POST["NT_Audio_Index-".$i."-".$z]) && $_POST["NT_Audio_Filename-".$i."-".$z] != "") {
+				$count_failed++;
+				$messages[] = "Check box for audio of " . $item_from_array . " chapter " . $y . " is blank.";
+			}
+			$inputs["NT_Audio_Filename-".$i."-".$z] = $_POST["NT_Audio_Filename-".$i."-".$z];
 		}
-	//}
+	}
 	
 // YouVersion
 	$i = 1;
@@ -493,18 +420,12 @@ txtSABurl		txtSABsubfolder		txtSABdescription		txtSABpreScriptoria
 	$inputs["CellPhone"] = 0;
 	while (isset($_POST["txtCellPhoneFile-$i"])) {
 		if (check_input($_POST["txtCellPhoneFile-$i"]) == "") {
-			//$count_failed++;
-			//$messages[] = "Cell Phone filename #" . $i . " is blank.";
 		}
 		else {
 			$inputs["CellPhone"] = 1;
-			//$inputs["txtCellPhoneTitle-$i"] = check_input($_POST["txtCellPhoneTitle-$i"]);
 			if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPJava-'.$i) $inputs["CPJava-$CellPhoneIndex"] = 1; else $inputs["CPJava-$CellPhoneIndex"] = 0;
 			if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPAndroid-'.$i) $inputs["CPAndroid-$CellPhoneIndex"] = 1; else $inputs["CPAndroid-$CellPhoneIndex"] = 0;
 			if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPiPhone-'.$i) $inputs["CPiPhone-$CellPhoneIndex"] = 1; else $inputs["CPiPhone-$CellPhoneIndex"] = 0;
-			//if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPWindows-'.$i) $inputs["CPWindows-$CellPhoneIndex"] = 1; else $inputs["CPWindows-$CellPhoneIndex"] = 0;
-			//if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPBlackberry-'.$i) $inputs["CPBlackberry-$CellPhoneIndex"] = 1; else $inputs["CPBlackberry-$CellPhoneIndex"] = 0;
-			//if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPStandard-'.$i) $inputs["CPStandard-$CellPhoneIndex"] = 1; else $inputs["CPStandard-$CellPhoneIndex"] = 0;
 			if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPAndroidApp-'.$i) $inputs["CPAndroidApp-$CellPhoneIndex"] = 1; else $inputs["CPAndroidApp-$CellPhoneIndex"] = 0;
 			if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPiOSAssetPackage-'.$i) $inputs["CPiOSAssetPackage-$CellPhoneIndex"] = 1; else $inputs["CPiOSAssetPackage-$CellPhoneIndex"] = 0;
 			$inputs["txtCellPhoneFile-$CellPhoneIndex"] = check_input($_POST["txtCellPhoneFile-$i"]);
@@ -517,16 +438,6 @@ txtSABurl		txtSABsubfolder		txtSABdescription		txtSABpreScriptoria
 // watch
 	$i = 1;
 	$inputs["watch"] = 0;
-	/*
-	while (isset($_POST["txtWatchWebSource-$i"])) {
-		if (check_input($_POST["txtWatchWebSource-$i"]) != "") $inputs["watch"] = 1;
-		if (empty($_POST["txtWatchWebSource-$i"])) {
-			if ((check_input($_POST["txtWatchResource-$i"]) != "") || (check_input($_POST["txtWatchURL-$i"]) != "")) {
-				$count_failed++;
-				$messages[] = "Watch #" . $i . " is blank.";
-			}
-		}
-		*/
 	while (isset($_POST["txtWatchURL-$i"])) {
 		if (check_input($_POST["txtWatchURL-$i"]) != "") $inputs["watch"] = 1;
 		if (empty($_POST["txtWatchURL-$i"])) {
@@ -557,11 +468,7 @@ txtSABurl		txtSABsubfolder		txtSABdescription		txtSABpreScriptoria
 	$inputs["viewerer"] = "off";
 	$inputs["viewer"] = 0;
 	$inputs["viewerText"] = '';
-//				$count_failed++;
-//				$messages[] = "; viewerer " . $_POST["viewerer"];
 	if ((isset($_POST["viewerer"]) && $_POST["viewerer"] == "on") || (isset($_POST["viewer"]) && $_POST["viewer"])) {
-//				$count_failed++;
-//				$messages[] = "; viewerer is 1.";
 		$inputs["viewerer"] = 'on';
 		$inputs["viewer"] = 1;					// checkbox = checked
 		if (isset($_POST["viewerText"]) && $_POST["viewerText"] != '') $inputs["viewerText"] = check_input($_POST["viewerText"]);
@@ -590,11 +497,9 @@ txtSABurl		txtSABsubfolder		txtSABdescription		txtSABpreScriptoria
 		$inputs["txtScriptureDescription-$i"] = check_input($_POST["txtScriptureDescription-$i"]);
 		$inputs["txtScriptureURL-$i"] = check_input($_POST["txtScriptureURL-$i"]);
 		$inputs["txtStatement-$i"] = check_input($_POST["txtStatement-$i"]);
-		//$inputs["txtTestament-$i"] = check_input($_POST["txtTestament-$i"]);
 		if ($_POST["txtTestament-".(string)$i] == 'SNT-'.$i) $inputs["SNT-$i"] = 1; else $inputs["SNT-$i"] = 0;
 		if ($_POST["txtTestament-".(string)$i] == 'SOT-'.$i) $inputs["SOT-$i"] = 1; else $inputs["SOT-$i"] = 0;
 		if ($_POST["txtTestament-".(string)$i] == 'SBible-'.$i) $inputs["SBible-$i"] = 1; else $inputs["SBible-$i"] = 0;
-		//$inputs["txtAlphabet-$i"] = check_input($_POST["txtAlphabet-$i"]);
 		if ($_POST["txtAlphabet-".(string)$i] == 'SStandAlphabet-'.$i) $inputs["SStandAlphabet-$i"] = 1; else $inputs["SStandAlphabet-$i"] = 0;
 		if ($_POST["txtAlphabet-".(string)$i] == 'STradAlphabet-'.$i) $inputs["STradAlphabet-$i"] = 1; else $inputs["STradAlphabet-$i"] = 0;
 		if ($_POST["txtAlphabet-".(string)$i] == 'SNewAlphabet-'.$i) $inputs["SNewAlphabet-$i"] = 1; else $inputs["SNewAlphabet-$i"] = 0;

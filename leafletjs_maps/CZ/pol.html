@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Language map of Czech Republic - Leaflet</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" type="../../image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="../../_css/leaflet.css" />
+    <script src="../../_js/leaflet.min.js"></script>
+</head>
+<body>
+<div id="mapid" style="width: 600px; height: 400px; margin: auto; margin-right: auto; margin-top: 100px; "></div>
+<script>
+	var mymap = L.map('mapid').setView([51.8439, 18.6255], 9);
+
+// blue icon is the default
+
+	var myRedIcon = L.icon({
+		iconUrl: '../../images/myRedIcon.png'
+	});
+
+	var myPurpleIcon = L.icon({
+		iconUrl: '../../images/myPurpleIcon.png'
+	});
+
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 16,
+		attribution: 'Map languages: � <a href="https://www.scriptureearth.org/00i-Scripture_Index.php">Scripture Earth</a>, ' +
+			'Map data: � <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery: � <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/streets-v11'
+	}).addTo(mymap);
+		L.marker([47.9232, 13.246]).addTo(mymap)
+	.bindPopup("<b>Bavarian - ISO 639-3: bar</b>")
+	L.marker([49.873398, 15.10437]).addTo(mymap)
+	.bindPopup("<b>Czech - ISO 639-3: ces</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=ces'>Czech</a>)")
+	L.marker([50.012, 14.4774]).addTo(mymap)
+	.bindPopup("<b>Czech Sign Language - ISO 639-3: cse</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=cse'>Czech Sign Language</a>)")
+	L.marker([48.649, 12.4676]).addTo(mymap)
+	.bindPopup("<b>German, Standard - ISO 639-3: deu</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=deu'>German, Standard</a>)")
+	L.marker([51.8439, 18.6255], {icon: myRedIcon}).addTo(mymap)
+	.bindPopup("<b>Polish - ISO 639-3: pol</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=pol'>Polish</a>)")
+	L.marker([48.1968, 20.3129]).addTo(mymap)
+	.bindPopup("<b>Romani, Carpathian - ISO 639-3: rmc</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=rmc'>Romani, Carpathian</a>)")
+	L.marker([48.7, 9.4]).addTo(mymap)
+	.bindPopup("<b>Romani, Sinti - ISO 639-3: rmo</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=rmo'>Romani, Sinti</a>)")
+	L.marker([48.7171, 22.9579]).addTo(mymap)
+	.bindPopup("<b>Rusyn - ISO 639-3: rue</b>")
+	L.marker([50.6963, 15.9667]).addTo(mymap)
+	.bindPopup("<b>Lower Silesian - ISO 639-3: sli</b>")
+	L.marker([48.545705, 18.78479]).addTo(mymap)
+	.bindPopup("<b>Slovak - ISO 639-3: slk</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=slk'>Slovak</a>)")
+
+	var popup = L.popup();
+</script>
+</body>
+</html>
