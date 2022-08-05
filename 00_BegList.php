@@ -64,7 +64,6 @@ function check_input($value) {							// used for ' and " that find it in the inp
 	*/
 	$db->query("DROP TABLE IF EXISTS LN_Temp");			// Get the names of all of the Spanish languages or else get the default names
 	$db->query("CREATE TEMPORARY TABLE LN_Temp (ISO VARCHAR(3) NOT NULL, ROD_Code VARCHAR(5) NOT NULL, ISO_ROD_index INT NULL, LN VARCHAR(50) NOT NULL) ENGINE = MEMORY CHARSET = utf8") or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . "</body></html>");
-	//$i=0;
 	$stmt = $db->prepare('INSERT INTO LN_Temp (ISO, ROD_Code, ISO_ROD_index, LN) VALUES (?, ?, ?, ?)');			// create a prepared statement
 	while ($row = $result->fetch_array()) {
 		$ISO=$row['ISO'];								// ISO

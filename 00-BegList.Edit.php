@@ -45,9 +45,8 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 		
 		$ISO_ROD_index = (string)$idx;						// make sure that00-DBLanguageCountryName.inc.php will work correctly
 		include ('./include/00-DBLanguageCountryName.inc.php');
-//echo '<br />#' . $LN . '#<br />'.
 		
-		$stmt->bind_param("ssis", $iso, $rod, $idx, $LN);			// bind parameters for markers
+		$stmt->bind_param("ssis", $iso, $rod, $idx, $LN);							// bind parameters for markers
 		$stmt->execute();															// execute query
 	}
 	$stmt->close();																	// close statement
@@ -101,8 +100,6 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 		$stmt_ISO_countries->bind_param("i", $idx);								// bind parameters for markers								// 
 		$stmt_ISO_countries->execute();														// execute query
 		$result_ISO_countries = $stmt_ISO_countries->get_result();							// instead of bind_result (used for only 1 record):
-		//$num_ISO_countries=mysql_num_rows($result_ISO_countries);
-		//$num_ISO_countries = $result_ISO_countries->num_rows;
 		// $SpecificCountry = the past dot $counterName	
 		$r_temp = $result_ISO_countries->fetch_assoc();
 		$country = trim($r_temp[$Country]);													// name of the country in the language version
@@ -137,7 +134,6 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 		$result_alt->close();
 		echo "<td width='15%' style='padding: 3px 5px 3px 5px; '>" . $iso . " " . $rod;
 		if ($VD != "") {
-			//include ("./include/00-MajorLanguageVariantCode.inc.php");
 			echo "<br /><span style='font-style: italic; font-size: 8pt; '>($VD)</span>";
 		}
 		echo "</td>";

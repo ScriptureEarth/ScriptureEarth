@@ -22,18 +22,12 @@ function check_input($value) {
 	 
 	include("OT_Books.php");
 	include("NT_Books.php");
-	//global $NT_array;		// from NT_Books.php
 
 	// The number of failed validations
 	$count_failed = 0;
  
 	$iso = $_POST["iso"];
-	//$rod = $_POST["rod"];
-	//echo '1) Add_Lang_validation.php rod = ' . $rod . '<br />';
 
-	//$count_failed++;
-	// Adds a message to the message queue.
-	//$messages[] = "Add_Lang_validation.php iso: '$iso'";
 	if (strlen($iso) == 3) {
 		if (isset($_POST["rod"])) {
 			$rod = $_POST["rod"];
@@ -41,22 +35,12 @@ function check_input($value) {
 		else {
 			$rod = '00000';
 		}
-		//$count_failed++;
-		// Adds a message to the message queue.
-		//$messages[] = "Add_Lang_validation.php rod: '$rod'";
 		if (isset($_POST["var"])) {
-			//$count_failed++;
-			//$messages[] = $_POST["var"];
 			$var = $_POST["var"];							// Variant_Code to the language name
 		}
 		else {
-			//$count_failed++;
-			//$messages[] = "NULL";
 			$var = '';
 		}
-		//$count_failed++;
-		// Adds a message to the message queue.
-		//$messages[] = "Add_Lang_validation.php var: '$var'";
 		
 		// connect to the database 
 		include './include/conn.inc.php';
@@ -117,8 +101,6 @@ function check_input($value) {
 				$stmt=$db->prepare($query);															// create a prepared statement
 				while ($z < $i) {
 					$temp=$inputs["Eng_country-".(string)$z];
-					//$query="SELECT ISO_Country FROM countries WHERE English='$temp'";
-					//$result=$db->query($query);
 					$stmt->bind_param("s", $temp);													// bind parameters for markers
 					$stmt->execute();																// execute query
 					$result = $stmt->get_result();													// instead of bind_result (used for only 1 record):
@@ -126,7 +108,6 @@ function check_input($value) {
 					if ($result && $num > 0) {
 						$r = $result->fetch_assoc();
 						$inputs['ISO_Country-'.(string)$z] = $r['ISO_Country'];
-						//$result->free();
 					}
 					else {
 						$count_failed++;
@@ -139,7 +120,6 @@ function check_input($value) {
 			}
 			
 			$DefaultLang = $_POST["DefaultLang"];
-			//$DefLang = 0;
 			foreach ($_SESSION['nav_ln_array'] as $code => $array){
 				if ($DefaultLang == $array[1]."Lang") {
 					$inputs['DefLangName'] = $array[3];
@@ -152,11 +132,9 @@ function check_input($value) {
 
 // alt name
   			$i = 1;
-			//$inputs["alt_lang_names"] = 0;
 			while (isset($_POST["txtAltNames-".(string)$i])) {
 				if (!empty($_POST["txtAltNames-".(string)$i])) {
 					$inputs["txtAltNames-".(string)$i] = $_POST["txtAltNames-".(string)$i];
-					//$inputs["alt_lang_names"] = 1;
 				}
 				$i++;
 			}
@@ -193,30 +171,17 @@ function check_input($value) {
 			$BibleIsIndex = 1;
 			$inputs["BibleIs"] = 0;
 			while (isset($_POST["txtLinkBibleIsURL-".(string)$i])) {
-				//if (check_input($_POST["txtLinkBibleIsURL-1"]) != "") $inputs["BibleIs"] = 1;
-				//if (empty($_POST["txtLinkBibleIsName-1"])) {
-					//if ((check_input($_POST["txtLinkBibleIsTitle-1"]) != "") || (check_input($_POST["txtLinkBibleIsURL-1"]) != "")) {
 				if (check_input($_POST["txtLinkBibleIsURL-".(string)$i]) != "") $inputs["BibleIs"] = 1;
 				if (empty($_POST["txtLinkBibleIsURL-".(string)$i])) {
-					//$count_failed++;
-					//$messages[] = "Bible.is URL is blank.";
 				}
-				//}
-				//$inputs["txtLinkBibleIsName-1"] = check_input($_POST["txtLinkBibleIsName-1"]);
 				$inputs["txtLinkBibleIsTitle-".(string)$i] = check_input($_POST["txtLinkBibleIsTitle-".(string)$i]);
-				//else {
-					$inputs["txtLinkBibleIsURL-".(string)$i] = check_input($_POST["txtLinkBibleIsURL-".(string)$i]);
-					$inputs["txtLinkBibleIs-".(string)$i] = check_input($_POST["txtLinkBibleIs-".(string)$i]);
-					if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsDefault-'.$i) $inputs["BibleIsDefault-$BibleIsIndex"] = 1; else $inputs["BibleIsDefault-$BibleIsIndex"] = 0;
-					if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsText-'.$i) $inputs["BibleIsText-$BibleIsIndex"] = 2; else $inputs["BibleIsText-$BibleIsIndex"] = 0;
-					if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsAudio-'.$i) $inputs["BibleIsAudio-$BibleIsIndex"] = 3; else $inputs["BibleIsAudio-$BibleIsIndex"] = 0;
-					if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsVideo-'.$i) $inputs["BibleIsVideo-$BibleIsIndex"] = 4; else $inputs["BibleIsVideo-$BibleIsIndex"] = 0;
-					$BibleIsIndex++;
-					/*if ($_POST['BibleIsTestament-'.(string)$i] == 'BibleIsNT-'.$i) $inputs["BibleIsNT-$i"] = 1; else $inputs["BibleIsNT-$i"] = 0;
-					if ($_POST['BibleIsTestament-'.(string)$i] == 'BibleIsOT-'.$i) $inputs["BibleIsOT-$i"] = 1; else $inputs["BibleIsOT-$i"] = 0;
-					if ($_POST['BibleIsTestament-'.(string)$i] == 'BibleIsBible-'.$i) $inputs["BibleIsBible-$i"] = 1; else $inputs["BibleIsBible-$i"] = 0;
-					if ($_POST['BibleIsTestament-'.(string)$i] == 'BiblePortions-'.$i) $inputs["BiblePortions-$i"] = 1; else $inputs["BiblePortions-$i"] = 0;
-				}*/
+				$inputs["txtLinkBibleIsURL-".(string)$i] = check_input($_POST["txtLinkBibleIsURL-".(string)$i]);
+				$inputs["txtLinkBibleIs-".(string)$i] = check_input($_POST["txtLinkBibleIs-".(string)$i]);
+				if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsDefault-'.$i) $inputs["BibleIsDefault-$BibleIsIndex"] = 1; else $inputs["BibleIsDefault-$BibleIsIndex"] = 0;
+				if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsText-'.$i) $inputs["BibleIsText-$BibleIsIndex"] = 2; else $inputs["BibleIsText-$BibleIsIndex"] = 0;
+				if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsAudio-'.$i) $inputs["BibleIsAudio-$BibleIsIndex"] = 3; else $inputs["BibleIsAudio-$BibleIsIndex"] = 0;
+				if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsVideo-'.$i) $inputs["BibleIsVideo-$BibleIsIndex"] = 4; else $inputs["BibleIsVideo-$BibleIsIndex"] = 0;
+				$BibleIsIndex++;
 				$i++;
 			}
 
@@ -231,15 +196,6 @@ function check_input($value) {
 				$i++;
 			}
 
-			/*if (isset($_POST["SAB"])) {
-				if ($_POST["SAB"] == 'on')
-					$inputs["SAB"] = 1;			// checkbox = checked
-				if ($_POST["SABnum"] != '' && $_POST["SAB"] == 'on')
-					$inputs["SABnum"] = check_input($_POST["SABnum"]);
-				else
-					$inputs["SABnum"] = '';
-			}*/
-			
 // Bible PDF
 			$inputs["Bible_PDF"] = 0;
 			if (check_input($_POST["whole_Bible"]) != '') {
@@ -325,7 +281,6 @@ function check_input($value) {
 			else {
 				$inputs['NT_name'] = "";
 			}
-			//if ($_POST["PDF_Button"] == "Yes") {
 				for ($i = 0; $i < 27; $i++) {
 					$inputs["NT_PDF_Book-".$i] = $i;
 					if (check_input($_POST["NT_PDF_Filename-".(string)$i]) != "") $inputs["NT_PDF"] = 1;
@@ -338,10 +293,8 @@ function check_input($value) {
 						$count_failed++;
 						$messages[] = "Check box PDF for " .$item_from_array . " is blank.";
 					}
-					//$inputs["NT_PDF_Book-".$i] = isset($_POST["NT_PDF_Book-".$i]);
 					$inputs["NT_PDF_Filename-".(string)$i] = check_input($_POST["NT_PDF_Filename-".(string)$i]);
 				}
-			//}
 			$inputs["NT_PDF_appendix"] = 200;
 			if (check_input($_POST["NT_PDF_Filename_appendix"]) != "") $inputs["NT_PDF"] = 1;
 			if (isset($_POST["NT_PDF_appendix"]) && check_input($_POST["NT_PDF_Filename_appendix"]) == "") {
@@ -364,13 +317,6 @@ function check_input($value) {
 				$messages[] = "Check box NT PDF for 'NT Glossary' is blank.";
 			}
 			$inputs["NT_PDF_Filename_glossary"] = check_input($_POST["NT_PDF_Filename_glossary"]);
-
-			/* removed 4/27/15 because FCBH no longer supports it.
-			$inputs["FCBH"] = 0;
-			if (isset($_POST["FCBH"])) {
-				if ($_POST["FCBH"] == 'on') $inputs["FCBH"] = 1;		// checkbox = checked
-			}
-			*/
 
 // OT Audio
 			$inputs["OT_Audio"] = 0;
@@ -396,28 +342,25 @@ function check_input($value) {
 
 // NT Audio
 			$inputs["NT_Audio"] = 0;
-			//if ($_POST["Audio_Button"] == "Yes") {
-				for ($i = 0; $i < 27; $i++) {					// number of books in the NT
-					$item_from_array = $NT_array[2][$i];		// English book name
-					$item2_from_array = $NT_array[1][$i];		// how many chapers in each book
-					$inputs["NT_Audio_Book-".(string)$i] = $i;
-					for ($z = 0; $z < $item2_from_array; $z++) {
-						$y = $z + 1;
-						$inputs["NT_Audio_Chapter-".(string)$i."-".(string)$z] = $y;
-						if (check_input($_POST["NT_Audio_Filename-".(string)$i."-".(string)$z]) != "") $inputs["NT_Audio"] = 1;
-						if (isset($_POST["NT_Audio_Index-".(string)$i."-".(string)$z]) && check_input($_POST["NT_Audio_Filename-".(string)$i."-".(string)$z]) == "") {
-							$count_failed++;
-							$messages[] = "Audio filename for " . $item_from_array . " chapter " . $y . " is blank.";
-						}
-						if (!isset($_POST["NT_Audio_Index-".(string)$i."-".(string)$z]) && check_input($_POST["NT_Audio_Filename-".(string)$i."-".(string)$z]) != "") {
-							$count_failed++;
-							$messages[] = "Check box for audio of " . $item_from_array . " chapter " . $y . " is blank.";
-						}
-						//$inputs["NT_Audio_Index-".$i."-".$z] = isset($_POST["NT_Audio_Index-".$i."-".$z]);
-						$inputs["NT_Audio_Filename-".(string)$i."-".(string)$z] = check_input($_POST["NT_Audio_Filename-".(string)$i."-".(string)$z]);
+			for ($i = 0; $i < 27; $i++) {					// number of books in the NT
+				$item_from_array = $NT_array[2][$i];		// English book name
+				$item2_from_array = $NT_array[1][$i];		// how many chapers in each book
+				$inputs["NT_Audio_Book-".(string)$i] = $i;
+				for ($z = 0; $z < $item2_from_array; $z++) {
+					$y = $z + 1;
+					$inputs["NT_Audio_Chapter-".(string)$i."-".(string)$z] = $y;
+					if (check_input($_POST["NT_Audio_Filename-".(string)$i."-".(string)$z]) != "") $inputs["NT_Audio"] = 1;
+					if (isset($_POST["NT_Audio_Index-".(string)$i."-".(string)$z]) && check_input($_POST["NT_Audio_Filename-".(string)$i."-".(string)$z]) == "") {
+						$count_failed++;
+						$messages[] = "Audio filename for " . $item_from_array . " chapter " . $y . " is blank.";
 					}
+					if (!isset($_POST["NT_Audio_Index-".(string)$i."-".(string)$z]) && check_input($_POST["NT_Audio_Filename-".(string)$i."-".(string)$z]) != "") {
+						$count_failed++;
+						$messages[] = "Check box for audio of " . $item_from_array . " chapter " . $y . " is blank.";
+					}
+					$inputs["NT_Audio_Filename-".(string)$i."-".(string)$z] = check_input($_POST["NT_Audio_Filename-".(string)$i."-".(string)$z]);
 				}
-			//}
+			}
 
 // Read - YouVersion
 			$i = 1;
@@ -482,17 +425,12 @@ function check_input($value) {
 			$inputs["CellPhone"] = 0;
 			while (isset($_POST['txtCellPhoneFile-'.(string)$i])) {
 				if (check_input($_POST['txtCellPhoneFile-'.(string)$i]) == "") {
-					//$count_failed++;
-					//$messages[] = "Cell Phone filename #" . $i . " is blank.";
 				}
 				else {
 					$inputs["CellPhone"] = 1;
 					if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPJava-'.$i) $inputs["CPJava-$CellPhoneIndex"] = 1; else $inputs["CPJava-$CellPhoneIndex"] = 0;
 					if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPAndroid-'.$i) $inputs["CPAndroid-$CellPhoneIndex"] = 1; else $inputs["CPAndroid-$CellPhoneIndex"] = 0;
 					if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPiPhone-'.$i) $inputs["CPiPhone-$CellPhoneIndex"] = 1; else $inputs["CPiPhone-$CellPhoneIndex"] = 0;
-					//if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPWindows-'.$i) $inputs["CPWindows-$CellPhoneIndex"] = 1; else $inputs["CPWindows-$CellPhoneIndex"] = 0;
-					//if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPBlackberry-'.$i) $inputs["CPBlackberry-$CellPhoneIndex"] = 1; else $inputs["CPBlackberry-$CellPhoneIndex"] = 0;
-					//if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPStandard-'.$i) $inputs["CPStandard-$CellPhoneIndex"] = 1; else $inputs["CPStandard-$CellPhoneIndex"] = 0;
 					if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPAndroidApp-'.$i) $inputs["CPAndroidApp-$CellPhoneIndex"] = 1; else $inputs["CPAndroidApp-$CellPhoneIndex"] = 0;
 					if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPiOSAssetPackage-'.$i) $inputs["CPiOSAssetPackage-$CellPhoneIndex"] = 1; else $inputs["CPiOSAssetPackage-$CellPhoneIndex"] = 0;
 					$inputs["txtCellPhoneFile-$CellPhoneIndex"] = check_input($_POST["txtCellPhoneFile-".(string)$i]);
@@ -505,16 +443,6 @@ function check_input($value) {
 // watch
   			$i = 1;
 			$inputs["watch"] = 0;
-			/*
-			while (isset($_POST["txtWatchWebSource-".(string)$i])) {
-				if (check_input($_POST["txtWatchWebSource-".(string)$i]) != "") $inputs["watch"] = 1;
-				if (empty($_POST["txtWatchWebSource-".(string)$i])) {
-					if ((check_input($_POST["txtWatchResource-".(string)$i]) != "") || (check_input($_POST["txtWatchURL-".(string)$i]) != "")) {
-						$count_failed++;
-						$messages[] = "Watch #" . $i . " is blank.";
-					}
-				}
-				*/
 			while (isset($_POST["txtWatchURL-$i"])) {
 				if (check_input($_POST["txtWatchURL-$i"]) != "") $inputs["watch"] = 1;
 				if (empty($_POST["txtWatchURL-$i"])) {
@@ -723,7 +651,4 @@ function check_input($value) {
 	}
 
 // The form page (right where Scripture_Add.php called Add_Lang_Validation.php) will continue to be processed now because the validation failed.
-	
-	//include 'Scripture_Add.php?iso='.$iso.'&rod='.$rod;		These query strings won't work!
-	//exit;
 ?>

@@ -5,9 +5,9 @@ function check_input($value) {							// used for ' and " that find it in the inp
 	$value = trim($value);
     /* Automatic escaping is deprecated, but many sites do it anyway. */
 	// Stripslashes
-	if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
+	//if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
 		$value = stripslashes($value);
-	}
+	//}
 	// Quote if not a number
 	if (!is_numeric($value)) {
 		$db = get_my_db();
@@ -45,7 +45,6 @@ function check_input($value) {							// used for ' and " that find it in the inp
 		$query="SELECT DISTINCT $SpecificCountry, scripture_main.* FROM scripture_main, countries, ISO_countries WHERE ISO_countries.ISO_countries = '$GN' AND scripture_main.ISO_ROD_index = ISO_countries.ISO_ROD_index AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY scripture_main.ISO";
 	}
 	$result=$db->query($query);
-	//$num=mysql_num_rows($result);
 
 	/*
 		*************************************************************************************************************
@@ -54,7 +53,6 @@ function check_input($value) {							// used for ' and " that find it in the inp
 	*/
 	$db->query("DROP TABLE IF EXISTS LN_Temp");			// Get the names of all of the Spanish languages or else get the default names
 	$db->query("CREATE TEMPORARY TABLE LN_Temp (ISO VARCHAR(3) NOT NULL, ROD_Code VARCHAR(5) NOT NULL, ISO_ROD_index INT NULL, LN VARCHAR(50) NOT NULL) ENGINE = MEMORY CHARSET = utf8") or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . "</body></html>");
-	//$i=0;
 	$stmt = $db->prepare('INSERT INTO LN_Temp (ISO, ROD_Code, ISO_ROD_index, LN) VALUES (?, ?, ?, ?)');			// create a prepared statement
 	while ($r = $result->fetch_array()) {
 		$ISO=$r['ISO'];									// ISO
@@ -62,11 +60,6 @@ function check_input($value) {							// used for ' and " that find it in the inp
 		$Variant_Code=$r['Variant_Code'];				// Variant_Code
 		$ISO_ROD_index=$r['ISO_ROD_index'];				// ISO_ROD_index
 		$ML=$r["$MajorLanguage"];						// the major language
-		//$LN_English=$r['LN_English'];					// boolean
-		//$LN_Spanish=$r['LN_Spanish'];					// boolean
-		//$LN_Portuguese=$r['LN_Portuguese'];			// boolean
-		//$LN_French=$r['LN_French'];					// boolean
-		//$LN_Dutch=$r['LN_Dutch'];						// boolean
 		$Def_LN=$r['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
 		if (!$ML) {										// if the English then the default langauge
 			switch ($Def_LN){
@@ -107,7 +100,7 @@ function check_input($value) {							// used for ' and " that find it in the inp
 					$LN=trim($row_temp['LN_German']);
 					break;
 				default:
-					echo 'This isn’t supposed to happen! The default language isn’t found.';
+					echo 'This isnï¿½t supposed to happen! The default language isnï¿½t found.';
 					break;
 			}
 		}
@@ -117,11 +110,8 @@ function check_input($value) {							// used for ' and " that find it in the inp
 			$row_temp=$result_LN->fetch_assoc();
 			$LN=trim($row_temp["$MajorLanguage"]);
 		}
-//		$LN = check_input($LN);
-		//$db->query("INSERT INTO LN_Temp (ISO, ROD_Code, ISO_ROD_index, LN) VALUES ('$ISO', '$ROD_Code', '$ISO_ROD_index', '$LN')");
 		$stmt->bind_param("ssis", $ISO, $ROD_Code, $ISO_ROD_index, $LN);			// bind parameters for markers								// 
 		$stmt->execute();															// execute query
-		//$i++;
 	}
 	$stmt->close();																	// close statement
 
@@ -154,7 +144,6 @@ function check_input($value) {							// used for ' and " that find it in the inp
 	$stmt_alt=$db->prepare($query);															// create a prepared statement
 	echo "<div id='CT'><table id='CountryTable'>";		// <div id='CT'> required for IE because it can't handle tables!
 	$i=0;
-//	echo $numSwitch;
 	while ($i < $numSwitch) {
 		if ($i % 2)
 			$color = 'f8fafa';
@@ -171,8 +160,6 @@ function check_input($value) {							// used for ' and " that find it in the inp
 		$Variant_Code = $row['Variant_Code'];
 		$VD = '';
 		if (!is_null($Variant_Code) && $Variant_Code != '') {
-			//$query = "SELECT Variant_Description FROM Variants WHERE Variant_Code = '$Variant_Code'";
-			//$resultVar=$db->query($query) or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
 			$stmt_Var->bind_param("s", $Variant_Code);										// bind parameters for markers								// 
 			$stmt_Var->execute();															// execute query
 			$resultVar = $stmt_Var->get_result();											// instead of bind_result (used for only 1 record):
@@ -181,12 +168,9 @@ function check_input($value) {							// used for ' and " that find it in the inp
 				$VD = $rowVD['Variant_Description'];
 			}
 		}		
-		//$query="SELECT $SpecificCountry FROM ISO_countries, countries WHERE ISO_countries.ISO_ROD_index = '$ISO_ROD_index' AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY $SpecificCountry";
-		//$result_ISO_countries=$db->query($query);
 		$stmt_ISO_countries->bind_param("i", $ISO_ROD_index);								// bind parameters for markers								// 
 		$stmt_ISO_countries->execute();														// execute query
 		$result_ISO_countries = $stmt_ISO_countries->get_result();							// instead of bind_result (used for only 1 record):
-		//$num_ISO_countries=$result_ISO_countries->num_rows;
 		$row_ISO_countries = $result_ISO_countries->fetch_assoc();
 		$countryTemp = $SpecificCountry;
 		if (strpos("$SpecificCountry", '.')) $countryTemp = substr("$SpecificCountry", strpos("$SpecificCountry", '.')+1);			// In case there's a "." in the "country"
@@ -198,14 +182,11 @@ function check_input($value) {							// used for ' and " that find it in the inp
 		}
 		echo "<tr style='background-color: #". $color . "; '>";
 		echo "<td width='30%' onclick='location.href=\"$Scriptname?sortby=lang&name=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code\"'>" . $LN . "</td>";
-		//$query_alt="SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = '$ISO_ROD_index'";				// alt_lang_names
-		//$result_alt=$db->query($query_alt);
 		$stmt_alt->bind_param("i", $ISO_ROD_index);											// bind parameters for markers								// 
 		$stmt_alt->execute();																// execute query
 		$result_alt = $stmt_alt->get_result();												// instead of bind_result (used for only 1 record):
 		$alt_lang_names = '';
 		if ($result_alt) {
-			//$num_alt=$result_alt->num_rows;
 			echo "<td width='35%'>";
 			$i_alt=0;
 			while ($row_alt = $result_alt->fetch_assoc()) {
@@ -217,7 +198,6 @@ function check_input($value) {							// used for ' and " that find it in the inp
 				// Cross Site Scripting (XSS) attack happens where client side code (usually JavaScript) gets injected into the output of your PHP script. The next line cleans it up.
 				$alt_lang_name = htmlspecialchars($alt_lang_name, ENT_QUOTES, 'UTF-8');
 				echo $alt_lang_name;
-				//$alt_lang_names .= $alt_lang_name;
 				$i_alt++;
 			}
 			echo '</td>';
@@ -257,17 +237,8 @@ function check_input($value) {							// used for ' and " that find it in the inp
 		else
 			$query="SELECT DISTINCT LEFT(LN, 1) AS Beg FROM LN_Temp ORDER BY LN";
 		$resultLetter = $db->query($query);
-		//$numLetter=$resultLetter->num_rows;
-		/*if ($st == "spa")
-			$BegLetters="Empieza&nbsp;con&nbsp;la&nbsp;letra&nbsp;&nbsp;";		//:Que&nbsp;comienzan&nbsp;con:&nbsp;&nbsp;";
-		else if ($st == "por")
-			$BegLetters="Começando&nbsp;com:&nbsp;&nbsp;";
-		else
-			$BegLetters="Beginning&nbsp;with:&nbsp;&nbsp;";*/
 			
 		$BegLetters=str_replace(" ", "&nbsp;", translate('Beginning with:', $st, 'sys')) . "&nbsp;&nbsp;";
-		//$BegLetters=translate('Beginning with:', $st, 'sys') . "&nbsp;&nbsp;";
-		//$i=0;
 		while ($r = $resultLetter->fetch_assoc()) {
 			$BegLetter=$r['Beg'];
 			if ($Beg == $BegLetter) {
@@ -276,7 +247,6 @@ function check_input($value) {							// used for ' and " that find it in the inp
 			}
 			else
 				$BegLetters=$BegLetters . "<a style='text-decoration: underline; ' href='#' onclick='Switch(" . $number . ", \"" . $BegLetter . "\")'>" . $BegLetter . "</a>&nbsp;&nbsp;";
-			//$i++;
 		}
 		if ($Beg == 'all')
 			$BegLetters=$BegLetters . "[<a style='text-decoration: underline; color: red; ' href='#' onclick='Switch(" . $number . ", \"all\")'>" . translate('All', $st, 'sys') . "</a>]";
@@ -293,8 +263,6 @@ function check_input($value) {							// used for ' and " that find it in the inp
 	$db->query('DROP TABLE LN_Temp');
 	$result->free();
 	$resultSwitch->free();
-	//$result_ISO_countries->free();
-	//$result_alt->free();
 	$stmt_alt->close();
 	$stmt_Var->close();
 	$stmt_ISO_countries->close();
