@@ -2875,8 +2875,8 @@ array_push($all_array, $string_temp);
  	<button class="tablinks" onclick="openTab(event, 'View')"><i class="fa fa-film" style="font-size:28px;"></i><br/>Video</button>
 	<button class="tablinks" onclick="openTab(event, 'App')"><i class="fa fa-mobile" style="font-size:28px;"></i><br/>App</button>
 	<button class="tablinks" onclick="openTab(event, 'Other')"><i class="fa fa-link" style="font-size:28px;"></i><br/>Other</button>
-	<button class="tablinks" onclick="openTab(event, 'All')" ><i class="fa fa-th" style="font-size:28px;"></i><br/>All</button>
-	<button class="tablinks" onclick="openTab(event, 'Map')" id="defaultOpen"><i class="fa fa-map-marker" style="font-size:28px;"></i><br/>Map</button>
+	<button class="tablinks" onclick="openTab(event, 'All')" id="defaultOpen"><i class="fa fa-th" style="font-size:28px;"></i><br/>All</button>
+	<button class="tablinks" onclick="openTab(event, 'Map')" ><i class="fa fa-map-marker" style="font-size:28px;"></i><br/>Map</button>
 </div>
 
 <!-- Tab content -->
