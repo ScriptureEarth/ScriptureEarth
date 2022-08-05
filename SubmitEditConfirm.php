@@ -18,11 +18,6 @@
 	*			But, BE CAREFUL!
 	*
 	**************************************************************************************************************************************/
-	 
-	//define ("PATHScripture", "./");
-	//include("OT_Books.php");
-	//include("NT_Books.php");
-	//global $NT_array;								// from NT_Books.php
 ?>
 
 <!DOCTYPE html>
@@ -47,29 +42,34 @@
 	if (!$result) {
 		die('Could not update the data in "scripture_main": ' . $db->error);
 	}
-	$ln_result = '';
-	foreach($_SESSION['nav_ln_array'] as $code => $array){
-		$ln_result .= "LN_".$array[1]." = '$inputs[LN_".$array[1]."Bool]', ";
-	}
-	$query="UPDATE nav_ln SET Variant_Code = '$inputs[var]', ".$ln_result."Def_LN = '$inputs[DefLangName]' WHERE ISO_ROD_index = $inputs[idx]"
-	$result=$db->query($query);
-	if (!$result) {
-		die('Could not update the data in "nav_ln": ' . $db->error);
-	}
 
-	// major languages - LN
-	foreach ($_SESSION['nav_ln_array'] as $code => $array){
-		if ($inputs['LN_'.$array[1].'Bool']) {
-			$query="DELETE FROM LN_".$array[1]." WHERE ISO_ROD_index = $inputs[idx]";
-			$db->query($query);
-			$temp = str_replace("'", "ꞌ", $inputs[$array[1].'_lang_name']);								// apostrophe (') to saltillo glyph (ꞌ - U+A78C)
-			$query="INSERT INTO LN_".$array[1]." (ISO, ROD_Code, Variant_Code, ISO_ROD_index, LN_".$array[1].") VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$temp')";
-			$result=$db->query($query);
-			if (!$result) {
-				echo 'Could not insert the data in "LN_'.$array[1].'": ' . $db->error;
-			}
+// nav_ln table
+$ln_result = '';
+foreach($_SESSION['nav_ln_array'] as $code => $array){
+	$temp = 'LN_'.$array[1].'Bool';
+	$ln_result .= "LN_".$array[1]." = '$inputs[$temp]', ";
+}
+$query="UPDATE nav_ln SET Variant_Code = '$inputs[var]', ".$ln_result."Def_LN = '$inputs[DefLangName]' WHERE ISO_ROD_index = $inputs[idx]";
+$result=$db->query($query);
+if (!$result) {
+	die('Could not update the data in "nav_ln": ' . $db->error);
+}
+
+// navigational language names - LN
+foreach ($_SESSION['nav_ln_array'] as $code => $array){
+	if ($inputs['LN_'.$array[1].'Bool']) {
+		$query="DELETE FROM LN_".$array[1]." WHERE ISO_ROD_index = $inputs[idx]";
+		$db->query($query);
+		$temp = '';
+		$temp = $inputs[$array[1].'_lang_name'];
+		$temp = str_replace("'", "ꞌ", $temp);								// apostrophe (') to saltillo glyph (ꞌ - U+A78C)
+		$query="INSERT INTO `LN_$array[1]` (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `LN_$array[1]`) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$temp')";
+		$result=$db->query($query);
+		if (!$result) {
+			echo 'Could not insert the data in "LN_'.$array[1].'": ' . $db->error;
 		}
 	}
+}
 
 	// ISO countries
 	$i=1;
@@ -79,9 +79,6 @@
 	$stmt=$db->prepare($query);
 	while ($i <= $inputs['ISO_countries']) {
 		$temp = 'ISO_Country-'.(string)$i;
-		// echo ("<br />'" . $inputs[$temp] . "'<br />");
-		//$query="INSERT INTO ISO_countries (ISO, ROD_Code, Variant_Code, ISO_ROD_index, ISO_countries) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$temp]')";
-		//$result=$db->query($query);
 		$stmt->bind_param("s", $inputs[$temp]);													// bind parameters for markers
 		$stmt->execute();																		// execute query
 		$i++;
@@ -97,12 +94,9 @@
 	$query="INSERT INTO alt_lang_names SET ISO = '$inputs[iso]', ROD_Code = '$inputs[rod]', Variant_Code = '$inputs[var]', ISO_ROD_index = $inputs[idx], alt_lang_name = ?";
 	$stmt=$db->prepare($query);
 	while (isset($inputs["txtAltNames-".(string)$i])) {
-		//$query="SELECT * FROM alt_lang_names WHERE ISO_ROD_index = $inputs[idx]";		// reject duplicate entries
-		//$result=$db->query($query);
 		$stmt_alt->bind_param("i", $inputs['idx']);												// bind parameters for markers
 		$stmt_alt->execute();																	// execute query
 		$result_alt = $stmt_alt->get_result();													// instead of bind_result (used for only 1 record):
-		//$row = mysql_num_rows($result);
 		$bool_ISO = false;
 		while ($r = $result_alt->fetch_assoc()) {
 			if ($r['alt_lang_name'] == $inputs["txtAltNames-".$i]) {							// compare
@@ -113,8 +107,6 @@
 		if (!$bool_ISO) {
 			$temp = "txtAltNames-".(string)$i;
 			//$temp = htmlspecialchars($temp, ENT_QUOTES, 'UTF-8');
-			//$query="INSERT INTO alt_lang_names SET ISO = '$inputs[iso]', ROD_Code = '$inputs[rod]', Variant_Code = '$inputs[var]', ISO_ROD_index = $inputs[idx], alt_lang_name = '$inputs[$temp]'";
-			//$result=$db->query($query);
 			$temp = stripslashes($inputs[$temp]);
 			$stmt->bind_param("s", $temp);														// bind parameters for markers								// 
 			$result=$stmt->execute();															// execute query
@@ -161,8 +153,6 @@
 			if ($inputs["BibleIsOT-".(string)$i] == 1) $temp4 = 2;
 			if ($inputs["BibleIsBible-".(string)$i] == 1) $temp4 = 3;
 			if ($inputs["BiblePortions-".(string)$i] == 1) $temp4 = 4;*/
-			//$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, URL, BibleIs) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], 'Bible.is', 'Read and Listen online or on cell phone', '$inputs[$temp3]', $temp4)";
-			//$result=$db->query($query);
 			$stmt_links->bind_param("ssi", $inputs[$temp2], $inputs[$temp3], $temp4);									// bind parameters for markers
 			$result=$stmt_links->execute();																				// execute query
 			if (!$result) {
@@ -191,7 +181,6 @@
 	if ($inputs['SAB'] >= 1) {
 		$i = 1;
 		$query="INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, url, subfolder, description, pre_scriptoria, SAB_number) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, ?, ?)";
-		//$query="INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, url, subfolder, description, pre_scriptoria, SAB_number) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '', ?, ?, ?, ?)";
 		$stmt_SAB_scriptoria=$db->prepare($query);
 //		while (isset($inputs["txtSABsubfolder-".(string)$i]) && trim($inputs["txtSABsubfolder-".(string)$i]) != '') {		//strlen(trim($inputs["txtSABsubFirstPath-".(string)$i]) >= 4)) {			// $inputs["txtSABsubFirstPath-".(string)$i]) = "sab" by default
 		while (isset($inputs["txtSABsubfolder-".(string)$i])) {		//strlen(trim($inputs["txtSABsubFirstPath-".(string)$i]) >= 4)) {			// $inputs["txtSABsubFirstPath-".(string)$i]) = "sab" by default
@@ -206,13 +195,7 @@
 				//$SABsubFirstPath = "txtSABsubFirstPath-".(string)$i;
 				//$inputs[$SABsubfolder] = $inputs[$SABsubFirstPath] . $inputs[$SABsubfolder];
 			//}
-//echo 'inputs[SABsubfolder] = ' . $inputs[$SABsubfolder] . '<br />';
-////echo 'inputs[SABsubFirstPath] = ' . $inputs[$SABsubFirstPath] . '<br />';
-//echo 'inputs[SABpreScriptoria] = ' . $inputs[$SABpreScriptoria] . '<br />';
-//echo 'inputs[SABdescription] = ' . $inputs[$SABdescription] . '<br />';
-//			$stmt_SAB_scriptoria->bind_param("ssssi", $inputs[$SABurl], $inputs[$SABsubfolder], $inputs[$SABdescription], $inputs[$SABpreScriptoria], $i);		// bind parameters for markers
 			$stmt_SAB_scriptoria->bind_param("ssssi", $inputs[$SABurl], $inputs[$SABsubfolder], $inputs[$SABdescription], $inputs[$SABpreScriptoria], $i);		// bind parameters for markers
-//echo 'Three variables: %'.$inputs[$SABsubfolder] . '% %' . $inputs[$SABdescription] . '% %' . $inputs[$SABpreScriptoria] . '%<br />';
 			$resultSAB_scriptoria=$stmt_SAB_scriptoria->execute();														// execute query
 			if (!$resultSAB_scriptoria) {
 				echo 'Could not update the data "sab_scriptoria" table: ' . $db->error;
@@ -221,7 +204,6 @@
 				$SAB_Path = '';
 				if ($inputs[$SABpreScriptoria] != '') {																	// field set with preScriptoria
 					$SAB_Path = './data/'.$inputs['iso'].'/sab/';
-//echo 'Path: '. $SAB_Path . '<br />';
 					// SAB OT
 					$book_number = 0;
 					$OT_Error_Books = 0;
@@ -246,8 +228,6 @@
 								$OT_Error_Books = 1;
 								// scan though SAB html and find out if there is an mp3
 								if (preg_match("/\.(mp3|3gp)['\"]/i", $SAB_Read)) {
-									//$query="INSERT INTO SAB (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Book_Chapter_HTML, SAB_Book, SAB_Chapter, SAB_Audio) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$filename', ".$book_number.", ".$chapter.", 1)";
-									//$result=$db->query($query);
 									$audio = 1;
 									$stmt_SAB->bind_param("siiii", $filename, $book_number, $chapter, $audio, $i);		// bind parameters for markers
 									if ($SAB_count == 0) {
@@ -256,8 +236,6 @@
 									}
 								}
 								else {
-									//$query="INSERT INTO SAB (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Book_Chapter_HTML, SAB_Book, SAB_Chapter, SAB_Audio) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$filename', ".$book_number.", ".$chapter.", 0)";
-									//$result=$db->query($query);
 									$SAB_count = 1;
 									$audio = 0;
 									$stmt_SAB->bind_param("siiii", $filename, $book_number, $chapter, $audio, $i);		// bind parameters for markers
@@ -274,9 +252,6 @@
 							//}
 						}
 					}
-					//if ($OT_Error_Books) {
-			//			echo $SAB_Error_Chapter;
-					//}
 					if ($OT_Error_Books == 1) {
 						if ($SAB_OT_Book_Count == 0) {			// 2 (binary) - OT Synchronized text and audio
 							$SAB_OT_Book_Count = 2;
@@ -306,9 +281,7 @@
 						$book_number++;
 						$SAB_count = 0;
 						for ($chapter = 1; $chapter <= $chapters+0; $chapter++) {
-//echo 'NT: ' . $BookChap . '<br />';
 							$filename = $inputs[$SABpreScriptoria].'-'.(string)($book_number+40).'-'.$book_NT.'-'.($chapter < 10 ? '00'.(string)$chapter : '0'.(string)$chapter).'.html';
-//echo $filename . '<br />';
 							if (file_exists($SAB_Path.$filename)) {
 							//$file_headers = @get_headers($SAB_Path . $filename);							// Fetches all 9 of the headers sent by the server in response to an HTTP request.
 							//if ($file_headers[0] != 'HTTP/1.1 404 Not Found' && $file_headers[0] != 'HTTP/1.1 302 Moved Temporarily') {
@@ -318,8 +291,6 @@
 								$temp = $book_number + 40;
 								// scan though SAB html and find out if there is an mp3
 								if (preg_match("/\.(mp3|3gp)['\"]/i", $SAB_Read)) {
-									//$query="INSERT INTO SAB (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Book_Chapter_HTML, SAB_Book, SAB_Chapter, SAB_Audio) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$filename', ".($book_number+40).", ".$chapter.", 1)";
-									//$result=$db->query($query);
 									$audio = 1;
 									$stmt_SAB->bind_param("siiii", $filename, $temp, $chapter, $audio, $i);				// bind parameters for markers
 									if ($SAB_count == 0) {
@@ -328,8 +299,6 @@
 									}
 								}
 								else {
-									//$query="INSERT INTO SAB (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Book_Chapter_HTML, SAB_Book, SAB_Chapter, SAB_Audio) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$filename', ".($book_number+40).", ".$chapter.", 1)";
-									//$result=$db->query($query);
 									$SAB_count = 1;
 									$audio = 0;
 									$stmt_SAB->bind_param("siiii", $filename, $temp, $chapter, $audio, $i);				// bind parameters for markers
@@ -346,14 +315,10 @@
 							//}
 						}
 					}
-					//if ($NT_Error_Books) {
-			//			echo $SAB_Error_Chapter;
-					//}
 					$stmt_SAB->close();
 					
 					if ($NT_Error_Books == 1) {
 						$SAB_Book_Count = 0;
-			//echo $SAB_NT_Book_Count . '<br />';
 						if ($SAB_NT_Book_Count == 0) {			// 1 (binary) - NT Synchronized text and audio
 							$SAB_Book_Count = $SAB_OT_Book_Count + 1;
 						}
@@ -367,13 +332,11 @@
 					else {
 						$SAB_Book_Count = $SAB_OT_Book_Count;
 					}
-			//echo $SAB_Book_Count;
 					// This is where OT and NT gets the field SAB UPDATEd
 					$db->query("UPDATE scripture_main SET SAB = $SAB_Book_Count WHERE ISO_ROD_index = $inputs[idx]");
 				}
 				elseif ($inputs[$SABsubfolder] != '') {																									// sw.js does exist therefore the html files are new ( >= 8/2020) Scritporia s3 (AWS)
 					$SAB_Path = './data/'.$inputs['iso'].'/'.$inputs[$SABsubfolder];
-//echo 'SAB_Path = ' . $SAB_Path . '<br /><br />';
 					$query="INSERT INTO SAB (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Book_Chapter_HTML, SAB_Book, SAB_Chapter, SAB_Audio, SAB_number) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, 0, ?)";
 					$stmt_SAB=$db->prepare($query);
 					$SAB_array = glob($SAB_Path.'*.html');
@@ -381,7 +344,6 @@
 						foreach ($SAB_array as $SAB_record) {															// $SAB_array = glob($SAB_Path.'*.html'). e.g. "tuoC-02-GEN-001.html"
 							$SAB_record = substr($SAB_record, strrpos($SAB_record, '/')+1);								// gets rids of directories. strrpos - returns the poistion of the last occurrence of the substring
 							if (preg_match('/-([0-9]+)-[A-Z0-9][A-Z]{2}-/', $SAB_record, $match)) {
-								//echo $SAB_record . '<br />';
 							}
 							else {
 								continue;
@@ -396,7 +358,6 @@
 					else {
 						echo '<h3>No HTML files found in '.$SAB_Path.'. Be sure you uploaded the HTML files from you\'re comptuer to the SE server AND then re-run the Edit of CMS again.</h3>';
 					}
-					//$stmt_SAB->close();
 				}
 				else {			// url is here so don't do the books
 				}
@@ -449,8 +410,6 @@
 			if ($inputs["OT_PDF_Filename-$i"] != "") {
 				$temp1 = "OT_PDF_Book-$i";
 				$temp2 = "OT_PDF_Filename-$i";
-				//$query="INSERT INTO OT_PDF_Media (ISO, ROD_Code, Variant_Code, ISO_ROD_index, OT_PDF, OT_PDF_Filename) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$temp1]', '$inputs[$temp2]')";
-				//$result=$db->query($query);
 				$stmt_OT->bind_param("ss", $inputs[$temp1], $inputs[$temp2]);						// bind parameters for markers
 				$result=$stmt_OT->execute();														// execute query
 				if (!$result) {
@@ -495,8 +454,6 @@
 			if ($inputs["NT_PDF_Filename-$i"] != "") {
 				$temp1 = "NT_PDF_Book-$i";
 				$temp2 = "NT_PDF_Filename-$i";
-				//$query="INSERT INTO NT_PDF_Media (ISO, ROD_Code, Variant_Code, ISO_ROD_index, NT_PDF, NT_PDF_Filename) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$temp1]', '$inputs[$temp2]')";
-				//$result=$db->query($query);
 				$stmt_NT->bind_param("ss", $inputs[$temp1], $inputs[$temp2]);						// bind parameters for markers
 				$result=$stmt_NT->execute();														// execute query
 				if (!$result) {
@@ -538,9 +495,6 @@
 					$temp1 = "OT_Audio_Book-".$i;
 					$temp2 = "OT_Audio_Filename-".$i."-".$z;
 					$temp3 = "OT_Audio_Chapter-".$i."-".$z;
-					//echo ($temp1 . "  " . $temp2 . "  " . $temp3);
-					//$query="INSERT INTO OT_Audio_Media (ISO, ROD_Code, Variant_Code, ISO_ROD_index, OT_Audio_Book, OT_Audio_Filename, OT_Audio_Chapter) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$temp1]', '$inputs[$temp2]', '$inputs[$temp3]')";
-					//$result=$db->query($query);
 					$stmt_OT->bind_param("isi", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3]);	// bind parameters for markers								// 
 					$result=$stmt_OT->execute();													// execute query
 					if (!$result) {
@@ -566,9 +520,6 @@
 					$temp1 = "NT_Audio_Book-".$i;
 					$temp2 = "NT_Audio_Filename-".$i."-".$z;
 					$temp3 = "NT_Audio_Chapter-".$i."-".$z;
-					//echo ($temp1 . "  " . $temp2 . "  " . $temp3);
-					//$query="INSERT INTO NT_Audio_Media (ISO, ROD_Code, Variant_Code, ISO_ROD_index, NT_Audio_Book, NT_Audio_Filename, NT_Audio_Chapter) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$temp1]', '$inputs[$temp2]', '$inputs[$temp3]')";
-					//$result=$db->query($query);
 					$stmt_NT->bind_param("isi", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3]);		// bind parameters for markers
 					$result=$stmt_NT->execute();														// execute query
 					if (!$result) {
@@ -591,8 +542,6 @@
 			$temp1 = "txtLinkYouVersionName-$i";
 			$temp2 = "txtLinkYouVersionTitle-$i";
 			$temp3 = "txtLinkYouVersionURL-$i";
-			//$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, URL, BibleIs, YouVersion, Bibles_org) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$temp1]', '$inputs[$temp2]', '$inputs[$temp3]', 0, 1, 0)";
-			//$result=$db->query($query);
 			$stmt_links->bind_param("sss", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3]);		// bind parameters for markers
 			$result=$stmt_links->execute();															// execute query
 			if (!$result) {
@@ -614,8 +563,6 @@
 			$temp1 = "txtLinkBiblesorgName-$i";
 			$temp2 = "txtLinkBiblesorgTitle-$i";
 			$temp3 = "txtLinkBiblesorgURL-$i";
-			//$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, URL, `Bibles_org`) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$temp1]', '$inputs[$temp2]', '$inputs[$temp3]', 1)";
-			//$result=$db->query($query);
 			$stmt_links->bind_param("sss", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3]);		// bind parameters for markers
 			$result=$stmt_links->execute();															// execute query
 			if (!$result) {
@@ -637,8 +584,6 @@
 			$temp1 = "txtLinkGRNName-$i";
 			$temp2 = "txtLinkGRNTitle-$i";
 			$temp3 = "txtLinkGRNURL-$i";
-			//$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, URL, BibleIs, YouVersion, GRN) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$temp1]', '$inputs[$temp2]', '$inputs[$temp3]', 0, 0, 1)";
-			//$result=$db->query($query);
 			$stmt_links->bind_param("sss", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3]);		// bind parameters for markers
 			$result=$stmt_links->execute();															// execute query
 			if (!$result) {
@@ -657,7 +602,6 @@
 		$query="INSERT INTO CellPhone (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Cell_Phone_Title, Cell_Phone_File, optional) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?)";
 		$stmt_cell=$db->prepare($query);
 		while (isset($inputs["txtCellPhoneFile-$i"])) {
-			//$temp1 = "txtCellPhoneTitle-$i";
 			if ($inputs["CPJava-".(string)$i] == 1) $temp1 = "GoBible (Java)";
 			if ($inputs["CPAndroid-".(string)$i] == 1) $temp1 = "MySword (Android)";
 			if ($inputs["CPiPhone-".(string)$i] == 1) $temp1 = "iPhone";
@@ -668,10 +612,8 @@
 			if ($inputs["CPiOSAssetPackage-".(string)$i] == 1) $temp1 = "iOS Asset Package";
 			$temp2 = "txtCellPhoneFile-$i";
 			$temp3 = "txtCellPhoneOptional-$i";
-			//$query="INSERT INTO CellPhone (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Cell_Phone_Title, Cell_Phone_File) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$temp1', '$inputs[$temp2]')";
-			//$result=$db->query($query);
 			$stmt_cell->bind_param("sss", $temp1, $inputs[$temp2], $inputs[$temp3]);			// bind parameters for markers								// 
-			$result=$stmt_cell->execute();													// execute query
+			$result=$stmt_cell->execute();														// execute query
 			if (!$result) {
 				echo 'Could not insert the data "CellPhone": ' . $db->error;
 			}
@@ -693,8 +635,6 @@
 			$temp3 = "txtWatchURL-$i";
 			$temp4 = "txtWatchJesusFilm-$i";
 			$temp5 = "txtWatchYouTube-$i";
-			//$query="INSERT INTO watch (ISO, ROD_Code, Variant_Code, ISO_ROD_index, organization, watch_what, URL, JesusFilm, YouTube) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$temp1]', '$inputs[$temp2]', '$inputs[$temp3]', '$inputs[$temp4]', '$inputs[$temp5]')";
-			//$result=$db->query($query);
 			$stmt_watch->bind_param('sssii', $inputs[$temp1], $inputs[$temp2], $inputs[$temp3], $inputs[$temp4], $inputs[$temp5]);		// bind parameters for markers
 			$result=$stmt_watch->execute();															// execute query
 			if (!$result) {
@@ -724,8 +664,6 @@
 			if ($inputs["SStandAlphabet-".(string)$i] == 1) $temp7 = "Standard alphabet";
 			if ($inputs["STradAlphabet-".(string)$i] == 1) $temp7 = "Traditional alphabet";
 			if ($inputs["SNewAlphabet-".(string)$i] == 1) $temp7 = "New alphabet";
-			//$query="INSERT INTO study (ISO, ROD_Code, Variant_Code, ISO_ROD_index, ScriptureDescription, Testament, alphabet, ScriptureURL, statement, othersiteDescription, othersiteURL) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$temp1]', '$temp6', '$temp7', '$inputs[$temp2]', '$inputs[$temp3]', '$inputs[$temp4]', '$inputs[$temp5]')";
-			//$result=$db->query($query);
 			$stmt_study->bind_param("sssssss", $inputs[$temp1], $temp6, $temp7, $inputs[$temp2], $inputs[$temp3], $inputs[$temp4], $inputs[$temp5]);		// bind parameters for markers
 			$result=$stmt_study->execute();															// execute query
 			if (!$result) {
@@ -762,8 +700,6 @@
 			$temp3 = "txtOtherPDF-$i";
 			$temp4 = "txtOtherAudio-$i";
 			$temp5 = "txtDownload_video-$i";
-			//$query="INSERT INTO other_titles (ISO, ROD_Code, Variant_Code, ISO_ROD_index, other, other_title, other_PDF, other_audio) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$temp1]', '$inputs[$temp2]', '$inputs[$temp3]', '$inputs[$temp4]')";
-			//$result=$db->query($query);
 			$stmt_other->bind_param("sssss", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3], $inputs[$temp4], $inputs[$temp5]);	// bind parameters for markers								// 
 			$result=$stmt_other->execute();													// execute query
 			if (!$result) {
@@ -785,8 +721,6 @@
 			$temp1 = "txtBuyWebSource-$i";
 			$temp2 = "txtBuyResource-$i";
 			$temp3 = "txtBuyURL-$i";
-			//$query="INSERT INTO buy (ISO, ROD_Code, Variant_Code, ISO_ROD_index, organization, buy_what, URL) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$temp1]', '$inputs[$temp2]', '$inputs[$temp3]')";
-			//$result=$db->query($query);
 			$stmt_buy->bind_param("sss", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3]);	// bind parameters for markers								// 
 			$result=$stmt_buy->execute();														// execute query
 			if (!$result) {
@@ -811,8 +745,6 @@
 			$temp4 = "linksBuy-$i";
 			$temp5 = "linksMap-$i";
 			$temp6 = "linksGooglePlay-$i";
-			//$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, URL, buy, map, GooglePlay) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$temp1]', '$inputs[$temp2]', '$inputs[$temp3]', '$inputs[$temp4]', '$inputs[$temp5]', '$inputs[$temp6]'')";
-			//$result=$db->query($query);
 			$stmt_links->bind_param("sssiii", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3], $inputs[$temp4], $inputs[$temp5], $inputs[$temp6]);	// bind parameters for markers								// 
 			$result=$stmt_links->execute();															// execute query
 			if (!$result) {
@@ -833,8 +765,6 @@
 		while (isset($inputs["txtPlaylistAudioTitle-$i"])) {
 			$temp1 = "txtPlaylistAudioTitle-$i";
 			$temp2 = "txtPlaylistAudioFilename-$i";
-			//$query="INSERT INTO PlaylistAudio (ISO, ROD_Code, Variant_Code, ISO_ROD_index, PlaylistAudioTitle, PlaylistAudioFilename) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$temp1]', '$inputs[$temp2]')";
-			//$result=$db->query($query);
 			$stmt_Audio->bind_param("ss", $inputs[$temp1], $inputs[$temp2]);						// bind parameters for markers								// 
 			$result = $stmt_Audio->execute();														// execute query
 			if (!$result) {
@@ -856,8 +786,6 @@
 			$temp1 = "txtPlaylistVideoTitle-$i";
 			$temp2 = "txtPlaylistVideoFilename-$i";
 			$temp3 = "PlaylistVideoDownload-$i";
-			//$query="INSERT INTO PlaylistVideo (ISO, ROD_Code, Variant_Code, ISO_ROD_index, PlaylistVideoTitle, PlaylistVideoFilename) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$temp1]', '$inputs[$temp2]')";
-			//$result=$db->query($query);
 			$stmt_Video->bind_param("ssi", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3]);		// bind parameters for markers
 			$result = $stmt_Video->execute();														// execute query
 			if (!$result) {
@@ -956,8 +884,6 @@
 	}
 	
 	echo "<div style='text-align: center; background-color: #333333; margin: 0px auto 0px auto; padding: 20px; width: 1020px; border-radius: 15px; -moz-border-radius: 15px; -webkit-box-shadow: 15px; '>";
-	//echo "<img src='images/top_wbtc_logo.gif' />";
-	//echo "<br /><br />";
 	echo "<div class='nav' style='font-weight: normal; color: white; font-size: 10pt; '><sup>©</sup>2009 - ".date('Y')." <span style='color: #99FF99; '>ScriptureEarth.org</span></div>";
 	echo "</div>";
 	$db->close();

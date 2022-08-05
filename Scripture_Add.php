@@ -1,9 +1,6 @@
 <?php
-// Start the session
-session_start();
-?>
-<?php
 // Change PHP.ini from max_input_vars = 1000 to max_input_vars = 3000 because POST has to be set for 3000!
+
 include './include/session.php';
 global $session;
 /* Login attempt */
@@ -37,25 +34,39 @@ $messages = [];
  
 // Default input values (later, sanitized $_POST inputs)
 $inputs = ['iso' => ''];
-//$inputs = ['rod' => '00000'];
-//$inputs = ['var' => ''];
+
+// Master list of languages for the site to run in
+if (empty($_SESSION['nav_ln_array'])) {
+	require_once './include/conn.inc.php';							// connect to the database named 'scripture'
+	$db = get_my_db();
+	$_SESSION['nav_ln_array'] = [];
+	$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `translation_code`";
+	$ln_result=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
+	if ($ln_result->num_rows == 0) {
+		die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
+	}
+
+	while ($ln_row = $ln_result->fetch_array()){
+		$ln_temp[0] = $ln_row['translation_code'];
+		$ln_temp[1] = $ln_row['name'];
+		$ln_temp[2] = $ln_row['nav_fileName'];
+		$ln_temp[3] = $ln_row['ln_number'];
+		$ln_temp[4] = $ln_row['ln_abbreviation'];
+		$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;
+	}
+
+	$db->close();
+}
  
 // Checks that the form was submitted after Scripture_Add.php submitted.
 if (isset($_POST['btnSubmit'])) {
 	// Runs the validation script which only returns to the form page if validation fails.
-	//echo $_POST['rod'];				// works
-	//echo $_POST['var'];				// works
-	//var_dump($_POST);
-	//exit();
 	require_once 'Add_Lang_Validation.php';
 	// Returns from Add_Lang_Validation.php if the validation failed.
 }
 
 // Debug for max_input_vars != 3000
 // One method to prevent an SQL Injection Attack!
-// $query = sprintf("SELECT * FROM users WHERE user='%s' AND password='%s'",
-//            mysql_real_escape_string($user),
-//            mysql_real_escape_string($password));
 
 include ('./OT_Books.php');			// include the books of the OT
 include ('./NT_Books.php');			// include the books of the NT
@@ -67,7 +78,7 @@ include ('./NT_Books.php');			// include the books of the NT
 <meta name="ObjectType" 					content="Document" />
 <meta http-equiv="Window-target" 			content="_top" />
 <meta name="Created-by" 					content="Scott Starker" />
-<meta name="Updated-by"                     content="Lærke Roager" />
+<meta name="Updated-by"                     content="Scott Starker, Lærke Roager" />
 <title>Scripture Add</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Add.css" />
 <script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.0.2"></script>
@@ -92,19 +103,13 @@ include ('./NT_Books.php');			// include the books of the NT
 				echo 'Please correct these errors:<br />';
 				// Displays a list of error messages
 				echo '<ul style="color: red"><li>'.implode('</li><li>', $messages).'</li></ul>';
-				//echo 'input: variable iso = ' . $iso . '; rod = ' . $rod . '; var = ' . $var . '<br />';							// works
-				//echo 'input: iso = ' . $inputs['iso'] . '; rod = ' . $inputs['rod'] . '; var = ' . $inputs['var'] . '<br />';		// works
-				//echo 'input: POST[iso] = ' . $_POST['iso'] . '; POST[rod] = ' . $_POST['rod'] . '<br />';							// works
-				//echo 'POST[var] = ' . $_POST['var'] . '<br />';																	// works
 			}
 			echo "<br />";
 		?>
 		
 		<form name='myForm' action='Scripture_Add.php' method='post'>
         <input type='hidden' name='rod' id='rod' value="<?php echo isset($rod) ? $rod : $rod = '00000' ?>" />
-        <!--?php echo '1) rod: ' . (isset($rod) ? $rod : $rod = '00000') ?-->
         <input type='hidden' name='variant' id='variant' value="<?php echo isset($var) ? $var : $var = '' ?>" />
-        <!--?php echo '1) var: ' . (isset($var) ? $var : $var = '') ?-->
         <!-- onBlur="ISOShow(this.value)" -->
         <!-- AJAX is here. -->
         <!-- showResult(this.value) in Scripture_Add.js -->
@@ -148,12 +153,10 @@ include ('./NT_Books.php');			// include the books of the NT
 				?>
 			</table>
 			<br /><br />
-<!-- /************************************************
-	Language Names
-*************************************************/-->
-			<?php
-
-
+<!-- /*********************************************************************
+	Specific Language Name for the navigational Language Names
+***********************************************************************/-->
+			<?php						// $array[1] = English, Chinese, etc.
 			foreach ($_SESSION['nav_ln_array'] as $code => $array){
 				$html = "<div class='MajorLang'>In <span>".strtoupper($array[1])."</span>, enter the Language Name: <input type='text' name='".$array[1]."_lang_name' id='".$array[1]."_lang_name' size='35' value=\"switch\" /></div>";
 				if (isset($_POST[$array[1].'_lang_name'])){
@@ -164,12 +167,16 @@ include ('./NT_Books.php');			// include the books of the NT
 				echo $result;
 			} ?>
 			<br />
-			<p>Select the default major langauge <span style="font-size: 10pt; ">(i.e. the major language from above)</span>: 
+<!-- /*********************************************************************
+	default navigational langauge
+***********************************************************************/-->
+			<p>Select the default navigational langauge <span style="font-size: 10pt; ">(i.e. the major language from above)</span>: 
 			<select name="DefaultLang" id="DefaultLang">
-				<?php foreach ($_SESSION['nav_ln_array'] as $code => $array){
+				<?php					// $array[1] = English, Chinese, etc.
+				foreach ($_SESSION['nav_ln_array'] as $code => $array){
 					$html = '<option value="'.$array[1].'Lang" switch>'.$array[1].'</option>';
 					if (isset($_POST['DefaultLang'])){
-						if ($_POST['DefaultLang'] == 'EnglishLang'){
+						if (substr($_POST['DefaultLang'], 0, -4) == $array[1]){
 							$result = str_replace("switch", " selected='yes'", $html);
 						} else {
 							$result = str_replace("switch", "", $html);
@@ -188,7 +195,7 @@ include ('./NT_Books.php');			// include the books of the NT
             <br />
 <!-- /************************************************
 	Alternate Language Name(s)
-*************************************************/-->
+**************************************************/-->
 			<table width="100%" cellpadding="0" cellspacing="0" name="tableAltNames" id="tableAltNames">
 				<tr>
 					<td width="53%">
@@ -231,7 +238,6 @@ include ('./NT_Books.php');			// include the books of the NT
             <input type='radio' name='GroupAdd' value='AddNo' checked <?php if (isset($_POST['GroupAdd'])) echo ($_POST['GroupAdd'] == 'AddNo' ? ' checked' : '') ?> /> No "The Bible In" or "The Scripture In".<br />
             <input type='radio' name='GroupAdd' value='AddTheBibleIn' <?php if (isset($_POST['GroupAdd'])) echo ($_POST['GroupAdd'] == 'AddTheBibleIn' ? ' checked' : '') ?> /> "The Bible In" added to the specific name of the language on the top of the screen.<br />
             <input type='radio' name='GroupAdd' value='AddTheScriptureIn' <?php if (isset($_POST['GroupAdd'])) echo ($_POST['GroupAdd'] == 'AddTheScriptureIn' ? ' checked' : '') ?> /> "The Scripture In" added to the specific name of the language on the top of the screen.<br />
-		
         </div>
 
 		<br /><br />
@@ -272,8 +278,6 @@ include ('./NT_Books.php');			// include the books of the NT
         <br />
 
 <?php
-//echo 'rod = ' . $rod . '<br />';		// works
-//echo 'var = ' . $var . '<br />';		// works
 /************************************************
 	OT and NT PDFs
 *************************************************/
@@ -300,7 +304,6 @@ include ('./NT_Books.php');			// include the books of the NT
 								else
 									$color = 'f0f4f0';
 								echo "<tr style='background-color: #$color;'><td width='30%'>";
-								//echo "'".$_POST['OT_PDF_Book-'.(string)$i]."'";
 								echo "&nbsp;&nbsp;<input type='checkbox' name='OT_PDF_Book-$i' id='OT_PDF_Book-$i'" . (isset($_POST['OT_PDF_Book-'.(string)$i]) ? ' checked' : '') . " />&nbsp;$item_from_array";
 								echo "</td><td width='70%'>";
 								echo "PDF filename:&nbsp;<input type='text' name='OT_PDF_Filename-$i' id='OT_PDF_Filename-$i' size='50' value='" . (isset($_POST['OT_PDF_Filename-'.(string)$i]) ? $_POST['OT_PDF_Filename-'.(string)$i] : '') . "' />";
@@ -347,7 +350,6 @@ include ('./NT_Books.php');			// include the books of the NT
 								else
 									$color = 'f0f4f0';
 								echo "<tr style='background-color: #$color;'><td width='30%'>";
-								//echo "'".$_POST['NT_PDF_Book-'.(string)$i]."'";
 								echo "&nbsp;&nbsp;<input type='checkbox' name='NT_PDF_Book-$i' id='NT_PDF_Book-$i'" . (isset($_POST['NT_PDF_Book-'.(string)$i]) ? ' checked' : '') . " />&nbsp;$item_from_array";
 								echo '</td><td width="70%">';
 								echo "PDF filename:&nbsp;<input type='text' name='NT_PDF_Filename-$i' id='NT_PDF_Filename-$i' size='50' value='" . (isset($_POST['NT_PDF_Filename-'.(string)$i]) ? $_POST['NT_PDF_Filename-'.(string)$i] : '') . "' />";
@@ -373,8 +375,6 @@ include ('./NT_Books.php');			// include the books of the NT
 		<br />
         <hr align="center" width="90%" color="#0066CC" />
         <br />
-		
-        <!--input type='checkbox' name='FCBH' id='FCBH' < ?php echo (isset($_POST['FCBH']) ? ' checked' : '') ?> /> Is there a widget in FCBH using our Old/New Testament in an audio (mp3) file?<br /><br /-->
 
 <?php
 /************************************************
@@ -461,15 +461,12 @@ include ('./NT_Books.php');			// include the books of the NT
 								echo "<tr style='vertical-align: top; '>";
 								echo "<td width='10%' style='padding: 12px; '>";
 								echo "&nbsp;$item_from_array:<br />";
-								//echo "<input style='font-size: 8pt; ' type='button' id='NT_Audio_On-$i' value='Click On' onclick='Audio_On_Or_Off(\"table3-$i\", true)' />";
-								//echo "&nbsp;&nbsp;<input style='font-size: 8pt; ' type='button' id='NT_Audio_None-$i' value='Click Off' onclick='Audio_On_Or_Off(\"table3-$i\", false)' /><br />";
 								if ($item2_from_array > 1) {
 									echo "<input style='font-size: 8pt; ' type='button' id='One_NT_Audio_Chapters-$i' value='Audio NT Chapters in $item_from_array' onclick='One_NT_Audio_Chapters($i)' />";
 									echo "<br /><span style='font-size: 8pt; '>Enter the audio filename for $item_from_array chapter 1 and click on this button to have all of the rest of $item_from_array filled in.</span>";
 								}
 								echo "</td>";
 								echo "<td width='90%' style='line-height: 18px; padding: 12px; '>";
-								//echo "table3-$i<br />";
 								echo "<table id='NT_Audio_Table3-$i' width='100%'>";
 								echo "<tr>";
 								for ($z = 0; $z < $item2_from_array; $z++) {
@@ -630,7 +627,6 @@ include ('./NT_Books.php');			// include the books of the NT
                         Text
                         Audio
                         Video
-					<input type='text' style='color: navy; ' size='11' name='txtLinkBibleIs-1' id='txtLinkBibleIs-1' value="< ?php if (isset($_POST['txtLinkBibleIs-1'])) echo $_POST['txtLinkBibleIs-1']; else echo ${'txtLinkBibleIs-1'}; ?>" />
                     -->
                     <select name="txtLinkBibleIs-1" id="txtLinkBibleIs-1" style='color: navy; '>
                         <option value="BibleIsDefault-1" <?php echo ( isset($_POST['BibleIsDefault-1']) ? ($_POST['BibleIsDefault-1'] == 1 ? " selected='selected'" : "") : '' ) ?>>Default</option>
@@ -1006,13 +1002,9 @@ include ('./NT_Books.php');			// include the books of the NT
                         echo "&nbsp;";
                     echo "</td>";
                     echo "<td width='16%'>";
-						//echo "<input type='text' name='txtCellPhoneTitle-$i' id='txtCellPhoneTitle-$i' style='color: navy; ' size='39' value='" . ( isset($_POST['txtCellPhoneTitle-'.(string)$i]) ? $_POST['txtCellPhoneTitle-'.(string)$i] : '' ) . "' />";
 						if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPJava-'.$i) ${'CPJava-$i'}=1; else ${'CPJava-$i'}=0;
 						if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPAndroid-'.$i) ${'CPAndroid-$i'}=1; else ${'CPAndroid-$i'}=0;
 						if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPiPhone-'.$i) ${'CPiPhone-$i'}=1; else ${'CPiPhone-$i'}=0;
-						//if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPWindows-'.$i) ${'CPWindows-$i'}=1; else ${'CPWindows-$i'}=0;
-						//if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPBlackberry-'.$i) ${'CPBlackberry-$i'}=1; else ${'CPBlackberry-$i'}=0;
-						//if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPStandard-'.$i) ${'CPStandard-$i'}=1; else ${'CPStandard-$i'}=0;
 						if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPAndroidApp-'.$i) ${'CPAndroidApp-$i'}=1; else ${'CPAndroidApp-$i'}=0;
 						if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPiOSAssetPackage-'.$i) ${'CPiOSAssetPackage-$i'}=1; else ${'CPiOSAssetPackage-$i'}=0;
 						?>
@@ -1020,9 +1012,6 @@ include ('./NT_Books.php');			// include the books of the NT
                             <option value="CPJava-<?php echo $i ?>" <?php echo ( isset($_POST['CPJava-'.(string)$i]) ? ($_POST['CPJava-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'CPJava-$i'}==1 ? " selected='selected'" : '' ) ) ?>>GoBible (Java)</option>
                             <option value="CPAndroid-<?php echo $i ?>" <?php echo ( isset($_POST['CPAndroid-'.(string)$i]) ? ($_POST['CPAndroid-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'CPAndroid-$i'}==1 ? " selected='selected'" : '' ) ) ?>>MySword (Android)</option>
                             <option value="CPiPhone-<?php echo $i ?>" <?php echo ( isset($_POST['CPiPhone-'.(string)$i]) ? ($_POST['CPiPhone-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'CPiPhone-$i'}==1 ? " selected='selected'" : '' ) ) ?>>iPhone</option>
-                            <!--option value="CPWindows-< ?php echo $i ?>" < ?php echo ( isset($_POST['CPWindows-'.(string)$i]) ? ($_POST['CPWindows-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'CPWindows-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Windows</option-->
-                            <!--option value="CPBlackberry-< ?php echo $i ?>" < ?php echo ( isset($_POST['CPBlackberry-'.(string)$i]) ? ($_POST['CPBlackberry-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'CPBlackberry-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Blackberry</option-->
-                            <!--option value="CPStandard-< ?php echo $i ?>" < ?php echo ( isset($_POST['CPStandard-'.(string)$i]) ? ($_POST['CPStandard-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'CPStandard-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Standard Cell Phone</option-->
                             <option value="CPAndroidApp-<?php echo $i ?>" <?php echo ( isset($_POST['CPAndroidApp-'.(string)$i]) ? ($_POST['CPAndroidApp-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'CPAndroidApp-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Android App (apk)</option>
                             <option value="CPiOSAssetPackage-<?php echo $i ?>" <?php echo ( isset($_POST['CPiOSAssetPackage-'.(string)$i]) ? ($_POST['CPiOSAssetPackage-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'CPiOSAssetPackage-$i'}==1 ? " selected='selected'" : '' ) ) ?>>iOS Asset Package</option>
          				</select>
@@ -1186,7 +1175,6 @@ include ('./NT_Books.php');			// include the books of the NT
                     <br /><span style="font-size: 8pt; ">Download New<br />Testament</span>
 				</td>
 				<td width="132px">
-					<!--input type='text' style='color: navy; ' size='10' name='txtTestament-1' id='txtTestament-1' value="< ? php if (isset($_POST['txtTestament-1'])) echo $_POST['txtTestament-1']; else echo ${'txtTestament-$i'}; ?>" /-->
                     <!--
                     	New Testament
                         Old Testament
@@ -1200,7 +1188,6 @@ include ('./NT_Books.php');			// include the books of the NT
                    <br /><span style="font-size: 10pt; ">New Testament</span>
 				</td>
 				<td width="156px">
-					<!--input type='text' style='color: navy; ' size='10' name='txtAlphabet-1' id='txtAlphabet-1' value="< ? php if (isset($_POST['txtAlphabet-1'])) echo $_POST['txtAlphabet-1']; else echo ${'txtAlphabet-$i'}; ?>" /-->
                     <!--
                     	Standard alphabet
                         Traditional alphabet
@@ -1504,12 +1491,8 @@ include ('./NT_Books.php');			// include the books of the NT
                     <br /><span style="font-size: 9pt; ">https://maps.google.com/maps/...</span>
 				</td>
 				<td width="8%">
-                    <div align="left">
+                    <div style="text-align: left; ">
                         <select name="linksIcon-1" id="linksIcon-1" style='color: navy; '>
-                            <!--option value="linksOther-1" < ?php echo ( isset($_POST['linksOther-1']) ? ($_POST['linksOther-1'] == 1 ? " selected='selected'" : "") : ('linksOther-1' == 1 ? " selected='selected'" : '' ) ) ?>>Other</option>
-                            <option value="linksBuy-1" < ?php echo ( isset($_POST['linksBuy-1']) ? ($_POST['linksBuy-1'] == 1 ? " selected='selected'" : "") : ('linksBuy-1' == 1 ? " selected='selected'" : '' ) ) ?>>Buy</option>
-                            <option value="linksMap-1" < ?php echo ( isset($_POST['linksMap-1']) ? ($_POST['linksMap-1'] == 1 ? " selected='selected'" : "") : ('linksMap-1' == 1 ? " selected='selected'" : '' ) ) ?>>Map</option>
-                            <option value="linksGooglePlay-1" < ?php echo ( isset($_POST['linksGooglePlay-1']) ? ($_POST['linksGooglePlay-1'] == 1 ? " selected='selected'" : "") : ('linksGooglePlay-1' == 1 ? " selected='selected'" : '' ) ) ?>>Google Play</option-->
                             <option value="linksMap-1" selected='selected'>Map</option>
                         </select>
                     </div>
@@ -1729,85 +1712,19 @@ include ('./NT_Books.php');			// include the books of the NT
 		<input type='checkbox' name='SILlink' id='SILlink' <?php echo (isset($_POST['SILlink']) && $_POST['SILlink'] == 'on' ? ' checked' : '') ?> /> Does this have the "SIL link" URL?
 		<?php
 		echo '<br />';
-/************************************************
-	interest records
-*************************************************/
 ?>
-		<!--table valign="bottom" cellpadding="0" cellspacing="0" width="100%">
-			<tr valign="bottom" style="color: navy; font-size: 8pt; line-height: 7pt; height: 30px; ">
-				<td width="13%">&nbsp;
-				</td>
-				<td width="33%">
-					ISO Code/ROD Code/Variant Code
-				</td>
-				<td width="54%">
-					Interest Minority Language
-				</td>
-			</tr>
-		</table>
-		<table width="100%" cellpadding="0" cellspacing="0" name="tableInterest" id="tableInterest">
-			<tr valign="bottom" style="line-height: 10pt; ">
-				<td width="13%">
-					<span style="font-size: 10pt; ">Enter Interest:</span><br /><span style="font-size: 8pt; ">(one per line)</span>
-                    <br /><span style="font-size: 10pt; ">For example:</span>
-				</td>
-				<td width="32%">
-					<input type='text' style='color: navy; ' size='28' name='txtInterestISO-1' id='txtInterestISO-1' value="< ?php if (isset($_POST['txtInterestISO-1'])) echo $_POST['txtInterestISO-1'] ?>" />
-                    <br /><span style="font-size: 10pt; ">amu</span>
-				</td>
-				<td width="39%">
-					<input type='text' style='color: navy; ' size='34' name='txtInterestLang-1' id='txtInterestLang-1' value="< ?php if (isset($_POST['txtInterestLang-1'])) echo $_POST['txtInterestLang-1'] ?>" />
-                    <br /><span style="font-size: 9pt; ">Amuzgo, Guerrero</span>
-				</td>
-				<td width="16%" style="text-align: right; ">
-					<input style="font-size: 9pt; " type="button" value="Add" onClick="addRowToTableCol2('Interest');" />
-					<input style="font-size: 9pt; " type="button" value="Remove" onClick="removeRowFromTable('tableInterest');" />
-                    <br /><span style="font-size: 10pt; ">&nbsp;</span>
-				</td>
-			</tr>
-			< ?php
-				$i = 2;
-				while (isset($_POST['txtInterestISO-'.(string)$i])) {
-					echo "<tr>";
-						echo "<td width='13%'>";
-							echo "&nbsp;";
-						echo "</td>";
-						echo "<td width='32%'>";
-							echo "<input type='text' name='txtInterestISO-$i' id='txtInterestISO-$i' style='color: navy; ' size='28' value='" . ( isset($_POST['txtInterestISO-'.(string)$i]) ? $_POST['txtInterestISO-'.(string)$i] : '' ) . "' />";
-						echo "</td>";
-						echo "<td width='39%'>";
-							echo "<input type='text' name='txtInterestLang-$i' id='txtInterestLang-$i' style='color: navy; ' size='34 value='" . ( isset($_POST['txtInterestLang-'.(string)$i]) ? $_POST['txtInterestLang-'.(string)$i] : '' ) . "' />";
-						echo "</td>";
-						echo "<td width='16%'>";
-							echo "&nbsp;";
-						echo "</td>";
-					echo "</tr>";
-					$i++;
-				}
-			?>
-		</table>
-		<br /-->
 
 		<div style='text-align: center; padding: 10px; '><input type='submit' name='btnSubmit' value='<?php echo "Submit to the\r\nDatabase"; ?>' /></div>
 		</form>
 	</div>
 	<br />
 	<div style='text-align: center; background-color: #333333; margin: 0px auto 0px auto; padding: 20px; width: 1020px; border-radius: 15px; -moz-border-radius: 15px; -webkit-box-shadow: 15px; '>
-	<!--img src='images/top_wbtc_logo.gif' />
 	<br /><br /-->
     <div class='nav' style='font-weight: normal; color: white; font-size: 10pt; '><sup>©</sup>2009 - <?php echo date('Y'); ?> <span style='color: #99FF99; '>ScriptureEarth.org</span></div>
 	</div>
     
 	<script type="text/javascript" language="javascript">
 		document.getElementById("iso").focus();					// focus on the ISO input
-		//var iso = getURLvar('iso');
-		//var rod = getURLvar('rod');
-		//alert('rod = < ?php echo $inputs['rod'] ?>');
-		//if (iso != "" && rod != "") {
-			//document.getElementById("iso").value = iso;
-			//document.getElementById("rod").value = '< ?php echo $inputs['rod'] ?>';
-			//ISOShow(iso, rod);
-		//}
 	</script>
     
 	<script type="text/javascript" src="_js/CMS_events.js?v=1.0.0"></script>

@@ -58,8 +58,6 @@ if (isset($_GET['iso'])) {
 				}
 				$VD = '';
 				if (!is_null($var) && $var != '') {
-					//$query = "SELECT Variant_Eng FROM Variants WHERE Variant_Code = '$var'";
-					//$resultVar=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
 					$stmt_Var->bind_param("s", $var);												// bind parameters for markers								// 
 					$stmt_Var->execute();															// execute query
 					$resultVar = $stmt_Var->get_result();											// instead of bind_result (used for only 1 record):
@@ -78,12 +76,9 @@ if (isset($_GET['iso'])) {
 					$response .= '' . '~';
 				}
 		
-				//$query="SELECT countries.English FROM ISO_countries, countries WHERE ISO_countries.ISO_ROD_index = '$idx' AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY countries.English";
-				//$result_ISO_countries=$db->query($query);
 				$stmt_ISO_countries->bind_param("i", $idx);											// bind parameters for markers								// 
 				$stmt_ISO_countries->execute();														// execute query
 				$result_ISO_countries = $stmt_ISO_countries->get_result();							// instead of bind_result (used for only 1 record):
-				//$num_ISO_countries=$result_ISO_countries->num_rows;
 				$temp_ISO_countries = $result_ISO_countries->fetch_assoc();
 				$Eng_country = str_replace("'", "&#x27;", $temp_ISO_countries['English']);			// name of the country in the language version
 				while ($temp_ISO_countries = $result_ISO_countries->fetch_assoc()) {
@@ -95,7 +90,6 @@ if (isset($_GET['iso'])) {
 			$stmt_Var->close();
 			$stmt_ISO_countries->close();
 			$stmt_LN->close();
-			//$result->free();
 			echo $response;
 		}
 		else {

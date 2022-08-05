@@ -1,7 +1,10 @@
 <?php
+session_start();
+
 // called by 00_CountryTable.inc.php in AJAX
 // ajaxCountryRequest.open("GET", "00_BegList.php?st=< ?php echo $st; ? >&MajorLanguage=<?php echo $MajorLanguage; ? >&SpecificCountry=< ?php echo $SpecificCountry; ? >&Scriptname=< ?php echo $Scriptname; ? >&gn=" + GN + "&n="+number, true);
-// Updated by Lærke Roager
+// Created by Scott Starker
+// Updated by Scott Starker, Lærke Roager
 
 function check_input($value) {							// used for ' and " that find it in the input to \' and \"
 	$value = trim($value);
@@ -45,15 +48,14 @@ function check_input($value) {							// used for ' and " that find it in the inp
 	$db = get_my_db();
 	include './translate/functions.php';
 	
-	if ($asset === 0) {
-		$query="SELECT DISTINCT $SpecificCountry, scripture_main.* FROM scripture_main, countries, ISO_countries WHERE ISO_countries.ISO_countries = '$GN' AND scripture_main.ISO_ROD_index = ISO_countries.ISO_ROD_index AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY scripture_main.ISO";
-	}
-	else {
-		$query="SELECT DISTINCT scripture_main.*, $SpecificCountry FROM scripture_main, countries, ISO_countries, CellPhone WHERE ISO_countries.ISO_countries = '$GN' AND scripture_main.ISO_ROD_index = ISO_countries.ISO_ROD_index AND ISO_countries.ISO_countries = countries.ISO_Country AND scripture_main.ISO_ROD_index = CellPhone.ISO_ROD_index AND CellPhone.Cell_Phone_Title = 'iOS Asset Package' ORDER BY scripture_main.ISO";
+	if ($asset == 1) {
+		$query="SELECT DISTINCT nav_ln.* , $SpecificCountry FROM nav_ln, countries, ISO_countries, CellPhone WHERE ISO_countries.ISO_countries = '$GN' AND nav_ln.ISO_ROD_index = ISO_countries.ISO_ROD_index AND ISO_countries.ISO_countries = countries.ISO_Country AND nav_ln.ISO_ROD_index = CellPhone.ISO_ROD_index AND CellPhone.Cell_Phone_Title = 'iOS Asset Package' ORDER BY nav_ln.ISO";
 		$stmt_asset = $db->prepare('SELECT Cell_Phone_File, optional FROM CellPhone WHERE ISO_ROD_index = ? AND Cell_Phone_Title = "iOS Asset Package"');			// create a prepared statement
 	}
+	else {
+		$query="SELECT DISTINCT $SpecificCountry, nav_ln.* FROM nav_ln, countries, ISO_countries WHERE ISO_countries.ISO_countries = '$GN' AND nav_ln.ISO_ROD_index = ISO_countries.ISO_ROD_index AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY nav_ln.ISO";
+	}
 	$result=$db->query($query);
-	//$num=mysql_num_rows($result);
 
 	/*
 		*************************************************************************************************************
@@ -65,16 +67,11 @@ function check_input($value) {							// used for ' and " that find it in the inp
 	//$i=0;
 	$stmt = $db->prepare('INSERT INTO LN_Temp (ISO, ROD_Code, ISO_ROD_index, LN) VALUES (?, ?, ?, ?)');			// create a prepared statement
 	while ($row = $result->fetch_array()) {
-		$ISO=$row['ISO'];									// ISO
+		$ISO=$row['ISO'];								// ISO
 		$ROD_Code=$row['ROD_Code'];						// ROD_Code
 		$Variant_Code=$row['Variant_Code'];				// Variant_Code
-		$ISO_ROD_index=$row['ISO_ROD_index'];				// ISO_ROD_index
-		$ML=$row["$MajorLanguage"];						// the major language
-		//$LN_English=$r['LN_English'];					// boolean
-		//$LN_Spanish=$r['LN_Spanish'];					// boolean
-		//$LN_Portuguese=$r['LN_Portuguese'];			// boolean
-		//$LN_French=$r['LN_French'];					// boolean
-		//$LN_Dutch=$r['LN_Dutch'];						// boolean
+		$ISO_ROD_index=$row['ISO_ROD_index'];			// ISO_ROD_index
+		$ML=$row["$MajorLanguage"];						// $ML booloen the major language
 		$def_LN=$row['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
 		if (!$ML) {										// if the English then the default langauge
 			foreach ($_SESSION['nav_ln_array'] as $code => $nav_ln_temp_array){
@@ -92,19 +89,16 @@ function check_input($value) {							// used for ' and " that find it in the inp
 			$row_temp=$result_LN->fetch_assoc();
 			$LN=trim($row_temp["$MajorLanguage"]);
 		}
-//		$LN = check_input($LN);
-		//$db->query("INSERT INTO LN_Temp (ISO, ROD_Code, ISO_ROD_index, LN) VALUES ('$ISO', '$ROD_Code', '$ISO_ROD_index', '$LN')");
 		$stmt->bind_param("ssis", $ISO, $ROD_Code, $ISO_ROD_index, $LN);			// bind parameters for markers								// 
 		$stmt->execute();															// execute query
-		//$i++;
 	}
 	$stmt->close();																	// close statement
 
 	if ($number == 1) {		// $which == 'Name'
-		$query="SELECT DISTINCT LN_Temp.LN, scripture_main.* FROM LN_Temp, scripture_main WHERE scripture_main.ISO_ROD_index = LN_Temp.ISO_ROD_index ORDER BY LN_Temp.ISO, LN_Temp.ROD_Code";
+		$query="SELECT DISTINCT LN_Temp.LN, nav_ln.* FROM LN_Temp, nav_ln WHERE nav_ln.ISO_ROD_index = LN_Temp.ISO_ROD_index ORDER BY LN_Temp.ISO, LN_Temp.ROD_Code";
 	}
 	else {	// $which == 'Code'
-		$query="SELECT DISTINCT LN_Temp.LN, scripture_main.* FROM LN_Temp, scripture_main WHERE scripture_main.ISO_ROD_index = LN_Temp.ISO_ROD_index ORDER BY LN_Temp.LN";
+		$query="SELECT DISTINCT LN_Temp.LN, nav_ln.* FROM LN_Temp, nav_ln WHERE nav_ln.ISO_ROD_index = LN_Temp.ISO_ROD_index ORDER BY LN_Temp.LN";
 	}
 	$resultSwitch=$db->query($query);
 	$numSwitch=$resultSwitch->num_rows;
@@ -117,14 +111,8 @@ function check_input($value) {							// used for ' and " that find it in the inp
 	$stmt_alt=$db->prepare($query);															// create a prepared statement
 	echo "<div id='CT'>";		// <div id='CT'> required for IE because it can't handle tables!
 		$i=0;
-	//	echo $numSwitch;
 		while ($i < $numSwitch) {
 			echo "<p style='line-height: 2px; '>&nbsp;</p>";
-			/*if ($i % 2)
-				$color = 'f8fafa';
-			else
-				//$color = "f0f4f0";
-				$color = 'EEF1F2';*/
 			$row=$resultSwitch->fetch_assoc();
 			$ISO = $row['ISO'];
 			$ROD_Code = $row['ROD_Code'];
@@ -147,16 +135,14 @@ function check_input($value) {							// used for ' and " that find it in the inp
 			
 			echo "<div class='countrySecond'>";
 				// language
-				if ($asset === 0) {
-					echo "<div class='countryLN2' onclick='location.href=\"$Scriptname?sortby=lang&name=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code\"'>$LN";
+				if ($asset == 1) {
+					echo "<div class='countryLN2' onclick='iOSLanguage(\"$st\",$ISO_ROD_index,\"$LN\", \"$URL\")'>$LN";
 				}
 				else {
-					echo "<div class='countryLN2' onclick='iOSLanguage(\"$st\",$ISO_ROD_index,\"$LN\", \"$URL\")'>$LN";
+					echo "<div class='countryLN2' onclick='location.href=\"$Scriptname?sortby=lang&name=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code\"'>$LN";
 				}
 				$VD = '';
 				if (!is_null($Variant_Code) && $Variant_Code != '') {
-					//$query = "SELECT Variant_Description FROM Variants WHERE Variant_Code = '$Variant_Code'";
-					//$resultVar=$db->query($query) or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . "</body></html>");
 					$stmt_Var->bind_param("s", $Variant_Code);										// bind parameters for markers								// 
 					$stmt_Var->execute();															// execute query
 					$resultVar = $stmt_Var->get_result();											// instead of bind_result (used for only 1 record):
@@ -171,13 +157,10 @@ function check_input($value) {							// used for ' and " that find it in the inp
 				echo '</div>';
 				
 				// Country(ies)
-				//$query="SELECT $SpecificCountry FROM ISO_countries, countries WHERE ISO_countries.ISO_ROD_index = '$ISO_ROD_index' AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY $SpecificCountry";
-				//$result_ISO_countries=$db->query($query);
 				$stmt_ISO_countries->bind_param("i", $ISO_ROD_index);								// bind parameters for markers								// 
 				$stmt_ISO_countries->execute();														// execute query
 				$result_ISO_countries = $stmt_ISO_countries->get_result();							// instead of bind_result (used for only 1 record):
 				$row_ISO_countries = $result_ISO_countries->fetch_array();
-				//$num_ISO_countries=mysql_num_rows($result_ISO_countries);
 				$countryTemp = $SpecificCountry;
 				if (strpos("$SpecificCountry", '.')) $countryTemp = substr("$SpecificCountry", strpos("$SpecificCountry", '.')+1);		// In case there's a "." in the "country"
 				$countryTextarea = trim($row_ISO_countries["$countryTemp"]);						// name of the country in the language version
@@ -191,27 +174,24 @@ function check_input($value) {							// used for ' and " that find it in the inp
 				echo "</p>";
 		
 				// ISO
-				if ($asset === 0) {
-					echo "<div class='countryCode2' onclick='location.href=\"$Scriptname?sortby=lang&name=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code\"'>$ISO</div>";
+				if ($asset == 1) {
+					echo "<div class='countryCode2' onclick='iOSLanguage(\"".$st."\",".$ISO_ROD_index.",\"".$LN."\",\"".$URL."\")'>$ISO</div>";
 				}
 				else {
-					echo "<div class='countryCode2' onclick='iOSLanguage(\"".$st."\",".$ISO_ROD_index.",\"".$LN."\",\"".$URL."\")'>$ISO</div>";
+					echo "<div class='countryCode2' onclick='location.href=\"$Scriptname?sortby=lang&name=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code\"'>$ISO</div>";
 				}
 				
 				// alternate language names
-				//$query_alt="SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = '$ISO_ROD_index'";				// alt_lang_names
-				//$result_alt=$db->query($query_alt);
 				$stmt_alt->bind_param("i", $ISO_ROD_index);											// bind parameters for markers								// 
 				$stmt_alt->execute();																// execute query
 				$result_alt = $stmt_alt->get_result();												// instead of bind_result (used for only 1 record):
 				$alt_lang_names = '';
 				if ($result_alt) {
-					//$num_alt=$result_alt->num_rows;
-					if ($asset === 0) {
-						echo "<div class='countryAlt2' onclick='location.href=\"$Scriptname?sortby=lang&name=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code\"'>";
+					if ($asset == 1) {
+						echo "<div class='countryAlt2' onclick='iOSLanguage(\"".$st."\",".$ISO_ROD_index.",\"".$LN."\",\"".$URL."\")'>";
 					}
 					else {
-						echo "<div class='countryAlt2' onclick='iOSLanguage(\"".$st."\",".$ISO_ROD_index.",\"".$LN."\",\"".$URL."\")'>";
+						echo "<div class='countryAlt2' onclick='location.href=\"$Scriptname?sortby=lang&name=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code\"'>";
 					}
 					$alt_item = '';
 					$i_alt=0;
@@ -224,7 +204,6 @@ function check_input($value) {							// used for ' and " that find it in the inp
 						// Cross Site Scripting (XSS) attack happens where client side code (usually JavaScript) gets injected into the output of your PHP script. The next line cleans it up.
 						$alt_lang_name = htmlspecialchars($alt_lang_name, ENT_QUOTES, 'UTF-8');
 						$alt_item .= $alt_lang_name;
-						//$alt_lang_names .= $alt_lang_name;
 						$i_alt++;
 					}
 					echo "<div style='display: inline; font-size: .95em; '>$alt_item</div>";
@@ -240,8 +219,6 @@ function check_input($value) {							// used for ' and " that find it in the inp
 	$db->query('DROP TABLE LN_Temp');
 	$result->free();
 	$resultSwitch->free();
-	//$result_ISO_countries->free();
-	//$result_alt->free();
 	$stmt_alt->close();
 	$stmt_Var->close();
 	$stmt_ISO_countries->close();

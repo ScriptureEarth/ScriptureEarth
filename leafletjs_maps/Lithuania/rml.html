@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Language map of Lithuania - Leaflet</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" type="../../image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="../../_css/leaflet.css" />
+    <script src="../../_js/leaflet.min.js"></script>
+</head>
+<body>
+<div id="mapid" style="width: 600px; height: 400px; margin: auto; margin-right: auto; margin-top: 100px; "></div>
+<script>
+	var mymap = L.map('mapid').setView([60, 38], 9);
+
+// blue icon is the default
+
+	var myRedIcon = L.icon({
+		iconUrl: '../../images/myRedIcon.png'
+	});
+
+	var myPurpleIcon = L.icon({
+		iconUrl: '../../images/myPurpleIcon.png'
+	});
+
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 16,
+		attribution: 'Map languages: © <a href="https://www.scriptureearth.org/00i-Scripture_Index.php">Scripture Earth</a>, ' +
+			'Map data: © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery: © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/streets-v11'
+	}).addTo(mymap);
+		L.marker([53.2307, 25.6038]).addTo(mymap)
+	.bindPopup("<b>Belorussian - ISO 639-3: bel</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=bel'>Belorussian</a>)")
+	L.marker([54.5534, 25.1054]).addTo(mymap)
+	.bindPopup("<b>Karaim - ISO 639-3: kdr</b>")
+	L.marker([55.1429, 23.9601]).addTo(mymap)
+	.bindPopup("<b>Lithuanian - ISO 639-3: lit</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=lit'>Lithuanian</a>)")
+	L.marker([55.2487, 23.8814]).addTo(mymap)
+	.bindPopup("<b>Lithuanian Sign Language - ISO 639-3: lls</b>")
+	L.marker([51.8439, 18.6255]).addTo(mymap)
+	.bindPopup("<b>Polish - ISO 639-3: pol</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=pol'>Polish</a>)")
+	L.marker([60, 38], {icon: myRedIcon}).addTo(mymap)
+	.bindPopup("<b>Romani, Baltic - ISO 639-3: rml</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=rml'>Romani, Baltic</a>)")
+	L.marker([59, 50]).addTo(mymap)
+	.bindPopup("<b>Russian - ISO 639-3: rus</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=rus'>Russian</a>)")
+	L.marker([49.796, 29.945]).addTo(mymap)
+	.bindPopup("<b>Ukrainian - ISO 639-3: ukr</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=ukr'>Ukrainian</a>)")
+
+	var popup = L.popup();
+</script>
+</body>
+</html>

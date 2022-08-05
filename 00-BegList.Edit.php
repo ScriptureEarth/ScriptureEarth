@@ -1,4 +1,5 @@
 <?php
+// 00-BegList.Edit.php?st=<?php echo $st; ? >&MajorLanguage=<?php echo $MajorLanguage; ? >&SpecificCountry=<?php echo $SpecificCountry; ? >&Scriptname=<?php echo $Scriptname; ? >&b=" + Beg + "&gn=" + GN + "&n="+number, true
 
 function check_input($value) {						// used for ' and " that find it in the input
 	$value = trim($value);
@@ -18,7 +19,6 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 	$MajorLanguage = 'LN_English';
 	$SpecificCountry = 'countries.English';
 	$Country = 'English';
-	//$Scriptname = end(explode('/', $_SERVER['SCRIPT_NAME']));
 	$Scriptname = basename($_SERVER["SCRIPT_NAME"]);
 
 	$Beg = $_GET['b'];
@@ -26,7 +26,7 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 	require_once './include/conn.inc.php';
 	$db = get_my_db();
 	
-	$query = 'SELECT DISTINCT * FROM scripture_main';
+	$query = 'SELECT * FROM nav_ln';
 	$result = $db->query($query);
 
 	/*
@@ -45,9 +45,8 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 		
 		$ISO_ROD_index = (string)$idx;						// make sure that00-DBLanguageCountryName.inc.php will work correctly
 		include ('./include/00-DBLanguageCountryName.inc.php');
+//echo '<br />#' . $LN . '#<br />'.
 		
-		//$LN = check_input($LN);
-		//$db->query("INSERT INTO LN_Temp (iso, rod, idx, LN) VALUES ('$ISO', '$ROD_Code', '$idx', '$LN')");
 		$stmt->bind_param("ssis", $iso, $rod, $idx, $LN);			// bind parameters for markers
 		$stmt->execute();															// execute query
 	}
@@ -91,8 +90,6 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 		$var = $r['Variant_Code'];
 		$VD = '';
 		if (!is_null($var) && $var != '') {
-			//$query = "SELECT Variant_Eng FROM Variants WHERE Variant_Code = '$Variant_Code'";
-			//$resultVar=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
 			$stmt_Var->bind_param("s", $var);												// bind parameters for markers								// 
 			$stmt_Var->execute();															// execute query
 			$resultVar = $stmt_Var->get_result();											// instead of bind_result (used for only 1 record):
@@ -101,8 +98,6 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 				$VD = $r_temp['Variant_Eng'];
 			}
 		}		
-		//$query="SELECT $SpecificCountry FROM ISO_countries, countries WHERE ISO_countries.ISO_ROD_index = '$idx' AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY $SpecificCountry";
-		//$result_ISO_countries=$db->query($query);
 		$stmt_ISO_countries->bind_param("i", $idx);								// bind parameters for markers								// 
 		$stmt_ISO_countries->execute();														// execute query
 		$result_ISO_countries = $stmt_ISO_countries->get_result();							// instead of bind_result (used for only 1 record):
@@ -117,8 +112,6 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 		echo "<tr style='background-color: #". $color . "; '>";
 		echo "<td width='6%' style='cursor: pointer; '><img style='margin-bottom: 3px; margin-left: 13px; cursor: hand; ' onclick='parent.location=\"Scripture_Edit.php?idx=$idx\"' src='images/pencil_edit.png' /></td>";
 		echo "<td width='28%' style='padding: 3px 5px 3px 5px; '>$LN</td>";
-		//$query_alt="SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = '$idx'";				// alt_lang_names
-		//$result_alt=$db->query($query_alt);
 		$stmt_alt->bind_param("i", $idx);											// bind parameters for markers								// 
 		$stmt_alt->execute();																// execute query
 		$result_alt = $stmt_alt->get_result();												// instead of bind_result (used for only 1 record):
@@ -198,7 +191,6 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 	$db->query("DROP TABLE LN_Temp");
 	$result->free();
 	$resultSwitch->free();
-	//$result_ISO_countries->free();
 	$stmt_alt->close();
 	$stmt_Var->close();
 	$stmt_ISO_countries->close();
