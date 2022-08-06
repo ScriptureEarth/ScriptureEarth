@@ -54,15 +54,12 @@ $first_e =
 		iconUrl: '../../images/myPurpleIcon.png'
 	});
 
-	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 16,
-		attribution: 'Map languages: � <a href="https://www.scriptureearth.org/00i-Scripture_Index.php">Scripture Earth</a>, ' +
-			'Map data: � <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-			'Imagery: � <a href="https://www.mapbox.com/">Mapbox</a>',
-		id: 'mapbox/streets-v11'
+		attribution: 'language names: <a href="https://www.scriptureearth.org/00i-Scripture_Index.php">Scripture Earth</a>, ' +
+			'map data: &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
 	}).addTo(mymap);
-	
+
 STRT;
 
 $end =
@@ -74,7 +71,7 @@ $end =
 </html>
 END;
 
-$query="SELECT ISO FROM LN_English WHERE (ISO_ROD_index IS NOT NULL OR ISO_ROD_index <> FALSE) AND ISO = ?";		// select the ISO from LN_English to $maps_array
+$query="SELECT ISO FROM LN_English WHERE ISO_ROD_index IS NOT NULL AND ISO = ?";		// select the ISO from LN_English to $maps_array
 $stmt_ISO=$db->prepare($query);														// create a prepared statement
 $query="SELECT LN_English FROM LN_English WHERE ISO = ?";							// select the language name from LN_English to $maps_array
 $stmt_LN=$db->prepare($query);														// create a prepared statement
@@ -150,23 +147,23 @@ while ($row = $result->fetch_array()) {
 					$result_ISO = $stmt_ISO->get_result();
 					
 					if ($L_ISO == $ISO_map[0]) {							// if ISO = ISO array
-						if ($result_ISO->num_rows == 0) {					// if ISO = LN_English table ISO
+						if (empty($result_ISO->num_rows) || $result_ISO->num_rows == 0) {					// if ISO = LN_English table ISO
 							$lat_long = "	L.marker([$lat_long_value], {icon: myRedIcon}).addTo(mymap)\n";
-							$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b>\")\n";
+							$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b>\").openPopup();\n";
 						} 
 						else {
 							$lat_long = "	L.marker([$lat_long_value], {icon: myRedIcon}).addTo(mymap)\n";
-							$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$L_ISO'>$L_LN</a>)\")\n";
+							$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$L_ISO'>$L_LN</a>)\").openPopup();\n";
 						}
 					}
 					else {
-						if ($result_ISO->num_rows == 0) {
+						if (empty($result_ISO->num_rows) || $result_ISO->num_rows == 0) {
 							$lat_long = "	L.marker([$lat_long_value]).addTo(mymap)\n";
-							$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b>\")\n";
+							$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b>\");\n";
 						}
 						else {
 							$lat_long = "	L.marker([$lat_long_value]).addTo(mymap)\n";
-							$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$L_ISO'>$L_LN</a>)\")\n";
+							$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$L_ISO'>$L_LN</a>)\");\n";
 						}
 					}
 					array_push($maps_array[$z], $lat_long);
@@ -198,6 +195,7 @@ while ($row = $result->fetch_array()) {
 						$match = [];
 						preg_match_all('/(\w+)[-\,\(\)]?/u', $J_LN, $match);				// get the word $J_LN
 						foreach ($match[1] as $temp) {
+							if ($temp == $previous_CName) continue;
 							if (preg_match('/^(on|the|and|of|south|north|northwest|northeast|Northwestern|Southwestern|Northeastern|Southeastern|southwest|southeast|southern|northern|Eastern|Western|central|Norte|sur|Sureste|Valley|river|Noroeste|Highland|Standard|Modern|de|del|Sta|santa|san|la|Alta|[0-9]+|Dos|west|east|^.)$/i', $temp)) continue;
 							$temp_value_array[] = $temp;									// words from value
 						}
@@ -214,6 +212,7 @@ while ($row = $result->fetch_array()) {
 						preg_match_all('/(\w+)[-\,\(\)]?/u', $temp_J_LN, $match);			// get the word $value[$latlong_index]
 						$temp_latlong_array = [];
 						foreach ($match[1] as $temp) {
+							if ($temp == $previous_CName) continue;
 							if (preg_match('/^(on|the|and|of|south|north|northwest|northeast|Northwestern|Southwestern|Northeastern|Southeastern|southwest|southeast|southern|northern|Eastern|Western|central|Norte|sur|Sureste|Valley|river|Noroeste|Highland|Standard|Modern|de|del|Sta|santa|san|la|Alta|[0-9]+|Dos|west|east|^.)$/i', $temp)) continue;
 							$temp_latlong_array[] = $temp;									// words from value
 						}
@@ -319,23 +318,23 @@ for ($z=0; $z < count($maps_array); $z++) {									// add all of the lat.'s and
 		$stmt_ISO->execute();												// execute query
 		$result_ISO = $stmt_ISO->get_result();
 		if ($L_ISO == $ISO_map[0]) {
-			if ($result_ISO->num_rows == 0) {
+			if (empty($result_ISO->num_rows) || $result_ISO->num_rows == 0) {
 				$lat_long = "	L.marker([$lat_long_value], {icon: myRedIcon}).addTo(mymap)\n";
-				$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b>\")\n";
+				$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b>\").openPopup();\n";
 			} 
 			else {
 				$lat_long = "	L.marker([$lat_long_value], {icon: myRedIcon}).addTo(mymap)\n";
-				$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$L_ISO'>$L_LN</a>)\")\n";
+				$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$L_ISO'>$L_LN</a>)\").openPopup();\n";
 			}
 		}
 		else {
-			if ($result_ISO->num_rows == 0) {
+			if (empty($result_ISO->num_rows) || $result_ISO->num_rows == 0) {
 				$lat_long = "	L.marker([$lat_long_value]).addTo(mymap)\n";
-				$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b>\")\n";
+				$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b>\");\n";
 			}
 			else {
 				$lat_long = "	L.marker([$lat_long_value]).addTo(mymap)\n";
-				$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$L_ISO'>$L_LN</a>)\")\n";
+				$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$L_ISO'>$L_LN</a>)\");\n";
 			}
 		}
 		array_push($maps_array[$z], $lat_long);
@@ -356,6 +355,7 @@ foreach($maps_array as $key => $value) {										// country html files output. 
 			$match = [];
 			preg_match_all('/(\w+)[-\,\(\)]?/u', $J_LN, $match);				// get the word $J_LN
 			foreach ($match[1] as $temp) {
+				if ($temp == $English_Country) continue;
 				if (preg_match('/^(on|the|and|of|south|north|northwest|northeast|Northwestern|Southwestern|Northeastern|Southeastern|southwest|southeast|southern|northern|Eastern|Western|central|Norte|sur|Sureste|Valley|river|Noroeste|Highland|Standard|Modern|de|del|Sta|santa|san|la|Alta|[0-9]*|Dos|west|east|^.)$/i', $temp)) continue;
 				$temp_value_array[] = $temp;									// words from value
 			}
@@ -371,6 +371,7 @@ foreach($maps_array as $key => $value) {										// country html files output. 
 			preg_match_all('/(\w+)[-\,\(\)]?/u', $temp_J_LN, $match);			// get the word $value[$latlong_index]
 			$temp_latlong_array = [];
 			foreach ($match[1] as $temp) {
+				if ($temp == $English_Country) continue;
 				if (preg_match('/^(on|the|and|of|south|north|northwest|northeast|Northwestern|Southwestern|Northeastern|Southeastern|southwest|southeast|southern|northern|Eastern|Western|central|Norte|sur|Sureste|Valley|river|Noroeste|Highland|Standard|Modern|de|del|Sta|santa|san|la|Alta|[0-9]*|Dos|west|east|^.)$/i', $temp)) continue;
 				$temp_latlong_array[] = $temp;									// words from value
 			}
