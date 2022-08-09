@@ -1,25 +1,10 @@
 <?php
+// Start the session
+session_start();
 /*
 
 Can't use <div id="langBackground" in FireFox 84.0.1 with cursor: pointer; inside the id because it is a bug. Also, <div id="langBackground_'.$st.'" won't at all. See Web Developer, Toogle Tools on Tools.
 
-<!-- facebook -->
-<!--
-    <html xmlns:og="http://ogp.me/ns#">
-        <head>
-            <meta property="og:title" 				content="insert your title here" />
-            <meta property="og:type" 				content="website" />
-            <meta property="og:url" 				content="insert your http://www.example.com/foo/" />
-            <meta property="og:image" 				content="inser your http://www.example.com/images/example.jpg" />
-            <meta property="og:site_name" 			content="insert a human-readable name for your site that is readable from facebook Send" />
-            <meta property="og:description" 		content="insert a one to two sentence metadata description of your page" />
-        </head>
-    </html>
--->
-<!--meta property="og:url" 					content="https://scriptureearth.org/" />
-<meta property="og:title" 					content="Language page of Scripture Earth" />
-<meta property="og:type" 					content="website" />
-<meta property="og:image" 					content="https://www.scriptureearth.org/images/SEThumbnail.jpg" /-->
 */
 ?>
 <meta http-equiv="Content-Type" 			content="text/html; charset=utf-8" />
@@ -87,6 +72,34 @@ if (!isset($st) || !isset($Variant_major) || !isset($MajorLanguage) || !isset($S
 		./include/00-MajorLanguageVariantCode.inc.php
 */
 
+
+include './OT_Books.php';										// $OT_array
+include './NT_Books.php';										// $NT_array
+include './translate/functions.php';							// translation function
+include './include/00-MainPHPFunctions.inc.php';				// main PHP functions
+
+require_once './include/conn.inc.php';							// connect to the database named 'scripture'
+$db = get_my_db();
+
+// master list of the naviagational languages
+if (!isset($_SESSION['nav_ln_array'])) {
+	$_SESSION['nav_ln_array'] = [];
+	$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `translation_code`";
+	$ln_result=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
+	if ($ln_result->num_rows == 0) {
+		die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
+	}
+
+	while ($ln_row = $ln_result->fetch_array()){
+		$ln_temp[0] = $ln_row['translation_code'];
+		$ln_temp[1] = $ln_row['name'];
+		$ln_temp[2] = $ln_row['nav_fileName'];
+		$ln_temp[3] = $ln_row['ln_number'];
+		$ln_temp[4] = $ln_row['ln_abbreviation'];
+		$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;
+	}
+}
+
 /*
 	*************************************************************************************************************
 		Internet?
@@ -97,30 +110,6 @@ $Internet = (substr($_SERVER['REMOTE_ADDR'], 0, 7) != "192.168" ? 1 : 0);
 
 $asset = 0;
 if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
-
-include './OT_Books.php';										// $OT_array
-include './NT_Books.php';										// $NT_array
-include './translate/functions.php';							// translation function
-include './include/00-MainPHPFunctions.inc.php';				// main PHP functions
-require_once './include/conn.inc.php';							// connect to the database named 'scripture'
-$db = get_my_db();
-
-// Master list of languages for the site to run in
-$_SESSION['nav_ln_array'] = [];
-$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `translation_code`";
-$ln_result=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
-if ($ln_result->num_rows == 0) {
-	die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
-}
-
-while ($ln_row = $ln_result->fetch_array()){
-	$ln_temp[0] = $ln_row['translation_code'];
-	$ln_temp[1] = $ln_row['name'];
-	$ln_temp[2] = $ln_row['nav_fileName'];
-	$ln_temp[3] = $ln_row['ln_number'];
-	$ln_temp[4] = $ln_row['ln_abbreviation'];
-	$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;
-}
 ?>
 
 <style>
@@ -163,13 +152,11 @@ while ($ln_row = $ln_result->fetch_array()){
         */
             
 		if (isset($_GET['sortby']) && (isset($_GET['name'])) || isset($_GET['iso']) || isset($_GET['ISO_ROD_index']) || isset($_GET['idx'])) {		// if (sortby and name (or iso)) or search
-			/*
-				*****************************************************************************************************
+			/*  *****************************************************************************************************
 				/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 					sortby = "lang" and iso/name = [ISO] or idx/ISO_ROD_index = [0-9]{1,5}
 				/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
-				*****************************************************************************************************
-			*/
+				*****************************************************************************************************  */
 			if ((isset($_GET['sortby']) && $_GET['sortby'] == 'lang') || isset($_GET['iso']) || isset($_GET['ISO_ROD_index']) || isset($_GET['idx'])) {
 				if (!isset($_GET['name']) && !isset($_GET['iso']) && !isset($_GET['ISO_ROD_index']) && !isset($_GET['idx'])) {
 					die('Die hacker!</body></html>');
@@ -184,7 +171,7 @@ while ($ln_row = $ln_result->fetch_array()){
 						if ($ISO_ROD_index == '0') {								// if $ISO_ROD_index has a letter at the beginning then intval returns 0
 							die('Die hacker!</div></div></body></html>');
 						}
-// here check
+						// here check
 						if (isset($asset) && $asset === 1) {
 							$query = "SELECT DISTINCT scripture_main.*, $SpecificCountry, countries.ISO_Country FROM scripture_main, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO_ROD_index = '$ISO_ROD_index' AND `scripture_main`.`ISO_ROD_index` = `CellPhone`.`ISO_ROD_index` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 						}
@@ -231,7 +218,7 @@ while ($ln_row = $ln_result->fetch_array()){
 								}
 							}
 						}
-// here - check						
+						// here - check						
 						if (isset($asset) && $asset === 1) {
 							if (!isset($ROD_Code) && !isset($Variant_Code)) {
 								$resultTest=$db->query("SELECT scripture_main.ISO FROM scripture_main, CellPhone WHERE scripture_main.ISO = '$ISO' AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'");
@@ -256,7 +243,7 @@ while ($ln_row = $ln_result->fetch_array()){
 										more than 1 ROD Code/Variant code
 									*************************************************************************************************************
 								*/
-// here:  AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'
+								// here:  AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'
 								include './00-moreThanOneRODCode.php';
 								return;
 							}
@@ -336,9 +323,9 @@ while ($ln_row = $ln_result->fetch_array()){
 					echo "<img src='images/00".$st."-ScriptureEarth_header.jpg' class='langHeader' alt='".translate('Scripture Resources in Thousands of Languages', $st, 'sys')."' />";									// just the ScriptureEarth.org icon
 					echo '</div>';
 					//? >
-//<div style="position: absolute; top: 0px; left: 0px; width: 100%; ">							<!-- "empty" "window" over "Scripture Earth" if you click on it the script links to "00i-Scripture_Index.org" -->
-//    <div style="position: relative; top: 0px; left: 30%; width: 40%; z-index: 1; cursor: pointer; " onclick="window.open('<? php echo $Scriptname; ? >', '_self')"><img id="langEmpty" src="./images/empty.png" /></div>
-//</div>
+					//<div style="position: absolute; top: 0px; left: 0px; width: 100%; ">							<!-- "empty" "window" over "Scripture Earth" if you click on it the script links to "00i-Scripture_Index.org" -->
+					//    <div style="position: relative; top: 0px; left: 30%; width: 40%; z-index: 1; cursor: pointer; " onclick="window.open('<? php echo $Scriptname; ? >', '_self')"><img id="langEmpty" src="./images/empty.png" /></div>
+					//</div>
 					//<? php
 					/*
 						*************************************************************************************
@@ -360,7 +347,7 @@ while ($ln_row = $ln_result->fetch_array()){
                             <?php /* ---------------------------------------------------------------------------------
 										display 'English', 'Spanish', ... drop-down menu
                             ------------------------------------------------------------------------------------------ */
-// Changed to work with the master array -- Laerke
+							// Changed to work with the master array -- Laerke
 							?>
                             <select id="sL" onchange="langChange('<?php echo $ISO_ROD_index; ?>', '<?php echo $LN; ?>', '<?php echo $ISO; ?>')">
 								<?php foreach ($_SESSION['nav_ln_array'] as $code => $array){
@@ -378,7 +365,7 @@ while ($ln_row = $ln_result->fetch_array()){
      				</div>
                     
                     <?php
-// here check
+					// here check
 					if (isset($asset) && $asset === 1) {
 						echo "<div style='background-color: white; color: navy; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; cursor: pointer; ' onclick='iOSLanguage(\"".$st."\", $ISO_ROD_index, \"".$LN."\, \"".$URL."\")'>$LN | $ISO | $country</div>";
 						return;
@@ -448,14 +435,11 @@ while ($ln_row = $ln_result->fetch_array()){
 					<?php
 				}
 			}
-	
-			/*
-				*****************************************************************************************************
+			/*  *****************************************************************************************************
 				/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 					sortby = country
 				/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
-				*****************************************************************************************************
-			*/
+				*****************************************************************************************************  */
 			if (isset($_GET['sortby']) && $_GET['sortby'] == 'country') {
 				$GetName = trim($_GET['name']);											// 2 uppercase letters for the country code (table countries.ISO_Country) or 'all':
 				if (preg_match('/^(all)/i', $GetName)) {
@@ -507,9 +491,9 @@ while ($ln_row = $ln_result->fetch_array()){
 				<!--img id="background" src='./images/00< ?php echo $st ?>-BackgroundFistPage.jpg' alt='< ?php echo translate('Scripture Resources in Thousands of Languages', $st, 'sys'); ?>' /-->				<!-- ScripturEarth and the Earth image -->
 				<div id="background" class="<?php echo $st; ?>-header"></div>				<!-- ScriptureEarth and the Earth image -->
 
-<div style="position: absolute; top: 0px; left: 0px; width: 100%; ">							<!-- "empty" "window" over "Scripture Earth" if you click on it the script links to "00i-Scripture_Index.org" -->
-    <div style="position: relative; top: 0px; left: 0px; width: 100%; z-index: 10; cursor: pointer; " onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><img id="empty" src="./images/empty.png" /></div>
-</div>
+				<div style="position: absolute; top: 0px; left: 0px; width: 100%; ">							<!-- "empty" "window" over "Scripture Earth" if you click on it the script links to "00i-Scripture_Index.org" -->
+					<div style="position: relative; top: 0px; left: 0px; width: 100%; z-index: 10; cursor: pointer; " onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><img id="empty" src="./images/empty.png" /></div>
+				</div>
                
                 <?php /* ---------------------------------------------------------------------------------
 							display home page button
@@ -521,7 +505,7 @@ while ($ln_row = $ln_result->fetch_array()){
                 <?php /* ---------------------------------------------------------------------------------
 							display 'English', 'Spanish', ... drop-down menu
                 ------------------------------------------------------------------------------------------ */ 
-// Changed to work with the master array -- Laerke
+				// Changed to work with the master array -- Laerke
 				?>
           		<div class="FormCountry">
                     <form action="#">
@@ -545,7 +529,7 @@ while ($ln_row = $ln_result->fetch_array()){
 					// top: -700 problem here 4/3/19
 					$which = 'Name';
 					// *********************************************************************************
-// here - check
+					// here - check
 					include ('./include/00-CountryTable.inc.php');					// Country table
 					// *********************************************************************************
 				?>
@@ -588,22 +572,18 @@ while ($ln_row = $ln_result->fetch_array()){
 				<?php
 			}
 		}
-		else {		// i.e.,	if (!isset($_GET["sortby"]) && !isset($_GET["name"])) {
-
-			/*
-				*****************************************************************************************************
+		else {
+			/*  *****************************************************************************************************
 				/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
-					 Are 'sortby' and 'name' or 'sortby' country not there? Then start over including 'input' 'placeholder'.
+					 Nothing. Are 'sortby' and 'name' or 'sortby' country not there? Start over.
 				/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
-				*****************************************************************************************************
-			*/
+				*****************************************************************************************************  */
 			?>
-            
 			<div id="background" class="<?php echo $st; ?>-header"></div>				<!-- ScriptureEarth and the Earth image -->
 
-<div style="position: absolute; top: 0px; left: 0px; width: 100%; ">							<!-- "empty" "window" over "Scripture Earth" if you click on it the script links to "00i-Scripture_Index.org" -->
-    <div style="position: relative; top: 0px; left: 0px; z-index: 10; cursor: pointer; " onClick="window.open('<?php echo $Scriptname; ?>', '_self')"><img id="empty" src="./images/empty.png" /></div>
-</div>
+			<div style="position: absolute; top: 0px; left: 0px; width: 100%; ">							<!-- "empty" "window" over "Scripture Earth" if you click on it the script links to "00i-Scripture_Index.org" -->
+				<div style="position: relative; top: 0px; left: 0px; z-index: 10; cursor: pointer; " onClick="window.open('<?php echo $Scriptname; ?>', '_self')"><img id="empty" src="./images/empty.png" /></div>
+			</div>
 			<?php /*
 			<!-- AJAX is here. -->
 			<!-- showLanguage(this.value) in autoLanguage.js and myFuncttranslate('Home', $st, 'sys')ion(this.value, '$st') in autoLanguage.js -->
@@ -695,7 +675,7 @@ while ($ln_row = $ln_result->fetch_array()){
                     <?php /* -----------------------------------------------------------------------------
 									display 'English', 'Spanish', ... drop-down menu
                     -------------------------------------------------------------------------------------- */
-// Changed to work with the master array -- Laerke
+					// Changed to work with the master array -- Laerke
 					?>
 					<form id="myForm" style='display: inline; ' action="#">
 						<select id="sM" style="font-size: 1em; padding: 6px; " title="<?php echo translate('Click here to choose the interface language.', $st, 'sys'); ?>">

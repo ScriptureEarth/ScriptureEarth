@@ -1131,9 +1131,7 @@ if (!$SynchronizedTextAndAudio || !$BibleIs) {
 						if (isset($mobile) && $mobile == 1) {
 						}
 						else {
-						?>
-							</div>
-						<?php
+							echo '</div>';
 						}
 						?>
 						</div>
@@ -2009,7 +2007,7 @@ if ($PlaylistVideo) {																//  test for $Internet is 1 1/2 screens dow
 			</td>
 			<td>
 				<?php
-				echo "<div class='linePointer' title='".translate('Download', $st, 'sys')." $PlaylistVideoTitle' onclick='PlaylistVideo(orgVideoPixels_$z, \"PlaylistVideoDownload_$z\", $mobile)'>".translate('Download', $st, 'sys') . "'  title='" . translate('Download the cell phone module for', $st, 'sys'). "'" . $PlaylistVideoTitle . "</div>";
+				echo "<div class='linePointer' title='".translate('Download', $st, 'sys')." $PlaylistVideoTitle' onclick='PlaylistVideo(orgVideoPixels_$z, \"PlaylistVideoDownload_$z\", $mobile)'>".translate('Download', $st, 'sys') . ' ' . $PlaylistVideoTitle . '</div>';
 				// Get and display Playlist Download
 				?>
 			</td>
