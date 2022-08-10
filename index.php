@@ -1,12 +1,12 @@
 <?php
 // Start the session
 session_start();
-?>
-<?php
+
 // by Jesse Skinner modified by Scott Starker; Parse Accept-Language to detect a user's language; May 2008
-// Updated by Lærke Roager
-$langs = array();
-if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+// Updated by Scott Starker, Lærke Roager
+
+$langs = [];
+if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {						// detects a browsers abbreviated language
     // break up string into pieces (languages and q factors)
     preg_match_all('/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $lang_parse);
     if (count($lang_parse[1])) {
@@ -16,18 +16,40 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         }
         arsort($langs, SORT_NUMERIC);								// sort list based on value
     }
-
+	
 	$mobile = 0;		// no mobile (new user interface)
+
+	include './translate/functions.php';                           		 // translation function
+
+	require_once './include/conn.inc.php';									// connect to the database named 'scripture'
+	$db = get_my_db();
+
+	// master list of the naviagational languages
+	if (!isset($_SESSION['nav_ln_array'])) {
+		$_SESSION['nav_ln_array'] = [];
+		$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `translation_code`";
+		$ln_result=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
+		if ($ln_result->num_rows == 0) {
+			die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
+		}
+		while ($ln_row = $ln_result->fetch_array()){
+			$ln_temp[0] = $ln_row['translation_code'];
+			$ln_temp[1] = $ln_row['name'];
+			$ln_temp[2] = $ln_row['nav_fileName'];
+			$ln_temp[3] = $ln_row['ln_number'];
+			$ln_temp[4] = $ln_row['ln_abbreviation'];
+			$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;
+		}
+	}
+
 	$redirectTo = '';
 	$ln_code = '';
-
-	include './translate/functions.php';                            // translation function
-
 	foreach($langs as $lang => $val){
 		$lang_code = explode("-",$lang)[0];
 		if (array_key_exists($lang_code, $_SESSION['nav_ln_array'])){
 			$redirectTo = $_SESSION['nav_ln_array'][$lang_code][2];			// assigns the matching site to the language found
-			$ln_code = $_SESSION['nav_ln_array'][$lang_code][0];				// assigns the language code to a variable for later use
+			$ln_code = $_SESSION['nav_ln_array'][$lang_code][0];			// assigns the language code to a variable for later use
+			break;
 		}
 	}
 	
@@ -36,7 +58,7 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 	}
 	
 	if (!isset($_GET['name']) && !isset($_GET['iso'])) {
-		header('Location: ' . $redirectTo, true);								// Redirect to target
+		header('Location: ' . $redirectTo, true);							// Redirect to target
 		exit();
 	}
 	else {
@@ -64,8 +86,6 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 			}
 			$var = substr($var, 0, 1);
 		}
-		require_once './include/conn.inc.php';									// connect to the database named 'scripture'
-		$db = get_my_db();
 		$resultTest=$db->query("SELECT ISO, ROD_Code, Variant_Code, ISO_ROD_index FROM scripture_main WHERE ISO = '$iso'");
 		if ($resultTest->num_rows == 1) {
 			$row = $resultTest->fetch_assoc();
@@ -105,7 +125,6 @@ if (isset($_GET['name']) || isset($_GET['iso'])) {								// not the 5 major lan
 <meta name="robots" 						content="noindex" />
 <title>Splash page of Scripture Earth</title>
 <style type="text/css">
-<!--
 body {
 	font: 100% Verdana, Arial, Helvetica, sans-serif;
 	background-color: #AEB2BE;
@@ -218,33 +237,8 @@ div.counter {
 	padding: 3px 8px 3px 8px;
 }
 /* remember that padding is the space inside the div box and margin is the space outside the div box */
--->
 </style>
 <script type="text/javascript">
-/*function outEnglish() {
-	document.getElementById('hoverEnglish').style.display = 'none';
-}
-
-function outSpanish() {
-	document.getElementById('hoverSpanish').style.display = 'none';
-}
-
-function outPortuguese() {
-	document.getElementById('hoverPortuguese').style.display = 'none';
-}
-
-function outFrench() {
-	document.getElementById('hoverFrench').style.display = 'none';
-}
-
-function outDutch() {
-	document.getElementById('hoverDutch').style.display = 'none';
-}
-
-function outGerman() {
-	document.getElementById('hoverGerman').style.display = 'none';
-}*/
-
 // new generic hover and out function
 function hover() {
 	document.getElementById('aclick').innerHTML = <?php translate('click to enter', $st, 'sys'); ?>
@@ -282,9 +276,6 @@ function out(){
 	}
 }
 
-//function WycliffeCanadaMouse() {
-//	window.open("https://www.wycliffe.ca");
-//}
 function SILMouse() {
 	window.open("https://www.sil.org");
 }
@@ -337,7 +328,7 @@ aan de taak Gods Woord beschikbaar te maken in de taal van het hart.",
 6 => "Es werden heutzutage über 3.000 indigene Sprachen gesprochen. In vielen dieser Sprachen wird die Bibel zur Zeit übersetzt.<br /><br />
 Wir haben diese Webseite der Ehre Gotes gewidmet sowie denen, die ihr Leben diesen Menschen gewidmet haben,
 indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre Herzen am besten erreicht.",
-7 => "??"];
+7 => "今天有2900多种土著语言。 这些语言中有许多正在进行圣经翻译工作。 我们将这个网站奉献给上帝的荣耀，并献给那些毕生为这些人服务的人们，他们的任务是用他们心中的语言来传达上帝的话语。"];
 ?>
 
 <div id="lblValues"></div>
@@ -402,11 +393,11 @@ indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre H
 				<li class="bottomBannerText">|</li>
 				<li class="bottomBannerText"><a class="bottomBannerWord" href="#" onMouseUp="loadIFrame(\''.$array[4].'\', \'P\')">'.translate('Privacy', $array[0], 'sys').'</a></li>
 				<li class="bottomBannerText">|</li>
-				<!--li class="bottomBannerText"><a class="bottomBannerWord" href="#" onMouseUp="loadIFrame(\''.$array[4].'\', \'H\')"'.translate('Help', $array[0], 'sys').'></a></li>
-				<li class="bottomBannerText">|</li-->
 				<li class="bottomBannerText"><a class="bottomBannerWord" href="#" onMouseUp="loadIFrame(\''.$array[4].'\', \'CU\')">'.translate('Contact/Links', $array[0], 'sys').'</a></li>
 			</ul>';
 			}
+				// <li class="bottomBannerText"><a class="bottomBannerWord" href="#" onMouseUp="loadIFrame(\''.$array[4].'\', \'H\')"'.translate('Help', $array[0], 'sys').'></a></li>
+				// <li class="bottomBannerText">|</li>
 		?>
       </div>
     <!-- end #container -->
