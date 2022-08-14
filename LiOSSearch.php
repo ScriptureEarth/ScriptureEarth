@@ -1,7 +1,10 @@
 <?php
 /*
 Created by Scottt Starker
-AJAX
+
+AJAX from LangSearch.js
+
+Can't use $_SESSION because as AJAX PHP there is NO global variables with AJAX including $_SESSION!
 
 Problems: TryLanguage ' should be \' 
 
@@ -41,44 +44,10 @@ else {
 }
 
 $response = '';
-$MajorLanguage = '';
-$Variant_major = '';
 
-switch ($st) {
-	case 'eng':
-		$MajorLanguage = 'LN_English';
-		$Variant_major = 'Variant_Eng';
-		$SpecificCountry = 'English';
-		break;
-	case 'spa':
-		$MajorLanguage = 'LN_Spanish';
-		$Variant_major = 'Variant_Spa';
-		$SpecificCountry = 'Spanish';
-		break;
-	case 'por':
-		$MajorLanguage = 'LN_Portuguese';
-		$Variant_major = 'Variant_Por';
-		$SpecificCountry = 'Portuguese';
-		break;
-	case 'nld':
-		$MajorLanguage = 'LN_Dutch';
-		$Variant_major = 'Variant_Dut';
-		$SpecificCountry = 'Dutch';
-		break;
-	case 'fra':
-		$MajorLanguage = 'LN_French';
-		$Variant_major = 'Variant_Fre';
-		$SpecificCountry = 'French';
-		break;
-	case 'deu':
-		$MajorLanguage = 'LN_German';
-		$Variant_major = 'Variant_Deu';
-		$SpecificCountry = 'German';
-		break;
-	default:
-		$response = '"st" never found.';
-		exit();
-}
+$MajorLanguage = $_GET['MajorLanguage'];
+$Variant_major = $_GET['Variant_major'];
+$SpecificCountry = $_GET['SpecificCountry'];
 
 if (strlen($TryLanguage) > 2) {
 	$hint = 0;

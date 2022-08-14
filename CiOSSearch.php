@@ -1,7 +1,10 @@
 <?php
 /*
 Created by Scott Starker
-AJAX
+
+AJAX from LangSearch.js
+
+Can't use $_SESSION because as AJAX PHP there is NO global variables with AJAX including $_SESSION!
 
 MySQL: utf8_general_ci flattens accents as well as lower-casing:
 You must ensure that all parties (your app, mysql connection, your table or column) have set utf8 as charset.
@@ -38,44 +41,18 @@ else {
 }
 $st = substr($st, 0, 3);
 
-$response = '';
-
-switch ($st) {
-	case 'eng':
-		$MajorLanguage = 'LN_English';
-		$Variant_major = 'Variant_Eng';
-		$SpecificCountry = 'English';
-		break;
-	case 'spa':
-		$MajorLanguage = 'LN_Spanish';
-		$Variant_major = 'Variant_Spa';
-		$SpecificCountry = 'Spanish';
-		break;
-	case 'por':
-		$MajorLanguage = 'LN_Portuguese';
-		$Variant_major = 'Variant_Por';
-		$SpecificCountry = 'Portuguese';
-		break;
-	case 'fra':
-		$MajorLanguage = 'LN_French';
-		$Variant_major = 'Variant_Fre';
-		$SpecificCountry = 'French';
-		break;
-	case 'nld':
-		$MajorLanguage = 'LN_Dutch';
-		$Variant_major = 'Variant_Dut';
-		$SpecificCountry = 'Dutch';
-		break;
-	case 'deu':
-		$MajorLanguage = 'LN_German';
-		$Variant_major = 'Variant_Deu';
-		$SpecificCountry = 'German';
-		break;
-	default:
-		$response = '"st" never found.';
-		exit();
+if (isset($_GET['SpecificCountry'])) {
+	$SpecificCountry = $_GET['SpecificCountry'];
+	if (!preg_match('/^([A-Za-z]+)/', $SpecificCountry, $match)) {
+		die('Hach! 1b');
+	}
 }
+else {
+	 die('Hack! 2b');
+}
+$SpecificCountry = $match[1];
 
+$response = '';
 $hint = 0;
 
 include './include/conn.inc.php';

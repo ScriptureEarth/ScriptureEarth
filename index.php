@@ -5,21 +5,23 @@ session_start();
 // by Jesse Skinner modified by Scott Starker; Parse Accept-Language to detect a user's language; May 2008
 // Updated by Scott Starker, Lærke Roager
 
+session_destroy();															// destroy entire session 
+
 $langs = [];
-if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {						// detects a browsers abbreviated language
+if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbreviated language
     // break up string into pieces (languages and q factors)
     preg_match_all('/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $lang_parse);
     if (count($lang_parse[1])) {
-        $langs = array_combine($lang_parse[1], $lang_parse[4]);		// create a list like "en" => 0.8
-        foreach ($langs as $lang => $val) {							// set default to 1 for any without q factor
+        $langs = array_combine($lang_parse[1], $lang_parse[4]);				// create a list like "en" => 0.8
+        foreach ($langs as $lang => $val) {									// set default to 1 for any without q factor
             if ($val === '') $langs[$lang] = 1;
         }
-        arsort($langs, SORT_NUMERIC);								// sort list based on value
+        arsort($langs, SORT_NUMERIC);										// sort list based on value
     }
 	
-	$mobile = 0;		// no mobile (new user interface)
+	$mobile = 0;															// no mobile (new user interface)
 
-	include './translate/functions.php';                           		 // translation function
+	include './translate/functions.php';                           		 	// translation function
 
 	require_once './include/conn.inc.php';									// connect to the database named 'scripture'
 	$db = get_my_db();

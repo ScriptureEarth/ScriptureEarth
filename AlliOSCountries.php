@@ -3,14 +3,14 @@
 	Created by Scott Starker
 	AJAX
 */
-$st = "eng";
-if (isset($_GET["st"])) {
-	$st = trim($_GET["st"]);
-	if (!preg_match('/^[a-z]{3}/', $st)) {
-		die ('‘st’ is empty.');
+	$st = "eng";
+	if (isset($_GET["st"])) {
+		$st = trim($_GET["st"]);
+		if (!preg_match('/^[a-z]{3}/', $st)) {
+			die ('‘st’ is empty.');
+		}
+		$st =substr($st, 0, 3);
 	}
-	$st = substr($st, 0, 3);
-}
 
 	$SpecificCountry = $_GET['SpecificCountry'];
 

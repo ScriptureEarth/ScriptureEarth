@@ -35,7 +35,7 @@ function getHTTPObject() { // get the AJAX object; it can be used more than once
     }
 }
 
-function showLanguage(str, st, Internet, asset) { // get the names of the languages
+function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificCountry, asset) { // get the names of the languages
     if (str.length == 0) {
         document.getElementById("LangSearch").innerHTML = '';
         document.getElementById("CountSearch").innerHTML = '';
@@ -47,18 +47,25 @@ function showLanguage(str, st, Internet, asset) { // get the names of the langua
         $("#copyright").show();
         return;
     }
-    // saltillo: ꞌ; U+A78C
-    var re = /[-. ,'ꞌ()A-Za-záéíóúÑñçãõâêîôûäëöüï]/; // the '-' has to go first
-    var foundArray = re.exec(str.substring(str.length - 1)); // the last character of the str
-    if (!foundArray) { // is the value of the last character of the str isn't A-Za - z then it returns
-        document.getElementById("ID").value = document.getElementById("ID").value.substring(0, document.getElementById("ID").value.length - 1);
-        alert(str.substring(str.length - 1) + " is an invalid character. Use an alphabetic character or - , ' ꞌ[saltillo] ( )  [space]");
-        str = str.substring(0, str.length - 1);
-        if (str.length == 0) {
-            document.getElementById("ID").innerHTML = '';
+
+    var nonLatinScript = 0;
+    if (/\p{Script=Han}/u.test(str.substring(str.length - 1)) || /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/.test(str.substring(str.length - 1))) { // https://stackoverflow.com/questions/21109011/javascript-unicode-string-chinese-character-but-no-punctuation
+        nonLatinScript = 1;
+    } else {
+        // saltillo: ꞌ; U+A78C
+        var re = /[-. ,'ꞌ()A-Za-záéíóúÑñçãõâêîôûäëöüï]/; // the '-' has to go first
+        var foundArray = re.exec(str.substring(str.length - 1)); // the last character of the str
+        if (!foundArray) { // is the value of the last character of the str isn't A-Za - z then it returns
+            document.getElementById("ID").value = document.getElementById("ID").value.substring(0, document.getElementById("ID").value.length - 1);
+            alert(str.substring(str.length - 1) + " is an invalid character. Use an alphabetic character or - , ' ꞌ[saltillo] ( )  [space]");
+            str = str.substring(0, str.length - 1);
+            if (str.length == 0) {
+                document.getElementById("ID").innerHTML = '';
+            }
+            return;
         }
-        return;
     }
+
     if (str.length <= 2) {
         document.getElementById("LangSearch").innerHTML = '';
         document.getElementById("CountSearch").innerHTML = '';
@@ -74,7 +81,7 @@ function showLanguage(str, st, Internet, asset) { // get the names of the langua
 
     // iOS Asset Package
     if (asset == 1) {
-        showiOSLanguage(str, st, Internet); // go to showiOSLanguage
+        showiOSLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificCountry, asset, nonLatinScript); // go to showiOSLanguage
         return;
     }
 
@@ -86,24 +93,34 @@ function showLanguage(str, st, Internet, asset) { // get the names of the langua
     var table = '';
     var Country_Total = [];
 
-    lnxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
-    if (lnxmlhttp == null) {
-        return;
-    }
+    //lnxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
+    //if (lnxmlhttp == null) {
+    //    return;
+    //}
 
     Scriptname = window.location.href;
-
     /****************************************************************************************************************
     	AJAX - languageSearch.php
     ****************************************************************************************************************/
     var url = "LSearch.php";
     url = url + "?language=" + str;
-    url = url + "&st=" + st;
+    if (st == 'cmn' && nonLatinScript == 0) { // test to see if st = Chinese and if it's Latin
+        url = url + "&st=eng";
+        url = url + "&SpecificCountry=English";
+    } else {
+        url = url + "&SpecificCountry=" + SpecificCountry;
+        url = url + "&st=" + st;
+    }
+    url = url + "&nav_ln_line=" + nav_languages_line; // assign at the end of 00-MainScript.inc.php. must be global
+    url = url + "&MajorLanguage=" + MajorLanguage;
+    url = url + "&Variant_major=" + Variant_major;
+    url = url + "&asset=" + asset;
     url = url + "&sid=" + Math.random();
     xmlhttp.open("GET", url, true); // open the AJAX object with livesearch.php
     xmlhttp.send(null);
     xmlhttp.onreadystatechange = function() { // the function that returns for AJAX object
         if (xmlhttp.readyState == 4) { // if the readyState = 4 then livesearch is displayed
+            //            alert(xmlhttp.responseText);
             var splits = xmlhttp.responseText.split('<br />'); // Display all of the languages that have 'language' as a part of it.
             document.getElementById("LangSearch").innerHTML = '';
             document.getElementById("CountSearch").innerHTML = '';
@@ -175,7 +192,7 @@ function send(sel) {
     }
 }
 
-function showCountry(str, st, Internet, asset) { // get the names of the country
+function showCountry(str, st, Internet, SpecificCountry, asset) { // get the names of the country
     if (str.length == 0) {
         document.getElementById("CountSearch").innerHTML = '';
         $("#showLanguageID").show();
@@ -212,7 +229,7 @@ function showCountry(str, st, Internet, asset) { // get the names of the country
 
     // iOS Asset Package
     if (asset == 1) {
-        showiOSCountry(str, st, Internet); // go to showiOSLanguage
+        showiOSCountry(str, st, Internet, SpecificCountry, asset, nonLatinScript); // go to showiOSLanguage
         return;
     }
 
@@ -229,8 +246,10 @@ function showCountry(str, st, Internet, asset) { // get the names of the country
     url = url + "?country=" + str;
     if (st == 'cmn' && nonLatinScript == 0) { // test to see if st = Chinese and if it's Latin
         url = url + "&st=eng";
+        url = url + "&SpecificCountry=English";
     } else {
         url = url + "&st=" + st;
+        url = url + "&SpecificCountry=" + SpecificCountry;
     }
     url = url + "&sid=" + Math.random();
     Countryxmlhttp.open("GET", url, true); // open the AJAX object
@@ -261,7 +280,6 @@ function showCountry(str, st, Internet, asset) { // get the names of the country
 }
 
 function AllCountries(Scriptname, st, SpecificCountry, Internet, asset) {
-    st = st.substr(0, 1).toUpperCase() + st.substr(1, 2);
     document.getElementById("LangSearch").innerHTML = '';
     document.getElementById("CountSearch").innerHTML = '';
     $("#showLanguageID").hide();
@@ -474,9 +492,9 @@ makeSortString = (function() {
 
 
 /*****************************************************************************************************************
-	iOS -- showiOSLanguage()
+	iOS -- showiOSLanguage() (the function are called by LangSearch.js by showLanguaage)
 *****************************************************************************************************************/
-function showiOSLanguage(str, st, Internet) { // get the names of the languages
+function showiOSLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificCountry, asset, nonLatinScript) { // get the names of the languages
     if (Internet == 0) {
         alert('ScriptureEarth.org is offline. Therefore, iOS app is not avaiable.');
         return;
@@ -492,22 +510,21 @@ function showiOSLanguage(str, st, Internet) { // get the names of the languages
     if (lnxmlhttp == null) {
         return;
     }
-    Scriptname = '';
 
-    lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + st, true)
-    lnxmlhttp.send(null)
-    lnxmlhttp.onreadystatechange = function() {
-            if (lnxmlhttp.readyState == 3) {
-                // Get hold of the array and change scriptname?
-                Scriptname = lnxmlhttp.responseText;
-            }
-        }
-        /****************************************************************************************************************
+    Scriptname = window.location.href;
+
+    /****************************************************************************************************************
         	AJAX - LiOSSearch.php
-        ****************************************************************************************************************/
+    ****************************************************************************************************************/
     var url = "LiOSSearch.php";
     url = url + "?language=" + str;
-    url = url + "&st=" + st;
+    if (st == 'cmn' && nonLatinScript == 0) { // test to see if st = Chinese and if it's Latin
+        url = url + "&st=eng";
+        url = url + "&SpecificCountry=English";
+    } else {
+        url = url + "&st=" + st;
+        url = url + "&SpecificCountry=" + SpecificCountry;
+    }
     url = url + "&sid=" + Math.random();
     xmlhttp.open("GET", url, true); // open the AJAX object with livesearch.php
     xmlhttp.send(null);
@@ -582,7 +599,7 @@ function showiOSLanguage(str, st, Internet) { // get the names of the languages
 /*****************************************************************************************************************
 	iOS -- showiOSCountry(str, st)
 *****************************************************************************************************************/
-function showiOSCountry(str, st, Internet) { // get the names of the country
+function showiOSCountry(str, st, Internet, SpecificCountry, asset, nonLatinScript) { // get the names of the country
     if (Internet == 0) {
         alert('ScriptureEarth in not online. iOS app is not avaiable.');
         return;
@@ -595,22 +612,22 @@ function showiOSCountry(str, st, Internet) { // get the names of the country
     if (lnxmlhttp == null) {
         return;
     }
-    Scriptname = '';
 
-    lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + st, true)
-    lnxmlhttp.send(null)
-    lnxmlhttp.onreadystatechange = function() {
-            if (lnxmlhttp.readyState == 3) {
-                // Get hold of the array and change scriptname?
-                Scriptname = lnxmlhttp.responseText;
-            }
-        }
-        /****************************************************************************************************************
-        	AJAX - CiOSSearch.php
-        ****************************************************************************************************************/
+    Scriptname = window.location.href;
+
+    /****************************************************************************************************************
+    	AJAX - CiOSSearch.php
+    ****************************************************************************************************************/
     var url = "CiOSSearch.php";
     url = url + "?country=" + str;
-    url = url + "&st=" + st;
+    if (st == 'cmn' && nonLatinScript == 0) { // test to see if st = Chinese and if it's Latin
+        url = url + "&st=eng";
+        url = url + "&SpecificCountry=English";
+    } else {
+        url = url + "&st=" + st;
+        url = url + "&SpecificCountry=" + SpecificCountry;
+    }
+    url = url + "&asset=" + asset;
     url = url + "&sid=" + Math.random();
     Countryxmlhttp.open("GET", url, true); // open the AJAX object
     Countryxmlhttp.send(null);

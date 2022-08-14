@@ -1,10 +1,11 @@
 <?php
-// Start the session
-session_start();
 /*
 Created by Scottt Starker
 Updated by Scott Starker, Lærke Roager
+
 AJAX from LangSearch.js
+
+Can't use $_SESSION because as AJAX PHP there is NO global variables with AJAX including $_SESSION!
 
 Problems: TryLanguage ' should be \' 
 
@@ -17,12 +18,19 @@ You must ensure that all parties (your app, mysql connection, your table or colu
 */
 
 /*
+	input:
+		language (string: 'try language')
+		st (string: eng, spa, por, fra, dut, deu, cmn)
+		nav_ln_line (strng: navigational languages separated by ', ')
+*/
+
+/*
 	These are defined at the end of $response:
-	langNotFound = "The language is not found.";
-	colLN = "Language Name";
-	colAlt = "Alternate Language Names";
-	colCode = "Code";
-	colCountry = "Country";
+		langNotFound = "The language is not found.";
+		colLN = "Language Name";
+		colAlt = "Alternate Language Names";
+		colCode = "Code";
+		colCountry = "Country";
 */
 
 // display all of the language names, ROD codes and variant codes from a major and alternate languages names
@@ -30,38 +38,39 @@ if (isset($_GET['language'])) $TryLanguage = $_GET['language']; else { die('Hack
 if (preg_match("/^[-. ,'ꞌ()A-Za-záéíóúÑñçãõâêîôûäëöüï&]+/", $TryLanguage)) {
 }
 else {
-	die('Hack!');
+	die('1) Hack!');
 }
 if (isset($_GET['st'])) {
 	$st = $_GET['st'];
 	$st = preg_replace('/^([a-z]{3})/', '$1', $st);
 	if ($st == NULL) {
-		die('Hack!');
+		die('2) Hack!');
 	}
 }
 else {
-	 die('Hack!');
+	 die('3) Hack!');
 }
 
 if (strlen($TryLanguage) > 2) {
 	$response = '';
-	$MajorLanguage = '';
-	$Variant_major = '';
 
-	$ln_result = '';												// get all of the navigigatioal language fields
-	foreach($_SESSION['nav_ln_array'] as $code => $array){
-		if ($st == $array[0]){
-			$MajorLanguage = 'LN_'.$array[1];
-			$Variant_major = 'Variant_'.$array[0];
-			$SpecificCountry = $array[1];
+	//	$ln_result = 'LN_English, LN_Spanish, LN_Portuguese, LN_French, LN_Dutch, LN_German, LN_Chinese, ';
+	if (isset($_GET['nav_ln_line'])) {
+		$ln_result = $_GET['nav_ln_line'];
+		$preg_count = 0;
+		$ln_result = preg_replace('/^([a-zA-Z\,_ ]+)/', "$1", $ln_result, -1, $preg_count);
+		if ($preg_count == 0) {
+			die('4) Hack!');
 		}
-		$ln_result .= 'LN_'.$array[1].', ';
 	}
-	if ($Variant_major == ''){
-		$response = '"st" never found.';
-		exit();
+	else {
+		die('5) Hack!');
 	}
 
+	$MajorLanguage = $_GET['MajorLanguage'];
+	$Variant_major = $_GET['Variant_major'];
+	$SpecificCountry = $_GET['SpecificCountry'];
+	
 	$hint = 0;
 	include './include/conn.inc.php';
 	$db = get_my_db();
@@ -80,8 +89,8 @@ if (strlen($TryLanguage) > 2) {
 
 	// ISO
 	if (strlen($TryLanguage) == 3) {
-		$stmt_nav_ln_iso->bind_param('s', $TryLanguage);										// bind parameters for markers
-		$stmt_nav_ln_iso->execute();															// execute query
+		$stmt_nav_ln_iso->bind_param('s', $TryLanguage);									// bind parameters for markers
+		$stmt_nav_ln_iso->execute();														// execute query
 		$result=$stmt_nav_ln_iso->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
 		$LN = '';
 		while ($row = $result->fetch_assoc()) {
@@ -90,7 +99,7 @@ if (strlen($TryLanguage) > 2) {
 			$ROD_Code = $row['ROD_Code'];
 			$Variant_Code = $row['Variant_Code'];
 			$VD = '';
-			include './include/00-DBLanguageCountryName.inc.php';							// returns $LN
+			include './include/00-DBLanguageCountryName.inc.php';							// returns $LN (navigational langename name)
 			$stmt_SC->bind_param('i', $ISO_ROD_index);										// bind parameters for markers
 			$stmt_SC->execute();															// execute query
 			$result_con=$stmt_SC->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
@@ -140,7 +149,7 @@ if (strlen($TryLanguage) > 2) {
 				$VD = '';
 			}
 			else {
-				$stmt_Var->bind_param('s', $Variant_Code);									// bind parameters for markers								// 
+				$stmt_Var->bind_param('s', $Variant_Code);									// bind parameters for markers
 				$stmt_Var->execute();														// execute query
 				$result_Var = $stmt_Var->get_result();
 				$row_Var = $result_Var->fetch_assoc();
@@ -197,7 +206,7 @@ if (strlen($TryLanguage) > 2) {
 		$LN = '';
 		while ($row = $result->fetch_assoc()) {													// All ISOs + ROD codes + variants
 			$ISO_ROD_index = $row['ISO_ROD_index'];
-			include './include/00-DBLanguageCountryName.inc.php';								// returns LN
+			include './include/00-DBLanguageCountryName.inc.php';								// returns $LN (navigational langename name)
 			// Author: 'ChickenFeet'
 			$temp_LN = CheckLetters($LN);														// diacritic removal
 			
@@ -206,7 +215,7 @@ if (strlen($TryLanguage) > 2) {
 			$temp_TL = str_replace('(', '\(', $TryLanguage);
 			$temp_TL = str_replace(')', '\)', $temp_TL);
 			$temp_TL = str_replace('.', '\.', $temp_TL);
-			$test = preg_match("/\b".$temp_TL.'/ui', $temp_LN, $match);						// match the beginning of the word(s) with TryLanguage from the user
+			$test = preg_match("/\b".$temp_TL.'/ui', $temp_LN, $match);							// match the beginning of the word(s) with TryLanguage from the user
 			if ($test === 1) {
 				$ISO = $row['ISO'];
 				if (strlen($TryLanguage) == 3 && $ISO == $ISO_only) {							// if the length of $TryLanguage is 3 and the top section is there
@@ -215,7 +224,7 @@ if (strlen($TryLanguage) > 2) {
 				$ROD_Code = $row['ROD_Code'];
 				$Variant_Code = $row['Variant_Code'];
 				$VD = '';
-				$stmt_SC->bind_param('i', $ISO_ROD_index);										// bind parameters for markers
+				$stmt_SC->bind_param('i', $ISO_ROD_index);										// bind parameters for markers (returns $SpecificCountry and country code)
 				$stmt_SC->execute();															// execute query
 				$result_con=$stmt_SC->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
 				if ($result_con->num_rows <= 0) {
@@ -238,7 +247,7 @@ if (strlen($TryLanguage) > 2) {
 								else {
 									$country .= ', ' . $value;									// name of the country in the language version
 								}
-								$stmt_c->bind_param("s", $value);								// bind parameters for markers								// 
+								$stmt_c->bind_param("s", $value);								// bind parameters for markers
 								$stmt_c->execute();												// execute query
 								$result_c=$stmt_c->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
 								if ($result_c->num_rows <= 0) {
@@ -264,7 +273,7 @@ if (strlen($TryLanguage) > 2) {
 					$VD = '';
 				}
 				else {
-					$stmt_Var->bind_param('s', $Variant_Code);									// bind parameters for markers								// 
+					$stmt_Var->bind_param('s', $Variant_Code);									// bind parameters for markers
 					$stmt_Var->execute();														// execute query
 					$result_Var = $stmt_Var->get_result();
 					$row_Var = $result_Var->fetch_assoc();
@@ -275,7 +284,7 @@ if (strlen($TryLanguage) > 2) {
 						alternate language names
 				*******************************************************************************/
 				$alt = '';
-				$stmt_alt->bind_param('i', $ISO_ROD_index);										// bind parameters for markers								// 
+				$stmt_alt->bind_param('i', $ISO_ROD_index);										// bind parameters for markers
 				$stmt_alt->execute();															// execute query
 				if ($result_alt = $stmt_alt->get_result()) {
 					$bool = 0;

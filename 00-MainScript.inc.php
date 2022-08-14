@@ -31,7 +31,7 @@ Can't use <div id="langBackground" in FireFox 84.0.1 with cursor: pointer; insid
 <link rel="stylesheet" type='text/css'		href="JQuery/css/style.css" />
 <!-- link rel="stylesheet" type="text/css" 	href="_css/Scripture_Index.css" /-->
 <link rel="stylesheet" type="text/css" 		href="_css/SpecificLanguage.css" />
-<link rel='stylesheet' type='text/css' 		href='_css/00-Scripture.css?v=1.0.1' />
+<link rel='stylesheet' type='text/css' 		href='_css/00-Scripture.css?v=1.0.2' />
 <link rel='stylesheet' type='text/css' 		href='_css/00-SEmobile.css' />
 <!--link rel='stylesheet' type='text/css' 	href='_css/CountryTable.css' /-->
 <link rel='stylesheet' type='text/css'		href='_css/jplayer.BlueMonday.css' />
@@ -43,8 +43,8 @@ Can't use <div id="langBackground" in FireFox 84.0.1 with cursor: pointer; insid
 <script type="text/javascript" language="javascript"	src="_js/jquery.jplayer-2.9.2.min.js"></script>
 <script type="text/javascript" language="javascript"	src="_js/jplayer.playlist.min.js"></script>
 <script type="text/javascript" language="javascript" 	src="_js/user_events.js?v=1.0.0"></script>
-<script type="text/javascript" language="javascript" 	src="_js/SpecificLanguage.js?v=1.0.2"></script>
-<script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.2"></script>
+<script type="text/javascript" language="javascript" 	src="_js/SpecificLanguage.js?v=1.0.3"></script>
+<script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.3"></script>
 <!--script type='text/javascript' language='javascript'	src="_js/LangSearch.js?v=1.0.3"></script-->
 <!--link rel='stylesheet' type='text/css' 	href='_css/boilerplate.css' /-->
 <link rel='stylesheet' type='text/css' 		href='_css/FGL.css' />
@@ -78,26 +78,59 @@ include './NT_Books.php';										// $NT_array
 include './translate/functions.php';							// translation function
 include './include/00-MainPHPFunctions.inc.php';				// main PHP functions
 
+$ln_result = '';
+
 require_once './include/conn.inc.php';							// connect to the database named 'scripture'
 $db = get_my_db();
+
+//session_unset();
+//echo '<pre>';
+//print_r($_SESSION);
+//echo '</pre>';
+
+if (!isset($_SESSION['MajorLanguage'])) {
+	$_SESSION['Variant_major'] = $Variant_major;
+	$_SESSION['MajorLanguage'] = $MajorLanguage;
+	$_SESSION['SpecificCountry'] = $SpecificCountry;
+	$_SESSION['counterName'] = $counterName;
+	$_SESSION['Scriptname'] = $Scriptname;
+	$_SESSION['FacebookCountry'] = $FacebookCountry;
+	$_SESSION['MajorCountryAbbr'] = $MajorCountryAbbr;
+}
 
 // master list of the naviagational languages
 if (!isset($_SESSION['nav_ln_array'])) {
 	$_SESSION['nav_ln_array'] = [];
-	$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `translation_code`";
-	$ln_result=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
-	if ($ln_result->num_rows == 0) {
+	$ln_temp_var = '';
+	$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `ln_number`";
+	$ln_result_temp=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
+	if ($ln_result_temp->num_rows == 0) {
 		die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
 	}
-
-	while ($ln_row = $ln_result->fetch_array()){
+	while ($ln_row = $ln_result_temp->fetch_array()){
 		$ln_temp[0] = $ln_row['translation_code'];
 		$ln_temp[1] = $ln_row['name'];
 		$ln_temp[2] = $ln_row['nav_fileName'];
 		$ln_temp[3] = $ln_row['ln_number'];
 		$ln_temp[4] = $ln_row['ln_abbreviation'];
 		$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;
+		$ln_temp_var .= 'LN_'.$ln_temp[1].', ';
 	}
+	$ln_result = $ln_temp_var;
+	$_SESSION['ln_result'] = $ln_result;
+}
+if (!isset($_SESSION['ln_result'])) {
+	$ln_query = "SELECT `name` FROM `translations` ORDER BY `ln_number`";
+	$ln_result_temp=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
+	if ($ln_result_temp->num_rows == 0) {
+		die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
+	}
+	$ln_temp_var = '';
+	while ($ln_row = $ln_result_temp->fetch_array()){
+		$ln_temp_var .= 'LN_'.$ln_row['name'].', ';
+	}
+	$ln_result = $ln_temp_var;
+	$_SESSION['ln_result'] = $ln_result;
 }
 
 /*
@@ -596,14 +629,14 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 									after 3 letter display the languages/alternate languages/ISO button
                     -------------------------------------------------------------------------------------- */ ?>
 					<div id="showLanguageID" name="showLanguageID">
-						<input type="text" id="ID" title="<?php echo translate('Find a language page: type at least 3 letters of the language name or code (ISO 639-3).', $st, 'sys'); ?>" placeholder="<?php echo translate('Language (or code)', $st, 'sys'); ?>" onKeyUp="showLanguage(this.value, '<?php echo $st; ?>', <?php echo $Internet; ?>, <?php echo $asset; ?>)" value="" />
+						<input type="text" id="ID" title="<?php echo translate('Find a language page: type at least 3 letters of the language name or code (ISO 639-3).', $st, 'sys'); ?>" placeholder="<?php echo translate('Language (or code)', $st, 'sys'); ?>" onKeyUp="showLanguage(this.value, '<?php echo $st; ?>', <?php echo $Internet; ?>, '<?php echo $MajorLanguage; ?>', '<?php echo $Variant_major; ?>', '<?php echo $SpecificCountry; ?>', <?php echo $asset; ?>)" value="" />
                     </div>
 	
                     <?php /* -----------------------------------------------------------------------------
 									display the first letter(s) of the countries button
                     -------------------------------------------------------------------------------------- */ ?>
 					<div id="showCountryID" name="showCountryID">
-						<input type="text" id="CID" autocomplete="off" title="<?php echo translate('Find a country list: type the country name.', $st, 'sys'); ?>" placeholder="<?php echo translate('Country', $st, 'sys'); ?>" onKeyUp="showCountry(this.value, '<?php echo $st; ?>', <?php echo $Internet; ?>, <?php echo $asset; ?>)" value="" />
+						<input type="text" id="CID" autocomplete="off" title="<?php echo translate('Find a country list: type the country name.', $st, 'sys'); ?>" placeholder="<?php echo translate('Country', $st, 'sys'); ?>" onKeyUp="showCountry(this.value, '<?php echo $st; ?>', <?php echo $Internet; ?>, '<?php echo $SpecificCountry; ?>', <?php echo $asset; ?>)" value="" />
                     </div>
 	
 					<div id="listCountriesID" name="listCountriesID">
@@ -736,4 +769,8 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 	</div>
 </div>
 <?php // This script HAS to be down here for the major language dropdown box to work! ?>
-<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.0.4"></script>
+<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.0.5"></script>
+<script>
+	// for LangSeacrh.js / LSearch.php
+	var nav_languages_line = '<?php echo $_SESSION['ln_result']; ?>';
+</script>
