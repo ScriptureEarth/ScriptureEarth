@@ -9,7 +9,7 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 		$value = stripslashes($value);
 	//}
 	// Quote if not a number
-	if (!is_numeric('$value')) {
+	if (!is_numeric($value)) {
 		$db = get_my_db();
 		$value = $db->real_escape_string($value);
 	}
@@ -46,20 +46,20 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 		$ISO_ROD_index = (string)$idx;						// make sure that00-DBLanguageCountryName.inc.php will work correctly
 		include ('./include/00-DBLanguageCountryName.inc.php');
 		
-		$stmt->bind_param("ssis", $iso, $rod, $idx, $LN);							// bind parameters for markers
+		$stmt->bind_param('ssis', $iso, $rod, $idx, $LN);							// bind parameters for markers
 		$stmt->execute();															// execute query
 	}
 	$stmt->close();																	// close statement
 
 	if ($number == 1) {		// $which == 'Name'
 		if ($Beg == 'all')
-			$query="SELECT DISTINCT LN_Temp.LN, scripture_main.* FROM LN_Temp, scripture_main WHERE scripture_main.ISO_ROD_index = LN_Temp.idx ORDER BY LN_Temp.iso, LN_Temp.rod";
+			$query='SELECT DISTINCT LN_Temp.LN, scripture_main.* FROM LN_Temp, scripture_main WHERE scripture_main.ISO_ROD_index = LN_Temp.idx ORDER BY LN_Temp.iso, LN_Temp.rod';
 		else
 			$query="SELECT DISTINCT LN_Temp.LN, scripture_main.* FROM LN_Temp, scripture_main WHERE scripture_main.ISO_ROD_index = LN_Temp.idx AND LN_Temp.iso LIKE '$Beg%' ORDER BY LN_Temp.iso, LN_Temp.rod";
 	}
 	else {					// $which == 'Code'
 		if ($Beg == 'all')
-			$query="SELECT DISTINCT LN_Temp.LN, scripture_main.* FROM LN_Temp, scripture_main WHERE scripture_main.ISO_ROD_index = LN_Temp.idx ORDER BY LN_Temp.LN";
+			$query='SELECT DISTINCT LN_Temp.LN, scripture_main.* FROM LN_Temp, scripture_main WHERE scripture_main.ISO_ROD_index = LN_Temp.idx ORDER BY LN_Temp.LN';
 		else
 			$query="SELECT DISTINCT LN_Temp.LN, scripture_main.* FROM LN_Temp, scripture_main WHERE scripture_main.ISO_ROD_index = LN_Temp.idx AND LN_Temp.LN LIKE '$Beg%' ORDER BY LN_Temp.LN";
 	}
@@ -70,16 +70,16 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 	$stmt_Var = $db->prepare($query);														// create a prepared statement
 	$query="SELECT $SpecificCountry FROM ISO_countries, countries WHERE ISO_countries.ISO_ROD_index = ? AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY $SpecificCountry";
 	$stmt_ISO_countries = $db->prepare($query);												// create a prepared statement
-	$query="SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = ?";				// alt_lang_names table
+	$query='SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = ?';				// alt_lang_names table
 	$stmt_alt = $db->prepare($query);														// create a prepared statement
 	echo "<div id='CT'><table id='CountryTable'>";							// <div id='CT'> required for IE because it can't handle tables!
 	$i=0;
 	while ($r = $resultSwitch->fetch_assoc()) {
 		if ($i % 2)
-			$color = "f8fafa";
+			$color = 'f8fafa';
 		else
-			//$color = "f0f4f0";
-			$color = "EEF1F2";
+			//$color = 'f0f4f0';
+			$color = 'EEF1F2';
 		$LN = $r['LN'];
 		// Cross Site Scripting (XSS) attack happens where client side code (usually JavaScript) gets injected into the output of your PHP script. The next line cleans it up.
 		$LN = htmlspecialchars($LN, ENT_QUOTES, 'UTF-8');
@@ -89,7 +89,7 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 		$var = $r['Variant_Code'];
 		$VD = '';
 		if (!is_null($var) && $var != '') {
-			$stmt_Var->bind_param("s", $var);												// bind parameters for markers								// 
+			$stmt_Var->bind_param('s', $var);												// bind parameters for markers								// 
 			$stmt_Var->execute();															// execute query
 			$resultVar = $stmt_Var->get_result();											// instead of bind_result (used for only 1 record):
 			if ($resultVar) {
@@ -97,7 +97,7 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 				$VD = $r_temp['Variant_Eng'];
 			}
 		}		
-		$stmt_ISO_countries->bind_param("i", $idx);								// bind parameters for markers								// 
+		$stmt_ISO_countries->bind_param('i', $idx);								// bind parameters for markers								// 
 		$stmt_ISO_countries->execute();														// execute query
 		$result_ISO_countries = $stmt_ISO_countries->get_result();							// instead of bind_result (used for only 1 record):
 		// $SpecificCountry = the past dot $counterName	
@@ -109,7 +109,7 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 		echo "<tr style='background-color: #". $color . "; '>";
 		echo "<td width='6%' style='cursor: pointer; '><img style='margin-bottom: 3px; margin-left: 13px; cursor: hand; ' onclick='parent.location=\"Scripture_Edit.php?idx=$idx\"' src='images/pencil_edit.png' /></td>";
 		echo "<td width='28%' style='padding: 3px 5px 3px 5px; '>$LN</td>";
-		$stmt_alt->bind_param("i", $idx);											// bind parameters for markers								// 
+		$stmt_alt->bind_param('i', $idx);											// bind parameters for markers								// 
 		$stmt_alt->execute();																// execute query
 		$result_alt = $stmt_alt->get_result();												// instead of bind_result (used for only 1 record):
 		$alt_lang_names = '';
@@ -118,7 +118,7 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 			$i_alt=0;
 			while ($r_temp = $result_alt->fetch_assoc()) {
 				if ($i_alt != 0) {
-					$alt_lang_names .= ", ";
+					$alt_lang_names .= ', ';
 				}
 				$alt_lang_name = trim($r_temp['alt_lang_name']);
 				$alt_lang_names .= $alt_lang_name;
@@ -127,22 +127,22 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 			// Cross Site Scripting (XSS) attack happens where client side code (usually JavaScript) gets injected into the output of your PHP script. The next line cleans it up.
 			$alt_lang_names = htmlspecialchars($alt_lang_names, ENT_QUOTES, 'UTF-8');
 			echo $alt_lang_names;
-			echo "</td>";
+			echo '</td>';
 		}
 		else
 			echo "<td width='31%'>&nbsp;</td>";
 		$result_alt->close();
-		echo "<td width='15%' style='padding: 3px 5px 3px 5px; '>" . $iso . " " . $rod;
-		if ($VD != "") {
+		echo "<td width='15%' style='padding: 3px 5px 3px 5px; '>" . $iso . ' ' . $rod;
+		if ($VD != '') {
 			echo "<br /><span style='font-style: italic; font-size: 8pt; '>($VD)</span>";
 		}
-		echo "</td>";
+		echo '</td>';
 		echo "<td width='20%' style='padding: 3px 5px 3px 5px; '>" . $country . "</td>";
-		echo "</tr>";
+		echo '</tr>';
 		$i++;
 	}
-	echo "</table>";
-	echo "</div>";
+	echo '</table>';
+	echo '</div>';
 	
 	echo "~||~";
 	
@@ -150,15 +150,15 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 	echo "<table style='width: 100%; margin-left: 25px; padding: 0; '>";
 	echo "<tr valign='middle'>";
 	echo "<td style='width: 100%; '>";
-	$Letter = "";
-	$BegLetters="";
+	$Letter = '';
+	$BegLetters='';
 	if ($number == 1) {
-		$query="SELECT DISTINCT LEFT(iso, 1) AS Beg FROM LN_Temp ORDER BY iso";
-		$BegLetters=str_replace(" ", "&nbsp;", 'Select the beginning of the ISO code:') . "&nbsp;&nbsp;";
+		$query='SELECT DISTINCT LEFT(iso, 1) AS Beg FROM LN_Temp ORDER BY iso';
+		$BegLetters=str_replace(' ', '&nbsp;', 'Select the beginning of the ISO code:') . '&nbsp;&nbsp;';
 	}
 	else {
-		$query="SELECT DISTINCT LEFT(LN, 1) AS Beg FROM LN_Temp ORDER BY LN";
-		$BegLetters=str_replace(" ", "&nbsp;", 'Select the beginning of the Language Name:') . "&nbsp;&nbsp;";
+		$query='SELECT DISTINCT LEFT(LN, 1) AS Beg FROM LN_Temp ORDER BY LN';
+		$BegLetters=str_replace(' ', '&nbsp;', 'Select the beginning of the Language Name:') . '&nbsp;&nbsp;';
 	}
 	$resultLetter = $db->query($query);
 	while ($r_temp = $resultLetter->fetch_assoc()) {
@@ -175,16 +175,16 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 	else
 		$BegLetters=$BegLetters . "[<a style='text-decoration: underline; ' href='#' onclick='Switch(" . $number . ", \"all\")'>" . "All" . "</a>]";
 	echo "<div id='BeginningLetters' style='margin-top: 10px; margin-bottom: 10px; font-weight: bold; '>$BegLetters</div>";
-	echo "</td>";
-	echo "</tr>";
-	echo "</table>";
-	echo "</div>";
+	echo '</td>';
+	echo '</tr>';
+	echo '</table>';
+	echo '</div>';
 	
 	echo "~||~";
 	
 	echo "<div style='margin: 40px; font-size: 14pt; color: navy; font-weight: bold; '>Total languages are $numSwitch</div>";
 	
-	$db->query("DROP TABLE LN_Temp");
+	$db->query('DROP TABLE LN_Temp');
 	$result->free();
 	$resultSwitch->free();
 	$stmt_alt->close();

@@ -3,9 +3,9 @@
 	Created by Scott Starker
 	AJAX
 */
-	$st = "eng";
-	if (isset($_GET["st"])) {
-		$st = trim($_GET["st"]);
+	$st = 'eng';
+	if (isset($_GET['st'])) {
+		$st = trim($_GET['st']);
 		if (!preg_match('/^[a-z]{3}/', $st)) {
 			die ('‘st’ is empty.');
 		}

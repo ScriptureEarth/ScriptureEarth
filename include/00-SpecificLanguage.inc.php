@@ -77,9 +77,44 @@ if (preg_match('/Macintosh|iPhone|iPod|iPad/', $_SERVER['HTTP_USER_AGENT'])) {
 }
 
 $mobile=0;
+$i=0;											// used in 00-DBLanguageCountryName.inc.php include
 
-$AddTheBibleIn=$row['AddTheBibleIn'];					// boolean
-$AddTheScriptureIn=$row['AddTheScriptureIn'];			// boolean
+/*
+	*******************************************************************************************************************
+		select the default primary language name to be used by displaying the Countries and indigenous langauge names
+	*******************************************************************************************************************
+*/
+$query = "SELECT DISTINCT scripture_main.*, $SpecificCountry, countries.ISO_Country FROM scripture_main, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO_ROD_index = scripture_main.ISO_ROD_index AND scripture_main.ISO_ROD_index = '$ISO_ROD_index'";
+$result=$db->query($query) or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
+if (!$result) {
+	die ("&ldquo;$ISO&rdquo; " . translate('is not found.', $st, 'sys') . '</div></body></html>');
+}
+$rowSM = $result->fetch_array(MYSQLI_ASSOC);
+// already have $ISO=$rowSM['ISO'];, $ROD_Code=$rowSM['ROD_Code'];, $Variant_Code=$rowSM['Variant_Code'];
+$ISO_Country=$rowSM['ISO_Country'];				// country = ZZ
+$GetName = $ISO_Country;						// country = ZZ
+$SAB=$rowSM['SAB'];								// boolean
+$BibleIs=$rowSM['BibleIs'];						// boolean
+$viewer=$rowSM['viewer'];						// boolean
+$OT_PDF=$rowSM['OT_PDF'];						// boolean
+$NT_PDF=$rowSM['NT_PDF'];						// boolean
+$OT_Audio=$rowSM['OT_Audio'];					// boolean
+$NT_Audio=$rowSM['NT_Audio'];					// boolean
+$PlaylistAudio=$rowSM['PlaylistAudio'];			// boolean
+$PlaylistVideo=$rowSM['PlaylistVideo'];			// boolean
+$watch=$rowSM['watch'];							// boolean
+$YouVersion=$rowSM['YouVersion'];				// boolean
+$buy=$rowSM['buy'];								// boolean
+$Biblesorg=$rowSM['Bibles_org'];				// boolean
+$GRN=$rowSM['GRN'];								// boolean
+$CellPhone=$rowSM['CellPhone'];					// boolean
+$study=$rowSM['study'];							// boolean
+$other_titles=$rowSM['other_titles'];			// boolean
+$links=$rowSM['links'];							// boolean
+$eBible=$rowSM['eBible'];						// boolean
+$SILlink=$rowSM['SILlink'];						// boolean
+$AddTheBibleIn=$rowSM['AddTheBibleIn'];					// boolean
+$AddTheScriptureIn=$rowSM['AddTheScriptureIn'];			// boolean
 $whichBible = '';
 ?>
 
@@ -115,49 +150,11 @@ $whichBible = '';
 
 <div style='display: inline; clear: both; '>
 
-<?php
-/*
-	*******************************************************************************************************************
-		select the default primary language name to be used by displaying the Countries and indigenous langauge names
-	*******************************************************************************************************************
-*/
-$query = "SELECT DISTINCT scripture_main.*, $SpecificCountry, countries.ISO_Country FROM scripture_main, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO_ROD_index = scripture_main.ISO_ROD_index AND scripture_main.ISO_ROD_index = '$ISO_ROD_index'";
-$result=$db->query($query) or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
-if (!$result) {
-	die ("&ldquo;$ISO&rdquo; " . translate('is not found.', $st, 'sys') . '</div></body></html>');
-}
-$rowSM = $result->fetch_array(MYSQLI_ASSOC);
-// already have $ISO=$rowSM['ISO'];, $ROD_Code=$rowSM['ROD_Code'];, $Variant_Code=$rowSM['Variant_Code'];
-$ISO_Country=$rowSM['ISO_Country'];				// country = ZZ
-$GetName = $ISO_Country;						// country = ZZ
-$SAB=$rowSM['SAB'];								// boolean
-$BibleIs=$rowSM['BibleIs'];						// boolean
-$viewer=$rowSM['viewer'];						// boolean
-$OT_PDF=$rowSM['OT_PDF'];						// boolean
-$NT_PDF=$rowSM['NT_PDF'];						// boolean
-$OT_Audio=$rowSM['OT_Audio'];					// boolean
-$NT_Audio=$rowSM['NT_Audio'];					// boolean
-$PlaylistAudio=$rowSM['PlaylistAudio'];			// boolean
-$PlaylistVideo=$rowSM['PlaylistVideo'];			// boolean
-$watch=$rowSM['watch'];							// boolean
-$YouVersion=$rowSM['YouVersion'];				// boolean
-$buy=$rowSM['buy'];								// boolean
-$Biblesorg=$rowSM['Bibles_org'];				// boolean
-$GRN=$rowSM['GRN'];								// boolean
-$CellPhone=$rowSM['CellPhone'];					// boolean
-$study=$rowSM['study'];							// boolean
-$other_titles=$rowSM['other_titles'];			// boolean
-$links=$rowSM['links'];							// boolean
-$eBible=$rowSM['eBible'];						// boolean
-$SILlink=$rowSM['SILlink'];						// boolean
-
-$i=0;											// used in 00-DBLanguageCountryName.inc.php include
-?>
-
 <div id='SpecLang' style='margin-left: auto; margin-right: auto; text-align: left; '>
 <br />
 
 <?php
+
 /*
 	*************************************************************************************************************
 		Get the alternate language name, if there is any, to display.
@@ -165,7 +162,6 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 */
 $query_alt="SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = '$ISO_ROD_index'";				// then look to the alt_lang_name table
 $result_alt=$db->query($query_alt);
-
 if ($result_alt && $result_alt->num_rows > 0) {
 	?>
 	<br />
@@ -218,7 +214,6 @@ while ($r_ISO_countries = $result_ISO_countries->fetch_array(MYSQLI_ASSOC)) {
 	*************************************************************************************************************
 */
 ?>
-
 <h2>
     <div style='width: 100%; '>
         <div class='Country' style='margin-bottom: 8px; '><?php echo translate('Country:', $st, 'sys'); ?>&nbsp;<span class='Country'><?php echo $country; ?></span></div>
@@ -229,6 +224,7 @@ while ($r_ISO_countries = $result_ISO_countries->fetch_array(MYSQLI_ASSOC)) {
 
 <table id='individualLanguage'>
 <?php
+
 /*
 	*************************************************************************************************************
 		interested?
@@ -256,7 +252,6 @@ if ($result2) {
 							if ($Goto_ROD_Code == '') $Goto_ROD_Code='00000';
 							$Goto_Variant_Code=trim($row_Goto['Goto_Variant_Code']);
 							$Percentage=trim($row_Goto['Percentage']);
-
 							/*
 								*********************************************************************************************
 									Get the "Goto' language name.
@@ -867,7 +862,7 @@ if ($CellPhone) {
 	$query="SELECT * FROM CellPhone WHERE ISO_ROD_index = '$ISO_ROD_index' AND (Cell_Phone_Title = 'Android App' OR Cell_Phone_Title = 'iOS Asset Package') ORDER BY Cell_Phone_Title";
 	$result2=$db->query($query);
 	if ($result2) {
-$c = 0;
+		$c = 0;
 		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
 			$Cell_Phone_Title=$r2['Cell_Phone_Title'];
 			if (!$check_iOS && $Cell_Phone_Title=='iOS Asset Package') {
@@ -889,7 +884,7 @@ $c = 0;
 				$Cell_Phone_File = str_replace("&", "%26", $Cell_Phone_File);
 				$optional=trim($r2['optional']);
 				$pos = strpos($Cell_Phone_File, '://');															// check to see if "://" is present (https;//zzzzz)
-	$c++;
+				$c++;
 				if ($pos === false) {
 					if (!file_exists('./data/' . $ISO . '/study/' . $Cell_Phone_File)) {
 						$matches = [];
@@ -911,7 +906,7 @@ $c = 0;
 								$Cell_Phone_File = $matches[1];
 								if (file_exists('./data/' . $ISO . '/study/' . $Cell_Phone_File)) {
 									//$db->query("UPDATE CellPhone SET Cell_Phone_File = '$Cell_Phone_File' WHERE ISO_ROD_index = '$ISO_ROD_index' AND Cell_Phone_Title = 'Android App'");
-	echo $c . ') would have UPDATE CellPhone<br />';
+									echo $c . ') would have UPDATE CellPhone<br />';
 								}
 								else {
 									echo 'WARNING: Android App (apk) downloadable cell phone file is not there!';
@@ -932,7 +927,7 @@ $c = 0;
 						echo "</td>";
 						echo "<td>";
 							echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the app for', $st, 'sys') . ' ' . ($Cell_Phone_Title == 'Android App' ? 'Android' : $Cell_Phone_Title);
-						echo ' ' . $optional . '</div>';
+							echo ' ' . $optional . '</div>';
 							?>
 						</td>
 					</tr>
@@ -1500,6 +1495,7 @@ if ($NT_Audio > 0 || $OT_Audio > 0) {							// if it is a 1 then
         <?php
 	}
 }
+
 /*
 	*************************************************************************************************************
 		Is it playlist video?
@@ -1574,9 +1570,9 @@ if ($PlaylistVideo) {															//  test for $Internet is 1 1/2 screens down
 		$tempArray = [];
 		
 		$tempArray = explode("\t", $VideoConvertContents[1]);					// $Internet test
-if (count($tempArray) < 3) {
-	file_put_contents('SpecificLanguage.txt', 'filename: #'.$filename.'#; $VideoConvertContents[1]: #'.$VideoConvertContents[1]."#\n", FILE_APPEND | LOCK_EX);
-}
+		if (count($tempArray) < 3) {
+			file_put_contents('SpecificLanguage.txt', 'filename: #'.$filename.'#; $VideoConvertContents[1]: #'.$VideoConvertContents[1]."#\n", FILE_APPEND | LOCK_EX);
+		}
 		if (stripos($tempArray[3], 'http', 0) === 0 && !$Internet) {			// returns 0 means 'http' starts at column 0. === needs to be this way (and not ==) because jPlayer wont work.
 			continue;
 		}
@@ -1666,9 +1662,9 @@ if (count($tempArray) < 3) {
                         if ($VideoName == 'the Genesis Video') $VideoName = 'el video de Genesis';
                         if ($VideoName == 'the Acts Video') $VideoName = 'el video de Hechos';
                     }
-if (count($VideoConvertWithTab) < 3) {
-	file_put_contents('SpecificLanguage.txt', 'filename: #'.$filename.'#; count($VideoConvertWithTab): ' . count($VideoConvertWithTab) . '; $BibleStory: #' . $BibleStory . '#; $VideoConvertContents[$BibleStory]: #'.$VideoConvertContents[$BibleStory]."#\n", FILE_APPEND | LOCK_EX);
-}
+					if (count($VideoConvertWithTab) < 3) {
+						file_put_contents('SpecificLanguage.txt', 'filename: #'.$filename.'#; count($VideoConvertWithTab): ' . count($VideoConvertWithTab) . '; $BibleStory: #' . $BibleStory . '#; $VideoConvertContents[$BibleStory]: #'.$VideoConvertContents[$BibleStory]."#\n", FILE_APPEND | LOCK_EX);
+					}
                     if (stripos($VideoConvertWithTab[3], 'http', 0) === 0) {									// returns 0 means 'http' starts at column 0. === needs to be this way (and not ==) because jPlayer wont work.
                     	echo "<div style='text-align: center; '><div style='cursor: pointer; display: inline; text-align: center; '";
                         echo " onclick='window.open(\"$VideoConvertWithTab[3]\")'>";
@@ -1749,7 +1745,7 @@ if (count($VideoConvertWithTab) < 3) {
 				**************************************************************************************************************************************/
 				if (stripos($VideoConvertWithTab[3], 'http', 0) === false) {									// returns FALSE if it is not there
 					$j = 0;
-				?>
+					?>
 					<div id="PlaylistVideoListenNow_<?php echo $SEVideoPlaylist; ?>" class='ourPlaylistVideoNow' style='margin-top: 0px; '>
 						<script type="text/javascript">
 							$(document).ready(function(){
@@ -1812,7 +1808,7 @@ if (count($VideoConvertWithTab) < 3) {
                                 //var currentNumber = 0;
                                 /*for (var a=1; a <= totalNumber; a++) {
                                     if (document.getElementById('PlaylistVideoListenNow_'+a).style.display == "block") {
-//                                        $("#jquery_jplayer_playlist_"+a).jPlayer("stop");
+									//                                        $("#jquery_jplayer_playlist_"+a).jPlayer("stop");
                                         document.getElementById('PlaylistVideoListenNow_'+a).style.display = "none";
                                         currentNumber = a;
                                     }
@@ -1901,6 +1897,7 @@ if (count($VideoConvertWithTab) < 3) {
 		$z++;
 	}
 }
+
 /*
 	*************************************************************************************************************
 		Is the playlist video downloadable?
@@ -2523,6 +2520,7 @@ if ($watch && $Internet) {
 		}
 	}
 }
+
 /*
 	*************************************************************************************************************
 		Is MP4 downloadable (other table)?
@@ -3080,6 +3078,7 @@ if ($eBible && $Internet) {
 		}
 	}
 }
+
 /*
 	*************************************************************************************************************
 		Does it have an SIL link?
@@ -3104,6 +3103,7 @@ if ($SILlink && $Internet) {
 	</tr>
 	<?php
 }
+
 /*
 	*************************************************************************************************************
 		Does it have a map? (table links)
@@ -3162,7 +3162,7 @@ if ($links && $Internet) {
 			}
 		}
 		else if (URL.startsWith("asset://")) {
-//			URL = URL.replace("asset://", "https://");
+			//			URL = URL.replace("asset://", "https://");
 			const link = document.createElement("a");
 			link.href = URL;
 			link.download = URL.substr(URL.lastIndexOf('/')+1);

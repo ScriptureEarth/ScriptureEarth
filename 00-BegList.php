@@ -16,21 +16,21 @@ function check_input($value) {							// used for ' and " that find it in the inp
 	return $value;
 }
 
-	if (!isset($_GET["st"]) || !isset($_GET["MajorLanguage"]) || !isset($_GET["SpecificCountry"]) || !isset($_GET["Scriptname"]) || !isset($_GET["b"]) || !isset($_GET["gn"]) || !isset($_GET["n"]))
+	if (!isset($_GET['st']) || !isset($_GET['MajorLanguage']) || !isset($_GET['SpecificCountry']) || !isset($_GET['Scriptname']) || !isset($_GET['b']) || !isset($_GET['gn']) || !isset($_GET['n']))
 		die('One or more GET wasn\'t on the URL line!</body></html>');
-	$st = $_GET["st"];
-	$st = preg_replace("/^([a-z]{3})/", "$1", $st);
-	$MajorLanguage = $_GET["MajorLanguage"];
-	$MajorLanguage = preg_replace("/^(LN_\w)/", "$1", $MajorLanguage);
-	$SpecificCountry = $_GET["SpecificCountry"];
-	$SpecificCountry = preg_replace("/^(countries\.\w)/", "$1", $SpecificCountry);
-	$Scriptname = $_GET["Scriptname"];
-	$Beg = $_GET["b"];								// first letter of the language names or ISO code and the "Get Name of country" != "ALL"
-	$Beg = preg_replace("/^([a-zA-Z]{1,3})/", "$1", $Beg);
-	$GN = $_GET["gn"];								// Get Name of country or "ALL"
-	$GN = preg_replace("/^([a-zA-Z]{1,3})/", "$1", $GN);
-	$number = $_GET["n"];							// either number = 2 (LanguageName) or 1 (LanguageCode)
-	$number = preg_replace("/^(1-2)/", "$1", $number);
+	$st = $_GET['st'];
+	$st = preg_replace('/^([a-z]{3})/', "$1", $st);
+	$MajorLanguage = $_GET['MajorLanguage'];
+	$MajorLanguage = preg_replace('/^(LN_\w)/', "$1", $MajorLanguage);
+	$SpecificCountry = $_GET['SpecificCountry'];
+	$SpecificCountry = preg_replace('/^(countries\.\w)/', "$1", $SpecificCountry);
+	$Scriptname = $_GET['Scriptname'];
+	$Beg = $_GET['b'];								// first letter of the language names or ISO code and the 'Get Name of country' != "ALL"
+	$Beg = preg_replace('/^([a-zA-Z]{1,3})/', "$1", $Beg);
+	$GN = $_GET['gn'];								// Get Name of country or 'ALL'
+	$GN = preg_replace('/^([a-zA-Z]{1,3})/', "$1", $GN);
+	$number = $_GET['n'];							// either number = 2 (LanguageName) or 1 (LanguageCode)
+	$number = preg_replace('/^(1-2)/', "$1", $number);
 	if (empty($st) || empty($MajorLanguage) || empty($SpecificCountry) || empty($Beg) || empty($GN) || empty($number))
 		die('HACK! One or more variables wasn\'t on the URL line!</body></html>');
 
@@ -38,8 +38,8 @@ function check_input($value) {							// used for ' and " that find it in the inp
 	$db = get_my_db();
 	include './translate/functions.php';
 	
-	if ($GN == "all") {
-		$query = "SELECT DISTINCT * FROM scripture_main";
+	if ($GN == 'all') {
+		$query = 'SELECT DISTINCT * FROM scripture_main';
 	}
 	else {
 		$query="SELECT DISTINCT $SpecificCountry, scripture_main.* FROM scripture_main, countries, ISO_countries WHERE ISO_countries.ISO_countries = '$GN' AND scripture_main.ISO_ROD_index = ISO_countries.ISO_ROD_index AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY scripture_main.ISO";
@@ -51,8 +51,8 @@ function check_input($value) {							// used for ' and " that find it in the inp
 			select the default primary language name to be used by displaying the Countries and indigenous langauge names
 		*************************************************************************************************************
 	*/
-	$db->query("DROP TABLE IF EXISTS LN_Temp");			// Get the names of all of the Spanish languages or else get the default names
-	$db->query("CREATE TEMPORARY TABLE LN_Temp (ISO VARCHAR(3) NOT NULL, ROD_Code VARCHAR(5) NOT NULL, ISO_ROD_index INT NULL, LN VARCHAR(50) NOT NULL) ENGINE = MEMORY CHARSET = utf8") or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . "</body></html>");
+	$db->query('DROP TABLE IF EXISTS LN_Temp');			// Get the names of all of the Spanish languages or else get the default names
+	$db->query('CREATE TEMPORARY TABLE LN_Temp (ISO VARCHAR(3) NOT NULL, ROD_Code VARCHAR(5) NOT NULL, ISO_ROD_index INT NULL, LN VARCHAR(50) NOT NULL) ENGINE = MEMORY CHARSET = utf8') or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
 	$stmt = $db->prepare('INSERT INTO LN_Temp (ISO, ROD_Code, ISO_ROD_index, LN) VALUES (?, ?, ?, ?)');			// create a prepared statement
 	while ($r = $result->fetch_array()) {
 		$ISO=$r['ISO'];									// ISO
@@ -99,8 +99,14 @@ function check_input($value) {							// used for ' and " that find it in the inp
 					$row_temp=$result_LN->fetch_assoc();
 					$LN=trim($row_temp['LN_German']);
 					break;
+				case 6:
+					$query="SELECT LN_Chinese FROM LN_Chinese WHERE ISO_ROD_index = '$ISO_ROD_index'";
+					$result_LN=$db->query($query);
+					$row_temp=$result_LN->fetch_assoc();
+					$LN=trim($row_temp['LN_Chinese']);
+					break;
 				default:
-					echo 'This isn�t supposed to happen! The default language isn�t found.';
+					echo 'This isn’t supposed to happen! The default language isn�t found.';
 					break;
 			}
 		}
@@ -110,7 +116,7 @@ function check_input($value) {							// used for ' and " that find it in the inp
 			$row_temp=$result_LN->fetch_assoc();
 			$LN=trim($row_temp["$MajorLanguage"]);
 		}
-		$stmt->bind_param("ssis", $ISO, $ROD_Code, $ISO_ROD_index, $LN);			// bind parameters for markers								// 
+		$stmt->bind_param('ssis', $ISO, $ROD_Code, $ISO_ROD_index, $LN);			// bind parameters for markers
 		$stmt->execute();															// execute query
 	}
 	$stmt->close();																	// close statement
@@ -118,7 +124,7 @@ function check_input($value) {							// used for ' and " that find it in the inp
 	if ($number == 1) {		// $which == 'Name'
 		if ($Beg == 'all')
 			if ($GN == 'all')
-				$query="SELECT DISTINCT LN_Temp.LN, scripture_main.* FROM LN_Temp, scripture_main WHERE scripture_main.ISO_ROD_index = LN_Temp.ISO_ROD_index ORDER BY LN_Temp.ISO, LN_Temp.ROD_Code";
+				$query='SELECT DISTINCT LN_Temp.LN, scripture_main.* FROM LN_Temp, scripture_main WHERE scripture_main.ISO_ROD_index = LN_Temp.ISO_ROD_index ORDER BY LN_Temp.ISO, LN_Temp.ROD_Code';
 			else
 				$query="SELECT DISTINCT LN_Temp.LN, $SpecificCountry, scripture_main.* FROM LN_Temp, scripture_main, countries, ISO_countries WHERE ISO_countries.ISO_countries = '$GN' AND scripture_main.ISO_ROD_index = LN_Temp.ISO_ROD_index AND scripture_main.ISO_ROD_index = ISO_countries.ISO_ROD_index AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY LN_Temp.ISO, LN_Temp.ROD_Code";
 		else
@@ -127,7 +133,7 @@ function check_input($value) {							// used for ' and " that find it in the inp
 	else {	// $which == 'Code'
 		if ($Beg == 'all')
 			if ($GN == 'all')
-				$query="SELECT DISTINCT LN_Temp.LN, scripture_main.* FROM LN_Temp, scripture_main WHERE scripture_main.ISO_ROD_index = LN_Temp.ISO_ROD_index ORDER BY LN_Temp.LN";
+				$query='SELECT DISTINCT LN_Temp.LN, scripture_main.* FROM LN_Temp, scripture_main WHERE scripture_main.ISO_ROD_index = LN_Temp.ISO_ROD_index ORDER BY LN_Temp.LN';
 			else
 				$query="SELECT DISTINCT LN_Temp.LN, $SpecificCountry, scripture_main.* FROM LN_Temp, scripture_main, countries, ISO_countries WHERE ISO_countries.ISO_countries = '$GN' AND scripture_main.ISO_ROD_index = LN_Temp.ISO_ROD_index AND scripture_main.ISO_ROD_index = ISO_countries.ISO_ROD_index AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY LN_Temp.LN";
 		else
@@ -136,11 +142,11 @@ function check_input($value) {							// used for ' and " that find it in the inp
 	$resultSwitch=$db->query($query);
 	$numSwitch=$resultSwitch->num_rows;
 
-	$query = "SELECT Variant_Description FROM Variants WHERE Variant_Code = ?";				// Variants table
+	$query = 'SELECT Variant_Description FROM Variants WHERE Variant_Code = ?';				// Variants table
 	$stmt_Var=$db->prepare($query);															// create a prepared statement
 	$query="SELECT $SpecificCountry FROM ISO_countries, countries WHERE ISO_countries.ISO_ROD_index = ? AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY $SpecificCountry";
 	$stmt_ISO_countries=$db->prepare($query);												// create a prepared statement
-	$query="SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = ?";				// alt_lang_names table
+	$query='SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = ?';				// alt_lang_names table
 	$stmt_alt=$db->prepare($query);															// create a prepared statement
 	echo "<div id='CT'><table id='CountryTable'>";		// <div id='CT'> required for IE because it can't handle tables!
 	$i=0;
@@ -148,7 +154,7 @@ function check_input($value) {							// used for ' and " that find it in the inp
 		if ($i % 2)
 			$color = 'f8fafa';
 		else
-			//$color = "f0f4f0";
+			//$color = 'f0f4f0';
 			$color = 'EEF1F2';
 		$row=$resultSwitch->fetch_assoc();
 		$LN = $row['LN'];
@@ -160,7 +166,7 @@ function check_input($value) {							// used for ' and " that find it in the inp
 		$Variant_Code = $row['Variant_Code'];
 		$VD = '';
 		if (!is_null($Variant_Code) && $Variant_Code != '') {
-			$stmt_Var->bind_param("s", $Variant_Code);										// bind parameters for markers								// 
+			$stmt_Var->bind_param('s', $Variant_Code);										// bind parameters for markers								// 
 			$stmt_Var->execute();															// execute query
 			$resultVar = $stmt_Var->get_result();											// instead of bind_result (used for only 1 record):
 			if ($resultVar) {
@@ -168,7 +174,7 @@ function check_input($value) {							// used for ' and " that find it in the inp
 				$VD = $rowVD['Variant_Description'];
 			}
 		}		
-		$stmt_ISO_countries->bind_param("i", $ISO_ROD_index);								// bind parameters for markers								// 
+		$stmt_ISO_countries->bind_param('i', $ISO_ROD_index);								// bind parameters for markers								// 
 		$stmt_ISO_countries->execute();														// execute query
 		$result_ISO_countries = $stmt_ISO_countries->get_result();							// instead of bind_result (used for only 1 record):
 		$row_ISO_countries = $result_ISO_countries->fetch_assoc();
@@ -181,8 +187,8 @@ function check_input($value) {							// used for ' and " that find it in the inp
 			$Country_Count++;
 		}
 		echo "<tr style='background-color: #". $color . "; '>";
-		echo "<td width='30%' onclick='location.href=\"$Scriptname?sortby=lang&name=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code\"'>" . $LN . "</td>";
-		$stmt_alt->bind_param("i", $ISO_ROD_index);											// bind parameters for markers								// 
+		echo "<td width='30%' onclick='location.href=\"$Scriptname?sortby=lang&name=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code\"'>" . $LN . '</td>';
+		$stmt_alt->bind_param('i', $ISO_ROD_index);											// bind parameters for markers								// 
 		$stmt_alt->execute();																// execute query
 		$result_alt = $stmt_alt->get_result();												// instead of bind_result (used for only 1 record):
 		$alt_lang_names = '';
@@ -221,8 +227,8 @@ function check_input($value) {							// used for ' and " that find it in the inp
 		echo '</tr>';
 		$i++;
 	}
-	echo "</table>";
-	echo "</div>";
+	echo '</table>';
+	echo '</div>';
 	
 	if ($GN == 'all') {
 		echo "~||~";
@@ -233,12 +239,12 @@ function check_input($value) {							// used for ' and " that find it in the inp
 		echo "<td style='width: 100%; '>";
 		$Letter = '';
 		if ($number == 1)
-			$query="SELECT DISTINCT LEFT(ISO, 1) AS Beg FROM LN_Temp ORDER BY ISO";
+			$query='SELECT DISTINCT LEFT(ISO, 1) AS Beg FROM LN_Temp ORDER BY ISO';
 		else
-			$query="SELECT DISTINCT LEFT(LN, 1) AS Beg FROM LN_Temp ORDER BY LN";
+			$query='SELECT DISTINCT LEFT(LN, 1) AS Beg FROM LN_Temp ORDER BY LN';
 		$resultLetter = $db->query($query);
 			
-		$BegLetters=str_replace(" ", "&nbsp;", translate('Beginning with:', $st, 'sys')) . "&nbsp;&nbsp;";
+		$BegLetters=str_replace(' ', '&nbsp;', translate('Beginning with:', $st, 'sys')) . '&nbsp;&nbsp;';
 		while ($r = $resultLetter->fetch_assoc()) {
 			$BegLetter=$r['Beg'];
 			if ($Beg == $BegLetter) {
@@ -253,10 +259,10 @@ function check_input($value) {							// used for ' and " that find it in the inp
 		else
 			$BegLetters=$BegLetters . "[<a style='text-decoration: underline; ' href='#' onclick='Switch(" . $number . ", \"all\")'>" . translate('All', $st, 'sys') . "</a>]";
 		echo "<div id='BeginningLetters' style='margin-top: 10px; margin-bottom: 10px; font-weight: bold; font-size: .95em; '>$BegLetters</div>";
-		echo "</td>";
-		echo "</tr>";
-		echo "</table>";
-		echo "</div>";
+		echo '</td>';
+		echo '</tr>';
+		echo '</table>';
+		echo '</div>';
 		$resultLetter->free();
 	}
 	

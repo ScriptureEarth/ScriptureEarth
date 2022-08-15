@@ -84,9 +84,6 @@ require_once './include/conn.inc.php';							// connect to the database named 's
 $db = get_my_db();
 
 //session_unset();
-//echo '<pre>';
-//print_r($_SESSION);
-//echo '</pre>';
 
 if (!isset($_SESSION['MajorLanguage'])) {
 	$_SESSION['Variant_major'] = $Variant_major;
@@ -102,7 +99,7 @@ if (!isset($_SESSION['MajorLanguage'])) {
 if (!isset($_SESSION['nav_ln_array'])) {
 	$_SESSION['nav_ln_array'] = [];
 	$ln_temp_var = '';
-	$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `ln_number`";
+	$ln_query = 'SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `ln_number`';
 	$ln_result_temp=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
 	if ($ln_result_temp->num_rows == 0) {
 		die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
@@ -138,8 +135,8 @@ if (!isset($_SESSION['ln_result'])) {
 		Internet?
 	*************************************************************************************************************
 */
-$Internet = 0;		// localhost is 127.0.0.1 but "192.168.x.x" should be not-on-the-Internet because it's URL is part of the stand-alone server.
-$Internet = (substr($_SERVER['REMOTE_ADDR'], 0, 7) != "192.168" ? 1 : 0);
+$Internet = 0;		// localhost is 127.0.0.1 but '192.168.x.x' should be not-on-the-Internet because it's URL is part of the stand-alone server.
+$Internet = (substr($_SERVER['REMOTE_ADDR'], 0, 7) != '192.168' ? 1 : 0);
 
 $asset = 0;
 if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
@@ -206,10 +203,10 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 						}
 						// here check
 						if (isset($asset) && $asset === 1) {
-							$query = "SELECT DISTINCT scripture_main.*, $SpecificCountry, countries.ISO_Country FROM scripture_main, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO_ROD_index = '$ISO_ROD_index' AND `scripture_main`.`ISO_ROD_index` = `CellPhone`.`ISO_ROD_index` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
+							$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO_ROD_index = '$ISO_ROD_index' AND `nav_ln`.`ISO_ROD_index` = `CellPhone`.`ISO_ROD_index` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 						}
 						else {
-							$query = "SELECT DISTINCT scripture_main.*, $SpecificCountry, countries.ISO_Country FROM scripture_main, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO_ROD_index = '$ISO_ROD_index'";
+							$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO_ROD_index = '$ISO_ROD_index'";
 							$asset = 0;
 						}
 					}
@@ -252,22 +249,22 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 							}
 						}
 						// here - check						
-						if (isset($asset) && $asset === 1) {
+						if (isset($asset) && $asset == 1) {
 							if (!isset($ROD_Code) && !isset($Variant_Code)) {
-								$resultTest=$db->query("SELECT scripture_main.ISO FROM scripture_main, CellPhone WHERE scripture_main.ISO = '$ISO' AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'");
-								$query = "SELECT DISTINCT scripture_main.*, $SpecificCountry, countries.ISO_Country FROM scripture_main, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO = '$ISO' AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
+								$resultTest=$db->query("SELECT nav_ln.ISO FROM nav_ln, CellPhone WHERE nav_ln.ISO = '$ISO' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'");
+								$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO = '$ISO' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 							}
 							elseif (isset($ROD_Code) && !isset($Variant_Code)) {
-								$resultTest=$db->query("SELECT scripture_main.ISO FROM scripture_main, CellPhone WHERE scripture_main.ISO = '$ISO' AND scripture_main.ROD_Code = '$ROD_Code' AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' AND scripture_main.ROD_Code = `CellPhone`.`ROD_Code`");
-								$query = "SELECT DISTINCT scripture_main.*, $SpecificCountry, countries.ISO_Country FROM scripture_main, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO = '$ISO' AND scripture_main.ROD_Code = '$ROD_Code' AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
+								$resultTest=$db->query("SELECT nav_ln.ISO FROM nav_ln, CellPhone WHERE nav_ln.ISO = '$ISO' AND nav_ln.ROD_Code = '$ROD_Code' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' AND nav_ln.ROD_Code = `CellPhone`.`ROD_Code`");
+								$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO = '$ISO' AND nav_ln.ROD_Code = '$ROD_Code' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 							}
 							elseif (!isset($ROD_Code) && isset($Variant_Code)) {
-								$resultTest=$db->query("SELECT scripture_main.ISO FROM scripture_main, CellPhone WHERE scripture_main.ISO = '$ISO' AND scripture_main.Variant_Code = '$Variant_Code' AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' AND scripture_main.Variant_Code = `CellPhone`.`Variant_Code`");
-								$query = "SELECT DISTINCT scripture_main.*, $SpecificCountry, countries.ISO_Country FROM scripture_main, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO = '$ISO' AND (scripture_main.Variant_Code = '$Variant_Code' OR isnull(scripture_main.Variant_Code)) AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
+								$resultTest=$db->query("SELECT nav_ln.ISO FROM nav_ln, CellPhone WHERE nav_ln.ISO = '$ISO' AND nav_ln.Variant_Code = '$Variant_Code' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' AND nav_ln.Variant_Code = `CellPhone`.`Variant_Code`");
+								$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO = '$ISO' AND (nav_ln.Variant_Code = '$Variant_Code' OR isnull(nav_ln.Variant_Code)) AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 							}
 							else {
-								$resultTest=$db->query("SELECT scripture_main.ISO FROM scripture_main, CellPhone WHERE scripture_main.ISO = '$ISO' AND scripture_main.ROD_Code = '$ROD_Code' AND scripture_main.Variant_Code = '$Variant_Code' AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' AND scripture_main.ROD_Code = `CellPhone`.`ROD_Code` AND scripture_main.Variant_Code = `CellPhone`.`Variant_Code`");
-								$query = "SELECT DISTINCT scripture_main.*, $SpecificCountry, countries.ISO_Country FROM scripture_main, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO = '$ISO' AND scripture_main.ROD_Code = '$ROD_Code' AND (scripture_main.Variant_Code = '$Variant_Code' OR isnull(scripture_main.Variant_Code)) AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
+								$resultTest=$db->query("SELECT nav_ln.ISO FROM nav_ln, CellPhone WHERE nav_ln.ISO = '$ISO' AND nav_ln.ROD_Code = '$ROD_Code' AND nav_ln.Variant_Code = '$Variant_Code' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' AND nav_ln.ROD_Code = `CellPhone`.`ROD_Code` AND nav_ln.Variant_Code = `CellPhone`.`Variant_Code`");
+								$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO = '$ISO' AND nav_ln.ROD_Code = '$ROD_Code' AND (nav_ln.Variant_Code = '$Variant_Code' OR isnull(nav_ln.Variant_Code)) AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 							}
 							
 							if ($resultTest->num_rows > 1) {														// in case someone does ?sortby=lang&name=[ZZZ] and there is more than one ROD Code
@@ -276,7 +273,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 										more than 1 ROD Code/Variant code
 									*************************************************************************************************************
 								*/
-								// here:  AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'
+								// here:  AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'
 								include './00-moreThanOneRODCode.php';
 								return;
 							}
@@ -287,20 +284,20 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 						}
 						else {
 							if (!isset($ROD_Code) && !isset($Variant_Code)) {
-								$resultTest=$db->query("SELECT ISO FROM scripture_main WHERE ISO = '$ISO'");
-								$query = "SELECT DISTINCT `scripture_main`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `scripture_main`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `scripture_main`.`ISO` AND `scripture_main`.`ISO` = '$ISO'";
+								$resultTest=$db->query("SELECT ISO FROM nav_ln WHERE ISO = '$ISO'");
+								$query = "SELECT DISTINCT `nav_ln`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `nav_ln`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `nav_ln`.`ISO` AND `nav_ln`.`ISO` = '$ISO'";
 							}
 							elseif (isset($ROD_Code) && !isset($Variant_Code)) {
-								$resultTest=$db->query("SELECT ISO FROM scripture_main WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code'");
-								$query = "SELECT DISTINCT `scripture_main`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `scripture_main`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `scripture_main`.`ISO` AND `scripture_main`.`ISO` = '$ISO' AND `scripture_main`.`ROD_Code` = '$ROD_Code'";
+								$resultTest=$db->query("SELECT ISO FROM nav_ln WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code'");
+								$query = "SELECT DISTINCT `nav_ln`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `nav_ln`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `nav_ln`.`ISO` AND `nav_ln`.`ISO` = '$ISO' AND `nav_ln`.`ROD_Code` = '$ROD_Code'";
 							}
 							elseif (!isset($ROD_Code) && isset($Variant_Code)) {
-								$resultTest=$db->query("SELECT ISO FROM scripture_main WHERE ISO = '$ISO' AND Variant_Code = '$Variant_Code'");
-								$query = "SELECT DISTINCT `scripture_main`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `scripture_main`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `scripture_main`.`ISO` AND `scripture_main`.`ISO` = '$ISO' AND (`scripture_main`.`Variant_Code` =  '$Variant_Code' OR isnull(`scripture_main`.`Variant_Code`))";
+								$resultTest=$db->query("SELECT ISO FROM nav_ln WHERE ISO = '$ISO' AND Variant_Code = '$Variant_Code'");
+								$query = "SELECT DISTINCT `nav_ln`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `nav_ln`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `nav_ln`.`ISO` AND `nav_ln`.`ISO` = '$ISO' AND (`nav_ln`.`Variant_Code` =  '$Variant_Code' OR isnull(`nav_ln`.`Variant_Code`))";
 							}
 							else {
-								$resultTest=$db->query("SELECT ISO FROM scripture_main WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND Variant_Code = '$Variant_Code'");
-								$query = "SELECT DISTINCT `scripture_main`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `scripture_main`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `scripture_main`.`ISO` AND `scripture_main`.`ISO` = '$ISO' AND `scripture_main`.`ROD_Code` = '$ROD_Code' AND (`scripture_main`.`Variant_Code` =  '$Variant_Code' OR isnull(`scripture_main`.`Variant_Code`))";
+								$resultTest=$db->query("SELECT ISO FROM nav_ln WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND Variant_Code = '$Variant_Code'");
+								$query = "SELECT DISTINCT `nav_ln`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `nav_ln`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `nav_ln`.`ISO` AND `nav_ln`.`ISO` = '$ISO' AND `nav_ln`.`ROD_Code` = '$ROD_Code' AND (`nav_ln`.`Variant_Code` =  '$Variant_Code' OR isnull(`nav_ln`.`Variant_Code`))";
 							}
 							
 							if ($resultTest->num_rows > 1) {														// in case someone does ?sortby=lang&name=[ZZZ] and there is more than one ROD Code
@@ -355,11 +352,6 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 					echo '<div id="langBackground" style="cursor: pointer; " onclick="window.open(\''.$Scriptname.'\', \'_self\')">';
 					echo "<img src='images/00".$st."-ScriptureEarth_header.jpg' class='langHeader' alt='".translate('Scripture Resources in Thousands of Languages', $st, 'sys')."' />";									// just the ScriptureEarth.org icon
 					echo '</div>';
-					//? >
-					//<div style="position: absolute; top: 0px; left: 0px; width: 100%; ">							<!-- "empty" "window" over "Scripture Earth" if you click on it the script links to "00i-Scripture_Index.org" -->
-					//    <div style="position: relative; top: 0px; left: 30%; width: 40%; z-index: 1; cursor: pointer; " onclick="window.open('<? php echo $Scriptname; ? >', '_self')"><img id="langEmpty" src="./images/empty.png" /></div>
-					//</div>
-					//<? php
 					/*
 						*************************************************************************************
 							execute the include file which lists all of the indigenous languages
@@ -411,12 +403,12 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
                     /* ---------------------------------------------------------------------------------------
 									display counter
                     ------------------------------------------------------------------------------------------ */
-					Counter("AllCounter", false);											// Total website counter, don't display
-					Counter("AllMLCounter", false);											// All of the major languages counter, don't display
-					Counter("All_".$ISO."_Counter", false);									// All of the ISO counter, don't display
-					Counter("All_".$GetName."_".$ISO."_Counter", false);					// All of the Country and the varient language counter, don't display
-					Counter($counterName . "MLCounter", false);								// All of the major language counter, don't display
-					Counter($counterName . "ML_".$GetName."_Counter", false);				// All of the major language and the Country counter, don't display
+					Counter('AllCounter', false);											// Total website counter, don't display
+					Counter('AllMLCounter', false);											// All of the major languages counter, don't display
+					Counter('All_'.$ISO.'_Counter', false);									// All of the ISO counter, don't display
+					Counter('All_'.$GetName.'_'.$ISO.'_Counter', false);					// All of the Country and the varient language counter, don't display
+					Counter($counterName . 'MLCounter', false);								// All of the major language counter, don't display
+					Counter($counterName . 'ML_'.$GetName.'_Counter', false);				// All of the major language and the Country counter, don't display
 					?>
                     
 					<div>

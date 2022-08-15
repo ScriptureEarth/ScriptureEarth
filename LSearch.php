@@ -5,7 +5,7 @@ Updated by Scott Starker, Lærke Roager
 
 AJAX from LangSearch.js
 
-Can't use $_SESSION because as AJAX PHP there is NO global variables with AJAX including $_SESSION!
+Can't use $_SESSION because as AJAX PHP there is NO global variables with AJAX including $_SESSION. Although SESSION_ID would work slower than mine.
 
 Problems: TryLanguage ' should be \' 
 
@@ -42,7 +42,7 @@ else {
 }
 if (isset($_GET['st'])) {
 	$st = $_GET['st'];
-	$st = preg_replace('/^([a-z]{3})/', '$1', $st);
+	$st = preg_replace('/^([a-z]{3})/', "$1", $st);
 	if ($st == NULL) {
 		die('2) Hack!');
 	}
@@ -74,7 +74,7 @@ if (strlen($TryLanguage) > 2) {
 	$hint = 0;
 	include './include/conn.inc.php';
 	$db = get_my_db();
-	include './translate/functions.php';							// translation function
+	include './translate/functions.php';													// translation function
 	
 	$langISOrod = [];
 	$ISO_only = '';
