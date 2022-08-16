@@ -332,7 +332,7 @@ if ($SAB) {
 			if ($SABurl != '') {
 				echo '<tr>';
 					echo '<td>';
-						echo "<div class='linePointer' onclick='SAB_Scriptoria_Other(\"$SABurl\")'><img class='iconActions'";
+						echo "<div class='linePointer' onclick='SAB_Scriptoria_Other(\"$SABurl\")'><img class='iconActions' ";
 						echo "src='../images/SAB-readListen-icon.png' alt='".translate('Read/Listen/View', $st, 'sys')."' title='".translate('Read/Listen/View', $st, 'sys')."' /></div>";
 					echo '</td>';
 					echo '<td>';
@@ -479,7 +479,7 @@ if ($SAB) {
 				$SABindex++;
 				echo '<tr>';
 					echo '<td>';
-						echo "<div class='linePointer' onclick='SAB_Scriptoria_Index(\"$subfolder\")'><img class='iconActions'";
+						echo "<div class='linePointer' onclick='SAB_Scriptoria_Index(\"$subfolder\")'><img class='iconActions' ";
 						echo "src='../images/SAB-readListen-icon.png' alt='".translate('Read/Listen/View', $st, 'sys')."' title='".translate('Read/Listen/View', $st, 'sys')."'/></div>";
 					echo '</td>';
 					echo '<td>';
@@ -3211,4 +3211,4 @@ if ($links && $Internet) {
 	}
 </script>
 
-<script type='text/javascript' language='javascript'	src="_js/user_events.js"></script>
+<script type='text/javascript' language='javascript' src='_js/user_events.js'></script>
