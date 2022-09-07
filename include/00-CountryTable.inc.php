@@ -170,6 +170,7 @@ $stmt->close();																				// close statement
                 	echo "<div class='countryLN2' onclick='location.href=\"./$Scriptname?idx=$ISO_ROD_index&language=$LN&iso_code=$ISO\"'>$LN";
 				}
 				else {
+<<<<<<< Updated upstream
 					echo "<div class='countryLN2' onclick='iOSLanguage(\"$st\",$ISO_ROD_index,\"$LN\", \"$URL\")'>$LN";
 				}
                 $VD = '';
@@ -177,6 +178,18 @@ $stmt->close();																				// close statement
                     //$query = "SELECT Variant_Description FROM Variants WHERE Variant_Code = '$Variant_Code'";
                     //$resultVar=$db->query($query) or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . "</body></html>");
                     $stmt_Var->bind_param("s", $Variant_Code);										// bind parameters for markers								// 
+=======
+					if ($ISO == 'qqq') {
+						echo "<div class='countryLN2' onclick='location.href=\"./$Scriptname?idx=$ISO_ROD_index&language=$LN\"'>$LN";
+					}
+					else {
+						echo "<div class='countryLN2' onclick='location.href=\"./$Scriptname?idx=$ISO_ROD_index&language=$LN&iso_code=$ISO\"'>$LN";
+					}
+				}
+                $VD = '';
+                if (!is_null($Variant_Code) && $Variant_Code != '') {
+                    $stmt_Var->bind_param("s", $Variant_Code);										// bind parameters for markers
+>>>>>>> Stashed changes
                     $stmt_Var->execute();															// execute query
                     $resultVar = $stmt_Var->get_result();											// instead of bind_result (used for only 1 record):
                     if ($resultVar) {
@@ -190,9 +203,13 @@ $stmt->close();																				// close statement
 				echo '</div>';
 				
 				// Country(ies)
+<<<<<<< Updated upstream
                 //$query="SELECT $SpecificCountry FROM ISO_countries, countries WHERE ISO_countries.ISO_ROD_index = '$ISO_ROD_index' AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY $SpecificCountry";
                 //$result_ISO_countries=$db->query($query);
                 $stmt_ISO_countries->bind_param("i", $ISO_ROD_index);								// bind parameters for markers								// 
+=======
+                $stmt_ISO_countries->bind_param("i", $ISO_ROD_index);								// bind parameters for markers
+>>>>>>> Stashed changes
                 $stmt_ISO_countries->execute();														// execute query
                 $result_ISO_countries = $stmt_ISO_countries->get_result();							// instead of bind_result (used for only 1 record):
                 $row_ISO_countries = $result_ISO_countries->fetch_array();
@@ -219,6 +236,7 @@ $stmt->close();																				// close statement
                 	echo "<div class='countryCode2' onclick='location.href=\"./$Scriptname?idx=$ISO_ROD_index&language=$LN&iso_code=$ISO\"'>$ISO</div>";
 				}
 				else {
+<<<<<<< Updated upstream
 					echo "<div class='countryCode2' onclick='iOSLanguage(\"".$st."\",".$ISO_ROD_index.",\"".$LN."\",\"".$URL."\")'>$ISO</div>";
 				}
                
@@ -226,6 +244,17 @@ $stmt->close();																				// close statement
 				//$query_alt="SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = '$ISO_ROD_index'";			// alt_lang_names
                 //$result_alt=$db->query($query_alt);
                 $stmt_alt->bind_param("i", $ISO_ROD_index);											// bind parameters for markers								// 
+=======
+					if ($ISO == 'qqq') {
+					}
+					else {
+                		echo "<div class='countryCode2' onclick='location.href=\"./$Scriptname?idx=$ISO_ROD_index&language=$LN&iso_code=$ISO\"'>$ISO</div>";
+					}
+				}
+               
+				// alternate language names
+                $stmt_alt->bind_param("i", $ISO_ROD_index);											// bind parameters for markers
+>>>>>>> Stashed changes
                 $stmt_alt->execute();																// execute query
                 $result_alt = $stmt_alt->get_result();												// instead of bind_result (used for only 1 record):
                 $alt_lang_names = '';
@@ -236,7 +265,16 @@ $stmt->close();																				// close statement
 						echo "<div class='countryAlt2' onclick='location.href=\"./$Scriptname?idx=$ISO_ROD_index&language=$LN&iso_code=$ISO\"'>";
 					}
 					else {
+<<<<<<< Updated upstream
 						echo "<div class='countryAlt2' onclick='iOSLanguage(\"".$st."\",".$ISO_ROD_index.",\"".$LN."\",\"".$URL."\")'>";
+=======
+						if ($ISO == 'qqq') {
+							echo "<div class='countryAlt2' onclick='location.href=\"./$Scriptname?idx=$ISO_ROD_index&language=$LN\"'>";
+						}
+						else {
+							echo "<div class='countryAlt2' onclick='location.href=\"./$Scriptname?idx=$ISO_ROD_index&language=$LN&iso_code=$ISO\"'>";
+						}
+>>>>>>> Stashed changes
 					}
 					$alt_item = '';
                     $i_alt=0;

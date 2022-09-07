@@ -42,9 +42,15 @@ Can't use <div id="langBackground" in FireFox 84.0.1 with cursor: pointer; insid
 <script type="text/javascript" language="javascript"	src="JQuery/js/jquery-ui-1.12.1.min.js"></script>
 <script type="text/javascript" language="javascript"	src="_js/jquery.jplayer-2.9.2.min.js"></script>
 <script type="text/javascript" language="javascript"	src="_js/jplayer.playlist.min.js"></script>
+<<<<<<< Updated upstream
 <script type="text/javascript" language="javascript" 	src="_js/user_events.js?v=1.0.0"></script>
 <script type="text/javascript" language="javascript" 	src="_js/SpecificLanguage.js?v=1.0.2"></script>
 <script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.2"></script>
+=======
+<script type="text/javascript" language="javascript" 	src="_js/user_events.js?v=1.0.1"></script>
+<script type="text/javascript" language="javascript" 	src="_js/SpecificLanguage.js?v=1.0.3"></script>
+<script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.3"></script>
+>>>>>>> Stashed changes
 <!--script type='text/javascript' language='javascript'	src="_js/LangSearch.js?v=1.0.3"></script-->
 <!--link rel='stylesheet' type='text/css' 	href='_css/boilerplate.css' /-->
 <link rel='stylesheet' type='text/css' 		href='_css/FGL.css' />
@@ -736,4 +742,12 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 	</div>
 </div>
 <?php // This script HAS to be down here for the major language dropdown box to work! ?>
+<<<<<<< Updated upstream
 <script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.0.4"></script>
+=======
+<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.0.7"></script>
+<script>
+	// for LangSeacrh.js / LSearch.php
+	var nav_languages_line = '<?php echo $_SESSION['ln_result']; ?>';
+</script>
+>>>>>>> Stashed changes

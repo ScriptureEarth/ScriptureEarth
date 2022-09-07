@@ -1,5 +1,5 @@
 // Created by Scott Starker
-// Updated by Scott Starker, LÃ¦rke Roager
+// Updated by Scott Starker, Lærke Roager
 
 /*
 	variables are defined in LSearch.php:
@@ -47,6 +47,7 @@ function showLanguage(str, st, Internet, asset) { // get the names of the langua
         $("#copyright").show();
         return;
     }
+<<<<<<< Updated upstream
     // saltillo: êŒ; U+A78C
     var re = /[-. ,'êŒ()A-Za-zÃ¡Ã©Ã­Ã³ÃºÃ‘Ã±Ã§Ã£ÃµÃ¢ÃªÃ®Ã´Ã»Ã¤Ã«Ã¶Ã¼Ã¯]/; // the '-' has to go first
     var foundArray = re.exec(str.substring(str.length - 1)); // the last character of the str
@@ -56,6 +57,24 @@ function showLanguage(str, st, Internet, asset) { // get the names of the langua
         str = str.substring(0, str.length - 1);
         if (str.length == 0) {
             document.getElementById("ID").innerHTML = '';
+=======
+
+    var nonLatinScript = 0;
+    if (/\p{Script=Han}/u.test(str.substring(str.length - 1)) || /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/.test(str.substring(str.length - 1))) { // https://stackoverflow.com/questions/21109011/javascript-unicode-string-chinese-character-but-no-punctuation
+        nonLatinScript = 1;
+    } else {
+        // saltillo: ?; U+A78C
+        var re = /[-. ,'?()A-Za-záéíóúÑñçãõâêîôûäëöüï]/; // the '-' has to go first
+        var foundArray = re.exec(str.substring(str.length - 1)); // the last character of the str
+        if (!foundArray) { // is the value of the last character of the str isn't A-Za - z then it returns
+            document.getElementById("ID").value = document.getElementById("ID").value.substring(0, document.getElementById("ID").value.length - 1);
+            alert(str.substring(str.length - 1) + " is an invalid character. Use an alphabetic character or - , ' ?[saltillo] ( )  [space]");
+            str = str.substring(0, str.length - 1);
+            if (str.length == 0) {
+                document.getElementById("ID").innerHTML = '';
+            }
+            return;
+>>>>>>> Stashed changes
         }
         return;
     }
@@ -196,8 +215,8 @@ function showCountry(str, st, Internet, asset) { // get the names of the country
     if (/\p{Script=Han}/u.test(str.substring(str.length - 1)) || /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/.test(str.substring(str.length - 1))) { // https://stackoverflow.com/questions/21109011/javascript-unicode-string-chinese-character-but-no-punctuation
         nonLatinScript = 1;
     } else {
-        // saltillo: êŒ; U+A78C
-        var re = /[-. ,'êŒ()A-Za-zÃ¡Ã©Ã­Ã³ÃºÃ‘Ã±Ã§Ã£ÃµÃ¢ÃªÃ®Ã´Ã»Ã¤Ã«Ã¶Ã¼Ã¯&]/;
+        // saltillo: ?; U+A78C
+        var re = /[-. ,'?()A-Za-záéíóúÑñçãõâêîôûäëöüï&]/;
         var foundArray = re.exec(str.substring(str.length - 1)); // the last character of the str
         if (!foundArray) { // is the value of the last character of the str isn't A-Za - z then it returns
             document.getElementById("CID").value = document.getElementById("CID").value.substring(0, document.getElementById("CID").value.length - 1);
@@ -381,7 +400,7 @@ function countryChange(country) {
 }
 
 function RemoveAccents(str) {
-    var accents = 'Ã€ÃÃ‚ÃƒÃ„Ã…Ã Ã¡Ã¢Ã£Ã¤Ã¥Ã’Ã“Ã”Ã•Ã–Ã˜Ã²Ã³Ã´ÃµÃ¶Ã¸ÃˆÃ‰ÃŠÃ‹Ã¨Ã©ÃªÃ«Ã°Ã‡Ã§ÃÃŒÃÃÃÃ¬Ã­Ã®Ã¯Ã™ÃšÃ›ÃœÃ¹ÃºÃ»Ã¼Ã‘Ã±Å Å¡Å¸Ã¿Ã½Å½Å¾';
+    var accents = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëğÇçĞÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿı';
     var accentsOut = 'AAAAAAaaaaaaOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz';
     str = str.split('');
     var strLen = str.length;
@@ -395,77 +414,77 @@ function RemoveAccents(str) {
 }
 
 
-// var without_accents = makeSortString("wÃ¯thÃªÃ¼Ã„TrÃ¨sBÃ¯gÃ¼eAk100t");
+// var without_accents = makeSortString("wïthêüÄTrèsBïgüeAk100t");
 makeSortString = (function() {
-    var translate_re = /[Ã¡Ã Ã¢Ã£Ã¤Ã¥Ã€ÃÃ‚ÃƒÃ„Ã…Ã†Ã§Ã‡ÃÃÃ¨Ã©ÃªÃ«ÃˆÃŠÃ‹â‚¬Ã¬Ã­Ã®Ã¯Ã¬ÃŒÃÃÃÃŒÃ±Ã‘Ã²Ã³Ã´ÃµÃ¶Ã¸Ã’Ã“Ã”Ã•Ã–Ã˜Å’Å¡ÃŸÅ Ã¹ÃºÃ»Ã¼Ã™ÃšÃ›ÃœÃ½Ã¿ÃÅ¸Å¾Å½]/g;
+    var translate_re = /[áàâãäåÀÁÂÃÄÅÆçÇĞĞèéêëÈÊË€ìíîïìÌÍÎÏÌñÑòóôõöøÒÓÔÕÖØŒšßŠùúûüÙÚÛÜıÿİŸ]/g;
     var translate = {
-        "Ã¡": "a",
-        "Ã ": "a",
-        "Ã¢": "a",
-        "Ã£": "a",
-        "Ã¤": "a",
-        "Ã¥": "a",
-        "Ã€": "A",
-        "Ã": "A",
-        "Ã‚": "A",
-        "Ãƒ": "A",
-        "Ã„": "A",
-        "Ã…": "A",
-        "Ã†": "A",
-        "Ã§": "c",
-        "Ã‡": "C",
-        "Ã": "D",
-        "Ã": "D",
-        "Ã¨": "e",
-        "Ã©": "e",
-        "Ãª": "e",
-        "Ã«": "e",
-        "Ãˆ": "E",
-        "ÃŠ": "E",
-        "Ã‹": "E",
-        "â‚¬": "E",
-        "Ã¬": "i",
-        "Ã­": "i",
-        "Ã®": "i",
-        "Ã¯": "i",
-        "Ã¬": "i",
-        "ÃŒ": "I",
-        "Ã": "I",
-        "Ã": "I",
-        "Ã": "I",
-        "ÃŒ": "I",
-        "Ã±": "n",
-        "Ã‘": "N",
-        "Ã²": "o",
-        "Ã³": "o",
-        "Ã´": "o",
-        "Ãµ": "o",
-        "Ã¶": "o",
-        "Ã¸": "o",
-        "Ã’": "O",
-        "Ã“": "O",
-        "Ã”": "O",
-        "Ã•": "O",
-        "Ã–": "O",
-        "Ã˜": "O",
-        "Å’": "O",
-        "Å¡": "s",
-        "ÃŸ": "s",
-        "Å ": "S",
-        "Ã¹": "u",
-        "Ãº": "u",
-        "Ã»": "u",
-        "Ã¼": "u",
-        "Ã™": "U",
-        "Ãš": "U",
-        "Ã›": "U",
-        "Ãœ": "U",
-        "Ã½": "y",
-        "Ã¿": "y",
-        "Ã": "Y",
-        "Å¸": "Y",
-        "Å¾": "z",
-        "Å½": "Z"
+        "á": "a",
+        "à": "a",
+        "â": "a",
+        "ã": "a",
+        "ä": "a",
+        "å": "a",
+        "À": "A",
+        "Á": "A",
+        "Â": "A",
+        "Ã": "A",
+        "Ä": "A",
+        "Å": "A",
+        "Æ": "A",
+        "ç": "c",
+        "Ç": "C",
+        "Ğ": "D",
+        "Ğ": "D",
+        "è": "e",
+        "é": "e",
+        "ê": "e",
+        "ë": "e",
+        "È": "E",
+        "Ê": "E",
+        "Ë": "E",
+        "€": "E",
+        "ì": "i",
+        "í": "i",
+        "î": "i",
+        "ï": "i",
+        "ì": "i",
+        "Ì": "I",
+        "Í": "I",
+        "Î": "I",
+        "Ï": "I",
+        "Ì": "I",
+        "ñ": "n",
+        "Ñ": "N",
+        "ò": "o",
+        "ó": "o",
+        "ô": "o",
+        "õ": "o",
+        "ö": "o",
+        "ø": "o",
+        "Ò": "O",
+        "Ó": "O",
+        "Ô": "O",
+        "Õ": "O",
+        "Ö": "O",
+        "Ø": "O",
+        "Œ": "O",
+        "š": "s",
+        "ß": "s",
+        "Š": "S",
+        "ù": "u",
+        "ú": "u",
+        "û": "u",
+        "ü": "u",
+        "Ù": "U",
+        "Ú": "U",
+        "Û": "U",
+        "Ü": "U",
+        "ı": "y",
+        "ÿ": "y",
+        "İ": "Y",
+        "Ÿ": "Y",
+        "": "z",
+        "": "Z"
     };
     return function(s) {
         return (s.replace(translate_re, function(match) { return translate[match]; }));

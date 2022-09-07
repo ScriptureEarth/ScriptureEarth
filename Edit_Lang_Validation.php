@@ -30,6 +30,25 @@
 		}
 	}
 
+// Specific Language Names for the navigational Language Names
+//		"No Language Names are found."
+	$no_ln_missing = 0;
+	foreach ($_SESSION['nav_ln_array'] as $code => $array){
+		$inputs[$array[1].'_lang_name'] = check_input($_POST[$array[1]."_lang_name"]);
+		if ($inputs[$array[1].'_lang_name'] != '') {
+			$inputs['LN_'.$array[1].'Bool'] = 1;
+		}
+		else {
+			$inputs['LN_'.$array[1].'Bool'] = 0;
+			$no_ln_missing++;
+		}
+	}
+	if ($no_ln_missing == count($_SESSION['nav_ln_array'])) {
+		$count_failed++;
+		$messages[] = "No Language Names are found.";
+	}
+
+//		"The Country isn't found: ".$temp
 	$z = 1;
 	if ($inputs['Eng_country-1'] != '') {
 		$db->query('set names utf8');
@@ -52,25 +71,13 @@
 		$inputs['ISO_countries'] = --$z;
 	}
 
-// Navigational Language Names
-	$no_ln_missing = 0;
-	foreach ($_SESSION['nav_ln_array'] as $code => $array){
-		$inputs[$array[1].'_lang_name'] = check_input($_POST[$array[1]."_lang_name"]);
-		if ($inputs[$array[1].'_lang_name'] != '') {
-			$inputs['LN_'.$array[1].'Bool'] = 1;
-		}
-		else {
-			$inputs['LN_'.$array[1].'Bool'] = 0;
-			$no_ln_missing++;
-		}
-	}
-	
-	if ($no_ln_missing == count($_SESSION['nav_ln_array'])) {
+//		"The ENGLISH Language Name is empty."
+	if (!$inputs['LN_'.$_SESSION['nav_ln_array']['en'][1].'Bool']) {
 		$count_failed++;
-		$messages[] = "No Language Names are found.";
+		$messages[] = "The ENGLISH Language Name is empty.";
 	}
 
-// major language
+//		"The ".$array[1]." default language is not associated with the ".$array[1]." Metadata language name."
 	$DefaultLang = $_POST["DefaultLang"];
 	foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		if ($DefaultLang == $array[1]."Lang") {
@@ -149,15 +156,15 @@
 
 // SAB
 
-/*
-		SAB_scriptoria
-url		subfolder	description		pre_scriptoria
-			sab/
+	/*
+			SAB_scriptoria
+	url		subfolder	description		pre_scriptoria
+				sab/
 
-		Scripture_Edit.php
-txtSABurl		txtSABsubfolder		txtSABdescription		txtSABpreScriptoria
-(hidden) txtSABsubFirstPath
-*/
+			Scripture_Edit.php
+	txtSABurl		txtSABsubfolder		txtSABdescription		txtSABpreScriptoria
+	(hidden) txtSABsubFirstPath
+	*/
 	$inputs["SAB"] = 0;
 	$i = 1;
 	while (isset($_POST["txtSABsubfolder-".(string)$i]) && (trim($_POST["txtSABsubfolder-".(string)$i]) != '') || (isset($_POST["txtSABurl-".(string)$i]) && (trim($_POST["txtSABurl-".(string)$i]) != ''))) {

@@ -1891,7 +1891,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 			
 			Scriptoria needs help on audio
 	*/
-?>
+	?>
         <div>Synchronized text and audio (Scripture Apps Builder) HTMLs:</div>
 		<table valign="bottom" style="margin-top: 10px; " cellpadding="0" cellspacing="0" width="100%">
         <thead>

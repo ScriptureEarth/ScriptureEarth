@@ -61,7 +61,6 @@ function check_input($value) {
 			$inputs['var'] = $var;							// Variant_Code to the language name
 			
 // Countries
-			
 			$inputs['Eng_country-1'] = check_input($_POST["Eng_country-1"]);
 			$inputs['ISO_countries'] = 0;
 		
@@ -77,7 +76,8 @@ function check_input($value) {
 				}
 			}
 
-// Specific Language Name for the navigational Language Names
+// Specific Language Names for the navigational Language Names
+//		"No Language Names are found."
 			$no_ln_missing = 0;
 			foreach ($_SESSION['nav_ln_array'] as $code => $array){									// $array[1] = English, Chinese, etc.
 				$inputs[$array[1].'_lang_name'] = check_input($_POST[$array[1]."_lang_name"]);
@@ -89,17 +89,17 @@ function check_input($value) {
 					$no_ln_missing++;
 				}
 			}
-
 			if ($no_ln_missing == count($_SESSION['nav_ln_array'])) {
 				$count_failed++;
 				$messages[] = "No Language Names are found.";
 			}
-			
+
+//		"The Country isn't found: ".$temp
 			$z = 1;
-			if ($inputs['Eng_country-1'] != '') {
+			if ($inputs['Eng_country-1'] != '') {													// see countries section
 				$query="SELECT ISO_Country FROM countries WHERE English=?";
 				$stmt=$db->prepare($query);															// create a prepared statement
-				while ($z < $i) {
+				while ($z < $i) {																	// $i is up under the countries section
 					$temp=$inputs["Eng_country-".(string)$z];
 					$stmt->bind_param("s", $temp);													// bind parameters for markers
 					$stmt->execute();																// execute query
@@ -118,7 +118,14 @@ function check_input($value) {
 				$stmt->close();
 				$inputs['ISO_countries'] = --$z;
 			}
+
+//		"The ENGLISH Language Name is empty."
+			if (!$inputs['LN_'.$_SESSION['nav_ln_array']['en'][1].'Bool']) {
+				$count_failed++;
+				$messages[] = "The ENGLISH Language Name is empty.";
+			}
 			
+//		"The ".$array[1]." default language is not associated with the ".$array[1]." Metadata language name."
 			$DefaultLang = $_POST["DefaultLang"];
 			foreach ($_SESSION['nav_ln_array'] as $code => $array){
 				if ($DefaultLang == $array[1]."Lang") {

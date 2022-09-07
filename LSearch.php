@@ -3,11 +3,16 @@
 session_start();
 /*
 Created by Scottt Starker
+<<<<<<< Updated upstream
 Updated by Scott Starker, Lærke Roager
 AJAX from LangSearch.js
 
+=======
+Updated by Scott Starker, L�rke Roager
+AJAX from LangSearch.js
+Can't use $_SESSION because as AJAX PHP there is NO global variables with AJAX including $_SESSION. Although SESSION_ID would work slower than mine.
+>>>>>>> Stashed changes
 Problems: TryLanguage ' should be \' 
-
 MySQL: utf8_general_ci flattens accents as well as lower-case:
 You must ensure that all parties (your app, mysql connection, your table or column) have set utf8 as charset.
 - header('Content-Type: text/html; charset=utf-8'); (or <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />)
@@ -17,6 +22,20 @@ You must ensure that all parties (your app, mysql connection, your table or colu
 */
 
 /*
+<<<<<<< Updated upstream
+=======
+	input:
+		language (string: 'try language')
+		st (string: eng, spa, por, fre, ndl, deu, cmn)
+		nav_ln_line (strng: navigational languages separated by ', ')
+		MajorLanguage = LN_English
+		Variant_major = Variant_Eng
+		SpecificCountry = English
+		e.g. LSearch.php?language=kerala&st=eng&Variant_major=Variant_Eng&SpecificCountry=English&MajorLanguage=LN_English&nav_ln_line=LN_English,%20LN_Spanish,%20LN_Portuguese,%20LN_French,%20LN_Dutch,%20LN_German,%20LN_Chinese,
+*/
+
+/*
+>>>>>>> Stashed changes
 	These are defined at the end of $response:
 	langNotFound = "The language is not found.";
 	colLN = "Language Name";
@@ -27,7 +46,7 @@ You must ensure that all parties (your app, mysql connection, your table or colu
 
 // display all of the language names, ROD codes and variant codes from a major and alternate languages names
 if (isset($_GET['language'])) $TryLanguage = $_GET['language']; else { die('Hack!'); }
-if (preg_match("/^[-. ,'ꞌ()A-Za-záéíóúÑñçãõâêîôûäëöüï&]+/", $TryLanguage)) {
+if (preg_match("/^[-. ,'?()A-Za-z��������������������&]+/", $TryLanguage)) {
 }
 else {
 	die('Hack!');
@@ -62,6 +81,12 @@ if (strlen($TryLanguage) > 2) {
 		exit();
 	}
 
+<<<<<<< Updated upstream
+=======
+	$MajorLanguage = $_GET['MajorLanguage'];
+	$Variant_major = $_GET['Variant_major'];
+	$SpecificCountry = $_GET['SpecificCountry'];
+>>>>>>> Stashed changes
 	$hint = 0;
 	include './include/conn.inc.php';
 	$db = get_my_db();
@@ -184,9 +209,9 @@ if (strlen($TryLanguage) > 2) {
 	}
 //echo $country . '#<br />';
 	
-	$RD = ['�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'ae', '�' => 'AE', '�' => 'ae', '�' => 'AE', '�' => 'c', '�' => 'C', '�' => 'D', '�' => 'dh', '�' => 'Dh', '�' => 'e', '�' => 'E', '�' => 'e', '�' => 'E', '�' => 'e', '�' => 'E', '�' => 'e', '�' => 'E', '�' => 'i', '�' => 'I', '�' => 'i', '�' => 'I', '�' => 'i', '�' => 'I', '�' => 'i', '�' => 'I', '�' => 'n', '�' => 'N', '�' => 'o', '�' => 'O', '�' => 'o', '�' => 'O', '�' => 'o', '�' => 'O', '�' => 'o', '�' => 'O', '�' => 'oe', '�' => 'OE', '�' => 'oe', '�' => 'OE', '�' => 's', '�' => 'S', '�' => 'SS', '�' => 'u', '�' => 'U', '�' => 'u', '�' => 'U', '�' => 'u', '�' => 'U', '�' => 'ue', '�' => 'UE', '�' => 'y', '�' => 'Y', '�' => 'y', '�' => 'Y', '�' => 'z', '�' => 'Z'];
-	if (preg_match('/[��������������������������]/', $TryLanguage)) {							// diacritic removal
-		$TryLanguage = strtr($TryLanguage, $RD);												// PHP: strtr - Translate characters ($addr = strtr($addr, "���", "aao");)
+	$RD = ['?' => 'a', '?' => 'A', '?' => 'a', '?' => 'A', '?' => 'a', '?' => 'A', '?' => 'a', '?' => 'A', '?' => 'a', '?' => 'A', '?' => 'ae', '?' => 'AE', '?' => 'ae', '?' => 'AE', '?' => 'c', '?' => 'C', '?' => 'D', '?' => 'dh', '?' => 'Dh', '?' => 'e', '?' => 'E', '?' => 'e', '?' => 'E', '?' => 'e', '?' => 'E', '?' => 'e', '?' => 'E', '?' => 'i', '?' => 'I', '?' => 'i', '?' => 'I', '?' => 'i', '?' => 'I', '?' => 'i', '?' => 'I', '?' => 'n', '?' => 'N', '?' => 'o', '?' => 'O', '?' => 'o', '?' => 'O', '?' => 'o', '?' => 'O', '?' => 'o', '?' => 'O', '?' => 'oe', '?' => 'OE', '?' => 'oe', '?' => 'OE', '?' => 's', '?' => 'S', '?' => 'SS', '?' => 'u', '?' => 'U', '?' => 'u', '?' => 'U', '?' => 'u', '?' => 'U', '?' => 'ue', '?' => 'UE', '?' => 'y', '?' => 'Y', '?' => 'y', '?' => 'Y', '?' => 'z', '?' => 'Z'];
+	if (preg_match('/[??????????????????????????]/', $TryLanguage)) {							// diacritic removal
+		$TryLanguage = strtr($TryLanguage, $RD);												// PHP: strtr - Translate characters ($addr = strtr($addr, "???", "aao");)
 	}
 	
 	$TryLanguage = str_replace("'", "\'", $TryLanguage);
@@ -197,7 +222,13 @@ if (strlen($TryLanguage) > 2) {
 		$LN = '';
 		while ($row = $result->fetch_assoc()) {													// All ISOs + ROD codes + variants
 			$ISO_ROD_index = $row['ISO_ROD_index'];
+<<<<<<< Updated upstream
 			include './include/00-DBLanguageCountryName.inc.php';								// returns LN
+=======
+			include './include/00-DBLanguageCountryName.inc.php';								// returns $LN (navigational langename name)
+//echo '3rd<br />';
+//exit;
+>>>>>>> Stashed changes
 			// Author: 'ChickenFeet'
 			$temp_LN = CheckLetters($LN);														// diacritic removal
 			
@@ -206,8 +237,12 @@ if (strlen($TryLanguage) > 2) {
 			$temp_TL = str_replace('(', '\(', $TryLanguage);
 			$temp_TL = str_replace(')', '\)', $temp_TL);
 			$temp_TL = str_replace('.', '\.', $temp_TL);
+<<<<<<< Updated upstream
 			$test = preg_match("/\b".$temp_TL.'/ui', $temp_LN, $match);						// match the beginning of the word(s) with TryLanguage from the user
 			if ($test === 1) {
+=======
+			if (preg_match("/\b".$temp_TL.'/ui', $temp_LN, $match)) {							// match the beginning of the word(s) with TryLanguage from the user
+>>>>>>> Stashed changes
 				$ISO = $row['ISO'];
 				if (strlen($TryLanguage) == 3 && $ISO == $ISO_only) {							// if the length of $TryLanguage is 3 and the top section is there
 					continue;
@@ -313,6 +348,8 @@ if (strlen($TryLanguage) > 2) {
 		$query="SELECT DISTINCT ISO_ROD_index FROM alt_lang_names WHERE alt_lang_name REGEXP '(^| )$TryLanguage' AND ISO_ROD_index NOT IN (".implode(',', $langISOrod).")";
 	}
 
+//echo '4th<br />';
+//exit;
 	if ($result = $db->query($query)) {
 		while ($r = $result->fetch_assoc()) {
 			$ISO_ROD_index = $r['ISO_ROD_index'];
@@ -435,14 +472,21 @@ if (strlen($TryLanguage) > 2) {
 
 
 function removeDiacritics($txt) {
-    $transliterationTable = ['�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'ae', '�' => 'AE', '�' => 'ae', '�' => 'AE', '�' => 'c', '�' => 'C', '�' => 'D', '�' => 'dh', '�' => 'Dh', '�' => 'e', '�' => 'E', '�' => 'e', '�' => 'E', '�' => 'e', '�' => 'E', '�' => 'e', '�' => 'E', '�' => 'i', '�' => 'I', '�' => 'i', '�' => 'I', '�' => 'i', '�' => 'I', '�' => 'i', '�' => 'I', '�' => 'n', '�' => 'N', '�' => 'o', '�' => 'O', '�' => 'o', '�' => 'O', '�' => 'o', '�' => 'O', '�' => 'o', '�' => 'O', '�' => 'oe', '�' => 'OE', '�' => 'oe', '�' => 'OE', '�' => 's', '�' => 'S', '�' => 'SS', '�' => 'u', '�' => 'U', '�' => 'u', '�' => 'U', '�' => 'u', '�' => 'U', '�' => 'ue', '�' => 'UE', '�' => 'y', '�' => 'Y', '�' => 'y', '�' => 'Y', '�' => 'z', '�' => 'Z'];
+    $transliterationTable = ['?' => 'a', '?' => 'A', '?' => 'a', '?' => 'A', '?' => 'a', '?' => 'A', '?' => 'a', '?' => 'A', '?' => 'a', '?' => 'A', '?' => 'ae', '?' => 'AE', '?' => 'ae', '?' => 'AE', '?' => 'c', '?' => 'C', '?' => 'D', '?' => 'dh', '?' => 'Dh', '?' => 'e', '?' => 'E', '?' => 'e', '?' => 'E', '?' => 'e', '?' => 'E', '?' => 'e', '?' => 'E', '?' => 'i', '?' => 'I', '?' => 'i', '?' => 'I', '?' => 'i', '?' => 'I', '?' => 'i', '?' => 'I', '?' => 'n', '?' => 'N', '?' => 'o', '?' => 'O', '?' => 'o', '?' => 'O', '?' => 'o', '?' => 'O', '?' => 'o', '?' => 'O', '?' => 'oe', '?' => 'OE', '?' => 'oe', '?' => 'OE', '?' => 's', '?' => 'S', '?' => 'SS', '?' => 'u', '?' => 'U', '?' => 'u', '?' => 'U', '?' => 'u', '?' => 'U', '?' => 'ue', '?' => 'UE', '?' => 'y', '?' => 'Y', '?' => 'y', '?' => 'Y', '?' => 'z', '?' => 'Z'];
 	return strtr($txt, $transliterationTable);
 }    // or, return str_replace(array_keys($transliterationTable), array_values($transliterationTable), $txt);
 
 // Author: 'ChickenFeet'
+// https://stackoverflow.com/questions/3371697/replacing-accented-characters-php
 function CheckLetters($field){
+	//echo $field . ' # ';
+	$field = htmlentities($field, ENT_COMPAT, "UTF-8");
+	$field = preg_replace('/&([a-zA-Z])(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml|caron);/','$1',$field);
+	//echo $field . '<br />';
+	return html_entity_decode($field);
+
 	// global $letters;										// won't work
-    $letters = [
+    /*$letters = [
         0 => "a à á â ä æ ã å ā",
         1 => "c ç ć č",
         2 => "e é è ê ë ę ė ē",
@@ -466,6 +510,6 @@ function CheckLetters($field){
             }
         }
     }
-    return $field;
+    return $field;*/
 }
 ?>

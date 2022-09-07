@@ -164,8 +164,13 @@
 			if ($asset == 1) {
 				echo "<div class='moreThanCode2' onclick='iOSLanguage(\"$st\", \"$idx\", \"$LN\", \"$URL\")'>".$ISO."<br />[".$rod."]";
 			}
-			else {			
-				echo "<div class='moreThanCode2' onclick='window.open(\"".$Scriptname."?idx=".$idx."\", \"_self\")'>".$ISO."<br />[".$rod."]";
+			else {
+				if ($ISO == 'qqq') {
+					echo "<div class='moreThanCode2' onclick='window.open(\"".$Scriptname."?idx=".$idx."\", \"_self\")'>".$rod;
+				}
+				else {
+					echo "<div class='moreThanCode2' onclick='window.open(\"".$Scriptname."?idx=".$idx."\", \"_self\")'>".$ISO."<br />[".$rod."]";
+				}
 			}
 			if (isset($Variant_Code) && $Variant_Code != '') {
 				echo "<br />[".$var."]";
