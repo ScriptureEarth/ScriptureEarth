@@ -158,7 +158,6 @@ a.alink {
 	display: block;
 	padding: 4px 0px 5px 0px;
 	text-align: center;
-	vertical-align: middle;
 	font-size: 12pt;
 	font-weight: bold;
 	text-decoration: none;

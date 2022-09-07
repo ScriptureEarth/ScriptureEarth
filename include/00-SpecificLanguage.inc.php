@@ -151,10 +151,8 @@ $links=$rowSM['links'];							// boolean
 $eBible=$rowSM['eBible'];						// boolean
 $SILlink=$rowSM['SILlink'];						// boolean
 
-<<<<<<< Updated upstream
 $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 ?>
-=======
 <h1 id='<?php echo $LN; ?>'>
 	<?php
 	// font-size: 22pt
@@ -186,7 +184,6 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 </script>
 
 <div style='display: inline; clear: both; '>
->>>>>>> Stashed changes
 
 <div id='SpecLang' style='margin-left: auto; margin-right: auto; text-align: left; '>
 <br />

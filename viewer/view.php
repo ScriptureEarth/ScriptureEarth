@@ -17,8 +17,6 @@
 include '../include/conn.inc.php';
 $db = get_my_db();
 include "../translate/functions.php";
-<<<<<<< Updated upstream
-=======
 
 $nav_LN_names = [];
 $k=1;
@@ -28,7 +26,6 @@ while ($row_LN = $res->fetch_assoc()){
 		$nav_LN_names[$k++] = $row_LN['Field'];
 	}
 }
->>>>>>> Stashed changes
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
@@ -600,10 +597,6 @@ switch ($st) {
 		'IDX'=>'Topical index'
 		);
 		break;
-<<<<<<< Updated upstream
-	default:
-		echo 'This isn’t suppossed to happen (view - switch code).';
-=======
 	case "cmn":
 		$MajorLanguage = "LN_Chinese";
 		$bookDescription = array(
@@ -686,18 +679,13 @@ switch ($st) {
 		break;
 	default:
 	echo 'This isn’t suppossed to happen (view - switch code).';
->>>>>>> Stashed changes
 }
 
 // get list of languages with field viewer = 1
 $language_options = '';
 //$query = "SELECT scripture_main.ISO, scripture_main.ROD_Code, scripture_main.Variant_Code, scripture_main.ISO_ROD_index, LN_English.LN_English FROM scripture_main, LN_English WHERE LN_English.ISO_ROD_index = scripture_main.ISO_ROD_index AND scripture_main.viewer = 1 ORDER BY LN_English.LN_English";
-<<<<<<< Updated upstream
-$query = "SELECT scripture_main.* FROM scripture_main WHERE scripture_main.viewer = 1";
-=======
 //$query = "SELECT scripture_main.* FROM scripture_main WHERE scripture_main.viewer = 1";
 $query = "SELECT nav_ln.* FROM nav_ln, scripture_main WHERE scripture_main.viewer = 1 AND `nav_ln`.`ISO_ROD_index` = `scripture_main`.`ISO_ROD_index`";
->>>>>>> Stashed changes
 $result_st = $db->query($query) or die ($db->error);
 //$num_st=$result_st->num_rows;
 if ($result_st->num_rows == 0) {
@@ -709,67 +697,11 @@ if ($result_st->num_rows == 0) {
 	*************************************************************************************************************
 */
 $db->query("DROP TABLE IF EXISTS LN_Temp");							// Get the names of all of the languages or else get the default names
-<<<<<<< Updated upstream
-$db->query("CREATE TEMPORARY TABLE LN_Temp (ISO VARCHAR(3) NOT NULL, ROD_Code VARCHAR(5) NOT NULL, ISO_ROD_index INT NULL, LN VARCHAR(50) NOT NULL) ENGINE = MEMORY CHARSET = utf8") or die ("<body>" . translate('Query failed:', $st, 'sys') . ' ' . mysql_error() . "</body></html>");
-=======
 $db->query("CREATE TEMPORARY TABLE LN_Temp (ISO VARCHAR(3) NOT NULL, ROD_Code VARCHAR(5) NOT NULL, ISO_ROD_index INT NULL, LN VARCHAR(50) NOT NULL) ENGINE = MEMORY CHARSET = utf8") or die ("<body>" . translate('Query failed:', $st, 'sys') . ' ' . $db->error . "</body></html>");
->>>>>>> Stashed changes
 while ($row = $result_st->fetch_array()) {
 	$ISO=$row['ISO'];
 	$ROD_Code=$row['ROD_Code'];
 	$Variant_Code=$row['Variant_Code'];
-<<<<<<< Updated upstream
-	$ISO_ROD_index=$row['ISO_ROD_index'];				// ISO_ROD_index
-	$ML=$row["$MajorLanguage"];						// boolean
-	//$LN_English=mysql_result($result_st,$i,"scripture_main.LN_English");					// boolean
-	//$LN_Spanish=mysql_result($result_st,$i,"scripture_main.LN_Spanish");					// boolean
-	//$LN_Portuguese=mysql_result($result_st,$i,"scripture_main.LN_Portuguese");			// boolean
-	//$LN_French=mysql_result($result_st,$i,"scripture_main.LN_French");					// boolean
-	//$LN_Dutch=mysql_result($result_st,$i,"scripture_main.LN_Dutch");						// boolean
-	$def_LN=$row['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
-	if ($ML > 0) {																			// if the major language then the default langauge
-		switch ($def_LN) {
-			case 1:
-				$query="SELECT LN_English FROM LN_English WHERE ISO_ROD_index = '$ISO_ROD_index'";
-				$result_LN=$db->query($query);
-				$r = $result_LN->fetch_array();
-				$LN=trim($r['LN_English']);
-				break;
-			case 2:
-				$query="SELECT LN_Spanish FROM LN_Spanish WHERE ISO_ROD_index = '$ISO_ROD_index'";
-				$result_LN=$db->query($query);
-				$r = $result_LN->fetch_array();
-				$LN=trim($r['LN_Spanish']);
-				break;
-			case 3:
-				$query="SELECT LN_Portuguese FROM LN_Portuguese WHERE ISO_ROD_index = '$ISO_ROD_index'";
-				$result_LN=$db->query($query);
-				$r = $result_LN->fetch_array();
-				$LN=trim($r['LN_Portuguese']);
-				break;	
-			case 4:
-				$query="SELECT LN_French FROM LN_French WHERE ISO_ROD_index = '$ISO_ROD_index'";
-				$result_LN=$db->query($query);
-				$r = $result_LN->fetch_array();
-				$LN=trim($r['LN_French']);
-				break;	
-			case 5:
-				$query="SELECT LN_Dutch FROM LN_Dutch WHERE ISO_ROD_index = '$ISO_ROD_index'";
-				$result_LN=$db->query($query);
-				$r = $result_LN->fetch_array();
-				$LN=trim($r['LN_Dutch']);
-				break; 	
-			case 6:
-				$query="SELECT LN_German FROM LN_German WHERE ISO_ROD_index = '$ISO_ROD_index'";
-				$result_LN=$db->query($query);
-				$r = $result_LN->fetch_array();
-				$LN=trim($r['LN_German']);
-				break; 	
-			default:
-				echo translate('This isn’t supposed to happen! The default language isn’t found.', $st, 'sys');
-				break;
-		}
-=======
 	$ISO_ROD_index=$row['ISO_ROD_index'];							// ISO_ROD_index
 
 	$ML=$row["$MajorLanguage"];										// boolean
@@ -779,7 +711,6 @@ while ($row = $result_st->fetch_array()) {
 		$result_LN=$db->query($query);
 		$row_LN = $result_LN->fetch_assoc();
 		$LN=trim($row_LN["$nav_LN_names[$def_LN]"]);
->>>>>>> Stashed changes
 	}
 	else {
 		//$query="SELECT $MajorLanguage FROM $MajorLanguage WHERE ISO_ROD_index = '$ISO_ROD_index'";

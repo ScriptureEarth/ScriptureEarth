@@ -81,12 +81,9 @@ if (strlen($TryLanguage) > 2) {
 		exit();
 	}
 
-<<<<<<< Updated upstream
-=======
 	$MajorLanguage = $_GET['MajorLanguage'];
 	$Variant_major = $_GET['Variant_major'];
 	$SpecificCountry = $_GET['SpecificCountry'];
->>>>>>> Stashed changes
 	$hint = 0;
 	include './include/conn.inc.php';
 	$db = get_my_db();
@@ -222,13 +219,7 @@ if (strlen($TryLanguage) > 2) {
 		$LN = '';
 		while ($row = $result->fetch_assoc()) {													// All ISOs + ROD codes + variants
 			$ISO_ROD_index = $row['ISO_ROD_index'];
-<<<<<<< Updated upstream
 			include './include/00-DBLanguageCountryName.inc.php';								// returns LN
-=======
-			include './include/00-DBLanguageCountryName.inc.php';								// returns $LN (navigational langename name)
-//echo '3rd<br />';
-//exit;
->>>>>>> Stashed changes
 			// Author: 'ChickenFeet'
 			$temp_LN = CheckLetters($LN);														// diacritic removal
 			
@@ -237,12 +228,7 @@ if (strlen($TryLanguage) > 2) {
 			$temp_TL = str_replace('(', '\(', $TryLanguage);
 			$temp_TL = str_replace(')', '\)', $temp_TL);
 			$temp_TL = str_replace('.', '\.', $temp_TL);
-<<<<<<< Updated upstream
-			$test = preg_match("/\b".$temp_TL.'/ui', $temp_LN, $match);						// match the beginning of the word(s) with TryLanguage from the user
-			if ($test === 1) {
-=======
 			if (preg_match("/\b".$temp_TL.'/ui', $temp_LN, $match)) {							// match the beginning of the word(s) with TryLanguage from the user
->>>>>>> Stashed changes
 				$ISO = $row['ISO'];
 				if (strlen($TryLanguage) == 3 && $ISO == $ISO_only) {							// if the length of $TryLanguage is 3 and the top section is there
 					continue;
