@@ -40,7 +40,7 @@
 		}
 	}
 	
-	$Variant_major = 'Variant_Deu';
+	$Variant_major = 'Variant_Ger';
 	$SpecificCountry = 'German';
 	$counterName = "German";
 	$MajorLanguage = "LN_German";

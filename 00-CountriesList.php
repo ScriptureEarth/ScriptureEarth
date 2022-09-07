@@ -74,6 +74,10 @@ switch ($st) {
 		$MajorLanguage = "LN_German";
 		$SpecificCountry = "countries.German";
 		break;
+	case "cmn":
+		$MajorLanguage = "LN_Chinese";
+		$SpecificCountry = "countries.Chinese";
+		break;
 	default:
 		die('This isn’t suppossed to happen (00-CountriesList.php - switch code).');
 }

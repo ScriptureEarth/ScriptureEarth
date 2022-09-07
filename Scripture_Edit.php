@@ -334,29 +334,48 @@ function NT_Test($PDF, $NT_Index) {
 			echo '<ul style="color: red; "><li>'.implode('</li><li>', $messages).'</li></ul>';
 		}
 
-$query="SELECT DISTINCT * FROM nav_ln WHERE ISO_ROD_index = $idx";			// boolean for navigational languagae names
-$result_nav_ln=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
-if ($db->error) {
-	die ("navigational language name is not found.<br />" . $db->error . '</body></html>');
-}
-$nav_ln_row = $result_nav_ln->fetch_assoc();
-
-$def_LN = $nav_ln_row['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
+		if (!isset($_SESSION['nav_ln_array'])) {
+			$_SESSION['nav_ln_array'] = [];
+			$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `translation_code`";
+			$ln_result=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
+			if ($ln_result->num_rows == 0) {
+				die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
+			}
 		
-foreach ($_SESSION['nav_ln_array'] as $code => $array){
-	${"LN_".$array[1]} = $nav_ln_row['LN_'.$array[1]];		// boolean
-	${$array[1]."_lang_name"}='';
-	if (${"LN_".$array[1]}) {								// if the English then the default langauge
-		$query="SELECT LN_".$array[1]." FROM LN_".$array[1]." WHERE ISO_ROD_index = $idx";
-		$result_LN=$db->query($query);
-		if ($result_LN->num_rows > 0) {
-			$temp_LN = $result_LN->fetch_assoc();
-			${$array[1]."_lang_name"} = $temp_LN['LN_'.$array[1]];
-			// Cross Site Scripting (XSS) attack happens where client side code (usually JavaScript) gets injected into the output of your PHP script. The next line cleans it up.
-			${$array[1]."_lang_name"} = htmlspecialchars(${$array[1]."_lang_name"}, ENT_QUOTES, 'UTF-8');
+			while ($ln_row = $ln_result->fetch_array()){
+				$ln_temp[0] = $ln_row['translation_code'];
+				$ln_temp[1] = $ln_row['name'];
+				$ln_temp[2] = $ln_row['nav_fileName'];
+				$ln_temp[3] = $ln_row['ln_number'];
+				$ln_temp[4] = $ln_row['ln_abbreviation'];
+				$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;
+			}
 		}
-	}
-}
+
+		$query="SELECT * FROM nav_ln WHERE ISO_ROD_index = $idx";			// boolean for navigational languagae names
+		$ln_result=$db->query($query) or die ('navigational language name is not found. ' . $db->error . '</body></html>');
+		$ln_row = $ln_result->fetch_assoc();
+		$def_LN = $ln_row['Def_LN'];										// default langauge (a 2 digit number for the national langauge)
+		$nav_ln_row = $ln_row;												// the whole row including ISO, etc.
+		foreach ($nav_ln_row as $code => $array) {							// delete lines that don't begin with "LN_"
+			if (substr($code, 0, 3) != 'LN_') {
+				unset($nav_ln_row[$code]);
+			}
+		}
+		foreach ($_SESSION['nav_ln_array'] as $code => $array){				// build language name array to be used later
+			${"LN_".$array[1]} = $nav_ln_row['LN_'.$array[1]];				// boolean
+			${$array[1]."_lang_name"} = '';
+			if (${"LN_".$array[1]}) {										// if = 1
+				$query="SELECT LN_".$array[1]." FROM LN_".$array[1]." WHERE ISO_ROD_index = $idx";
+				$result_LN=$db->query($query);
+				if ($result_LN->num_rows > 0) {
+					$temp_LN = $result_LN->fetch_assoc();
+					${$array[1]."_lang_name"} = $temp_LN['LN_'.$array[1]];	// build language name array from language table
+					// Cross Site Scripting (XSS) attack happens where client side code (usually JavaScript) gets injected into the output of your PHP script. The next line cleans it up.
+					${$array[1]."_lang_name"} = htmlspecialchars(${$array[1]."_lang_name"}, ENT_QUOTES, 'UTF-8');
+				}
+			}
+		}
 		
 		$query="SELECT DISTINCT * FROM scripture_main WHERE ISO_ROD_index = $idx";
 		$result=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
@@ -4165,7 +4184,7 @@ function Switch(number, Beg) {
 			}
 		}
 	}
-	ajaxCountryRequest.open("GET", "LN_English");
+	ajaxCountryRequest.open("GET", "00-BegList.Edit.php?st=<?php echo $st; ?>&MajorLanguage=<?php echo $MajorLanguage; ?>&SpecificCountry=<?php echo $SpecificCountry; ?>&Scriptname=<?php echo $Scriptname; ?>&b=" + Beg + "&gn=" + GN + "&n="+number, true);
 	ajaxCountryRequest.send(null);
 	$("#wait").css("display","none");
 }

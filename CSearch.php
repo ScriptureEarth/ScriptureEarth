@@ -1,9 +1,10 @@
 <?php
-// Start the session
-session_start();
 /*
 Created by Scott Starker
+
 AJAX from LangSearch.js
+
+Can't use $_SESSION because as AJAX PHP there is NO global variables with AJAX including $_SESSION!
 
 MySQL: utf8_general_ci flattens accents as well as lower-casing:
 You must ensure that all parties (your app, mysql connection, your table or column) have set utf8 as charset.
@@ -28,7 +29,7 @@ if (!preg_match("/[-. ,'ꞌ()A-Za-záéíóúÑñçãõâêîôûäëöüï&]/",
 }
 if (isset($_GET['st'])) {
 	$st = $_GET['st'];
-/*	$st = preg_replace('/^([a-z]{3})/', '$1', $st);
+/*	$st = preg_replace('/^([a-z]{3})/', "$1", $st);
 	if ($st == NULL) {
 	}*/
 	if (!preg_match('/^[a-z]{3}/', $st)) {
@@ -41,20 +42,17 @@ else {
 $st = substr($st, 0, 3);
 
 $response = '';
-$MajorLanguage = '';
-$Variant_major = '';
-foreach($_SESSION['nav_ln_array'] as $code => $array){
-	if ($st == $array[0]){
-		$MajorLanguage = 'LN_'.$array[1];
-		$Variant_major = 'Variant_'.$array[0];
-		$SpecificCountry = $array[1];
-		break;
+
+if (isset($_GET['SpecificCountry'])) {
+	$SpecificCountry = $_GET['SpecificCountry'];
+	if (!preg_match('/^([A-Za-z]+)/', $SpecificCountry, $match)) {
+		die('Hach! 1b');
 	}
 }
-if ($Variant_major == ''){
-	$response = '"st" never found.';
-	exit();
+else {
+	 die('Hack! 2b');
 }
+$SpecificCountry = $match[1];
 
 $hint = 0;
 

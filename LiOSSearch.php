@@ -1,7 +1,10 @@
 <?php
 /*
 Created by Scottt Starker
-AJAX
+
+AJAX from LangSearch.js
+
+Can't use $_SESSION because as AJAX PHP there is NO global variables with AJAX including $_SESSION. Although SESSION_ID would work slower than mine.
 
 Problems: TryLanguage ' should be \' 
 
@@ -31,7 +34,7 @@ else {
 }
 if (isset($_GET['st'])) {
 	$st = $_GET['st'];
-	$st = preg_replace('/^([a-z]{3})/', '$1', $st);
+	$st = preg_replace('/^([a-z]{3})/', "$1", $st);
 	if ($st == NULL) {
 		die('Hack!');
 	}
@@ -41,50 +44,16 @@ else {
 }
 
 $response = '';
-$MajorLanguage = '';
-$Variant_major = '';
 
-switch ($st) {
-	case 'eng':
-		$MajorLanguage = 'LN_English';
-		$Variant_major = 'Variant_Eng';
-		$SpecificCountry = 'English';
-		break;
-	case 'spa':
-		$MajorLanguage = 'LN_Spanish';
-		$Variant_major = 'Variant_Spa';
-		$SpecificCountry = 'Spanish';
-		break;
-	case 'por':
-		$MajorLanguage = 'LN_Portuguese';
-		$Variant_major = 'Variant_Por';
-		$SpecificCountry = 'Portuguese';
-		break;
-	case 'nld':
-		$MajorLanguage = 'LN_Dutch';
-		$Variant_major = 'Variant_Dut';
-		$SpecificCountry = 'Dutch';
-		break;
-	case 'fra':
-		$MajorLanguage = 'LN_French';
-		$Variant_major = 'Variant_Fre';
-		$SpecificCountry = 'French';
-		break;
-	case 'deu':
-		$MajorLanguage = 'LN_German';
-		$Variant_major = 'Variant_Deu';
-		$SpecificCountry = 'German';
-		break;
-	default:
-		$response = '"st" never found.';
-		exit();
-}
+$MajorLanguage = $_GET['MajorLanguage'];
+$Variant_major = $_GET['Variant_major'];
+$SpecificCountry = $_GET['SpecificCountry'];
 
 if (strlen($TryLanguage) > 2) {
 	$hint = 0;
 	include './include/conn.inc.php';
 	$db = get_my_db();
-	include './translate/functions.php';							// translation function
+	include './translate/functions.php';														// translation function
 	
 	$langISOrod = [];
 	$ISO_only = '';
