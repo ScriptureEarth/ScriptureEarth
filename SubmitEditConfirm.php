@@ -44,34 +44,34 @@
 	}
 
 // nav_ln table
-$ln_result = '';
-foreach($_SESSION['nav_ln_array'] as $code => $array){
-	$temp = 'LN_'.$array[1].'Bool';
-	$ln_result .= "LN_".$array[1]." = '$inputs[$temp]', ";
-}
-$query="UPDATE nav_ln SET Variant_Code = '$inputs[var]', ".$ln_result."Def_LN = '$inputs[DefLangName]' WHERE ISO_ROD_index = $inputs[idx]";
-$result=$db->query($query);
-if (!$result) {
-	die('Could not update the data in "nav_ln": ' . $db->error);
-}
+	$ln_result = '';
+	foreach($_SESSION['nav_ln_array'] as $code => $array){
+		$temp = 'LN_'.$array[1].'Bool';
+		$ln_result .= "LN_".$array[1]." = '$inputs[$temp]', ";
+	}
+	$query="UPDATE nav_ln SET Variant_Code = '$inputs[var]', ".$ln_result."Def_LN = '$inputs[DefLangName]' WHERE ISO_ROD_index = $inputs[idx]";
+	$result=$db->query($query);
+	if (!$result) {
+		die('Could not update the data in "nav_ln": ' . $db->error);
+	}
 
 // navigational language names - LN
-foreach ($_SESSION['nav_ln_array'] as $code => $array){
-	if ($inputs['LN_'.$array[1].'Bool']) {
-		$query="DELETE FROM LN_".$array[1]." WHERE ISO_ROD_index = $inputs[idx]";
-		$db->query($query);
-		$temp = '';
-		$temp = $inputs[$array[1].'_lang_name'];
-		$temp = str_replace("'", "ꞌ", $temp);								// apostrophe (') to saltillo glyph (ꞌ - U+A78C)
-		$query="INSERT INTO `LN_$array[1]` (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `LN_$array[1]`) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$temp')";
-		$result=$db->query($query);
-		if (!$result) {
-			echo 'Could not insert the data in "LN_'.$array[1].'": ' . $db->error;
+	foreach ($_SESSION['nav_ln_array'] as $code => $array){
+		if ($inputs['LN_'.$array[1].'Bool']) {
+			$query="DELETE FROM LN_".$array[1]." WHERE ISO_ROD_index = $inputs[idx]";
+			$db->query($query);
+			$temp = '';
+			$temp = $inputs[$array[1].'_lang_name'];
+			$temp = str_replace("'", "ꞌ", $temp);								// apostrophe (') to saltillo glyph (ꞌ - U+A78C)
+			$query="INSERT INTO `LN_$array[1]` (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `LN_$array[1]`) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$temp')";
+			$result=$db->query($query);
+			if (!$result) {
+				echo 'Could not insert the data in "LN_'.$array[1].'": ' . $db->error;
+			}
 		}
 	}
-}
 
-	// ISO countries
+// ISO countries
 	$i=1;
 	$query="DELETE FROM ISO_countries WHERE ISO_ROD_index = $inputs[idx]";
 	$db->query($query);
@@ -85,7 +85,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 	}
 	$stmt->close();
 	
-	// alt_lang_names
+// alt_lang_names
 	$query="DELETE FROM alt_lang_names WHERE ISO_ROD_index = $inputs[idx]";
 	$db->query($query);
 	$i = 1;
@@ -119,7 +119,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 	$stmt_alt->close();
 	$stmt->close();
 	
-	// isop
+// isop
 	if ($inputs["isop"] === 0) {
 		$db->query("DELETE FROM isop WHERE ISO_ROD_index = ".$inputs['idx']);
 	}
@@ -138,7 +138,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		}
 	}
 	
-	// links: BibleIs
+// links: BibleIs
 	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND BibleIs > 0";
 	$result=$db->query($query);
 	if ($inputs['BibleIs']) {
@@ -163,7 +163,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		$stmt_links->close();
 	}
 
-	// SAB
+// SAB
 	/*
 		$SAB (bitwise):
 			decimal		binary		meaning
@@ -182,7 +182,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		$i = 1;
 		$query="INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, url, subfolder, description, pre_scriptoria, SAB_number) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, ?, ?)";
 		$stmt_SAB_scriptoria=$db->prepare($query);
-//		while (isset($inputs["txtSABsubfolder-".(string)$i]) && trim($inputs["txtSABsubfolder-".(string)$i]) != '') {		//strlen(trim($inputs["txtSABsubFirstPath-".(string)$i]) >= 4)) {			// $inputs["txtSABsubFirstPath-".(string)$i]) = "sab" by default
+	//		while (isset($inputs["txtSABsubfolder-".(string)$i]) && trim($inputs["txtSABsubfolder-".(string)$i]) != '') {		//strlen(trim($inputs["txtSABsubFirstPath-".(string)$i]) >= 4)) {			// $inputs["txtSABsubFirstPath-".(string)$i]) = "sab" by default
 		while (isset($inputs["txtSABsubfolder-".(string)$i])) {		//strlen(trim($inputs["txtSABsubFirstPath-".(string)$i]) >= 4)) {			// $inputs["txtSABsubFirstPath-".(string)$i]) = "sab" by default
 			$SABdescription = "txtSABdescription-".(string)$i;
 			$SABurl = "txtSABurl-".(string)$i;
@@ -366,7 +366,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		}
 	}
 
-	// Scripture_and_or_Bible PDF
+// Scripture_and_or_Bible PDF
 	$query="DELETE FROM Scripture_and_or_Bible WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if (!$result) {
@@ -382,7 +382,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		}
 	}
 
-	// complete Scripture PDF
+// complete Scripture PDF
 	if ($inputs['complete_Scripture_PDF']) {
 		if ($inputs['complete_Scripture'] != "") {
 			$query="INSERT INTO Scripture_and_or_Bible SET ISO = '$inputs[iso]', ROD_Code = '$inputs[rod]', Variant_Code = '$inputs[var]', ISO_ROD_index = $inputs[idx], Item = 'S', Scripture_Bible_Filename = '$inputs[complete_Scripture]'";
@@ -393,7 +393,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		}
 	}
 
-	// OT_PDF_Media
+// OT_PDF_Media
 	$query="DELETE FROM OT_PDF_Media WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if ($inputs['OT_PDF']) {
@@ -437,7 +437,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		}
 	}
 	
-	// NT_PDF_Media
+// NT_PDF_Media
 	$query="DELETE FROM NT_PDF_Media WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if ($inputs['NT_PDF']) {
@@ -481,7 +481,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		}
 	}
 	
-	// OT_Audio_Media
+// OT_Audio_Media
 	$query="DELETE FROM OT_Audio_Media WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if ($inputs['OT_Audio']) {
@@ -506,7 +506,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		$stmt_OT->close();
 	}
 	
-	// NT_Audio
+// NT_Audio
 	$query="DELETE FROM NT_Audio_Media WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if ($inputs['NT_Audio']) {
@@ -531,7 +531,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		$stmt_NT->close();
 	}
 	
-	// links: Read: YouVersion
+// links: Read: YouVersion
 	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND YouVersion = 1";
 	$result=$db->query($query);
 	if ($inputs['YouVersion']) {
@@ -552,7 +552,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		$stmt_links->close();
 	}
 	
-	// links: Study - Bibles_org
+// links: Study - Bibles_org
 	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND Bibles_org = 1";
 	$result=$db->query($query);
 	if ($inputs['Biblesorg']) {
@@ -573,7 +573,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		$stmt_links->close();
 	}
 	
-	// links: GRN
+// links: GRN
 	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND GRN = 1";
 	$result=$db->query($query);
 	if ($inputs['GRN']) {
@@ -594,7 +594,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		$stmt_links->close();
 	}
 
-	// CellPhone
+// CellPhone
 	$query="DELETE FROM CellPhone WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if ($inputs['CellPhone']) {
@@ -622,7 +622,7 @@ foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		$stmt_cell->close();
 	}
 	
-	// watch
+// watch
 	$query="DELETE FROM watch WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if ($inputs['watch']) {

@@ -1,14 +1,18 @@
 <?php
+// Start the session
+session_start();
 /*
 Created by Scottt Starker
+<<<<<<< Updated upstream
 Updated by Scott Starker, Lærke Roager
-
 AJAX from LangSearch.js
 
+=======
+Updated by Scott Starker, L�rke Roager
+AJAX from LangSearch.js
 Can't use $_SESSION because as AJAX PHP there is NO global variables with AJAX including $_SESSION. Although SESSION_ID would work slower than mine.
-
+>>>>>>> Stashed changes
 Problems: TryLanguage ' should be \' 
-
 MySQL: utf8_general_ci flattens accents as well as lower-case:
 You must ensure that all parties (your app, mysql connection, your table or column) have set utf8 as charset.
 - header('Content-Type: text/html; charset=utf-8'); (or <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />)
@@ -18,63 +22,75 @@ You must ensure that all parties (your app, mysql connection, your table or colu
 */
 
 /*
+<<<<<<< Updated upstream
+=======
 	input:
 		language (string: 'try language')
-		st (string: eng, spa, por, fra, dut, deu, cmn)
+		st (string: eng, spa, por, fre, ndl, deu, cmn)
 		nav_ln_line (strng: navigational languages separated by ', ')
+		MajorLanguage = LN_English
+		Variant_major = Variant_Eng
+		SpecificCountry = English
+		e.g. LSearch.php?language=kerala&st=eng&Variant_major=Variant_Eng&SpecificCountry=English&MajorLanguage=LN_English&nav_ln_line=LN_English,%20LN_Spanish,%20LN_Portuguese,%20LN_French,%20LN_Dutch,%20LN_German,%20LN_Chinese,
 */
 
 /*
+>>>>>>> Stashed changes
 	These are defined at the end of $response:
-		langNotFound = "The language is not found.";
-		colLN = "Language Name";
-		colAlt = "Alternate Language Names";
-		colCode = "Code";
-		colCountry = "Country";
+	langNotFound = "The language is not found.";
+	colLN = "Language Name";
+	colAlt = "Alternate Language Names";
+	colCode = "Code";
+	colCountry = "Country";
 */
 
 // display all of the language names, ROD codes and variant codes from a major and alternate languages names
 if (isset($_GET['language'])) $TryLanguage = $_GET['language']; else { die('Hack!'); }
-if (preg_match("/^[-. ,'ꞌ()A-Za-záéíóúÑñçãõâêîôûäëöüï&]+/", $TryLanguage)) {
+if (preg_match("/^[-. ,'?()A-Za-z��������������������&]+/", $TryLanguage)) {
 }
 else {
-	die('1) Hack!');
+	die('Hack!');
 }
 if (isset($_GET['st'])) {
 	$st = $_GET['st'];
-	$st = preg_replace('/^([a-z]{3})/', "$1", $st);
+	$st = preg_replace('/^([a-z]{3})/', '$1', $st);
 	if ($st == NULL) {
-		die('2) Hack!');
+		die('Hack!');
 	}
 }
 else {
-	 die('3) Hack!');
+	 die('Hack!');
 }
 
 if (strlen($TryLanguage) > 2) {
 	$response = '';
+	$MajorLanguage = '';
+	$Variant_major = '';
 
-	//	$ln_result = 'LN_English, LN_Spanish, LN_Portuguese, LN_French, LN_Dutch, LN_German, LN_Chinese, ';
-	if (isset($_GET['nav_ln_line'])) {
-		$ln_result = $_GET['nav_ln_line'];
-		$preg_count = 0;
-		$ln_result = preg_replace('/^([a-zA-Z\,_ ]+)/', "$1", $ln_result, -1, $preg_count);
-		if ($preg_count == 0) {
-			die('4) Hack!');
+	$ln_result = '';												// get all of the navigigatioal language fields
+	foreach($_SESSION['nav_ln_array'] as $code => $array){
+		if ($st == $array[0]){
+			$MajorLanguage = 'LN_'.$array[1];
+			$Variant_major = 'Variant_'.$array[0];
+			$SpecificCountry = $array[1];
 		}
+		$ln_result .= 'LN_'.$array[1].', ';
 	}
-	else {
-		die('5) Hack!');
+	if ($Variant_major == ''){
+		$response = '"st" never found.';
+		exit();
 	}
 
+<<<<<<< Updated upstream
+=======
 	$MajorLanguage = $_GET['MajorLanguage'];
 	$Variant_major = $_GET['Variant_major'];
 	$SpecificCountry = $_GET['SpecificCountry'];
-	
+>>>>>>> Stashed changes
 	$hint = 0;
 	include './include/conn.inc.php';
 	$db = get_my_db();
-	include './translate/functions.php';													// translation function
+	include './translate/functions.php';							// translation function
 	
 	$langISOrod = [];
 	$ISO_only = '';
@@ -89,8 +105,8 @@ if (strlen($TryLanguage) > 2) {
 
 	// ISO
 	if (strlen($TryLanguage) == 3) {
-		$stmt_nav_ln_iso->bind_param('s', $TryLanguage);									// bind parameters for markers
-		$stmt_nav_ln_iso->execute();														// execute query
+		$stmt_nav_ln_iso->bind_param('s', $TryLanguage);										// bind parameters for markers
+		$stmt_nav_ln_iso->execute();															// execute query
 		$result=$stmt_nav_ln_iso->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
 		$LN = '';
 		while ($row = $result->fetch_assoc()) {
@@ -99,7 +115,7 @@ if (strlen($TryLanguage) > 2) {
 			$ROD_Code = $row['ROD_Code'];
 			$Variant_Code = $row['Variant_Code'];
 			$VD = '';
-			include './include/00-DBLanguageCountryName.inc.php';							// returns $LN (navigational langename name)
+			include './include/00-DBLanguageCountryName.inc.php';							// returns $LN
 			$stmt_SC->bind_param('i', $ISO_ROD_index);										// bind parameters for markers
 			$stmt_SC->execute();															// execute query
 			$result_con=$stmt_SC->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
@@ -149,7 +165,7 @@ if (strlen($TryLanguage) > 2) {
 				$VD = '';
 			}
 			else {
-				$stmt_Var->bind_param('s', $Variant_Code);									// bind parameters for markers
+				$stmt_Var->bind_param('s', $Variant_Code);									// bind parameters for markers								// 
 				$stmt_Var->execute();														// execute query
 				$result_Var = $stmt_Var->get_result();
 				$row_Var = $result_Var->fetch_assoc();
@@ -193,9 +209,9 @@ if (strlen($TryLanguage) > 2) {
 	}
 //echo $country . '#<br />';
 	
-	$RD = ['�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'ae', '�' => 'AE', '�' => 'ae', '�' => 'AE', '�' => 'c', '�' => 'C', '�' => 'D', '�' => 'dh', '�' => 'Dh', '�' => 'e', '�' => 'E', '�' => 'e', '�' => 'E', '�' => 'e', '�' => 'E', '�' => 'e', '�' => 'E', '�' => 'i', '�' => 'I', '�' => 'i', '�' => 'I', '�' => 'i', '�' => 'I', '�' => 'i', '�' => 'I', '�' => 'n', '�' => 'N', '�' => 'o', '�' => 'O', '�' => 'o', '�' => 'O', '�' => 'o', '�' => 'O', '�' => 'o', '�' => 'O', '�' => 'oe', '�' => 'OE', '�' => 'oe', '�' => 'OE', '�' => 's', '�' => 'S', '�' => 'SS', '�' => 'u', '�' => 'U', '�' => 'u', '�' => 'U', '�' => 'u', '�' => 'U', '�' => 'ue', '�' => 'UE', '�' => 'y', '�' => 'Y', '�' => 'y', '�' => 'Y', '�' => 'z', '�' => 'Z'];
-	if (preg_match('/[��������������������������]/', $TryLanguage)) {							// diacritic removal
-		$TryLanguage = strtr($TryLanguage, $RD);												// PHP: strtr - Translate characters ($addr = strtr($addr, "���", "aao");)
+	$RD = ['?' => 'a', '?' => 'A', '?' => 'a', '?' => 'A', '?' => 'a', '?' => 'A', '?' => 'a', '?' => 'A', '?' => 'a', '?' => 'A', '?' => 'ae', '?' => 'AE', '?' => 'ae', '?' => 'AE', '?' => 'c', '?' => 'C', '?' => 'D', '?' => 'dh', '?' => 'Dh', '?' => 'e', '?' => 'E', '?' => 'e', '?' => 'E', '?' => 'e', '?' => 'E', '?' => 'e', '?' => 'E', '?' => 'i', '?' => 'I', '?' => 'i', '?' => 'I', '?' => 'i', '?' => 'I', '?' => 'i', '?' => 'I', '?' => 'n', '?' => 'N', '?' => 'o', '?' => 'O', '?' => 'o', '?' => 'O', '?' => 'o', '?' => 'O', '?' => 'o', '?' => 'O', '?' => 'oe', '?' => 'OE', '?' => 'oe', '?' => 'OE', '?' => 's', '?' => 'S', '?' => 'SS', '?' => 'u', '?' => 'U', '?' => 'u', '?' => 'U', '?' => 'u', '?' => 'U', '?' => 'ue', '?' => 'UE', '?' => 'y', '?' => 'Y', '?' => 'y', '?' => 'Y', '?' => 'z', '?' => 'Z'];
+	if (preg_match('/[??????????????????????????]/', $TryLanguage)) {							// diacritic removal
+		$TryLanguage = strtr($TryLanguage, $RD);												// PHP: strtr - Translate characters ($addr = strtr($addr, "???", "aao");)
 	}
 	
 	$TryLanguage = str_replace("'", "\'", $TryLanguage);
@@ -206,7 +222,13 @@ if (strlen($TryLanguage) > 2) {
 		$LN = '';
 		while ($row = $result->fetch_assoc()) {													// All ISOs + ROD codes + variants
 			$ISO_ROD_index = $row['ISO_ROD_index'];
+<<<<<<< Updated upstream
+			include './include/00-DBLanguageCountryName.inc.php';								// returns LN
+=======
 			include './include/00-DBLanguageCountryName.inc.php';								// returns $LN (navigational langename name)
+//echo '3rd<br />';
+//exit;
+>>>>>>> Stashed changes
 			// Author: 'ChickenFeet'
 			$temp_LN = CheckLetters($LN);														// diacritic removal
 			
@@ -215,8 +237,12 @@ if (strlen($TryLanguage) > 2) {
 			$temp_TL = str_replace('(', '\(', $TryLanguage);
 			$temp_TL = str_replace(')', '\)', $temp_TL);
 			$temp_TL = str_replace('.', '\.', $temp_TL);
-			$test = preg_match("/\b".$temp_TL.'/ui', $temp_LN, $match);							// match the beginning of the word(s) with TryLanguage from the user
+<<<<<<< Updated upstream
+			$test = preg_match("/\b".$temp_TL.'/ui', $temp_LN, $match);						// match the beginning of the word(s) with TryLanguage from the user
 			if ($test === 1) {
+=======
+			if (preg_match("/\b".$temp_TL.'/ui', $temp_LN, $match)) {							// match the beginning of the word(s) with TryLanguage from the user
+>>>>>>> Stashed changes
 				$ISO = $row['ISO'];
 				if (strlen($TryLanguage) == 3 && $ISO == $ISO_only) {							// if the length of $TryLanguage is 3 and the top section is there
 					continue;
@@ -224,7 +250,7 @@ if (strlen($TryLanguage) > 2) {
 				$ROD_Code = $row['ROD_Code'];
 				$Variant_Code = $row['Variant_Code'];
 				$VD = '';
-				$stmt_SC->bind_param('i', $ISO_ROD_index);										// bind parameters for markers (returns $SpecificCountry and country code)
+				$stmt_SC->bind_param('i', $ISO_ROD_index);										// bind parameters for markers
 				$stmt_SC->execute();															// execute query
 				$result_con=$stmt_SC->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
 				if ($result_con->num_rows <= 0) {
@@ -247,7 +273,7 @@ if (strlen($TryLanguage) > 2) {
 								else {
 									$country .= ', ' . $value;									// name of the country in the language version
 								}
-								$stmt_c->bind_param("s", $value);								// bind parameters for markers
+								$stmt_c->bind_param("s", $value);								// bind parameters for markers								// 
 								$stmt_c->execute();												// execute query
 								$result_c=$stmt_c->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
 								if ($result_c->num_rows <= 0) {
@@ -273,7 +299,7 @@ if (strlen($TryLanguage) > 2) {
 					$VD = '';
 				}
 				else {
-					$stmt_Var->bind_param('s', $Variant_Code);									// bind parameters for markers
+					$stmt_Var->bind_param('s', $Variant_Code);									// bind parameters for markers								// 
 					$stmt_Var->execute();														// execute query
 					$result_Var = $stmt_Var->get_result();
 					$row_Var = $result_Var->fetch_assoc();
@@ -284,7 +310,7 @@ if (strlen($TryLanguage) > 2) {
 						alternate language names
 				*******************************************************************************/
 				$alt = '';
-				$stmt_alt->bind_param('i', $ISO_ROD_index);										// bind parameters for markers
+				$stmt_alt->bind_param('i', $ISO_ROD_index);										// bind parameters for markers								// 
 				$stmt_alt->execute();															// execute query
 				if ($result_alt = $stmt_alt->get_result()) {
 					$bool = 0;
@@ -322,6 +348,8 @@ if (strlen($TryLanguage) > 2) {
 		$query="SELECT DISTINCT ISO_ROD_index FROM alt_lang_names WHERE alt_lang_name REGEXP '(^| )$TryLanguage' AND ISO_ROD_index NOT IN (".implode(',', $langISOrod).")";
 	}
 
+//echo '4th<br />';
+//exit;
 	if ($result = $db->query($query)) {
 		while ($r = $result->fetch_assoc()) {
 			$ISO_ROD_index = $r['ISO_ROD_index'];
@@ -444,14 +472,21 @@ if (strlen($TryLanguage) > 2) {
 
 
 function removeDiacritics($txt) {
-    $transliterationTable = ['�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'a', '�' => 'A', '�' => 'ae', '�' => 'AE', '�' => 'ae', '�' => 'AE', '�' => 'c', '�' => 'C', '�' => 'D', '�' => 'dh', '�' => 'Dh', '�' => 'e', '�' => 'E', '�' => 'e', '�' => 'E', '�' => 'e', '�' => 'E', '�' => 'e', '�' => 'E', '�' => 'i', '�' => 'I', '�' => 'i', '�' => 'I', '�' => 'i', '�' => 'I', '�' => 'i', '�' => 'I', '�' => 'n', '�' => 'N', '�' => 'o', '�' => 'O', '�' => 'o', '�' => 'O', '�' => 'o', '�' => 'O', '�' => 'o', '�' => 'O', '�' => 'oe', '�' => 'OE', '�' => 'oe', '�' => 'OE', '�' => 's', '�' => 'S', '�' => 'SS', '�' => 'u', '�' => 'U', '�' => 'u', '�' => 'U', '�' => 'u', '�' => 'U', '�' => 'ue', '�' => 'UE', '�' => 'y', '�' => 'Y', '�' => 'y', '�' => 'Y', '�' => 'z', '�' => 'Z'];
+    $transliterationTable = ['?' => 'a', '?' => 'A', '?' => 'a', '?' => 'A', '?' => 'a', '?' => 'A', '?' => 'a', '?' => 'A', '?' => 'a', '?' => 'A', '?' => 'ae', '?' => 'AE', '?' => 'ae', '?' => 'AE', '?' => 'c', '?' => 'C', '?' => 'D', '?' => 'dh', '?' => 'Dh', '?' => 'e', '?' => 'E', '?' => 'e', '?' => 'E', '?' => 'e', '?' => 'E', '?' => 'e', '?' => 'E', '?' => 'i', '?' => 'I', '?' => 'i', '?' => 'I', '?' => 'i', '?' => 'I', '?' => 'i', '?' => 'I', '?' => 'n', '?' => 'N', '?' => 'o', '?' => 'O', '?' => 'o', '?' => 'O', '?' => 'o', '?' => 'O', '?' => 'o', '?' => 'O', '?' => 'oe', '?' => 'OE', '?' => 'oe', '?' => 'OE', '?' => 's', '?' => 'S', '?' => 'SS', '?' => 'u', '?' => 'U', '?' => 'u', '?' => 'U', '?' => 'u', '?' => 'U', '?' => 'ue', '?' => 'UE', '?' => 'y', '?' => 'Y', '?' => 'y', '?' => 'Y', '?' => 'z', '?' => 'Z'];
 	return strtr($txt, $transliterationTable);
 }    // or, return str_replace(array_keys($transliterationTable), array_values($transliterationTable), $txt);
 
 // Author: 'ChickenFeet'
+// https://stackoverflow.com/questions/3371697/replacing-accented-characters-php
 function CheckLetters($field){
+	//echo $field . ' # ';
+	$field = htmlentities($field, ENT_COMPAT, "UTF-8");
+	$field = preg_replace('/&([a-zA-Z])(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml|caron);/','$1',$field);
+	//echo $field . '<br />';
+	return html_entity_decode($field);
+
 	// global $letters;										// won't work
-    $letters = [
+    /*$letters = [
         0 => "a à á â ä æ ã å ā",
         1 => "c ç ć č",
         2 => "e é è ê ë ę ė ē",
@@ -475,6 +510,6 @@ function CheckLetters($field){
             }
         }
     }
-    return $field;
+    return $field;*/
 }
 ?>

@@ -16,7 +16,19 @@
 //include 'config.php';
 include '../include/conn.inc.php';
 $db = get_my_db();
-include '../translate/functions.php';
+include "../translate/functions.php";
+<<<<<<< Updated upstream
+=======
+
+$nav_LN_names = [];
+$k=1;
+$res=$db->query("SHOW COLUMNS FROM nav_ln");							// the following values are ['Field'], ['Type'], ['Collation'], ['Null'], and ['Key']
+while ($row_LN = $res->fetch_assoc()){
+	if (preg_match('/^LN_/', $row_LN['Field'])) {
+		$nav_LN_names[$k++] = $row_LN['Field'];
+	}
+}
+>>>>>>> Stashed changes
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
@@ -37,7 +49,34 @@ $book = [];
 $MajorLanguage = '';
 
 // php.ini will NOT display error messages
-ini_set('display_errors', 0);
+ini_set("display_errors", 0);
+
+// get list of languages
+//$isos = scandir('../data');
+//$languageArray = array();
+/*foreach($isos as $iso)
+{
+ if($iso!='.' && $iso!='..')
+ {
+  if(file_exists('../data/'.$_GET['iso'].'/viewer'))
+  {
+<<<<<<< Updated upstream
+   $query  = 
+   "SELECT LN_English FROM LN_English
+    WHERE ISO  = \"".$iso."\"
+    LIMIT 1";
+   $result_st = mysql_query($query) or die (mysql_error());
+   $myrow_st  = mysql_fetch_array($result_st);
+=======
+   $query = "SELECT LN_English FROM LN_English WHERE ISO  = '".$iso."' LIMIT 1";
+   $result_st = mysql_query($query) or die (mysql_error());
+   $myrow_st = mysql_fetch_array($result_st);
+>>>>>>> Stashed changes
+   $languageArray[$iso] = $myrow_st['LN_English'];
+  }
+ }
+}
+*/
 
 function check_input($value) {						// used for ' and " that find it in the input
 	$value = trim($value);
@@ -59,9 +98,8 @@ if (!isset($_POST['st']) && !isset($_GET['st'])) {
 }
 if (!isset($_POST['st'])) {$_POST['st']=$_GET['st'];}
 $st = $_POST['st'];
-if (preg_match('/^([a-z]{3})$/', $st)) {
-}
-else {
+$st = preg_replace('/^([a-z]{3})/', '$1', $st);
+if ($st == NULL) {
 	die('‘st’ is empty.</body></html>');
 }
 
@@ -69,20 +107,21 @@ if (!isset($_POST['iso']) && !isset($_GET['iso'])) {
 	die('‘iso’ is empty.</body></html>');
 }
 if (!isset($_POST['iso'])) {$_POST['iso']=$_GET['iso'];}
-$_POST['iso'] = preg_replace('/^([a-z]{3})$/', "$1", $_POST['iso']);
+$_POST['iso'] = preg_replace('/^([a-z]{3})/', '$1', $_POST['iso']);
 if ($_POST['iso'] == NULL) {
 	die('‘ISO’ ' . translate('is empty', $st, 'sys') . '.</body></html>');
 }
 
-$query = "SELECT ISO FROM scripture_main WHERE ISO = '".substr($_POST['iso'], 0, 3)."'";
+//$query = "SELECT ISO FROM scripture_main WHERE ISO = '".substr($_POST['iso'], 0, 3)."'";
+$query = "SELECT ISO FROM nav_ln WHERE ISO = '".substr($_POST['iso'], 0, 3)."'";
 $result_st = $db->query($query) or die ($db->error);
 if ($result_st->num_rows == 0) {
 	die('There is no ' . substr($_POST['iso'], 0, 3) . ' in the database.</body></html>');
 }
 
 switch ($st) {
-	case 'eng':
-		$MajorLanguage = 'LN_English';
+	case "eng":
+		$MajorLanguage = "LN_English";
 		$bookDescription = array(
 		 '1CH'=>'1 Chronicles',
 		 '1CO'=>'1 Corinthians',
@@ -161,8 +200,8 @@ switch ($st) {
 		 'IDX'=>'Topical index'
 		 );
 		break;
-	case 'spa':
-		$MajorLanguage = 'LN_Spanish';
+	case "spa":
+		$MajorLanguage = "LN_Spanish";
 		$bookDescription = array(
 		 '1CH'=>'1 Crónicas',
 		 '1CO'=>'1 Corintios',
@@ -241,8 +280,8 @@ switch ($st) {
 		 'IDX'=>'Topical index'
 		 );
 		break;
-	case 'por':
-		$MajorLanguage = 'LN_Portuguese';
+	case "por":
+		$MajorLanguage = "LN_Portuguese";
 		$bookDescription = array(
 		 '1CH'=>'1 Crônicas',
 		 '1CO'=>'1 Coríntios',
@@ -321,8 +360,8 @@ switch ($st) {
 		 'IDX'=>'Topical index'
 		 );
 		break;
-	case 'fra':
-		$MajorLanguage = 'LN_French';
+	case "fra":
+		$MajorLanguage = "LN_French";
 		$bookDescription = array(
 		 '1CH'=>'1 Chroniques',
 		 '1CO'=>'1 Corinthiens',
@@ -401,8 +440,8 @@ switch ($st) {
 		 'IDX'=>'Topical index'
 		 );
 		break;
-	case 'nld':
-		$MajorLanguage = 'LN_Dutch';
+	case "nld":
+		$MajorLanguage = "LN_Dutch";
 		$bookDescription = array(
 		 '1CH'=>'1 Kronieken',
 		 '1CO'=>'1 Corinthiërs',
@@ -481,8 +520,8 @@ switch ($st) {
 		 'IDX'=>'Topical index'
 		 );
 		break;
-	case 'deu':
-		$MajorLanguage = 'LN_German';
+	case "deu":
+		$MajorLanguage = "LN_German";
 		$bookDescription = array(
 		'1CH'=>'1 Chronik',
 		'1CO'=>'1 Korinther',
@@ -561,95 +600,106 @@ switch ($st) {
 		'IDX'=>'Topical index'
 		);
 		break;
-	case 'cmn':
-		$MajorLanguage = 'LN_Chinese';
+<<<<<<< Updated upstream
+	default:
+		echo 'This isn’t suppossed to happen (view - switch code).';
+=======
+	case "cmn":
+		$MajorLanguage = "LN_Chinese";
 		$bookDescription = array(
-		'1CH'=>'1 Chronicles',
-		'1CO'=>'1 Corinthians',
-		'1JN'=>'1 John',
-		'1KI'=>'1 Kings',
-		'1PE'=>'1 Peter',
-		'1SA'=>'1 Samuel',
-		'1TH'=>'1 Thessalonians',
-		'1TI'=>'1 Timothy',
-		'2CH'=>'2 Chronicles',
-		'2CO'=>'2 Corinthians',
-		'2JN'=>'2 John',
-		'2KI'=>'2 Kings',
-		'2PE'=>'2 Peter',
-		'2SA'=>'2 Samuel',
-		'2TH'=>'2 Thessalonians',
-		'2TI'=>'2 Timothy',
-		'3JN'=>'3 John',
-		'ACT'=>'Acts',
-		'AMO'=>'Amos',
-		'COL'=>'Colossians',
-		'DAN'=>'Daniel',
-		'DEU'=>'Deuteronomy',
-		'ECC'=>'Ecclesiastes',
-		'EPH'=>'Ephesians',
-		'EST'=>'Esther',
-		'EXO'=>'Exodus',
-		'EZK'=>'Ezekiel',
-		'EZR'=>'Ezra',
-		'GAL'=>'Galatians',
-		'GEN'=>'Genesis',
-		'HAB'=>'Habakkuk',
-		'HAG'=>'Haggai',
-		'HEB'=>'Hebrews',
-		'HOS'=>'Hosea',
-		'ISA'=>'Isaiah',
-		'JAS'=>'James',
-		'JDG'=>'Judges',
-		'JER'=>'Jeremiah',
-		'JHN'=>'John',
-		'JOB'=>'Job',
-		'JOL'=>'Joel',
-		'JON'=>'Jonah',
-		'JOS'=>'Joshua',
-		'JUD'=>'Jude',
-		'LAM'=>'Lamentations',
-		'LEV'=>'Leviticus',
-		'LUK'=>'Luke',
-		'MAL'=>'Malachi',
-		'MAT'=>'Matthew',
-		'MIC'=>'Micah',
-		'MRK'=>'Mark',
-		'NAM'=>'Nahum',
-		'NEH'=>'Nehemiah',
-		'NUM'=>'Numbers',
-		'OBA'=>'Obadiah',
-		'PHM'=>'Philemon',
-		'PHP'=>'Philippians',
-		'PRO'=>'Proverbs',
-		'PSA'=>'Psalms',
-		'REV'=>'Revelation',
-		'ROM'=>'Romans',
-		'RUT'=>'Ruth',
-		'SNG'=>'Song of Solomon',
-		'TIT'=>'Titus',
-		'ZEC'=>'Zechariah',
-		'ZEP'=>'Zephaniah',
-		'WAP'=>'Apocrypha',
-		'WBA'=>'Bible with Apocrypha',
-		'WBI'=>'Bible',
-		'WNT'=>'New Testament',
-		'WOA'=>'Old Testament with Apocrypha',
-		'WOT'=>'Old Testament',
-		'GLO'=>'Glossary',
-		'BAK'=>'Glossary',
-		'IDX'=>'Topical index'
-		);
+			'1CH'=>'历代志上',
+			'1CO'=>'哥林多前书',
+			'1JN'=>'约翰1书',
+			'1KI'=>'列王纪上',
+			'1PE'=>'彼得前书',
+			'1SA'=>'撒母耳记上',
+			'1TH'=>'帖撒罗尼迦前书',
+			'1TI'=>'提摩太前书',
+			'2CH'=>'历代志下',
+			'2CO'=>'哥林多后书',
+			'2JN'=>'约翰2书',
+			'2KI'=>'列王纪下',
+			'2PE'=>'彼得后书',
+			'2SA'=>'撒母耳记下',
+			'2TH'=>'帖撒罗尼迦后书',
+			'2TI'=>'提摩太后书',
+			'3JN'=>'约翰3书',
+			'ACT'=>'使徒行传',
+			'AMO'=>'阿摩司书',
+			'COL'=>'歌罗西书',
+			'DAN'=>'但以理书',
+			'DEU'=>'申命记',
+			'ECC'=>'传道书',
+			'EPH'=>'以弗所书',
+			'EST'=>'以斯帖记',
+			'EXO'=>'出埃及记',
+			'EZK'=>'以西结书',
+			'EZR'=>'以斯拉记',
+			'GAL'=>'加拉太书',
+			'GEN'=>'创世记',
+			'HAB'=>'哈巴谷书',
+			'HAG'=>'哈该书',
+			'HEB'=>'希伯来书',
+			'HOS'=>'何西阿书',
+			'ISA'=>'以赛亚书',
+			'JAS'=>'雅各书',
+			'JDG'=>'士師记',
+			'JER'=>'耶利米书',
+			'JHN'=>'约翰福音',
+			'JOB'=>'约伯记',
+			'JOL'=>'约珥书',
+			'JON'=>'约拿书',
+			'JOS'=>'约书亚记',
+			'JUD'=>'犹大书',
+			'LAM'=>'耶利米哀歌',
+			'LEV'=>'利未记',
+			'LUK'=>'路加福音',
+			'MAL'=>'玛拉基书',
+			'MAT'=>'马太福音',
+			'MIC'=>'弥迦书',
+			'MRK'=>'马可福音',
+			'NAM'=>'那鸿书',
+			'NEH'=>'尼希米记',
+			'NUM'=>'民数记',
+			'OBA'=>'俄巴底亚书',
+			'PHM'=>'腓利门书',
+			'PHP'=>'腓立比书',
+			'PRO'=>'箴言',
+			'PSA'=>'诗篇',
+			'REV'=>'启示录',
+			'ROM'=>'罗马书',
+			'RUT'=>'路得记',
+			'SNG'=>'雅歌',
+			'TIT'=>'提多书',
+			'ZEC'=>'撒迦利亚书',
+			'ZEP'=>'西番雅书',
+			'WAP'=>'伪经',
+			'WBA'=>'圣经与伪经',
+			'WBI'=>'Bible',
+			'WNT'=>'New Testament',
+			'WOA'=>'旧约与伪经',
+			'WOT'=>'Old Testament',
+			'GLO'=>'词汇表',
+			'BAK'=>'词汇表',
+			'IDX'=>'主题索引'
+			);
 		break;
 	default:
-		echo 'This isn’t suppossed to happen (view - switch code). ';
-		echo 'st= ' . $st . '<br />';
+	echo 'This isn’t suppossed to happen (view - switch code).';
+>>>>>>> Stashed changes
 }
 
 // get list of languages with field viewer = 1
 $language_options = '';
-$query = 'SELECT nav_ln.* FROM nav_ln, scripture_main WHERE nav_ln.ISO = scripture_main.ISO AND nav_ln.ROD_Code = scripture_main.ROD_Code AND nav_ln.Variant_Code = scripture_main.Variant_Code AND scripture_main.viewer = 1';
+//$query = "SELECT scripture_main.ISO, scripture_main.ROD_Code, scripture_main.Variant_Code, scripture_main.ISO_ROD_index, LN_English.LN_English FROM scripture_main, LN_English WHERE LN_English.ISO_ROD_index = scripture_main.ISO_ROD_index AND scripture_main.viewer = 1 ORDER BY LN_English.LN_English";
+<<<<<<< Updated upstream
+$query = "SELECT scripture_main.* FROM scripture_main WHERE scripture_main.viewer = 1";
+=======
+//$query = "SELECT scripture_main.* FROM scripture_main WHERE scripture_main.viewer = 1";
+$query = "SELECT nav_ln.* FROM nav_ln, scripture_main WHERE scripture_main.viewer = 1 AND `nav_ln`.`ISO_ROD_index` = `scripture_main`.`ISO_ROD_index`";
+>>>>>>> Stashed changes
 $result_st = $db->query($query) or die ($db->error);
+//$num_st=$result_st->num_rows;
 if ($result_st->num_rows == 0) {
 	die('There is not any viewing books for ISO.');
 }
@@ -659,15 +709,25 @@ if ($result_st->num_rows == 0) {
 	*************************************************************************************************************
 */
 $db->query("DROP TABLE IF EXISTS LN_Temp");							// Get the names of all of the languages or else get the default names
-$db->query("CREATE TEMPORARY TABLE LN_Temp (ISO VARCHAR(3) NOT NULL, ROD_Code VARCHAR(5) NOT NULL, ISO_ROD_index INT NULL, LN VARCHAR(50) NOT NULL) ENGINE = MEMORY CHARSET = utf8") or die ("<body>" . translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
+<<<<<<< Updated upstream
+$db->query("CREATE TEMPORARY TABLE LN_Temp (ISO VARCHAR(3) NOT NULL, ROD_Code VARCHAR(5) NOT NULL, ISO_ROD_index INT NULL, LN VARCHAR(50) NOT NULL) ENGINE = MEMORY CHARSET = utf8") or die ("<body>" . translate('Query failed:', $st, 'sys') . ' ' . mysql_error() . "</body></html>");
+=======
+$db->query("CREATE TEMPORARY TABLE LN_Temp (ISO VARCHAR(3) NOT NULL, ROD_Code VARCHAR(5) NOT NULL, ISO_ROD_index INT NULL, LN VARCHAR(50) NOT NULL) ENGINE = MEMORY CHARSET = utf8") or die ("<body>" . translate('Query failed:', $st, 'sys') . ' ' . $db->error . "</body></html>");
+>>>>>>> Stashed changes
 while ($row = $result_st->fetch_array()) {
 	$ISO=$row['ISO'];
 	$ROD_Code=$row['ROD_Code'];
 	$Variant_Code=$row['Variant_Code'];
-	$ISO_ROD_index=$row['ISO_ROD_index'];							// ISO_ROD_index
-	$ML=$row["$MajorLanguage"];										// boolean
-	$def_LN=$row['Def_LN'];											// default langauge (a 2 digit number for the national langauge)
-	if ($ML > 0) {													// if the major language then the default langauge
+<<<<<<< Updated upstream
+	$ISO_ROD_index=$row['ISO_ROD_index'];				// ISO_ROD_index
+	$ML=$row["$MajorLanguage"];						// boolean
+	//$LN_English=mysql_result($result_st,$i,"scripture_main.LN_English");					// boolean
+	//$LN_Spanish=mysql_result($result_st,$i,"scripture_main.LN_Spanish");					// boolean
+	//$LN_Portuguese=mysql_result($result_st,$i,"scripture_main.LN_Portuguese");			// boolean
+	//$LN_French=mysql_result($result_st,$i,"scripture_main.LN_French");					// boolean
+	//$LN_Dutch=mysql_result($result_st,$i,"scripture_main.LN_Dutch");						// boolean
+	$def_LN=$row['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
+	if ($ML > 0) {																			// if the major language then the default langauge
 		switch ($def_LN) {
 			case 1:
 				$query="SELECT LN_English FROM LN_English WHERE ISO_ROD_index = '$ISO_ROD_index'";
@@ -705,28 +765,35 @@ while ($row = $result_st->fetch_array()) {
 				$r = $result_LN->fetch_array();
 				$LN=trim($r['LN_German']);
 				break; 	
-			case 7:
-				$query="SELECT LN_Chinese FROM LN_Chinese WHERE ISO_ROD_index = '$ISO_ROD_index'";
-				$result_LN=$db->query($query);
-				$r = $result_LN->fetch_array();
-				$LN=trim($r['LN_Chinese']);
-				break; 	
 			default:
 				echo translate('This isn’t supposed to happen! The default language isn’t found.', $st, 'sys');
 				break;
 		}
+=======
+	$ISO_ROD_index=$row['ISO_ROD_index'];							// ISO_ROD_index
+
+	$ML=$row["$MajorLanguage"];										// boolean
+	$def_LN=$row['Def_LN'];											// default national langauge (a 2 digit number for the national langauge)
+	if (!$ML) {														// if the national language name is set
+		$query="SELECT $nav_LN_names[$def_LN] FROM $nav_LN_names[$def_LN] WHERE ISO_ROD_index = '$ISO_ROD_index'";
+		$result_LN=$db->query($query);
+		$row_LN = $result_LN->fetch_assoc();
+		$LN=trim($row_LN["$nav_LN_names[$def_LN]"]);
+>>>>>>> Stashed changes
 	}
 	else {
+		//$query="SELECT $MajorLanguage FROM $MajorLanguage WHERE ISO_ROD_index = '$ISO_ROD_index'";
 		$query="SELECT LN_English FROM LN_English WHERE ISO_ROD_index = '$ISO_ROD_index'";
 		$result_LN=$db->query($query);
 		$r = $result_LN->fetch_array();
+		//$LN=trim(mysql_result($result_LN,0,"$MajorLanguage"));
 		$LN=trim($r['LN_English']);
 	}
 	$LN = check_input($LN);
 	$db->query("INSERT INTO LN_Temp (ISO, ROD_Code, ISO_ROD_index, LN) VALUES ('$ISO', '$ROD_Code', '$ISO_ROD_index', '$LN')");
 }
 
-$query="SELECT LN_Temp.LN, scripture_main.ISO, scripture_main.ROD_Code, scripture_main.Variant_Code FROM LN_Temp, scripture_main WHERE LN_Temp.ISO_ROD_index = scripture_main.ISO_ROD_index ORDER BY LN_Temp.LN";
+$query="SELECT LN_Temp.LN, nav_ln.ISO, nav_ln.ROD_Code, nav_ln.Variant_Code FROM LN_Temp, nav_ln WHERE LN_Temp.ISO_ROD_index = nav_ln.ISO_ROD_index ORDER BY LN_Temp.LN";
 $result_st = $db->query($query);
 //$num_st=$result_st->num_rows;
 while ($row = $result_st->fetch_array()) {
@@ -785,18 +852,18 @@ if (!isset($_POST['ROD_Var']) && !isset($_GET['ROD_Var'])) {
 }
 
 if (!isset($_POST['ROD_Code'])) {$_POST['ROD_Code']=$_GET['ROD_Code'];}
-$_POST['ROD_Code'] = preg_replace('/^(.{0,5})/', "$1", $_POST['ROD_Code']);
+$_POST['ROD_Code'] = preg_replace('/^(.{0,5})/', '$1', $_POST['ROD_Code']);
 
 if (!isset($_POST['Variant_Code'])) {$_POST['Variant_Code']=$_GET['Variant_Code'];}
-$_POST['Variant_Code'] = preg_replace('/^([a-zA-Z0-9]?)/', "$1", $_POST['Variant_Code']);
+$_POST['Variant_Code'] = preg_replace('/^([a-zA-Z0-9]?)/', '$1', $_POST['Variant_Code']);
 
 if (!isset($_POST['ROD_Var'])) {$_POST['ROD_Var']=$_GET['ROD_Var'];}
 $ROD_Var = $_POST['ROD_Var'];
-$ROD_Var = preg_replace('/^([-a-zA-Z0-9]{0,15})/', "$1", $ROD_Var);
+$ROD_Var = preg_replace('/^([-a-zA-Z0-9]{0,15})/', '$1', $ROD_Var);
 
 if (!isset($_POST['rtl'])) {$_POST['rtl']=$_GET['rtl'];}
 $rtl = $_POST['rtl'];
-$rtl = preg_replace('/^([01])/', "$1", $rtl);
+$rtl = preg_replace('/^([01])/', '$1', $rtl);
 if ($rtl != '0' && $rtl != '1' && $rtl != NULL) {
 	die('‘rtl’ is wrong.</body></html>');
 }
@@ -836,7 +903,8 @@ if ($_POST['iso']) {
  if ($ROD_Var == '') {
 	if (is_dir('../data/'.$_POST['iso'].'/viewer')) {
 		$books = scandir('../data/'.$_POST['iso'].'/viewer');									// only 1 ISO
-		$query = "SELECT ISO FROM scripture_main WHERE ISO = '".$_POST['iso']."'";
+//		$query = "SELECT ISO FROM scripture_main WHERE ISO = '".$_POST['iso']."'";
+		$query = "SELECT ISO FROM nav_ln WHERE ISO = '".$_POST['iso']."'";
 		$result_ISO = $db->query($query) or die ($db->error);
 		//$num_ISO=$result_ISO->num_rows;
 		//$ISO=mysql_result($result_ISO,0,"ISO");
@@ -869,9 +937,6 @@ if (empty($books)) {
  //$ROD_Var = '';
  //if ($tempRODVar != '')
  //	$_POST['iso'] = $_POST['iso'].$tempRODVar;
-If (!isset($_POST['iso'])) {
-	die('Hacked!');
-}
  if (strpos($_POST['iso'], "~") == 0)
 	 $_POST['iso'] = $_POST['iso'].'~'.$_POST['ROD_Code'].'~'.$_POST['Variant_Code'].'~'.$ROD_Var;
  //print_r($books);

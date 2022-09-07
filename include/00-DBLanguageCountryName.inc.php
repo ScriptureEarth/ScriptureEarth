@@ -1,22 +1,40 @@
 <?php
-// 00-DBLanguageCountryName.inc.php
 /*
 	*********************************************************************************************
 		Get the major language name to display in the middle of the windows eventually.
+<<<<<<< Updated upstream
+=======
 		called from php and AJAX!
+		
+		00-MainScript.inc.php
+		Scripture_Edit.php
+>>>>>>> Stashed changes
 	*********************************************************************************************
 */
 // Created by Scott Starker
 // Updated by Scott Starker, Lærke Roager
 
+<<<<<<< Updated upstream
 if (!isset($MajorLanguage)) die('1) Hacked!');
 if (!isset($row["$MajorLanguage"])) {
+//echo 'ZZZZZZ<br />';
+=======
+if (!isset($MajorLanguage)) die('1a) Hacked!');
+if (!isset($ISO_ROD_index)) die('1b) Hacked!');
+if (preg_match('/^[0-9]+$/', $ISO_ROD_index)) {
+}
+else {
+	die('1c) Hacked!');
+}
+
+if (!isset($row["$MajorLanguage"])) {				// is $row["$MajorLanguage"] NOT set
+>>>>>>> Stashed changes
 	$query="SELECT $MajorLanguage, Def_LN FROM nav_ln WHERE ISO_ROD_index = '$ISO_ROD_index'";
 	$result_temp=$db->query($query);
 	if ($result_temp->num_rows > 0) {
 		$row_temp=$result_temp->fetch_assoc();
 		$ML=$row_temp["$MajorLanguage"];			// $ML = boolean
-		$def_LN=$row_temp['Def_LN'];				// default langauge (a 2 digit number for the national langauge)
+		$def_LN=$row_temp['Def_LN'];				// default langauge (a number that points to the national langauge name)
 	}
 	else {
 		die('2) Hacked!');
@@ -24,18 +42,35 @@ if (!isset($row["$MajorLanguage"])) {
 }
 else {
 	$ML=$row["$MajorLanguage"];						// $ML = boolean
+<<<<<<< Updated upstream
 	$def_LN=$row['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
+//	echo "<br /><br />& ". $MajorLanguage.'&   &'. $ML . ' & ' . $row["$MajorLanguage"] . ' & & '. $row['Def_LN']." <br /><br />";
 }
-
+//echo "<br /><br />% ". $MajorLanguage.'%   %'. $ML . "%<br /><br />";
 if (!$ML) {											// if the country doesn't exist then the major default langauge name
 //	Why is this????
+	if (session_status() === PHP_SESSION_NONE) {
+	session_start();
+	}
+//	print_r($_SESSION['nav_ln_array']);
+//	echo '<br />';
+	foreach ($_SESSION['nav_ln_array'] as $code => $array){
+		if ($array[3] == $def_LN){
+			$query="SELECT LN_".$array[1]." FROM LN_".$array[1]." WHERE ISO_ROD_index = '$ISO_ROD_index'";
+			$result_LN=$db->query($query);
+			if ($result_LN->num_rows > 0){
+				$row_temp=$result_LN->fetch_assoc();
+				$LN=$row_temp['LN_'.$array[1]];
+=======
+	$def_LN=$row['Def_LN'];							// default langauge (a number that points to the national langauge name)
+}
+
+if (!$ML) {									// if the national langauge name is 0 then the default langauge name is used
+	$ML = $def_LN;
 	if (isset($_SESSION['nav_ln_array']) || !empty($_SESSION['nav_ln_array'])) {		// from PHP
 		if (session_status() === PHP_SESSION_NONE) {
 			session_start();
 		}
-//		echo '<pre>';
-//		print_r($_SESSION['nav_ln_array']);
-//		echo '</pre><br />';
 		foreach ($_SESSION['nav_ln_array'] as $code => $array){
 			if ($array[3] == $def_LN){
 				$query="SELECT LN_".$array[1]." FROM LN_".$array[1]." WHERE ISO_ROD_index = '$ISO_ROD_index'";
@@ -50,10 +85,7 @@ if (!$ML) {											// if the country doesn't exist then the major default lan
 	}
 	else {
 		$temp_ln = explode(', ', $ln_result);		// from AJAX
-//echo $ln_result . '@<br />';
-//exit;
 		foreach ($temp_ln as $code => $array){
-//echo $code + 1 . '# #' . $def_LN . '# !' . $array. '!<br />';
 			if ($code+1 == $def_LN){
 				$query="SELECT ".$array." FROM ".$array." WHERE ISO_ROD_index = '$ISO_ROD_index'";
 				$result_LN=$db->query($query);
@@ -62,22 +94,23 @@ if (!$ML) {											// if the country doesn't exist then the major default lan
 					$LN=$row_temp[$array];
 				}
 				break;
+>>>>>>> Stashed changes
 			}
+			break;
 		}
 	}
 }
-else {
-//echo '<br /><br />SELECT<br /><br />';
-//echo "<br /><br />% ". $MajorLanguage.'%   % ISO_ROD_index: '. $ISO_ROD_index . "%<br /><br />";
-	$query="SELECT $MajorLanguage FROM $MajorLanguage WHERE ISO_ROD_index = '$ISO_ROD_index'";
-	$result_LN=$db->query($query);
-	//echo $ISO . "<br />";
-	if ($result_LN->num_rows > 0) {
-		$row_temp=$result_LN->fetch_assoc();
+else {												// points directly to $MajorLanguage
+	$query="SELECT `$MajorLanguage` FROM `$MajorLanguage` WHERE ISO_ROD_index = '$ISO_ROD_index'";
+	$result_LN=$db->query($query) or die('Error querying database.');
+	if (!$result_LN) {
+		echo 'Query to show fields from table failed!<br />';
+	}	
+	if ($row_temp=$result_LN->fetch_assoc()) {
 		$LN=$row_temp["$MajorLanguage"];
 	}
 	else {
-		die('3) Hacked!');
+		echo ("Error: $MajorLanguage; ISO ROD index: $ISO_ROD_index. Is there any national language name tables entry??<br />");
 	}
 }
 ?>

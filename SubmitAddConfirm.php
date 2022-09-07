@@ -50,7 +50,7 @@
 	// **********************************************
 	$idx = $db->insert_id;							// retrieves the last auto number (idx)
 
-//  get nav_ln and INSERT navigational languages - LN tables
+// get nav_ln and INSERT navigational languages - LN tables
 	$ln_result = '';
 	$ln_string = '';
 	foreach($_SESSION['nav_ln_array'] as $code => $array){
