@@ -2,16 +2,9 @@
 // Start the session
 session_start();
 /*
-Created by Scottt Starker
-<<<<<<< Updated upstream
 Updated by Scott Starker, Lærke Roager
 AJAX from LangSearch.js
-
-=======
-Updated by Scott Starker, L�rke Roager
-AJAX from LangSearch.js
 Can't use $_SESSION because as AJAX PHP there is NO global variables with AJAX including $_SESSION. Although SESSION_ID would work slower than mine.
->>>>>>> Stashed changes
 Problems: TryLanguage ' should be \' 
 MySQL: utf8_general_ci flattens accents as well as lower-case:
 You must ensure that all parties (your app, mysql connection, your table or column) have set utf8 as charset.
@@ -22,8 +15,6 @@ You must ensure that all parties (your app, mysql connection, your table or colu
 */
 
 /*
-<<<<<<< Updated upstream
-=======
 	input:
 		language (string: 'try language')
 		st (string: eng, spa, por, fre, ndl, deu, cmn)
@@ -35,7 +26,6 @@ You must ensure that all parties (your app, mysql connection, your table or colu
 */
 
 /*
->>>>>>> Stashed changes
 	These are defined at the end of $response:
 	langNotFound = "The language is not found.";
 	colLN = "Language Name";
@@ -46,7 +36,7 @@ You must ensure that all parties (your app, mysql connection, your table or colu
 
 // display all of the language names, ROD codes and variant codes from a major and alternate languages names
 if (isset($_GET['language'])) $TryLanguage = $_GET['language']; else { die('Hack!'); }
-if (preg_match("/^[-. ,'?()A-Za-z��������������������&]+/", $TryLanguage)) {
+if (preg_match("/^[-. ,'?()A-Za-záéíóúÑñçãõâêîôûäëöüï&]+/", $TryLanguage)) {
 }
 else {
 	die('Hack!');
