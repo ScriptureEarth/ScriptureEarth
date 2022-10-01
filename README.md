@@ -13,6 +13,6 @@ For the user the scripts are divided up into two stages: 1) the search for the l
 
 ## CMS
 
-### Add to Database
+### Add to ScripturesEarth's Database
 
-### Edit the Database
+### Edit ScripturesEarth's Database
