@@ -8,3 +8,5 @@ For the user the scripts are divided up into two stages: 1) the search for the l
 Search for the Language
 
 Specific Language Page
+
+We are very glad that you are now able 
