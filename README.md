@@ -5,9 +5,11 @@ This contains most of the PHP, Mariadb, HTML, JavaScript, AJAX, and CSS for the 
 
 For the user the scripts are divided up into two stages: 1) the search for the language, and 2) the specific language page.
 
+## Search for and Display Specific Language Pages
+
 ### Search for the Language
 
-### Specific Language Page
+### Display Specific Language Pages
 
 ## CMS
 
