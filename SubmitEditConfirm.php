@@ -182,7 +182,7 @@
 		$i = 1;
 		$query="INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, url, subfolder, description, pre_scriptoria, SAB_number) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, ?, ?)";
 		$stmt_SAB_scriptoria=$db->prepare($query);
-	//		while (isset($inputs["txtSABsubfolder-".(string)$i]) && trim($inputs["txtSABsubfolder-".(string)$i]) != '') {		//strlen(trim($inputs["txtSABsubFirstPath-".(string)$i]) >= 4)) {			// $inputs["txtSABsubFirstPath-".(string)$i]) = "sab" by default
+		//		while (isset($inputs["txtSABsubfolder-".(string)$i]) && trim($inputs["txtSABsubfolder-".(string)$i]) != '') {		//strlen(trim($inputs["txtSABsubFirstPath-".(string)$i]) >= 4)) {			// $inputs["txtSABsubFirstPath-".(string)$i]) = "sab" by default
 		while (isset($inputs["txtSABsubfolder-".(string)$i])) {		//strlen(trim($inputs["txtSABsubFirstPath-".(string)$i]) >= 4)) {			// $inputs["txtSABsubFirstPath-".(string)$i]) = "sab" by default
 			$SABdescription = "txtSABdescription-".(string)$i;
 			$SABurl = "txtSABurl-".(string)$i;
@@ -645,7 +645,7 @@
 		$stmt_watch->close();
 	}
 	
-	// study
+// study
 	$query="DELETE FROM study WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if ($inputs['study']) {
@@ -674,7 +674,7 @@
 		$stmt_study->close();
 	}
 	
-	// viewer
+// viewer
 	$query="DELETE FROM viewer WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if ($inputs['viewer']) {
@@ -687,7 +687,7 @@
 		}
 	}
 	
-	// other_titles
+// other_titles
 	$query="DELETE FROM other_titles WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if ($inputs['other_titles']) {
@@ -710,7 +710,7 @@
 		$stmt_other->close();
 	}
 	
-	// buy
+// buy (buy table)
 	$query="DELETE FROM buy WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if ($inputs['buy']) {
@@ -731,21 +731,112 @@
 		$stmt_buy->close();
 	}
 	
-	// links: buy, map, and GooglePlay
-	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND BibleIs = 0 AND YouVersion = 0 AND Bibles_org = 0 AND GRN = 0";		// otherwise buy, map, and GooglePlay 
+// links: buy
+	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND buy = 1";
 	$result=$db->query($query);
-	if ($inputs['links']) {
+	if ($inputs['linksBuy']) {																		// test
 		$i = 1;
-		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, URL, buy, map, GooglePlay) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, ?, ?, ?)";
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, buy) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, 1)";
 		$stmt_links=$db->prepare($query);
-		while (isset($inputs["txtLinkCompany-$i"])) {
+		//while (isset($inputs["txtLinkCompany-$i"]) && $inputs["linksBuy-$i"] == 1) {
+		for (; isset($inputs["txtLinkCompany-$i"]); $i++) {
+			if (!isset($inputs["linksBuy-$i"])) continue;
 			$temp1 = "txtLinkCompany-$i";
-			$temp2 = "txtLinkCompanyTitle-".(string)$i;
+			$temp2 = "txtLinkCompanyTitle-$i";
 			$temp3 = "txtLinkURL-$i";
-			$temp4 = "linksBuy-$i";
-			$temp5 = "linksMap-$i";
-			$temp6 = "linksGooglePlay-$i";
-			$stmt_links->bind_param("sssiii", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3], $inputs[$temp4], $inputs[$temp5], $inputs[$temp6]);	// bind parameters for markers								// 
+			//$temp4 = "linksBuy-$i";
+			$stmt_links->bind_param("sss", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3]);		// bind parameters for markers
+			$result=$stmt_links->execute();															// execute query
+			if (!$result) {
+				echo 'Could not insert the data "links buy": ' . $db->error;
+			}
+			//$i++;
+		}
+		$stmt_links->close();
+	}
+
+// links: map
+	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND map = 1";
+	$result=$db->query($query);
+	if ($inputs['linksMap']) {																		// test
+		$i = 1;
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, map) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, 1)";
+		$stmt_links=$db->prepare($query);
+		//while (isset($inputs["txtLinkCompany-$i"]) && $inputs["linksMap-$i"]) {
+		for (; isset($inputs["txtLinkCompany-$i"]); $i++) {
+			if (!isset($inputs["linksMap-$i"])) continue;
+			$temp1 = "txtLinkCompany-$i";
+			$temp2 = "txtLinkCompanyTitle-$i";
+			$temp3 = "txtLinkURL-$i";
+			//$temp5 = "linksMap-$i";
+			$stmt_links->bind_param("sss", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3]);		// bind parameters for markers
+			$result=$stmt_links->execute();															// execute query
+			if (!$result) {
+				echo 'Could not insert the data "links map": ' . $db->error;
+			}
+			//$i++;
+		}
+		$stmt_links->close();
+	}
+
+// links: GooglePlay
+	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND GooglePlay = 1";
+	$result=$db->query($query);
+	if ($inputs['linksGooglePlay']) {																// test
+		$i = 1;
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, GooglePlay) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, 1)";
+		$stmt_links=$db->prepare($query);
+		//while (isset($inputs["txtLinkCompany-$i"]) && $inputs["linksGooglePlay-$i"]) {
+		for (; isset($inputs["txtLinkCompany-$i"]); $i++) {
+			if (!isset($inputs["linksGooglePlay-$i"])) continue;
+			$temp1 = "txtLinkCompany-$i";
+			$temp2 = "txtLinkCompanyTitle-$i";
+			$temp3 = "txtLinkURL-$i";
+			//$temp6 = "linksGooglePlay-$i";
+			$stmt_links->bind_param("sss", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3]);		// bind parameters for markers
+			$result=$stmt_links->execute();															// execute query
+			if (!$result) {
+				echo 'Could not insert the data "links Google Play": ' . $db->error;
+			}
+			//$i++;
+		}
+		$stmt_links->close();
+	}
+
+// other links
+	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND (buy = 0 AND map = 0 AND GooglePlay = 0 AND BibleIs = 0 AND YouVersion = 0 AND Bibles_org = 0 AND GRN = 0 AND email = 0)";
+	$result=$db->query($query);
+	if ($inputs['linksOther']) {																	// test
+		$i = 1;
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?)";
+		$stmt_links=$db->prepare($query);
+		//while (isset($inputs["txtLinkCompany-$i"]) && (isset($inputs["linksBuy-$i"]) ? 1 : 0) && (isset($inputs["linksMap-$i"]) ? 1 : 0) && (isset($inputs["linksGooglePlay-$i"]) ? 1 : 0) && (isset($inputs["BibleIs-$i"]) ? 1 : 0) && (isset($inputs["YouVersion-$i"]) ? 1 : 0) && (isset($inputs["Bibles_org-$i"]) ? 1 : 0) && (isset($inputs["GRN-$i"]) ? 1 : 0) && (isset($inputs["email-$i"]) ? 1 : 0)) {
+		for (; isset($inputs["txtLinkCompany-$i"]); $i++) {
+			if (!isset($inputs["linksOther-$i"])) continue;
+			$temp1 = "txtLinkCompany-$i";
+			$temp2 = "txtLinkCompanyTitle-$i";
+			$temp3 = "txtLinkURL-$i";
+			$stmt_links->bind_param("sss", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3]);		// bind parameters for markers
+			$result=$stmt_links->execute();															// execute query
+			if (!$result) {
+				echo 'Could not insert the data "links other": ' . $db->error;
+			}
+			//$i++;
+		}
+		$stmt_links->close();
+	}
+
+// links: email
+	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND email = 1";					// otherwise buy, map, and GooglePlay 
+	$result=$db->query($query);
+	if ($inputs['email']) {
+		$i = 1;
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, email) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '', ?, ?, 1)";
+		$stmt_links=$db->prepare($query);
+		while (isset($inputs['txtEmailAddress-'.(string)$i])) {
+			$temp1 = 'txtEmailTitle-'.(string)$i;
+			$temp2 = 'txtEmailAddress-'.(string)$i;
+			$stmt_links->bind_param("ss", $inputs[$temp1], $inputs[$temp2]);						// bind parameters for markers
 			$result=$stmt_links->execute();															// execute query
 			if (!$result) {
 				echo 'Could not insert the data "links": ' . $db->error;
@@ -755,7 +846,7 @@
 		$stmt_links->close();
 	}
 
-	// PlaylistAudio
+// PlaylistAudio
 	$query="DELETE FROM PlaylistAudio WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if ($inputs['AudioPlaylist']) {
@@ -774,8 +865,8 @@
 		}
 		$stmt_Audio->close();
 	}
-	
-	// PlaylistVideo
+
+// PlaylistVideo
 	$query="DELETE FROM PlaylistVideo WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if ($inputs['VideoPlaylist']) {
@@ -796,7 +887,7 @@
 		$stmt_Video->close();
 	}
 
-	// FCBH
+// FCBH
 	// A checked on FCBH only goes through this code. When unchecked the scripture_main takes it over.
 	$inputs['FCBH'] = 0;		// FCBH is no longer needed.
 	if ($inputs['FCBH']) {
@@ -821,7 +912,7 @@
 		}
 	}
 	
-	// eBible
+// eBible
 	$result=$db->query("SELECT translationId FROM eBible_list WHERE ISO_ROD_index = $inputs[idx]");
 	if ($r = $result->fetch_assoc()) {
 		$translationId=$r['translationId'];
@@ -835,6 +926,7 @@
 		}
 	}
 
+// completed
 	echo "<h2 style='text-align: center; '>You have successfully completed the edit to ";
     /*
      * It is safe to echo $_POST['txtName'] here because
@@ -844,7 +936,7 @@
 	echo "'".$inputs['iso']."' '".$inputs['rod']."' '".$inputs['var']."'.";
 	echo "</h2><br />";
 	echo "<form>";
-	echo "<input type='reset' value='Go back to the Edit script' OnClick='parent.location=\"Scripture_Edit.php\"' />";
+	echo "<input type='reset' value='Go back to the Edit script' onclick='parent.location=\"Scripture_Edit.php\"' />";
 	echo "</form>";	
 	echo "</div>";
 	echo "<br />";
@@ -860,7 +952,7 @@
 			for($x=0; $x<$arrlength; $x++) {
 				if (strpos($file_array[$x], $temp)) {
 					$temp1 = "		case '".$inputs['isopText']."':";
-					$temp2 = '			window.location.replace("https://www.ScriptureEarth.org/"+navLang+"?sortby=lang&idx='.$inputs['idx'].'");		// '.$inputs['iso'].' '.$inputs['rod'].' '.$inputs['idx'].' '.$inputs['isopText'];
+					$temp2 = '			window.location.replace("https://www.ScriptureEarth.org/"+navLang+"?idx='.$inputs['idx'].'");		// '.$inputs['iso'].' '.$inputs['rod'].' '.$inputs['idx'].' '.$inputs['isopText'];
 					array_splice($file_array, $x-1, 2, [$temp1, $temp2]);									// and delete 2
 					break;
 				}
@@ -872,7 +964,7 @@
 			for($x=0; $x<$arrlength; $x++) {
 				if (strpos($file_array[$x], '(query)')) {													// switch (query) only occurs once in 404.shtml
 					$temp1 = "		case '".$inputs['isopText']."':";
-					$temp2 = '			window.location.replace("https://www.ScriptureEarth.org/"+navLang+"?sortby=lang&idx='.$inputs['idx'].'");		// '.$inputs['iso'].' '.$inputs['rod'].' '.$inputs['idx'].' '.$inputs['isopText'];
+					$temp2 = '			window.location.replace("https://www.ScriptureEarth.org/"+navLang+"?idx='.$inputs['idx'].'");		// '.$inputs['iso'].' '.$inputs['rod'].' '.$inputs['idx'].' '.$inputs['isopText'];
 					$temp3 = '			break;';
 					array_splice($file_array, $x+1, 0, [$temp1, $temp2, $temp3]);
 					break;

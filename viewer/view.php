@@ -9,7 +9,7 @@
 /*                 Marshall, TX 75672                                         */
 /*                 ken@marshallcomputer.net                                   */
 /*                                                                            */
-/*  Modified by:   Scott Starker                                              */
+/*  Updated by:    Scott Starker                                              */
 /*                 scott_starker@sil.org                                      */
 /******************************************************************************/
 
@@ -28,15 +28,14 @@ while ($row_LN = $res->fetch_assoc()){
 }
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" dir="ltr">
+<!DOCTYPE html>
+<html>
 <head>
-<meta content="text/html; charset=UTF-8" http-equiv="content-type">
 <title></title>
-<meta name="robots" content="noindex, nofollow">
-<link rel="SHORTCUT ICON" href="../favicon.ico" />
-<link type="text/css" rel="stylesheet" href="style.css" />
+<meta http-equiv="content-type"			content="text/html; charset=UTF-8">
+<meta name="robots"						content="noindex, nofollow">
+<link rel="SHORTCUT ICON"				href="../favicon.ico" />
+<link rel="stylesheet" type="text/css"	href="style.css" />
 </head>
 <body>
 
@@ -57,18 +56,9 @@ ini_set("display_errors", 0);
  {
   if(file_exists('../data/'.$_GET['iso'].'/viewer'))
   {
-<<<<<<< Updated upstream
-   $query  = 
-   "SELECT LN_English FROM LN_English
-    WHERE ISO  = \"".$iso."\"
-    LIMIT 1";
-   $result_st = mysql_query($query) or die (mysql_error());
-   $myrow_st  = mysql_fetch_array($result_st);
-=======
    $query = "SELECT LN_English FROM LN_English WHERE ISO  = '".$iso."' LIMIT 1";
    $result_st = mysql_query($query) or die (mysql_error());
    $myrow_st = mysql_fetch_array($result_st);
->>>>>>> Stashed changes
    $languageArray[$iso] = $myrow_st['LN_English'];
   }
  }
@@ -109,7 +99,6 @@ if ($_POST['iso'] == NULL) {
 	die('‘ISO’ ' . translate('is empty', $st, 'sys') . '.</body></html>');
 }
 
-//$query = "SELECT ISO FROM scripture_main WHERE ISO = '".substr($_POST['iso'], 0, 3)."'";
 $query = "SELECT ISO FROM nav_ln WHERE ISO = '".substr($_POST['iso'], 0, 3)."'";
 $result_st = $db->query($query) or die ($db->error);
 if ($result_st->num_rows == 0) {
@@ -687,7 +676,6 @@ $language_options = '';
 //$query = "SELECT scripture_main.* FROM scripture_main WHERE scripture_main.viewer = 1";
 $query = "SELECT nav_ln.* FROM nav_ln, scripture_main WHERE scripture_main.viewer = 1 AND `nav_ln`.`ISO_ROD_index` = `scripture_main`.`ISO_ROD_index`";
 $result_st = $db->query($query) or die ($db->error);
-//$num_st=$result_st->num_rows;
 if ($result_st->num_rows == 0) {
 	die('There is not any viewing books for ISO.');
 }
@@ -726,7 +714,6 @@ while ($row = $result_st->fetch_array()) {
 
 $query="SELECT LN_Temp.LN, nav_ln.ISO, nav_ln.ROD_Code, nav_ln.Variant_Code FROM LN_Temp, nav_ln WHERE LN_Temp.ISO_ROD_index = nav_ln.ISO_ROD_index ORDER BY LN_Temp.LN";
 $result_st = $db->query($query);
-//$num_st=$result_st->num_rows;
 while ($row = $result_st->fetch_array()) {
 	$ISO=$row['ISO'];
 	$ROD_Code=$row['ROD_Code'];
@@ -743,7 +730,6 @@ while ($row = $result_st->fetch_array()) {
 	if ($Variant_Code != '') {
 		$query = "SELECT Variant_Description FROM Variants WHERE Variant_Code = '$Variant_Code'";
 		$result_Var = $db->query($query) or die ($db->error);
-		//$num_Var=$result_Var->num_rows;
 		if ($result_Var->num_rows > 0) {
 			$r_Var = $result_Var->fetch_array();
 			$Variant_Description=$r_Var['Variant_Description'];
@@ -752,7 +738,6 @@ while ($row = $result_st->fetch_array()) {
 	}
 	$query = "SELECT viewer_ROD_Variant FROM viewer WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND Variant_Code = '$Variant_Code'";
 	$result_Viewer = $db->query($query) or die ($db->error);
-	//$num_Viewer=$result_Viewer->num_rows;
 	if ($result_Viewer->num_rows > 0) {
 		$r_Viewer = $result_Viewer->fetch_array();
 		$ROD_Var=$r_Viewer['viewer_ROD_Variant'];

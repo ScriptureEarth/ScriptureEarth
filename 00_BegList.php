@@ -45,19 +45,6 @@ function check_input($value) {							// used for ' and " that find it in the inp
 		}
 	}
 
-	//	$ln_result = 'LN_English, LN_Spanish, LN_Portuguese, LN_French, LN_Dutch, LN_German, LN_Chinese, ';
-	if (isset($_GET['nav_ln_line'])) {
-		$ln_result = $_GET['nav_ln_line'];
-		$preg_count = 0;
-		$ln_result = preg_replace('/^([a-zA-Z\,_ ]+)/', "$1", $ln_result, -1, $preg_count);
-		if ($preg_count == 0) {
-			die('4) Hack!');
-		}
-	}
-	else {
-		die('5) Hack!');
-	}
-
 	require_once './include/conn.inc.php';
 	$db = get_my_db();
 	include './translate/functions.php';

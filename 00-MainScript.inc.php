@@ -31,7 +31,7 @@ Can't use <div id="langBackground" in FireFox 84.0.1 with cursor: pointer; insid
 <link rel="stylesheet" type='text/css'		href="JQuery/css/style.css" />
 <!-- link rel="stylesheet" type="text/css" 	href="_css/Scripture_Index.css" /-->
 <link rel="stylesheet" type="text/css" 		href="_css/SpecificLanguage.css" />
-<link rel='stylesheet' type='text/css' 		href='_css/00-Scripture.css?v=1.0.1' />
+<link rel='stylesheet' type='text/css' 		href='_css/00-Scripture.css?v=1.0.2' />
 <link rel='stylesheet' type='text/css' 		href='_css/00-SEmobile.css' />
 <!--link rel='stylesheet' type='text/css' 	href='_css/CountryTable.css' /-->
 <link rel='stylesheet' type='text/css'		href='_css/jplayer.BlueMonday.css' />
@@ -42,15 +42,9 @@ Can't use <div id="langBackground" in FireFox 84.0.1 with cursor: pointer; insid
 <script type="text/javascript" language="javascript"	src="JQuery/js/jquery-ui-1.12.1.min.js"></script>
 <script type="text/javascript" language="javascript"	src="_js/jquery.jplayer-2.9.2.min.js"></script>
 <script type="text/javascript" language="javascript"	src="_js/jplayer.playlist.min.js"></script>
-<<<<<<< Updated upstream
-<script type="text/javascript" language="javascript" 	src="_js/user_events.js?v=1.0.0"></script>
-<script type="text/javascript" language="javascript" 	src="_js/SpecificLanguage.js?v=1.0.2"></script>
-<script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.2"></script>
-=======
-<script type="text/javascript" language="javascript" 	src="_js/user_events.js?v=1.0.1"></script>
-<script type="text/javascript" language="javascript" 	src="_js/SpecificLanguage.js?v=1.0.3"></script>
-<script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.3"></script>
->>>>>>> Stashed changes
+<script type="text/javascript" language="javascript" 	src="_js/user_events.js?v=1.0.2"></script>
+<script type="text/javascript" language="javascript" 	src="_js/SpecificLanguage.js?v=1.0.4"></script>
+<script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.4"></script>
 <!--script type='text/javascript' language='javascript'	src="_js/LangSearch.js?v=1.0.3"></script-->
 <!--link rel='stylesheet' type='text/css' 	href='_css/boilerplate.css' /-->
 <link rel='stylesheet' type='text/css' 		href='_css/FGL.css' />
@@ -84,35 +78,65 @@ include './NT_Books.php';										// $NT_array
 include './translate/functions.php';							// translation function
 include './include/00-MainPHPFunctions.inc.php';				// main PHP functions
 
+$ln_result = '';
+
 require_once './include/conn.inc.php';							// connect to the database named 'scripture'
 $db = get_my_db();
+
+//session_unset();
+
+if (!isset($_SESSION['MajorLanguage'])) {
+	$_SESSION['Variant_major'] = $Variant_major;
+	$_SESSION['MajorLanguage'] = $MajorLanguage;
+	$_SESSION['SpecificCountry'] = $SpecificCountry;
+	$_SESSION['counterName'] = $counterName;
+	$_SESSION['Scriptname'] = $Scriptname;
+	$_SESSION['FacebookCountry'] = $FacebookCountry;
+	$_SESSION['MajorCountryAbbr'] = $MajorCountryAbbr;
+}
 
 // master list of the naviagational languages
 if (!isset($_SESSION['nav_ln_array'])) {
 	$_SESSION['nav_ln_array'] = [];
-	$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `translation_code`";
-	$ln_result=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
-	if ($ln_result->num_rows == 0) {
+	$ln_temp_var = '';
+	$ln_query = 'SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `ln_number`';
+	$ln_result_temp=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
+	if ($ln_result_temp->num_rows == 0) {
 		die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
 	}
-
-	while ($ln_row = $ln_result->fetch_array()){
+	while ($ln_row = $ln_result_temp->fetch_array()){
 		$ln_temp[0] = $ln_row['translation_code'];
 		$ln_temp[1] = $ln_row['name'];
 		$ln_temp[2] = $ln_row['nav_fileName'];
 		$ln_temp[3] = $ln_row['ln_number'];
 		$ln_temp[4] = $ln_row['ln_abbreviation'];
 		$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;
+		$ln_temp_var .= 'LN_'.$ln_temp[1].', ';								// must have a space (' ') here
 	}
+	$ln_result = $ln_temp_var;
+	$_SESSION['ln_result'] = $ln_result;
 }
+/*if (!isset($_SESSION['ln_result'])) {
+	$ln_query = "SELECT `name` FROM `translations` ORDER BY `ln_number`";
+	$ln_result_temp=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
+	if ($ln_result_temp->num_rows == 0) {
+		die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
+	}
+	$ln_temp_var = '';
+	while ($ln_row = $ln_result_temp->fetch_array()){
+		$ln_temp_var .= 'LN_'.$ln_row['name'].', ';
+	}
+	$ln_result = $ln_temp_var;
+	$_SESSION['ln_result'] = $ln_result;
+}*/
 
 /*
 	*************************************************************************************************************
 		Internet?
 	*************************************************************************************************************
 */
-$Internet = 0;		// localhost is 127.0.0.1 but "192.168.x.x" should be not-on-the-Internet because it's URL is part of the stand-alone server.
-$Internet = (substr($_SERVER['REMOTE_ADDR'], 0, 7) != "192.168" ? 1 : 0);
+$Internet = 0;		// localhost is 127.0.0.1 but '192.168.x.x' should be not-on-the-Internet because it's URL is part of the stand-alone server.
+$Internet = (substr($_SERVER['REMOTE_ADDR'], 0, 7) != '192.168' ? 1 : 0);
 
 $asset = 0;
 if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
@@ -178,11 +202,11 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 							die('Die hacker!</div></div></body></html>');
 						}
 						// here check
-						if (isset($asset) && $asset === 1) {
-							$query = "SELECT DISTINCT scripture_main.*, $SpecificCountry, countries.ISO_Country FROM scripture_main, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO_ROD_index = '$ISO_ROD_index' AND `scripture_main`.`ISO_ROD_index` = `CellPhone`.`ISO_ROD_index` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
+						if (isset($asset) && $asset == 1) {
+							$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO_ROD_index = '$ISO_ROD_index' AND `nav_ln`.`ISO_ROD_index` = `CellPhone`.`ISO_ROD_index` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 						}
 						else {
-							$query = "SELECT DISTINCT scripture_main.*, $SpecificCountry, countries.ISO_Country FROM scripture_main, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO_ROD_index = '$ISO_ROD_index'";
+							$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO_ROD_index = '$ISO_ROD_index'";
 							$asset = 0;
 						}
 					}
@@ -225,22 +249,22 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 							}
 						}
 						// here - check						
-						if (isset($asset) && $asset === 1) {
+						if (isset($asset) && $asset == 1) {
 							if (!isset($ROD_Code) && !isset($Variant_Code)) {
-								$resultTest=$db->query("SELECT scripture_main.ISO FROM scripture_main, CellPhone WHERE scripture_main.ISO = '$ISO' AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'");
-								$query = "SELECT DISTINCT scripture_main.*, $SpecificCountry, countries.ISO_Country FROM scripture_main, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO = '$ISO' AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
+								$resultTest=$db->query("SELECT nav_ln.ISO FROM nav_ln, CellPhone WHERE nav_ln.ISO = '$ISO' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'");
+								$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO = '$ISO' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 							}
 							elseif (isset($ROD_Code) && !isset($Variant_Code)) {
-								$resultTest=$db->query("SELECT scripture_main.ISO FROM scripture_main, CellPhone WHERE scripture_main.ISO = '$ISO' AND scripture_main.ROD_Code = '$ROD_Code' AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' AND scripture_main.ROD_Code = `CellPhone`.`ROD_Code`");
-								$query = "SELECT DISTINCT scripture_main.*, $SpecificCountry, countries.ISO_Country FROM scripture_main, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO = '$ISO' AND scripture_main.ROD_Code = '$ROD_Code' AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
+								$resultTest=$db->query("SELECT nav_ln.ISO FROM nav_ln, CellPhone WHERE nav_ln.ISO = '$ISO' AND nav_ln.ROD_Code = '$ROD_Code' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' AND nav_ln.ROD_Code = `CellPhone`.`ROD_Code`");
+								$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO = '$ISO' AND nav_ln.ROD_Code = '$ROD_Code' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 							}
 							elseif (!isset($ROD_Code) && isset($Variant_Code)) {
-								$resultTest=$db->query("SELECT scripture_main.ISO FROM scripture_main, CellPhone WHERE scripture_main.ISO = '$ISO' AND scripture_main.Variant_Code = '$Variant_Code' AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' AND scripture_main.Variant_Code = `CellPhone`.`Variant_Code`");
-								$query = "SELECT DISTINCT scripture_main.*, $SpecificCountry, countries.ISO_Country FROM scripture_main, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO = '$ISO' AND (scripture_main.Variant_Code = '$Variant_Code' OR isnull(scripture_main.Variant_Code)) AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
+								$resultTest=$db->query("SELECT nav_ln.ISO FROM nav_ln, CellPhone WHERE nav_ln.ISO = '$ISO' AND nav_ln.Variant_Code = '$Variant_Code' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' AND nav_ln.Variant_Code = `CellPhone`.`Variant_Code`");
+								$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO = '$ISO' AND (nav_ln.Variant_Code = '$Variant_Code' OR isnull(nav_ln.Variant_Code)) AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 							}
 							else {
-								$resultTest=$db->query("SELECT scripture_main.ISO FROM scripture_main, CellPhone WHERE scripture_main.ISO = '$ISO' AND scripture_main.ROD_Code = '$ROD_Code' AND scripture_main.Variant_Code = '$Variant_Code' AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' AND scripture_main.ROD_Code = `CellPhone`.`ROD_Code` AND scripture_main.Variant_Code = `CellPhone`.`Variant_Code`");
-								$query = "SELECT DISTINCT scripture_main.*, $SpecificCountry, countries.ISO_Country FROM scripture_main, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO = '$ISO' AND scripture_main.ROD_Code = '$ROD_Code' AND (scripture_main.Variant_Code = '$Variant_Code' OR isnull(scripture_main.Variant_Code)) AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
+								$resultTest=$db->query("SELECT nav_ln.ISO FROM nav_ln, CellPhone WHERE nav_ln.ISO = '$ISO' AND nav_ln.ROD_Code = '$ROD_Code' AND nav_ln.Variant_Code = '$Variant_Code' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' AND nav_ln.ROD_Code = `CellPhone`.`ROD_Code` AND nav_ln.Variant_Code = `CellPhone`.`Variant_Code`");
+								$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO = '$ISO' AND nav_ln.ROD_Code = '$ROD_Code' AND (nav_ln.Variant_Code = '$Variant_Code' OR isnull(nav_ln.Variant_Code)) AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 							}
 							
 							if ($resultTest->num_rows > 1) {														// in case someone does ?sortby=lang&name=[ZZZ] and there is more than one ROD Code
@@ -249,7 +273,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 										more than 1 ROD Code/Variant code
 									*************************************************************************************************************
 								*/
-								// here:  AND `scripture_main`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'
+								// here:  AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'
 								include './00-moreThanOneRODCode.php';
 								return;
 							}
@@ -260,20 +284,20 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 						}
 						else {
 							if (!isset($ROD_Code) && !isset($Variant_Code)) {
-								$resultTest=$db->query("SELECT ISO FROM scripture_main WHERE ISO = '$ISO'");
-								$query = "SELECT DISTINCT `scripture_main`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `scripture_main`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `scripture_main`.`ISO` AND `scripture_main`.`ISO` = '$ISO'";
+								$resultTest=$db->query("SELECT ISO FROM nav_ln WHERE ISO = '$ISO'");
+								$query = "SELECT DISTINCT `nav_ln`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `nav_ln`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `nav_ln`.`ISO` AND `nav_ln`.`ISO` = '$ISO'";
 							}
 							elseif (isset($ROD_Code) && !isset($Variant_Code)) {
-								$resultTest=$db->query("SELECT ISO FROM scripture_main WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code'");
-								$query = "SELECT DISTINCT `scripture_main`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `scripture_main`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `scripture_main`.`ISO` AND `scripture_main`.`ISO` = '$ISO' AND `scripture_main`.`ROD_Code` = '$ROD_Code'";
+								$resultTest=$db->query("SELECT ISO FROM nav_ln WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code'");
+								$query = "SELECT DISTINCT `nav_ln`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `nav_ln`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `nav_ln`.`ISO` AND `nav_ln`.`ISO` = '$ISO' AND `nav_ln`.`ROD_Code` = '$ROD_Code'";
 							}
 							elseif (!isset($ROD_Code) && isset($Variant_Code)) {
-								$resultTest=$db->query("SELECT ISO FROM scripture_main WHERE ISO = '$ISO' AND Variant_Code = '$Variant_Code'");
-								$query = "SELECT DISTINCT `scripture_main`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `scripture_main`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `scripture_main`.`ISO` AND `scripture_main`.`ISO` = '$ISO' AND (`scripture_main`.`Variant_Code` =  '$Variant_Code' OR isnull(`scripture_main`.`Variant_Code`))";
+								$resultTest=$db->query("SELECT ISO FROM nav_ln WHERE ISO = '$ISO' AND Variant_Code = '$Variant_Code'");
+								$query = "SELECT DISTINCT `nav_ln`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `nav_ln`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `nav_ln`.`ISO` AND `nav_ln`.`ISO` = '$ISO' AND (`nav_ln`.`Variant_Code` =  '$Variant_Code' OR isnull(`nav_ln`.`Variant_Code`))";
 							}
 							else {
-								$resultTest=$db->query("SELECT ISO FROM scripture_main WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND Variant_Code = '$Variant_Code'");
-								$query = "SELECT DISTINCT `scripture_main`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `scripture_main`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `scripture_main`.`ISO` AND `scripture_main`.`ISO` = '$ISO' AND `scripture_main`.`ROD_Code` = '$ROD_Code' AND (`scripture_main`.`Variant_Code` =  '$Variant_Code' OR isnull(`scripture_main`.`Variant_Code`))";
+								$resultTest=$db->query("SELECT ISO FROM nav_ln WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND Variant_Code = '$Variant_Code'");
+								$query = "SELECT DISTINCT `nav_ln`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `nav_ln`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `nav_ln`.`ISO` AND `nav_ln`.`ISO` = '$ISO' AND `nav_ln`.`ROD_Code` = '$ROD_Code' AND (`nav_ln`.`Variant_Code` =  '$Variant_Code' OR isnull(`nav_ln`.`Variant_Code`))";
 							}
 							
 							if ($resultTest->num_rows > 1) {														// in case someone does ?sortby=lang&name=[ZZZ] and there is more than one ROD Code
@@ -328,11 +352,6 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 					echo '<div id="langBackground" style="cursor: pointer; " onclick="window.open(\''.$Scriptname.'\', \'_self\')">';
 					echo "<img src='images/00".$st."-ScriptureEarth_header.jpg' class='langHeader' alt='".translate('Scripture Resources in Thousands of Languages', $st, 'sys')."' />";									// just the ScriptureEarth.org icon
 					echo '</div>';
-					//? >
-					//<div style="position: absolute; top: 0px; left: 0px; width: 100%; ">							<!-- "empty" "window" over "Scripture Earth" if you click on it the script links to "00i-Scripture_Index.org" -->
-					//    <div style="position: relative; top: 0px; left: 30%; width: 40%; z-index: 1; cursor: pointer; " onclick="window.open('<? php echo $Scriptname; ? >', '_self')"><img id="langEmpty" src="./images/empty.png" /></div>
-					//</div>
-					//<? php
 					/*
 						*************************************************************************************
 							execute the include file which lists all of the indigenous languages
@@ -357,7 +376,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 							?>
                             <select id="sL" onchange="langChange('<?php echo $ISO_ROD_index; ?>', '<?php echo $LN; ?>', '<?php echo $ISO; ?>')">
 								<?php foreach ($_SESSION['nav_ln_array'] as $code => $array){
-									$html = "<option value='".$array[2]."' here>".translate($array[1], $array[0], 'sys')."</option>";
+									$html = "<option value='".$array[2].($asset == 1 ? '?asset=1' : '')."' here>".translate($array[1], $array[0], 'sys')."</option>";
 									if ($st == $array[0]){
 										$result = str_replace("here",'selected="selected"',$html);
 									} else{
@@ -384,12 +403,12 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
                     /* ---------------------------------------------------------------------------------------
 									display counter
                     ------------------------------------------------------------------------------------------ */
-					Counter("AllCounter", false);											// Total website counter, don't display
-					Counter("AllMLCounter", false);											// All of the major languages counter, don't display
-					Counter("All_".$ISO."_Counter", false);									// All of the ISO counter, don't display
-					Counter("All_".$GetName."_".$ISO."_Counter", false);					// All of the Country and the varient language counter, don't display
-					Counter($counterName . "MLCounter", false);								// All of the major language counter, don't display
-					Counter($counterName . "ML_".$GetName."_Counter", false);				// All of the major language and the Country counter, don't display
+					Counter('AllCounter', false);											// Total website counter, don't display
+					Counter('AllMLCounter', false);											// All of the major languages counter, don't display
+					Counter('All_'.$ISO.'_Counter', false);									// All of the ISO counter, don't display
+					Counter('All_'.$GetName.'_'.$ISO.'_Counter', false);					// All of the Country and the varient language counter, don't display
+					Counter($counterName . 'MLCounter', false);								// All of the major language counter, don't display
+					Counter($counterName . 'ML_'.$GetName.'_Counter', false);				// All of the major language and the Country counter, don't display
 					?>
                     
 					<div>
@@ -485,7 +504,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 				if (strpos("$SpecificCountry", '.')) $countryTemp = substr("$SpecificCountry", strpos("$SpecificCountry", '.')+1);			// In case there's a "." in the "country"
 				$country = trim($r["$countryTemp"]);								// name of the full country if there is one
 				
-				// "$country" is equal to "$SpecificCountry" (full country name)
+				// "$country" = "$SpecificCountry" (full country name)
 				
 				/*
 					*************************************************************************************
@@ -505,18 +524,20 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 							display home page button
                 ------------------------------------------------------------------------------------------ */ ?>
 				<div id='homeCountry'>
-					<button class='homeCountryButton' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></button>
+					<button class='homeCountryButton' onclick="window.open('<?php echo $Scriptname.($asset == 1 ? '?asset=1' : ''); ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></button>
                 </div>
 					
                 <?php /* ---------------------------------------------------------------------------------
 							display 'English', 'Spanish', ... drop-down menu
                 ------------------------------------------------------------------------------------------ */ 
 				// Changed to work with the master array -- Laerke
+				// added $asset -- Scott
 				?>
           		<div class="FormCountry">
                     <form action="#">
-						<select id="sC" onchange="countryChange('<?php echo $GetName; ?>')">
-							<?php foreach ($_SESSION['nav_ln_array'] as $code => $array){
+						<select id="sC" onchange="countryChange('<?php echo $GetName; ?>', <?php echo $asset; ?>)">
+							<?php
+							foreach ($_SESSION['nav_ln_array'] as $code => $array) {
 								$html = "<option value='".$array[2]."' here>".translate($array[1], $array[0], 'sys')."</option>";
 								if ($st == $array[0]){
 									$result = str_replace("here",'selected="selected"',$html);
@@ -524,7 +545,8 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 									$result = str_replace("here",'',$html);
 								}
 								echo $result;
-							}?>
+							}
+							?>
 						</select>
 					</form>
 				</div>
@@ -588,7 +610,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 			<div id="background" class="<?php echo $st; ?>-header"></div>				<!-- ScriptureEarth and the Earth image -->
 
 			<div style="position: absolute; top: 0px; left: 0px; width: 100%; ">							<!-- "empty" "window" over "Scripture Earth" if you click on it the script links to "00i-Scripture_Index.org" -->
-				<div style="position: relative; top: 0px; left: 0px; z-index: 10; cursor: pointer; " onClick="window.open('<?php echo $Scriptname; ?>', '_self')"><img id="empty" src="./images/empty.png" /></div>
+				<div style="position: relative; top: 0px; left: 0px; z-index: 10; cursor: pointer; " onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><img id="empty" src="./images/empty.png" /></div>
 			</div>
 			<?php /*
 			<!-- AJAX is here. -->
@@ -602,14 +624,14 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 									after 3 letter display the languages/alternate languages/ISO button
                     -------------------------------------------------------------------------------------- */ ?>
 					<div id="showLanguageID" name="showLanguageID">
-						<input type="text" id="ID" title="<?php echo translate('Find a language page: type at least 3 letters of the language name or code (ISO 639-3).', $st, 'sys'); ?>" placeholder="<?php echo translate('Language (or code)', $st, 'sys'); ?>" onKeyUp="showLanguage(this.value, '<?php echo $st; ?>', <?php echo $Internet; ?>, <?php echo $asset; ?>)" value="" />
+						<input type="text" id="ID" title="<?php echo translate('Find a language page: type at least 3 letters of the language name or code (ISO 639-3).', $st, 'sys'); ?>" placeholder="<?php echo translate('Language (or code)', $st, 'sys'); ?>" onKeyUp="showLanguage(this.value, '<?php echo $st; ?>', <?php echo $Internet; ?>, '<?php echo $MajorLanguage; ?>', '<?php echo $Variant_major; ?>', '<?php echo $SpecificCountry; ?>', <?php echo $asset; ?>)" value="" />
                     </div>
 	
                     <?php /* -----------------------------------------------------------------------------
 									display the first letter(s) of the countries button
                     -------------------------------------------------------------------------------------- */ ?>
 					<div id="showCountryID" name="showCountryID">
-						<input type="text" id="CID" autocomplete="off" title="<?php echo translate('Find a country list: type the country name.', $st, 'sys'); ?>" placeholder="<?php echo translate('Country', $st, 'sys'); ?>" onKeyUp="showCountry(this.value, '<?php echo $st; ?>', <?php echo $Internet; ?>, <?php echo $asset; ?>)" value="" />
+						<input type="text" id="CID" autocomplete="off" title="<?php echo translate('Find a country list: type the country name.', $st, 'sys'); ?>" placeholder="<?php echo translate('Country', $st, 'sys'); ?>" onKeyUp="showCountry(this.value, '<?php echo $st; ?>', <?php echo $Internet; ?>, '<?php echo $SpecificCountry; ?>', <?php echo $asset; ?>)" value="" />
                     </div>
 	
 					<div id="listCountriesID" name="listCountriesID">
@@ -617,13 +639,13 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
                         <?php /* -------------------------------------------------------------------------------
 										display all of the countries button
                         ---------------------------------------------------------------------------------------- */ ?>
-                        <button title="<?php echo translate('Tap to get a list of countries available.', $st, 'sys'); ?>" id="AID" onClick="AllCountries('<?php echo $Scriptname; ?>', '<?php echo $st ?>', '<?php echo $SpecificCountry; ?>', <?php echo $Internet; ?>, <?php echo $asset; ?>)"><?php echo translate('List by Country', $st, 'sys'); ?></button>
+                        <button title="<?php echo translate('Tap to get a list of countries available.', $st, 'sys'); ?>" id="AID" onclick="AllCountries('<?php echo $Scriptname; ?>', '<?php echo $st ?>', '<?php echo $SpecificCountry; ?>', <?php echo $Internet; ?>, <?php echo $asset; ?>)"><?php echo translate('List by Country', $st, 'sys'); ?></button>
         
                         <?php /*- ------------------------------------------------------------------------------
 										display home page button. 'hide' at first
                         ---------------------------------------------------------------------------------------- */ ?>
                         <div id="home">
-                            <button class="homeAllCountries" onClick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></button>
+                            <button class="homeAllCountries" onclick="window.open('<?php echo $Scriptname.($asset == 1 ? '?asset=1' : ''); ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></button>
                         </div>
                         
                         <?php /* -------------------------------------------------------------------------------
@@ -644,56 +666,72 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 			<div id="container">
 				<div id="mainContent">
 
-                    <?php /* -----------------------------------------------------------------------------
-									display 'About this site' button
-                    -------------------------------------------------------------------------------------- */ ?>
-					<div id='about' class="button" style='border-radius: 12px; ' title="<?php echo translate('Tap to find out more about the purpose and content of the site.', $st, 'sys'); ?>" onClick="about('<?php echo $st; ?>')"><?php echo translate('About this site', $st, 'sys'); ?></div>
-					
-                    <?php /* -----------------------------------------------------------------------------
+                    <?php
+					if ($asset != 1) {
+						/* -----------------------------------------------------------------------------
+										display 'About this site' button
+						-------------------------------------------------------------------------------------- */ ?>
+						<div id='about' class="button" style='border-radius: 12px; ' title="<?php echo translate('Tap to find out more about the purpose and content of the site.', $st, 'sys'); ?>" onClick="about('<?php echo $st; ?>')"><?php echo translate('About this site', $st, 'sys'); ?></div>
+						<?php
+					}
+					/* -----------------------------------------------------------------------------
 									display "Home" button. 'show' if 'About this site' button is clicked
                     -------------------------------------------------------------------------------------- */ ?>
                     <div id='statements'>
-						<button class='homeAbout' onClick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></button>
+						<button class='homeAbout' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></button>
                     </div>
                     
-                    <?php /* -----------------------------------------------------------------------------
-									6 menus are displayed if 'About this site' button is clicked
-                    -------------------------------------------------------------------------------------- */ ?>
-                    <div class='site'>
-            			<div style='background-color: white; margin-top: -220px; margin-bottom: 20px; '>
-                            <output id='results'></output>							<!-- Gives the about($st) text. -->
-                            <?php
-                                //include './include/00-about_help.inc.php';
-                            ?>
-                 
-                            <br /><br /><br />
-                            
-                            <ul id="ul<?php echo $SpecificCountry; ?>" class="ul<?php echo $SpecificCountry; ?>">
-                                <?php
-                                    include './include/00-MajorLanguageAbout.inc.php';				// Major language bottom banner menu
-                                ?>
-                            </ul>
-                        </div>
-					</div>
+                    <?php
+					if ($asset != 1) {
+						/* -----------------------------------------------------------------------------
+										sub-menus are displayed if 'About this site' button is clicked
+						-------------------------------------------------------------------------------------- */ ?>
+						<div class='site'>
+							<div style='background-color: white; margin-top: -220px; margin-bottom: 20px; '>
+								<output id='results'></output>							<!-- Gives the about($st) text. -->
+								<?php
+									//include './include/00-about_help.inc.php';
+								?>
+					
+								<br /><br /><br />
+								
+								<ul id="ul<?php echo $SpecificCountry; ?>" class="ul<?php echo $SpecificCountry; ?>">
+									<?php
+										include './include/00-MajorLanguageAbout.inc.php';				// Major language bottom banner menu
+									?>
+								</ul>
+							</div>
+						</div>
+						<?php
+					}
+					?>
 					
 					<img id="myShadow" class="myShadow" src="./images/shadow2.png" />
 					
                     <?php /* -----------------------------------------------------------------------------
 									display 'English', 'Spanish', ... drop-down menu
                     -------------------------------------------------------------------------------------- */
+					// in the element 'form', display: block = center when there is no 'About' botton
 					// Changed to work with the master array -- Laerke
 					?>
-					<form id="myForm" style='display: inline; ' action="#">
+					<form id="myForm" style="display: <?php echo ($asset == 1 ? 'block; ' : 'inline; ') ?>" action="#">
 						<select id="sM" style="font-size: 1em; padding: 6px; " title="<?php echo translate('Click here to choose the interface language.', $st, 'sys'); ?>">
-							<?php foreach ($_SESSION['nav_ln_array'] as $code => $array){
-								$html = "<option value='".$array[2]."' here>".translate($array[1], $array[0], 'sys')."</option>";
+							<?php
+							foreach ($_SESSION['nav_ln_array'] as $code => $array){
+								// Scott:
+								echo "<option style='text-align-last: left; ' value='$array[2]".($asset == 1 ? '?asset=1' : '').'\''.($st == $array[0] ? ' selected=\'selected\'' : '').">".translate($array[1], $array[0], 'sys').'</option>';
+							/*
+								// Laerke:
+								$html = "<option style='text-align: left; ' value='".$array[2].($asset == 1 ? '?asset=1' : '')."' here>".translate($array[1], $array[0], 'sys')."</option>";
 								if ($st == $array[0]){
 									$result_nav = str_replace("here",'selected="selected"',$html);
 								} else{
 									$result_nav = str_replace("here",'',$html);
 								}
 								echo $result_nav;
-								}?>
+								*/
+							}
+							?>
 						</select>
 					</form>
 				<?php // end #mainContent ?>
@@ -721,18 +759,22 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 				<div id="CountrySearch"></div>
 			</div>
  	
-            <?php /* ---------------------------------------------------------------------------------
+            <?php
+			if ($asset != 1) {
+			/* ---------------------------------------------------------------------------------
 							display Feedback button
             ------------------------------------------------------------------------------------------ */ ?>
             <div id="feedback" style="top: 30px; " title="<?php echo translate('Thank you for providing us with your feedback and suggestions.', $st, 'sys'); ?>" onclick="window.open('Feedback/Feedback.php?st=<?php echo $st; ?>')">
                 <div><?php echo translate('Feedback', $st, 'sys'); ?></div>
             </div>
+			<?php
+			}
+			?>
            
             <?php /* ---------------------------------------------------------------------------------
 							display copyright
             ------------------------------------------------------------------------------------------ */ ?>
             <div id='copyright' style='top: 120px; '>
-            	<!--div>© < ?php echo translate('Copyright', $st, 'sys'); ?> < ?php echo date('Y'); ?> ScriptureEarth.org</div-->
             	<div>ScriptureEarth.org</div>
             </div>
             
@@ -742,12 +784,4 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 	</div>
 </div>
 <?php // This script HAS to be down here for the major language dropdown box to work! ?>
-<<<<<<< Updated upstream
-<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.0.4"></script>
-=======
-<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.0.7"></script>
-<script>
-	// for LangSeacrh.js / LSearch.php
-	var nav_languages_line = '<?php echo $_SESSION['ln_result']; ?>';
-</script>
->>>>>>> Stashed changes
+<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.2.2"></script>

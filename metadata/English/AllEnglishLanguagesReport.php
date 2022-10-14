@@ -88,10 +88,10 @@ $db = get_my_db();
 
 $FileString = '';
 
-	$query = 'SELECT * FROM scripture_main ORDER BY ISO, ROD_Code';
+	$query = 'SELECT * FROM nav_ln ORDER BY ISO, ROD_Code';
 	$result_SM=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
 	if (!$result_SM) {
-		die ("Cannot SELECT from 'scripture_main'. " . $db->error . '</body></html>');
+		die ("Cannot SELECT from 'nav_ln'. " . $db->error . '</body></html>');
 	}
 	$num=$result_SM->num_rows;
 	
@@ -111,6 +111,8 @@ $FileString = '';
 	$stmt_LN_Dutch=$db->prepare($query);																// create a prepared statement
 	$query='SELECT LN_German FROM LN_German WHERE LN_German.ISO = ? AND LN_German.ROD_Code = ?';
 	$stmt_LN_German=$db->prepare($query);																// create a prepared statement
+	$query='SELECT LN_Chinese FROM LN_Chinese WHERE LN_Chinese.ISO = ? AND LN_Chinese.ROD_Code = ?';
+	$stmt_LN_Chinese=$db->prepare($query);																// create a prepared statement
 	$query='INSERT INTO LN_Temp (ISO, ROD_Code, Variant_Code, LN) VALUES (?, ?, ?, ?)';
 	$stmt_LN_Temp=$db->prepare($query);																	// create a prepared statement
 	
@@ -124,6 +126,7 @@ $FileString = '';
 		$LN_French=$row_SM['LN_French'];					// boolean
 		$LN_Dutch=$row_SM['LN_Dutch'];						// boolean
 		$LN_German=$row_SM['LN_German'];					// boolean
+		$LN_Chinese=$row['LN_Chinese'];					// boolean
 		$def_LN=$row_SM['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
 		if (!$LN_English) {									// if the English then the default langauge
 			switch ($def_LN){
@@ -181,6 +184,13 @@ $FileString = '';
 					$r = $result_LN_German->fetch_array();
 					$LN=$r['LN_German'];
 					break; 	
+				case 7:
+					$stmt_LN_Chinese->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
+					$stmt_LN_Chinese->execute();															// execute query
+					$result_LN_Chinese = $stmt_LN_Chinese->get_result();									// instead of bind_result (used for only 1 record):
+					$r = $result_LN_Chinese->fetch_array();
+					$LN=$r['LN_Chinese'];
+					break; 	
 				default:
 					echo "Isn't supposed to happen! The default language isn't here.";
 					break;
@@ -214,6 +224,7 @@ $FileString = '';
 	$stmt_LN_French->close();
 	$stmt_LN_Portuguese->close();
 	$stmt_LN_German->close();
+	$stmt_LN_Chinese->close();
 	$stmt_LN_Temp->close();
 	
 	$query='SELECT Variant_Eng FROM Variants WHERE Variant_Code = ?';									// Variant

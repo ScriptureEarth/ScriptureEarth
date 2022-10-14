@@ -19,14 +19,6 @@
     watch, view, Jesus Film, Luke video, buy, print-on-demand, online purchase, bookstore, study, The Word,
     Bible, New Testament, NT, Old Testament, OT, Scripture, map, mobile app
 " />
-<style type="text/css">
-	/* this version of classes are for English only! */
-	div.topBannerImage {
-		background-image: url(images/00i-topBanerComp.png);
-		height: 136px;
-		text-align: right;
-	}
-</style>
 <script type="text/javascript" language="javascript">
 	var MajorLang = "Eng";
 </script>

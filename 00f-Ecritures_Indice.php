@@ -19,14 +19,6 @@
     iPad , tablette, android, montre, vue, film de Jésus, Luc vidéo, acheter, impression à la demande, achat en ligne,
     librairie, étude, Word, Bible, Nouveau Testament, NT, Ancien Testament, OT, Écriture, carte, mobile app
 " />
-<style type="text/css">
-    /* this version of classes are for English only! */
-    div.topBannerImage {
-        background-image: url(images/00i-topBanerComp.png);
-        height: 136px;
-        text-align: right;
-    }
-</style>
 <script type="text/javascript" language="javascript">
 	var MajorLang = "Fra";
 </script>

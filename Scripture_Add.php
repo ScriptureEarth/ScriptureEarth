@@ -40,13 +40,13 @@ if (empty($_SESSION['nav_ln_array'])) {
 	require_once './include/conn.inc.php';							// connect to the database named 'scripture'
 	$db = get_my_db();
 	$_SESSION['nav_ln_array'] = [];
-	$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `translation_code`";
-	$ln_result=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
-	if ($ln_result->num_rows == 0) {
+	$query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `ln_number`";
+	$result_ln=$db->query($query) or die ('Query failed:  ' . $db->error . '</body></html>');
+	if ($result_ln->num_rows == 0) {
 		die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
 	}
 
-	while ($ln_row = $ln_result->fetch_array()){
+	while ($ln_row = $result_ln->fetch_array()){
 		$ln_temp[0] = $ln_row['translation_code'];
 		$ln_temp[1] = $ln_row['name'];
 		$ln_temp[2] = $ln_row['nav_fileName'];
@@ -81,8 +81,8 @@ include ('./NT_Books.php');			// include the books of the NT
 <meta name="Updated-by"                     content="Scott Starker, Lærke Roager" />
 <title>Scripture Add</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Add.css" />
-<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.0.3"></script>
-<script type="text/javascript" language="javascript" src="_js/Scripture_Add.js?v=1.0.1"></script>
+<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.0.5"></script>
+<script type="text/javascript" language="javascript" src="_js/Scripture_Add.js?v=1.0.2"></script>
 <script>
 	var ALNindex = 1;
 </script>
@@ -168,7 +168,7 @@ include ('./NT_Books.php');			// include the books of the NT
 			} ?>
 			<br />
 <!-- /*********************************************************************
-	default navigational langauge
+	default navigational Langauge
 ***********************************************************************/-->
 			<p>Select the default navigational langauge <span style="font-size: 10pt; ">(i.e. the major language from above)</span>: 
 			<select name="DefaultLang" id="DefaultLang">
@@ -242,7 +242,7 @@ include ('./NT_Books.php');			// include the books of the NT
 
 		<br /><br />
 
-<?php
+		<?php
 /************************************************
 	isop
 *************************************************/
@@ -265,9 +265,9 @@ include ('./NT_Books.php');			// include the books of the NT
         
 		<?php
 /************************************************
-	whole Bible PDF and complete Scripture publication PDF
+	Whole Bible PDF and complete Scripture publication PDF
 *************************************************/
-?>
+		?>
 		<div class='enter'>Enter the PDF file name of the whole Bible in this language: <input type='text' name='whole_Bible' id='whole_Bible' size='35' value="<?php if (isset($_POST['whole_Bible'])) echo $_POST['whole_Bible'] ?>" /></div>
         <br />
         
@@ -277,11 +277,11 @@ include ('./NT_Books.php');			// include the books of the NT
         <hr align="center" width="90%" color="#0066CC" />
         <br />
 
-<?php
+		<?php
 /************************************************
 	OT and NT PDFs
 *************************************************/
-?>
+		?>
 		<div class='enter'>Enter the PDF file name of the OT in this language: <input type='text' name='OT_name' id='OT_name' size='35' value="<?php if (isset($_POST['OT_name'])) echo $_POST['OT_name'] ?>" /></div>
 		<br />
 		<input type='hidden' name='OT_PDF_Button' id='OT_PDF_Button' value='No' />
@@ -376,11 +376,11 @@ include ('./NT_Books.php');			// include the books of the NT
         <hr align="center" width="90%" color="#0066CC" />
         <br />
 
-<?php
+		<?php
 /************************************************
 	OT and NT audio
 *************************************************/
-?>
+		?>
 		<input type='hidden' name='OT_Audio_Button' id='OT_Audio_Button' value='No' />
         <div id='OT_Off_Audio'>		<!-- The id has to the same because of function classChange in AddorChange.js! -->
 			<input type='button' id='Open_OT_audio' value='Open OT audio' /> Are there any of the books in the Old Testament in audio (mp3) by chapter?<br />
@@ -496,7 +496,7 @@ include ('./NT_Books.php');			// include the books of the NT
 /************************************************
 	SAB - Scriture Apps Buidler (table SAB) HTML
 *************************************************/
-?>
+		?>
 					</table>
 				</div>
 			</div>
@@ -571,11 +571,11 @@ include ('./NT_Books.php');			// include the books of the NT
 		</table>
         <br />
 
-<?php
+		<?php
 /************************************************
 	Bible.is
 *************************************************/
-?>
+		?>
 		<table valign="bottom" cellpadding="0" cellspacing="0" width="100%">
         <thead>
 			<tr valign="bottom" style="color: navy; font-size: 8pt; line-height: 10pt; height: 30px; ">
@@ -679,11 +679,11 @@ include ('./NT_Books.php');			// include the books of the NT
 		</table>
         <br />
 
-<?php
+		<?php
 /************************************************
 	YouVersion - Read
 *************************************************/
-?>
+		?>
 		<table width="100%" valign="bottom" cellpadding="0" cellspacing="0">
             <thead>
                 <tr valign="bottom" style="color: navy; font-size: 8pt; line-height: 10pt; height: 30px; ">
@@ -823,7 +823,7 @@ include ('./NT_Books.php');			// include the books of the NT
 		</table>
 		<br />
         
-	<?php
+		<?php
 /*************************************************
 	GRN
 **************************************************/
@@ -895,11 +895,11 @@ include ('./NT_Books.php');			// include the books of the NT
 		</table>
 		<br /><br />
         
-<?php
+		<?php
 /************************************************
 	checkbox for viewer
 *************************************************/
-?>
+		?>
         <input type='checkbox' name='viewer' id='viewer' <?php echo (isset($_POST['viewer']) ? ' checked' : '') ?> /> Does this language have the Study online viewer (USFM) files?<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		
         <input type='text' style='color: navy; ' size='3' name='viewerText' id='viewerText' value="<?php if (isset($_POST['viewerText'])) echo $_POST['viewerText']; else echo ''; ?>" />
@@ -908,19 +908,19 @@ include ('./NT_Books.php');			// include the books of the NT
         (i.e., 41-MATaoj.sfm to 41-MATaoj<span style="color: red; ">W</span>.sfm)</span>
         <br /><br />
 
-<?php
+		<?php
 /************************************************
 	checkbox for right-to-left
 *************************************************/
-?>
+		?>
         &nbsp;&nbsp;&nbsp;&nbsp;<input type='checkbox' name='rtl' id='rtl' <?php echo (isset($_POST['rtl']) ? ' checked' : '') ?> /> Is the language right-to-left? (Only for "Study online viewer".)
 		<br /><br />
 
-<?php
+		<?php
 /************************************************
 	cell phones
 *************************************************/
-?>
+		?>
 		<table valign="bottom" cellpadding="0" cellspacing="0" width="100%">
           <thead style='text-align: left; vertical-align: bottom; '>
 			<tr valign="bottom" style="color: navy; font-size: 8pt; line-height: 11pt; height: 30px; ">
@@ -1460,12 +1460,16 @@ include ('./NT_Books.php');			// include the books of the NT
 			</tr>
 		</thead>
         <?php
-		if (isset($_POST['txtLinkCompany-1'])) {
+		/*if (isset($_POST['txtLinkCompany-1'])) {
 			if ($_POST['linksIcon-1'] == 'linksOther-1') $_POST['linksOther-1']=1;
 			if ($_POST['linksIcon-1'] == 'linksBuy-1') $_POST['linksBuy-1']=1;
 			if ($_POST['linksIcon-1'] == 'linksMap-1') $_POST['linksMap-1']=1;
 			if ($_POST['linksIcon-1'] == 'linksGooglePlay-1') $_POST['linksGooglePlay-1']=1;
-		}
+		}*/
+		//${'linksOther'}=0;
+		//${'linksBuy'}=0;
+		//${'linksMap'}=1;
+		//${'linksGooglePlay'}=0;
 		// 12/3/19 - Joshua Project
 		${'linksMap-1'}=1;
 		?>
@@ -1505,43 +1509,43 @@ include ('./NT_Books.php');			// include the books of the NT
 				</td>
 			</tr>
 			<?php
-				$i = 2;
-				while (isset($_POST['txtLinkCompany-'.(string)$i]) || isset($_POST['txtLinkCompanyTitle-'.(string)$i]) || isset($_POST['txtLinkURL-'.(string)$i])) {
-					echo "<tr>";
-						echo "<td width='12%'>";
-							echo "&nbsp;";
-						echo "</td>";
-						echo "<td width='21%'>";
-							echo "<input type='text' name='txtLinkCompany-$i' id='txtLinkCompany-$i' style='color: navy; ' size='25' value='" . ( isset($_POST['txtLinkCompany-'.(string)$i]) ? $_POST['txtLinkCompany-'.(string)$i] : '' ) . "' />";
-						echo "</td>";
-						echo "<td width='21%'>";
-							echo "<input type='text' name='txtLinkCompanyTitle-$i' id='txtLinkCompanyTitle-$i' style='color: navy; ' size='25' value='" . ( isset($_POST['txtLinkCompanyTitle-'.(string)$i]) ? $_POST['txtLinkCompanyTitle-'.(string)$i] : '' ) . "' />";
-						echo "</td>";
-						echo "<td width='22%'>";
-							echo "<input type='text' name='txtLinkURL-$i' id='txtLinkURL-$i' style='color: navy; ' size='27' value='" . ( isset($_POST['txtLinkURL-'.(string)$i]) ? $_POST['txtLinkURL-'.(string)$i] : '' ) . "' />";
-						echo "</td>";
-						echo "<td width='8%'>";
-							if ($_POST['linksIcon-'.(string)$i] == 'linksOther-'.$i) ${'linksOther-$i'}=1; else ${'linksOther-$i'}=0;
-							if ($_POST['linksIcon-'.(string)$i] == 'linksBuy-'.$i) ${'linksBuy-$i'}=1; else ${'linksBuy-$i'}=0;
-							if ($_POST['linksIcon-'.(string)$i] == 'linksMap-'.$i) ${'linksMap-$i'}=1; else ${'linksMap-$i'}=0;
-							if ($_POST['linksIcon-'.(string)$i] == 'linksGooglePlay-'.$i) ${'linksGooglePlay-$i'}=1; else ${'linksGooglePlay-$i'}=0;
-							?>
-                           	<div align="center">
-                                <select name="linksIcon-<?php echo $i ?>" id="linksIcon-<?php echo $i ?>" style='color: navy; '>
-                                    <option value="linksOther-<?php echo $i ?>" <?php echo ( isset($_POST['linksOther-'.(string)$i]) ? ($_POST['linksOther-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksOther-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Other</option>
-                                    <option value="linksBuy-<?php echo $i ?>" <?php echo ( isset($_POST['linksBuy-'.(string)$i]) ? ($_POST['linksBuy-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksBuy-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Buy</option>
-                                    <option value="linksMap-<?php echo $i ?>" <?php echo ( isset($_POST['linksMap-'.(string)$i]) ? ($_POST['linksMap-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksMap-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Map</option>
-                                    <option value="linksGooglePlay-<?php echo $i ?>" <?php echo ( isset($_POST['linksGooglePlay-'.(string)$i]) ? ($_POST['linksGooglePlay-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksGooglePlay-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Google Play</option>
-                                </select>
-                           	</div>
-                           	<?php
-						echo "</td>";
-						echo "<td width='16%'>";
-							echo "&nbsp;";
-						echo "</td>";
-					echo "</tr>";
-					$i++;
-				}
+			$i = 2;
+			while (isset($_POST['txtLinkCompany-'.(string)$i]) || isset($_POST['txtLinkCompanyTitle-'.(string)$i]) || isset($_POST['txtLinkURL-'.(string)$i])) {
+				echo "<tr>";
+					echo "<td width='12%'>";
+						echo "&nbsp;";
+					echo "</td>";
+					echo "<td width='21%'>";
+						echo "<input type='text' name='txtLinkCompany-$i' id='txtLinkCompany-$i' style='color: navy; ' size='25' value='" . ( isset($_POST['txtLinkCompany-'.(string)$i]) ? $_POST['txtLinkCompany-'.(string)$i] : '' ) . "' />";
+					echo "</td>";
+					echo "<td width='21%'>";
+						echo "<input type='text' name='txtLinkCompanyTitle-$i' id='txtLinkCompanyTitle-$i' style='color: navy; ' size='25' value='" . ( isset($_POST['txtLinkCompanyTitle-'.(string)$i]) ? $_POST['txtLinkCompanyTitle-'.(string)$i] : '' ) . "' />";
+					echo "</td>";
+					echo "<td width='22%'>";
+						echo "<input type='text' name='txtLinkURL-$i' id='txtLinkURL-$i' style='color: navy; ' size='27' value='" . ( isset($_POST['txtLinkURL-'.(string)$i]) ? $_POST['txtLinkURL-'.(string)$i] : '' ) . "' />";
+					echo "</td>";
+					echo "<td width='8%'>";
+						if ($_POST['linksIcon-'.(string)$i] == 'linksOther-'.$i) ${'linksOther-$i'}=1; else ${'linksOther-$i'}=0;
+						if ($_POST['linksIcon-'.(string)$i] == 'linksBuy-'.$i) ${'linksBuy-$i'}=1; else ${'linksBuy-$i'}=0;
+						if ($_POST['linksIcon-'.(string)$i] == 'linksMap-'.$i) ${'linksMap-$i'}=1; else ${'linksMap-$i'}=0;
+						if ($_POST['linksIcon-'.(string)$i] == 'linksGooglePlay-'.$i) ${'linksGooglePlay-$i'}=1; else ${'linksGooglePlay-$i'}=0;
+						?>
+						<div align="center">
+							<select name="linksIcon-<?php echo $i ?>" id="linksIcon-<?php echo $i ?>" style='color: navy; '>
+								<option value="linksOther-<?php echo $i ?>" <?php echo ( isset($_POST['linksOther-'.(string)$i]) ? ($_POST['linksOther-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksOther-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Other</option>
+								<option value="linksBuy-<?php echo $i ?>" <?php echo ( isset($_POST['linksBuy-'.(string)$i]) ? ($_POST['linksBuy-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksBuy-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Buy</option>
+								<option value="linksMap-<?php echo $i ?>" <?php echo ( isset($_POST['linksMap-'.(string)$i]) ? ($_POST['linksMap-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksMap-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Map</option>
+								<option value="linksGooglePlay-<?php echo $i ?>" <?php echo ( isset($_POST['linksGooglePlay-'.(string)$i]) ? ($_POST['linksGooglePlay-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksGooglePlay-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Google Play</option>
+							</select>
+						</div>
+						<?php
+					echo "</td>";
+					echo "<td width='16%'>";
+						echo "&nbsp;";
+					echo "</td>";
+				echo "</tr>";
+				$i++;
+			}
 /************************************************
 	Audio Playlist mp3s
 *************************************************/
@@ -1695,24 +1699,89 @@ include ('./NT_Books.php');			// include the books of the NT
 		</table>
         <br />
 
-<?php
+	<?php
 /************************************************
 	Scripture Resources from eBible.org
 *************************************************/
-?>
+	?>
         <input type='checkbox' name='eBible' id='eBible' <?php echo (isset($_POST['eBible']) ? ' checked' : '') ?> /> Is there the "Scripture Resources from eBible.org" URL?
 		<br />
 
-<?php		
+	<?php		
 /************************************************
 	"SIL link" checkbox
-******************************************* *****/
+*************************************************/
 		?>
 		<br />
 		<input type='checkbox' name='SILlink' id='SILlink' <?php echo (isset($_POST['SILlink']) && $_POST['SILlink'] == 'on' ? ' checked' : '') ?> /> Does this have the "SIL link" URL?
-		<?php
-		echo '<br />';
-?>
+		<br />
+		
+		<?php		
+/************************************************
+	Email links
+*************************************************/
+		?>
+		<table valign="bottom" cellpadding="0" cellspacing="0" width="100%">
+       	  <thead style='text-align: left; vertical-align: bottom; '>
+			<tr valign="bottom" style="color: navy; font-size: 8pt; line-height: 7pt; height: 30px; ">
+				<td width="16%">&nbsp;
+				</td>
+				<td width="41%" style="padding-left: 3px; padding-bottom: 3px; ">
+                	Before Email
+				</td>
+				<td width="27%" style="padding-left: 3px; padding-bottom: 3px; ">
+					Email address link
+				</td>
+				<td width="16%">&nbsp;
+				</td>
+			</tr>
+          </thead>
+		  <?php
+		  ?>
+          <tbody name="tableEmail" id="tableEmail">
+			<tr valign="bottom" style="line-height: 10pt; ">
+				<td width="16%">
+					<span style="font-size: 10pt; ">Enter Email link:</span>
+                    <br /><span style="font-size: 10pt; ">For example:</span>
+				</td>
+				<td width="41%">
+					<input type='text' style='color: navy; ' size='70' name='txtEmailTitle-1' id='txtEmailTitle-1' value="<?php if (isset($_POST['txtEmailTitle-1'])) echo $_POST['txtEmailTitle-1'] ?>" />
+                    <br /><span style="font-size: 10pt; ">To buy a printed New Testament in this language in Cameroon, please write to </span>
+				</td>
+				<td width="27%">
+					<input type='text' style='color: navy; ' size='32' name='txtEmailAddress-1' id='txtEmailAddress-1' value="<?php if (isset($_POST['txtEmailAddress-1'])) echo $_POST['txtEmailAddress-1'] ?>" />
+                    <br /><span style="font-size: 9pt; "> library_cameroon@sil.org</span>
+				</td>
+				<td width="16%" style="text-align: right; ">
+					<input style="font-size: 9pt; " type="button" id="addEmail" value="Add" />
+					<input style="font-size: 9pt; " type="button" id="removeEmail" value="Remove" />
+                    <br /><span style="font-size: 10pt; ">&nbsp;</span>
+				</td>
+			</tr>
+			<?php
+				$i = 2;
+				while (isset($_POST['txtEmailTitle-'.(string)$i]) || isset($_POST['txtEmailAddress-'.(string)$i])) {
+					echo "<tr>";
+						echo "<td width='16%'>";
+							echo "&nbsp;";
+						echo "</td>";
+						echo "<td width='41%'>";
+							echo "<input type='text' name='txtEmailTitle-$i' id='txtEmailTitle-$i' style='color: navy; ' size='70' value='" . ( isset($_POST['txtEmailTitle-'.(string)$i]) ? $_POST['txtEmailTitle-'.(string)$i] : '' ) . "' />";
+						echo "</td>";
+						echo "<td width='27%'>";
+							echo "<input type='text' name='txtEmailAddress-$i' id='txtEmailAddress-$i' style='color: navy; ' size='32' value='" . ( isset($_POST['txtEmailAddress-'.(string)$i]) ? $_POST['txtEmailAddress-'.(string)$i] : '' ) . "' />";
+						echo "</td>";
+						echo "<td width='16%'>";
+							echo "&nbsp;";
+						echo "</td>";
+					echo "</tr>";
+					$i++;
+				}
+				?>
+          </tbody>
+		</table>
+        <br />
+		<br />
 
 		<div style='text-align: center; padding: 10px; '><input type='submit' name='btnSubmit' value='<?php echo "Submit to the\r\nDatabase"; ?>' /></div>
 		</form>
@@ -1727,6 +1796,6 @@ include ('./NT_Books.php');			// include the books of the NT
 		document.getElementById("iso").focus();					// focus on the ISO input
 	</script>
     
-	<script type="text/javascript" src="_js/CMS_events.js?v=1.0.0"></script>
+	<script type="text/javascript" src="_js/CMS_events.js?v=1.0.2"></script>
 </body>
 </html>

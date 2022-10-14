@@ -18,14 +18,6 @@
     texto, PDF, áudio, relógio, MP3, filme Jesus, comprar, print-on-demand, compras on-line,
     livraria, estudar, The Word, a Bíblia, no Novo Testamento, NT, Antigo Testamento, OT
 " />
-<style type="text/css">
-    /* this version of classes are for English only! */
-    div.topBannerImage {
-        background-image: url(images/00i-topBanerComp.png);
-        height: 136px;
-        text-align: right;
-    }
-</style>
 <script type="text/javascript" language="javascript">
 	var MajorLang = "Port";
 </script>

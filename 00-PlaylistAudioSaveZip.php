@@ -15,14 +15,14 @@ $st = "eng";
 if (isset($_GET["st"])) {
 	$st = $_GET["st"];
 	if (!preg_match('/^([a-z]{3})$/', $st)) {
-		die ('‘st’ is empty.</body></html>');
+		die ('ï¿½stï¿½ is empty.</body></html>');
 	}
 }
 
 if (isset($_GET["iso"])) {
 	$iso = $_GET["iso"];
 	if (!preg_match('/^([a-z]{3})$/', $iso)) {
-		die ('‘ISO’ ' . translate('is empty', $st, 'sys') . '.</body></html>');
+		die ('ï¿½ISOï¿½ ' . translate('is empty', $st, 'sys') . '.</body></html>');
 	}
 }
 else
@@ -32,7 +32,7 @@ $dirname = './data/'.$iso.'/audio/';
 
 if (isset($_GET['Books'])) {
 	$Books = $_GET['Books'];
-	if (!preg_match('/^([0-9a-zA-Z._-]+)$/', $Books)) {
+	if (!preg_match('/^([0-9a-zA-Z._|-]+)$/', $Books)) {
 		die('Books were not just numbers!</body></html>');
 	}
 }

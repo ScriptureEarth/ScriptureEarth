@@ -1,86 +1,77 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<?php
+// 00-CountriesList.php
+// Start the session
+session_start();
+?>
+
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Countries List</title>
 <link rel="stylesheet" type="text/css" href="_css/Scripture_Index.css" />
 <style type="text/css">
-/* from Scripture-Index.css */
-a.country, a.country:hover, a.country:link, a.country:active {
-	color: navy;
-	font-size: 11pt;
-	text-decoration: underline;
-	font-weight: normal;
-	line-height: 26px;
-	margin: 0 0 0 10px;
-	padding: 3px 5px 3px 5px;
-}
+	/* from Scripture-Index.css */
+	a.country, a.country:hover, a.country:link, a.country:active {
+		color: navy;
+		font-size: 11pt;
+		text-decoration: underline;
+		font-weight: normal;
+		line-height: 26px;
+		margin: 0 0 0 10px;
+		padding: 3px 5px 3px 5px;
+	}
 </style>
 </head>
 <body style='background-image: url(../images/grayNav.png); background-repeat: repeat-x; background-color: #B0B8C1; min-width: 200px; '>
 <?php
-require_once './include/conn.inc.php';								// connect to the database named 'scripture'
-$db = get_my_db();
-include 'translate/functions.php';
+	require_once './include/conn.inc.php';								// connect to the database named 'scripture'
+	$db = get_my_db();
+	include 'translate/functions.php';
 
-if (!isset($_GET["st"])) {
-	die ("<body>'st' is empty.</body></html>");
-}
-if (!isset($_GET["GetName"])) {
-	die ("<body>'GetName' " . translate('is empty.', $st, 'sys') . "</body></html>");
-}
-if (!isset($_GET["Location"])) {
-	die ("<body>'Location' " . translate('is empty.', $st, 'sys') . "</body></html>");
-}
-if (!isset($_GET["Scriptname"])) {
-	die ("<body>'Scriptname' " . translate('is empty.', $st, 'sys') . "</body></html>");
-}
+	if (!isset($_GET["st"])) {
+		die ("<body>'st' is empty.</body></html>");
+	}
+	if (!isset($_GET["GetName"])) {
+		die ("<body>'GetName' " . translate('is empty.', $st, 'sys') . "</body></html>");
+	}
+	if (!isset($_GET["Location"])) {
+		die ("<body>'Location' " . translate('is empty.', $st, 'sys') . "</body></html>");
+	}
+	if (!isset($_GET["Scriptname"])) {
+		die ("<body>'Scriptname' " . translate('is empty.', $st, 'sys') . "</body></html>");
+	}
 
-$st = $_GET["st"];
-$st = preg_replace('/^([a-z]{3})/', '$1', $st);
-if ($st == NULL) {
-	die ('‘st’ is empty.</body></html>');
-}
-$Location = $_GET["Location"];
-$GetName = $_GET["GetName"];
-$GetName = preg_replace('/^([a-zA-Z]{1,3})/', '$1', $GetName);
-if ($GetName == NULL) {
-	die ('‘GetName’ ' . translate('is empty', $st, 'sys') . '.</body></html>');
-}
-$Scriptname = $_GET["Scriptname"];
+	$st = $_GET["st"];
+	if (!preg_match('/^[a-z]{3}/', $st)) {
+		die ('‘st’ is empty.</body></html>');
+	}
+	$Location = $_GET["Location"];
+	$GetName = $_GET["GetName"];
+	if (!preg_match('/^[a-zA-Z]{1,3}/', $GetName)) {
+		die ('‘GetName’ ' . translate('is empty', $st, 'sys') . '.</body></html>');
+	}
+	$Scriptname = $_GET["Scriptname"];
 
-switch ($st) {
-	case "eng":
-		$MajorLanguage = "LN_English";
-		$SpecificCountry = "countries.English";
-		break;
-	case "spa":
-		$MajorLanguage = "LN_Spanish";
-		$SpecificCountry = "countries.Spanish";
-		break;
-	case "por":
-		$MajorLanguage = "LN_Portuguese";
-		$SpecificCountry = "countries.Portuguese";
-		break;
-	case "fra":
-		$MajorLanguage = "LN_French";
-		$SpecificCountry = "countries.French";
-		break;
-	case "nld":
-		$MajorLanguage = "LN_Dutch";
-		$SpecificCountry = "countries.Dutch";
-		break;
-	case "deu":
-		$MajorLanguage = "LN_German";
-		$SpecificCountry = "countries.German";
-		break;
-	case "cmn":
-		$MajorLanguage = "LN_Chinese";
-		$SpecificCountry = "countries.Chinese";
-		break;
-	default:
-		die('This isn’t suppossed to happen (00-CountriesList.php - switch code).');
-}
+	/*
+		from 'translations' tables:
+			'en' (
+				[0] => eng							translation_code
+				[1] => English						name
+				[2] => 00i-Scripture_Index.php		nav_fileName
+				[3] => 1							ln_number
+				[4] => i							ln_abbreviation
+			)
+			'nl' (
+				...
+			)
+	*/
+
+	$languages = array_column($_SESSION['nav_ln_array'], 1, 0);		// an array: [0] => 1 - e.g. ['eng'] => 'English', etc.
+	//print_r($languages);
+	//echo '<br />' . $languages[$st] . '<br />';
+	$MajorLanguage = "LN_". $languages[$st];
+	$SpecificCountry = $languages[$st];
 
 	/*
 		*************************************************************************************
@@ -88,7 +79,7 @@ switch ($st) {
 		*************************************************************************************
 	*/
 	//$query="SELECT DISTINCT countries.English, ISO_countries.ISO_countries FROM scripture_main, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND ISO_countries.ROD_Code = scripture_main.ROD_Code ORDER BY countries.English";
-	$query="SELECT DISTINCT $SpecificCountry, ISO_countries.ISO_countries FROM scripture_main, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO_ROD_index = scripture_main.ISO_ROD_index ORDER BY $SpecificCountry";
+	$query="SELECT DISTINCT `countries`.$SpecificCountry, ISO_countries.ISO_countries FROM scripture_main, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO_ROD_index = scripture_main.ISO_ROD_index ORDER BY $SpecificCountry";
 	$result=$db->query($query) or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . "</body></html>");
 	if (!$result) {
 		die (translate('The countries are not found.', $st, 'sys') . "</body></html>");
@@ -110,7 +101,7 @@ switch ($st) {
 	//echo "</td></tr>";
 	echo "</p>";
 	$countryTemp = $SpecificCountry;
-	if (strpos("$SpecificCountry", '.')) $countryTemp = substr("$SpecificCountry", strpos("$SpecificCountry", '.')+1);					// In case there's a "." in the "country"
+	//if (strpos("$SpecificCountry", '.')) $countryTemp = substr("$SpecificCountry", strpos("$SpecificCountry", '.')+1);					// In case there's a "." in the "country"
 	while ($r = $result->fetch_array()) {
 		$country=$r["$countryTemp"];
 		$country = str_replace(' ', '&nbsp;', $country); 

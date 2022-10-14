@@ -1,5 +1,5 @@
 // Created by Scott Starker
-// Updated by Scott Starker, LÊrke Roager
+// Updated by Scott Starker, L√¶rke Roager
 
 /*
 	variables are defined in LSearch.php:
@@ -35,7 +35,10 @@ function getHTTPObject() { // get the AJAX object; it can be used more than once
     }
 }
 
-function showLanguage(str, st, Internet, asset) { // get the names of the languages
+/*****************************************************************************************************************
+	showLanguage()
+*****************************************************************************************************************/
+function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificCountry, asset) { // get the names of the languages
     if (str.length == 0) {
         document.getElementById("LangSearch").innerHTML = '';
         document.getElementById("CountSearch").innerHTML = '';
@@ -47,24 +50,13 @@ function showLanguage(str, st, Internet, asset) { // get the names of the langua
         $("#copyright").show();
         return;
     }
-<<<<<<< Updated upstream
-    // saltillo: Íûå; U+A78C
-    var re = /[-. ,'Íûå()A-Za-z√°√©√≠√≥√∫√ë√±√ß√£√µ√¢√™√Æ√¥√ª√§√´√∂√º√Ø]/; // the '-' has to go first
-    var foundArray = re.exec(str.substring(str.length - 1)); // the last character of the str
-    if (!foundArray) { // is the value of the last character of the str isn't A-Za - z then it returns
-        document.getElementById("ID").value = document.getElementById("ID").value.substring(0, document.getElementById("ID").value.length - 1);
-        alert(str.substring(str.length - 1) + " is an invalid character. Use an alphabetic character or - , ' Íûå[saltillo] ( )  [space]");
-        str = str.substring(0, str.length - 1);
-        if (str.length == 0) {
-            document.getElementById("ID").innerHTML = '';
-=======
 
     var nonLatinScript = 0;
     if (/\p{Script=Han}/u.test(str.substring(str.length - 1)) || /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/.test(str.substring(str.length - 1))) { // https://stackoverflow.com/questions/21109011/javascript-unicode-string-chinese-character-but-no-punctuation
         nonLatinScript = 1;
     } else {
         // saltillo: ?; U+A78C
-        var re = /[-. ,'?()A-Za-z·ÈÌÛ˙—ÒÁ„ı‚ÍÓÙ˚‰Îˆ¸Ô]/; // the '-' has to go first
+        var re = /[-. ,'?()a-z√°√©√≠√≥√∫√†√®√¨√≤√π√ë√±√ß√£√µ√¢√™√Æ√¥√ª√§√´√∂√º√Ø]/ui; // the '-' has to go first
         var foundArray = re.exec(str.substring(str.length - 1)); // the last character of the str
         if (!foundArray) { // is the value of the last character of the str isn't A-Za - z then it returns
             document.getElementById("ID").value = document.getElementById("ID").value.substring(0, document.getElementById("ID").value.length - 1);
@@ -74,10 +66,9 @@ function showLanguage(str, st, Internet, asset) { // get the names of the langua
                 document.getElementById("ID").innerHTML = '';
             }
             return;
->>>>>>> Stashed changes
         }
-        return;
     }
+
     if (str.length <= 2) {
         document.getElementById("LangSearch").innerHTML = '';
         document.getElementById("CountSearch").innerHTML = '';
@@ -93,7 +84,7 @@ function showLanguage(str, st, Internet, asset) { // get the names of the langua
 
     // iOS Asset Package
     if (asset == 1) {
-        showiOSLanguage(str, st, Internet); // go to showiOSLanguage
+        showiOSLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificCountry, asset, nonLatinScript); // go to showiOSLanguage
         return;
     }
 
@@ -105,11 +96,6 @@ function showLanguage(str, st, Internet, asset) { // get the names of the langua
     var table = '';
     var Country_Total = [];
 
-    lnxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
-    if (lnxmlhttp == null) {
-        return;
-    }
-
     Scriptname = window.location.href;
 
     /****************************************************************************************************************
@@ -117,12 +103,22 @@ function showLanguage(str, st, Internet, asset) { // get the names of the langua
     ****************************************************************************************************************/
     var url = "LSearch.php";
     url = url + "?language=" + str;
-    url = url + "&st=" + st;
+    if (st == 'cmn' && nonLatinScript == 0) { // test to see if st = Chinese and if it's Latin
+        url = url + "&st=eng";
+        url = url + "&SpecificCountry=English";
+    } else {
+        url = url + "&SpecificCountry=" + SpecificCountry;
+        url = url + "&st=" + st;
+    }
+    url = url + "&MajorLanguage=" + MajorLanguage; // e.g. 'LN_English'
+    url = url + "&Variant_major=" + Variant_major; // e.g. 'Variant_Eng'
+    url = url + "&asset=" + asset;
     url = url + "&sid=" + Math.random();
     xmlhttp.open("GET", url, true); // open the AJAX object with livesearch.php
     xmlhttp.send(null);
     xmlhttp.onreadystatechange = function() { // the function that returns for AJAX object
         if (xmlhttp.readyState == 4) { // if the readyState = 4 then livesearch is displayed
+            //            alert(xmlhttp.responseText);
             var splits = xmlhttp.responseText.split('<br />'); // Display all of the languages that have 'language' as a part of it.
             document.getElementById("LangSearch").innerHTML = '';
             document.getElementById("CountSearch").innerHTML = '';
@@ -137,9 +133,9 @@ function showLanguage(str, st, Internet, asset) { // get the names of the langua
             $("#copyright").hide();
             // the 'table' is caused by a buy in Firefox 63.0.1 (11/7/2018) thus I added the last 3 items
             colCountry = splits[splits.length - 1]; // subtract 1 from splits.length
-            colCode = splits[splits.length - 2]; // subtract 1 from splits.length
-            colAlt = splits[splits.length - 3]; // subtract 1 from splits.length
-            colLN = splits[splits.length - 4]; // subtract 1 from splits.length
+            colCode = splits[splits.length - 2]; // subtract 2 from splits.length
+            colAlt = splits[splits.length - 3]; // subtract 3 from splits.length
+            colLN = splits[splits.length - 4]; // subtract 4 from splits.length
             table = '<div class="langCol">';
             table += '<div class="colFirst">';
             table += '<p class="colLN1">' + colLN + '</p>';
@@ -167,11 +163,15 @@ function showLanguage(str, st, Internet, asset) { // get the names of the langua
                 for (var k = 0; k < countrySplit.length; k++) {
                     var tempCountry = countrySplit[k].substring(0, countrySplit[k].length - 3); // full country name (split ':')
                     var tempAbbCountry = countrySplit[k].substring(countrySplit[k].length - 2); // ZZ abbreviated country name (split ':')
-                    table += '<span style="font-size: .9em; cursor: pointer; " onclick="window.open(\'./' + Scriptname + '?sortby=country&name=' + tempAbbCountry + '\', \'_self\')">' + tempCountry + '</span>, ';
+                    table += '<span style="font-size: .9em; cursor: pointer; " onclick="window.open(\'' + Scriptname + '?sortby=country&name=' + tempAbbCountry + '\', \'_self\')">' + tempCountry + '</span>, ';
                 }
                 table = table.substring(0, table.length - 2); // take out the last ', '
                 table += "</p>";
-                table += "<div class='colCode2' onclick='window.open(\"" + Scriptname + "?idx=" + idx + "&language=" + LN + "&iso_code=" + iso + "\", \"_self\")'>" + iso + "</div>";
+                if (iso == "qqq") {
+                    table += "<div class='colCode2' onclick='window.open(\"" + Scriptname + "?idx=" + idx + "&language=" + LN + "&iso_code=" + iso + "\", \"_self\")'>&nbsp;&nbsp;&nbsp;</div>";
+                } else {
+                    table += "<div class='colCode2' onclick='window.open(\"" + Scriptname + "?idx=" + idx + "&language=" + LN + "&iso_code=" + iso + "\", \"_self\")'>" + iso + "</div>";
+                }
                 table += "<div class='colAlt2' onclick='window.open(\"" + Scriptname + "?idx=" + idx + "&language=" + LN + "&iso_code=" + iso + "\", \"_self\")'>" + alt + "</div>";
                 table += "</div>";
             }
@@ -183,6 +183,7 @@ function showLanguage(str, st, Internet, asset) { // get the names of the langua
     }
 }
 
+// send
 function send(sel) {
     // languageName = 'block'; which = 2
     // languageCode = 'block'; which = 1
@@ -194,7 +195,10 @@ function send(sel) {
     }
 }
 
-function showCountry(str, st, Internet, asset) { // get the names of the country
+/*****************************************************************************************************************
+	showCountry()
+*****************************************************************************************************************/
+function showCountry(str, st, Internet, SpecificCountry, asset) { // get the names of the country
     if (str.length == 0) {
         document.getElementById("CountSearch").innerHTML = '';
         $("#showLanguageID").show();
@@ -216,7 +220,7 @@ function showCountry(str, st, Internet, asset) { // get the names of the country
         nonLatinScript = 1;
     } else {
         // saltillo: ?; U+A78C
-        var re = /[-. ,'?()A-Za-z·ÈÌÛ˙—ÒÁ„ı‚ÍÓÙ˚‰Îˆ¸Ô&]/;
+        var re = /[-. ,'?()a-z√°√©√≠√≥√∫√†√®√¨√≤√π√ë√±√ß√£√µ√¢√™√Æ√¥√ª√§√´√∂√º√Ø&]/ui;
         var foundArray = re.exec(str.substring(str.length - 1)); // the last character of the str
         if (!foundArray) { // is the value of the last character of the str isn't A-Za - z then it returns
             document.getElementById("CID").value = document.getElementById("CID").value.substring(0, document.getElementById("CID").value.length - 1);
@@ -231,7 +235,7 @@ function showCountry(str, st, Internet, asset) { // get the names of the country
 
     // iOS Asset Package
     if (asset == 1) {
-        showiOSCountry(str, st, Internet); // go to showiOSLanguage
+        showiOSCountry(str, st, Internet, SpecificCountry, asset, nonLatinScript); // go to showiOSLanguage
         return;
     }
 
@@ -248,8 +252,10 @@ function showCountry(str, st, Internet, asset) { // get the names of the country
     url = url + "?country=" + str;
     if (st == 'cmn' && nonLatinScript == 0) { // test to see if st = Chinese and if it's Latin
         url = url + "&st=eng";
+        url = url + "&SpecificCountry=English";
     } else {
         url = url + "&st=" + st;
+        url = url + "&SpecificCountry=" + SpecificCountry;
     }
     url = url + "&sid=" + Math.random();
     Countryxmlhttp.open("GET", url, true); // open the AJAX object
@@ -279,8 +285,10 @@ function showCountry(str, st, Internet, asset) { // get the names of the country
     }
 }
 
-function AllCountries(Scriptname, st, SpecificCountry, Internet, asset) {
-    st = st.substr(0, 1).toUpperCase() + st.substr(1, 2);
+/*****************************************************************************************************************
+	AllCountries()
+*****************************************************************************************************************/
+function AllCountries(Scriptname, st, SpecificCountry, Internet, asset) { // get the names of all of the countries
     document.getElementById("LangSearch").innerHTML = '';
     document.getElementById("CountSearch").innerHTML = '';
     $("#showLanguageID").hide();
@@ -394,13 +402,17 @@ function langChange(idx, LN, ISO) {
     window.open(cL + "?idx=" + idx + "&LN=" + LN + "&ISO=" + ISO, '_self');
 }
 
-function countryChange(country) {
+function countryChange(country, asset) {
     var cC = document.getElementById('sC').value;
-    window.open(cC + "?sortby=country&name=" + country, '_self');
+    if (asset == 1) {
+        window.open(cC + "?sortby=country&name=" + country + '&asset=1', '_self');
+    } else {
+        window.open(cC + "?sortby=country&name=" + country, '_self');
+    }
 }
 
 function RemoveAccents(str) {
-    var accents = '¿¡¬√ƒ≈‡·‚„‰Â“”‘’÷ÿÚÛÙıˆ¯»… ÀËÈÍÎ«Á–ÃÕŒœÏÌÓÔŸ⁄€‹˘˙˚¸—Òäöüˇ˝éû';
+    var accents = '√Ä√Å√Ç√É√Ñ√Ö√†√°√¢√£√§√•√í√ì√î√ï√ñ√ò√≤√≥√¥√µ√∂√∏√à√â√ä√ã√®√©√™√´√∞√á√ß√ê√å√ç√é√è√¨√≠√Æ√Ø√ô√ö√õ√ú√π√∫√ª√º√ë√±≈†≈°≈∏√ø√Ω≈Ω≈æ';
     var accentsOut = 'AAAAAAaaaaaaOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz';
     str = str.split('');
     var strLen = str.length;
@@ -414,77 +426,77 @@ function RemoveAccents(str) {
 }
 
 
-// var without_accents = makeSortString("wÔthÍ¸ƒTrËsBÔg¸eAk100t");
+// var without_accents = makeSortString("w√Øth√™√º√ÑTr√®sB√Øg√ºeAk100t");
 makeSortString = (function() {
-    var translate_re = /[·‡‚„‰Â¿¡¬√ƒ≈∆Á«––ËÈÍÎ» ÀÄÏÌÓÔÏÃÕŒœÃÒ—ÚÛÙıˆ¯“”‘’÷ÿåöﬂä˘˙˚¸Ÿ⁄€‹˝ˇ›üûé]/g;
+    var translate_re = /[√°√†√¢√£√§√•√Ä√Å√Ç√É√Ñ√Ö√Ü√ß√á√ê√ê√®√©√™√´√à√ä√ã‚Ç¨√¨√≠√Æ√Ø√¨√å√ç√é√è√å√±√ë√≤√≥√¥√µ√∂√∏√í√ì√î√ï√ñ√ò≈í≈°√ü≈†√π√∫√ª√º√ô√ö√õ√ú√Ω√ø√ù≈∏≈æ≈Ω]/ug;
     var translate = {
-        "·": "a",
-        "‡": "a",
-        "‚": "a",
-        "„": "a",
-        "‰": "a",
-        "Â": "a",
-        "¿": "A",
-        "¡": "A",
-        "¬": "A",
-        "√": "A",
-        "ƒ": "A",
-        "≈": "A",
-        "∆": "A",
-        "Á": "c",
-        "«": "C",
-        "–": "D",
-        "–": "D",
-        "Ë": "e",
-        "È": "e",
-        "Í": "e",
-        "Î": "e",
-        "»": "E",
-        " ": "E",
-        "À": "E",
-        "Ä": "E",
-        "Ï": "i",
-        "Ì": "i",
-        "Ó": "i",
-        "Ô": "i",
-        "Ï": "i",
-        "Ã": "I",
-        "Õ": "I",
-        "Œ": "I",
-        "œ": "I",
-        "Ã": "I",
-        "Ò": "n",
-        "—": "N",
-        "Ú": "o",
-        "Û": "o",
-        "Ù": "o",
-        "ı": "o",
-        "ˆ": "o",
-        "¯": "o",
-        "“": "O",
-        "”": "O",
-        "‘": "O",
-        "’": "O",
-        "÷": "O",
-        "ÿ": "O",
-        "å": "O",
-        "ö": "s",
-        "ﬂ": "s",
-        "ä": "S",
-        "˘": "u",
-        "˙": "u",
-        "˚": "u",
-        "¸": "u",
-        "Ÿ": "U",
-        "⁄": "U",
-        "€": "U",
-        "‹": "U",
-        "˝": "y",
-        "ˇ": "y",
-        "›": "Y",
-        "ü": "Y",
-        "û": "z",
-        "é": "Z"
+        "√°": "a",
+        "√†": "a",
+        "√¢": "a",
+        "√£": "a",
+        "√§": "a",
+        "√•": "a",
+        "√Ä": "A",
+        "√Å": "A",
+        "√Ç": "A",
+        "√É": "A",
+        "√Ñ": "A",
+        "√Ö": "A",
+        "√Ü": "A",
+        "√ß": "c",
+        "√á": "C",
+        "√ê": "D",
+        "√ê": "D",
+        "√®": "e",
+        "√©": "e",
+        "√™": "e",
+        "√´": "e",
+        "√à": "E",
+        "√ä": "E",
+        "√ã": "E",
+        "‚Ç¨": "E",
+        "√¨": "i",
+        "√≠": "i",
+        "√Æ": "i",
+        "√Ø": "i",
+        "√¨": "i",
+        "√å": "I",
+        "√ç": "I",
+        "√é": "I",
+        "√è": "I",
+        "√å": "I",
+        "√±": "n",
+        "√ë": "N",
+        "√≤": "o",
+        "√≥": "o",
+        "√¥": "o",
+        "√µ": "o",
+        "√∂": "o",
+        "√∏": "o",
+        "√í": "O",
+        "√ì": "O",
+        "√î": "O",
+        "√ï": "O",
+        "√ñ": "O",
+        "√ò": "O",
+        "≈í": "O",
+        "≈°": "s",
+        "√ü": "s",
+        "≈†": "S",
+        "√π": "u",
+        "√∫": "u",
+        "√ª": "u",
+        "√º": "u",
+        "√ô": "U",
+        "√ö": "U",
+        "√õ": "U",
+        "√ú": "U",
+        "√Ω": "y",
+        "√ø": "y",
+        "√ù": "Y",
+        "≈∏": "Y",
+        "≈æ": "z",
+        "≈Ω": "Z"
     };
     return function(s) {
         return (s.replace(translate_re, function(match) { return translate[match]; }));
@@ -493,9 +505,9 @@ makeSortString = (function() {
 
 
 /*****************************************************************************************************************
-	iOS -- showiOSLanguage()
+	iOS -- showiOSLanguage() (the function are called by LangSearch.js by showLanguaage() function)
 *****************************************************************************************************************/
-function showiOSLanguage(str, st, Internet) { // get the names of the languages
+function showiOSLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificCountry, asset, nonLatinScript) { // get the names of the languages
     if (Internet == 0) {
         alert('ScriptureEarth.org is offline. Therefore, iOS app is not avaiable.');
         return;
@@ -507,26 +519,23 @@ function showiOSLanguage(str, st, Internet) { // get the names of the languages
     var color = '';
     var table = '';
     var Country_Total = [];
-    lnxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
-    if (lnxmlhttp == null) {
-        return;
-    }
-    Scriptname = '';
 
-    lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + st, true)
-    lnxmlhttp.send(null)
-    lnxmlhttp.onreadystatechange = function() {
-            if (lnxmlhttp.readyState == 3) {
-                // Get hold of the array and change scriptname?
-                Scriptname = lnxmlhttp.responseText;
-            }
-        }
-        /****************************************************************************************************************
+    //Scriptname = window.location.pathname;
+
+    /****************************************************************************************************************
         	AJAX - LiOSSearch.php
-        ****************************************************************************************************************/
+    ****************************************************************************************************************/
     var url = "LiOSSearch.php";
     url = url + "?language=" + str;
-    url = url + "&st=" + st;
+    if (st == 'cmn' && nonLatinScript == 0) { // test to see if st = Chinese and if it's Latin
+        url = url + "&st=eng";
+        url = url + "&SpecificCountry=English";
+    } else {
+        url = url + "&st=" + st;
+        url = url + "&SpecificCountry=" + SpecificCountry;
+    }
+    url = url + "&MajorLanguage=" + MajorLanguage;
+    url = url + "&Variant_major=" + Variant_major;
     url = url + "&sid=" + Math.random();
     xmlhttp.open("GET", url, true); // open the AJAX object with livesearch.php
     xmlhttp.send(null);
@@ -599,9 +608,9 @@ function showiOSLanguage(str, st, Internet) { // get the names of the languages
 }
 
 /*****************************************************************************************************************
-	iOS -- showiOSCountry(str, st)
+	iOS -- showiOSCountry() (the function are called by LangSearch.js by showCountry() function)
 *****************************************************************************************************************/
-function showiOSCountry(str, st, Internet) { // get the names of the country
+function showiOSCountry(str, st, Internet, SpecificCountry, asset, nonLatinScript) { // get the names of the country
     if (Internet == 0) {
         alert('ScriptureEarth in not online. iOS app is not avaiable.');
         return;
@@ -610,26 +619,22 @@ function showiOSCountry(str, st, Internet) { // get the names of the country
     if (Countryxmlhttp == null) {
         return;
     }
-    lnxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
-    if (lnxmlhttp == null) {
-        return;
-    }
-    Scriptname = '';
 
-    lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + st, true)
-    lnxmlhttp.send(null)
-    lnxmlhttp.onreadystatechange = function() {
-            if (lnxmlhttp.readyState == 3) {
-                // Get hold of the array and change scriptname?
-                Scriptname = lnxmlhttp.responseText;
-            }
-        }
-        /****************************************************************************************************************
-        	AJAX - CiOSSearch.php
-        ****************************************************************************************************************/
+    Scriptname = window.location.pathname;
+
+    /****************************************************************************************************************
+    	AJAX - CiOSSearch.php
+    ****************************************************************************************************************/
     var url = "CiOSSearch.php";
     url = url + "?country=" + str;
-    url = url + "&st=" + st;
+    if (st == 'cmn' && nonLatinScript == 0) { // test to see if st = Chinese and if it's Latin
+        url = url + "&st=eng";
+        url = url + "&SpecificCountry=English";
+    } else {
+        url = url + "&st=" + st;
+        url = url + "&SpecificCountry=" + SpecificCountry;
+    }
+    url = url + "&asset=" + asset;
     url = url + "&sid=" + Math.random();
     Countryxmlhttp.open("GET", url, true); // open the AJAX object
     Countryxmlhttp.send(null);
@@ -651,7 +656,7 @@ function showiOSCountry(str, st, Internet) { // get the names of the country
                 var Country = firstSplit[0];
                 var ISO_Country = firstSplit[1];
                 // here - check
-                Country_Total += '<div class="pickCountry" onclick="window.open(\'./' + Scriptname + '?sortby=country&asset=1&name=' + ISO_Country + '\', \'_self\')">' + Country + '</div>';
+                Country_Total += '<div class="pickCountry" onclick="window.open(\'' + Scriptname + '?sortby=country&asset=1&name=' + ISO_Country + '\', \'_self\')">' + Country + '</div>';
             }
             Country_Total += '</div>';
             document.getElementById("CountSearch").innerHTML = Country_Total;
@@ -660,7 +665,7 @@ function showiOSCountry(str, st, Internet) { // get the names of the country
 }
 
 /*****************************************************************************************************************
-	iOS -- AlliOSCountries()
+	iOS -- AlliOSCountries() (the function are called by LangSearch.js by AllCountries() function)
 *****************************************************************************************************************/
 function AlliOSCountries(Scriptname, st, SpecificCountry, Internet) {
     if (Internet == 0) {
@@ -719,6 +724,8 @@ function iOSLanguage(st, idx, LN, URL) {
             window.open(URL, '_blank');
         }
     } else if (URL.startsWith("asset://")) {
+        // "procolor not defined" - it seems that "asset:" isn't a procolor!
+        //location.protocol = 'file:';							'file:' will not work nor 'https'
         //        URL = URL.replace("asset://", "https://");
         const link = document.createElement("a");
         //		link.href = 'data:application/zip,'+URL;
@@ -729,22 +736,9 @@ function iOSLanguage(st, idx, LN, URL) {
         alert('This isnt suppose to happen! (LangSearch.js function iOSLanguage)');
     }
 
-    lnxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
-    if (lnxmlhttp == null) {
-        return;
-    }
-    Scriptname = '';
+    Scriptname = window.location.pathname;
 
-    lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + st, true)
-    lnxmlhttp.send(null)
-    lnxmlhttp.onreadystatechange = function() {
-        if (lnxmlhttp.readyState == 3) {
-            // Get hold of the array and change scriptname?
-            Scriptname = lnxmlhttp.responseText;
-        }
-    }
-
-    window.open(Scriptname + '?asset=1', '_self');
+    //window.open(Scriptname + '?asset=1', '_self');
 
     return;
 }

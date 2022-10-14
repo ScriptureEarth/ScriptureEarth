@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Espanol Language Setup</title>
+<title>Chinese Language Setup</title>
 <meta http-equiv="Content-Type"  content="text/html; charset=utf-8" />
 <meta http-equiv="Window-target" content="_top" />
 <meta name="ObjectType"          content="Document" />
@@ -39,22 +39,19 @@ $fileFirstPart =
 '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Scripture Earth Espanol Language Setup</title>
+<title>Scripture Earth Chinese Language Setup</title>
 <meta http-equiv="Content-Type" 			content="text/html; charset=utf-8" />
 <meta name="ObjectType" 					content="Document" />
 <meta http-equiv="Window-target" 			content="_top" />
 <meta name="Description" lang="en-US" 		content="
-		Este sitio provee acceso a la Biblia/NT en texto (PDF),
-		audio (MP3), vea (la película JESÚS, etc.), compre (se imprimen a pedido),
-		estudie (La Palabra), otros libros y enlaces en los idiomas autóctonos de las Américas.
+		Diese Webseite bietet Zugang zur Bibel (Schriften aus dem Alten und Neuen Testament) in indigenen Sprachen.
+		Die Bibel steht im Textformat, als Audio- und als Videoversion zur Verfügung und kann auf Ihr Gerät heruntergeladen
+		oder online angesehen werden. Testen Sie die die Materialien zum herunterladen, die Bibelstudienprogramme,
+		die mobilen Apps oder bestellen Sie die Bibel als Buch.
 	" />
 <meta name="Keywords" lang="en-US" 			content="
-		recursos Bíblicos, lengua,
-		idiomas autóctonos modernos, las Américas, lengua materna,
-		lenguas indígenas, texto, PDF, audio, MP3, vea, la película JESÚS,
-		se imprime a pedido, compre el libro en línea, compra en línea, internet, tienda, libro,
-		estudie, módulos de estudio Bíblico, La Palabra, Biblia, Nuevo Testamento, NT, Antiguo Testamento, AT,
-';
+		#kkkkkkkkkk#
+	';
 $fileSecondPart = '';
 $fileThirdPart = '" />
 <meta name="Created-by" 					content="Scott Starker" />
@@ -75,11 +72,11 @@ $fileThirdPart = '" />
 <div id="container">
 <img src="../../images/topBannerCompSplash.jpg" style="position: relative; top: 0px; z-index: 1; width: 100%; " /><br /><br />
 &nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 10pt; font-style: italic; ">PDF<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Audio (<a href="http://www.faithcomesbyhearing.com/ambassador/free-audio-bible-download">Faith Comes By Hearing</a>)<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Video (<a href="http://www.inspirationalfilms.com/av/watch.html">The JESUS Film</a>)<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Módulos de Estudio Bíblico (<a href="http://www.theword.gr/">The Word</a>)<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Compre el libro en línea (Internet) (<a href="http://www.virtualstorehouse.org/">Virtual Storehouse</a>)</span><br /><br />
-<span style="color: #003366; font-size: 11pt; ">Haga <span style="font-size: 14pt; font-weight: bold; ">Clic</span> aquí para encontrar <span style="font-size: 12pt; font-weight: bold; ">Recursos de las Escrituras</span> (Nuevo Testamento o Biblia completa) en los siguientes idiomas…</span><br />';
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Áudio (<a href="http://www.faithcomesbyhearing.com/ambassador/free-audio-bible-download">Faith Comes By Hearing</a>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vídeo (<a href="http://www.inspirationalfilms.com/av/watch.html">The JESUS Film</a>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Módulos de Estudo Bíblico (<a href="http://www.theword.gr/">The Word</a>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Compre o livro on-line (<a href="http://www.virtualstorehouse.org/">Virtual Storehouse</a>)</span><br /><br />
+<span style="color: #003366; font-size: 11pt; "><span style="font-size: 14pt; font-weight: bold; ">Clique</span> aqui para encontrar o Novo Testamento ou Bíblia completa nas seguintes línguas:</span><br />';
 $fileFourthPart = '';
 $fileFifthPart = '</div>
 </body>
@@ -87,7 +84,7 @@ $fileFifthPart = '</div>
 
 	if ($Display) {
 		echo "<div style='background-color: white; padding: 20px; width: 800px; margin-left: auto; margin-right: auto; '>";
-		echo "<h2 style='text-align: center; margin: 0px; color: navy; '>Scripture Earth Espanol Language Setup</h2><br /><br />";
+		echo "<h2 style='text-align: center; margin: 0px; color: navy; '>Scripture Earth Chinese Language Setup</h2><br /><br />";
 	}
 	
 	$query = 'SELECT * FROM nav_ln ORDER BY ISO, ROD_Code';
@@ -115,7 +112,6 @@ $fileFifthPart = '</div>
 	$stmt_LN_Chinese=$db->prepare($query);																// create a prepared statement
 	$query='INSERT INTO LN_Temp (ISO, ROD_Code, Variant_Code, LN) VALUES (?, ?, ?, ?)';
 	$stmt_LN_Temp=$db->prepare($query);																	// create a prepared statement
-	
 	while ($row = $result->fetch_array()) {
 		$ISO=$row['ISO'];								// ISO
 		$ROD_Code=$row['ROD_Code'];						// ROD_Code
@@ -128,14 +124,15 @@ $fileFifthPart = '</div>
 		$LN_German=$row['LN_German'];					// boolean
 		$LN_Chinese=$row['LN_Chinese'];					// boolean
 		$def_LN=$row['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
-		if (!$LN_Spanish) {								// if the Spanish then the default langauge
+
+		if (!$LN_Chinese) {								// if the German then the default langauge
 			switch ($def_LN){
 				case 1:
 					//$query="SELECT LN_English FROM LN_English WHERE LN_English.ISO = '$ISO' AND LN_English.ROD_Code = '$ROD_Code'";
 					//$result_LN=$db->query($query);
-					$stmt_LN_English->bind_param('ss', $ISO, $ROD_Code);								// bind parameters for markers								// 
-					$stmt_LN_English->execute();														// execute query
-					$result_LN_English = $stmt_LN_English->get_result();								// instead of bind_result (used for only 1 record):
+					$stmt_LN_English->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
+					$stmt_LN_English->execute();															// execute query
+					$result_LN_English = $stmt_LN_English->get_result();									// instead of bind_result (used for only 1 record):
 					$r = $result_LN_English->fetch_array();
 					$LN=$r['LN_English'];
 					break;
@@ -197,13 +194,11 @@ $fileFifthPart = '</div>
 			}
 		}
 		else {
-			//$query="SELECT LN_Spanish FROM LN_Spanish WHERE LN_Spanish.ISO = '$ISO' AND LN_Spanish.ROD_Code = '$ROD_Code'";
-			//$result_LN=$db->query($query);
-			$stmt_LN_Spanish->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
-			$stmt_LN_Spanish->execute();															// execute query
-			$result_LN_Spanish = $stmt_LN_Spanish->get_result();									// instead of bind_result (used for only 1 record):
-			$r = $result_LN_Spanish->fetch_array();
-			$LN=$r['LN_Spanish'];
+			$stmt_LN_Chinese->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
+			$stmt_LN_Chinese->execute();															// execute query
+			$result_LN_Chinese = $stmt_LN_Chinese->get_result();									// instead of bind_result (used for only 1 record):
+			$r = $result_LN_Chinese->fetch_array();
+			$LN=$r['LN_Chinese'];
 		}
 		$LN = check_input($LN);							// check_input: in order to make the INSERT work right
 		//$result_Temp = $db->query("INSERT INTO LN_Temp (ISO, ROD_Code, Variant_Code, LN) VALUES ('$ISO', '$ROD_Code', '$Variant_Code', '$LN')");
@@ -212,8 +207,8 @@ $fileFifthPart = '</div>
 		//$i++;
 	}
 
-	// Create 'Espanol.htm'
-	$filename = 'Espanol.htm';
+	// Create 'Chinese.htm'
+	$filename = 'Chinese.htm';
 	$handle = fopen($filename,'w');		// Open for writing only; place the file pointer at the beginning of the file and truncate the file to zero length. If the file does not exist, attempt to create it. 
 	fwrite($handle, $fileFirstPart);
 	$j=0;
@@ -225,22 +220,22 @@ $fileFifthPart = '</div>
 	if ($Display) {
 		echo "<table border='0' style='width: 980px; margin: 0px; padding: 0px; '>";
 		echo "<tr valign='bottom' style='text-align: left; color: black; margin: 0px; padding: 0px; '>";
-		echo "<th width='28%'>Language Name:</th>";
-		echo "<th width='31%'>Alternate Language Name:</th>";
+		echo "<th width='28%'>Name der Sprache:</th>";
+		echo "<th width='31%'>Andere Namen der Sprache:</th>";
 		echo "<th width='15%'>ISO:</th>";
-		echo "<th width='26%'>Country:</th>";
+		echo "<th width='26%'>Land:</th>";
 	}
 	$fileFourthPart .= PHP_EOL . "<table border='0' style='width: 980px; margin: 0px; padding: 0px; '>" . PHP_EOL .
 		"<tr valign='bottom' style='text-align: left; color: black; margin: 0px; padding: 0px; '>" . PHP_EOL .
-		"<th width='28%'>Lengua:</th>" . PHP_EOL .
-		"<th width='31%'>Nombre alternativo de la lengua:</th>" . PHP_EOL .
+		"<th width='28%'>Name der Sprache:</th>" . PHP_EOL .
+		"<th width='31%'>Andere Namen der Sprache:</th>" . PHP_EOL .
 		"<th width='15%'>ISO:</th>" . PHP_EOL .
-		"<th width='26%'>País:</th>" . PHP_EOL .
+		"<th width='26%'>Land:</th>" . PHP_EOL .
 		'</tr>' . PHP_EOL;
 	$query='SELECT alt_lang_name FROM alt_lang_names WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ?';		// alt_lang_names
 	$stmt_alt=$db->prepare($query);																		// create a prepared statement
-	$query='SELECT countries.Spanish FROM ISO_countries, countries WHERE ISO_countries.ISO = ? AND ISO_countries.ROD_Code = ? AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY countries.Spanish';
-	$stmt_countries_Spa=$db->prepare($query);															// create a prepared statement
+	$query='SELECT countries.Chinese FROM ISO_countries, countries WHERE ISO_countries.ISO = ? AND ISO_countries.ROD_Code = ? AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY countries.Chinese';
+	$stmt_countries_Ger=$db->prepare($query);															// create a prepared statement
 	while ($row = $result->fetch_array()) {
 		if ($i % 2)
 			$color = 'ffffff';
@@ -256,8 +251,8 @@ $fileFifthPart = '</div>
 			echo "<td width='28%' style='background-color: #$color; margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>$LN</td>";
 		}
 		$fileFourthPart .= "<tr valign='bottom' style='color: navy; background-color: #$color; margin: 0px; padding: 0px; '>" . PHP_EOL .
-			"<td width='28%' style='background-color: #$color; margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '><a href='../../00e-Escrituras_Indice.php?sortby=lang&iso=$ISO&rod=$ROD_Code&var=$Variant_Code'>$LN</a></td>" . PHP_EOL;
-		//$alt_lang_names=$row['scripture_main.alt_lang_names');
+			"<td width='28%' style='background-color: #$color; margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '><a href='../../00de-Sprachindex.php?sortby=lang&iso=$ISO&rod=$ROD_Code&var=$Variant_Code'>$LN</a></td>" . PHP_EOL;
+		//$alt_lang_names=$row['scripture_main.alt_lang_names");
 		//if ($alt_lang_names > 0) {
 		//$query_alt="SELECT alt_lang_name FROM alt_lang_names WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND Variant_Code = '$Variant_Code'";				// alt_lang_names
 		//$result_alt=$db->query($query_alt);
@@ -309,24 +304,24 @@ $fileFifthPart = '</div>
 		}
 		$fileFourthPart .= "<td width='15%' style='margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>$ISO</td>" . PHP_EOL;
 
-		//$query="SELECT countries.Spanish FROM ISO_countries, countries WHERE ISO_countries.ISO = '$ISO' AND ISO_countries.ROD_Code = '$ROD_Code' AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY countries.Spanish";
+		//$query="SELECT countries.Portuguese FROM ISO_countries, countries WHERE ISO_countries.ISO = '$ISO' AND ISO_countries.ROD_Code = '$ROD_Code' AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY countries.Chinese";
 		//$result_ISO_countries=$db->query($query);
 		//$num_ISO_countries=$result_ISO_countries->num_rows;
-		$stmt_countries_Spa->bind_param('ss', $ISO, $ROD_Code);											// bind parameters for markers
-		$stmt_countries_Spa->execute();																	// execute query
-		$result_ISO_countries = $stmt_countries_Spa->get_result();										// instead of bind_result (used for only 1 record):
+		$stmt_countries_Ger->bind_param('ss', $ISO, $ROD_Code);											// bind parameters for markers
+		$stmt_countries_Ger->execute();																	// execute query
+		$result_ISO_countries = $stmt_countries_Ger->get_result();										// instead of bind_result (used for only 1 record):
 		//$num_ISO_countries=$result_ISO_countries->num_rows;
 		$r_ISO_C = $result_ISO_countries->fetch_array();
-		$Span_country = $r_ISO_C['Spanish'];															// name of the country in the language version
+		$Chin_country = $r_ISO_C['Chinese'];						// first name of the country in the language version
 		while ($r_ISO_C = $result_ISO_countries->fetch_array()) {
-			$Span_country = $Span_country.', '.$r_ISO_C['Spanish'];										// name of the country in the language version
+			$Chin_country = $Chin_country.', '.$r_ISO_C['Chinese'];	// name of the country in the language version
 		}
 		if ($Display) {
-			//echo "<td width='20%' style='background-color: #$color; margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>$Eng_country</td>";
-			echo "<td width='26%' style='margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>$Span_country</td>";
+			//echo "<td width='20%' style='background-color: #$color; margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>Chin_country</td>";
+			echo "<td width='26%' style='margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>$Chin_country</td>";
 			echo '</tr>';
 		}
-		$fileFourthPart .= "<td width='26%' style='margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>$Span_country</td>" . PHP_EOL .
+		$fileFourthPart .= "<td width='26%' style='margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>$Chin_country</td>" . PHP_EOL .
 			'</tr>' . PHP_EOL;
 
 		// 	$fileSecondPart
@@ -344,7 +339,7 @@ $fileFifthPart = '</div>
 		$fileCreate = str_replace('#zzz#', $ISO, $fileCreate);
 		$fileCreate = str_replace('#qqqqq#', $ROD_Code, $fileCreate);
 		$fileCreate = str_replace('#llllllllll#', $LN, $fileCreate);
-		$Temp = $ISO . ', ' . $LN . ', ' . $Span_country;
+		$Temp = $ISO . ', ' . $LN . ', ' . $Germ_country;
 		if ($alt != '') {
 			$Temp = $Temp . ', ' . $alt;
 		}

@@ -19,14 +19,6 @@
     watch, Jesus Film, Luke video, buy, print-on-demand, online purchase, bookstore, study, The Word,
     Bible, New Testament, NT, Old Testament, OT, Scripture, map
 " />
-<style type="text/css">
-	/* this version of classes are for German only! */
-	div.ZtopBannerImage {
-		background-image: url(images/00i-topBanerComp.png);
-		height: 136px;
-		text-align: right;
-	}
-</style>
 <script type="text/javascript" language="javascript">
 	var MajorLang = "Deu";
 </script>

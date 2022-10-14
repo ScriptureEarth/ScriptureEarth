@@ -141,6 +141,46 @@ function addRowToTableCol1(tableId, txtId) {
 }
 
 /*****************************************************
+			Email
+******************************************************/
+function addRowToTableEmail() {
+    var tbl = document.getElementById("tableEmail");
+    var lastRow = tbl.rows.length;
+    var iteration = lastRow + 1;
+    var row = tbl.insertRow(lastRow);
+
+    // left cell
+    var cellLeft = row.insertCell(0);
+    var textNode1 = document.createTextNode(" ");
+    cellLeft.appendChild(textNode1);
+
+    // center cell
+    var cellCenter = row.insertCell(1);
+    var el = document.createElement("input");
+    el.type = "text";
+    el.name = "txtEmailTitle" + "-" + iteration;
+    el.id = "txtEmailTitle" + "-" + iteration;
+    el.size = 70;
+    el.style.color = "navy";
+    cellCenter.appendChild(el);
+
+    // email address
+    var cellFile = row.insertCell(2);
+    var el = document.createElement("input");
+    el.type = "text";
+    el.name = "txtEmailAddress" + "-" + iteration;
+    el.id = "txtEmailAddress" + "-" + iteration;
+    el.size = 32;
+    el.style.color = "navy";
+    cellFile.appendChild(el);
+
+    // right cell
+    var cellRight = row.insertCell(3);
+    var textNode2 = document.createTextNode(" ");
+    cellRight.appendChild(textNode2);
+}
+
+/*****************************************************
 					Cell Phone
 ******************************************************/
 function addRowToCellPhone() {

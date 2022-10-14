@@ -8,6 +8,15 @@ session_start();
 session_destroy();															// destroy entire session 
 
 $langs = [];
+
+$asset = 0;
+if (isset($_GET['asset'])) {
+	$asset = $_GET['asset'];
+	if (!preg_match('/^(0|1)$/', $asset)) {
+		die("hack!");
+	}
+}
+
 if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbreviated language
     // break up string into pieces (languages and q factors)
     preg_match_all('/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $lang_parse);
@@ -60,8 +69,8 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbr
 	}
 	
 	if (!isset($_GET['name']) && !isset($_GET['iso'])) {
-		header('Location: ' . $redirectTo, true);							// Redirect to target
-		exit();
+		header('Location: ' . $redirectTo . ($asset == 1 ? '?asset=1' : ''), true);							// Redirect to target
+		exit;
 	}
 	else {
 		$iso = '';
@@ -69,7 +78,7 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbr
 		$var = '';
 		$iso = isset($_GET['iso']) ? $_GET['iso'] : $_GET['name'];
 		if (preg_match('/^([a-z]{3})/', $iso, $match)) {
-			$redirectTo .= '?sortby=lang&iso='.$match[1];
+			$redirectTo .= '?sortby=lang&iso='.$match[1] . ($asset == 1 ? '&asset=1' : '');
 		}
 		else {
 			die('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The ISO code is not found. (index.php)</div>');
@@ -98,7 +107,7 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbr
 			exit();
 		}
 		elseif ($resultTest->num_rows > 1) {									// in case someone does ?sortby=lang&name=[ZZZ] and there is more than one ROD Code
-			header('Location: ' . $redirectTo, true);							// Redirect to target
+			header('Location: ' . $redirectTo. ($asset == 1 ? '?asset=1' : '' ), true);							// Redirect to target
 			exit;
 		}
 		else {
@@ -112,10 +121,11 @@ if (isset($_GET['name']) || isset($_GET['iso'])) {								// not the 5 major lan
 	$temp = '';
 	$temp = isset($_GET['name']) ? '?sortby=lang&name='.$_GET['name'].'&ROD_Code='.$_GET['ROD_Code'].'&Variant_Code='.$_GET['Variant_Code'] : '?iso='.$_GET['iso'].(isset($_GET['rod']) ? '&rod='.$_GET['rod'] : '&rod=').(isset($_GET['var']) ? '&var='.$_GET['var'] : '&var=');
 	$redirectTo .= $temp;
-	header('Location: ' . $redirectTo, true); // Redirect to target
-	exit();
+	header('Location: ' . $redirectTo. ($asset == 1 ? '?asset=1' : '' ), true); // Redirect to target
+	exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -130,7 +140,6 @@ if (isset($_GET['name']) || isset($_GET['iso'])) {								// not the 5 major lan
 body {
 	font: 100% Verdana, Arial, Helvetica, sans-serif;
 	background-color: #AEB2BE;
-	background-image: url(images/background.png);
 	margin: 0; /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
 	text-align: center; /* this centers the container in IE 5* browsers. The text is then set to the left aligned default in the #container selector */
 	color: #000000;
@@ -139,7 +148,6 @@ body {
 	margin: 0; /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
 	padding: 20px 0 0 0; /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
 	background-color: #AEB2BE;
-	background-image: url(images/background_top.png);
 	background-repeat: repeat-x;
 }
 .oneColFixCtr #container {
@@ -186,7 +194,6 @@ div.middleText {
 #bottomBanner {
 	width: 980px;				/* width and height of the graphic of the bottom banner */
 	height: 80px;
-	background-image: url(images/btmBanner.png);
 	background-repeat: no-repeat;
 	border-left: solid 2px black;
 	/*border-bottom: solid 2px black;*/
@@ -239,61 +246,63 @@ div.counter {
 }
 /* remember that padding is the space inside the div box and margin is the space outside the div box */
 </style>
-<script type="text/javascript">
-// new generic hover and out function
-function hover() {
-	document.getElementById('aclick').innerHTML = <?php translate('click to enter', $st, 'sys'); ?>
-	document.getElementById('canvas').style.display = 'none';
-	ln_code = "<?php echo $ln_code?>"
-	hover = document.getElementsByClassName('hover');
-	for (element of hover){
-		element.style.display = 'none';
-	}
-	hover.getElementsByClassName(ln_code)[0].style.display = 'block';
 
-	list = document.getElementsByClassName('list');
-	for (element of list){
-		element.style.display = 'none';
-	}
-	list.getElementsByClassName(ln_code)[0].style.display = 'block';
+<script type="text/javascript" language="JavaScript">
+	// new generic hover and out function
+	function hover() {
+		document.getElementById('aclick').innerHTML = <?php translate('click to enter', $st, 'sys'); ?>
+		document.getElementById('canvas').style.display = 'none';
+		ln_code = "<?php echo $ln_code?>"
+		hover = document.getElementsByClassName('hover');
+		for (element of hover){
+			element.style.display = 'none';
+		}
+		hover.getElementsByClassName(ln_code)[0].style.display = 'block';
 
-	alink = document.getElementsByClassName('alink')
-	for (element of alink){
-		element.style.color = '#080860';
-	}
-	hover.getElementsByClassName(ln_code)[0].style.color = 'white';
+		list = document.getElementsByClassName('list');
+		for (element of list){
+			element.style.display = 'none';
+		}
+		list.getElementsByClassName(ln_code)[0].style.display = 'block';
 
-	visit = document.getElementsByClassName('visit')
-	for (element of visit){
-		element.style.display = 'none';
-	}
-	visit.getElementsByClassName(ln_code)[0].style.display = 'inline';
-}
-// find the right place to connet. Is it even nessecery?
-function out(){
-	hover = document.getElementsByClassName('hover');
-	for (element of hover){
-		element.style.display = 'none';
-	}
-}
+		alink = document.getElementsByClassName('alink')
+		for (element of alink){
+			element.style.color = '#080860';
+		}
+		hover.getElementsByClassName(ln_code)[0].style.color = 'white';
 
-function SILMouse() {
-	window.open("https://www.sil.org");
-}
+		visit = document.getElementsByClassName('visit')
+		for (element of visit){
+			element.style.display = 'none';
+		}
+		visit.getElementsByClassName(ln_code)[0].style.display = 'inline';
+	}
+
+	// find the right place to connet. Is it even nessecery?
+	function out(){
+		hover = document.getElementsByClassName('hover');
+		for (element of hover){
+			element.style.display = 'none';
+		}
+	}
+
+	function SILMouse() {
+		window.open("https://www.sil.org");
+	}
+
+	function loadIFrame(ml, CTPHC) {
+		var canvas = document.getElementById("canvas");
+		canvas.style.display = 'none';
+		//canvas.innerHTML = '';
+		hover = document.getElementsByClassName('hover');
+		for (element of hover){
+			element.style.display = 'none';
+		}
+		canvas.setAttribute("src", "00"+ml+"-CTPHC.php?I="+CTPHC);
+		canvas.style.display = 'block';
+	}
 </script>
-<script language="JavaScript" type="text/javascript">
-function loadIFrame(ml, CTPHC) {
-	var canvas = document.getElementById("canvas");
-	canvas.style.display = 'none';
-	//canvas.innerHTML = '';
-	hover = document.getElementsByClassName('hover');
-	for (element of hover){
-		element.style.display = 'none';
-	}
-	canvas.setAttribute("src", "00"+ml+"-CTPHC.php?I="+CTPHC);
-	canvas.style.display = 'block';
-}
-</script>
+
 <script type="text/javascript" src="_js/BrowserFixes.js"></script>
 </head>
 <body class="oneColFixCtr">
@@ -346,7 +355,7 @@ indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre H
               <?php 
 			  		foreach ($_SESSION['nav_ln_array'] as $code => $array){
 						echo '<div style="margin: 13px 0px; ">
-						<a id="a'.$array[1].'" class="alink '.$array[0].'" href="'.$array[2].'" onMouseOver="hover()">'.translate($array[1], $array[0], 'sys').'</a>
+						<a id="a'.$array[1].'" class="alink '.$array[0].'" href="'.$array[2].'" onMouseOver="hover()">'.translate($array[1], $array[0], 'sys'). ($asset == 1 ? '?asset=1' : '' ).'</a>
 						</div>';
 					}
 			  ?>

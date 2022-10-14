@@ -135,7 +135,7 @@
 // links: BibleIs
 	if ($inputs['BibleIs']) {
 		$i = 1;
-		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, URL, BibleIs) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, 'Bible.is', ?, ?, ?)";
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, BibleIs) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, 'Bible.is', ?, ?, ?)";
 		$stmt_links=$db->prepare($query);
 		while (isset($inputs["txtLinkBibleIsURL-".(string)$i])) {
 			$temp3 = "txtLinkBibleIsURL-".(string)$i;
@@ -371,7 +371,7 @@
 // links: Read: YouVersion
 	if ($inputs['YouVersion']) {
 		$i = 1;
-		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, URL, YouVersion) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, 1)";
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, YouVersion) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, 1)";
 		$stmt_links=$db->prepare($query);
 		while (isset($inputs["txtLinkYouVersionName-".(string)$i])) {
 			$temp1 = "txtLinkYouVersionName-".(string)$i;
@@ -390,7 +390,7 @@
 // links: Study - Bibles_org
 	if ($inputs['Biblesorg']) {
 		$i = 1;
-		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, URL, Bibles_org) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, 1)";
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, Bibles_org) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, 1)";
 		$stmt_links=$db->prepare($query);
 		while (isset($inputs["txtLinkBiblesorgName-".(string)$i])) {
 			$temp1 = "txtLinkBiblesorgName-".(string)$i;
@@ -409,7 +409,7 @@
 // links: GRN
 	if ($inputs['GRN']) {
 		$i = 1;
-		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, URL, GRN) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, 1)";
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, GRN) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, 1)";
 		$stmt_links=$db->prepare($query);
 		while (isset($inputs["txtLinkGRNName-".(string)$i])) {
 			$temp1 = "txtLinkGRNName-".(string)$i;
@@ -550,7 +550,7 @@
 // links: buy, map, and GooglePlay
 	if ($inputs['links']) {
 		$i = 1;
-		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, URL, buy, map, GooglePlay) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, ?, ?, ?)";
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, buy, map, GooglePlay) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, ?, ?, ?)";
 		$stmt_links=$db->prepare($query);
 		while (isset($inputs["txtLinkCompany-".(string)$i])) {
 			$temp1 = "txtLinkCompany-".(string)$i;
@@ -568,7 +568,25 @@
 		}
 		$stmt_links->close();
 	}
-	
+
+// links: email
+	if ($inputs['email']) {
+		$i = 1;
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, email) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, '', ?, ?, 1)";
+		$stmt_links=$db->prepare($query);
+		while (isset($inputs['txtEmailAddress-'.(string)$i])) {
+			$temp1 = 'txtEmailTitle-'.(string)$i;
+			$temp2 = 'txtEmailAddress-'.(string)$i;
+			$stmt_links->bind_param("ss", $inputs[$temp1], $inputs[$temp2]);					// bind parameters for markers
+			$result=$stmt_links->execute();														// execute query
+			if (!$result) {
+				echo 'Could not insert the data "links": ' . $db->error;
+			}
+			$i++;
+		}
+		$stmt_links->close();
+	}
+
 // PlaylistAudio
 	if ($inputs['AudioPlaylist']) {
 		$i = 1;
@@ -727,6 +745,10 @@
 	setTimeout(function() { y.close(); }, 1000);
 	//w.close();
 	url = "metadata/Deutsch/DeutschLanguageSetup.php?noDisplay=1";
+	var v = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
+	setTimeout(function() { v.close(); }, 1000);
+	//w.close();
+	url = "metadata/Chinese/ChineseLanguageSetup.php?noDisplay=1";
 	var v = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
 	setTimeout(function() { v.close(); }, 1000);
 	//w.close();

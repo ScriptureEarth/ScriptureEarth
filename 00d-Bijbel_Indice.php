@@ -18,14 +18,6 @@
     Jezus film, kopen, print-on-demand, online kopen, boekhandel, studie, The Word, de Bijbel,
     Nieuwe Testament, NT, Oude Testament, OT
 " />
-<style type="text/css">
-    /* this version of classes are for English only! */
-    div.topBannerImage {
-        background-image: url(images/00i-topBanerComp.png);
-        height: 136px;
-        text-align: right;
-    }
-</style>
 <script type="text/javascript" language="javascript">
 	var MajorLang = "Nld";
 </script>

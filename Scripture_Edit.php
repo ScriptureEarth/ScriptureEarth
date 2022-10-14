@@ -35,7 +35,7 @@ if (!$retval) {
 <title>Scripture Edit</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Edit.css" />
 <script type="text/javascript" language="javascript" src="_js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.0.3"></script>
+<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.0.5"></script>
 <!-- see the bottom of this html file for CMS_events.js -->
 </head>
 <body>
@@ -535,7 +535,7 @@ function NT_Test($PDF, $NT_Index) {
 /************************************************
 	Default Navigational Language Name
 *************************************************/
-?>
+		?>
 		<br />
 		<p>Select the default major langauge <span style="font-size: 10pt; ">(i.e. the major language from above)</span>: 
 		<select name="DefaultLang" id="DefaultLang">
@@ -1894,7 +1894,7 @@ function NT_Test($PDF, $NT_Index) {
         <hr align="center" width="90%" color="#0066CC" />
         <br />
         
-<?php
+		<?php
 /*************************************************
 	SAB - Scriture Apps Buidler (table SAB) HTML
 *************************************************/
@@ -2104,11 +2104,11 @@ function NT_Test($PDF, $NT_Index) {
 		</table>
         <br />
 		
-<?php       
+		<?php       
 /*************************************************
 	Bible.is
 **************************************************/
-?>
+		?>
 		<table valign="bottom" cellpadding="0" cellspacing="0" width="100%">
         <thead>
 			<tr valign="bottom" style="color: navy; font-size: 8pt; line-height: 10pt; height: 30px; ">
@@ -2274,11 +2274,11 @@ function NT_Test($PDF, $NT_Index) {
 		</table>
         <br />
 
-<?php
+		<?php
 /*************************************************
 	YouVersion (Bible.com) - Read
 **************************************************/
-?>      
+		?>      
 
 		<table width="100%" valign="bottom" cellpadding="0" cellspacing="0">
             <thead>
@@ -2681,7 +2681,7 @@ function NT_Test($PDF, $NT_Index) {
         (i.e., 41-MATaoj.sfm to 41-MATaoj<span style="color: red; ">W</span>.sfm)</span>
         <br /><br />&nbsp;&nbsp;&nbsp;&nbsp;
         
-<?php
+		<?php
 /*************************************************
 	checkbox for right-to-left
 *************************************************/
@@ -2719,7 +2719,7 @@ function NT_Test($PDF, $NT_Index) {
 /*************************************************
 	cell phones
 **************************************************/
-?>
+		?>
 		<table valign="bottom" cellpadding="0" cellspacing="0" width="100%">
            <thead style='text-align: left; vertical-align: bottom; '>
 			<tr valign="bottom" style="color: navy; font-size: 8pt; line-height: 11pt; height: 30px; ">
@@ -3081,11 +3081,11 @@ function NT_Test($PDF, $NT_Index) {
 		</table>
 		<br />
 
-<?php
+		<?php
 /*************************************************
 	Studies -- theWord
 **************************************************/
-?>
+		?>
 		<table valign="bottom" cellpadding="0" cellspacing="0" width="100%">
        	  <thead style='text-align: center; vertical-align: bottom; '>
 			<tr valign="bottom" style="color: navy; font-size: 8pt; line-height: 7pt; height: 30px; ">
@@ -3653,32 +3653,56 @@ function NT_Test($PDF, $NT_Index) {
 			if ($_POST['linksIcon-1'] == 'linksBuy-1') $_POST['linksBuy-1']=1; else $_POST['linksBuy-1']=0;
 			if ($_POST['linksIcon-1'] == 'linksMap-1') $_POST['linksMap-1']=1; else $_POST['linksMap-1']=0;
 			if ($_POST['linksIcon-1'] == 'linksGooglePlay-1') $_POST['linksGooglePlay-1']=1; else $_POST['linksGooglePlay-1']=0;
+			$_POST['linksOther'] = $_POST['linksOther-1'];
+			$_POST['linksBuy'] = $_POST['linksBuy-1'];									// to be tested
+			$_POST['linksMap'] = $_POST['linksMap-1'];									// to be tested
+			$_POST['linksGooglePlay'] = $_POST['linksGooglePlay-1'];					// to be tested
 		}
 		elseif ($SM_row['links']) {
-			$query="SELECT * FROM links WHERE ISO_ROD_index = $idx AND BibleIs = 0 AND YouVersion = 0 AND Bibles_org = 0 AND GRN = 0";
+			$query="SELECT * FROM links WHERE ISO_ROD_index = $idx AND BibleIs = 0 AND YouVersion = 0 AND Bibles_org = 0 AND GRN = 0 AND email = 0";
 			$result1=$db->query($query);
 			$num=$result1->num_rows;
-			$r = $result1->fetch_assoc();
-			${'txtLinkCompany-$i'}=$r['company'];
-			${'txtLinkCompanyTitle-$i'}=stripslashes($r['company_title']);
-			${'txtLinkURL-$i'}=$r['URL'];
-			${'linksBuy-$i'}=$r['buy'];
-			${'linksMap-$i'}=$r['map'];
-			${'linksGooglePlay-$i'}=$r['GooglePlay'];
-			${'linksGRN-$i'}=$r['GRN'];
-			if (${'linksBuy-$i'} == 1 || ${'linksMap-$i'} == 1 || ${'linksGooglePlay-$i'} == 1 || ${'linksGRN-$i'} == 1)
-				${'linksOther-$i'}=0;
-			else
-				${'linksOther-$i'}=1;
+			if ($r = $result1->fetch_assoc()) {
+				${'txtLinkCompany-1'}=$r['company'];
+				${'txtLinkCompanyTitle-1'}=stripslashes($r['company_title']);
+				${'txtLinkURL-1'}=$r['URL'];
+				${'linksBuy-1'}=$r['buy'];
+				${'linksMap-1'}=$r['map'];
+				${'linksGooglePlay-1'}=$r['GooglePlay'];
+				if (${'linksBuy-1'} == 1 || ${'linksMap-1'} == 1 || ${'linksGooglePlay-1'} == 1) {
+					${'linksOther-1'}=0;
+					${'linksOther'}=0;													// to be tested
+				}
+				else {
+					${'linksOther-1'}=1;
+					${'linksOther'}=1;													// to be tested
+				}
+			}
+			else {
+				${'txtLinkCompany-1'}='';
+				${'txtLinkCompanyTitle-1'}='';
+				${'txtLinkURL-1'}='';
+				${'linksOther-1'}=0;
+				${'linksBuy-1'}=0;
+				${'linksMap-1'}=0;
+				${'linksGooglePlay-1'}=0;
+			}
+			${'linksBuy'}=${'linksBuy-1'};												// to be tested
+			${'linksMap'}=${'linksMap-1'};												// to be tested
+			${'linksGooglePlay'}=${'linksGooglePlay-1'};								// to be tested
 		}
 		else {
-			${'txtLinkCompany-$i'}='';
-			${'txtLinkCompanyTitle-$i'}='';
-			${'txtLinkURL-$i'}='';
-			${'linksOther-$i'}=1;
-			${'linksBuy-$i'}=0;
-			${'linksMap-$i'}=0;
-			${'linksGooglePlay-$i'}=0;
+			${'txtLinkCompany-1'}='';
+			${'txtLinkCompanyTitle-1'}='';
+			${'txtLinkURL-1'}='';
+			${'linksOther-1'}=0;
+			${'linksBuy-1'}=0;
+			${'linksMap-1'}=0;
+			${'linksGooglePlay-1'}=0;
+			${'linksOther'}=0;															// to be tested
+			${'linksBuy'}=0;															// to be tested
+			${'linksMap'}=0;															// to be tested
+			${'linksGooglePlay'}=0;														// to be tested
 		}
 		?>
 		<tbody name="tableLinks" id="tableLinks">
@@ -3688,23 +3712,23 @@ function NT_Test($PDF, $NT_Index) {
                     <br /><span style="font-size: 10pt; ">For example:</span>
 				</td>
 				<td width="21%">
-					<input type='text' style='color: navy; ' size='25' name='txtLinkCompany-1' id='txtLinkCompany-1' value="<?php if (isset($_POST['txtLinkCompany-1'])) echo $_POST['txtLinkCompany-1']; else echo ${'txtLinkCompany-$i'}; ?>" />
+					<input type='text' style='color: navy; ' size='25' name='txtLinkCompany-1' id='txtLinkCompany-1' value="<?php if (isset($_POST['txtLinkCompany-1'])) echo $_POST['txtLinkCompany-1']; else echo ${'txtLinkCompany-1'}; ?>" />
                     <br /><span style="font-size: 10pt; ">Google map</span>
 				</td>
 				<td width="21%">
-					<input type='text' style='color: navy; ' size='25' name='txtLinkCompanyTitle-1' id='txtLinkCompanyTitle-1' value="<?php if (isset($_POST['txtLinkCompanyTitle-1'])) echo $_POST['txtLinkCompanyTitle-1']; else echo ${'txtLinkCompanyTitle-$i'}; ?>" />
+					<input type='text' style='color: navy; ' size='25' name='txtLinkCompanyTitle-1' id='txtLinkCompanyTitle-1' value="<?php if (isset($_POST['txtLinkCompanyTitle-1'])) echo $_POST['txtLinkCompanyTitle-1']; else echo ${'txtLinkCompanyTitle-1'}; ?>" />
                     <br /><span style="font-size: 10pt; ">language of Brazil</span>
 				</td>
 				<td width="22%">
-                	<input type='text' style='color: navy; ' size='27' name='txtLinkURL-1' id='txtLinkURL-1' value="<?php if (isset($_POST['txtLinkURL-1'])) echo $_POST['txtLinkURL-1']; else echo ${'txtLinkURL-$i'}; ?>" />
+                	<input type='text' style='color: navy; ' size='27' name='txtLinkURL-1' id='txtLinkURL-1' value="<?php if (isset($_POST['txtLinkURL-1'])) echo $_POST['txtLinkURL-1']; else echo ${'txtLinkURL-1'}; ?>" />
                     <br /><span style="font-size: 9pt; ">http://maps.google.com/maps/...</span>
                 </td>
 				<td width="8%">
                     <select name="linksIcon-1" id="linksIcon-1" style='color: navy; '>
-                        <option value="linksOther-1" <?php echo ( isset($_POST['linksOther-1']) ? ($_POST['linksOther-'.(string)$i] == 1 ? " selected='selected'" : "") : (${'linksOther-$i'} == 1 ? " selected='selected'" : '' ) ) ?>>Other</option>
-                        <option value="linksBuy-1" <?php echo ( isset($_POST['linksBuy-1']) ? ($_POST['linksBuy-'.(string)$i] == 1 ? " selected='selected'" : "") : (${'linksBuy-$i'} == 1 ? " selected='selected'" : '' ) ) ?>>Buy</option>
-                        <option value="linksMap-1" <?php echo ( isset($_POST['linksMap-1']) ? ($_POST['linksMap-'.(string)$i] == 1 ? " selected='selected'" : "") : (${'linksMap-$i'} == 1 ? " selected='selected'" : '' ) ) ?>>Map</option>
-                        <option value="linksGooglePlay-1" <?php echo ( isset($_POST['linksGooglePlay-1']) ? ($_POST['linksGooglePlay-'.(string)$i] == 1 ? " selected='selected'" : "") : (${'linksGooglePlay-$i'} == 1 ? " selected='selected'" : '' ) ) ?>>Google Play</option>
+                        <option value="linksOther-1" <?php echo ( isset($_POST['linksOther-1']) ? ($_POST['linksOther-1'] == 1 ? " selected='selected'" : "") : (${'linksOther-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Other</option>
+                        <option value="linksBuy-1" <?php echo ( isset($_POST['linksBuy-1']) ? ($_POST['linksBuy-1'] == 1 ? " selected='selected'" : "") : (${'linksBuy-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Buy</option>
+                        <option value="linksMap-1" <?php echo ( isset($_POST['linksMap-1']) ? ($_POST['linksMap-1'] == 1 ? " selected='selected'" : "") : (${'linksMap-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Map</option>
+                        <option value="linksGooglePlay-1" <?php echo ( isset($_POST['linksGooglePlay-1']) ? ($_POST['linksGooglePlay-1'] == 1 ? " selected='selected'" : "") : (${'linksGooglePlay-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Google Play</option>
                     </select>
                     <span style="font-size: 10pt; ">Map</span>
                 </td>
@@ -3761,8 +3785,7 @@ function NT_Test($PDF, $NT_Index) {
 						${'linksBuy-$i'}=$r['buy'];
 						${'linksMap-$i'}=$r['map'];
 						${'linksGooglePlay-$i'}=$r['GooglePlay'];
-						${'linksGRN-$i'}=$r['GRN'];
-						if (${'linksBuy-$i'} == "1" || ${'linksMap-$i'} == "1" || ${'linksGooglePlay-$i'} == "1" || ${'linksGRN-$i'} == "1")
+						if (${'linksBuy-$i'} == "1" || ${'linksMap-$i'} == "1" || ${'linksGooglePlay-$i'} == "1" )
 							${'linksOther-$i'}="0";
 						else
 							${'linksOther-$i'}="1";
@@ -4069,7 +4092,7 @@ function NT_Test($PDF, $NT_Index) {
 		</table>
 		<br />
         
-<?php
+		<?php
 /*************************************************
 	"Scripture Resources from eBible.org" checkbox
 **************************************************/
@@ -4100,7 +4123,117 @@ function NT_Test($PDF, $NT_Index) {
 			<?php
 		}
 		echo '<br />';
-?>
+/*************************************************
+	Email links
+**************************************************/
+		?>
+		<table width="100%" valign="bottom" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr valign="bottom" style="color: navy; font-size: 8pt; line-height: 10pt; height: 30px; ">
+                    <td width="16%">&nbsp;
+                    </td>
+                    <td width="41%" style="padding-left: 3px; ">
+						Before Email
+                    </td>
+                    <td width="27%" style="padding-left: 3px; ">
+						Email address link
+                    </td>
+                    <td width="16%">&nbsp;
+                    </td>
+                </tr>
+            </thead>
+            <?php
+			$i=1;
+
+			$query="SELECT * FROM links WHERE ISO_ROD_index = $idx AND email = 1";
+			$result_email=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
+			if ($db->error) {
+				die ("'email' ISO_ROD_index is not found.<br />" . $db->error . '</body></html>');
+			}
+			$email_item = 0;
+			if ($result_email->num_rows > 0) {
+				$email_item = 1;
+			}
+
+            if (isset($_POST['txtEmailAddress-1'])) {
+
+            }
+            elseif ($email_item == 1) {
+				$row_email = $result_email->fetch_assoc();
+                ${'txtEmailTitle-1'}=$row_email['company_title'];
+                ${'txtEmailAddress-1'}=$row_email['URL'];
+            }
+            else {
+                ${'txtEmailTitle-1'}="";
+                ${'txtEmailAddress-1'}="";
+            }
+            ?>
+            <tbody id="tableEmail" name="tableEmail">
+                <tr valign="top" style="line-height: 10pt; ">
+                    <td width="16%" style="font-size: 10pt; ">
+                        <div style="margin-top: 8px; ">Enter Email link:</div>For example:
+                    </td>
+                    <td width="41%">
+                        <input type='text' style='color: navy; ' size='70' name='txtEmailTitle-1' id='txtEmailTitle-1' value="<?php if (isset($_POST['txtEmailTitle-1'])) echo $_POST['txtEmailTitle-1']; else echo ${'txtEmailTitle-1'}; ?>" />
+                        <br /><span style="font-size: 10pt; ">To buy a printed New Testament in this language in Cameroon, please write to </span>
+                    </td>
+                    <td width="27%">
+                        <input type='text' style='color: navy; ' size='32' name='txtEmailAddress-1' id='txtEmailAddress-1' value="<?php if (isset($_POST['txtEmailAddress-1'])) echo $_POST['txtEmailAddress-1']; else echo ${'txtEmailAddress-1'}; ?>" />
+                        <br /><span style="font-size: 10pt; margin-left: 3px; "> library_cameroon@sil.org</span>
+                    </td>
+                    <td width="16%" style="text-align: right; vertical-align: top; ">
+                        <input style="font-size: 9pt; " type="button" id="addEmail" value="Add" />
+                        <input style="font-size: 9pt; " type="button" id="removeEmail" value="Remove" />
+                    </td>
+                </tr>
+			<?php
+			$i = 2;
+			if (isset($_POST['txtEmailAddress-'.(string)$i])) {
+				while (isset($_POST['txtEmailAddress-'.(string)$i])) {
+					echo "<tr valign='bottom' style='line-height: 10pt; '>";
+						echo "<td width='16%'>";
+							echo "&nbsp;";
+						echo "</td>";
+						echo "<td width='41%'>";
+							echo "<input type='text' style='color: navy; ' size='70' name='txtEmailTitle-".(string)$i."' id='txtEmailTitle-".(string)$i."' value='" . ( isset($_POST['txtEmailTitle-'.(string)$i]) ? $_POST['txtEmailTitle-'.(string)$i] : '' ) . "' />";
+						echo "</td>";
+						echo "<td width='27%'>";
+							echo "<input type='text' style='color: navy; ' size='32' name='txtEmailAddress-".(string)$i."' id='txtEmailAddress-".(string)$i."' value='" . ( isset($_POST['txtEmailAddress-'.(string)$i]) ? $_POST['txtEmailAddress-'.(string)$i] : '' ) . "' />";
+						echo "</td>";
+						echo "<td width='16%'>";
+							echo "&nbsp;";
+						echo "</td>";
+					echo "</tr>";
+					$i++;
+				}
+			}
+			else {
+				if ($result_email->num_rows > 1) {
+					while ($row_email = $result_email->fetch_assoc()) {
+						${'txtEmailTitle-$i'}=$row_email['company_title'];
+						${'txtEmailAddress-$i'}=$row_email['URL'];
+						echo "<tr valign='bottom' style='line-height: 10pt; '>";
+							echo "<td width='16%'>";
+								echo "&nbsp;";
+							echo "</td>";
+							echo "<td width='41%'>";
+								echo "<input type='text' style='color: navy; ' size='70' name='txtEmailTitle-".(string)$i."' id='txtEmailTitle-".(string)$i."' value='" . ${'txtEmailTitle-$i'} . "' />";
+							echo "</td>";
+							echo "<td width='27%'>";
+								echo "<input type='text' style='color: navy; ' size='32' name='txtEmailAddress-".(string)$i."' id='txtEmailAddress-".(string)$i."' value='" . ${'txtEmailAddress-$i'} . "' />";
+							echo "</td>";
+							echo "<td width='16%'>";
+								echo "&nbsp;";
+							echo "</td>";
+						echo "</tr>";
+						$i++;
+					}
+				}
+			}
+			?>
+            </tbody>
+		</table>
+		<br />
 
 		<br />
 		<div style='text-align: center; padding: 10px; '><input type='submit' name='btnSubmit' value='<?php echo "Submit to the\r\nDatabase"; ?>' /></div>
@@ -4194,6 +4327,6 @@ function Switch(number, Beg) {
 }
 ?>
 
-<script type="text/javascript" src="_js/CMS_events.js?v=1.0.0"></script>
+<script type="text/javascript" src="_js/CMS_events.js?v=1.0.2"></script>
 </body>
 </html>

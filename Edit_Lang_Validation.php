@@ -11,6 +11,7 @@
 	$inputs['rod'] = check_input($_POST["rod"]);
 	$inputs['var'] = check_input($_POST["var"]);
 	$inputs['idx'] = check_input($_POST["idx"]);
+	$inputs["links"] = 0;
 	
 // Countries
 	$inputs['English_lang_name'] = check_input($_POST["English_lang_name"]);
@@ -404,7 +405,6 @@
 
 // GRN
 	$i = 1;
-	$GRNIndex = 1;
 	$inputs["GRN"] = 0;
 	while (isset($_POST["txtLinkGRNName-$i"])) {
 		if (check_input($_POST["txtLinkGRNName-$i"]) != "") $inputs["GRN"] = 1;
@@ -414,10 +414,9 @@
 				$messages[] = "GRN $i is blank.";
 			}
 		}
-		$inputs["txtLinkGRNName-$GRNIndex"] = check_input($_POST["txtLinkGRNName-$i"]);
-		$inputs["txtLinkGRNTitle-$GRNIndex"] = check_input($_POST["txtLinkGRNTitle-$i"]);
-		$inputs["txtLinkGRNURL-$GRNIndex"] = check_input($_POST["txtLinkGRNURL-$i"]);
-		$GRNIndex++;
+		$inputs["txtLinkGRNName-$i"] = check_input($_POST["txtLinkGRNName-$i"]);
+		$inputs["txtLinkGRNTitle-$i"] = check_input($_POST["txtLinkGRNTitle-$i"]);
+		$inputs["txtLinkGRNURL-$i"] = check_input($_POST["txtLinkGRNURL-$i"]);
 		$i++;
 	}
 
@@ -550,7 +549,7 @@
 		$i++;
 	}
 
-// buy
+// buy (buy table)
 	$i = 1;
 	$inputs["buy"] = 0;
 	while (isset($_POST["txtBuyWebSource-$i"])) {
@@ -567,24 +566,115 @@
 		$i++;
 	}
 
-// links
+// links: buy
+	//$inputs["links"] = 0;
+	$inputs['linksBuy'] = 0;
 	$i = 1;
-	$inputs["links"] = 0;
-	while (isset($_POST["txtLinkCompany-$i"])) {
+	for (; isset($_POST["txtLinkCompany-$i"]); $i++) {
+		if ($_POST["linksIcon-".(string)$i] != 'linksBuy-'.$i) continue;
 		if (check_input($_POST["txtLinkCompany-$i"]) != "") $inputs["links"] = 1;
 		if (empty($_POST["txtLinkCompany-$i"])) {
 			if ((check_input($_POST["txtLinkCompanyTitle-$i"]) != "") || (check_input($_POST["txtLinkURL-$i"]) != "")) {
 				$count_failed++;
-				$messages[] = "Link #" . $i . " is blank.";
+				$messages[] = "Buy Link #" . $i . " is blank.";
 			}
 		}
 		$inputs["txtLinkCompany-$i"] = check_input($_POST["txtLinkCompany-$i"]);
 		$inputs["txtLinkCompanyTitle-$i"] = check_input($_POST["txtLinkCompanyTitle-$i"]);
 		$inputs["txtLinkURL-$i"] = check_input($_POST["txtLinkURL-$i"]);
-		if ($_POST["linksIcon-".(string)$i] == 'linksOther-'.$i) $inputs["linksOther-$i"] = 1; else $inputs["linksOther-$i"] = 0;
-		if ($_POST["linksIcon-".(string)$i] == 'linksBuy-'.$i) $inputs["linksBuy-$i"] = 1; else $inputs["linksBuy-$i"] = 0;
-		if ($_POST["linksIcon-".(string)$i] == 'linksMap-'.$i) $inputs["linksMap-$i"] = 1; else $inputs["linksMap-$i"] = 0;
-		if ($_POST["linksIcon-".(string)$i] == 'linksGooglePlay-'.$i) $inputs["linksGooglePlay-$i"] = 1; else $inputs["linksGooglePlay-$i"] = 0;
+		$inputs["linksBuy-$i"] = 1;
+		$inputs['linksBuy'] = 1;
+		//if ($_POST["linksIcon-".(string)$i] == 'linksOther-'.$i) $inputs["linksOther-$i"] = 1; else $inputs["linksOther-$i"] = 0;
+		//if ($_POST["linksIcon-".(string)$i] == 'linksBuy-'.$i) $inputs["linksBuy-$i"] = 1; else $inputs["linksBuy-$i"] = 0;
+		//if ($_POST["linksIcon-".(string)$i] == 'linksMap-'.$i) $inputs["linksMap-$i"] = 1; else $inputs["linksMap-$i"] = 0;
+		//if ($_POST["linksIcon-".(string)$i] == 'linksGooglePlay-'.$i) $inputs["linksGooglePlay-$i"] = 1; else $inputs["linksGooglePlay-$i"] = 0;
+	}
+
+// links: map
+	//$inputs["links"] = 0;
+	$inputs['linksMap'] = 0;
+	$i = 1;
+	for (; isset($_POST["txtLinkCompany-$i"]); $i++) {
+		if ($_POST["linksIcon-".(string)$i] != 'linksMap-'.$i) continue;
+		if (check_input($_POST["txtLinkCompany-$i"]) != "") $inputs["links"] = 1;
+		if (empty($_POST["txtLinkCompany-$i"])) {
+			if ((check_input($_POST["txtLinkCompanyTitle-$i"]) != "") || (check_input($_POST["txtLinkURL-$i"]) != "")) {
+				$count_failed++;
+				$messages[] = "Map Link #" . $i . " is blank.";
+			}
+		}
+		$inputs["txtLinkCompany-$i"] = check_input($_POST["txtLinkCompany-$i"]);
+		$inputs["txtLinkCompanyTitle-$i"] = check_input($_POST["txtLinkCompanyTitle-$i"]);
+		$inputs["txtLinkURL-$i"] = check_input($_POST["txtLinkURL-$i"]);
+		$inputs["linksMap-$i"] = 1;
+		$inputs['linksMap'] = 1;
+		//if ($_POST["linksIcon-".(string)$i] == 'linksOther-'.$i) $inputs["linksOther-$i"] = 1; else $inputs["linksOther-$i"] = 0;
+		//if ($_POST["linksIcon-".(string)$i] == 'linksBuy-'.$i) $inputs["linksBuy-$i"] = 1; else $inputs["linksBuy-$i"] = 0;
+		//if ($_POST["linksIcon-".(string)$i] == 'linksMap-'.$i) $inputs["linksMap-$i"] = 1; else $inputs["linksMap-$i"] = 0;
+		//if ($_POST["linksIcon-".(string)$i] == 'linksGooglePlay-'.$i) $inputs["linksGooglePlay-$i"] = 1; else $inputs["linksGooglePlay-$i"] = 0;
+	}
+
+// links: GooglePlay
+	//$inputs["links"] = 0;
+	$inputs['linksGooglePlay'] = 0;
+	$i = 1;
+	for (; isset($_POST["txtLinkCompany-$i"]); $i++) {
+		if ($_POST["linksIcon-".(string)$i] != 'linksGooglePlay-'.$i) continue;
+		if (check_input($_POST["txtLinkCompany-$i"]) != "") $inputs["links"] = 1;
+		if (empty($_POST["txtLinkCompany-$i"])) {
+			if ((check_input($_POST["txtLinkCompanyTitle-$i"]) != "") || (check_input($_POST["txtLinkURL-$i"]) != "")) {
+				$count_failed++;
+				$messages[] = "Google Play Link #" . $i . " is blank.";
+			}
+		}
+		$inputs["txtLinkCompany-$i"] = check_input($_POST["txtLinkCompany-$i"]);
+		$inputs["txtLinkCompanyTitle-$i"] = check_input($_POST["txtLinkCompanyTitle-$i"]);
+		$inputs["txtLinkURL-$i"] = check_input($_POST["txtLinkURL-$i"]);
+		$inputs["linksGooglePlay-$i"] = 1;
+		$inputs['linksGooglePlay'] = 1;
+		//if ($_POST["linksIcon-".(string)$i] == 'linksOther-'.$i) $inputs["linksOther-$i"] = 1; else $inputs["linksOther-$i"] = 0;
+		//if ($_POST["linksIcon-".(string)$i] == 'linksBuy-'.$i) $inputs["linksBuy-$i"] = 1; else $inputs["linksBuy-$i"] = 0;
+		//if ($_POST["linksIcon-".(string)$i] == 'linksMap-'.$i) $inputs["linksMap-$i"] = 1; else $inputs["linksMap-$i"] = 0;
+		//if ($_POST["linksIcon-".(string)$i] == 'linksGooglePlay-'.$i) $inputs["linksGooglePlay-$i"] = 1; else $inputs["linksGooglePlay-$i"] = 0;
+	}
+
+// links: other
+	//$inputs["links"] = 0;
+	$inputs['linksOther'] = 0;
+	$i = 1;
+	for (; isset($_POST["txtLinkCompany-$i"]); $i++) {
+		if ($_POST["linksIcon-".(string)$i] != 'linksOther-'.$i) continue;
+		if (check_input($_POST["txtLinkCompany-$i"]) != "") $inputs["links"] = 1;
+		if (empty($_POST["txtLinkCompany-$i"])) {
+			if ((check_input($_POST["txtLinkCompanyTitle-$i"]) != "") || (check_input($_POST["txtLinkURL-$i"]) != "")) {
+				$count_failed++;
+				$messages[] = "Other Link #" . $i . " is blank.";
+			}
+		}
+		$inputs["txtLinkCompany-$i"] = check_input($_POST["txtLinkCompany-$i"]);
+		$inputs["txtLinkCompanyTitle-$i"] = check_input($_POST["txtLinkCompanyTitle-$i"]);
+		$inputs["txtLinkURL-$i"] = check_input($_POST["txtLinkURL-$i"]);
+		$inputs["linksOther-$i"] = 1;
+		$inputs['linksOther'] = 1;
+		//if ($_POST["linksIcon-".(string)$i] == 'linksOther-'.$i) $inputs["linksOther-$i"] = 1; else $inputs["linksOther-$i"] = 0;
+		//if ($_POST["linksIcon-".(string)$i] == 'linksBuy-'.$i) $inputs["linksBuy-$i"] = 1; else $inputs["linksBuy-$i"] = 0;
+		//if ($_POST["linksIcon-".(string)$i] == 'linksMap-'.$i) $inputs["linksMap-$i"] = 1; else $inputs["linksMap-$i"] = 0;
+		//if ($_POST["linksIcon-".(string)$i] == 'linksGooglePlay-'.$i) $inputs["linksGooglePlay-$i"] = 1; else $inputs["linksGooglePlay-$i"] = 0;
+	}
+
+// links: email
+	$i = 1;
+	$inputs["email"] = 0;
+	while (isset($_POST['txtEmailTitle-'.(string)$i]) || isset($_POST['txtEmailAddress-'.(string)$i])) {
+		if (check_input($_POST["txtEmailAddress-$i"]) != "") $inputs["email"] = 1;
+		if (empty($_POST["txtEmailAddress-$i"])) {
+			if ((check_input($_POST["txtEmailTitle-$i"]) != "") || (check_input($_POST["txtEmailAddress-$i"]) != "")) {
+				$count_failed++;
+				$messages[] = "Email $i is blank.";
+			}
+		}
+		$inputs["txtEmailTitle-$i"] = check_input($_POST["txtEmailTitle-$i"]);
+		$inputs["txtEmailAddress-$i"] = check_input($_POST["txtEmailAddress-$i"]);
 		$i++;
 	}
 

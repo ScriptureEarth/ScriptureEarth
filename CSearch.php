@@ -4,7 +4,7 @@ Created by Scott Starker
 
 AJAX from LangSearch.js
 
-Can't use $_SESSION because as AJAX PHP there is NO global variables with AJAX including $_SESSION!
+Can't use $_SESSION because as AJAX PHP there is NO global variables with AJAX including $_SESSION. Although SESSION_ID would work slower than mine.
 
 MySQL: utf8_general_ci flattens accents as well as lower-casing:
 You must ensure that all parties (your app, mysql connection, your table or column) have set utf8 as charset.
@@ -24,14 +24,11 @@ You must ensure that all parties (your app, mysql connection, your table or colu
 
 if (isset($_GET['country'])) $TryCountry = $_GET['country']; else { die('Hack!'); }
 // saltillo: ꞌ; U+A78C
-if (!preg_match("/[-. ,'ꞌ()A-Za-záéíóúÑñçãõâêîôûäëöüï&]/", $TryCountry)) {
+if (!preg_match("/[-. ,'ꞌ()a-záéíóúàèìòùÑñçãõâêîôûäëöüï&]/ui", $TryCountry)) {
 	die('Hack!');
 }
 if (isset($_GET['st'])) {
 	$st = $_GET['st'];
-/*	$st = preg_replace('/^([a-z]{3})/', "$1", $st);
-	if ($st == NULL) {
-	}*/
 	if (!preg_match('/^[a-z]{3}/', $st)) {
 		die('Hach! 1');
 	}

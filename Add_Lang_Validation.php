@@ -571,9 +571,9 @@ function check_input($value) {
 				$i++;
 			}
 
-// links
+// links: buy, map, and GooglePlay
   			$i = 1;
-			$inputs["links"] = 0;
+			//$inputs["links"] = 0;
 			while (isset($_POST["txtLinkCompany-".(string)$i])) {
 				if (check_input($_POST["txtLinkCompany-".(string)$i]) != "") $inputs["links"] = 1;
 				if (empty($_POST["txtLinkCompany-".(string)$i])) {
@@ -589,6 +589,22 @@ function check_input($value) {
 				if ($_POST["linksIcon-".(string)$i] == 'linksBuy-'.$i) $inputs["linksBuy-$i"] = 1; else $inputs["linksBuy-$i"] = 0;
 				if ($_POST["linksIcon-".(string)$i] == 'linksMap-'.$i) $inputs["linksMap-$i"] = 1; else $inputs["linksMap-$i"] = 0;
 				if ($_POST["linksIcon-".(string)$i] == 'linksGooglePlay-'.$i) $inputs["linksGooglePlay-$i"] = 1; else $inputs["linksGooglePlay-$i"] = 0;
+				$i++;
+			}
+
+// links: email
+			$i = 1;
+			$inputs['email'] = 0;
+			while (isset($_POST['txtEmailTitle-'.(string)$i]) || isset($_POST['txtEmailAddress-'.(string)$i])) {
+				if (check_input($_POST['txtEmailAddress-'.(string)$i]) != "") $inputs['email'] = 1;
+				if (empty($_POST['txtEmailAddress-'.(string)$i])) {
+					if ((check_input($_POST['txtEmailTitle-'.(string)$i]) != "") || (check_input($_POST['txtEmailAddress-'.(string)$i]) != "")) {
+						$count_failed++;
+						$messages[] = "Email #" . $i . " is blank.";
+					}
+				}
+				$inputs["txtEmailTitle-".(string)$i] = check_input($_POST["txtEmailTitle-".(string)$i]);
+				$inputs["txtEmailAddress-".(string)$i] = check_input($_POST["txtEmailAddress-".(string)$i]);
 				$i++;
 			}
 

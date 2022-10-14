@@ -24,7 +24,7 @@ You must ensure that all parties (your app, mysql connection, your table or colu
 
 if (isset($_GET['country'])) $TryCountry = $_GET['country']; else { die('Hack!'); }
 // saltillo: ꞌ; U+A78C
-if (preg_match("/[-. ,'ꞌ()A-Za-záéíóúÑñçãõâêîôûäëöüï&]/", $TryCountry)) {
+if (preg_match("/[-. ,'ꞌ()a-záéíóúàèìòùÑñçãõâêîôûäëöüï&]/ui", $TryCountry)) {
 }
 else {
 	die('Hack!');

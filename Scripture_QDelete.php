@@ -122,11 +122,10 @@ function NT_Test($PDF, $NT_Index) {
 
 function check_input($value) {						// used for ' and " that find it in the input
 	$value = trim($value);
-    /* Automatic escaping is highly deprecated, but many sites do it anyway. */
-	// Stripslashes
-	//()) {
-	  $value = stripslashes($value);
-	//}
+	if (is_string($value)) {
+		$value = implode("", explode("\\", $value));	// get rid of e.g. "\\\\\\\\\\\"
+		$value = stripslashes($value);
+	}
 	$db = get_my_db();
 	// Quote if not a number
 	if (!is_numeric($value)) {

@@ -1,6 +1,7 @@
 <?php
 /*
-https://scriptureearth.org/api/add_resource.php?v=1&key=<key>&json=https//...
+To test, in a browser type:
+https://scriptureearth.org/api/add_resource.php?v=1&key=<key>&json=https//ScriptureEarth.org/api/add_resources.json
 */
 
 /* Scriptoria should send json file: https://thisinterestsme.com/sending-json-via-post-php/ */
@@ -51,7 +52,8 @@ $data = json_decode($json, true);
 if (!is_array($data)) { throw new Exception('Received content contained invalid JSON!'); }
 
 $stmt_main = $db->prepare("SELECT ISO, ROD_Code, Variant_Code FROM scripture_main WHERE ISO_ROD_index = ?");
-$stmt_add_resource = $db->prepare("INSERT INTO add_resource (`iso`, `rod`, `var`, `idx`, `type`, `url`, `projectName`, `projectDescription`, `username`, `organization`, `subfolder`, `email`, `createdDate`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE())");
+//$stmt_add_resource = $db->prepare("INSERT INTO add_resource (`iso`, `rod`, `var`, `idx`, `type`, `url`, `projectName`, `projectDescription`, `username`, `organization`, `subfolder`, `email`, `createdDate`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE())");
+$stmt_add_resource = $db->prepare("INSERT INTO add_resource (`iso`, `rod`, `var`, `idx`, `type`, `url`, `projectName`, `username`, `organization`, `subfolder`, `email`, `createdDate`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE())");
 
 $message = '';
 
@@ -61,7 +63,7 @@ foreach ($data as $items => $value) {
     $idx = (int)$data[$items]["idx"];
     $email = $data[$items]["email"];
     $projectName = $data[$items]["projectName"];
-    $projectDescription = $data[$items]["projectDescription"];
+//    $projectDescription = $data[$items]["projectDescription"];
     $username = $data[$items]["username"];
     $organization = $data[$items]["organization"];
     $url = $data[$items]["url"];
@@ -107,10 +109,13 @@ foreach ($data as $items => $value) {
     $rod = $row_main['ROD_Code'];
     $var = $row_main['Variant_Code'];
    
-    $stmt_add_resource->bind_param('sssissssssss', $iso, $rod, $var, $idx, $type, $url, $projectName, $projectDescription, $username, $organization, $subfolder, $email);	    // bind parameters for markers
-    $stmt_add_resource->execute();																// execute query for add_resource table
+//    $stmt_add_resource->bind_param('sssissssssss', $iso, $rod, $var, $idx, $type, $url, $projectName, $projectDescription, $username, $organization, $subfolder, $email);	    // bind parameters for markers
+$stmt_add_resource->bind_param('sssisssssss', $iso, $rod, $var, $idx, $type, $url, $projectName, $username, $organization, $subfolder, $email);	    // bind parameters for markers
+$stmt_add_resource->execute();																// execute query for add_resource table
 
     // These \r\n 's need to be here!
+ //   Project Description: $projectDescription
+ //   <br />
     $message .= "Using CMS Examine:
     <br />
     idx: $idx / iso: $iso; rod: $rod; var: $var
@@ -118,8 +123,6 @@ foreach ($data as $items => $value) {
     type: $type
     <br />
     Project Name: $projectName
-    <br />
-    Project Description: $projectDescription
     <br />
     URL: $url
     <br />

@@ -23,11 +23,10 @@ function NT_Test($PDF, $NT_Index) {					// returns true if the Book is part of t
 
 function check_input($value) {						// used for ' and " that find it in the input
 	$value = trim($value);
-    /* Automatic escaping is highly deprecated, but many sites do it anyway. */
-	// Stripslashes
-	//if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
+	if (is_string($value)) {
+		$value = implode("", explode("\\", $value));	// get rid of e.g. "\\\\\\\\\\\"
 		$value = stripslashes($value);
-	//}
+	}
 	// Quote if not a number
 	if (!is_numeric($value)) {
 		$db = get_my_db();

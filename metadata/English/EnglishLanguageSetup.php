@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <title>English Language Setup</title>
 <meta http-equiv="Content-Type"  content="text/html; charset=utf-8" />
@@ -40,11 +40,10 @@ $ma = 0;
 
 function check_input($value) {						// used for ' and " that find it in the input
 	$value = trim($value);
-    /* Automatic escaping is highly deprecated, but many sites do it anyway. */
-	// Stripslashes
-	//if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
-	  $value = stripslashes($value);
-	//}
+	if (is_string($value)) {
+		$value = implode("", explode("\\", $value));	// get rid of e.g. "\\\\\\\\\\\"
+		$value = stripslashes($value);
+	}
 	// Quote if not a number
 	if (!is_numeric($value)) {
 		$db = get_my_db();
@@ -121,10 +120,10 @@ $fileFifthPart = '</div>
 		echo "<h2 style='text-align: center; margin: 0px; color: navy; '>Scripture Earth English Language Setup</h2><br /><br />";
 	}
 	
-	$query = 'SELECT * FROM scripture_main ORDER BY ISO, ROD_Code';
+	$query = 'SELECT * FROM nav_ln ORDER BY ISO, ROD_Code';
 	$result=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
 	if (!$result) {
-		die ("Cannot SELECT from 'scripture_main'. " . $db->error . '</body></html>');
+		die ("Cannot SELECT from 'nav_ln'. " . $db->error . '</body></html>');
 	}
 	$db->query('DROP TABLE IF EXISTS LN_Temp');
 	$result_Temp = $db->query('CREATE TEMPORARY TABLE LN_Temp (ISO VARCHAR(3) NOT NULL, ROD_Code VARCHAR(5) NOT NULL, Variant_Code VARCHAR(1) NULL, LN VARCHAR(50) NOT NULL) ENGINE = MEMORY CHARSET = utf8')  or die ('Query failed: ' . $db->error . '</body></html>');
@@ -142,6 +141,8 @@ $fileFifthPart = '</div>
 	$stmt_LN_Dutch=$db->prepare($query);																// create a prepared statement
 	$query='SELECT LN_German FROM LN_German WHERE LN_German.ISO = ? AND LN_German.ROD_Code = ?';
 	$stmt_LN_German=$db->prepare($query);																// create a prepared statement
+	$query='SELECT LN_Chinese FROM LN_Chinese WHERE LN_Chinese.ISO = ? AND LN_Chinese.ROD_Code = ?';
+	$stmt_LN_Chinese=$db->prepare($query);																// create a prepared statement
 	$query='INSERT INTO LN_Temp (ISO, ROD_Code, Variant_Code, LN) VALUES (?, ?, ?, ?)';
 	$stmt_LN_Temp=$db->prepare($query);																	// create a prepared statement
 	
@@ -155,6 +156,7 @@ $fileFifthPart = '</div>
 		$LN_French=$row['LN_French'];					// boolean
 		$LN_Dutch=$row['LN_Dutch'];						// boolean
 		$LN_German=$row['LN_German'];					// boolean
+		$LN_Chinese=$row['LN_Chinese'];					// boolean
 		$def_LN=$row['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
 		if (!$LN_English) {								// if the English then the default langauge
 			switch ($def_LN){
@@ -212,6 +214,13 @@ $fileFifthPart = '</div>
 					$r = $result_LN_German->fetch_array();
 					$LN=$r['LN_German'];
 					break; 	
+				case 7:
+					$stmt_LN_Chinese->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
+					$stmt_LN_Chinese->execute();															// execute query
+					$result_LN_Chinese = $stmt_LN_Chinese->get_result();									// instead of bind_result (used for only 1 record):
+					$r = $result_LN_Chinese->fetch_array();
+					$LN=$r['LN_Chinese'];
+					break; 	
 				default:
 					echo "Isn't supposed to happen! The default language isn't here.";
 					break;
@@ -243,6 +252,7 @@ $fileFifthPart = '</div>
 	$stmt_LN_French->close();
 	$stmt_LN_Portuguese->close();
 	$stmt_LN_German->close();
+	$stmt_LN_Chinese->close();
 	$stmt_LN_Temp->close();
 
 	// Create 'English.htm'
