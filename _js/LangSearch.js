@@ -97,7 +97,7 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
     var Country_Total = [];
 
     Scriptname = window.location.href;
-
+	
     /****************************************************************************************************************
     	AJAX - languageSearch.php
     ****************************************************************************************************************/
@@ -110,8 +110,8 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
         url = url + "&SpecificCountry=" + SpecificCountry;
         url = url + "&st=" + st;
     }
-    url = url + "&MajorLanguage=" + MajorLanguage; // e.g. 'LN_English'
-    url = url + "&Variant_major=" + Variant_major; // e.g. 'Variant_Eng'
+    url = url + "&MajorLanguage=" + MajorLanguage;			// e.g. 'LN_English'
+    url = url + "&Variant_major=" + Variant_major;			// e.g. 'Variant_Eng'
     url = url + "&asset=" + asset;
     url = url + "&sid=" + Math.random();
     xmlhttp.open("GET", url, true); // open the AJAX object with livesearch.php
@@ -167,12 +167,13 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
                 }
                 table = table.substring(0, table.length - 2); // take out the last ', '
                 table += "</p>";
-                if (iso == "qqq") {
-                    table += "<div class='colCode2' onclick='window.open(\"" + Scriptname + "?idx=" + idx + "&language=" + LN + "&iso_code=" + iso + "\", \"_self\")'>&nbsp;&nbsp;&nbsp;</div>";
-                } else {
-                    table += "<div class='colCode2' onclick='window.open(\"" + Scriptname + "?idx=" + idx + "&language=" + LN + "&iso_code=" + iso + "\", \"_self\")'>" + iso + "</div>";
+				if (iso == "qqq") {
+					table += "<div class='colCode2' onclick='window.open(\"" + Scriptname + "?idx=" + idx + "&language=" + LN + "&iso_code=" + iso + "\", \"_self\")'>&nbsp;&nbsp;&nbsp;</div>";
+				}
+                else {
+					table += "<div class='colCode2' onclick='window.open(\"" + Scriptname + "?idx=" + idx + "&language=" + LN + "&iso_code=" + iso + "\", \"_self\")'>" + iso + "</div>";
                 }
-                table += "<div class='colAlt2' onclick='window.open(\"" + Scriptname + "?idx=" + idx + "&language=" + LN + "&iso_code=" + iso + "\", \"_self\")'>" + alt + "</div>";
+				table += "<div class='colAlt2' onclick='window.open(\"" + Scriptname + "?idx=" + idx + "&language=" + LN + "&iso_code=" + iso + "\", \"_self\")'>" + alt + "</div>";
                 table += "</div>";
             }
             table += "<br /><br />";
@@ -288,7 +289,7 @@ function showCountry(str, st, Internet, SpecificCountry, asset) { // get the nam
 /*****************************************************************************************************************
 	AllCountries()
 *****************************************************************************************************************/
-function AllCountries(Scriptname, st, SpecificCountry, Internet, asset) { // get the names of all of the countries
+function AllCountries(Scriptname, st, SpecificCountry, Internet, asset) {	// get the names of all of the countries
     document.getElementById("LangSearch").innerHTML = '';
     document.getElementById("CountSearch").innerHTML = '';
     $("#showLanguageID").hide();
@@ -404,11 +405,12 @@ function langChange(idx, LN, ISO) {
 
 function countryChange(country, asset) {
     var cC = document.getElementById('sC').value;
-    if (asset == 1) {
-        window.open(cC + "?sortby=country&name=" + country + '&asset=1', '_self');
-    } else {
-        window.open(cC + "?sortby=country&name=" + country, '_self');
-    }
+	if (asset == 1) {
+		window.open(cC + "?sortby=country&name=" + country + '&asset=1', '_self');
+	}
+	else {
+		window.open(cC + "?sortby=country&name=" + country, '_self');
+	}
 }
 
 function RemoveAccents(str) {
@@ -724,15 +726,15 @@ function iOSLanguage(st, idx, LN, URL) {
             window.open(URL, '_blank');
         }
     } else if (URL.startsWith("asset://")) {
-        // "procolor not defined" - it seems that "asset:" isn't a procolor!
-        //location.protocol = 'file:';							'file:' will not work nor 'https'
-        //        URL = URL.replace("asset://", "https://");
+		// "procolor not defined" - it seems that "asset:" isn't a procolor!
+  		//location.protocol = 'file:';							'file:' will not work nor 'https'
+		//        URL = URL.replace("asset://", "https://");
         const link = document.createElement("a");
         //		link.href = 'data:application/zip,'+URL;
         link.href = URL;
         link.download = URL.substr(URL.lastIndexOf('/') + 1);
         link.click();
-    } else {
+   } else {
         alert('This isnt suppose to happen! (LangSearch.js function iOSLanguage)');
     }
 

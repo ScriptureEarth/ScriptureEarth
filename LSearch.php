@@ -20,10 +20,11 @@ You must ensure that all parties (your app, mysql connection, your table or colu
 /**
  * @param {string} language - 'try language'
  * @param {string} st - eng, spa, por, fre, ndl, deu, or cmn
+ * @param {string} nav_ln_line - navigational languages separated by ', '
  * @param {string} MajorLanguage - LN_English, etc.
  * @param {string} Variant_major - Variant_Eng, etc.
  * @param {string} SpecificCountry - English, etc.
-		e.g. LSearch.php?language=kerala&st=eng&Variant_major=Variant_Eng&SpecificCountry=English&MajorLanguage=LN_English
+		e.g. LSearch.php?language=kerala&st=eng&Variant_major=Variant_Eng&SpecificCountry=English&MajorLanguage=LN_English&nav_ln_line=LN_English,%20LN_Spanish,%20LN_Portuguese,%20LN_French,%20LN_Dutch,%20LN_German,%20LN_Chinese,
  * @returns {datatype} Description of the returns value
  */
 

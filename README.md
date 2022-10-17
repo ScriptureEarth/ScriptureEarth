@@ -1,4 +1,5 @@
 # ScriptureEarth
+
 [ScriptureEarth.org](https://scriptureearth.org)
 
 This contains most of the PHP, Mariadb, HTML, JavaScript, AJAX, and CSS for the ScriptureEarth.org website. In additoon, ihe contains the "add" and "edit" for the database for the CMS.
