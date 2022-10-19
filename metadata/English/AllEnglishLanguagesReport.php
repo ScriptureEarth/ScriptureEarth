@@ -38,6 +38,7 @@ echo '<p style="color: blue; font-weight: bold; ">Start...</p>';
 $map_array = [];						// declare the array here because later on do a array_push
 $itunes_array = [];
 $App_array = [];
+$iOS_array = [];
 $GoBible_array = [];
 $MySword_array = [];
 $itunes_array = [];
@@ -126,7 +127,7 @@ $FileString = '';
 		$LN_French=$row_SM['LN_French'];					// boolean
 		$LN_Dutch=$row_SM['LN_Dutch'];						// boolean
 		$LN_German=$row_SM['LN_German'];					// boolean
-		$LN_Chinese=$row['LN_Chinese'];					// boolean
+		$LN_Chinese=$row_SM['LN_Chinese'];					// boolean
 		$def_LN=$row_SM['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
 		if (!$LN_English) {									// if the English then the default langauge
 			switch ($def_LN){
@@ -184,7 +185,7 @@ $FileString = '';
 					$r = $result_LN_German->fetch_array();
 					$LN=$r['LN_German'];
 					break; 	
-				case 7:
+				case 6:
 					$stmt_LN_Chinese->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
 					$stmt_LN_Chinese->execute();															// execute query
 					$result_LN_Chinese = $stmt_LN_Chinese->get_result();									// instead of bind_result (used for only 1 record):
@@ -245,7 +246,6 @@ $FileString = '';
 	$stmt_OT_Audio_Media=$db->prepare($query);															// create a prepared statement
 	$query='SELECT company, company_title, URL, map FROM links WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ? AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND Bibles_org = 0 AND GooglePlay = 0 AND GRN = 0';
 	$stmt_links=$db->prepare($query);																	// create a prepared statement
-
 	$query='SELECT organization, buy_what, URL FROM buy WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ?';
 	$stmt_links_first_buy=$db->prepare($query);															// create a prepared statement
 	$query='SELECT company, company_title, URL FROM links WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ? AND buy = 1';
@@ -260,27 +260,21 @@ $FileString = '';
 	$stmt_links_GooglePlay=$db->prepare($query);														// create a prepared statement
 	$query='SELECT company, company_title, URL FROM links WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ? AND GRN = 1';
 	$stmt_links_GRN=$db->prepare($query);																// create a prepared statement
-
 	$query='SELECT Cell_Phone_Title, Cell_Phone_File, optional FROM CellPhone WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ?';
 	$stmt_links_CellPhone=$db->prepare($query);
-	
 	$query='SELECT PlaylistAudioTitle, PlaylistAudioFilename FROM PlaylistAudio WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ?';
 	$stmt_links_PlaylistAudio=$db->prepare($query);
-	
 	$query='SELECT PlaylistVideoTitle, PlaylistVideoFilename, PlaylistVideoDownload FROM PlaylistVideo WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ?';
 	$stmt_links_PlaylistVideo=$db->prepare($query);
-	
 	$query='SELECT organization, watch_what, URL, YouTube FROM watch WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ?';
 	$stmt_links_watch=$db->prepare($query);
-	
 	$query='SELECT DISTINCT ISO, ROD_Code, Variant_Code FROM SAB WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ?';
 	$stmt_links_SAB=$db->prepare($query);
-	
 	$query='SELECT COUNT(*) FROM study WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ?';
 	$stmt_links_study=$db->prepare($query);
 
 
-	$query='SELECT DISTINCT LN_Temp.LN, scripture_main.ISO, scripture_main.ROD_Code, scripture_main.Variant_Code FROM LN_Temp, scripture_main WHERE LN_Temp.ISO = scripture_main.ISO AND LN_Temp.ROD_Code = scripture_main.ROD_Code ORDER BY LN_Temp.LN';
+	$query='SELECT DISTINCT LN_Temp.LN, nav_ln.ISO, nav_ln.ROD_Code, nav_ln.Variant_Code FROM LN_Temp, nav_ln WHERE LN_Temp.ISO = nav_ln.ISO AND LN_Temp.ROD_Code = nav_ln.ROD_Code ORDER BY LN_Temp.LN';
 	$result = $db->query($query);
 	$num=$result->num_rows;
 	
@@ -292,7 +286,7 @@ $FileString = '';
 		$AllLanguages_Handle = fopen("All_SE_Resources_".date("M.Y").".csv", 'w');		// Open for writing only; place the file pointer at the beginning of the file and truncate the file to zero length. If the file does not exist, attempt to create it. 
 	}
 
-fwrite($AllLanguages_Handle, 'English Language Name	Alternate Language Name	iso	rod	var	URL	Country(ies)	NT PDF count	NT Audio count	NT Partial PDF count	NT Partial Audio count	NT PDF Whole count	NT Audio Whole count	OT PDF count	OT Audio count	OT Partial PDF count	OT Partial Audio count	OT PDF Whole count	OT Audio Whole count	Bible PDF count	Bible Audio count	Scripture App Builder HTML (SE)	Online Viewer (SE)	Google Play (Android app) (SE)	Android App (SE version)	Buy	BibleIs	YouVersion	GRN	eBible	GoBible (SE)	MySword (Android) (SE)	Playlist Audio (SE)	Jesus Film	Luke Vidoe	John Video	Acts Video	Genesis Video	God\'s Story Video	The Good Samaritan Video	Magdalena Video	John Animation Video (SE)	Scripture Animation Video (SE)	The Last Day Video	Story of Jesus for Children Video	History	5fish	iTunes	One Story	Bibles for India	Bibles for Russia	Maps	'."\r\n");
+	fwrite($AllLanguages_Handle, 'English Language Name	Alternate Language Name	iso	rod	var	URL	Country(ies)	NT PDF count	NT Audio count	NT Partial PDF count	NT Partial Audio count	NT PDF Whole count	NT Audio Whole count	OT PDF count	OT Audio count	OT Partial PDF count	OT Partial Audio count	OT PDF Whole count	OT Audio Whole count	Bible PDF count	Bible Audio count	Scripture App Builder HTML (SE)	Online Viewer (SE)	Google Play (Android app) (SE)	Android App (SE)	iOS (SE)	Buy	BibleIs	YouVersion	GRN	eBible	GoBible (SE)	MySword (Android) (SE)	Playlist Audio (SE)	Jesus Film	Luke Vidoe	John Video	Acts Video	Genesis Video	God\'s Story Video	The Good Samaritan Video	Magdalena Video	John Animation Video (SE)	Scripture Animation Video (SE)	The Last Day Video	Story of Jesus for Children Video	History	5fish	iTunes	One Story	Bibles for India	Bibles for Russia	Maps	'."\r\n");
 
 	while ($row = $result->fetch_array()) {
 		$ISO = $row['ISO'];
@@ -330,7 +324,7 @@ fwrite($AllLanguages_Handle, 'English Language Name	Alternate Language Name	iso	
 			$Variant_Eng=$row_Var['Variant_Eng'];
 		}
 
-$FileString = "$LN	$alt	$ISO	$temp_ROD_Code	$Variant_Eng	https://www.scriptureearth.org/00i-Scripture_Index.php?sortby=lang&iso=${ISO}${temp_ROD_Code_string}${temp_Variant_Code_string}	";
+		$FileString = "$LN	$alt	$ISO	$temp_ROD_Code	$Variant_Eng	https://www.scriptureearth.org/00i-Scripture_Index.php?sortby=lang&iso=${ISO}${temp_ROD_Code_string}${temp_Variant_Code_string}	";
 
 		$stmt_countries_Eng->bind_param('ss', $ISO, $ROD_Code);										// bind parameters for markers
 		$stmt_countries_Eng->execute();																// execute query
@@ -347,7 +341,7 @@ $FileString = "$LN	$alt	$ISO	$temp_ROD_Code	$Variant_Eng	https://www.scriptureea
 		else {
 			echo 'No English country for ' . $ISO . ' ' . $ROD_Code . ' ' . $Variant_Code . '<br />';
 		}
-$FileString .= "$Eng_country	";
+		$FileString .= "$Eng_country	";
 
 		$stmt_all_SM->bind_param('sss', $ISO, $ROD_Code, $Variant_Code);							// bind parameters for markers from scripture_main table
 		$stmt_all_SM->execute();																	// execute query
@@ -503,8 +497,8 @@ $FileString .= "$Eng_country	";
 		$result_links_SAB = $stmt_links_SAB->get_result();									// instead of bind_result (used for only 1 record):
 		while ($r_links = $result_links_SAB->fetch_array()) {
 			array_push($SAB_array, ['1', $ISO, $ROD_Code, $Variant_Code]);					// add to $SAB_array
-//echo $SABtemp . ': ' . $ISO . ' ' . $ROD_Code . ' ' . $Variant_Code . '<br />';
-$SABtemp++;
+			//echo $SABtemp . ': ' . $ISO . ' ' . $ROD_Code . ' ' . $Variant_Code . '<br />';
+			$SABtemp++;
 		}
 		$SAB_count = 0;
 		foreach ($SAB_array as $key => $value) {
@@ -519,7 +513,7 @@ $SABtemp++;
 			$viewer = NULL;
 		}
 
-$FileString .= "$NT_PDF_count	$NT_Audio_count	$NT_Partial_PDF_count	$NT_Partial_Audio_count	$NT_PDF_Whole	$NT_Audio_Whole	$OT_PDF_count	$OT_Audio_count	$OT_Partial_PDF_count	$OT_Partial_Audio_count	$OT_PDF_Whole	$OT_Audio_Whole	$Bible_PDF_count	$Bible_Audio_count	$SAB_count	$viewer	";
+		$FileString .= "$NT_PDF_count	$NT_Audio_count	$NT_Partial_PDF_count	$NT_Partial_Audio_count	$NT_PDF_Whole	$NT_Audio_Whole	$OT_PDF_count	$OT_Audio_count	$OT_Partial_PDF_count	$OT_Partial_Audio_count	$OT_PDF_Whole	$OT_Audio_Whole	$Bible_PDF_count	$Bible_Audio_count	$SAB_count	$viewer	";
 
 		// buy
 		$stmt_links_first_buy->bind_param('sss', $ISO, $ROD_Code, $Variant_Code);					// bind parameters for markers
@@ -543,10 +537,10 @@ $FileString .= "$NT_PDF_count	$NT_Audio_count	$NT_Partial_PDF_count	$NT_Partial_
 		}
 		$buy = '';
 		foreach ($buy_array as $key => $value) {
-if ($N == 1) {
-	$buy = (string)((int)$buy + 1);
-	continue;
-}
+			if ($N == 1) {
+				$buy = (string)((int)$buy + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$buy .=  " ## ";
 			}
@@ -570,10 +564,10 @@ if ($N == 1) {
 		}
 		$BibleIs = '';
 		foreach ($BibleIs_array as $key => $value) {
-if ($N == 1) {
-	$BibleIs = (string)((int)$BibleIs + 1);
-	continue;
-}
+			if ($N == 1) {
+				$BibleIs = (string)((int)$BibleIs + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$BibleIs .=  " ## ";
 			}
@@ -598,11 +592,11 @@ if ($N == 1) {
 		$YouVersion = '';
 		$YouVersion_count = 0;
 		foreach ($YouVersion_array as $key => $value) {
-if ($N == 1) {
-	$YouVersion_count++;
-$y++;
-	continue;
-}
+			if ($N == 1) {
+				$YouVersion_count++;
+			$y++;
+				continue;
+			}
 			if ($key > 0) {
 				$YouVersion .=  " ## ";
 			}
@@ -654,10 +648,10 @@ $y++;
 		}
 		$GooglePlay = '';
 		foreach ($GooglePlay_array as $key => $value) {
-if ($N == 1) {
-	$GooglePlay = (string)((int)$GooglePlay + 1);
-	continue;
-}
+			if ($N == 1) {
+				$GooglePlay = (string)((int)$GooglePlay + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$GooglePlay .=  " ## ";
 			}
@@ -682,10 +676,10 @@ if ($N == 1) {
 		}
 		$GRN = '';
 		foreach ($GRN_array as $key => $value) {
-if ($N == 1) {
-	$GRN = (string)((int)$GRN + 1);
-	continue;
-}
+			if ($N == 1) {
+				$GRN = (string)((int)$GRN + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$GRN .=  " ## ";
 			}
@@ -716,16 +710,19 @@ if ($N == 1) {
 			elseif (preg_match('/\.mybible/i', $Cell_Phone_File)) {
 				array_push($MySword_array, [$Cell_Phone_Title, $Cell_Phone_File, $optional, $ISO, $ROD_Code, $Variant_Code]);	// add to $MySword_array
 			}
+			elseif (preg_match('/iOS /', $Cell_Phone_Title)) {
+				array_push($iOS_array, [$Cell_Phone_Title, $Cell_Phone_File, $optional, $ISO, $ROD_Code, $Variant_Code]);		// add to $App_array
+			}
 			else {
 				//
 			}
 		}
 		$App = '';
 		foreach ($App_array as $key => $value) {
-if ($N == 1) {
-	$App = (string)((int)$App + 1);
-	continue;
-}
+			if ($N == 1) {
+				$App = (string)((int)$App + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$App .=  " ## ";
 			}
@@ -738,10 +735,10 @@ if ($N == 1) {
 		$App_array = [];
 		$GoBible = '';
 		foreach ($GoBible_array as $key => $value) {
-if ($N == 1) {
-	$GoBible = (string)((int)$GoBible + 1);
-	continue;
-}
+			if ($N == 1) {
+				$GoBible = (string)((int)$GoBible + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$GoBible .=  " ## ";
 			}
@@ -750,12 +747,26 @@ if ($N == 1) {
 			//$GoBible .= $value[2];
 		}
 		$GoBible_array = [];
+
+		$iOS = '';
+		foreach ($iOS_array as $key => $value) {
+			if ($N == 1) {
+				$iOS = (string)((int)$iOS + 1);
+				continue;
+			}
+			if ($key > 0) {
+				$iOS .=  " ## ";
+			}
+			$iOS .= 'https://www.scriptureearth.org/data/'.$ISO.'/study/'.$value[1];
+		}
+		$iOS_array = [];
+
 		$MySword = '';
 		foreach ($MySword_array as $key => $value) {
-if ($N == 1) {
-	$MySword = (string)((int)$MySword + 1);
-	continue;
-}
+			if ($N == 1) {
+				$MySword = (string)((int)$MySword + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$MySword .=  " ## ";
 			}
@@ -769,7 +780,7 @@ if ($N == 1) {
 			$eBible = NULL;
 		}
 		
-$FileString .= "$GooglePlay	$App	$buy	$BibleIs	$YouVersion	$GRN	$eBible	$GoBible	$MySword	";
+		$FileString .= "$GooglePlay	$App	$iOS	$buy	$BibleIs	$YouVersion	$GRN	$eBible	$GoBible	$MySword	";
 
 		// PlaylistAudio table: PlaylistAudioTitle	PlaylistAudioFilename (*txt)
 		$stmt_links_PlaylistAudio->bind_param('sss', $ISO, $ROD_Code, $Variant_Code);				// bind parameters for markers
@@ -782,10 +793,10 @@ $FileString .= "$GooglePlay	$App	$buy	$BibleIs	$YouVersion	$GRN	$eBible	$GoBible
 		}
 		$PlaylistAudio = '';
 		foreach ($PlaylistAudio_array as $key => $value) {
-if ($N == 1) {
-	$PlaylistAudio = (string)((int)$PlaylistAudio + 1);
-	continue;
-}
+			if ($N == 1) {
+				$PlaylistAudio = (string)((int)$PlaylistAudio + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$PlaylistAudio .=  " ## ";
 			}
@@ -795,7 +806,7 @@ if ($N == 1) {
 		}
 		$PlaylistAudio_array = [];
 		
-$FileString .= "$PlaylistAudio	";
+		$FileString .= "$PlaylistAudio	";
 		
 		// PlaylistVideo table: PlaylistVideoTitle	PlaylistVideoFilename (*.txt)	PlaylistVideoDownload (0 or 1)
 		$stmt_links_PlaylistVideo->bind_param('sss', $ISO, $ROD_Code, $Variant_Code);				// bind parameters for markers
@@ -904,10 +915,10 @@ $FileString .= "$PlaylistAudio	";
 
 		$PlaylistGenesis = '';
 		foreach ($PlaylistGenesis_array as $key => $value) {
-if ($N == 1) {
-	$PlaylistGenesis = (string)((int)$PlaylistGenesis + 1);
-	continue;
-}
+			if ($N == 1) {
+				$PlaylistGenesis = (string)((int)$PlaylistGenesis + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$PlaylistGenesis .=  " ## ";
 			}
@@ -919,10 +930,10 @@ if ($N == 1) {
 		
 		$PlaylistActs = '';
 		foreach ($PlaylistActs_array as $key => $value) {
-if ($N == 1) {
-	$PlaylistActs = (string)((int)$PlaylistActs + 1);
-	continue;
-}
+			if ($N == 1) {
+				$PlaylistActs = (string)((int)$PlaylistActs + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$PlaylistActs .=  " ## ";
 			}
@@ -934,10 +945,10 @@ if ($N == 1) {
 		
 		$PlaylistScriptAnim = '';
 		foreach ($PlaylistScriptAnim_array as $key => $value) {
-if ($N == 1) {
-	$PlaylistScriptAnim = (string)((int)$PlaylistScriptAnim + 1);
-	continue;
-}
+			if ($N == 1) {
+				$PlaylistScriptAnim = (string)((int)$PlaylistScriptAnim + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$PlaylistScriptAnim .=  " ## ";
 			}
@@ -949,10 +960,10 @@ if ($N == 1) {
 		
 		$PlaylistJohnAnim = '';
 		foreach ($PlaylistJohnAnim_array as $key => $value) {
-if ($N == 1) {
-	$PlaylistJohnAnim = (string)((int)$PlaylistJohnAnim + 1);
-	continue;
-}
+			if ($N == 1) {
+				$PlaylistJohnAnim = (string)((int)$PlaylistJohnAnim + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$PlaylistJohnAnim .=  " ## ";
 			}
@@ -964,10 +975,10 @@ if ($N == 1) {
 		
 		$PlaylistJohn = '';
 		foreach ($PlaylistJohn_array as $key => $value) {
-if ($N == 1) {
-	$PlaylistJohn = (string)((int)$PlaylistJohn + 1);
-	continue;
-}
+			if ($N == 1) {
+				$PlaylistJohn = (string)((int)$PlaylistJohn + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$PlaylistJohn .=  " ## ";
 			}
@@ -979,10 +990,10 @@ if ($N == 1) {
 		
 		$PlaylistLuke = '';
 		foreach ($PlaylistLuke_array as $key => $value) {
-if ($N == 1) {
-	$PlaylistLuke = (string)((int)$PlaylistLuke + 1);
-	continue;
-}
+			if ($N == 1) {
+				$PlaylistLuke = (string)((int)$PlaylistLuke + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$PlaylistLuke .=  " ## ";
 			}
@@ -994,10 +1005,10 @@ if ($N == 1) {
 		
 		$PlaylistGodsStory = '';
 		foreach ($PlaylistGodsStory_array as $key => $value) {
-if ($N == 1) {
-	$PlaylistGodsStory = (string)((int)$PlaylistGodsStory + 1);
-	continue;
-}
+			if ($N == 1) {
+				$PlaylistGodsStory = (string)((int)$PlaylistGodsStory + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$PlaylistGodsStory .=  " ## ";
 			}
@@ -1009,10 +1020,10 @@ if ($N == 1) {
 		
 		$PlaylistJesus = '';
 		foreach ($PlaylistJesus_array as $key => $value) {
-if ($N == 1) {
-	$PlaylistJesus = (string)((int)$PlaylistJesus + 1);
-	continue;
-}
+			if ($N == 1) {
+				$PlaylistJesus = (string)((int)$PlaylistJesus + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$PlaylistJesus .=  " ## ";
 			}
@@ -1024,10 +1035,10 @@ if ($N == 1) {
 		
 		$PlaylistMagdalena = '';
 		foreach ($PlaylistMagdalena_array as $key => $value) {
-if ($N == 1) {
-	$PlaylistMagdalena = (string)((int)$PlaylistMagdalena + 1);
-	continue;
-}
+			if ($N == 1) {
+				$PlaylistMagdalena = (string)((int)$PlaylistMagdalena + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$PlaylistMagdalena .=  " ## ";
 			}
@@ -1039,10 +1050,10 @@ if ($N == 1) {
 		
 		$PlaylistSamaritan = '';
 		foreach ($PlaylistSamaritan_array as $key => $value) {
-if ($N == 1) {
-	$PlaylistSamaritan = (string)((int)$PlaylistSamaritan + 1);
-	continue;
-}
+			if ($N == 1) {
+				$PlaylistSamaritan = (string)((int)$PlaylistSamaritan + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$PlaylistSamaritan .=  " ## ";
 			}
@@ -1052,14 +1063,14 @@ if ($N == 1) {
 		}
 		$PlaylistSamaritan_array = [];
 
-$FileString .= "$PlaylistJesus	$PlaylistLuke	$PlaylistJohn	$PlaylistActs	$PlaylistGenesis	$PlaylistGodsStory	$PlaylistSamaritan	$PlaylistMagdalena	$PlaylistJohnAnim	$PlaylistScriptAnim	";
+		$FileString .= "$PlaylistJesus	$PlaylistLuke	$PlaylistJohn	$PlaylistActs	$PlaylistGenesis	$PlaylistGodsStory	$PlaylistSamaritan	$PlaylistMagdalena	$PlaylistJohnAnim	$PlaylistScriptAnim	";
 		
 		$Children = '';
 		foreach ($Children_array as $key => $value) {
-if ($N == 1) {
-	$Children = (string)((int)$Children + 1);
-	continue;
-}
+			if ($N == 1) {
+				$Children = (string)((int)$Children + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$Children .=  " ## ";
 			}
@@ -1071,10 +1082,10 @@ if ($N == 1) {
 		
 		$fish = '';
 		foreach ($fish_array as $key => $value) {
-if ($N == 1) {
-	$fish = (string)((int)$fish + 1);
-	continue;
-}
+			if ($N == 1) {
+				$fish = (string)((int)$fish + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$fish .=  " ## ";
 			}
@@ -1086,10 +1097,10 @@ if ($N == 1) {
 		
 		$History = '';
 		foreach ($History_array as $key => $value) {
-if ($N == 1) {
-	$History = (string)((int)$History + 1);
-	continue;
-}
+			if ($N == 1) {
+				$History = (string)((int)$History + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$History .=  " ## ";
 			}
@@ -1101,10 +1112,10 @@ if ($N == 1) {
 		
 		$LastDay = '';
 		foreach ($LastDay_array as $key => $value) {
-if ($N == 1) {
-	$LastDay = (string)((int)$LastDay + 1);
-	continue;
-}
+			if ($N == 1) {
+				$LastDay = (string)((int)$LastDay + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$LastDay .=  " ## ";
 			}
@@ -1150,10 +1161,10 @@ if ($N == 1) {
 		
 		$maps = '';
 		foreach ($map_array as $key => $value) {
-if ($N == 1) {
-	$maps = (string)((int)$maps + 1);
-	continue;
-}
+			if ($N == 1) {
+				$maps = (string)((int)$maps + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$maps .=  " ## ";
 			}
@@ -1164,10 +1175,10 @@ if ($N == 1) {
 		
 		$itunes = '';
 		foreach ($itunes_array as $key => $value) {
-if ($N == 1) {
-	$itunes = (string)((int)$itunes + 1);
-	continue;
-}
+			if ($N == 1) {
+				$itunes = (string)((int)$itunes + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$itunes .=  " ## ";
 			}
@@ -1179,10 +1190,10 @@ if ($N == 1) {
 		
 		$india = '';
 		foreach ($india_array as $key => $value) {
-if ($N == 1) {
-	$india = (string)((int)$india + 1);
-	continue;
-}
+			if ($N == 1) {
+				$india = (string)((int)$india + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$india .=  " ## ";
 			}
@@ -1194,10 +1205,10 @@ if ($N == 1) {
 		
 		$oneStory = '';
 		foreach ($oneStory_array as $key => $value) {
-if ($N == 1) {
-	$oneStory = (string)((int)$oneStory + 1);
-	continue;
-}
+			if ($N == 1) {
+				$oneStory = (string)((int)$oneStory + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$oneStory .=  " ## ";
 			}
@@ -1209,10 +1220,10 @@ if ($N == 1) {
 		
 		$ibt = '';
 		foreach ($ibt_array as $key => $value) {
-if ($N == 1) {
-	$ibt = (string)((int)$ibt + 1);
-	continue;
-}
+			if ($N == 1) {
+				$ibt = (string)((int)$ibt + 1);
+				continue;
+			}
 			if ($key > 0) {
 				$ibt .=  " ## ";
 			}
@@ -1222,7 +1233,7 @@ if ($N == 1) {
 		}
 		$ibt_array = [];
 
-$FileString .= "$LastDay	$Children	$History	$fish	$itunes	$oneStory	$india	$ibt	$maps	";
+		$FileString .= "$LastDay	$Children	$History	$fish	$itunes	$oneStory	$india	$ibt	$maps	";
 		
 		// study table: (The Word) is there
 		$stmt_links_study->bind_param('sss', $ISO, $ROD_Code, $Variant_Code);				// bind parameters for markers
