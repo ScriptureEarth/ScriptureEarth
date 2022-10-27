@@ -3,6 +3,8 @@
 
 // Created by Scott Starker
 
+// 	ini_set('memory_limit', '1024M');	about line 300							// memory_limit - 1GB !
+
 // This PHP script must have the following:
 // 00-PlaylistDownloadVideoZip.php?st="+st+"&iso="+iso+"&PlaylistVideoFilename="+PlaylistVideoFilename+"&checkBoxes="+CB
 
@@ -108,13 +110,13 @@ if (is_array($aFiles)) {
     $filesize = 0;
 	$temp = 0;
 	foreach ($aFiles as $filename) {
-		$temp = strpos($filename, '_');							// strpos = false when not found
+		$temp = strpos($filename, '_');																// strpos = false when not found
 		if ($temp !== false) {
 			$ISO_Code_array = [];
 			$ISO_Code_array = explode('_', $filename);
 			if ($ISO_Code === $ISO_Code_array[1]) {
 				if ($filesize === filesize($filename)) {
-					unlink($filename);																	// deletes the $filename from the SE server
+					unlink($filename);																// deletes the $filename from the SE server
 				}
 				else {
 					$filesize = filesize($filename);
@@ -131,7 +133,7 @@ if (is_array($aFiles)) {
 /*********************************************************************************************************
     creating ZIP
  *********************************************************************************************************/
-$zip = new ZipArchive();																				// create the zip object
+$zip = new ZipArchive();																			// create the zip object
 
 // creating zip file
 $Zip_Filename = str_replace(' ', '', microtime());													// creating string for the zip file
@@ -261,12 +263,15 @@ if (basename($_SERVER['PHP_SELF']) == '00-PlaylistDownloadVideoZip.php'){
                 case "wmv":     $type = "video/x-ms-wmv";                break;
                 default:        $type = "application/force-download";    break;
             }
+
             // Fix IE bug [0]
             $header_file = (strstr($_SERVER['HTTP_USER_AGENT'], 'MSIE')) ? preg_replace('/\./', '%2e', $file, substr_count($file, '.') - 1) : $file;
-			
-            // Prepare headers
-			ob_start();
-			
+
+//			ob_end_clean();
+//			ob_end_flush();
+			// Prepare headers
+//			ob_start();									// breaks if zip file is over 64 MB!
+
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header("Content-Description: File Transfer");
             header("Content-Type: " . $type);
@@ -294,21 +299,23 @@ if (basename($_SERVER['PHP_SELF']) == '00-PlaylistDownloadVideoZip.php'){
 			// ********************************************************************************************************
 			//				Send file for 'download' for the user
 			// ********************************************************************************************************
+			ini_set('memory_limit', '1024M');								// memory_limit - 1GB !
             if ($stream = fopen($file_real, 'rb')){
-                while (!feof($stream) && connection_status() == 0){
+                //while (!feof($stream) && connection_status() == 0) {
                     //reset time limit for big files
-                    set_time_limit(0);					// The maximum execution time in seconds. If set to zero, no time limit is imposed.
+                    set_time_limit(0);										// The maximum execution time in seconds. If set to zero, no time limit is imposed.
                     //print(fread($stream, 1024*8));
-					print(fread($stream, 1*(1024*1024)));
-                    flush();
-                }
+					//print(fread($stream, 1*(1024*1024)));
+					print(fread($stream, filesize($file_real)));
+					flush();
+                //}
                 fclose($stream);
             }
 			if (file_exists($file_real)) {
 				unlink($file_real);
 			}
 
-			ob_end_flush();
+//			ob_end_flush();
         }
 		else {
             // Requested file does not exist (File not found)
