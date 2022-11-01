@@ -492,12 +492,13 @@ function GoSAB_subfolder(iso, Book_HTML, subfolder) {
     return false; // cancels href action 
 }
 
-function PlaylistVideo(orgVideoPixels, getElById, mobile) { // passing argument by reference (this.)
+ // passing argument by reference (this.)
+function PlaylistVideo(orgVideoPixels, getElById, mobile) {
     "use strict";
     // I need windows height to go here
     // The extra styles are for the mobile Andoid to work! (6/17/17)
     if (mobile == 1) {
-        if (document.getElementById(getElById).style.display === "table-row") {
+        if (document.getElementById(getElById).style.display == "table-row") {
             document.getElementById(getElById).style.display = "none";
             document.getElementById(getElById).style.overflow = "hidden";
             document.getElementById(getElById).style.float = "left";
@@ -509,7 +510,7 @@ function PlaylistVideo(orgVideoPixels, getElById, mobile) { // passing argument 
             document.getElementById(getElById).style.lineHeight = "100%";
         }
     } else {
-        if (document.getElementById(getElById).style.display === "table-row") {
+        if (document.getElementById(getElById).style.display == "table-row") {
             document.getElementById(getElById).style.display = "none";
             document.getElementById(getElById).style.overflow = "hidden";
             document.getElementById(getElById).style.float = "left";
@@ -519,7 +520,7 @@ function PlaylistVideo(orgVideoPixels, getElById, mobile) { // passing argument 
             document.getElementById(getElById).style.overflow = "visible";
             document.getElementById(getElById).style.float = "none";
             document.getElementById(getElById).style.lineHeight = "100%";
-        }
+       }
     }
 }
 
