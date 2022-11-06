@@ -44,7 +44,8 @@ $first_e =
 <<<STRT
 
 
-// blue icon is the default
+	// blue icon is the default
+	L.Icon.Default.imagePath = '../../images/';
 
 	var myRedIcon = L.icon({
 		iconUrl: '../../images/myRedIcon.png'
@@ -71,7 +72,7 @@ $end =
 </html>
 END;
 
-$query="SELECT ISO FROM LN_English WHERE ISO_ROD_index IS NOT NULL AND ISO = ?";		// select the ISO from LN_English to $maps_array
+$query="SELECT ISO FROM LN_English WHERE ISO_ROD_index IS NOT NULL AND ISO = ?";	// select the ISO from LN_English to $maps_array
 $stmt_ISO=$db->prepare($query);														// create a prepared statement
 $query="SELECT LN_English FROM LN_English WHERE ISO = ?";							// select the language name from LN_English to $maps_array
 $stmt_LN=$db->prepare($query);														// create a prepared statement

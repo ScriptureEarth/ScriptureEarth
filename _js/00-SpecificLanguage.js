@@ -545,6 +545,7 @@ function getHTTPObject() { // get the AJAX object; can be used more than once
     }
 }
 
+var tempArray = [];
 function eBibleShow(URL, st, mobile) { // the AJAX for the live search on the iso input
     eBibleItems = getHTTPObject(); // the eBible object (see JavaScript function getHTTPObject() above)
     if (eBibleItems == null) {
@@ -559,7 +560,6 @@ function eBibleShow(URL, st, mobile) { // the AJAX for the live search on the is
     eBibleItems.send(null);
     eBibleItems.onreadystatechange = function() { // the function that returns for AJAX object
         if (eBibleItems.readyState == 4) { // if the readyState = 4 then eBible is displayed
-            var tempArray = [];
             tempArray = eBibleItems.responseText.split("|");
             if (tempArray.length == 1) {
                 document.getElementById("eBibleItems").innerHTML = tempArray[0];

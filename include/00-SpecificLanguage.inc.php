@@ -1669,10 +1669,12 @@ do this later when IOS packages become live (9.10.2022)
 				if ($PlaylistVideoTitle == 'the Acts Video') $PlaylistVideoTitle = 'el video de Hechos';
 			}
 			// $i = the number of rows beginning with the number 1 in the first column
-			$string_temp = '<script>';
-				$string_temp .= "var orgVideoPixels_".$z." = 0;";
-			$string_temp .= '</script>';
-			$string_temp .= '<tr>';
+			?>
+			<script>
+				var orgVideoPixels_<?php echo $z ?> = 0;
+			</script>
+			<?php
+			$string_temp = '<tr>';
 				$string_temp .= "<td style='width: 45px; '>";
 					$string_temp .= "<div class='linePointer' onclick='PlaylistVideo(orgVideoPixels_$z, \"PlaylistVideoNow_$z\", $mobile)'><img class='iconActions' src='../images/youtube-icon.jpg' alt='".translate('View', $st, 'sys')."' title='".translate('View', $st, 'sys')."' /></div>";
 				$string_temp .= '</td>';
@@ -2571,6 +2573,8 @@ do this later when IOS packages become live (9.10.2022)
 					$string_temp .= "<div class='linePointer' title='".translate('Listen', $st, 'sys')." $PlaylistAudioTitle' onclick='PlaylistAudio_$z($z, $num3)'>".translate('Listen', $st, 'sys').": $PlaylistAudioTitle</div>";
 					// Get and display Playlist
 					$string_temp .= '<div id="PlaylistAudioListenNow_'.$z.'" class="ourPlaylistAudioNow" style="margin-top: 0px; ">';
+					//<div class='linePointer' title="<?php echo translate('Listen', $st, 'sys') . ' ' . $PlaylistAudioTitle ? >" onclick=<?php echo 'PlaylistAudio_$z($z, $num3)' ? >><?php echo translate('Listen', $st, 'sys') ? >: <?php echo $PlaylistAudioTitle ? ></div>
+					//	<div id="PlaylistAudioListenNow_<?php echo $z ? >" class="ourPlaylistAudioNow" style="margin-top: 0px; ">
 						?>
 						<script>
 							$(document).ready(function(){
@@ -2686,7 +2690,7 @@ do this later when IOS packages become live (9.10.2022)
 					}
 					$MB_Total_Amount = 0;
 					$string_temp .= '<form>';
-					$string_temp .= '<table id="DLPlaylistAudio_'.$z.'" style="width: '.$tableWidth.'px; margin-top: 5px; margin-right: 10px; font-weight: bold; font-size: 11pt; ">';
+					$string_temp .= '<table id="DLPlaylistAudio_'.$z.'" style="display: none; width: '.$tableWidth.'px; margin-top: 5px; margin-right: 10px; font-weight: bold; font-size: 11pt; ">';
 						$string_temp .= '<tr>';
 							$string_temp .= '<td colspan="'.$howManyCol.'" style="width: 100%; ">';
 								$string_temp .= '<div style="float: right; margin-top: 0; margin-left: 30px; margin-bottom: 4px; ">';
@@ -2697,7 +2701,7 @@ do this later when IOS packages become live (9.10.2022)
 									$CountArr = count($arr);
 									$string_temp .= "<input style='font-size: 1em; font-weight: bold; font-family: Arial, Helvetica, sans-serif; ' type='button' value='".translate('Download Audio Playlist', $st, 'sys')."' onclick='PlaylistAudioZip(\"$st\", \"$ISO\", \"$ROD_Code\", \"$z\", $CountArr, \"$mobile\", \"".translate('Please wait!<br />Creating the ZIP file<br />which will take a while.', $st, 'sys')."\")' />";
 								$string_temp .= '</div>';
-								$string_temp .= '<div id="Playlist_Download_MB_'.$z.'" style="float: right; display: inline-block; margin-top: 6px; margin-right: 8px; margin-bottom: 2px; "></div>';
+								$string_temp .= '<div id="Playlist_Download_MB_'.$z.'" style="display: none; float: right; margin-top: 6px; margin-right: 8px; margin-bottom: 2px; "></div>';
 							$string_temp .= '</td>';
 						$string_temp .= '</tr>';
 						$i = 0;
@@ -2738,15 +2742,14 @@ do this later when IOS packages become live (9.10.2022)
 					$string_temp .= '</form>';
 					$string_temp .= "<div id='MB_".$z."' style='display: none; '>".$MB_Total_Amount.'</div>';
 
-					$string_temp .= '<script type="text/javascript" language="javascript">';
-						$string_temp .= 'document.getElementById("DLPlaylistAudio_'.$z.'").style.display = "none";';
-						$string_temp .= 'document.getElementById("Playlist_Download_MB_'.$z.'").style.display = "none";';
-						$string_temp .= 'var ZipFilesPlaylist_'.$z.' = 0;';
-						$string_temp .= 'var PlaylistTableVisible_'.$z.' = 0;';
-						//$string_temp .= 'var divHeight_'.$z.' = 0;';
-					$string_temp .= '</script>';
-					
 					?>
+
+					<script type="text/javascript" language="javascript">
+						var ZipFilesPlaylist_<?php echo $z ?> = 0;
+						var PlaylistTableVisible_<?php echo $z ?> = 0;
+						//var divHeight_< ?php echo $z; ? > = 0;
+					</script>
+					
 					<script type="text/javascript" language="javascript">
 						function PlaylistAudioClick_<?php echo $z; ?>(PlaylistGroupIndex, PlaylistIndex, ZipFileSize) {		// check box name, the book
 							if (document.getElementById("Playlist_audio_"+PlaylistGroupIndex+"_"+PlaylistIndex).checked) {
@@ -3026,18 +3029,42 @@ do this later when IOS packages become live (9.10.2022)
 				else {
 					//$vernacularTitle = trim($r2['vernacularTitle']);
 					$PDFline = '';
-					$string_temp = '<tr>';
+					$string_temp = '<tr id="eBible">';
 						$string_temp .= '<td style="width: 45px; ">';
-							$string_temp .= "<div class='linePointer' onclick='eBibleClick()'><img class='iconActions' src='../images/eBible-icon.jpg' alt='".translate('Scripture Resources from eBible.org', $st, 'sys')."' title='".translate('Scripture Resources from eBible.org', $st, 'sys')."' /></div>";
+							$string_temp .= "<div class='linePointer' onclick='eBibleClick(); eBibleBuild()'><img class='iconActions' src='../images/eBible-icon.jpg' alt='".translate('Scripture Resources from eBible.org', $st, 'sys')."' title='".translate('Scripture Resources from eBible.org', $st, 'sys')."' /></div>";
 						$string_temp .= '</td>';
 						$string_temp .= '<td>';
-							$string_temp .= "<div class='linePointer' title='".translate('Scripture Resources from eBible.org', $st, 'sys')."' onclick='eBibleClick()'>".translate('Scripture Resources from eBible.org', $st, 'sys').'</div><br />';
+							$string_temp .= "<div class='linePointer' title='".translate('Scripture Resources from eBible.org', $st, 'sys')."' onclick='eBibleClick(); eBibleBuild()'>".translate('Scripture Resources from eBible.org', $st, 'sys').'</div><br />';
 							$string_temp .= '<div id="eBibleClick">';
 							$string_temp .= '<br />';
-							// start of eBible AJAX
-							$string_temp .= '<script>';
-							$string_temp .= 'eBibleShow("'.$publicationURL.'","'.$st.'","'.$mobile.'")';
-							$string_temp .= '</script>';
+							?>
+							<script>
+								//var a = 0;
+								function eBibleBuild() {
+									if (document.getElementById("vernacularTitle").innerHTML == '') {
+									//if (typeof a === 'undefined') {
+										if (tempArray.length === 0) {
+											// start of eBible AJAX
+											eBibleShow("<?php echo $publicationURL?>","<?php echo $st ?>","<?php echo $mobile ?>");
+										}
+										else {
+											if (tempArray.length == 1) {
+												document.getElementById("eBibleItems").innerHTML = tempArray[0];
+											} else {
+												document.getElementById("vernacularTitle").innerHTML = tempArray[0];
+												document.getElementById("eBibleItems").innerHTML = tempArray[1];
+											}
+										}
+										//a = 1;
+									}
+									else {
+										// IF document.getElementById("vernacularTitle").innerHTML != '' WHY IS IT HIDDEN HERE IN "ALL"????!!!!
+										//$("#eBibleClick").show();
+									}
+								}
+								//eBibleBuild();
+							</script>
+							<?php
 							$string_temp .= '<div id="vernacularTitle" style="text-align: center; "></div>';
 							$string_temp .= '<div id="eBibleItems"></div>';
 							$string_temp .= '</div>';
@@ -3138,6 +3165,44 @@ array_push($app_array, $string_temp);
 array_push($other_array, $string_temp);
 array_push($all_array, $string_temp);
 
+// Created by Lærke Roager; updated by Scott Starker
+$Read_string = '';
+foreach ($read_array as $string){
+	$Read_string .= $string;
+}
+$Read_string = str_replace('</script', '< script', $Read_string);
+//$Read_string = str_replace('"', '\"', $Read_string);
+
+$Listen_string = '';
+foreach ($listen_array as $string){
+	$Listen_string .= $string;
+}
+$Listen_string = str_replace('</script', '< script', $Listen_string);
+
+$View_string = '';
+foreach ($view_array as $string){
+	$View_string .= $string;
+}
+$View_string = str_replace('</script', '< script', $View_string);
+
+$App_string = '';
+foreach ($app_array as $string){
+	$App_string .= $string;
+}
+$App_string = str_replace('</script', '< script', $App_string);
+
+$Other_string = '';
+foreach ($other_array as $string){
+	$Other_string .= $string;
+}
+$Other_string = str_replace('</script', '< script', $Other_string);
+
+$All_string = '';
+foreach ($all_array as $string){
+	$All_string .= $string;
+}
+$All_string = str_replace('</script', '< script', $All_string);
+
 ?>
 
 <br />
@@ -3155,57 +3220,36 @@ array_push($all_array, $string_temp);
 	<button class="tablinks" onclick="openTab(event, 'Map')"><i class="fa fa-map-marker" style="font-size:28px;"></i><br/><?php echo translate('Map', $st, 'sys') ?></button>
 </div>
 
+<script>
+	var Read_string = `<?php echo $Read_string ?>`;
+	var Listen_string = `<?php echo $Listen_string ?>`;
+	var View_string = `<?php echo  $View_string ?>`;
+	var App_string = `<?php echo $App_string ?>`;
+	var Other_string = `<?php echo $Other_string ?>`;
+	var All_string = `<?php echo  $All_string  ?>`;
+</script>
+
 <!-- Tab content -->
 <div id="Read" class="tabcontent">
-  	<?php
-	foreach ($read_array as $string){
-		echo $string;
-	}
-	?>
 </div>
 
 <div id="Listen" class="tabcontent">
-	<?php
-	foreach ($listen_array as $string){
-		echo $string;
-	}
-	?>
 </div>
 
 <div id="View" class="tabcontent">
-	<?php
-	foreach ($view_array as $string){
-		echo $string;
-	}
-	?>
 </div>
 
 <div id="App" class="tabcontent">
-	<?php
-	foreach ($app_array as $string){
-		echo $string;
-	}
-	?>
 </div> 
 
 <div id="Other" class="tabcontent">
-	<?php
-	foreach ($other_array as $string){
-		echo $string;
-	}
-	?>
 </div> 
 
 <div id="All" class="tabcontent">
-	<?php
-	foreach ($all_array as $string){
-		echo $string;
-	}
-	?>
 </div> 
 
 <div id="Map" class="tabcontent" >
-	<iframe src=<?php echo "../leafletjs_maps/".$GetName."/".$ISO.".html" ?> title="Map" width="100%" height="550"></iframe> 
+	<iframe src=<?php echo "../leafletjs_maps/".$GetName."/".$ISO.".html" ?> title="Map" style="width: 100%; height: 600px; "></iframe> 
 </div>
 
 <br />
@@ -3271,21 +3315,30 @@ array_push($all_array, $string_temp);
 			window.open("./data/<?php echo $ISO; ?>/" + subfolder + "index.html", "SABPage");
 		}
 	}
+
+	// Created by Lærke Roager; updated by Scott Starker
 	function openTab(evt, tabName) {
   		// Declare all variables
   		var i, tabcontent, tablinks;
 
-  		// Get all elements with class="tabcontent" and hide them
+  		// Get all elements with div class="tabcontent" and hide them
   		tabcontent = document.getElementsByClassName("tabcontent");
-  		for (i = 0; i < tabcontent.length; i++) {
-  		  tabcontent[i].style.display = "none";
+  		for (i = 0; i < tabcontent.length; i++) {									// iterate throght elements of "tabcontact"
+			if (tabcontent[i].style.display != "none") {
+				tabcontent[i].style.display = "none";
+			}
   		}
 	
-  		// Get all elements with class="tablinks" and remove the class "active"
+  		// Get all elements with button class="tablinks" and remove the class "active"
   		tablinks = document.getElementsByClassName("tablinks");
   		for (i = 0; i < tablinks.length; i++) {
-  		  tablinks[i].className = tablinks[i].className.replace(" active", "");
+			tablinks[i].className = tablinks[i].className.replace(" active", "");
   		}
+
+		if (tabName != "Map") {
+			document.getElementById(tabName).innerHTML = eval(tabName + "_string").replace(/< script/g, "<\/script");
+			console.log(eval(tabName + "_string").replace(/< script/g, "<\/script"));
+		}
 	
   		// Show the current tab, and add an "active" class to the button that opened the tab
   		document.getElementById(tabName).style.display = "block";
