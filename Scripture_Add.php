@@ -833,11 +833,11 @@ include ('./NT_Books.php');			// include the books of the NT
                 <tr valign="bottom" style="color: navy; font-size: 8pt; line-height: 10pt; height: 30px; ">
                     <td width="14%">&nbsp;
                     </td>
-                    <td width="12%" style="padding-left: 3px; ">
-                        Words preceding Text
-                    </td>
                     <td width="11%" style="padding-left: 3px; ">
                         Text for the website
+                    </td>
+                    <td width="12%" style="padding-left: 3px; ">
+                        Words preceding Text
                     </td>
                     <td width="44%" style="padding-left: 3px; ">
                         URL Link
@@ -851,13 +851,13 @@ include ('./NT_Books.php');			// include the books of the NT
                     <td width="14%" style="font-size: 10pt; ">
                         <div style="margin-top: 10px; ">Enter "GRN":</div>For example:
                     </td>
-                    <td width="12%">
-                        <input type='text' style='color: navy; ' size='13' name='txtLinkGRNName-1' id='txtLinkGRNName-1' value="<?php if (isset($_POST['txtLinkGRNName-1'])) echo $_POST['txtLinkGRNName-1']; ?>" />
-                        <br /><span style="font-size: 10pt; ">Global Recordings Network</span>
-                    </td>
                     <td width="11%">
                         <input type='text' style='color: navy; ' size='20' name='txtLinkGRNTitle-1' id='txtLinkGRNTitle-1' value="<?php if (isset($_POST['txtLinkGRNTitle-1'])) echo $_POST['txtLinkGRNTitle-1']; ?>" />
                         <br /><span style="font-size: 10pt; margin-left: 1px; ">Audio recordings</span>
+                    </td>
+                    <td width="12%">
+                        <input type='text' style='color: navy; ' size='13' name='txtLinkGRNName-1' id='txtLinkGRNName-1' value="<?php if (isset($_POST['txtLinkGRNName-1'])) echo $_POST['txtLinkGRNName-1']; ?>" />
+                        <br /><span style="font-size: 10pt; ">Global Recordings Network</span>
                     </td>
                     <td width="44%">
                         <input type='text' style='color: navy; ' size='60' name='txtLinkGRNURL-1' id='txtLinkGRNURL-1' value="<?php if (isset($_POST['txtLinkGRNURL-1'])) echo $_POST['txtLinkGRNURL-1']; ?>" />
@@ -875,11 +875,11 @@ include ('./NT_Books.php');			// include the books of the NT
                     echo "<td width='14%'>";
                         echo "&nbsp;";
                     echo "</td>";
-                    echo "<td width='12%'>";
-                        echo "<input type='text' style='color: navy; ' size='13' name='txtLinkGRNName-".(string)$i."' id='txtLinkGRNName-".(string)$i."' value='" . ( isset($_POST['txtLinkGRNName-'.(string)$i]) ? $_POST['txtLinkGRNName-'.(string)$i] : '' ) . "' />";
-                    echo "</td>";
                     echo "<td width='11%'>";
                         echo "<input type='text' style='color: navy; ' size='20' name='txtLinkGRNTitle-".(string)$i."' id='txtLinkGRNTitle-".(string)$i."' value='" . ( isset($_POST['txtLinkGRNTitle-'.(string)$i]) ? $_POST['txtLinkGRNTitle-'.(string)$i] : '' ) . "' />";
+                    echo "</td>";
+                    echo "<td width='12%'>";
+                        echo "<input type='text' style='color: navy; ' size='13' name='txtLinkGRNName-".(string)$i."' id='txtLinkGRNName-".(string)$i."' value='" . ( isset($_POST['txtLinkGRNName-'.(string)$i]) ? $_POST['txtLinkGRNName-'.(string)$i] : '' ) . "' />";
                     echo "</td>";
                     echo "<td width='44%'>";
                         echo "<input type='text' style='color: navy; ' size='60' name='txtLinkGRNURL-".(string)$i."' id='txtLinkGRNURL-".(string)$i."' value='" . ( isset($_POST['txtLinkGRNURL-'.(string)$i]) ? $_POST['txtLinkGRNURL-'.(string)$i] : '' ) . "' />";
@@ -1446,10 +1446,10 @@ include ('./NT_Books.php');			// include the books of the NT
 				<td width="12%">&nbsp;
 				</td>
 				<td width="21%" style="padding-left: 3px; ">
-					Web Source
+					Resource Description
 				</td>
 				<td width="21%" style="padding-left: 3px; ">
-					Resource Description
+					Web Source
 				</td>
 				<td width="22%" style="padding-left: 3px; ">
 					URL Link
@@ -1480,14 +1480,14 @@ include ('./NT_Books.php');			// include the books of the NT
                     <br /><span style="font-size: 10pt; ">For example:</span>
 				</td>
 				<td width="21%">
-					<!--input type='text' style='color: navy; ' size='25' name='txtLinkCompany-1' id='txtLinkCompany-1' value="< ?php if (isset($_POST['txtLinkCompany-1'])) echo $_POST['txtLinkCompany-1'] ?>" /-->
-					<input type='text' style='color: navy; ' size='25' name='txtLinkCompany-1' id='txtLinkCompany-1' value="Joshua Project" />
-                    <br /><span style="font-size: 10pt; ">Google map</span>
-				</td>
-				<td width="21%">
 					<!--input type='text' style='color: navy; ' size='25' name='txtLinkCompanyTitle-1' id='txtLinkCompanyTitle-1' value="< ?php if (isset($_POST['txtLinkCompanyTitle-1'])) echo $_POST['txtLinkCompanyTitle-1'] ?>" /-->
 					<input type='text' style='color: navy; ' size='25' name='txtLinkCompanyTitle-1' id='txtLinkCompanyTitle-1' value="language map" />
                     <br /><span style="font-size: 10pt; ">language of Brazil</span>
+				</td>
+				<td width="21%">
+					<!--input type='text' style='color: navy; ' size='25' name='txtLinkCompany-1' id='txtLinkCompany-1' value="< ?php if (isset($_POST['txtLinkCompany-1'])) echo $_POST['txtLinkCompany-1'] ?>" /-->
+					<input type='text' style='color: navy; ' size='25' name='txtLinkCompany-1' id='txtLinkCompany-1' value="Joshua Project" />
+                    <br /><span style="font-size: 10pt; ">Google map</span>
 				</td>
 				<td width="22%">
 					<!--input type='text' style='color: navy; ' size='27' name='txtLinkURL-1' id='txtLinkURL-1' value="< ?php if (isset($_POST['txtLinkURL-1'])) echo $_POST['txtLinkURL-1'] ?>" /-->
@@ -1516,10 +1516,10 @@ include ('./NT_Books.php');			// include the books of the NT
 						echo "&nbsp;";
 					echo "</td>";
 					echo "<td width='21%'>";
-						echo "<input type='text' name='txtLinkCompany-$i' id='txtLinkCompany-$i' style='color: navy; ' size='25' value='" . ( isset($_POST['txtLinkCompany-'.(string)$i]) ? $_POST['txtLinkCompany-'.(string)$i] : '' ) . "' />";
+						echo "<input type='text' name='txtLinkCompanyTitle-$i' id='txtLinkCompanyTitle-$i' style='color: navy; ' size='25' value='" . ( isset($_POST['txtLinkCompanyTitle-'.(string)$i]) ? $_POST['txtLinkCompanyTitle-'.(string)$i] : '' ) . "' />";
 					echo "</td>";
 					echo "<td width='21%'>";
-						echo "<input type='text' name='txtLinkCompanyTitle-$i' id='txtLinkCompanyTitle-$i' style='color: navy; ' size='25' value='" . ( isset($_POST['txtLinkCompanyTitle-'.(string)$i]) ? $_POST['txtLinkCompanyTitle-'.(string)$i] : '' ) . "' />";
+						echo "<input type='text' name='txtLinkCompany-$i' id='txtLinkCompany-$i' style='color: navy; ' size='25' value='" . ( isset($_POST['txtLinkCompany-'.(string)$i]) ? $_POST['txtLinkCompany-'.(string)$i] : '' ) . "' />";
 					echo "</td>";
 					echo "<td width='22%'>";
 						echo "<input type='text' name='txtLinkURL-$i' id='txtLinkURL-$i' style='color: navy; ' size='27' value='" . ( isset($_POST['txtLinkURL-'.(string)$i]) ? $_POST['txtLinkURL-'.(string)$i] : '' ) . "' />";
