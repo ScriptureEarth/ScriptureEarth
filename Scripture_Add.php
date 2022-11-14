@@ -81,7 +81,7 @@ include ('./NT_Books.php');			// include the books of the NT
 <meta name="Updated-by"                     content="Scott Starker, Lærke Roager" />
 <title>Scripture Add</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Add.css" />
-<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.0.6"></script>
+<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.0.7"></script>
 <script type="text/javascript" language="javascript" src="_js/Scripture_Add.js?v=1.0.2"></script>
 <script>
 	//let ALNindex = 1;
@@ -1347,7 +1347,7 @@ include ('./NT_Books.php');			// include the books of the NT
 							echo "&nbsp;";
 						echo "</td>";
 						echo "<td width='13%'>";
-							echo "<input type='text' name='txtOther-$i' id='txtOther-$i' style='color: navy; ' size='17' value='" . ( isset($_POST['txtOther-'.(string)$i]) ? $_POST['txtOther-'.(string)$i] : '' ). "' />";
+							echo "<input type='text' name='txtOther-$i' id='txtOther-$i' style='color: navy; ' size='17' value='" . ( isset($_POST['txtOther-'.(string)$i]) ? $_POST['txtOther-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='13%'>";
 							echo "<input type='text' name='txtOtherTitle-$i' id='txtOtherTitle-$i' style='color: navy; ' size='18' value='" . ( isset($_POST['txtOtherTitle-'.(string)$i]) ? $_POST['txtOtherTitle-'.(string)$i] : '' ) . "' />";

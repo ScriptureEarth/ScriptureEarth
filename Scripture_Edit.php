@@ -35,7 +35,7 @@ if (!$retval) {
 <title>Scripture Edit</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Edit.css" />
 <script type="text/javascript" language="javascript" src="_js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.0.6"></script>
+<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.0.7"></script>
 <!-- see the bottom of this html file for CMS_events.js -->
 </head>
 <body>
@@ -597,8 +597,8 @@ function NT_Test($PDF, $NT_Index) {
 					<input type='text' name='txtAltNames-1' id='txtAltNames-1' style='color: navy; ' size='50' onclick='ALNidx(1)' value="<?php if (isset($_POST['txtAltNames-1'])) echo $_POST['txtAltNames-1']; else echo ${'txtAltNames-$i'}; ?>" />
 				</td>
                 <td width="4%" style="text-align: right; ">
-                    <div onClick="moveUpDownALN('tableAltNames', 'up')" style="cursor: pointer; "><img src="images/up.png" width="24" height="20" /></div>
-                    <div onClick="moveUpDownALN('tableAltNames', 'down')" style="cursor: pointer; "><img src="images/down.png" width="24" height="18" /></div>
+                    <div onclick="moveUpDownALN('tableAltNames', 'up')" style="cursor: pointer; "><img src="images/up.png" width="24" height="20" /></div>
+                    <div onclick="moveUpDownALN('tableAltNames', 'down')" style="cursor: pointer; "><img src="images/down.png" width="24" height="18" /></div>
                 </td>
 				<td width="17%" style="text-align: right; ">
 					<input id="addRowTableAlt" style="font-size: 9pt; " type="button" value="Add" />
@@ -3403,23 +3403,23 @@ function NT_Test($PDF, $NT_Index) {
             	<td width="15%"><span style="font-size: 8pt; ">(one line per Other Book)</span><br /><span style="font-size: 10pt; ">For example:</span>
                 </td>
 				<td width="13%">
-					<input type='text' style='color: navy; ' size='17' name='txtOther-1' id='txtOther-1' value="<?php if (isset($_POST['txtOther-1'])) echo $_POST['txtOther-1']; else echo ${'txtOther-$i'}; ?>" />
+					<input type='text' style='color: navy; ' size='17' name='txtOther-1' id='txtOther-1' onclick='Otheridx(1)' value="<?php if (isset($_POST['txtOther-1'])) echo $_POST['txtOther-1']; else echo ${'txtOther-$i'}; ?>" />
                     <br /><span style="font-size: 10pt; ">OT Selections</span>
 				</td>
 				<td width="13">
-					<input type='text' style='color: navy; ' size='18' name='txtOtherTitle-1' id='txtOtherTitle-1' value="<?php if (isset($_POST['txtOtherTitle-1'])) echo $_POST['txtOtherTitle-1']; else echo ${'txtOtherTitle-$i'}; ?>" />
+					<input type='text' style='color: navy; ' size='18' name='txtOtherTitle-1' id='txtOtherTitle-1' onclick='Otheridx(1)' value="<?php if (isset($_POST['txtOtherTitle-1'])) echo $_POST['txtOtherTitle-1']; else echo ${'txtOtherTitle-$i'}; ?>" />
                     <br /><span style="font-size: 7pt; ">Selections from the Old Testament</span>
 				</td>
 				<td width="13%">
-					<input type='text' style='color: navy; ' size='18' name='txtOtherPDF-1' id='txtOtherPDF-1' value="<?php if (isset($_POST['txtOtherPDF-1'])) echo $_POST['txtOtherPDF-1']; else echo ${'txtOtherPDF-$i'}; ?>" />
+					<input type='text' style='color: navy; ' size='18' name='txtOtherPDF-1' id='txtOtherPDF-1' onclick='Otheridx(1)' value="<?php if (isset($_POST['txtOtherPDF-1'])) echo $_POST['txtOtherPDF-1']; else echo ${'txtOtherPDF-$i'}; ?>" />
                     <br /><span style="font-size: 10pt; ">00-POT[ISO]-web.pdf</span>
 				</td>
 				<td width="13%">
-					<input type='text' style='color: navy; ' size='18' name='txtOtherAudio-1' id='txtOtherAudio-1' value="<?php if (isset($_POST['txtOtherAudio-1'])) echo $_POST['txtOtherAudio-1']; else echo ${'txtOtherAudio-$i'}; ?>" />
+					<input type='text' style='color: navy; ' size='18' name='txtOtherAudio-1' id='txtOtherAudio-1' onclick='Otheridx(1)' value="<?php if (isset($_POST['txtOtherAudio-1'])) echo $_POST['txtOtherAudio-1']; else echo ${'txtOtherAudio-$i'}; ?>" />
                     <br /><span style="font-size: 10pt; ">&nbsp;</span>
 				</td>
 				<td width="13%">
-					<input type='text' style='color: navy; ' size='18' name='txtDownload_video-1' id='txtDownload_video-1' value="<?php if (isset($_POST['txtDownload_video-1'])) echo $_POST['txtDownload_video-1']; else echo ${'txtDownload_video-$i'}; ?>" />
+					<input type='text' style='color: navy; ' size='18' name='txtDownload_video-1' id='txtDownload_video-1' onclick='Otheridx(1)' value="<?php if (isset($_POST['txtDownload_video-1'])) echo $_POST['txtDownload_video-1']; else echo ${'txtDownload_video-$i'}; ?>" />
                     <br /><span style="font-size: 10pt; ">&nbsp;</span>
 				</td>
 				<td width="4%" style="text-align: right; ">
@@ -3441,19 +3441,19 @@ function NT_Test($PDF, $NT_Index) {
 							echo "&nbsp;";
 						echo "</td>";
 						echo "<td width='13%'>";
-							echo "<input type='text' name='txtOther-$i' id='txtOther-$i' style='color: navy; ' size='17' value='" . ( isset($_POST['txtOther-'.(string)$i]) ? $_POST['txtOther-'.(string)$i] : '' ). "' />";
+							echo "<input type='text' name='txtOther-$i' id='txtOther-$i' style='color: navy; ' size='17' onclick='Otheridx($i)' value='" . (isset($_POST['txtOther-'.(string)$i]) ? $_POST['txtOther-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='13%'>";
-							echo "<input type='text' name='txtOtherTitle-$i' id='txtOtherTitle-$i' style='color: navy; ' size='18' value='" . ( isset($_POST['txtOtherTitle-'.(string)$i]) ? $_POST['txtOtherTitle-'.(string)$i] : '' ) . "' />";
+							echo "<input type='text' name='txtOtherTitle-$i' id='txtOtherTitle-$i' style='color: navy; ' size='18' onclick='Otheridx($i)' value='" . (isset($_POST['txtOtherTitle-'.(string)$i]) ? $_POST['txtOtherTitle-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='13%'>";
-							echo "<input type='text' name='txtOtherPDF-$i' id='txtOtherPDF-$i' style='color: navy; ' size='18' value='" . ( isset($_POST['txtOtherPDF-'.(string)$i]) ? $_POST['txtOtherPDF-'.(string)$i] : '' ) . "' />";
+							echo "<input type='text' name='txtOtherPDF-$i' id='txtOtherPDF-$i' style='color: navy; ' size='18' onclick='Otheridx($i)' value='" . (isset($_POST['txtOtherPDF-'.(string)$i]) ? $_POST['txtOtherPDF-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='13%'>";
-							echo "<input type='text' name='txtOtherAudio-$i' id='txtOtherAudio-$i' style='color: navy; ' size='18' value='" . ( isset($_POST['txtOtherAudio-'.(string)$i]) ? $_POST['txtOtherAudio-'.(string)$i] : '' ) . "' />";
+							echo "<input type='text' name='txtOtherAudio-$i' id='txtOtherAudio-$i' style='color: navy; ' size='18' onclick='Otheridx($i)' value='" . (isset($_POST['txtOtherAudio-'.(string)$i]) ? $_POST['txtOtherAudio-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='13%'>";
-							echo "<input type='text' name='txtDownload_video-$i' id='txtDownload_video-$i' style='color: navy; ' size='18' value='" . ( isset($_POST['txtDownload_video-'.(string)$i]) ? $_POST['txtDownload_video-'.(string)$i] : '' ) . "' />";
+							echo "<input type='text' name='txtDownload_video-$i' id='txtDownload_video-$i' style='color: navy; ' size='18' onclick='Otheridx($i)' value='" . (isset($_POST['txtDownload_video-'.(string)$i]) ? $_POST['txtDownload_video-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='20%' colspan='2'>";
 							echo "&nbsp;";
@@ -3475,19 +3475,19 @@ function NT_Test($PDF, $NT_Index) {
 								echo "&nbsp;";
 							echo "</td>";
 							echo "<td width='13%'>";
-								echo "<input type='text' name='txtOther-$i' id='txtOther-$i' style='color: navy; ' size='17' value='" . ${'txtOther-$i'}. "' />";
+								echo "<input type='text' name='txtOther-$i' id='txtOther-$i' style='color: navy; ' size='17' onclick='Otheridx($i)' value='" . ${'txtOther-$i'}. "' />";
 							echo "</td>";
 							echo "<td width='13%'>";
-								echo "<input type='text' name='txtOtherTitle-$i' id='txtOtherTitle-$i' style='color: navy; ' size='18' value='" . ${'txtOtherTitle-$i'} . "' />";
+								echo "<input type='text' name='txtOtherTitle-$i' id='txtOtherTitle-$i' style='color: navy; ' size='18' onclick='Otheridx($i)' value='" . ${'txtOtherTitle-$i'} . "' />";
 							echo "</td>";
 							echo "<td width='13%'>";
-								echo "<input type='text' name='txtOtherPDF-$i' id='txtOtherPDF-$i' style='color: navy; ' size='18' value='" . ${'txtOtherPDF-$i'} . "' />";
+								echo "<input type='text' name='txtOtherPDF-$i' id='txtOtherPDF-$i' style='color: navy; ' size='18' onclick='Otheridx($i)' value='" . ${'txtOtherPDF-$i'} . "' />";
 							echo "</td>";
 							echo "<td width='13%'>";
-								echo "<input type='text' name='txtOtherAudio-$i' id='txtOtherAudio-$i' style='color: navy; ' size='18' value='" . ${'txtOtherAudio-$i'} . "' />";
+								echo "<input type='text' name='txtOtherAudio-$i' id='txtOtherAudio-$i' style='color: navy; ' size='18' onclick='Otheridx($i)' value='" . ${'txtOtherAudio-$i'} . "' />";
 							echo "</td>";
 							echo "<td width='13%'>";
-								echo "<input type='text' name='txtDownload_video-$i' id='txtDownload_video-$i' style='color: navy; ' size='18' value='" . ${'txtDownload_video-$i'} . "' />";
+								echo "<input type='text' name='txtDownload_video-$i' id='txtDownload_video-$i' style='color: navy; ' size='18' onclick='Otheridx($i)' value='" . ${'txtDownload_video-$i'} . "' />";
 							echo "</td>";
 							echo "<td width='20%' colspan='2'>";
 								echo "&nbsp;";
