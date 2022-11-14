@@ -103,8 +103,9 @@ function addRowToTableALN(tableId, txtId) {
     cellRight.appendChild(textNode2);
 }
 
-ALNindex = 0;
+let ALNindex = 0;
 
+// el.onclick in function addRowToTableALN() above. Ued in 
 function ALNidx(idx) { // set the txtAltNames-zz so that function moveUpDownALN(tableId, upDown) will work
     ALNindex = idx;
 }
@@ -411,12 +412,12 @@ function addLinksRowToTableCol4() {
     //el.options.add(objOption);
     el.appendChild(objOption);
 
-    objOption = document.createElement('option');
+    /*objOption = document.createElement('option');
     objOption.text = "Buy";
-    //objOption.appendChild(document.createTextNode('Buy'));
+    / /objOption.appendChild(document.createTextNode('Buy'));
     objOption.value = "linksBuy-" + iteration;
-    //el.options.add(objOption);
-    el.appendChild(objOption);
+    / /el.options.add(objOption);
+    el.appendChild(objOption);*/
 
     objOption = document.createElement('option');
     objOption.text = "Map";
@@ -460,6 +461,7 @@ function addRowToTableOther() {
     el.id = "txtOther-" + iteration;
     el.size = 17;
     el.style.color = "navy";
+    el.onclick = function() { Otheridx(iteration); }; // onclick function
     cellLeft.appendChild(el);
 
     // left center cell
@@ -470,6 +472,7 @@ function addRowToTableOther() {
     el.id = "txtOtherTitle-" + iteration;
     el.size = 18;
     el.style.color = "navy";
+    el.onclick = function() { Otheridx(iteration); }; // onclick function
     cellLeftCenter.appendChild(el);
 
     // right center cell
@@ -480,6 +483,7 @@ function addRowToTableOther() {
     el.id = "txtOtherPDF-" + iteration;
     el.size = 18;
     el.style.color = "navy";
+    el.onclick = function() { Otheridx(iteration); }; // onclick function
     cellRightCenter.appendChild(el);
 
     // right cell
@@ -490,6 +494,7 @@ function addRowToTableOther() {
     el.id = "txtOtherAudio-" + iteration;
     el.size = 18;
     el.style.color = "navy";
+    el.onclick = function() { Otheridx(iteration); }; // onclick function
     cellRight.appendChild(el);
 
     // last cell
@@ -500,12 +505,19 @@ function addRowToTableOther() {
     el.id = "txtDownload_video-" + iteration;
     el.size = 18;
     el.style.color = "navy";
+    el.onclick = function() { Otheridx(iteration); }; // onclick function
     cellLast.appendChild(el);
 
     // tail cell
     var cellTail = row.insertCell(6);
     var textNode2 = document.createTextNode(" ");
     cellTail.appendChild(textNode2);
+}
+
+let Otherindex = 0;
+
+function Otheridx(idx) { // set the txtOther-zz so that function moveUpDownOther(tableId, upDown) will work. el.onclick in function addRowToTableOther() above
+    Otherindex = idx;
 }
 
 /********************************************
@@ -1519,17 +1531,17 @@ function moveUpDownALN(tableId, upDown) {
 
     // ALNindex is a global variable
 
-    // build the array id from the input id numbers
+    // build the array id from the id element
     var id = [];
     var temp = "";
     for (var curRow = 0; curRow < lastRow; curRow++) { // index start with 0; ingore "curRow"
-        temp = tbl.rows[curRow].cells[1].getElementsByTagName("input")[0].id;
-        id.push(parseInt(temp.substr(temp.indexOf("-") + 1))); // add to id
+        temp = tbl.rows[curRow].cells[1].getElementsByTagName("input")[0].id;                       // tableOtherBooks.iterate row numbers.cell 1.first 'input'.id
+        id.push(parseInt(temp.substring(temp.indexOf("-") + 1)));                                   // push to id[]
         //console.log("curRow (index) = " + curRow + "; id[curRow] (value) = " + id[curRow] + "; " + tbl.rows[curRow].cells[1].getElementsByTagName("input")[0].value);								// value
-    };
+    }
 
-    // which input text ('txtAltNames-'+ALNindex) has the focus?
-    idIndex = id.indexOf(ALNindex); // 0 to lastRow - 1 order by actual input list; equals position
+    // the "text" ('txtAltNames-'+ALNindex) has the "focus". The value of "ALNindex" is el.onclick in function addRowToTableALN() above.
+    idIndex = id.indexOf(ALNindex);                                                                 // 0 to lastRow - 1 order by actual input list; equals position
     if (idIndex === 0 && upDown == "up") {
         return;
     }
@@ -1552,6 +1564,77 @@ function moveUpDownALN(tableId, upDown) {
         document.getElementById('txtAltNames-' + idxDown).value = currentValue;
         document.getElementById('txtAltNames-' + idxDown).focus();
         ALNindex = idxDown;
+    }
+}
+
+/**********************************************************
+				Other books: up or down
+**********************************************************/
+function moveUpDownOther(tableId, upDown) {
+    var tbl = document.getElementById(tableId);
+    var lastRow = tbl.rows.length; // that is 'tr'
+    var currentValue_1 = "";
+    var currentValue_2 = "";
+    var currentValue_3 = "";
+    var currentValue_4 = "";
+    var currentValue_5 = "";
+    var idIndex = 0;
+
+    // Otherindex is a global variable
+
+    // build the array id from the id element
+    var id = [];
+    var temp = "";
+    for (var curRow = 0; curRow < lastRow; curRow++) { // index start with 0; ingore "curRow"
+        temp = tbl.rows[curRow].cells[1].getElementsByTagName("input")[0].id;                       // tableOtherBooks.iterate row numbers.cell 1.first 'input'.id
+        id.push(parseInt(temp.substring(temp.indexOf("-") + 1)));                                   // push to id[]
+        //console.log("curRow (index) = " + curRow + "; id[curRow] (value) = " + id[curRow] + "; " + tbl.rows[curRow].cells[1].getElementsByTagName("input")[0].value);								// value
+    }
+
+    // the "text" ('txtOther-'+Otherindex) has the "focus". The value of "Otherindex" is el.onclick in function addRowToTableOther() above.
+    idIndex = id.indexOf(Otherindex);                                                               // 0 to lastRow - 1; actual "input" list; equals position
+    if (idIndex === 0 && upDown == "up") {
+        return;
+    }
+    if (idIndex === lastRow - 1 && upDown == "down") {
+        return;
+    }
+
+    //console.log("id[idIndex] = " + id[idIndex]);
+    currentValue_1 = document.getElementById('txtOther-' + id[idIndex]).value;
+    currentValue_2 = document.getElementById('txtOtherTitle-' + id[idIndex]).value;
+    currentValue_3 = document.getElementById('txtOtherPDF-' + id[idIndex]).value;
+    currentValue_4 = document.getElementById('txtOtherAudio-' + id[idIndex]).value;
+    currentValue_5 = document.getElementById('txtDownload_video-' + id[idIndex]).value;
+
+    if (upDown == "up") {
+        var idxUp = id[idIndex - 1];
+        document.getElementById('txtOther-' + id[idIndex]).value = document.getElementById('txtOther-' + idxUp).value;
+        document.getElementById('txtOther-' + idxUp).value = currentValue_1;
+        document.getElementById('txtOtherTitle-' + id[idIndex]).value = document.getElementById('txtOtherTitle-' + idxUp).value;
+        document.getElementById('txtOtherTitle-' + idxUp).value = currentValue_2;
+        document.getElementById('txtOtherPDF-' + id[idIndex]).value = document.getElementById('txtOtherPDF-' + idxUp).value;
+        document.getElementById('txtOtherPDF-' + idxUp).value = currentValue_3;
+        document.getElementById('txtOtherAudio-' + id[idIndex]).value = document.getElementById('txtOtherAudio-' + idxUp).value;
+        document.getElementById('txtOtherAudio-' + idxUp).value = currentValue_4;
+        document.getElementById('txtDownload_video-' + id[idIndex]).value = document.getElementById('txtDownload_video-' + idxUp).value;
+        document.getElementById('txtDownload_video-' + idxUp).value = currentValue_5;
+        document.getElementById('txtOther-' + idxUp).focus();
+        Otherindex = idxUp;
+    } else { // upDown == "down"
+        var idxDown = id[idIndex + 1];
+        document.getElementById('txtOther-' + id[idIndex]).value = document.getElementById('txtOther-' + idxDown).value;
+        document.getElementById('txtOther-' + idxDown).value = currentValue_1;
+        document.getElementById('txtOtherTitle-' + id[idIndex]).value = document.getElementById('txtOtherTitle-' + idxDown).value;
+        document.getElementById('txtOtherTitle-' + idxDown).value = currentValue_2;
+        document.getElementById('txtOtherPDF-' + id[idIndex]).value = document.getElementById('txtOtherPDF-' + idxDown).value;
+        document.getElementById('txtOtherPDF-' + idxDown).value = currentValue_3;
+        document.getElementById('txtOtherAudio-' + id[idIndex]).value = document.getElementById('txtOtherAudio-' + idxDown).value;
+        document.getElementById('txtOtherAudio-' + idxDown).value = currentValue_4;
+        document.getElementById('txtDownload_video-' + id[idIndex]).value = document.getElementById('txtDownload_video-' + idxDown).value;
+        document.getElementById('txtDownload_video-' + idxDown).value = currentValue_5;
+        document.getElementById('txtOther-' + idxDown).focus();
+        Otherindex = idxDown;
     }
 }
 

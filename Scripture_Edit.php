@@ -35,7 +35,7 @@ if (!$retval) {
 <title>Scripture Edit</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Edit.css" />
 <script type="text/javascript" language="javascript" src="_js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.0.5"></script>
+<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.0.6"></script>
 <!-- see the bottom of this html file for CMS_events.js -->
 </head>
 <body>
@@ -3359,16 +3359,16 @@ function NT_Test($PDF, $NT_Index) {
                     <td width="13%" style="padding-left: 3px; ">
                         Book Title
                     </td>
-                    <td width="14%" style="padding-left: 3px; ">
+                    <td width="13%" style="padding-left: 3px; ">
                         Brief Summary
                     </td>
-                    <td width="14%" style="padding-left: 3px; ">
+                    <td width="13%" style="padding-left: 3px; ">
                         PDF Filename
                     </td>
-                    <td width="14%" style="padding-left: 3px; ">
+                    <td width="13%" style="padding-left: 3px; ">
                         <b>OR</b> Audio (mp3) Filename
                     </td>
-                    <td width="30%" colspan="2" style="padding-left: 3px; ">
+                    <td width="33%" colspan="3" style="padding-left: 3px; ">
                         <b>OR</b> Download Video (mp4) Filename
                     </td>
                 </tr>
@@ -3406,21 +3406,25 @@ function NT_Test($PDF, $NT_Index) {
 					<input type='text' style='color: navy; ' size='17' name='txtOther-1' id='txtOther-1' value="<?php if (isset($_POST['txtOther-1'])) echo $_POST['txtOther-1']; else echo ${'txtOther-$i'}; ?>" />
                     <br /><span style="font-size: 10pt; ">OT Selections</span>
 				</td>
-				<td width="14%">
+				<td width="13">
 					<input type='text' style='color: navy; ' size='18' name='txtOtherTitle-1' id='txtOtherTitle-1' value="<?php if (isset($_POST['txtOtherTitle-1'])) echo $_POST['txtOtherTitle-1']; else echo ${'txtOtherTitle-$i'}; ?>" />
                     <br /><span style="font-size: 7pt; ">Selections from the Old Testament</span>
 				</td>
-				<td width="14%">
+				<td width="13%">
 					<input type='text' style='color: navy; ' size='18' name='txtOtherPDF-1' id='txtOtherPDF-1' value="<?php if (isset($_POST['txtOtherPDF-1'])) echo $_POST['txtOtherPDF-1']; else echo ${'txtOtherPDF-$i'}; ?>" />
                     <br /><span style="font-size: 10pt; ">00-POT[ISO]-web.pdf</span>
 				</td>
-				<td width="14%">
+				<td width="13%">
 					<input type='text' style='color: navy; ' size='18' name='txtOtherAudio-1' id='txtOtherAudio-1' value="<?php if (isset($_POST['txtOtherAudio-1'])) echo $_POST['txtOtherAudio-1']; else echo ${'txtOtherAudio-$i'}; ?>" />
                     <br /><span style="font-size: 10pt; ">&nbsp;</span>
 				</td>
-				<td width="14%">
+				<td width="13%">
 					<input type='text' style='color: navy; ' size='18' name='txtDownload_video-1' id='txtDownload_video-1' value="<?php if (isset($_POST['txtDownload_video-1'])) echo $_POST['txtDownload_video-1']; else echo ${'txtDownload_video-$i'}; ?>" />
                     <br /><span style="font-size: 10pt; ">&nbsp;</span>
+				</td>
+				<td width="4%" style="text-align: right; ">
+					<div onclick="moveUpDownOther('tableOtherBooks', 'up')" style="cursor: pointer; "><img src="images/up.png" width="24" height="20" /></div>
+					<div onclick="moveUpDownOther('tableOtherBooks', 'down')" style="cursor: pointer; margin-top: 3px; "><img src="images/down.png" width="24" height="18" /></div>
 				</td>
 				<td width="16%" style="text-align: right; ">
 					<input style="font-size: 9pt; " type="button" id="addOther" value="Add" />
@@ -3439,19 +3443,19 @@ function NT_Test($PDF, $NT_Index) {
 						echo "<td width='13%'>";
 							echo "<input type='text' name='txtOther-$i' id='txtOther-$i' style='color: navy; ' size='17' value='" . ( isset($_POST['txtOther-'.(string)$i]) ? $_POST['txtOther-'.(string)$i] : '' ). "' />";
 						echo "</td>";
-						echo "<td width='14%'>";
+						echo "<td width='13%'>";
 							echo "<input type='text' name='txtOtherTitle-$i' id='txtOtherTitle-$i' style='color: navy; ' size='18' value='" . ( isset($_POST['txtOtherTitle-'.(string)$i]) ? $_POST['txtOtherTitle-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
-						echo "<td width='14%'>";
+						echo "<td width='13%'>";
 							echo "<input type='text' name='txtOtherPDF-$i' id='txtOtherPDF-$i' style='color: navy; ' size='18' value='" . ( isset($_POST['txtOtherPDF-'.(string)$i]) ? $_POST['txtOtherPDF-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
-						echo "<td width='14%'>";
+						echo "<td width='13%'>";
 							echo "<input type='text' name='txtOtherAudio-$i' id='txtOtherAudio-$i' style='color: navy; ' size='18' value='" . ( isset($_POST['txtOtherAudio-'.(string)$i]) ? $_POST['txtOtherAudio-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
-						echo "<td width='14%'>";
+						echo "<td width='13%'>";
 							echo "<input type='text' name='txtDownload_video-$i' id='txtDownload_video-$i' style='color: navy; ' size='18' value='" . ( isset($_POST['txtDownload_video-'.(string)$i]) ? $_POST['txtDownload_video-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
-						echo "<td width='16%'>";
+						echo "<td width='20%' colspan='2'>";
 							echo "&nbsp;";
 						echo "</td>";
 					echo "</tr>";
@@ -3467,25 +3471,25 @@ function NT_Test($PDF, $NT_Index) {
 						${'txtOtherAudio-$i'}=$r['other_audio'];
 						${'txtDownload_video-$i'}=$r['download_video'];
 						echo "<tr valign='bottom' style='line-height: 10pt; '>";
-							echo "<td width='19%'>";
+							echo "<td width='15%'>";
 								echo "&nbsp;";
 							echo "</td>";
 							echo "<td width='13%'>";
 								echo "<input type='text' name='txtOther-$i' id='txtOther-$i' style='color: navy; ' size='17' value='" . ${'txtOther-$i'}. "' />";
 							echo "</td>";
-							echo "<td width='14%'>";
+							echo "<td width='13%'>";
 								echo "<input type='text' name='txtOtherTitle-$i' id='txtOtherTitle-$i' style='color: navy; ' size='18' value='" . ${'txtOtherTitle-$i'} . "' />";
 							echo "</td>";
-							echo "<td width='14%'>";
+							echo "<td width='13%'>";
 								echo "<input type='text' name='txtOtherPDF-$i' id='txtOtherPDF-$i' style='color: navy; ' size='18' value='" . ${'txtOtherPDF-$i'} . "' />";
 							echo "</td>";
-							echo "<td width='14%'>";
+							echo "<td width='13%'>";
 								echo "<input type='text' name='txtOtherAudio-$i' id='txtOtherAudio-$i' style='color: navy; ' size='18' value='" . ${'txtOtherAudio-$i'} . "' />";
 							echo "</td>";
-							echo "<td width='14%'>";
+							echo "<td width='13%'>";
 								echo "<input type='text' name='txtDownload_video-$i' id='txtDownload_video-$i' style='color: navy; ' size='18' value='" . ${'txtDownload_video-$i'} . "' />";
 							echo "</td>";
-							echo "<td width='16%'>";
+							echo "<td width='20%' colspan='2'>";
 								echo "&nbsp;";
 							echo "</td>";
 						echo "</tr>";
@@ -3650,11 +3654,11 @@ function NT_Test($PDF, $NT_Index) {
 		$num = 0;
 		if (isset($_POST['txtLinkCompany-1'])) {
 			if ($_POST['linksIcon-1'] == 'linksOther-1') $_POST['linksOther-1']=1; else $_POST['linksOther-1']=0;
-			if ($_POST['linksIcon-1'] == 'linksBuy-1') $_POST['linksBuy-1']=1; else $_POST['linksBuy-1']=0;
+			//if ($_POST['linksIcon-1'] == 'linksBuy-1') $_POST['linksBuy-1']=1; else $_POST['linksBuy-1']=0;
 			if ($_POST['linksIcon-1'] == 'linksMap-1') $_POST['linksMap-1']=1; else $_POST['linksMap-1']=0;
 			if ($_POST['linksIcon-1'] == 'linksGooglePlay-1') $_POST['linksGooglePlay-1']=1; else $_POST['linksGooglePlay-1']=0;
 			$_POST['linksOther'] = $_POST['linksOther-1'];
-			$_POST['linksBuy'] = $_POST['linksBuy-1'];									// to be tested
+			//$_POST['linksBuy'] = $_POST['linksBuy-1'];									// to be tested
 			$_POST['linksMap'] = $_POST['linksMap-1'];									// to be tested
 			$_POST['linksGooglePlay'] = $_POST['linksGooglePlay-1'];					// to be tested
 		}
@@ -3666,10 +3670,11 @@ function NT_Test($PDF, $NT_Index) {
 				${'txtLinkCompany-1'}=$r['company'];
 				${'txtLinkCompanyTitle-1'}=stripslashes($r['company_title']);
 				${'txtLinkURL-1'}=$r['URL'];
-				${'linksBuy-1'}=$r['buy'];
+				//${'linksBuy-1'}=$r['buy'];
 				${'linksMap-1'}=$r['map'];
 				${'linksGooglePlay-1'}=$r['GooglePlay'];
-				if (${'linksBuy-1'} == 1 || ${'linksMap-1'} == 1 || ${'linksGooglePlay-1'} == 1) {
+				//if (${'linksBuy-1'} == 1 || ${'linksMap-1'} == 1 || ${'linksGooglePlay-1'} == 1) {
+				if (${'linksMap-1'} == 1 || ${'linksGooglePlay-1'} == 1) {
 					${'linksOther-1'}=0;
 					${'linksOther'}=0;													// to be tested
 				}
@@ -3683,11 +3688,11 @@ function NT_Test($PDF, $NT_Index) {
 				${'txtLinkCompanyTitle-1'}='';
 				${'txtLinkURL-1'}='';
 				${'linksOther-1'}=0;
-				${'linksBuy-1'}=0;
+				//${'linksBuy-1'}=0;
 				${'linksMap-1'}=0;
 				${'linksGooglePlay-1'}=0;
 			}
-			${'linksBuy'}=${'linksBuy-1'};												// to be tested
+			//${'linksBuy'}=${'linksBuy-1'};												// to be tested
 			${'linksMap'}=${'linksMap-1'};												// to be tested
 			${'linksGooglePlay'}=${'linksGooglePlay-1'};								// to be tested
 		}
@@ -3696,11 +3701,11 @@ function NT_Test($PDF, $NT_Index) {
 			${'txtLinkCompanyTitle-1'}='';
 			${'txtLinkURL-1'}='';
 			${'linksOther-1'}=0;
-			${'linksBuy-1'}=0;
+			//${'linksBuy-1'}=0;
 			${'linksMap-1'}=0;
 			${'linksGooglePlay-1'}=0;
 			${'linksOther'}=0;															// to be tested
-			${'linksBuy'}=0;															// to be tested
+			//${'linksBuy'}=0;															// to be tested
 			${'linksMap'}=0;															// to be tested
 			${'linksGooglePlay'}=0;														// to be tested
 		}
@@ -3726,7 +3731,7 @@ function NT_Test($PDF, $NT_Index) {
 				<td width="8%">
                     <select name="linksIcon-1" id="linksIcon-1" style='color: navy; '>
                         <option value="linksOther-1" <?php echo ( isset($_POST['linksOther-1']) ? ($_POST['linksOther-1'] == 1 ? " selected='selected'" : "") : (${'linksOther-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Other</option>
-                        <option value="linksBuy-1" <?php echo ( isset($_POST['linksBuy-1']) ? ($_POST['linksBuy-1'] == 1 ? " selected='selected'" : "") : (${'linksBuy-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Buy</option>
+                        <!--option value="linksBuy-1" < ?php echo ( isset($_POST['linksBuy-1']) ? ($_POST['linksBuy-1'] == 1 ? " selected='selected'" : "") : (${'linksBuy-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Buy</option-->
                         <option value="linksMap-1" <?php echo ( isset($_POST['linksMap-1']) ? ($_POST['linksMap-1'] == 1 ? " selected='selected'" : "") : (${'linksMap-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Map</option>
                         <option value="linksGooglePlay-1" <?php echo ( isset($_POST['linksGooglePlay-1']) ? ($_POST['linksGooglePlay-1'] == 1 ? " selected='selected'" : "") : (${'linksGooglePlay-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Google Play</option>
                     </select>
@@ -3757,13 +3762,13 @@ function NT_Test($PDF, $NT_Index) {
 						echo "</td>";
 						echo "<td width='8%'>";
 							if ($_POST['linksIcon-'.(string)$i] == 'linksOther-'.$i) ${'linksOther-$i'}=1; else ${'linksOther-$i'}=0;
-							if ($_POST['linksIcon-'.(string)$i] == 'linksBuy-'.$i) ${'linksBuy-$i'}=1; else ${'linksBuy-$i'}=0;
+							//if ($_POST['linksIcon-'.(string)$i] == 'linksBuy-'.$i) ${'linksBuy-$i'}=1; else ${'linksBuy-$i'}=0;
 							if ($_POST['linksIcon-'.(string)$i] == 'linksMap-'.$i) ${'linksMap-$i'}=1; else ${'linksMap-$i'}=0;
 							if ($_POST['linksIcon-'.(string)$i] == 'linksGooglePlay-'.$i) ${'linksGooglePlay-$i'}=1; else ${'linksGooglePlay-$i'}=0;
 							?>
                             <select name="linksIcon-<?php echo $i ?>" id="linksIcon-<?php echo $i ?>" style='color: navy; '>
                                 <option value="linksOther-<?php echo $i ?>" <?php echo ( isset($_POST['linksOther-'.(string)$i]) ? ($_POST['linksOther-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksOther-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Other</option>
-                                <option value="linksBuy-<?php echo $i ?>" <?php echo ( isset($_POST['linksBuy-'.(string)$i]) ? ($_POST['linksBuy-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksBuy-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Buy</option>
+                                <!--option value="linksBuy-< ?php echo $i ?>" < ?php echo ( isset($_POST['linksBuy-'.(string)$i]) ? ($_POST['linksBuy-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksBuy-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Buy</option-->
                                 <option value="linksMap-<?php echo $i ?>" <?php echo ( isset($_POST['linksMap-'.(string)$i]) ? ($_POST['linksMap-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksMap-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Map</option>
                                 <option value="linksGooglePlay-<?php echo $i ?>" <?php echo ( isset($_POST['linksGooglePlay-'.(string)$i]) ? ($_POST['linksGooglePlay-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksGooglePlay-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Google Play</option>
                             </select>
@@ -3782,10 +3787,11 @@ function NT_Test($PDF, $NT_Index) {
 						${'txtLinkCompany-$i'}=$r['company'];
 						${'txtLinkCompanyTitle-$i'}=stripslashes($r['company_title']);
 						${'txtLinkURL-$i'}=$r['URL'];
-						${'linksBuy-$i'}=$r['buy'];
+						//${'linksBuy-$i'}=$r['buy'];
 						${'linksMap-$i'}=$r['map'];
 						${'linksGooglePlay-$i'}=$r['GooglePlay'];
-						if (${'linksBuy-$i'} == "1" || ${'linksMap-$i'} == "1" || ${'linksGooglePlay-$i'} == "1" )
+						//if (${'linksBuy-$i'} == "1" || ${'linksMap-$i'} == "1" || ${'linksGooglePlay-$i'} == "1" )
+						if (${'linksMap-$i'} == "1" || ${'linksGooglePlay-$i'} == "1" )
 							${'linksOther-$i'}="0";
 						else
 							${'linksOther-$i'}="1";
@@ -3806,7 +3812,7 @@ function NT_Test($PDF, $NT_Index) {
 								?>
 								<select name="linksIcon-<?php echo $i ?>" id="linksIcon-<?php echo $i ?>" style='color: navy; '>
 									<option value="linksOther-<?php echo $i ?>" <?php echo ( ${'linksOther-$i'}==1 ? " selected='selected'" : '' ) ?>>Other</option>
-									<option value="linksBuy-<?php echo $i ?>" <?php echo ( ${'linksBuy-$i'}==1 ? " selected='selected'" : '' ) ?>>Buy</option>
+									<!--option value="linksBuy-< ?php echo $i ?>" < ?php echo ( ${'linksBuy-$i'}==1 ? " selected='selected'" : '' ) ?>>Buy</option-->
 									<option value="linksMap-<?php echo $i ?>" <?php echo ( ${'linksMap-$i'}==1 ? " selected='selected'" : '' ) ?>>Map</option>
 									<option value="linksGooglePlay-<?php echo $i ?>" <?php echo ( ${'linksGooglePlay-$i'}==1 ? " selected='selected'" : '' ) ?>>Google Play</option>
 								</select>
