@@ -88,7 +88,7 @@
 		// Validate Email From
 			$email = filter_input( INPUT_POST, 'email', FILTER_SANITIZE_EMAIL ); 
 			$email = trim($email);
-			if ($email == '' || !filter_var( $email, FILTER_VALIDATE_EMAIL )) {  
+			if ($email != '' && !filter_var( $email, FILTER_VALIDATE_EMAIL )) {  
 				$emailError = '' . $email . ' is <strong>NOT</strong> a valid email address.';  
 				$hasError = true;	
 			}
