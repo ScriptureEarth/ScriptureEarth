@@ -234,8 +234,8 @@ if (strlen($TryLanguage) > 2) {
 				$ROD_Code = $row['ROD_Code'];
 				$Variant_Code = $row['Variant_Code'];
 				$VD = '';
-				$URL = '';
-				$optional = '';
+				$URL = $row['Cell_Phone_File'];
+				$optional = $row['optional'];
 				
 				//$query = "SELECT DISTINCT $SpecificCountry FROM scripture_main, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO_ROD_index = $ISO_ROD_index";
 				$stmt_SC->bind_param('i', $ISO_ROD_index);										// bind parameters for markers
