@@ -54,7 +54,7 @@ div.linePointer {
 	cursor: pointer;
 	display: inline;
 }
-div.linePointer:hover{
+div.linePointer:hover {
     border-bottom:2px solid red;
 }
 </style>
@@ -325,255 +325,255 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 				16			010000		NT View text
 				32			100000		OT View text
 		*/
-	/*
-		How about creating a new table called SAB_folder table and a new field called sab_folder. ("tzoCHA") Then grab the data and create new records for SAB_folder using the code below.
-		But it won't work for previous records pre scriptoria.
-	*/
-	/*
-		Note: the js sessionStorage is extended to any new tabs and windows when they are opened from the parent window!
-	*/
-	$SABindex=0;
-	$query="SELECT `url`, `subfolder`, `description`, `pre_scriptoria` FROM `SAB_scriptoria` WHERE `ISO_ROD_index` = '$ISO_ROD_index'";			// parent table of SAB table
-	$result_sub=$db->query($query);
-	$num_sub=$result_sub->num_rows;
-	if ($result_sub && $num_sub > 0) {
-		while ($row_sub=$result_sub->fetch_array(MYSQLI_ASSOC)) {												// SAB_scriptoria table
-			$SABurl=trim($row_sub['url']);
-			$subfolder=trim($row_sub['subfolder']);
-			$description=trim($row_sub['description']);
-			$preScriptoria=trim($row_sub['pre_scriptoria']);
-			if ($SABurl != '') {
-				echo '<tr>';
-					echo '<td>';
-						echo "<div class='linePointer' onclick='SAB_Scriptoria_Other(\"$SABurl\")'><img class='iconActions' ";
-						echo "src='../images/SAB-readListen-icon.png' alt='".translate('Read/Listen/View', $st, 'sys')."' title='".translate('Read/Listen/View', $st, 'sys')."' /></div>";
-					echo '</td>';
-					echo '<td>';
-						echo "<div class='linePointer' title='".translate('Read/Listen/View', $st, 'sys')."' onclick='SAB_Scriptoria_Other(\"$SABurl\")'>" . translate('Read/Listen/View', $st, 'sys');
-						if ($description != '') {
-							echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
+		/*
+			How about creating a new table called SAB_folder table and a new field called sab_folder. ("tzoCHA") Then grab the data and create new records for SAB_folder using the code below.
+			But it won't work for previous records pre scriptoria.
+		*/
+		/*
+			Note: the js sessionStorage is extended to any new tabs and windows when they are opened from the parent window!
+		*/
+		$SABindex=0;
+		$query="SELECT `url`, `subfolder`, `description`, `pre_scriptoria` FROM `SAB_scriptoria` WHERE `ISO_ROD_index` = '$ISO_ROD_index'";			// parent table of SAB table
+		$result_sub=$db->query($query);
+		$num_sub=$result_sub->num_rows;
+		if ($result_sub && $num_sub > 0) {
+			while ($row_sub=$result_sub->fetch_array(MYSQLI_ASSOC)) {												// SAB_scriptoria table
+				$SABurl=trim($row_sub['url']);
+				$subfolder=trim($row_sub['subfolder']);
+				$description=trim($row_sub['description']);
+				$preScriptoria=trim($row_sub['pre_scriptoria']);
+				if ($SABurl != '') {
+					echo '<tr>';
+						echo '<td>';
+							echo "<div class='linePointer' onclick='SAB_Scriptoria_Other(\"$SABurl\")'><img class='iconActions' ";
+							echo "src='../images/SAB-readListen-icon.png' alt='".translate('Read/Listen/View', $st, 'sys')."' title='".translate('Read/Listen/View', $st, 'sys')."' /></div>";
+						echo '</td>';
+						echo '<td>';
+							echo "<div class='linePointer' title='".translate('Read/Listen/View', $st, 'sys')."' onclick='SAB_Scriptoria_Other(\"$SABurl\")'>" . translate('Read/Listen/View', $st, 'sys');
+							if ($description != '') {
+								echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
+							}
+							echo '</div>';
+						echo '</td>';
+					echo '</tr>';
+				}
+				elseif ($preScriptoria != '') {																		// field set with preScriptoria
+					$SAB_Path = './data/'.$ISO.'/sab/';
+					if (file_exists("./data/$ISO/sab/js/".(strlen($preScriptoria) == 3 ? '' : $preScriptoria.'-') . 'book-names.js')) {			// not on the PHP server but my office/home oomputer
+						$SAB_Read = file("./data/$ISO/sab/js/".(strlen($preScriptoria) == 3 ? '' : $preScriptoria.'-') . 'book-names.js');		// read the '[ISO][SABnum]-book-names.js' file
+						foreach ($SAB_Read as $line_num => $line) {													// read through the lines
+							$l = '';
+							$l = preg_replace('/.*-([0-9]{2}-[A-Z0-9][A-Z]{2})-.*/', "$1", $line);					// set $l to e.g. '01-GEN'
+							if ($l == $line) continue;																// if not $ln = $line
+							$ln = (int)substr($l, 0, 2);															// get the number of the book"
+							if ($ln > 0 && $ln <= 39) {							// OT books							// if the book from the OT
+								$SAB_OT_lists[] = $ln;
+							}
+							elseif ($ln >= 41 && $ln <= 66) {					// NT books							// if the book from the NT
+								$SAB_NT_lists[] = $ln;
+							}
+							else {
+								// this line perminently left empty
+							}
 						}
-						echo '</div>';
-					echo '</td>';
-				echo '</tr>';
-			}
-			elseif ($preScriptoria != '') {																		// field set with preScriptoria
-				$SAB_Path = './data/'.$ISO.'/sab/';
-				if (file_exists("./data/$ISO/sab/js/".(strlen($preScriptoria) == 3 ? '' : $preScriptoria.'-') . 'book-names.js')) {			// not on the PHP server but my office/home oomputer
-					$SAB_Read = file("./data/$ISO/sab/js/".(strlen($preScriptoria) == 3 ? '' : $preScriptoria.'-') . 'book-names.js');		// read the '[ISO][SABnum]-book-names.js' file
-					foreach ($SAB_Read as $line_num => $line) {													// read through the lines
-						$l = '';
-						$l = preg_replace('/.*-([0-9]{2}-[A-Z0-9][A-Z]{2})-.*/', "$1", $line);					// set $l to e.g. '01-GEN'
-						if ($l == $line) continue;																// if not $ln = $line
-						$ln = (int)substr($l, 0, 2);															// get the number of the book"
-						if ($ln > 0 && $ln <= 39) {							// OT books							// if the book from the OT
-							$SAB_OT_lists[] = $ln;
-						}
-						elseif ($ln >= 41 && $ln <= 66) {					// NT books							// if the book from the NT
-							$SAB_NT_lists[] = $ln;
-						}
-						else {
-							// this line perminently left empty
-						}
+					}
+					else {
+						continue;
+					}
+
+					$SAB_OT_lists = [];
+					$SAB_NT_lists = [];
+					/*
+						OT Scripture App Builder (SAB) HTML
+					*/
+					$query="SELECT `ISO_ROD_index` FROM `SAB` WHERE `ISO_ROD_index` = '$ISO_ROD_index' AND `SAB_Book` <= 39 LIMIT 1";	// test to see if OT is there
+					$result2=$db->query($query);
+					$num=$result2->num_rows;
+					if ($result2 && $num > 0) {
+						$OT_SAB_Book = [];
+						$OT_SAB_Book_Chapter = [];
+						$OT_SAB_a_index = 0;
+						?>
+						<tr>
+							<td>
+								<?php
+								echo "<div style='display: inline; ' id='OT_SABRL_a'><img class='iconActions' ";
+								if ($SAB & 2) {
+									echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text with audio', $st, 'sys')."' title='".translate('Text with audio', $st, 'sys')."'";
+									$SynchronizedTextAndAudio = 1;
+								}
+								else if ($SAB & 8) {
+									echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text (with audio where available)', $st, 'sys')."' title='".translate('Text (with audio where available)', $st, 'sys')."'";
+								}
+								else {				// $SAB & 32
+									echo "src='../images/SAB-text-icon.jpg' alt='".translate('View text', $st, 'sys')."' title='".translate('View text', $st, 'sys')."'";
+								}
+								echo "/></div>";
+							echo "</td>";
+							echo "<td>";
+								?>
+								<div class='SABReadListen'>
+									<?php
+									echo "<div style='display: inline; ' id='OT_SABRL_b'>";
+									if ($SAB & 2) {
+										echo translate('Text with audio', $st, 'sys') . "</div>:";
+									}
+									else if ($SAB & 8) {
+										echo translate('Text (with audio where available)', $st, 'sys') . "</div>:";
+									}
+									else {		// $SAB & 32
+										echo translate('View text', $st, 'sys') . "</div>:";
+									}
+									echo " <div style='display: inline; ' id='OTSABSelects' style='display: inline; '>";
+									// Get and display Books
+									$query_array="SELECT * FROM SAB WHERE ISO_ROD_index = '$ISO_ROD_index' AND SAB_Book = ? AND (Book_Chapter_HTML IS NOT null AND trim(Book_Chapter_HTML) <> '') ORDER BY Book_Chapter_HTML ASC";
+									$stmt = $db->prepare($query_array);										// create a prepared statement
+									echo "<form name='form_OT_SAB_Books' id='form_OT_SAB_Books' style='display: inline; '>";
+									echo "<select name='OT_SAB_Book' id='OT_SAB_Book' class='selectOption'>";
+									echo "<option>".translate('Choose One...', $st, 'sys')."</option>";
+									foreach ($OT_array[OT_EngBook] as $a) {									// display the OT books in the English language. i.e. $a = 'Genesis', etc.
+										if (!empty($SAB_OT_lists)) {										// not on the PHP server but my office/home oomputer OR if $temp_Book_Chapter_HTML == ''
+											$t = 1;
+											foreach ($SAB_OT_lists as $SAB_OT_list) {						// go through the 'book-names.js' array from above
+												if ((int)$OT_array[0][$t] == ($SAB_OT_list + 0)) {			// see if the number of the book 'book-names.js' array matches the number of the $OT_array[0] book number
+													break;
+												}
+												$t++;
+											}
+											if ($t > count($OT_array[0])) continue;							// if the match is not found then continue
+										}
+										$temp = ($OT_SAB_a_index)+1;
+										$stmt->bind_param("i", $temp);										// bind parameters for markers
+										$stmt->execute();													// execute query
+										$result_array = $stmt->get_result();								// instead of bind_result (used for only 1 record):
+										$num_array=$result_array->num_rows;
+										if ($result_array && $num_array > 0) {
+											$OT_SAB_Book[] = $OT_SAB_a_index;
+											$r_array = $result_array->fetch_array(MYSQLI_ASSOC);			// now you can fetch the results into an array for 'for' - NICE (as oppossed to bind_result)
+											$OT_Book_Chapter_HTML = trim($r_array['Book_Chapter_HTML']);	// 1st chapter
+											$SAB_Audio = $r_array['SAB_Audio'];								// is there audio in the 1st chapter?
+											echo "<option id='OT_SAB_Book_${OT_SAB_a_index}' name='OT_SAB_Book_${OT_SAB_a_index}' class='speaker' value='${OT_Book_Chapter_HTML}'>".($SAB_Audio ? '&#128266; ' : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;').$a."</option>";
+										}
+										$OT_SAB_a_index++;
+									}
+									echo "</select>";
+									echo "</form>";
+									$stmt->close();															// close statement
+									if ($description != '') {
+										echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
+									}
+									echo "</div>";
+									?>
+								</div>
+							</td>
+						</tr>
+						<?php
+					}
+					/*
+						NT Scripture App Builder (SAB) HTML
+					*/
+					$query="SELECT `ISO_ROD_index` FROM `SAB` WHERE `ISO_ROD_index` = '$ISO_ROD_index' AND `SAB_Book` >= 41 LIMIT 1";	// test to see if NT is there
+					$result2=$db->query($query);
+					$num=$result2->num_rows;
+					if ($result2 && $num > 0) {
+						$NT_SAB_Book = [];
+						$NT_SAB_Book_Chapter = [];
+						$NT_SAB_a_index = 0;
+						?>
+						<tr>
+							<td>
+								<?php
+								echo "<div style='display: inline; ' id='NT_SABRL_a'><img class='iconActions' ";
+								if ($SAB & 1) {
+									echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text with audio', $st, 'sys')."' title='".translate('Text with audio', $st, 'sys')."'";
+									$SynchronizedTextAndAudio = 1;
+								}
+								else if ($SAB & 4) {
+									echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text (with audio where available)', $st, 'sys')."' title='".translate('Text (with audio where available)', $st, 'sys')."'";
+								}
+								else {		// $SAB & 16
+									echo "src='../images/SAB-text-icon.jpg' alt='".translate('View text', $st, 'sys')."' title='".translate('View text', $st, 'sys')."'";
+								}
+								echo "/></div>";
+							echo "</td>";
+							echo "<td>";
+								?>
+								<div class='SABReadListen'>
+									<?php
+									echo "<div style='display: inline; ' id='NT_SABRL_b'>";
+									if ($SAB & 1) {
+										echo translate('Text with audio', $st, 'sys') . "</div>";
+									}
+									else if ($SAB & 4) {
+										echo translate('Text (with audio where available)', $st, 'sys') . "</div>";
+									}
+									else {		// $SAB & 16
+										echo translate('View text', $st, 'sys') . "</div>";
+									}
+									echo " <div style='display: inline; ' id='NTSABSelects' style='display: inline; '>";
+									$query_array="SELECT * FROM SAB WHERE ISO_ROD_index = '$ISO_ROD_index' AND SAB_Book = ? AND (Book_Chapter_HTML IS NOT null AND trim(Book_Chapter_HTML) <> '') ORDER BY Book_Chapter_HTML ASC";
+									$stmt = $db->prepare($query_array);										// create a prepared statement
+									echo "<form name='form_NT_SAB_Books' id='form_NT_SAB_Books' style='display: inline; '>";
+									echo "<select name='NT_SAB_Book' id='NT_SAB_Book' class='selectOption'>";
+									echo "<option>".translate('Choose One...', $st, 'sys')."</option>";
+									foreach ($NT_array[NT_EngBook] as $a) {									// display the NT books in the MAJOR language!
+										if (!empty($SAB_NT_lists)) {										// not on the PHP server but my office/home oomputer OR if $temp_Book_Chapter_HTML == ''
+											$t = 1;
+											foreach ($SAB_NT_lists as $SAB_NT_list) {						// go through the 'book-names.js' array from above
+												if ((int)$NT_array[0][$t] == ($SAB_NT_list - 40)) {			// see if the number of the book 'book-names.js' array matches the number of the $OT_array[0] book number
+													break;
+												}
+												$t++;
+											}
+											if ($t > count($NT_array[0])) continue;							// if the match is not found then continue
+										}
+										$temp = ($NT_SAB_a_index)+41;
+										$stmt->bind_param("i", $temp);										// bind parameters for markers
+										$stmt->execute();													// execute query
+										$result_array = $stmt->get_result();								// instead of bind_result (used for only 1 record):
+										$num_array=$result_array->num_rows;
+										if ($result_array && $num_array > 0) {
+											$NT_SAB_Book[] = $NT_SAB_a_index;
+											$r_array = $result_array->fetch_array(MYSQLI_ASSOC);			// now you can fetch the results into an array for 'for' - NICE (as oppossed to bind_result)
+											$NT_Book_Chapter_HTML = trim($r_array['Book_Chapter_HTML']);	// 1st chapter
+											$SAB_Audio = $r_array['SAB_Audio'];								// is there audio in the 1st chapter?
+											echo "<option id='NT_SAB_Book_".$NT_SAB_a_index."' name='NT_SAB_Book_".$NT_SAB_a_index."' class='speaker' value='".$NT_Book_Chapter_HTML."'>".($SAB_Audio ? '&#128266; ' : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;').$a."</option>";
+										}
+										$NT_SAB_a_index++;
+									}
+									echo "</select>";
+									echo "</form>";
+									$stmt->close();															// close statement
+									if ($description != '') {
+											echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
+										}
+									echo "</div>";
+									?>
+								</div>
+							</td>
+						</tr>
+						<?php
 					}
 				}
 				else {
-					continue;
+					$SABindex++;
+					echo '<tr>';
+						echo '<td>';
+							echo "<div class='linePointer' onclick='SAB_Scriptoria_Index(\"$subfolder\")'><img class='iconActions' ";
+							echo "src='../images/SAB-readListen-icon.png' alt='".translate('Read/Listen/View', $st, 'sys')."' title='".translate('Read/Listen/View', $st, 'sys')."'/></div>";
+						echo '</td>';
+						echo '<td>';
+							echo "<div class='linePointer' onclick='SAB_Scriptoria_Index(\"$subfolder\")'>" . translate('Read/Listen/View', $st, 'sys') . " ";
+							if ($description != '') {
+								echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
+							}
+							echo '</div>';
+						echo '</td>';
+					echo '</tr>';
 				}
-
-				$SAB_OT_lists = [];
-				$SAB_NT_lists = [];
-				/*
-					 OT Scripture App Builder (SAB) HTML
-				*/
-				$query="SELECT `ISO_ROD_index` FROM `SAB` WHERE `ISO_ROD_index` = '$ISO_ROD_index' AND `SAB_Book` <= 39 LIMIT 1";	// test to see if OT is there
-				$result2=$db->query($query);
-				$num=$result2->num_rows;
-				if ($result2 && $num > 0) {
-					$OT_SAB_Book = [];
-					$OT_SAB_Book_Chapter = [];
-					$OT_SAB_a_index = 0;
-					?>
-					<tr>
-						<td>
-							<?php
-							echo "<div style='display: inline; ' id='OT_SABRL_a'><img class='iconActions' ";
-							if ($SAB & 2) {
-								echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text with audio', $st, 'sys')."' title='".translate('Text with audio', $st, 'sys')."'";
-								$SynchronizedTextAndAudio = 1;
-							}
-							else if ($SAB & 8) {
-								echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text (with audio where available)', $st, 'sys')."' title='".translate('Text (with audio where available)', $st, 'sys')."'";
-							}
-							else {				// $SAB & 32
-								echo "src='../images/SAB-text-icon.jpg' alt='".translate('View text', $st, 'sys')."' title='".translate('View text', $st, 'sys')."'";
-							}
-							echo "/></div>";
-						echo "</td>";
-						echo "<td>";
-							?>
-							<div class='SABReadListen'>
-								<?php
-								echo "<div style='display: inline; ' id='OT_SABRL_b'>";
-								if ($SAB & 2) {
-									echo translate('Text with audio', $st, 'sys') . "</div>:";
-								}
-								else if ($SAB & 8) {
-									echo translate('Text (with audio where available)', $st, 'sys') . "</div>:";
-								}
-								else {		// $SAB & 32
-									echo translate('View text', $st, 'sys') . "</div>:";
-								}
-								echo " <div style='display: inline; ' id='OTSABSelects' style='display: inline; '>";
-								// Get and display Books
-								$query_array="SELECT * FROM SAB WHERE ISO_ROD_index = '$ISO_ROD_index' AND SAB_Book = ? AND (Book_Chapter_HTML IS NOT null AND trim(Book_Chapter_HTML) <> '') ORDER BY Book_Chapter_HTML ASC";
-								$stmt = $db->prepare($query_array);										// create a prepared statement
-								echo "<form name='form_OT_SAB_Books' id='form_OT_SAB_Books' style='display: inline; '>";
-								echo "<select name='OT_SAB_Book' id='OT_SAB_Book' class='selectOption'>";
-								echo "<option>".translate('Choose One...', $st, 'sys')."</option>";
-								foreach ($OT_array[OT_EngBook] as $a) {									// display the OT books in the English language. i.e. $a = 'Genesis', etc.
-									if (!empty($SAB_OT_lists)) {										// not on the PHP server but my office/home oomputer OR if $temp_Book_Chapter_HTML == ''
-										$t = 1;
-										foreach ($SAB_OT_lists as $SAB_OT_list) {						// go through the 'book-names.js' array from above
-											if ((int)$OT_array[0][$t] == ($SAB_OT_list + 0)) {			// see if the number of the book 'book-names.js' array matches the number of the $OT_array[0] book number
-												break;
-											}
-											$t++;
-										}
-										if ($t > count($OT_array[0])) continue;							// if the match is not found then continue
-									}
-									$temp = ($OT_SAB_a_index)+1;
-									$stmt->bind_param("i", $temp);										// bind parameters for markers
-									$stmt->execute();													// execute query
-									$result_array = $stmt->get_result();								// instead of bind_result (used for only 1 record):
-									$num_array=$result_array->num_rows;
-									if ($result_array && $num_array > 0) {
-										$OT_SAB_Book[] = $OT_SAB_a_index;
-										$r_array = $result_array->fetch_array(MYSQLI_ASSOC);			// now you can fetch the results into an array for 'for' - NICE (as oppossed to bind_result)
-										$OT_Book_Chapter_HTML = trim($r_array['Book_Chapter_HTML']);	// 1st chapter
-										$SAB_Audio = $r_array['SAB_Audio'];								// is there audio in the 1st chapter?
-										echo "<option id='OT_SAB_Book_${OT_SAB_a_index}' name='OT_SAB_Book_${OT_SAB_a_index}' class='speaker' value='${OT_Book_Chapter_HTML}'>".($SAB_Audio ? '&#128266; ' : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;').$a."</option>";
-									}
-									$OT_SAB_a_index++;
-								}
-								echo "</select>";
-								echo "</form>";
-								$stmt->close();															// close statement
-								if ($description != '') {
-									echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
-								}
-								echo "</div>";
-								?>
-							</div>
-						</td>
-					 </tr>
-					<?php
-				}
-				/*
-					 NT Scripture App Builder (SAB) HTML
-				*/
-				$query="SELECT `ISO_ROD_index` FROM `SAB` WHERE `ISO_ROD_index` = '$ISO_ROD_index' AND `SAB_Book` >= 41 LIMIT 1";	// test to see if NT is there
-				$result2=$db->query($query);
-				$num=$result2->num_rows;
-				if ($result2 && $num > 0) {
-					$NT_SAB_Book = [];
-					$NT_SAB_Book_Chapter = [];
-					$NT_SAB_a_index = 0;
-					?>
-					<tr>
-						<td>
-							<?php
-							echo "<div style='display: inline; ' id='NT_SABRL_a'><img class='iconActions' ";
-							if ($SAB & 1) {
-								echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text with audio', $st, 'sys')."' title='".translate('Text with audio', $st, 'sys')."'";
-								$SynchronizedTextAndAudio = 1;
-							}
-							else if ($SAB & 4) {
-								echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text (with audio where available)', $st, 'sys')."' title='".translate('Text (with audio where available)', $st, 'sys')."'";
-							}
-							else {		// $SAB & 16
-								echo "src='../images/SAB-text-icon.jpg' alt='".translate('View text', $st, 'sys')."' title='".translate('View text', $st, 'sys')."'";
-							}
-							echo "/></div>";
-						echo "</td>";
-						echo "<td>";
-							?>
-							<div class='SABReadListen'>
-								<?php
-								echo "<div style='display: inline; ' id='NT_SABRL_b'>";
-								if ($SAB & 1) {
-									echo translate('Text with audio', $st, 'sys') . "</div>";
-								}
-								else if ($SAB & 4) {
-									echo translate('Text (with audio where available)', $st, 'sys') . "</div>";
-								}
-								else {		// $SAB & 16
-									echo translate('View text', $st, 'sys') . "</div>";
-								}
-								echo " <div style='display: inline; ' id='NTSABSelects' style='display: inline; '>";
-								$query_array="SELECT * FROM SAB WHERE ISO_ROD_index = '$ISO_ROD_index' AND SAB_Book = ? AND (Book_Chapter_HTML IS NOT null AND trim(Book_Chapter_HTML) <> '') ORDER BY Book_Chapter_HTML ASC";
-								$stmt = $db->prepare($query_array);										// create a prepared statement
-								echo "<form name='form_NT_SAB_Books' id='form_NT_SAB_Books' style='display: inline; '>";
-								echo "<select name='NT_SAB_Book' id='NT_SAB_Book' class='selectOption'>";
-								echo "<option>".translate('Choose One...', $st, 'sys')."</option>";
-								foreach ($NT_array[NT_EngBook] as $a) {									// display the NT books in the MAJOR language!
-									if (!empty($SAB_NT_lists)) {										// not on the PHP server but my office/home oomputer OR if $temp_Book_Chapter_HTML == ''
-										$t = 1;
-										foreach ($SAB_NT_lists as $SAB_NT_list) {						// go through the 'book-names.js' array from above
-											if ((int)$NT_array[0][$t] == ($SAB_NT_list - 40)) {			// see if the number of the book 'book-names.js' array matches the number of the $OT_array[0] book number
-												break;
-											}
-											$t++;
-										}
-										if ($t > count($NT_array[0])) continue;							// if the match is not found then continue
-									}
-									$temp = ($NT_SAB_a_index)+41;
-									$stmt->bind_param("i", $temp);										// bind parameters for markers
-									$stmt->execute();													// execute query
-									$result_array = $stmt->get_result();								// instead of bind_result (used for only 1 record):
-									$num_array=$result_array->num_rows;
-									if ($result_array && $num_array > 0) {
-										$NT_SAB_Book[] = $NT_SAB_a_index;
-										$r_array = $result_array->fetch_array(MYSQLI_ASSOC);			// now you can fetch the results into an array for 'for' - NICE (as oppossed to bind_result)
-										$NT_Book_Chapter_HTML = trim($r_array['Book_Chapter_HTML']);	// 1st chapter
-										$SAB_Audio = $r_array['SAB_Audio'];								// is there audio in the 1st chapter?
-										echo "<option id='NT_SAB_Book_".$NT_SAB_a_index."' name='NT_SAB_Book_".$NT_SAB_a_index."' class='speaker' value='".$NT_Book_Chapter_HTML."'>".($SAB_Audio ? '&#128266; ' : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;').$a."</option>";
-									}
-									$NT_SAB_a_index++;
-								}
-								echo "</select>";
-								echo "</form>";
-								$stmt->close();															// close statement
-								if ($description != '') {
-                                    	echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
-									}
-								echo "</div>";
-                                ?>
-							</div>
-						</td>
-					</tr>
-					<?php
-				}
-			}
-			else {
-				$SABindex++;
-				echo '<tr>';
-					echo '<td>';
-						echo "<div class='linePointer' onclick='SAB_Scriptoria_Index(\"$subfolder\")'><img class='iconActions' ";
-						echo "src='../images/SAB-readListen-icon.png' alt='".translate('Read/Listen/View', $st, 'sys')."' title='".translate('Read/Listen/View', $st, 'sys')."'/></div>";
-					echo '</td>';
-					echo '<td>';
-						echo "<div class='linePointer' onclick='SAB_Scriptoria_Index(\"$subfolder\")'>" . translate('Read/Listen/View', $st, 'sys') . " ";
-						if ($description != '') {
-							echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
-						}
-						echo '</div>';
-					echo '</td>';
-				echo '</tr>';
 			}
 		}
 	}
-}
 
 /*
 	*************************************************************************************************************
@@ -711,7 +711,7 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 				<?php
 			}
 		}
-		if ($OT_PDF) {
+		if ($OT_PDF > 0) {
 			$query="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF = 'OT'";			// check if there is a OT
 			$result1=$db->query($query);
 			$num=$result1->num_rows;
@@ -1040,7 +1040,6 @@ do this later when IOS packages become live (9.10.2022)
 		}
 	}
 }
-
 /*
 	*************************************************************************************************************
 		Is it audio playable?
@@ -2210,7 +2209,6 @@ do this later when IOS packages become live (9.10.2022)
 		disabled: Is thw PDF downloadable?
 	*************************************************************************************************************
 */
-
 /*
 	*************************************************************************************************************
 		Is it Bible.is? (if "Text with audio" exists here and if not then above)
@@ -2388,7 +2386,6 @@ do this later when IOS packages become live (9.10.2022)
 		disabled: Can it be viewed? (if (Bible.is || YouVersion || Bibles.org || "Text with audio") then here otherwise below)
 	*************************************************************************************************************
 */
-
 /*
 	*************************************************************************************************************
 		Is it a cell phone module (apart from the Android App and iOS Asset Package)?

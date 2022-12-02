@@ -22,8 +22,8 @@
  * 
  */
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Feedback</title>
@@ -69,7 +69,15 @@
 		}
 		
 		// Validate Name
-			$contactName = filter_input(INPUT_POST, 'contactName', FILTER_SANITIZE_STRING); 
+			//$contactName = filter_input(INPUT_POST, 'contactName', FILTER_SANITIZE_STRING);
+			if (isset($_POST['contactName'])) {
+				$contactName = $_POST['contactName'];
+				$contactName = trim($contactName);
+				if (preg_match('/(^[-_\.@0-9 ]+$|[\*=+\(\)\{\}%!\^\$|\/`"\\#])/', $contactName)) {
+					$nameError = 'Special characters and/or numbers found in your name.'; 
+					$hasError = true;
+				}
+			}
 		/*
 			if ($contactName == '') { 
 				$nameError = 'Please enter a valid name.';  
@@ -79,15 +87,22 @@
 
 		// Validate Email From
 			$email = filter_input( INPUT_POST, 'email', FILTER_SANITIZE_EMAIL ); 
-		/*
-			if (!filter_var( $email, FILTER_VALIDATE_EMAIL )) {  
+			$email = trim($email);
+			if ($email == '' || !filter_var( $email, FILTER_VALIDATE_EMAIL )) {  
 				$emailError = '' . $email . ' is <strong>NOT</strong> a valid email address.';  
 				$hasError = true;	
 			}
-			*/
 
 		// Validate Subject
-			$subject = filter_input( INPUT_POST, 'subject' , FILTER_SANITIZE_STRING ); 
+			//$subject = filter_input( INPUT_POST, 'subject' , FILTER_SANITIZE_STRING );
+			if (isset($_POST['subject'])) {
+				$subject = $_POST['subject'];
+				$subject = trim($subject);
+				if (preg_match('/(^[-_\.@0-9 ]+$|\(\)|&#|\$\(|\.\.\/|\$\{|@@|\)\)|\(\(|\|\||\\ )/', $subject)) {
+					$subjectError = 'Special characters and/or numbers found in your subject.'; 
+					$hasError = true;
+				}
+			}
 			/*
 			if ($subject == '') { 
 				$subjectError = 'Please enter a valid subject.';  
@@ -95,10 +110,18 @@
 			}
 			*/
 		// Validate Message
-			$message = filter_input( INPUT_POST, 'message', FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES); 	
-			if ($message == '') {  
-				$commentError = 'Please enter a message to send.<br/>';  
-				$hasError = true;	
+			//$message = filter_input( INPUT_POST, 'message', FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES); 	
+			if (isset($_POST['message'])) {
+				$message = $_POST['message'];
+				$message= trim($message);
+				if (preg_match('/^[0-9]+$/', $message)) {
+					$nameError = 'Numbers found in your message.'; 
+					$hasError = true;
+				}
+				if ($message == '') {  
+					$commentError = 'Please enter a message to send.<br/>';  
+					$hasError = true;	
+				}
 			}
 			if (isset($_POST['iso'])) {
 				// These \r\n 's need to be here!
