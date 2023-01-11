@@ -1,17 +1,17 @@
 <?php
-function OT_Test($PDF, $OT_Index) {					// returns true if the Book is part of the OT
-	global $OT_array;								// from OT_Books.php
+function OT_Test($PDF, $OT_Index) {						// returns true if the Book is part of the OT
+	global $OT_array;									// from OT_Books.php
 	
 	$a_index = 0;
 	foreach ($OT_array[$OT_Index] as $a) {
-		if ($OT_PDF == $a_index) return true;
+		if ($PDF == $a_index) return true;
 		$a_index++;
 	}
 	return false;
 }
 
-function NT_Test($PDF, $NT_Index) {					// returns true if the Book is part of the NT
-	global $NT_array;								// from NT_Books.php
+function NT_Test($PDF, $NT_Index) {						// returns true if the Book is part of the NT
+	global $NT_array;									// from NT_Books.php
 	
 	$a_index = 0;
 	foreach ($NT_array[$NT_Index] as $a) {
@@ -21,7 +21,7 @@ function NT_Test($PDF, $NT_Index) {					// returns true if the Book is part of t
 	return false;
 }
 
-function check_input($value) {						// used for ' and " that find it in the input
+function check_input($value) {							// used for ' and " that find it in the input
 	$value = trim($value);
 	if (is_string($value)) {
 		$value = implode("", explode("\\", $value));	// get rid of e.g. "\\\\\\\\\\\"

@@ -13,11 +13,11 @@
 			Scriptoria needs help on audio
 	*/
 	$db->query("DELETE FROM SAB WHERE ISO_ROD_index = $idx AND SAB_number = $SAB_number");
-    $SAB_Path = './data/'.$iso.'/'.$subfolder;
+    $SAB_Path = './data/'.$iso.'/sab/'.$subfolder;
 //echo 'SAB_Path = ' . $SAB_Path . '<br /><br />';
     $query="INSERT INTO SAB (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Book_Chapter_HTML, SAB_Book, SAB_Chapter, SAB_Audio, SAB_number) VALUES ('$iso', '$rod', '$var', $idx, ?, ?, ?, 0, $SAB_number)";
     $stmt_SAB=$db->prepare($query);
-    $SAB_array = glob($SAB_Path.'*.html');
+    $SAB_array = glob($SAB_Path.'/*.html');
     if (empty($SAB_array) === false) {																	// there are html files here
         foreach ($SAB_array as $SAB_record) {															// $SAB_array = glob($SAB_Path.'*.html'). e.g. "tuoC-02-GEN-001.html"
             $SAB_record = substr($SAB_record, strrpos($SAB_record, '/')+1);								// gets rids of directories. strrpos - returns the poistion of the last occurrence of the substring
@@ -35,7 +35,11 @@
         }
     }
     else {
-        echo '<h3>No HTML files found in '.$SAB_Path.'. Be sure you uploaded the HTML files from you\'re comptuer to the SE server AND then re-run the Edit of CMS again.</h3>';
+        ?>
+        <script>
+            text += "\r\nAlso, no HTML files found in <?php echo $SAB_Path ?>. Be sure you uploaded the HTML files from you\'re comptuer to the SE server AND then re-run the Edit of CMS again.";
+        </script>
+        <?php
     }
     $stmt_SAB->close();
 ?>

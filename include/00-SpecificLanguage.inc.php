@@ -1,4 +1,20 @@
 <?php
+// Created by Scott Starker
+// Updated by Scott Starker, Lærke Roager
+
+/*************************************************************************************************************************************
+*
+* 			CAREFUL when your making any additions! Any "onclick", "change", etc. that occurs on "input", "a", "div", etc.
+* 			should be placed in "_js/user_events.js". Also, in "_js/user_events.js" any errors in previous statements will
+* 			not works in any of the satesments then on. It can also help in the Firefox browser (version 79.0+) run
+* 			"00-SpecificLanguage.inc.php", menu "Tools", "Web developement", and "Toggle Tools". Then menu "Debugger". In the left
+* 			side of the windows click on "00-SpecificLanguage.inc.php", Localhost", "_js", and "user_events.js". Look down the js file
+* 			and find out if there are errors using the "underline" indicator and fix them if there are any. You can also
+* 			use "Scripture_[Add|Edit].php" just to make sure that the document.getElementById('...') name is current.
+*			But, BE CAREFUL!
+*
+**************************************************************************************************************************************/
+
 	if (!isset($LN)) die('Hacked!');
 	if (!isset($ISO_ROD_index)) {
 		die('Hacked!');
@@ -60,26 +76,12 @@ div.linePointer:hover {
 </style>
 
 <?php
-// Created by Scott Starker
-// Updated by Scott Starker, Lærke Roager
-
-/*************************************************************************************************************************************
-*
-* 			CAREFUL when your making any additions! Any "onclick", "change", etc. that occurs on "input", "a", "div", etc.
-* 			should be placed in "_js/user_events.js". Also, in "_js/user_events.js" any errors in previous statements will
-* 			not works in any of the satesments then on. It can also help in the Firefox browser (version 79.0+) run
-* 			"00-SpecificLanguage.inc.php", menu "Tools", "Web developement", and "Toggle Tools". Then menu "Debugger". In the left
-* 			side of the windows click on "00-SpecificLanguage.inc.php", Localhost", "_js", and "user_events.js". Look down the js file
-* 			and find out if there are errors using the "underline" indicator and fix them if there are any. You can also
-* 			use "Scripture_[Add|Edit].php" just to make sure that the document.getElementById('...') name is current.
-*			But, BE CAREFUL!
-*
-**************************************************************************************************************************************/
-
 $check_iOS = 0;
-if (preg_match('/Macintosh|iPhone|iPod|iPad/', $_SERVER['HTTP_USER_AGENT'])) {
-	/* This is iOS */
-	$check_iOS = 1;
+if (isset($_SERVER['HTTP_USER_AGENT'])) {
+	if (preg_match('/Macintosh|iPhone|iPod|iPad/', $_SERVER['HTTP_USER_AGENT'])) {
+		/* This is iOS */
+		$check_iOS = 1;
+	}
 }
 
 $mobile=0;
@@ -143,7 +145,8 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 		echo $LN;															// Language Name (LN)
 			
 		if (!is_null($Variant_Code) && $Variant_Code != '') {
-			$Variant_Lang = 'Variant_'.ucfirst($st);
+			//$Variant_Lang = 'Variant_'.ucfirst($st);						// but $st = Fra but it should be Fre
+			$Variant_Lang = 'Variant_'.substr($SpecificCountry, 0, 3);
 			$query = "SELECT $Variant_Lang FROM Variants WHERE Variant_Code = '$Variant_Code'";
 			$resultVar=$db->query($query) or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
 			if ($resultVar->num_rows > 0) {
@@ -173,7 +176,7 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 */
 	$query_alt="SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = '$ISO_ROD_index'";				// then look to the alt_lang_name table
 	$result_alt=$db->query($query_alt);
-	if ($result_alt && $result_alt->num_rows > 0) {
+	if ($result_alt->num_rows > 0) {
 		?>
 		<br />
 		<h2 id='<?php echo $ISO; ?>'>
@@ -247,7 +250,7 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 	$result2=$db->query($query);
 	if ($result2) {
 		if ($result2->num_rows == 1) {
-			$query="SELECT Goto_ISO_ROD_index, Goto_ISO, Goto_ROD_Code, Goto_Variant_Code, Percentage FROM GotoInterest WHERE ISO_ROD_index = '$ISO_ROD_index'";
+			$query="SELECT Goto_ISO_ROD_index, Goto_ISO, Goto_ROD_Code, Goto_Variant_Code, `Percentage` FROM GotoInterest WHERE ISO_ROD_index = '$ISO_ROD_index'";
 			$result2=$db->query($query);
 			if ($result2) {
 				$GotoInterest = $result2->num_rows;
@@ -270,7 +273,7 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 										Get the "Goto' language name.
 									*********************************************************************************************
 								*/
-								$query="SELECT * FROM scripture_main WHERE ISO_ROD_index = '$Goto_ISO_ROD_index'";
+								$query="SELECT * FROM nav_ln WHERE ISO_ROD_index = '$Goto_ISO_ROD_index'";
 								$result3=$db->query($query);
 								$row_Goto_ISO = $result3->fetch_array(MYSQLI_ASSOC);
 								$ML_Interest=$row_Goto_ISO["$MajorLanguage"];										// boolean
@@ -452,7 +455,7 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 											$r_array = $result_array->fetch_array(MYSQLI_ASSOC);			// now you can fetch the results into an array for 'for' - NICE (as oppossed to bind_result)
 											$OT_Book_Chapter_HTML = trim($r_array['Book_Chapter_HTML']);	// 1st chapter
 											$SAB_Audio = $r_array['SAB_Audio'];								// is there audio in the 1st chapter?
-											echo "<option id='OT_SAB_Book_${OT_SAB_a_index}' name='OT_SAB_Book_${OT_SAB_a_index}' class='speaker' value='${OT_Book_Chapter_HTML}'>".($SAB_Audio ? '&#128266; ' : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;').$a."</option>";
+											echo "<option id='OT_SAB_Book_{$OT_SAB_a_index}' name='OT_SAB_Book_{$OT_SAB_a_index}' class='speaker' value='{$OT_Book_Chapter_HTML}'>".($SAB_Audio ? '&#128266; ' : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;').$a."</option>";
 										}
 										$OT_SAB_a_index++;
 									}
@@ -935,111 +938,117 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 		Is it a cell phone module = Android App (apk) and iOS Asset Package?
 	*************************************************************************************************************
 */
-	/*
-		Android App (apk) and iOS Asset Package
-	*/
-if ($CellPhone) {
-	$query="SELECT * FROM CellPhone WHERE ISO_ROD_index = '$ISO_ROD_index' AND (Cell_Phone_Title = 'Android App' OR Cell_Phone_Title = 'iOS Asset Package') ORDER BY Cell_Phone_Title";
-	$result2=$db->query($query);
-	if ($result2) {
-		$c = 0;
-		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
-			$Cell_Phone_Title=$r2['Cell_Phone_Title'];
-			if (!$check_iOS && $Cell_Phone_Title=='iOS Asset Package') {
-				/*
-do this later when IOS packages become live (9.10.2022)
-				?>
-				<tr>
-					<td style='width: 45px; '>
-						<?php
-						echo "<img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
-					echo "</td>";
-					echo "<td>";
-						echo translate('The ScriptureEarth App is available in the Apple Store.', $st, 'sys');
-						?>
-					</td>
-				</tr>
-				<?php
-				*/
-			}
-			else {
-				$Cell_Phone_File=trim($r2['Cell_Phone_File']);
-				$Cell_Phone_File = str_replace("&", "%26", $Cell_Phone_File);
-				$optional=trim($r2['optional']);
-				$pos = strpos($Cell_Phone_File, '://');															// check to see if "://" is present (https;//zzzzz)
-				$c++;
-				if ($pos === false) {
-					if (!file_exists('./data/' . $ISO . '/study/' . $Cell_Phone_File)) {
-						$matches = [];
-						preg_match('/(.*-)[0-9.]+\.apk/', $Cell_Phone_File, $matches);							// SE (keep track of everything but the number)
-						$list = [];
-						$list = glob('./data/' . $ISO . '/study/' . $matches[1] . '*.apk');						// server (glob = find a file based on wildcards)
-						if (empty($list)) {
-							echo 'WARNING: Android App (apk) downloadable cell phone file is not there!<br />';
-						}
-						else {
+	if ($CellPhone) {
+		$query="SELECT * FROM CellPhone WHERE ISO_ROD_index = '$ISO_ROD_index' AND (Cell_Phone_Title = 'Android App' OR Cell_Phone_Title = 'iOS Asset Package') ORDER BY Cell_Phone_Title";
+		$result2=$db->query($query);
+		if ($result2) {
+			$c = 0;
+			while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
+				$Cell_Phone_Title=$r2['Cell_Phone_Title'];
+				if (!$check_iOS && $Cell_Phone_Title=='iOS Asset Package') {
+					//do this later when IOS packages become live (9.10.2022)
+					// came alive on 1/4/23
+					$optional=$r2['optional'];
+					?>
+					<tr>
+						<td style='width: 45px; '>
+							<?php
+							echo "<img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
+						echo "</td>";
+						echo "<td>";
+							echo translate('The ScriptureEarth App is available in the Apple Store.', $st, 'sys');
+							if ($optional != '' && !is_null($optional)) {
+								echo ' (' . (substr($optional, 0, 2) == '- ' ? substr($optional, 2) : $optional) . ')';
+							}
+							?>
+						</td>
+					</tr>
+					<?php
+				}
+				else {
+					$Cell_Phone_File=trim($r2['Cell_Phone_File']);
+					$Cell_Phone_File = str_replace("&", "%26", $Cell_Phone_File);
+					$optional=$r2['optional'];
+					if ($optional === null) {
+						$optional='';
+					}
+					else {
+						$optional=trim($optional);
+					}
+					$pos = strpos($Cell_Phone_File, '://');															// check to see if "://" is present (https://zzzzz)
+					$c++;
+					if ($pos === false) {
+						if (!file_exists('./data/' . $ISO . '/study/' . $Cell_Phone_File)) {
 							$matches = [];
-							preg_match('/.*\/(.*\.apk)/', $list[0], $matches);									// server
-							if (empty($matches)) {
+							preg_match('/(.*-)[0-9.]+\.apk/', $Cell_Phone_File, $matches);							// SE (keep track of everything but the number)
+							$list = [];
+							$list = glob('./data/' . $ISO . '/study/' . $matches[1] . '*.apk');						// server (glob = find a file based on wildcards)
+							if (empty($list)) {
 								echo 'WARNING: Android App (apk) downloadable cell phone file is not there!<br />';
 							}
 							else {
-								$Cell_Phone_File = $matches[1];
-								if (file_exists('./data/' . $ISO . '/study/' . $Cell_Phone_File)) {
-									//$db->query("UPDATE CellPhone SET Cell_Phone_File = '$Cell_Phone_File' WHERE ISO_ROD_index = '$ISO_ROD_index' AND Cell_Phone_Title = 'Android App'");
-									echo $c . ') would have UPDATE CellPhone<br />';
+								$matches = [];
+								preg_match('/.*\/(.*\.apk)/', $list[0], $matches);									// server
+								if (empty($matches)) {
+									echo 'WARNING: Android App (apk) downloadable cell phone file is not there!<br />';
 								}
 								else {
-									echo 'WARNING: Android App (apk) downloadable cell phone file is not there!<br />';
+									$Cell_Phone_File = $matches[1];
+									if (file_exists('./data/' . $ISO . '/study/' . $Cell_Phone_File)) {
+										//$db->query("UPDATE CellPhone SET Cell_Phone_File = '$Cell_Phone_File' WHERE ISO_ROD_index = '$ISO_ROD_index' AND Cell_Phone_Title = 'Android App'");
+										echo $c . ') would have UPDATE CellPhone<br />';
+									}
+									else {
+										echo 'WARNING: Android App (apk) downloadable cell phone file is not there!<br />';
+									}
 								}
 							}
 						}
+						else {
+							// file exists so don't do anything right now
+						}
 					}
+					if ($Cell_Phone_Title == 'Android App') {
+						?>
+						<tr>
+							<td style='width: 45px; '>
+								<?php
+								echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/android_module-icon.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
+							echo "</td>";
+							echo "<td>";
+								echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the app for', $st, 'sys') . ' ' . ($Cell_Phone_Title == 'Android App' ? 'Android' : $Cell_Phone_Title);
+								echo ' ' . $optional . '</div>';
+								?>
+							</td>
+						</tr>
+						<?php
+					}
+					// do this later when IOS packages become live (9.10.2022)
+					// came alive on 1/4/23
 					else {
-						// file exists so don't do anything right now
+						$query = "SELECT Cell_Phone_File, optional FROM CellPhone WHERE ISO_ROD_index = $ISO_ROD_index AND Cell_Phone_Title = 'iOS Asset Package'";
+						$result_iOS = $db->query($query);
+						$row_iOS = $result_iOS->fetch_array(MYSQLI_ASSOC);
+						$Cell_Phone_File = $row_iOS['Cell_Phone_File'];
+						$optional = $row_iOS['optional'];
+						?>
+						<tr>
+							<td style='width: 45px; '>
+								<?php
+								echo "<div class='linePointer' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /><div>";
+							echo "</td>";
+							echo "<td>";
+								echo "<div class='linePointer' title='" . translate('Download the Scripture Earth app for iOS', $st, 'sys') . "' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'>" . translate('Download', $st, 'sys') . " " . translate('the Scripture Earth app for iOS', $st, 'sys');
+								echo ' ' . $optional . '</div>';
+								?>
+							</td>
+						</tr>
+						<?php
 					}
 				}
-				if ($Cell_Phone_Title == 'Android App') {
-					?>
-					<tr>
-						<td style='width: 45px; '>
-							<?php
-							echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/android_module-icon.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
-						echo "</td>";
-						echo "<td>";
-							echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the app for', $st, 'sys') . ' ' . ($Cell_Phone_Title == 'Android App' ? 'Android' : $Cell_Phone_Title);
-							echo ' ' . $optional . '</div>';
-							?>
-						</td>
-					</tr>
-					<?php
-				}
-				/*
-do this later when IOS packages become live (9.10.2022)
-				else {
-					?>
-					<tr>
-						<td style='width: 45px; '>
-							<?php
-							$query = "SELECT Cell_Phone_File FROM CellPhone WHERE ISO_ROD_index = $ISO_ROD_index AND Cell_Phone_Title = 'iOS Asset Package'";
-							$result_iOS = $db->query($query);
-							$row_iOS = $result_iOS->fetch_array(MYSQLI_ASSOC);
-							$Cell_Phone_File = $row_iOS['Cell_Phone_File'];
-							echo "<div class='linePointer' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /><div>";
-						echo "</td>";
-						echo "<td>";
-							echo "<div class='linePointer' title='" . translate('Download the Scripture Earth app for iOS', $st, 'sys') . "' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'>" . translate('Download', $st, 'sys') . " " . translate('the Scripture Earth app for iOS', $st, 'sys');
-						echo ' ' . $optional . '</div>';
-							?>
-						</td>
-					</tr>
-					<?php
-				}
-				*/
 			}
 		}
 	}
-}
 /*
 	*************************************************************************************************************
 		Is it audio playable?
@@ -2123,7 +2132,7 @@ do this later when IOS packages become live (9.10.2022)
 							<td colspan='4' style='width: 100% '>
 								<div style="float: right; margin-top: 0; margin-left: 30px; margin-bottom: 0; ">
 									<?php
-									echo "<input type='button' id='AllOrNoneVideo_${z}' style='font-size: 11pt; font-weight: bold; ' value='".translate('Select all', $st, 'sys')."' onclick='DownloadAllVideoPlaylistClick(\"$z\", \"".translate('Select all', $st, 'sys')."\", \"".translate('Unselect all', $st, 'sys')."\")' />";
+									echo "<input type='button' id='AllOrNoneVideo_{$z}' style='font-size: 11pt; font-weight: bold; ' value='".translate('Select all', $st, 'sys')."' onclick='DownloadAllVideoPlaylistClick(\"$z\", \"".translate('Select all', $st, 'sys')."\", \"".translate('Unselect all', $st, 'sys')."\")' />";
 									?>
 								</div>
 								<div style="float: right; margin-top: 0; margin-right: 15px; margin-bottom: 0; ">
@@ -2173,7 +2182,7 @@ do this later when IOS packages become live (9.10.2022)
 											$ZipFile += round($temp/1024, 2);
 											$ZipFile = round($ZipFile, 1);
 											$TotalZipFile += $ZipFile;
-											echo "<input type='checkbox' id='DVideoPlaylist_${z}_${video_download_index}' name='DownloadVideoPlaylist_$z' value='${video_download_index}' onclick='DownloadVideoPlaylistClick(\"${video_download_index}\", $ZipFile, $z)' />&nbsp;&nbsp;<span style='font-size: 12pt; '>$VideoConvertWithTab[1]</span><span style='font-size: 11pt; font-weight: normal; '> (~$ZipFile MB)</span>";
+											echo "<input type='checkbox' id='DVideoPlaylist_{$z}_{$video_download_index}' name='DownloadVideoPlaylist_$z' value='{$video_download_index}' onclick='DownloadVideoPlaylistClick(\"{$video_download_index}\", $ZipFile, $z)' />&nbsp;&nbsp;<span style='font-size: 12pt; '>$VideoConvertWithTab[1]</span><span style='font-size: 11pt; font-weight: normal; '> (~$ZipFile MB)</span>";
 											$video_download_index++;												// video count
 										}
 										else {
@@ -2408,7 +2417,13 @@ do this later when IOS packages become live (9.10.2022)
 			while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
 				$Cell_Phone_Title=$r2['Cell_Phone_Title'];
 				$Cell_Phone_File=trim($r2['Cell_Phone_File']);
-				$optional=trim($r2['optional']);
+				$optional=$r2['optional'];
+				if ($optional === null) {
+					$optional='';
+				}
+				else {
+					$optional=trim($optional);
+				}
 				?>
 				<tr>
 					<td style='width: 45px; '>
@@ -2780,7 +2795,7 @@ do this later when IOS packages become live (9.10.2022)
 								<div style="float: right; margin-top: 0; margin-left: 30px; margin-bottom: 4px; ">
 									<?php
 									$CountArr = count($arr);
-									echo "<input id='AllOrNone_${z}' style='font-size: 1em; font-weight: bold; font-family: Arial, Helvetica, sans-serif; ' type='button' value='".translate('Select all', $st, 'sys')."' onclick='PlaylistAllAudioZip(\"$z\", $CountArr, \"".translate('Select all', $st, 'sys')."\", \"".translate('Unselect all', $st, 'sys')."\")' />";
+									echo "<input id='AllOrNone_{$z}' style='font-size: 1em; font-weight: bold; font-family: Arial, Helvetica, sans-serif; ' type='button' value='".translate('Select all', $st, 'sys')."' onclick='PlaylistAllAudioZip(\"$z\", $CountArr, \"".translate('Select all', $st, 'sys')."\", \"".translate('Unselect all', $st, 'sys')."\")' />";
 									?>
 								</div>
 								<div style="float: right; margin-top: 0; margin-right: 15px; margin-bottom: 4px; ">
@@ -2799,7 +2814,7 @@ do this later when IOS packages become live (9.10.2022)
 							if ($i == 0) {
 								echo "<tr style='vertical-align: top; '>";
 							}
-							echo "<td style='width: ${width}px; vertical-align: top; '>";
+							echo "<td style='width: {$width}px; vertical-align: top; '>";
 								// $single[0] = text name
 								// $single[1] = filename
 								$temp = filesize($single[1]);
@@ -2809,8 +2824,8 @@ do this later when IOS packages become live (9.10.2022)
 								$MB_Total_Amount += $ZipFile;
 								$j++;
 								//echo "<input type='checkbox' id='Playlist_audio_${z}_$j' name='Playlist_audio_${z}_$j' onclick='PlaylistAudioClick_$z(\"$z\", $j, $ZipFile)' />";
-								echo "<input type='checkbox' id='Playlist_audio_${z}_$j' name='Playlist_audio_${z}_$j' value='$single[1]' onclick='PlaylistAudioClick_$z(\"$z\", $j, $ZipFile)' />";
-								echo "<div style='display: inline; float: right; width: ${DivIndent}%; margin-right: 20px; '>$single[0]<span style='font-size: .9em; font-weight: normal; '> (~$ZipFile MB)</style></div>";
+								echo "<input type='checkbox' id='Playlist_audio_{$z}_$j' name='Playlist_audio_{$z}_$j' value='$single[1]' onclick='PlaylistAudioClick_$z(\"$z\", $j, $ZipFile)' />";
+								echo "<div style='display: inline; float: right; width: {$DivIndent}%; margin-right: 20px; '>$single[0]<span style='font-size: .9em; font-weight: normal; '> (~$ZipFile MB)</style></div>";
 							echo "</td>";
 							$i++;
 							if ($i == $howManyCol) {
@@ -2820,7 +2835,7 @@ do this later when IOS packages become live (9.10.2022)
 						}
 						if ($i != 0) {
 							while ($i < $howManyCol) {
-								echo "<td style='width: ${width}px; '>";
+								echo "<td style='width: {$width}px; '>";
 									echo "&nbsp;";
 								echo "</td>";
 								$i++;

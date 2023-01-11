@@ -37,7 +37,7 @@ else {
 
 if (!$ML) {											// if the navigational langauge name is 0 then the default langauge name is used
 	$ML = $def_LN;
-	if (session_status() === PHP_SESSION_NONE) {
+	if (session_status() == PHP_SESSION_NONE) {
 		session_start();
 	}
 	// from PHP

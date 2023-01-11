@@ -36,7 +36,7 @@ $result=$db->query($query);
 if ($result->num_rows > 0) {
     // Requesting a fix: Are you sure that you want to override this?
     //$db->query("UPDATE add_resource SET reject = 1, wait = 0, accept = 0, toAdd = 0 WHERE idx = $idx AND `type` = '$type' AND (toAdd = 1 OR wait = 1)");
-    $response = 'index ' . $idx . ' and type ' . $type . ' has already had the accept/reject field set!';
+    $response = 'index ' . $idx . ' and type ' . $type . ' has already had the accept/reject field set! Email the webmaster to delete it from add_resource table';
 }
 else {
     if ($action == 'Reject') {

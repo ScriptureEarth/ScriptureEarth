@@ -1,4 +1,10 @@
 <?php
+/*
+
+    MUST ADD `projectDescription` to the right of `projectName` in the add_resource table BEFORE uploading it to the server!!!!!!!!!!!!!!
+    <*=*><*=*><*=*><*=*><*=*>*=*<*=*><*=*><*=*><*=*><*=*><*=*><*=*>*=*<*=*><*=*><*=*><*=*><*=*><*=*><*=*>*=*<*=*><*=*><*=*><*=*><*=*><*=*>
+
+*/
 include './include/session.php';
 global $session;
 /* Login attempt */
@@ -72,6 +78,9 @@ if (!$retval) {
         //window.open('Scripture_Examine.php', '_self');
         window.location.href = 'Scripture_Examine.php';
     }
+
+    message = 0;
+    text = '';
 </script>
 </head>
 <body>
@@ -108,8 +117,11 @@ if (isset($_POST['accept'])) {          // the "Submit" button
     $type = $_POST['type'];
     $email = $_POST['email'];
     $projectName = $_POST['projectName'];
-    $projectDescription = $_POST['projectDescription'];
-    $projectDescription = substr($projectDescription, 0, strpos($projectDescription, ';') - 1);
+    $projectDescription = '';
+    if (isset($_POST['projectDescription'])) {          // google_play under links table
+        $projectDescription = $_POST['projectDescription'];
+        $projectDescription = substr($projectDescription, 0, strpos($projectDescription, ';') - 1);
+    }
     $url = $_POST['url'];
     $username = $_POST['username'];
     $organization = $_POST['organization'];
@@ -122,7 +134,7 @@ if (isset($_POST['accept'])) {          // the "Submit" button
     //      "sab_html" (SAB_Scirptoria table:  ISO	ROD_Code	Variant_Code	ISO_ROD_index	subfolder = subfolder	description = projectDescription	pre_scriptoria),
     //      "apk" (CellPhone table: ISO	ROD_Code	Variant_Code	ISO_ROD_index	Cell_Phone_Title = 'Android App'	Cell_Phone_File = url),
     //      "ios" (CellPhone table: ISO	ROD_Code	Variant_Code	ISO_ROD_index	Cell_Phone_Title = 'iOS Asset Package'	Cell_Phone_File = url),
-    //      and "google_play" (links table:  ISO	ROD_Code	Variant_Code	ISO_ROD_index	company = 'Google Play Store'   company_title =	URL = url	buy	map	BibleIs	YouVersion	Bibles_org	GooglePlay = 1	GRN)
+    //      and "google_play" (links table:  ISO	ROD_Code	Variant_Code	ISO_ROD_index	company = 'Google Play Store'   company_title =  projectDescription URL = url	buy	map	BibleIs	YouVersion	Bibles_org	GooglePlay = 1	GRN)
     // UPDATE add_resource to accept = 1
     /******************************************************************************************************
             potential problem. What if the user wants to update from $subfolder to sab/$subfolder/?
@@ -132,33 +144,43 @@ if (isset($_POST['accept'])) {          // the "Submit" button
             $query = "SELECT * FROM SAB_scriptoria WHERE ISO_ROD_index = $idx AND subfolder = 'sab/$subfolder/'";
             $result = $db->query($query);
             if ($result->num_rows == 0) {
-                $db->query("INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `url`, subfolder, `description`, pre_scriptoria, SAB_number) VALUES ('$iso', '$rod', '$var', $idx, '$url', 'sab/$subfolder/', '', '', 1)");
+                $db->query("INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `url`, subfolder, `description`, pre_scriptoria, SAB_number) VALUES ('$iso', '$rod', '$var', $idx, '$url', 'sab/$subfolder/', '$projectDescription', '', 1)");
                 $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
                 $db->query("UPDATE scripture_main SET SAB = 1 WHERE ISO_ROD_index = $idx");
                 $SAB_number = 1;
             }
             else {
                 $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
-                echo 'SAB_Scriptoria table has index number ' . $idx . ' (sab/' . $subfolder . '/) already there.<br />';
+                ?>
+                    <script>
+                        text = "SAB_Scriptoria table already has the index number <?php echo $idx . '. (sab/' . $subfolder . '/)' ?>";
+                        message = 1;
+                    </script>
+                <?php
                 if ($result->num_rows == 0) {
                     die('SAB_Scriptoria ' . $idx . ' and ' . $subfolder . ' is not found.');
                 }
                 $row = $result->fetch_assoc();
                 $SAB_number = $row['SAB_number'];
             }
-            include 'include/SAB_inc.php';      // add and index SAB table
+            include 'api/include/SAB_inc.php';      // add html files to the SAB table
         }
         else {                                  // SAB HTML links
             $query = "SELECT * FROM SAB_scriptoria WHERE ISO_ROD_index = $idx AND `url` = '$url'";
             $result = $db->query($query);
             if ($result->num_rows == 0) {
-                $db->query("INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `url`, subfolder, `description`, pre_scriptoria, SAB_number) VALUES ('$iso', '$rod', '$var', $idx, '$url', '', '', '', 1)");
+                $db->query("INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `url`, subfolder, `description`, pre_scriptoria, SAB_number) VALUES ('$iso', '$rod', '$var', $idx, '$url', '', '$projectDescription', '', 1)");
                 $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
                 $db->query("UPDATE scripture_main SET SAB = 1 WHERE ISO_ROD_index = $idx");
             }
             else {
                 $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
-                echo 'SAB_Scriptoria table has index number ' . $idx . ' (URL: ' . $url . ') already there.<br />';
+                ?>
+                    <script>
+                        text = "SAB_Scriptoria table already has the index number <?php echo $idx . '. (URL: ' . $url . ')' ?>";
+                        message = 1;
+                    </script>
+                <?php
             }
         }
     }
@@ -172,7 +194,12 @@ if (isset($_POST['accept'])) {          // the "Submit" button
         }
         else {
             $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
-            echo 'CellPhone table has ' . $idx . ' and "Android App" already there.<br />';
+            ?>
+                <script>
+                    text = "CellPhone table already has index number <?php echo $idx ?> and 'Android App'.";
+                    message = 1;
+                </script>
+            <?php
         }
     }
     elseif ($type == 'ios') {
@@ -185,7 +212,12 @@ if (isset($_POST['accept'])) {          // the "Submit" button
         }
         else {
             $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
-            echo 'CellPhone table has ' . $idx . ' and "iOS Asset Package" already there.<br />';
+            ?>
+                <script>
+                    text = "CellPhone table already has index number <?php echo $idx ?> and 'iOS Asset Package'.";
+                    message = 1;
+                </script>
+            <?php
         }
     }
     elseif ($type == 'google_play') {
@@ -198,7 +230,12 @@ if (isset($_POST['accept'])) {          // the "Submit" button
         }
         else {
             $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
-            echo 'links table: ' . $idx . ' and ' . $url . ' and GooglePlay = 1 is already there.<br />';
+            ?>
+                <script>
+                    text = "The links table index number <?php echo $idx . ', ' . $url ?>, and GooglePlay = 1 is already here.";
+                    message = 1;
+                </script>
+            <?php
         }
     }
     else {
@@ -209,6 +246,9 @@ if (isset($_POST['accept'])) {          // the "Submit" button
     // exit();
     ?>
     <script>
+        if (message == 1) {
+            alert(text);
+        }
         window.location.href = 'Scripture_Examine.php';
     </script>
     <?php
@@ -251,7 +291,10 @@ if (isset($_POST['accept'])) {          // the "Submit" button
                 $type = $row['type'];
                 $email = $row['email'];
                 $projectName = $row['projectName'];
-                $projectDescription = $row['projectDescription'];
+                $projectDescription = '';
+                if (isset($row['projectDescription'])) {
+                    $projectDescription = $row['projectDescription'];
+                }
                 $username = $row['username'];
                 $organization = $row['organization'];
                 $url = $row['url'];
@@ -314,7 +357,10 @@ if (isset($_POST['accept'])) {          // the "Submit" button
         $type = $row['type'];*/
         $email = trim($row['email']);
         $projectName = trim($row['projectName']);
-        $projectDescription = trim($row['projectDescription']);
+        $projectDescription = '';
+        if (isset($row['projectDescription'])) {
+            $projectDescription = trim($row['projectDescription']);
+        }
         $username = trim($row['username']);
         $organization = trim($row['organization']);
         $url = trim($row['url']);
@@ -334,10 +380,13 @@ if (isset($_POST['accept'])) {          // the "Submit" button
             <br />
             type: <?php echo $type; ?><br />
             Project Name: <?php echo $projectName; ?><br />
-            Project Description: <?php echo $projectDescription; ?><br />
+            <?php if ($projectDescription != '') { ?>
+                Project Description: <?php echo $projectDescription; ?><br />
+            <?php } ?>
             URL: <?php echo $url; ?><br />
             User Name: <?php echo $username; ?><br />
             Organization: <?php echo $organization; ?>
+
             <?php
             if ($type == "sab_html") {
                 $subfolder = trim($subfolder);
@@ -345,21 +394,17 @@ if (isset($_POST['accept'])) {          // the "Submit" button
                     $subfolder = $iso;
                 }
                 echo "<br />subfolder: $subfolder<br />";
-                //echo "description: $projectDescription<br />";
             }
             elseif ($type == "apk") {
-                //echo "<br />url: $url<br />";
             }
             elseif ($type == "ios") {
-                //echo "<br />url: $url<br />";
             }
             elseif ($type == "google_play") {
-                //echo "<br />url: $url<br />";
-                //echo "<br />description: $projectDescription";
             }
             else {
                 die('type is not listed.');
             }
+
             echo "<br />email: $email<br /><br ><br />";
             ?>
         </div>

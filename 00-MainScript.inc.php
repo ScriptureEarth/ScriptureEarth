@@ -1,11 +1,14 @@
 <?php
-// Start the session
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+	// Start the session
+	session_start();
+}
+
 /*
-
-Can't use <div id="langBackground" in FireFox 84.0.1 with cursor: pointer; inside the id because it is a bug. Also, <div id="langBackground_'.$st.'" won't at all. See Web Developer, Toogle Tools on Tools.
-
+	Can't use <div id="langBackground" in FireFox 84.0.1 with cursor: pointer; inside the id because it is a bug.
+	Also, <div id="langBackground_'.$st.'" won't at all. See Web Developer, Toogle Tools on Tools.
 */
+
 ?>
 <meta http-equiv="Content-Type" 			content="text/html; charset=utf-8" />
 <meta name="viewport" 						content="width=device-width, initial-scale=1, maximum-scale=1" />

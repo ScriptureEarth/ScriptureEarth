@@ -17,6 +17,8 @@ if (isset($_GET['asset'])) {
 	}
 }
 
+include './translate/functions.php';                           		 		// translation function
+
 if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbreviated language
     // break up string into pieces (languages and q factors)
     preg_match_all('/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $lang_parse);
@@ -29,8 +31,6 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbr
     }
 	
 	$mobile = 0;															// no mobile (new user interface)
-
-	include './translate/functions.php';                           		 	// translation function
 
 	require_once './include/conn.inc.php';									// connect to the database named 'scripture'
 	$db = get_my_db();
@@ -250,7 +250,7 @@ div.counter {
 <script type="text/javascript" language="JavaScript">
 	// new generic hover and out function
 	function hover() {
-		document.getElementById('aclick').innerHTML = <?php translate('click to enter', $st, 'sys'); ?>
+		document.getElementById('aclick').innerHTML = <?php translate('click to enter', $st, 'sys'); ?>;
 		document.getElementById('canvas').style.display = 'none';
 		ln_code = "<?php echo $ln_code?>"
 		hover = document.getElementsByClassName('hover');
