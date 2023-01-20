@@ -185,7 +185,7 @@ $FileString = '';
 					$r = $result_LN_German->fetch_array();
 					$LN=$r['LN_German'];
 					break; 	
-				case 6:
+				case 7:
 					$stmt_LN_Chinese->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
 					$stmt_LN_Chinese->execute();															// execute query
 					$result_LN_Chinese = $stmt_LN_Chinese->get_result();									// instead of bind_result (used for only 1 record):
