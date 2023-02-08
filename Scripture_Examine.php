@@ -1,10 +1,4 @@
 <?php
-/*
-
-    MUST ADD `projectDescription` to the right of `projectName` in the add_resource table BEFORE uploading it to the server!!!!!!!!!!!!!!
-    <*=*><*=*><*=*><*=*><*=*>*=*<*=*><*=*><*=*><*=*><*=*><*=*><*=*>*=*<*=*><*=*><*=*><*=*><*=*><*=*><*=*>*=*<*=*><*=*><*=*><*=*><*=*><*=*>
-
-*/
 include './include/session.php';
 global $session;
 /* Login attempt */

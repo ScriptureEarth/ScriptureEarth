@@ -1,9 +1,5 @@
 <?php
 /*
-
-    MUST ADD `projectDescription` to the right of `projectName` in the add_resource table BEFORE uploading it to the server!!!!!!!!!!!!!!
-    <*=*><*=*><*=*><*=*><*=*>*=*<*=*><*=*><*=*><*=*><*=*><*=*><*=*>*=*<*=*><*=*><*=*><*=*><*=*><*=*><*=*>*=*<*=*><*=*><*=*><*=*><*=*><*=*>
-
     To test, in a browser type:
         https://scriptureearth.org/api/add_resource.php?v=1&key=<key>&json=https//ScriptureEarth.org/api/add_resources.json
 */
