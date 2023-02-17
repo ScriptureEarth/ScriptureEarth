@@ -35,7 +35,7 @@ if (!$retval) {
 <title>Scripture Edit</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Edit.css" />
 <script type="text/javascript" language="javascript" src="_js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.0.7"></script>
+<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.0.9"></script>
 <!-- see the bottom of this html file for CMS_events.js -->
 </head>
 <body>
@@ -874,7 +874,8 @@ function NT_Test($PDF, $NT_Index) {
 												echo "&nbsp;&nbsp;<input type='checkbox' name='OT_PDF_Book-$j' id='OT_PDF_Book-$j' checked />&nbsp;$item_from_array";
 												echo "</td><td width='70%'>";
 												${'OT_PDF_Filename-$i'} = $r['OT_PDF_Filename'];	// $i is the actual OT_PDF_Filename in the row (ISO)!
-												echo "OT PDF Filename:&nbsp;<input type='text' name='OT_PDF_Filename-$j' id='OT_PDF_Filename-$j' size='50' value=\"${'OT_PDF_Filename-$i'}\" />";
+												$temp_OT_PDF_Filename = ${'OT_PDF_Filename-$i'};
+												echo "OT PDF Filename:&nbsp;<input type='text' name='OT_PDF_Filename-$j' id='OT_PDF_Filename-$j' size='50' value='$temp_OT_PDF_Filename' />";
 											}
 											else {
 												echo "&nbsp;&nbsp;<input type='checkbox' name='OT_PDF_Book-$j' id='OT_PDF_Book-$j' />&nbsp;$item_from_array";
@@ -1109,7 +1110,8 @@ function NT_Test($PDF, $NT_Index) {
 												echo "&nbsp;&nbsp;<input type='checkbox' name='NT_PDF_Book-$j' id='NT_PDF_Book-$j' checked />&nbsp;$item_from_array";
 												echo "</td><td width='70%'>";
 												${'NT_PDF_Filename-$i'} = $r['NT_PDF_Filename'];	// $i is the actual NT_PDF_Filename in the row (ISO)!
-												echo "NT PDF filename:&nbsp;<input type='text' name='NT_PDF_Filename-$j' id='NT_PDF_Filename-$j' size='50' value=\"${'NT_PDF_Filename-$i'}\" />";
+												$temp_NT_PDF_Filename = ${'NT_PDF_Filename-$i'};
+												echo "NT PDF filename:&nbsp;<input type='text' name='NT_PDF_Filename-$j' id='NT_PDF_Filename-$j' size='50' value='$temp_NT_PDF_Filename' />";
 											}
 											else {
 												echo "&nbsp;&nbsp;<input type='checkbox' name='NT_PDF_Book-$j' id='NT_PDF_Book-$j' />&nbsp;$item_from_array";
@@ -1331,14 +1333,14 @@ function NT_Test($PDF, $NT_Index) {
 											echo "<td width='10%' style='padding: 12px; '>";
 											echo "&nbsp;$item_from_array:<br />";
 											if ($item2_from_array > 1) {
-												echo "<input style='font-size: 8pt; ' type='button' id='One_OT_Audio_Chapters-${book_num_sel}' value='Audio OT Chapters in $item_from_array' onclick='One_OT_Audio_Chapters($book_num_sel)' />";
+												echo "<input style='font-size: 8pt; ' type='button' id='One_OT_Audio_Chapters-$book_num_sel' value='Audio OT Chapters in $item_from_array' onclick='One_OT_Audio_Chapters($book_num_sel)' />";
 												echo "<br /><span style='font-size: 8pt; '>Enter the OT audio filename for $item_from_array chapter 1 and click on this button to have all of the rest of $item_from_array filled in.</span>";
-												echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_OT_Audio_Chapters-${book_num_sel}' value='No Audio OT Chapters in $item_from_array' onclick='One_No_OT_Audio_Chapters(${book_num_sel})' />";
+												echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_OT_Audio_Chapters-$book_num_sel' value='No Audio OT Chapters in $item_from_array' onclick='One_No_OT_Audio_Chapters($book_num_sel)' />";
 												echo "<br /><span style='font-size: 8pt; '>Delete the OT audio filename for $item_from_array chapter 1 and click on this button to have none of the rest of $item_from_array filled in.</span>";
 											}
 											echo "</td>";
 											echo "<td width='90%' style='line-height: 18px; padding: 12px; '>";
-											echo "<table id='OT_Audio_Table3-${book_num_sel}' width='100%'>";
+											echo "<table id='OT_Audio_Table3-$book_num_sel' width='100%'>";
 											echo "<tr>";
 											for ($z = 0; $z < $item2_from_array; $z++) {						// max. chapter number for the book
 												if (($z % 3) == 0 && $z != 0) {
@@ -1347,9 +1349,9 @@ function NT_Test($PDF, $NT_Index) {
 												$y = $z + 1;
 												echo "<td width='10%'>";
 												// $item_from_array-$y doesn't work. The only thing you get is the number!
-												echo "<input style='font-size: 9pt; ' type='checkbox' name='OT_Audio_Index-${book_num_sel}-$z' id='OT_Audio_Index-${book_num_sel}-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
+												echo "<input style='font-size: 9pt; ' type='checkbox' name='OT_Audio_Index-$book_num_sel-$z' id='OT_Audio_Index-$book_num_sel-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
 												echo "</td><td width='20%'>";
-												echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"OT_Audio_Index-${book_num_sel}-$z\").checked = true;' name='OT_Audio_Filename-${book_num_sel}-$z' id='OT_Audio_Filename-${book_num_sel}-$z' size='19' value='' />";
+												echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"OT_Audio_Index-$book_num_sel-$z\").checked = true;' name='OT_Audio_Filename-$book_num_sel-$z' id='OT_Audio_Filename-$book_num_sel-$z' size='19' value='' />";
 												echo "</td>";
 											}
 											if (($z % 3) != 0) {
@@ -1373,14 +1375,14 @@ function NT_Test($PDF, $NT_Index) {
 										echo "<td width='10%' style='padding: 12px; '>";
 										echo "&nbsp;$item_from_array:<br />";
 										if ($item2_from_array > 1) {
-											echo "<input style='font-size: 8pt; ' type='button' id='One_OT_Audio_Chapters-${book_num_sel}' value='Audio OT Chapters in $item_from_array' onclick='One_OT_Audio_Chapters(${book_num_sel})' />";
+											echo "<input style='font-size: 8pt; ' type='button' id='One_OT_Audio_Chapters-$book_num_sel' value='Audio OT Chapters in $item_from_array' onclick='One_OT_Audio_Chapters($book_num_sel)' />";
 											echo "<br /><span style='font-size: 8pt; '>Enter the OT audio filename for $item_from_array chapter 1 and click on this button to have all of the rest of $item_from_array filled in.</span>";
-											echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_OT_Audio_Chapters-${book_num_sel}' value='No Audio OT Chapters in $item_from_array' onclick='One_No_OT_Audio_Chapters(${book_num_sel})' />";
+											echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_OT_Audio_Chapters-$book_num_sel' value='No Audio OT Chapters in $item_from_array' onclick='One_No_OT_Audio_Chapters($book_num_sel)' />";
 											echo "<br /><span style='font-size: 8pt; '>Delete the OT audio filename for $item_from_array chapter 1 and click on this button to have none of the rest of $item_from_array filled in.</span>";
 										}
 										echo "</td>";
 										echo "<td width='90%' style='line-height: 18px; padding: 12px; '>";
-										echo "<table id='OT_Audio_Table3-${book_num_sel}' width='100%'>";
+										echo "<table id='OT_Audio_Table3-$book_num_sel' width='100%'>";
 										echo "<tr>";
 										$w=0;
 										$z=0;
@@ -1396,14 +1398,14 @@ function NT_Test($PDF, $NT_Index) {
 												$y = $w + 1;
 												echo "<td width='10%'>";
 												if ($w == $chap_num_sel) {
-													echo "<input style='font-size: 9pt; ' type='checkbox' name='OT_Audio_Index-${book_num_sel}-${w}' id='OT_Audio_Index-${book_num_sel}-${w}' checked /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
+													echo "<input style='font-size: 9pt; ' type='checkbox' name='OT_Audio_Index-$book_num_sel-$w' id='OT_Audio_Index-$book_num_sel-$w' checked /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
 													echo "</td><td width='20%'>";
-													echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"OT_Audio_Index-${book_num_sel}-${w}\").checked = true;' name='OT_Audio_Filename-${book_num_sel}-${w}' id='OT_Audio_Filename-${book_num_sel}-${w}' size='19' value='$OT_Audio_Filename' />";
+													echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"OT_Audio_Index-$book_num_sel-$w\").checked = true;' name='OT_Audio_Filename-$book_num_sel-$w' id='OT_Audio_Filename-$book_num_sel-$w' size='19' value='$OT_Audio_Filename' />";
 												}
 												else {
-													echo "<input style='font-size: 9pt; ' type='checkbox' name='OT_Audio_Index-${book_num_sel}-${w}' id='OT_Audio_Index-${book_num_sel}-${w}' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
+													echo "<input style='font-size: 9pt; ' type='checkbox' name='OT_Audio_Index-$book_num_sel-$w' id='OT_Audio_Index-$book_num_sel-$w' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
 													echo "</td><td width='20%'>";
-													echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"OT_Audio_Index-${book_num_sel}-${w}\").checked = true;' name='OT_Audio_Filename-${book_num_sel}-${w}' id='OT_Audio_Filename-${book_num_sel}-${w}' size='19' value='' />";
+													echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"OT_Audio_Index-$book_num_sel-$w\").checked = true;' name='OT_Audio_Filename-$book_num_sel-$w' id='OT_Audio_Filename-$book_num_sel-$w' size='19' value='' />";
 												}
 												echo "</td>";
 											}
@@ -1428,9 +1430,9 @@ function NT_Test($PDF, $NT_Index) {
 											}
 											$y = $z + 1;
 											echo "<td width='10%'>";
-											echo "<input style='font-size: 9pt; ' type='checkbox' name='OT_Audio_Index-${book_num_sel}-$z' id='OT_Audio_Index-${book_num_sel}-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
+											echo "<input style='font-size: 9pt; ' type='checkbox' name='OT_Audio_Index-$book_num_sel-$z' id='OT_Audio_Index-$book_num_sel-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
 											echo "</td><td width='20%'>";
-											echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"OT_Audio_Index-${book_num_sel}-$z\").checked = true;' name='OT_Audio_Filename-${book_num_sel}-$z' id='OT_Audio_Filename-${book_num_sel}-$z' size='19' value='' />";
+											echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"OT_Audio_Index-$book_num_sel-$z\").checked = true;' name='OT_Audio_Filename-$book_num_sel-$z' id='OT_Audio_Filename-$book_num_sel-$z' size='19' value='' />";
 											echo "</td>";
 										}
 										if (($z % 3) != 0) {
@@ -1454,9 +1456,9 @@ function NT_Test($PDF, $NT_Index) {
 									echo "<td width='10%' style='padding: 12px; '>";
 									echo "&nbsp;$item_from_array:<br />";
 									if ($item2_from_array > 1) {
-										echo "<input style='font-size: 8pt; ' type='button' id='One_OT_Audio_Chapters-${w}' value='Audio OT Chapters in $item_from_array' onclick='One_OT_Audio_Chapters($w)' />";
+										echo "<input style='font-size: 8pt; ' type='button' id='One_OT_Audio_Chapters-$w' value='Audio OT Chapters in $item_from_array' onclick='One_OT_Audio_Chapters($w)' />";
 										echo "<br /><span style='font-size: 8pt; '>Enter the OT audio filename for $item_from_array chapter 1 and click on this button to have all of the rest of $item_from_array filled in.</span>";
-										echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_OT_Audio_Chapters-${w}' value='No Audio OT Chapters in $item_from_array' onclick='One_No_OT_Audio_Chapters($w)' />";
+										echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_OT_Audio_Chapters-$w' value='No Audio OT Chapters in $item_from_array' onclick='One_No_OT_Audio_Chapters($w)' />";
 										echo "<br /><span style='font-size: 8pt; '>Delete the OT audio filename for $item_from_array chapter 1 and click on this button to have none of the rest of $item_from_array filled in.</span>";
 									}
 									echo "</td>";
@@ -1470,9 +1472,9 @@ function NT_Test($PDF, $NT_Index) {
 										$y = $z + 1;
 										echo "<td width='10%'>";
 										// $item_from_array-$y doesn't work. The only thing you get is the number!
-										echo "<input style='font-size: 9pt; ' type='checkbox' name='OT_Audio_Index-${w}-$z' id='OT_Audio_Index-${w}-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
+										echo "<input style='font-size: 9pt; ' type='checkbox' name='OT_Audio_Index-$w-$z' id='OT_Audio_Index-$w-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
 										echo "</td><td width='20%'>";
-										echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"OT_Audio_Index-${w}-$z\").checked = true;' name='OT_Audio_Filename-${w}-$z' id='OT_Audio_Filename-${w}-$z' size='19' value='' />";
+										echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"OT_Audio_Index-$w-$z\").checked = true;' name='OT_Audio_Filename-$w-$z' id='OT_Audio_Filename-$w-$z' size='19' value='' />";
 										echo "</td>";
 									}
 									if (($z % 3) != 0) {
@@ -1521,14 +1523,14 @@ function NT_Test($PDF, $NT_Index) {
 									echo "<td width='10%' style='padding: 12px; '>";
 									echo "&nbsp;$item_from_array:<br />";
 									if ($item2_from_array > 1) {
-										echo "<input style='font-size: 8pt; ' type='button' id='One_OT_Audio_Chapters-${book_num_sel}' value='Audio OT Chapters in $item_from_array' onclick='One_OT_Audio_Chapters($book_num_sel)' />";
+										echo "<input style='font-size: 8pt; ' type='button' id='One_OT_Audio_Chapters-$book_num_sel' value='Audio OT Chapters in $item_from_array' onclick='One_OT_Audio_Chapters($book_num_sel)' />";
 										echo "<br /><span style='font-size: 8pt; '>Enter the OT audio filename for $item_from_array chapter 1 and click on this button to have all of the rest of $item_from_array filled in.</span>";
-										echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_OT_Audio_Chapters-${book_num_sel}' value='No Audio OT Chapters in $item_from_array' onclick='One_No_OT_Audio_Chapters($book_num_sel)' />";
+										echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_OT_Audio_Chapters-$book_num_sel' value='No Audio OT Chapters in $item_from_array' onclick='One_No_OT_Audio_Chapters($book_num_sel)' />";
 										echo "<br /><span style='font-size: 8pt; '>Delete the OT audio filename for $item_from_array chapter 1 and click on this button to have none of the rest of $item_from_array filled in.</span>";
 									}
 									echo "</td>";
 									echo "<td width='90%' style='line-height: 18px; padding: 12px; '>";
-									echo "<table id='OT_Audio_Table3-${book_num_sel}' width='100%'>";
+									echo "<table id='OT_Audio_Table3-$book_num_sel' width='100%'>";
 									echo "<tr>";
 									for ($z = 0; $z < $item2_from_array; $z++) {
 										if (($z % 3) == 0 && $z != 0) {
@@ -1537,9 +1539,9 @@ function NT_Test($PDF, $NT_Index) {
 										$y = $z + 1;
 										echo "<td width='10%'>";
 										// $item_from_array-$y doesn't work. The only thing you get is the number!
-										echo "<input style='font-size: 9pt; ' type='checkbox' name='OT_Audio_Index-${book_num_sel}-$z' id='OT_Audio_Index-${book_num_sel}-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
+										echo "<input style='font-size: 9pt; ' type='checkbox' name='OT_Audio_Index-$book_num_sel-$z' id='OT_Audio_Index-$book_num_sel-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
 										echo "</td><td width='20%'>";
-										echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"OT_Audio_Index-${book_num_sel}-$z\").checked = true;' name='OT_Audio_Filename-${book_num_sel}-$z' id='OT_Audio_Filename-${book_num_sel}-$z' size='19' value='' />";
+										echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"OT_Audio_Index-$book_num_sel-$z\").checked = true;' name='OT_Audio_Filename-$book_num_sel-$z' id='OT_Audio_Filename-$book_num_sel-$z' size='19' value='' />";
 										echo "</td>";
 									}
 									if (($z % 3) != 0) {
@@ -1664,14 +1666,14 @@ function NT_Test($PDF, $NT_Index) {
 											echo "<td width='10%' style='padding: 12px; '>";
 											echo "&nbsp;$item_from_array:<br />";
 											if ($item2_from_array > 1) {
-												echo "<input style='font-size: 8pt; ' type='button' id='One_NT_Audio_Chapters-${book_num_sel}' value='Audio NT Chapters in $item_from_array' onclick='One_NT_Audio_Chapters($book_num_sel)' />";
+												echo "<input style='font-size: 8pt; ' type='button' id='One_NT_Audio_Chapters-$book_num_sel' value='Audio NT Chapters in $item_from_array' onclick='One_NT_Audio_Chapters($book_num_sel)' />";
 												echo "<br /><span style='font-size: 8pt; '>Enter the audio filename for $item_from_array chapter 1 and click on this button to have all of the rest of $item_from_array filled in.</span>";
-												echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_NT_Audio_Chapters-${book_num_sel}' value='No Audio NT Chapters in $item_from_array' onclick='One_No_NT_Audio_Chapters(${book_num_sel})' />";
+												echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_NT_Audio_Chapters-$book_num_sel' value='No Audio NT Chapters in $item_from_array' onclick='One_No_NT_Audio_Chapters($book_num_sel)' />";
 												echo "<br /><span style='font-size: 8pt; '>Delete the NT audio filename for $item_from_array chapter 1 and click on this button to have none of the rest of $item_from_array filled in.</span>";
 											}
 											echo "</td>";
 											echo "<td width='90%' style='line-height: 18px; padding: 12px; '>";
-											echo "<table id='NT_Audio_Table3-${book_num_sel}' width='100%'>";
+											echo "<table id='NT_Audio_Table3-$book_num_sel' width='100%'>";
 											echo "<tr>";
 											for ($z = 0; $z < $item2_from_array; $z++) {						// max. chapter number for the book
 												if (($z % 3) == 0 && $z != 0) {
@@ -1679,9 +1681,9 @@ function NT_Test($PDF, $NT_Index) {
 												}
 												$y = $z + 1;
 												echo "<td width='10%'>";
-												echo "<input style='font-size: 9pt; ' type='checkbox' name='NT_Audio_Index-${book_num_sel}-$z' id='NT_Audio_Index-${book_num_sel}-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
+												echo "<input style='font-size: 9pt; ' type='checkbox' name='NT_Audio_Index-$book_num_sel-$z' id='NT_Audio_Index-$book_num_sel-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
 												echo "</td><td width='20%'>";
-												echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"NT_Audio_Index-${book_num_sel}-$z\").checked = true;' name='NT_Audio_Filename-${book_num_sel}-$z' id='NT_Audio_Filename-${book_num_sel}-$z' size='19' value='' />";
+												echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"NT_Audio_Index-$book_num_sel-$z\").checked = true;' name='NT_Audio_Filename-$book_num_sel-$z' id='NT_Audio_Filename-$book_num_sel-$z' size='19' value='' />";
 												echo "</td>";
 											}
 											if (($z % 3) != 0) {
@@ -1704,14 +1706,14 @@ function NT_Test($PDF, $NT_Index) {
 										echo "<td width='10%' style='padding: 12px; '>";
 										echo "&nbsp;$item_from_array:<br />";
 										if ($item2_from_array > 1) {
-											echo "<input style='font-size: 8pt; ' type='button' id='One_NT_Audio_Chapters-${book_num_sel}' value='Audio NT Chapters in $item_from_array' onclick='One_NT_Audio_Chapters(${book_num_sel})' />";
+											echo "<input style='font-size: 8pt; ' type='button' id='One_NT_Audio_Chapters-$book_num_sel' value='Audio NT Chapters in $item_from_array' onclick='One_NT_Audio_Chapters($book_num_sel)' />";
 											echo "<br /><span style='font-size: 8pt; '>Enter the audio filename for $item_from_array chapter 1 and click on this button to have all of the rest of $item_from_array filled in.</span>";
-											echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_NT_Audio_Chapters-${book_num_sel}' value='No Audio NT Chapters in $item_from_array' onclick='One_No_NT_Audio_Chapters(${book_num_sel})' />";
+											echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_NT_Audio_Chapters-$book_num_sel' value='No Audio NT Chapters in $item_from_array' onclick='One_No_NT_Audio_Chapters($book_num_sel)' />";
 											echo "<br /><span style='font-size: 8pt; '>Delete the NT audio filename for $item_from_array chapter 1 and click on this button to have none of the rest of $item_from_array filled in.</span>";
 										}
 										echo "</td>";
 										echo "<td width='90%' style='line-height: 18px; padding: 12px; '>";
-										echo "<table id='NT_Audio_Table3-${book_num_sel}' width='100%'>";
+										echo "<table id='NT_Audio_Table3-$book_num_sel' width='100%'>";
 										echo "<tr>";
 										$w=0;
 										$z=0;
@@ -1727,14 +1729,14 @@ function NT_Test($PDF, $NT_Index) {
 												$y = $w + 1;
 												echo "<td width='10%'>";
 												if ($w == $chap_num_sel) {
-													echo "<input style='font-size: 9pt; ' type='checkbox' name='NT_Audio_Index-${book_num_sel}-${w}' id='NT_Audio_Index-${book_num_sel}-${w}' checked /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
+													echo "<input style='font-size: 9pt; ' type='checkbox' name='NT_Audio_Index-$book_num_sel-$w' id='NT_Audio_Index-$book_num_sel-$w' checked /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
 													echo "</td><td width='20%'>";
-													echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"NT_Audio_Index-${book_num_sel}-${w}\").checked = true;' name='NT_Audio_Filename-${book_num_sel}-${w}' id='NT_Audio_Filename-${book_num_sel}-${w}' size='19' value='$NT_Audio_Filename' />";
+													echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"NT_Audio_Index-$book_num_sel-$w\").checked = true;' name='NT_Audio_Filename-$book_num_sel-$w' id='NT_Audio_Filename-$book_num_sel-$w' size='19' value='$NT_Audio_Filename' />";
 												}
 												else {
-													echo "<input style='font-size: 9pt; ' type='checkbox' name='NT_Audio_Index-${book_num_sel}-${w}' id='NT_Audio_Index-${book_num_sel}-${w}' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
+													echo "<input style='font-size: 9pt; ' type='checkbox' name='NT_Audio_Index-$book_num_sel-$w' id='NT_Audio_Index-$book_num_sel-$w' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
 													echo "</td><td width='20%'>";
-													echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"NT_Audio_Index-${book_num_sel}-${w}\").checked = true;' name='NT_Audio_Filename-${book_num_sel}-${w}' id='NT_Audio_Filename-${book_num_sel}-${w}' size='19' value='' />";
+													echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"NT_Audio_Index-$book_num_sel-$w\").checked = true;' name='NT_Audio_Filename-$book_num_sel-$w' id='NT_Audio_Filename-$book_num_sel-$w' size='19' value='' />";
 												}
 												echo "</td>";
 											}
@@ -1759,9 +1761,9 @@ function NT_Test($PDF, $NT_Index) {
 											}
 											$y = $z + 1;
 											echo "<td width='10%'>";
-											echo "<input type='checkbox' style='font-size: 9pt; ' name='NT_Audio_Index-${book_num_sel}-$z' id='NT_Audio_Index-${book_num_sel}-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
+											echo "<input type='checkbox' style='font-size: 9pt; ' name='NT_Audio_Index-$book_num_sel-$z' id='NT_Audio_Index-$book_num_sel-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
 											echo "</td><td width='20%'>";
-											echo "<input type='text' style='font-size: 9pt; text-align: left; ' onclick='document.getElementById(\"NT_Audio_Index-${book_num_sel}-$z\").checked = true;' name='NT_Audio_Filename-${book_num_sel}-$z' id='NT_Audio_Filename-${book_num_sel}-$z' size='19' value='' />";
+											echo "<input type='text' style='font-size: 9pt; text-align: left; ' onclick='document.getElementById(\"NT_Audio_Index-$book_num_sel-$z\").checked = true;' name='NT_Audio_Filename-$book_num_sel-$z' id='NT_Audio_Filename-$book_num_sel-$z' size='19' value='' />";
 											echo "</td>";
 										}
 										if (($z % 3) != 0) {
@@ -1784,9 +1786,9 @@ function NT_Test($PDF, $NT_Index) {
 									echo "<td width='10%' style='padding: 12px; '>";
 									echo "&nbsp;$item_from_array:<br />";
 									if ($item2_from_array > 1) {
-										echo "<input type='button' style='font-size: 8pt; ' id='One_NT_Audio_Chapters-${w}' value='Audio NT Chapters in $item_from_array' onclick='One_NT_Audio_Chapters($w)' />";
+										echo "<input type='button' style='font-size: 8pt; ' id='One_NT_Audio_Chapters-$w' value='Audio NT Chapters in $item_from_array' onclick='One_NT_Audio_Chapters($w)' />";
 										echo "<br /><span style='font-size: 8pt; '>Enter the audio filename for $item_from_array chapter 1 and click on this button to have all of the rest of $item_from_array filled in.</span>";
-										echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_NT_Audio_Chapters-${w}' value='No Audio NT Chapters in $item_from_array' onclick='One_No_NT_Audio_Chapters($w)' />";
+										echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_NT_Audio_Chapters-$w' value='No Audio NT Chapters in $item_from_array' onclick='One_No_NT_Audio_Chapters($w)' />";
 										echo "<br /><span style='font-size: 8pt; '>Delete the NT audio filename for $item_from_array chapter 1 and click on this button to have none of the rest of $item_from_array filled in.</span>";
 									}
 									echo "</td>";
@@ -1800,9 +1802,9 @@ function NT_Test($PDF, $NT_Index) {
 										$y = $z + 1;
 										echo "<td width='10%'>";
 										// $item_from_array-$y doesn't work. The only thing you get is the number!
-										echo "<input type='checkbox' style='font-size: 9pt; ' name='NT_Audio_Index-${w}-$z' id='NT_Audio_Index-${w}-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
+										echo "<input type='checkbox' style='font-size: 9pt; ' name='NT_Audio_Index-$w-$z' id='NT_Audio_Index-$w-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
 										echo "</td><td width='20%'>";
-										echo "<input type='text' style='font-size: 9pt; text-align: left; ' onclick='document.getElementById(\"NT_Audio_Index-${w}-$z\").checked = true;' name='NT_Audio_Filename-${w}-$z' id='NT_Audio_Filename-${w}-$z' size='19' value='' />";
+										echo "<input type='text' style='font-size: 9pt; text-align: left; ' onclick='document.getElementById(\"NT_Audio_Index-$w-$z\").checked = true;' name='NT_Audio_Filename-$w-$z' id='NT_Audio_Filename-$w-$z' size='19' value='' />";
 										echo "</td>";
 									}
 									if (($z % 3) != 0) {
@@ -1850,14 +1852,14 @@ function NT_Test($PDF, $NT_Index) {
 									echo "<td width='10%' style='padding: 12px; '>";
 									echo "&nbsp;$item_from_array:<br />";
 									if ($item2_from_array > 1) {
-										echo "<input style='font-size: 8pt; ' type='button' id='One_NT_Audio_Chapters-${book_num_sel}' value='Audio NT Chapters in $item_from_array' onclick='One_NT_Audio_Chapters($book_num_sel)' />";	//'NT_Audio_testing($book_num_sel)' />";	//
+										echo "<input style='font-size: 8pt; ' type='button' id='One_NT_Audio_Chapters-$book_num_sel' value='Audio NT Chapters in $item_from_array' onclick='One_NT_Audio_Chapters($book_num_sel)' />";	//'NT_Audio_testing($book_num_sel)' />";	//
 										echo "<br /><span style='font-size: 8pt; '>Enter the audio filename for $item_from_array chapter 1 and click on this button to have all of the rest of $item_from_array filled in.</span>";
-										echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_NT_Audio_Chapters-${book_num_sel}' value='No Audio NT Chapters in $item_from_array' onclick='One_No_NT_Audio_Chapters($book_num_sel)' />";
+										echo "<br /><br /><input style='font-size: 8pt; ' type='button' id='One_No_NT_Audio_Chapters-$book_num_sel' value='No Audio NT Chapters in $item_from_array' onclick='One_No_NT_Audio_Chapters($book_num_sel)' />";
 										echo "<br /><span style='font-size: 8pt; '>Delete the NT audio filename for $item_from_array chapter 1 and click on this button to have none of the rest of $item_from_array filled in.</span>";
 									}
 									echo "</td>";
 									echo "<td width='90%' style='line-height: 18px; padding: 12px; '>";
-									echo "<table id='NT_Audio_Table3-${book_num_sel}' width='100%'>";
+									echo "<table id='NT_Audio_Table3-$book_num_sel' width='100%'>";
 									echo "<tr>";
 									for ($z = 0; $z < $item2_from_array; $z++) {
 										if (($z % 3) == 0 && $z != 0) {
@@ -1865,9 +1867,9 @@ function NT_Test($PDF, $NT_Index) {
 										}
 										$y = $z + 1;
 										echo "<td width='10%'>";
-										echo "<input style='font-size: 9pt; ' type='checkbox' name='NT_Audio_Index-${book_num_sel}-$z' id='NT_Audio_Index-${book_num_sel}-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
+										echo "<input style='font-size: 9pt; ' type='checkbox' name='NT_Audio_Index-$book_num_sel-$z' id='NT_Audio_Index-$book_num_sel-$z' /><span style='font-size: 9pt; ' >&nbsp;$y&nbsp;</span>";
 										echo "</td><td width='20%'>";
-										echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"NT_Audio_Index-${book_num_sel}-$z\").checked = true;' name='NT_Audio_Filename-${book_num_sel}-$z' id='NT_Audio_Filename-${book_num_sel}-$z' size='19' value='' />";
+										echo "<input style='font-size: 9pt; text-align: left; ' type='text' onclick='document.getElementById(\"NT_Audio_Index-$book_num_sel-$z\").checked = true;' name='NT_Audio_Filename-$book_num_sel-$z' id='NT_Audio_Filename-$book_num_sel-$z' size='19' value='' />";
 										echo "</td>";
 									}
 									if (($z % 3) != 0) {
@@ -2273,6 +2275,115 @@ function NT_Test($PDF, $NT_Index) {
 		</tbody>
 		</table>
         <br />
+
+		<?php
+/*************************************************
+	Bible.is Gospel Films
+**************************************************/
+		?>
+		<table valign="bottom" cellpadding="0" cellspacing="0" width="100%">
+		<thead>
+			<tr valign="bottom" style="color: navy; font-size: 8pt; line-height: 10pt; height: 30px; ">
+				<td width="11%">&nbsp;
+				</td>
+				<td width="40%" style="padding-left: 3px; ">
+					URL Link
+				</td>
+				<td width="49%" colspan="2" style="padding-left: 3px; ">
+					Which Gospel?
+				</td>
+			</tr>
+		</thead>
+		<?php
+		$num = 0;
+		if (isset($_POST['txtLinkBibleIsGospelFilmURL-1'])) {
+			${'txtLinkBibleIsGospelFilmURL-1'} = $_POST['txtLinkBibleIsGospelFilmURL-1'];
+			${'txtLinkBibleIsGospel-1'} = $_POST['txtLinkBibleIsGospel-1'];
+		}
+		elseif ($SM_row['BibleIsGospelFilm']) {
+			$query="SELECT * FROM links WHERE ISO_ROD_index = $idx AND BibleIsGospelFilm = 1";
+			$result1=$db->query($query);
+			$num=$result1->num_rows;
+			$tempLinks = $result1->fetch_assoc();
+			${'txtLinkBibleIsGospelFilmURL-1'} = $tempLinks['URL'];
+			${'txtLinkBibleIsGospel-1'} = $tempLinks['company_title'];
+		}
+		else {
+			${'txtLinkBibleIsGospelFilmURL-1'}='';
+			${'txtLinkBibleIsGospel-1'}='';
+		}
+		?>
+		<tbody name="tableBibleIsGospelFilm" id="tableBibleIsGospelFilm">
+			<tr valign="bottom" style="line-height: 10pt; ">
+				<td width="11%" style="font-size: 10pt; ">
+					<div style="margin-bottom: 6px; ">Enter "Bible.is Gospel Film":</div>For example:
+				</td>
+				<td width="40%">
+					<input type='text' style='color: navy; ' size='54' name='txtLinkBibleIsGospelFilmURL-1' id='txtLinkBibleIsGospelFilmURL-1' value="<?php if (isset($_POST['txtLinkBibleIsGospelFilmURL-1'])) echo $_POST['txtLinkBibleIsGospelFilmURL-1']; else echo ${'txtLinkBibleIsGospelFilmURL-1'}; ?>" />
+					<br /><span style="font-size: 10pt; margin-left: 3px; ">https://www.youtube.com/playlist?list=[Google address]</span>
+				</td>
+				<td width="32%">
+					<input type='text' style='color: navy; ' size='30' name='txtLinkBibleIsGospel-1' id='txtLinkBibleIsGospel-1' value="<?php if (isset($_POST['txtLinkBibleIsGospel-1'])) echo $_POST['txtLinkBibleIsGospel-1']; else echo ${'txtLinkBibleIsGospel-1'}; ?>" />
+					<br /><span style="font-size: 10pt; margin-left: 1px; "> - Gospel of [which Gospel]</span>
+				</td>
+				<td width="17%" style="text-align: right; ">
+					<input style="font-size: 9pt; " type="button" id="addBibleIsGospelFilm" value="Add" />
+					<input style="font-size: 9pt; " type="button" id="removeBibleIsGospelFilm" value="Remove" />
+					<br />&nbsp;
+				</td>
+				</td>
+			</tr>
+			<?php
+			$i = 2;
+			if (isset($_POST['txtLinkBibleIsGospelFilmURL-'.(string)$i])) {
+				while (isset($_POST['txtLinkBibleIsGospelFilmURL-'.(string)$i])) {
+					echo "<tr valign='bottom' style='line-height: 10pt; '>";
+						echo "<td width='11%'>";
+							echo "&nbsp;";
+						echo "</td>";
+						echo "<td width='40%'>";
+							echo "<input type='text' name='txtLinkBibleIsGospelFilmURL-$i' id='txtLinkBibleIsGospelFilmURL-$i' style='color: navy; ' size='53' value='" . ( isset($_POST['txtLinkBibleIsGospelFilmURL-'.(string)$i]) ? $_POST['txtLinkBibleIsGospelFilmURL-'.(string)$i] : '' ) . "' />";
+						echo "</td>";
+						echo "<td width='32%'>";
+							echo "<input type='text' name='txtLinkBibleIsGospel-$i' id='txtLinkBibleIsGospel-$i' style='color: navy; ' size='30' value='" . ( isset($_POST['txtLinkBibleIsGospel-'.(string)$i]) ? $_POST['txtLinkBibleIsGospel-'.(string)$i] : '' ) . "' />";
+						echo "</td>";
+						echo "<td width='17%'>";
+							echo "&nbsp;";
+						echo "</td>";
+					echo "</tr>";
+					$i++;
+				}
+			}
+			else {
+				if ($num > 1) {
+					while ($tempLinks = $result1->fetch_assoc()) {
+						${'txtLinkBibleIsGospelFilmURL-$i'} = $tempLinks['URL'];
+						${'txtLinkBibleIsGospel-$i'} = $tempLinks['company_title'];						
+						echo "<tr valign='bottom' style='line-height: 10pt; '>";
+							echo "<td width='11%'>";
+								echo "&nbsp;";
+							echo "</td>";
+							echo "<td width='40%'>";
+								echo "<input type='text' name='txtLinkBibleIsGospelFilmURL-$i' id='txtLinkBibleIsGospelFilmURL-$i' style='color: navy; ' size='52' value='" . ${'txtLinkBibleIsGospelFilmURL-$i'} . "' />";
+							echo "</td>";
+							echo "<td width='32%'>";
+								echo "<input type='text' name='txtLinkBibleIsGospel-$i' id='txtLinkBibleIsGospel-$i' style='color: navy; ' size='30' value='" . ${'txtLinkBibleIsGospel-$i'} . "' />";
+							echo "</td>";
+							echo "<td width='17%'>";
+								echo "&nbsp;";
+							echo "</td>";
+						echo "</tr>";
+						$i++;
+					}
+				}
+				if ($num > 0) {
+					$result1->free();
+				}
+			}
+		?>
+		</tbody>
+		</table>
+		<br />
 
 		<?php
 /*************************************************
@@ -3663,7 +3774,7 @@ function NT_Test($PDF, $NT_Index) {
 			$_POST['linksGooglePlay'] = $_POST['linksGooglePlay-1'];					// to be tested
 		}
 		elseif ($SM_row['links']) {
-			$query="SELECT * FROM links WHERE ISO_ROD_index = $idx AND BibleIs = 0 AND YouVersion = 0 AND Bibles_org = 0 AND GRN = 0 AND email = 0";
+			$query="SELECT * FROM links WHERE ISO_ROD_index = $idx AND BibleIs = 0 AND BibleIsGospelFilm = 0 AND YouVersion = 0 AND Bibles_org = 0 AND GRN = 0 AND email = 0";
 			$result1=$db->query($query);
 			$num=$result1->num_rows;
 			if ($r = $result1->fetch_assoc()) {
@@ -4333,6 +4444,6 @@ function Switch(number, Beg) {
 }
 ?>
 
-<script type="text/javascript" src="_js/CMS_events.js?v=1.0.2"></script>
+<script type="text/javascript" src="_js/CMS_events.js?v=1.0.3"></script>
 </body>
 </html>

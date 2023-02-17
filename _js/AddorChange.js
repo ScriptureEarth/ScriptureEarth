@@ -938,6 +938,46 @@ function addRowToTableBibleIs() {
     cellTail.appendChild(textNode2);
 }
 
+/**********************************************************
+					Bible.is Gospel Film
+**********************************************************/
+function addRowToTableBibleIsGospelFilm() {
+    var tbl = document.getElementById("tableBibleIsGospelFilm");
+    var lastRow = tbl.rows.length;
+    var iteration = lastRow + 1;
+    var row = tbl.insertRow(lastRow);
+
+    // head cell
+    var cellHead = row.insertCell(0);
+    var textNode1 = document.createTextNode(" ");
+    cellHead.appendChild(textNode1);
+
+     // URL cell
+    var cellURL = row.insertCell(1);
+    var el = document.createElement("input");
+    el.type = "text";
+    el.name = "txtLinkBibleIsGospelFilmURL-" + iteration;
+    el.id = "txtLinkBibleIsGospelFilmURL-" + iteration;
+    el.size = 54;
+    el.style.color = "navy";
+    cellURL.appendChild(el);
+
+    // left cell
+    var cellLeft = row.insertCell(2);
+    var el = document.createElement("input");
+    el.type = "text";
+    el.name = "txtLinkBibleIsGospel-" + iteration;
+    el.id = "txtLinkBibleIsGospel-" + iteration;
+    el.size = 30;
+    el.style.color = "navy";
+    cellLeft.appendChild(el);
+
+    // tail cell
+    var cellTail = row.insertCell(3);
+    var textNode2 = document.createTextNode(" ");
+    cellTail.appendChild(textNode2);
+}
+
 /******************************************************
 				YouVerion and Bible.org and GRN
 ******************************************************/
@@ -1089,7 +1129,6 @@ function removeRowFromTable(tableId) {
     var lastRow = tbl.rows.length;
     if (lastRow > 1) tbl.deleteRow(lastRow - 1);
 }
-
 
 /**********************************************
 				All PDF OT Books

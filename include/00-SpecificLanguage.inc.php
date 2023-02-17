@@ -26,53 +26,53 @@
 
 <!-- These css have to be on this page! -->
 <style>
-body {
-	background-color: white;
-}
-a {
-	color: navy;
-	text-decoration: none;
-	/*margin-left: 10px;*/
-}
-tr {
-	text-align: left;
-	margin: 0;
-	padding: 0;
-}
-td {
-	text-align: left;
-}
+	body {
+		background-color: white;
+	}
+	a {
+		color: navy;
+		text-decoration: none;
+		/*margin-left: 10px;*/
+	}
+	tr {
+		text-align: left;
+		margin: 0;
+		padding: 0;
+	}
+	td {
+		text-align: left;
+	}
 
-li.aboutText {
-	display: block;
-	margin-top: 20px;
-	padding: 0;
-}
-a.aboutWord {
-	color: white;
-	text-decoration: none;
-}
-a.aboutWord:hover {
-	color: red;
-}
-img.iconActions {
-	margin-top: 4px;
-	margin-bottom: 4px;
-	padding: 0;
-	vertical-align: middle;
-	border-style: none;
-	height: 45px;
-	width: 45px;
-	min-width: 45px;
-	margin-right: 6px;
-}
-div.linePointer {
-	cursor: pointer;
-	display: inline;
-}
-div.linePointer:hover {
-    border-bottom:2px solid red;
-}
+	li.aboutText {
+		display: block;
+		margin-top: 20px;
+		padding: 0;
+	}
+	a.aboutWord {
+		color: white;
+		text-decoration: none;
+	}
+	a.aboutWord:hover {
+		color: red;
+	}
+	img.iconActions {
+		margin-top: 4px;
+		margin-bottom: 4px;
+		padding: 0;
+		vertical-align: middle;
+		border-style: none;
+		height: 45px;
+		width: 45px;
+		min-width: 45px;
+		margin-right: 6px;
+	}
+	div.linePointer {
+		cursor: pointer;
+		display: inline;
+	}
+	div.linePointer:hover {
+		border-bottom:2px solid red;
+	}
 </style>
 
 <?php
@@ -103,6 +103,7 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 	$GetName = $ISO_Country;						// country = ZZ
 	$SAB=$rowSM['SAB'];								// boolean
 	$BibleIs=$rowSM['BibleIs'];						// boolean
+	$BibleIsGospelFilm=$rowSM['BibleIsGospelFilm'];	// boolean
 	$viewer=$rowSM['viewer'];						// boolean
 	$OT_PDF=$rowSM['OT_PDF'];						// boolean
 	$NT_PDF=$rowSM['NT_PDF'];						// boolean
@@ -580,7 +581,7 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 
 /*
 	*************************************************************************************************************
-		Is it Bible.is? (if "Text with audio" does not exists here and if exists then below)
+		Is it BibleIs? (if "Text with audio" does not exists here and if exists then below)
 	*************************************************************************************************************
 */
 	if ($Internet && $BibleIs && !$SAB) {
@@ -625,13 +626,6 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 					echo "</td>";
 					echo "<td>";
 						echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'>" . $BibleIsActText . " ";
-						//if (stripos($URL, '/Gen/') !== false)
-						/*if ($BibleIsLink == 1)
-							echo translate('to the New Testament', $st, 'sys');
-						else if ($BibleIsLink == 2)
-							echo translate('to the Old Testament', $st, 'sys');
-						else	// $BibleIs == 3
-							echo translate('to the Bible', $st, 'sys');*/
 						echo translate('on Bible.is', $st, 'sys');
 						if ($BibleIsVersion!='') {
 							echo ' ' . $BibleIsVersion;
@@ -642,6 +636,37 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 				</tr>
 				<?php
 			}
+		}
+	}
+
+/*
+	*************************************************************************************************************
+		Is it BibleIsGospelFilm? (if "Text with audio" does not exists here and if exists then below)
+	*************************************************************************************************************
+*/
+	if ($Internet && $BibleIsGospelFilm && !$SAB) {
+		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND NOT BibleIsGospelFilm = 0";
+		$result2=$db->query($query);
+		while ($r_links=$result2->fetch_array(MYSQLI_ASSOC)) {
+			$BibleIsGospel=trim($r_links['company_title']);
+			$URL=trim($r_links['URL']);
+			?>
+			<tr>
+				<td>
+					<?php
+					echo "<div class='linePointer' onclick='window.open(\"".$URL."\")'><img class='iconActions' src='../images/gospelFilm-icon.jpg' alt='".$BibleIsGospel."' title='".$BibleIsGospel."' /></div>";
+				echo "</td>";
+				echo "<td>";
+						echo "<div class='linePointer' onclick='window.open(\"".$URL."\")' title='".$BibleIsGospel."'>";
+						echo 'Bible.is Gospel Film';
+					if ($BibleIsGospel!='') {
+						echo ' ' . $BibleIsGospel;
+					}
+					echo "</div>";
+					?>
+				</td>
+			</tr>
+			<?php
 		}
 	}
 
@@ -1689,7 +1714,7 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 				if (preg_match("/- *(.*)/", $VideoConvertContents[0], $match)) {
 					$VT = $match[1];
 				}
-				if (preg_match("/\t(.*) — /", $VideoConvertContents[0], $match)) {
+				if (preg_match("/\t(.* — .*) \[/", $VideoConvertContents[0], $match)) {
 					$PlaylistVideoTitle = $match[1];
 				}
 				else if (preg_match("/\t(.*)\t.*\timages/", $VideoConvertContents[0], $match)) {
@@ -2265,13 +2290,6 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 					echo "</td>";
 					echo "<td>";
 						echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")' title='".translate('Read/Listen/View from Bible.is', $st, 'sys')."'>" . $BibleIsActText . " ";
-						//if (stripos($URL, '/Gen/') !== false)
-						/*if ($BibleIsLink == 1)
-							echo translate('to the New Testament', $st, 'sys');
-						else if ($BibleIsLink == 2)
-							echo translate('to the Old Testament', $st, 'sys');
-						else	// $BibleIs == 3
-							echo translate('to the Bible', $st, 'sys');*/
 						echo translate('on Bible.is', $st, 'sys');
 						if ($BibleIsVersion!='') {
 							echo ' ' . $BibleIsVersion;
@@ -2282,6 +2300,36 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 				</tr>
 				<?php
 			}
+		}
+	}
+/*
+	*************************************************************************************************************
+		Is it BibleIsGospelFilm? (if "Text with audio" exists here and if not then above)
+	*************************************************************************************************************
+*/
+	if ($Internet && $BibleIsGospelFilm && $SAB) {
+		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND NOT BibleIsGospelFilm = 0";
+		$result2=$db->query($query);
+		while ($r_links=$result2->fetch_array(MYSQLI_ASSOC)) {
+			$BibleIsGospel=trim($r_links['company_title']);
+			$URL=trim($r_links['URL']);
+			?>
+			<tr>
+				<td>
+					<?php
+					echo "<div class='linePointer' onclick='window.open(\"".$URL."\")'><img class='iconActions' src='../images/gospelFilm-icon.jpg' alt='".$BibleIsGospel."' title='".$BibleIsGospel."' /></div>";
+				echo "</td>";
+				echo "<td>";
+					echo "<div class='linePointer' onclick='window.open(\"".$URL."\")' title='".$BibleIsGospel."'>";
+					echo 'Bible.is Gospel Film';
+					if ($BibleIsGospel!='') {
+						echo ' ' . $BibleIsGospel;
+					}
+					echo "</div>";
+					?>
+				</td>
+			</tr>
+			<?php
 		}
 	}
 
@@ -3069,7 +3117,7 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 */
 	if ($links && $Internet) {
 		// This takes care of all of the rest of the links.
-		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND email = 0 AND map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 ORDER BY URL";
+		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND email = 0 AND map = 0 AND buy = 0 AND BibleIs = 0 AND BibleIsGospelFilm = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 ORDER BY URL";
 		$result2=$db->query($query);
 		if ($result2) {
 			if ($Internet) {

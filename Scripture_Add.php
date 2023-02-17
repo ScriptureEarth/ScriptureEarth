@@ -81,8 +81,8 @@ include ('./NT_Books.php');			// include the books of the NT
 <meta name="Updated-by"                     content="Scott Starker, Lærke Roager" />
 <title>Scripture Add</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Add.css" />
-<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.0.7"></script>
-<script type="text/javascript" language="javascript" src="_js/Scripture_Add.js?v=1.0.2"></script>
+<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.0.8"></script>
+<script type="text/javascript" language="javascript" src="_js/Scripture_Add.js?v=1.0.3"></script>
 <script>
 	//let ALNindex = 1;
 	//let Otherindex = 1;
@@ -679,6 +679,68 @@ include ('./NT_Books.php');			// include the books of the NT
         </tbody>
 		</table>
         <br />
+
+		<?php
+/************************************************
+	Bible.is Gospel Film
+*************************************************/
+		?>
+		<table valign="bottom" cellpadding="0" cellspacing="0" width="100%">
+		<thead>
+			<tr valign="bottom" style="color: navy; font-size: 8pt; line-height: 10pt; height: 30px; ">
+				<td width="11%">&nbsp;
+				</td>
+				<td width="40%" style="padding-left: 3px; ">
+					URL Link
+				</td>
+				<td width="49%" colspan="2" style="padding-left: 3px; ">
+					Which Gospel?
+				</td>
+			</tr>
+		</thead>
+		<?php
+		$num = 0;
+		?>
+		<tbody name="tableBibleIsGospelFilm" id="tableBibleIsGospelFilm">
+			<tr valign="bottom" style="line-height: 10pt; ">
+				<td width="11%" style="font-size: 10pt; ">
+					<div style="margin-top: 10px; ">Enter "Bible.is Gospel Film":</div>For example:
+				</td>
+				<td width="40%">
+					<input type='text' style='color: navy; ' size='54' name='txtLinkBibleIsGospelFilmURL-1' id='txtLinkBibleIsGospelFilmURL-1' value="<?php if (isset($_POST['txtLinkBibleIsGospelFilmURL-1'])) echo $_POST['txtLinkBibleIsGospelFilmURL-1']; ?>" />
+					<br /><span style="font-size: 10pt; margin-left: 3px; ">https://www.youtube.com/playlist?list=[Google address]</span>
+				</td>
+				<td width="32%">
+					<input type='text' style='color: navy; ' size='30' name='txtLinkBibleIsGospel-1' id='txtLinkBibleIsGospel-1' value="<?php if (isset($_POST['txtLinkBibleIsGospel-1'])) echo $_POST['txtLinkBibleIsGospel-1']; ?>" />
+					<br /><span style="font-size: 10pt; margin-left: 1px; "> - Gospel of [which Gospel]</span>
+				</td>
+				<td width="17%" style="text-align: right; vertical-align: top; ">
+					<input id='addBibleIsGospelFilm' style="font-size: 9pt; " type="button" value="Add" />
+					<input id='removeBibleIsGospelFilm' style="font-size: 9pt; " type="button" value="Remove" />
+				</td>
+			</tr>
+			<?php
+			$i = 2;
+			while (isset($_POST['txtLinkBibleIsGospelFilmURL-'.(string)$i])) {
+				echo "<tr valign='bottom' style='line-height: 10pt; '>";
+					echo "<td width='11%' style='font-size: 10pt; '>&nbsp;";
+					echo '</td>';
+					echo "<td width='40%'>";
+						echo "<input type='text' style='color: navy; ' size='53' name='txtLinkBibleIsGospelFilmURL-$i' id='txtLinkBibleIsGospelFilmURL-$i' value='" . $_POST['txtLinkBibleIsGospelFilmURL-' . (string)$i] . "' />";
+					echo "</td>";
+					echo '<td width="32%">';
+						echo "<input type='text' style='color: navy; ' size='30' name='txtLinkBibleIsGospel-$i' id='txtLinkBibleIsGospel-$i' value='" . $_POST['txtLinkBibleIsGospel-' . (string)$i] . "' />";
+					echo '</td>';
+					echo "<td width='17%'>";
+						echo "&nbsp;";
+					echo "</td>";
+				echo "</tr>";
+				$i++;
+			}
+			?>
+		</tbody>
+		</table>
+		<br />
 
 		<?php
 /************************************************
@@ -1466,10 +1528,10 @@ include ('./NT_Books.php');			// include the books of the NT
 		</thead>
         <?php
 		if (isset($_POST['txtLinkCompany-1'])) {
-			if ($_POST['linksIcon-1'] == 'linksOther-1') $_POST['linksOther-1']=1;
-			//if ($_POST['linksIcon-1'] == 'linksBuy-1') $_POST['linksBuy-1']=1;
-			if ($_POST['linksIcon-1'] == 'linksMap-1') $_POST['linksMap-1']=1;
-			if ($_POST['linksIcon-1'] == 'linksGooglePlay-1') $_POST['linksGooglePlay-1']=1;
+			if ($_POST['linksIcon-1'] == 'linksOther-1') $_POST['linksOther-1']=1; else $_POST['linksOther-1']=0;
+			//if ($_POST['linksIcon-1'] == 'linksBuy-1') $_POST['linksBuy-1']=1; else  $_POST['linksBuy-1']=0;
+			if ($_POST['linksIcon-1'] == 'linksMap-1') $_POST['linksMap-1']=1; else $_POST['linksMap-1']=0;
+			if ($_POST['linksIcon-1'] == 'linksGooglePlay-1') $_POST['linksGooglePlay-1']=1; else $_POST['linksGooglePlay-1']=0;
 		}
 		else {
 			${'linksOther-1'}=0;
@@ -1805,6 +1867,7 @@ include ('./NT_Books.php');			// include the books of the NT
 		document.getElementById("iso").focus();					// focus on the ISO input
 	</script>
     
-	<script type="text/javascript" src="_js/CMS_events.js?v=1.0.2"></script>
+	<script type="text/javascript" src="_js/CMS_events.js?v=1.0.3"></script>
+
 </body>
 </html>

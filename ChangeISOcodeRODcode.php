@@ -94,10 +94,8 @@ if (!$result_to) {
 //$row_to = $result_to->fetch_array();
 //$ISO_ROD_index_to = $row_to['ISO_ROD_index'];
 
-
 echo 'ISO_from: ' . $ISO_from . ' ROD_Code_from: ' . $ROD_Code_from . ($Variant_Code_from == '' ? '' : ' Variant_Code_from: ' . $Variant_Code_from) . ' ISO_ROD_index_from: ' . $ISO_ROD_index_from . '<br />';
 echo 'ISO_to: ' . $ISO_to . ' ROD_Code_to: ' . $ROD_Code_to . ($Variant_Code_to == '' ? '' : ' Variant_Code_to: ' . $Variant_Code_to) . '<br /><br />';
-
 
 $db->query("UPDATE alt_lang_names SET ISO = '$ISO_to', ROD_Code = '$ROD_Code_to' WHERE ISO_ROD_index = $ISO_ROD_index_from");		// Add ISO_ROD_index_to
 $db->query("UPDATE buy SET ISO = '$ISO_to', ROD_Code = '$ROD_Code_to' WHERE ISO_ROD_index = $ISO_ROD_index_from");					// Add ISO_ROD_index_to
@@ -110,6 +108,7 @@ $db->query("UPDATE LN_Dutch SET ISO = '$ISO_to', ROD_Code = '$ROD_Code_to' WHERE
 $db->query("UPDATE eBible_list SET ISO = '$ISO_to', ROD_Code = '$ROD_Code_to' WHERE ISO_ROD_index = $ISO_ROD_index_from");			// Add ISO_ROD_index_to
 $db->query("UPDATE watch SET ISO = '$ISO_to', ROD_Code = '$ROD_Code_to' WHERE ISO_ROD_index = $ISO_ROD_index_from");					// Add ISO_ROD_index_to
 
+// Change ISO and ROD_Code tables to new ISO code
 
 // CellPhone
 $query="SELECT ISO, ROD_Code FROM CellPhone WHERE ISO_ROD_index = $ISO_ROD_index_from";

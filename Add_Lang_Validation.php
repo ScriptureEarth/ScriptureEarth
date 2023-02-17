@@ -192,6 +192,20 @@ function check_input($value) {
 				$i++;
 			}
 
+// Bible.is Gospel Film
+			$i = 1;
+			$BibleIsGospelFilmIndex = 1;
+			$inputs["BibleIsGospelFilm"] = 0;
+			while (isset($_POST["txtLinkBibleIsGospelFilmURL-".(string)$i])) {
+				if (check_input($_POST["txtLinkBibleIsGospelFilmURL-".(string)$i]) != "") $inputs["BibleIsGospelFilm"] = 1;
+				if (empty($_POST["txtLinkBibleIsGospelFilmURL-".(string)$i])) {
+				}
+				$inputs["txtLinkBibleIsGospelFilmURL-".(string)$i] = check_input($_POST["txtLinkBibleIsGospelFilmURL-".(string)$i]);
+				$inputs["txtLinkBibleIsGospel-".(string)$i] = check_input($_POST["txtLinkBibleIsGospel-".(string)$i]);
+				$BibleIsGospelFilmIndex++;
+				$i++;
+			}
+
 // SAB
 			$inputs["SAB"] = 0;
 			$i = 1;

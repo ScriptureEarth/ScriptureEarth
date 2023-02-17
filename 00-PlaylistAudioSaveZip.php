@@ -219,8 +219,13 @@ if (basename($_SERVER['PHP_SELF']) == '00-PlaylistAudioSaveZip.php'){
 			// ********************************************************************************************************
 			//				Send file for 'download' for the user
 			// ********************************************************************************************************
-			if ($stream = fopen($file_real, 'rb')){
-				while (!feof($stream) && connection_status() == 0){
+ini_set('upload_max_filesize', '1000M');
+ini_set('post_max_size', '1000M');
+ini_set('memory_limit', '1000M' );							// this one for sure! I don't know what number to put at. At least over 300M
+ini_set('max_input_time', 3000);
+ini_set('max_execution_time', 3000);
+			if ($stream = fopen($file_real, 'rb')) {
+				while (!feof($stream) && connection_status() == 0) {
 					//reset time limit for big files
 					set_time_limit(0);					// The maximum execution time in seconds. If set to zero, no time limit is imposed.
 					//print(fread($stream, 1024*8));

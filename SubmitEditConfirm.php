@@ -37,7 +37,7 @@
 	echo "<div style='background-color: white; padding: 20px; width: 1020px; margin-left: auto; margin-right: auto; border-radius: 15px; -moz-border-radius: 15px; -webkit-box-shadow: 15px; '>";
 //Change here??
 	
-	$query="UPDATE scripture_main SET Variant_Code = '$inputs[var]', OT_PDF = '$inputs[OT_PDF]', NT_PDF = '$inputs[NT_PDF]', FCBH = 0, OT_Audio = '$inputs[OT_Audio]', NT_Audio = '$inputs[NT_Audio]', links = '$inputs[links]', other_titles = '$inputs[other_titles]', watch = '$inputs[watch]', buy = '$inputs[buy]', study = '$inputs[study]', viewer = '$inputs[viewer]', CellPhone  = '$inputs[CellPhone]', AddNo = '$inputs[AddNo]', AddTheBibleIn = '$inputs[AddTheBibleIn]', AddTheScriptureIn = '$inputs[AddTheScriptureIn]', BibleIs = '$inputs[BibleIs]', `Bibles_org` = '$inputs[Biblesorg]', YouVersion = '$inputs[YouVersion]', PlaylistAudio = '$inputs[AudioPlaylist]', PlaylistVideo = '$inputs[VideoPlaylist]', SAB = '$inputs[SAB]', eBible = '$inputs[eBible]', SILlink = '$inputs[SILlink]', `GRN` = '$inputs[GRN]' WHERE ISO_ROD_index = $inputs[idx]";
+	$query="UPDATE scripture_main SET Variant_Code = '$inputs[var]', OT_PDF = '$inputs[OT_PDF]', NT_PDF = '$inputs[NT_PDF]', FCBH = 0, OT_Audio = '$inputs[OT_Audio]', NT_Audio = '$inputs[NT_Audio]', links = '$inputs[links]', other_titles = '$inputs[other_titles]', watch = '$inputs[watch]', buy = '$inputs[buy]', study = '$inputs[study]', viewer = '$inputs[viewer]', CellPhone  = '$inputs[CellPhone]', AddNo = '$inputs[AddNo]', AddTheBibleIn = '$inputs[AddTheBibleIn]', AddTheScriptureIn = '$inputs[AddTheScriptureIn]', BibleIs = '$inputs[BibleIs]', BibleIsGospelFilm = '$inputs[BibleIsGospelFilm]', `Bibles_org` = '$inputs[Biblesorg]', YouVersion = '$inputs[YouVersion]', PlaylistAudio = '$inputs[AudioPlaylist]', PlaylistVideo = '$inputs[VideoPlaylist]', SAB = '$inputs[SAB]', eBible = '$inputs[eBible]', SILlink = '$inputs[SILlink]', `GRN` = '$inputs[GRN]' WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if (!$result) {
 		die('Could not update the data in "scripture_main": ' . $db->error);
@@ -143,7 +143,7 @@
 	$result=$db->query($query);
 	if ($inputs['BibleIs']) {
 		$i = 1;
-		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, URL, BibleIs) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], 'Bible.is', ?, ?, ?)";
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, BibleIs) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], 'Bible.is', ?, ?, ?)";
 		$stmt_links=$db->prepare($query);
 		while (isset($inputs["txtLinkBibleIsURL-".(string)$i])) {
 			$temp3 = "txtLinkBibleIsURL-".(string)$i;
@@ -157,6 +157,26 @@
 			$result=$stmt_links->execute();																				// execute query
 			if (!$result) {
 				echo 'Could not update the data "Bible.is links": ' . $db->error;
+			}
+			$i++;
+		}
+		$stmt_links->close();
+	}
+
+// links: BibleIs Gospel Film
+	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND BibleIsGospelFilm = 1";
+	$result=$db->query($query);
+	if ($inputs["BibleIsGospelFilm"]) {
+		$i = 1;
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, BibleIsGospelFilm) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], 'Bible.is Gospel Film', ?, ?, 1)";
+		$stmt_links=$db->prepare($query);
+		while (isset($inputs["txtLinkBibleIsGospelFilmURL-".(string)$i])) {
+			$temp2 = "txtLinkBibleIsGospel-".(string)$i;
+			$temp3 = "txtLinkBibleIsGospelFilmURL-".(string)$i;
+			$stmt_links->bind_param("ss", $inputs[$temp2], $inputs[$temp3]);											// bind parameters for markers
+			$result=$stmt_links->execute();																				// execute query
+			if (!$result) {
+				echo 'Could not update the data "Bible.is Gospel Film" links: ' . $db->error;
 			}
 			$i++;
 		}
@@ -536,7 +556,7 @@
 	$result=$db->query($query);
 	if ($inputs['YouVersion']) {
 		$i = 1;
-		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, URL, YouVersion) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, 1)";
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, YouVersion) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, 1)";
 		$stmt_links=$db->prepare($query);
 		while (isset($inputs["txtLinkYouVersionName-$i"])) {
 			$temp1 = "txtLinkYouVersionName-$i";
@@ -804,7 +824,7 @@
 	}
 
 // other links
-	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND (buy = 0 AND map = 0 AND GooglePlay = 0 AND BibleIs = 0 AND YouVersion = 0 AND Bibles_org = 0 AND GRN = 0 AND email = 0)";
+	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND (buy = 0 AND map = 0 AND GooglePlay = 0 AND BibleIs = 0 AND BibleIsGospelFilm = 0 AND YouVersion = 0 AND Bibles_org = 0 AND GRN = 0 AND email = 0)";
 	$result=$db->query($query);
 	if ($inputs['linksOther']) {																	// test
 		$i = 1;

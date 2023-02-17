@@ -76,6 +76,10 @@ document.getElementById('addBibleIs').addEventListener('click', function() { add
 
 document.getElementById('removeBibleIs').addEventListener('click', function() { removeRowFromTable('tableBibleIs'); });
 
+document.getElementById('addBibleIsGospelFilm').addEventListener('click', function() { addRowToTableBibleIsGospelFilm(); });
+
+document.getElementById('removeBibleIsGospelFilm').addEventListener('click', function() { removeRowFromTable('tableBibleIsGospelFilm'); });
+
 document.getElementById('addYouVer').addEventListener('click', function() { addRowToTableYouVer('YouVersion'); });
 
 document.getElementById('removeYouVer').addEventListener('click', function() { removeRowFromTable('tableYouVersion'); });

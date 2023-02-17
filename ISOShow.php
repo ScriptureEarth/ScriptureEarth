@@ -106,7 +106,7 @@ if (strlen($iso) == 3) {																		// if not, exit this ISOShow.php scrip
 	?>
 	<form style="display: inline; ">
 		<div id="addROD" name="addROD" style="display: inline; ">
-			<input type="button" value="Add to ROD Code" onClick="addROD('rod', 'addingROD')" />
+			<input type="button" value="Add ROD Code" onClick="addROD('rod', 'addingROD')" />
 			<input type="button" value="Replace this ROD Code with the new ROD Code" onClick="replaceROD('rod', 'replacingROD')" />
 		</div>
 	</form>
