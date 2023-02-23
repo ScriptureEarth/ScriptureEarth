@@ -55,6 +55,7 @@ watch: organization, watch_what, URL, JesusFilm (0 or 1), YouTube (0 or 1)
 */
 
 $stmt_BibleIs = $db->prepare("SELECT * FROM links WHERE ISO_ROD_index = ? AND NOT BibleIs = 0 ORDER BY BibleIs");
+$stmt_BibleIsGospelFilm = $db->prepare("SELECT * FROM links WHERE ISO_ROD_index = ? AND BibleIsGospelFilm = 1");
 $stmt_YouVersion = $db->prepare("SELECT * FROM links WHERE ISO_ROD_index = ? AND YouVersion = 1");
 $stmt_Bibles_org = $db->prepare("SELECT * FROM links WHERE ISO_ROD_index = ? AND `Bibles_org` = 1");
 $stmt_GRN = $db->prepare("SELECT * FROM links WHERE ISO_ROD_index = ? AND GRN = 1");
@@ -87,6 +88,9 @@ while ($row_main = $result_main->fetch_assoc()) {
     $stmt_BibleIs->bind_param('i', $idx);													    // bind parameters for markers
     $stmt_BibleIs->execute();																    // execute query
     $result_BibleIs = $stmt_BibleIs->get_result();
+    $stmt_BibleIsGospelFilm->bind_param('i', $idx);													    // bind parameters for markers
+    $stmt_BibleIsGospelFilm->execute();																    // execute query
+    $result_BibleIsGospelFilm = $stmt_BibleIsGospelFilm->get_result();
     $stmt_YouVersion->bind_param('i', $idx);													// bind parameters for markers
     $stmt_YouVersion->execute();																// execute query
     $result_YouVersion = $stmt_YouVersion->get_result();
@@ -104,6 +108,7 @@ while ($row_main = $result_main->fetch_assoc()) {
     $result_watch = $stmt_watch->get_result();
 
     $BibleIs=$row_main['BibleIs'];						// boolean
+    $BibleIsGospelFilm=$row_main['BibleIsGospelFilm'];	// boolean
     $YouVersion=$row_main['YouVersion'];				// boolean
     $Biblesorg=$row_main['Bibles_org'];			    	// boolean
     $GRN=$row_main['GRN'];								// boolean
@@ -120,7 +125,7 @@ while ($row_main = $result_main->fetch_assoc()) {
     $first .= '"rod":				        "'.$rod.'",';
     $first .= '"var_code":		    	    "'.$var.'",';
     $first .= '"var_name":					"'.$Variant_name.'",';
-    $first .= '"iso_query_string":	        "sortby=lang&iso='.$iso;
+    $first .= '"iso_query_string":	        "iso='.$iso;
     if ($rod != '00000') {
         $first .= '&rod='.$rod;
     }
@@ -129,7 +134,7 @@ while ($row_main = $result_main->fetch_assoc()) {
     }
     $first .= '",';
     $first .= '"idx":		                '.$idx.',';
-    $first .= '"idx_query_string":          "sortby=lang&idx='.$idx.'"';	
+    $first .= '"idx_query_string":          "idx='.$idx.'"';	
     $first .= '},';
     $first .= '"relationships": {';
 
@@ -192,7 +197,30 @@ while ($row_main = $result_main->fetch_assoc()) {
     }
     $n=0;
 
-    if ($YouVersion) {
+    if ($BibleIsGospelFilm) {
+        //$num=mysql_num_rows($result_YouVersion);
+        if ($result_BibleIsGospelFilm->num_rows > 0) {
+            $first .= '"Bible.is Gospel Film": {';
+        }
+        while ($r2 = $result_BibleIsGospelFilm->fetch_array(MYSQLI_ASSOC)) {
+            $URL=trim($r2['URL']);
+            //$organization=trim($r2['company']);
+            $BibleIsGospel=trim($r2['company_title']);
+            $BibleIsGospel= preg_replace('/^ ?-? ?(.*)/', '$1', $BibleIsGospel);     // remove the text including  -
+            $first .= '"'.$n++.'":	{';
+            //$first .= '"organization":                  "'.$organization.'",';
+            $first .= '"Which Gospel":                  "'.$BibleIsGospel.'",';
+            $first .= '"URL":                           "'.$URL.'"';
+            $first .= '},';
+        }
+        if ($result_BibleIsGospelFilm->num_rows > 0) {
+            $first = rtrim($first, ',');
+            $first .= '},';
+        }
+    }
+    $n=0;
+
+   if ($YouVersion) {
         //$num=mysql_num_rows($result_YouVersion);
         if ($result_YouVersion->num_rows > 0) {
             $first .= '"YouVersion": {';

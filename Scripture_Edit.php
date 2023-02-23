@@ -35,7 +35,7 @@ if (!$retval) {
 <title>Scripture Edit</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Edit.css" />
 <script type="text/javascript" language="javascript" src="_js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.0.9"></script>
+<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.1.0"></script>
 <!-- see the bottom of this html file for CMS_events.js -->
 </head>
 <body>
@@ -109,7 +109,9 @@ function NT_Test($PDF, $NT_Index) {
 	echo "<a style='float: right; font-size: small; font-weight: normal; vertical-align: bottom; margin: 10px 10px 0px 0px; ' href='Scripture_Edit.php'>[Scripture Edit]</a>";
 
 /************************************************
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 	if $_GET does NOT have idx
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 ************************************************/
 
 	if (!isset($_GET["idx"])) {
@@ -316,7 +318,9 @@ function NT_Test($PDF, $NT_Index) {
 	}
 
 /************************************************
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 	if $_GET does have idx
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 ************************************************/
 
 	elseif (isset($_GET['idx'])) {

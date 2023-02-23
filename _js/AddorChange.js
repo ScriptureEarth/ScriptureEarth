@@ -182,7 +182,7 @@ function addRowToTableEmail() {
 }
 
 /*****************************************************
-					Cell Phone
+			Cell Phone
 ******************************************************/
 function addRowToCellPhone() {
     var tbl = document.getElementById("tableCellPhone");
@@ -286,7 +286,7 @@ function addRowToCellPhone() {
 }
 
 /*****************************************************
-				Buy (only 'Buy' variable!)
+			Buy (only 'Buy' variable!)
 ******************************************************/
 function addRowToTableCol3(DatabaseTable) {
     var whatTable = "";
@@ -353,7 +353,7 @@ function addRowToTableCol3(DatabaseTable) {
 }
 
 /*************************************************
-					Links
+			Links
 *************************************************/
 function addLinksRowToTableCol4() {
     var tbl = document.getElementById("tableLinks");
@@ -366,22 +366,22 @@ function addLinksRowToTableCol4() {
     var textNode1 = document.createTextNode(" ");
     cellHead.appendChild(textNode1);
 
-    // left cell
-    var cellLeft = row.insertCell(1);
-    var el = document.createElement("input");
-    el.type = "text";
-    el.name = "txtLinkCompany-" + iteration;
-    el.id = "txtLinkCompany-" + iteration;
-    el.size = 25;
-    el.style.color = "navy"
-    cellLeft.appendChild(el);
-
     // left center cell
-    var cellLeftCenter = row.insertCell(2);
+    var cellLeft = row.insertCell(1);
     var el = document.createElement("input");
     el.type = "text";
     el.name = "txtLinkCompanyTitle-" + iteration;
     el.id = "txtLinkCompanyTitle-" + iteration;
+    el.size = 25;
+    el.style.color = "navy"
+    cellLeft.appendChild(el);
+
+    // left cell
+    var cellLeftCenter = row.insertCell(2);
+    var el = document.createElement("input");
+    el.type = "text";
+    el.name = "txtLinkCompany-" + iteration;
+    el.id = "txtLinkCompany-" + iteration;
     el.size = 25;
     el.style.color = "navy"
     cellLeftCenter.appendChild(el);
@@ -440,7 +440,7 @@ function addLinksRowToTableCol4() {
 }
 
 /******************************************************
-					Other Books
+			Other Books
 ******************************************************/
 function addRowToTableOther() {
     var tbl = document.getElementById("tableOtherBooks");
@@ -521,7 +521,7 @@ function Otheridx(idx) { // set the txtOther-zz so that function moveUpDownOther
 }
 
 /********************************************
-					Watch
+			Watch
 ********************************************/
 function addWatchRowToTableCol4() {
     var whatTable = "tableWatch";
@@ -600,7 +600,7 @@ function addWatchRowToTableCol4() {
 }
 
 /**********************************************************
-					Study
+			Study
 **********************************************************/
 function addRowToTableCol5(DatabaseTable) {
     var tbl = document.getElementById("table" + DatabaseTable);
@@ -728,7 +728,7 @@ function addRowToTableCol5(DatabaseTable) {
 }
 
 /**********************************************************
-					SAB HTMLs (Edit)
+			SAB HTMLs (Edit)
 **********************************************************/
 function addRowToTableSABHTMLEdit() {
     var tbl = document.getElementById("tableSABHTMLEdit");
@@ -788,7 +788,7 @@ function addRowToTableSABHTMLEdit() {
 }
 
 /**********************************************************
-					SAB HTMLs (Add)
+			SAB HTMLs (Add)
 **********************************************************/
 function addRowToTableSABHTMLAdd() {
     var tbl = document.getElementById("tableSABHTMLAdd");
@@ -838,7 +838,7 @@ function addRowToTableSABHTMLAdd() {
 }
 
 /**********************************************************
-					Bible.is
+			Bible.is
 **********************************************************/
 function addRowToTableBibleIs() {
     var tbl = document.getElementById("tableBibleIs");
@@ -939,7 +939,7 @@ function addRowToTableBibleIs() {
 }
 
 /**********************************************************
-					Bible.is Gospel Film
+			Bible.is Gospel Film
 **********************************************************/
 function addRowToTableBibleIsGospelFilm() {
     var tbl = document.getElementById("tableBibleIsGospelFilm");
@@ -979,7 +979,7 @@ function addRowToTableBibleIsGospelFilm() {
 }
 
 /******************************************************
-				YouVerion and Bible.org and GRN
+			YouVerion and Bible.org and GRN
 ******************************************************/
 function addRowToTableYouVer(DatabaseTable) {
     if (DatabaseTable == "Biblesorg") {
@@ -1044,7 +1044,7 @@ function addRowToTableYouVer(DatabaseTable) {
 }
 
 /*****************************************************
-					Playlist (Audio and Video)
+			Playlist (Audio and Video)
 ******************************************************/
 function addRowToPlaylist(Playlist) {
     var tbl;
@@ -1122,7 +1122,7 @@ function addRowToPlaylist(Playlist) {
 }
 
 /**********************************************
-				Remove row
+			Remove row
 **********************************************/
 function removeRowFromTable(tableId) {
     var tbl = document.getElementById(tableId);
@@ -1131,7 +1131,7 @@ function removeRowFromTable(tableId) {
 }
 
 /**********************************************
-				All PDF OT Books
+			All PDF OT Books
 **********************************************/
 function All_PDF_OT_Books() { // fills in OT book PDFs
     try {
@@ -1163,7 +1163,7 @@ function All_PDF_OT_Books() { // fills in OT book PDFs
 }
 
 /**********************************************
-				No PDF OT Books
+			No PDF OT Books
 **********************************************/
 function No_PDF_OT_Books() { // fills in NT book PDFs
     try {
@@ -1180,7 +1180,7 @@ function No_PDF_OT_Books() { // fills in NT book PDFs
 }
 
 /**********************************************
-				All PDF NT Books
+			All PDF NT Books
 **********************************************/
 function All_PDF_NT_Books() { // fills in NT book PDFs
     try {
@@ -1212,7 +1212,7 @@ function All_PDF_NT_Books() { // fills in NT book PDFs
 }
 
 /**********************************************
-				No PDF NT Books
+			No PDF NT Books
 **********************************************/
 function No_PDF_NT_Books() { // deletes in NT book PDFs
     try {
@@ -1229,7 +1229,7 @@ function No_PDF_NT_Books() { // deletes in NT book PDFs
 }
 
 /**********************************************
-				All OT Audio Chapters
+			All OT Audio Chapters
 **********************************************/
 function All_Audio_OT_Chapters() { // fills in OT audio chapters
     try {
@@ -1305,7 +1305,7 @@ function All_Audio_OT_Chapters() { // fills in OT audio chapters
 }
 
 /**********************************************
-				No OT Audio Chapters
+			No OT Audio Chapters
 **********************************************/
 function No_Audio_OT_Chapters() { // deletes in OT audio chapters
     try {
@@ -1326,7 +1326,7 @@ function No_Audio_OT_Chapters() { // deletes in OT audio chapters
 }
 
 /**********************************************
-				One OT Audio Chapters
+			One OT Audio Chapters
 **********************************************/
 function One_OT_Audio_Chapters(index) {
     var OT_Audio_Filename = document.getElementById("OT_Audio_Filename-" + index + "-0");
@@ -1386,7 +1386,7 @@ function One_OT_Audio_Chapters(index) {
 }
 
 /**********************************************
-				No one OT Audio Chapters
+			No one OT Audio Chapters
 **********************************************/
 function One_No_OT_Audio_Chapters(num_book_sel) {
     var OT_Audio_Filename = document.getElementById("OT_Audio_Filename-" + num_book_sel + "-0");
@@ -1401,7 +1401,7 @@ function One_No_OT_Audio_Chapters(num_book_sel) {
 }
 
 /**********************************************
-				All NT Audio Chapters
+			All NT Audio Chapters
 **********************************************/
 function All_Audio_NT_Chapters() { // fills in NT audio chapters
     try {
@@ -1455,7 +1455,7 @@ function All_Audio_NT_Chapters() { // fills in NT audio chapters
 }
 
 /**********************************************
-				No all NT Audio Chapters
+			No all NT Audio Chapters
 **********************************************/
 function No_Audio_NT_Chapters() { // deletes in NT audio chapters
     try {
@@ -1476,7 +1476,7 @@ function No_Audio_NT_Chapters() { // deletes in NT audio chapters
 }
 
 /**********************************************
-				One NT Audio Chapters
+			One NT Audio Chapters
 **********************************************/
 function One_NT_Audio_Chapters(index) {
     var Audio_Filename = document.getElementById("NT_Audio_Filename-" + index + "-0"); // index is the number of the book (0 through < 27). 0 is the chapter number
@@ -1531,7 +1531,7 @@ function One_NT_Audio_Chapters(index) {
 }
 
 /**********************************************
-				No one OT Audio Chapters
+			No one OT Audio Chapters
 **********************************************/
 function One_No_NT_Audio_Chapters(index) {
     var Audio_Filename = document.getElementById("NT_Audio_Filename-" + index + "-0");
@@ -1560,7 +1560,7 @@ function getURLvar(name) {
 }
 
 /**********************************************************
-				Alternate Language Name: up or down
+			Alternate Language Name: up or down
 **********************************************************/
 function moveUpDownALN(tableId, upDown) {
     var tbl = document.getElementById(tableId);
@@ -1607,7 +1607,7 @@ function moveUpDownALN(tableId, upDown) {
 }
 
 /**********************************************************
-				Other books: up or down
+			Other books: up or down
 **********************************************************/
 function moveUpDownOther(tableId, upDown) {
     var tbl = document.getElementById(tableId);
@@ -1678,7 +1678,7 @@ function moveUpDownOther(tableId, upDown) {
 }
 
 /**********************************************************
-				ISO ROD index
+			ISO ROD index
 **********************************************************/
 function iso_idx() {
     var isoIdx = document.getElementById('iso_idx').value;

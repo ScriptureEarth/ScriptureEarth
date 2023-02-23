@@ -95,7 +95,7 @@ $SAB_temp = (int)$row['SAB'];
 $SAB_Audio = 0;
 $SAB_Text = 0;
 $SAB_Video = 0;
-if ($SAB_temp === 1) {
+if ($SAB_temp == 1) {
 //	$query="SELECT COUNT(*) AS SAB_temp FROM SAB WHERE ISO_ROD_index = $idx AND SAB_Audio = 1";
 //	$result_temp = $db->query($query);
 	$SAB_temp = 1;
@@ -116,10 +116,13 @@ if ($SAB_temp === 1) {
 
 $links = (int)$row['links'];
 $map = 0;
+$BibleIs = 0;
+$BibleIsGospelFilm = 0;
 $YouVersion = 0;
 $GooglePlay = 0;																		// GooglePlay!
+$GRN = 0;
 $websites = 0;
-if ($links === 1) {
+if ($links == 1) {
 //	$query="SELECT LOWER(company) as company_temp, map, YouVersion, GooglePlay FROM links WHERE ISO_ROD_index = $idx AND (map >= 1 OR YouVersion >= 1 OR GooglePlay >= 1 OR company = 'website' OR company = 'webpage')";
 //	$result_temp = $db->query($query);
 	$stmt_links->bind_param('i', $idx);													// bind parameters for markers
@@ -127,17 +130,29 @@ if ($links === 1) {
 	$result_temp = $stmt_links->get_result();
 	while ($row_temp = $result_temp->fetch_assoc()) {
 		$map_temp = $row_temp['map'];
+		$BibleIs_temp = $row_temp['BibleIs'];
+		$BibleIsGospelFilm_temp = $row_temp['BibleIsGospelFilm'];
 		$YouVersion_temp = $row_temp['YouVersion'];
 		$GooglePlay_temp = $row_temp['GooglePlay'];
+		$GRN_temp = $row_temp['GRN'];
 		$company_temp = $row_temp['company_temp'];
 		if ($map_temp >= 1) {
 			$map++;
+		}
+		if ($BibleIs_temp >= 1) {
+			$BibleIs++;
+		}
+		if ($BibleIsGospelFilm_temp >= 1) {
+			$BibleIsGospelFilm++;
 		}
 		if ($YouVersion_temp >= 1) {
 			$YouVersion++;
 		}
 		if ($GooglePlay_temp >= 1) {
 			$GooglePlay++;
+		}
+		if ($GRN_temp >= 1) {
+			$GRN++;
 		}
 		if ($company_temp == "website" || $company_temp == "webpage") {
 			$websites++;
@@ -193,6 +208,7 @@ if ($CellPhone === 1) {
 }
 
 //$BibleIs = (int)$row['BibleIs'];
+//$BibleIsGospelFile = (int)$row['BibleIsGospelFlim'];
 //$YouVersion = (int)$row['YouVersion'];
 //$Bibles_org = (int)$row['Bibles_org'];
 $PlaylistAudio = (int)$row['PlaylistAudio'];

@@ -11,7 +11,8 @@
 		$first .= '"portugues":			"00p-Escrituras_Indice.php",';
 		$first .= '"french":			"00f-Ecritures_Indice.php",';
 		$first .= '"dutch":				"00d-Bijbel_Indice.php",';
-		$first .= '"german":			"00de-Sprachindex.php"';
+		$first .= '"german":			"00de-Sprachindex.php",';
+		$first .= '"chinese":			"00cmn.php"';
 		$first .= '}';
 		$first .= '},';
 		$first .= '"relationships":';
@@ -19,7 +20,7 @@
 		$first .= '"rod":				"'.$rod.'",';
 		$first .= '"var_code":		   	"'.$var.'",';
 		$first .= '"var_name":			"'.$Variant_name.'",';
-		$first .= '"iso_query_string":	"sortby=lang&iso='.$iso;
+		$first .= '"iso_query_string":	"iso='.$iso;
         if ($rod != '00000') {
             $first .= '&rod='.$rod;
         }
@@ -28,7 +29,7 @@
         }
         $first .= '",';
 		$first .= '"idx":		        '.$idx.',';
-        $first .= '"idx_query_string":	"sortby=lang&idx='.$idx.'",';
+        $first .= '"idx_query_string":	"idx='.$idx.'",';
 		$first .= '"language_name": {';
 		$first .= '"english":			"'.$LN_English.'",';
 		$first .= '"spanish":			"'.$LN_Spanish.'",';
@@ -36,6 +37,7 @@
 		$first .= '"french":			"'.$LN_French.'",';
 		$first .= '"dutch":				"'.$LN_Dutch.'",';
 		$first .= '"german":			"'.$LN_German.'",';
+		$first .= '"chinese":			"'.$LN_Chinese.'",';
 		$first .= '"minority":			""';
 		$first .= '},';
 		$first .= '"alternate_language_count":		'.$alt_ln.',';                              // how many
@@ -91,7 +93,9 @@
 		$first .= '"theWord":			'.$study;
 		$first .= '},';
 		$first .= '"links_media": {';
-		$first .= '"youversion":		'.$YouVersion.',';
+		$first .= '"Bible.is":			'.$BibleIs.',';
+		$first .= '"Bible.is Gospel Film":	'.$BibleIsGospelFilm.',';
+		$first .= '"YouVersion":		'.$YouVersion.',';
 		$first .= '"eBible":			'.$eBible.',';
 		$first .= '"GRN":				'.$GRN;
 		$first .= '},';

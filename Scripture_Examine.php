@@ -208,7 +208,7 @@ if (isset($_POST['accept'])) {          // the "Submit" button
             $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
             ?>
                 <script>
-                    text = "CellPhone table already has index number <?php echo $idx ?> and 'iOS Asset Package'.";
+                    text = "UPDATED. CellPhone table already has index number <?php echo $idx ?> and 'iOS Asset Package'.";
                     message = 1;
                 </script>
             <?php
@@ -323,15 +323,15 @@ if (isset($_POST['accept'])) {          // the "Submit" button
 		if (!is_numeric($idx)) {
 			echo '<script type="text/javascript" language="javascript">
 					location.replace("process.php");
-					document.write ("DIE you Hacker!");
+					document.write ("You are a hacker!");
 				</script>'; 
 		}
         if (!isset($_GET['type'])) {
-            die('Hack!');
+            die('You are a hacker!');
         }
         $type = $_GET['type'];
         if (!preg_match('/^([_a-zA-Z0-9])+/', $type)) {
-            die('Hack!');
+            die('You are a hack!er');
         }
 		echo '<br />';
 		

@@ -8,8 +8,8 @@ $db = get_my_db();
 
 include 'include/v.key.php';																	// get v and key
 
-$stmt_iso = $db->prepare("SELECT * FROM scripture_main ORDER BY ISO, ROD_Code, Variant_Code");
-$stmt_main = $db->prepare("SELECT * FROM scripture_main WHERE ISO_ROD_index = ?");
+$stmt_iso = $db->prepare("SELECT * FROM scripture_main, nav_ln WHERE scripture_main.ISO_ROD_index = nav_ln.ISO_ROD_index ORDER BY ISO, ROD_Code, Variant_Code");
+//$stmt_main = $db->prepare("SELECT * FROM scripture_main WHERE ISO_ROD_index = ?");
 $stmt_var = $db->prepare("SELECT Variant_Eng FROM Variants WHERE Variant_Code = ?");
 $stmt_country = $db->prepare("SELECT ISO_countries, English FROM countries, ISO_countries WHERE ISO_countries.ISO_ROD_index = ? AND ISO_countries.ISO_countries = countries.ISO_Country");
 $stmt_alt = $db->prepare("SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = ?");
@@ -27,7 +27,7 @@ $stmt_Portuguese = $db->prepare("SELECT LN_Portuguese FROM LN_Portuguese WHERE I
 $stmt_French = $db->prepare("SELECT LN_French FROM LN_French WHERE ISO_ROD_index = ?");
 $stmt_Dutch = $db->prepare("SELECT LN_Dutch FROM LN_Dutch WHERE ISO_ROD_index = ?");
 $stmt_German = $db->prepare("SELECT LN_German FROM LN_German WHERE ISO_ROD_index = ?");
-$stmt_iso_languages = $db->prepare("SELECT * FROM scripture_main ORDER BY ISO");
+//$stmt_iso_languages = $db->prepare("SELECT * FROM scripture_main ORDER BY ISO");
 
 $stmt_iso->execute();															                // execute query
 $result_iso = $stmt_iso->get_result();

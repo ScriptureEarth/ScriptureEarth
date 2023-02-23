@@ -9,8 +9,11 @@
 </head>
 <body>
 <?php
-$SABtemp = 0;
-$y = 0;
+$SAB_Count_Display = 0;
+$Jesus_Count_Display = 0;
+$BibleIs_Count_Display = 0;
+$BibleIsGospelFilm_Count_Display = 0;
+$YouVersion_Count_Display = 0;
 /********************************************************************************************************************************************************************
 		Creates 'AllLanguages.csv'
 
@@ -44,6 +47,7 @@ $MySword_array = [];
 $itunes_array = [];
 $buy_array = [];
 $BibleIs_array = [];
+$BibleIsGospelFilm_array = [];
 $YouVersion_array = [];
 //$Bibles_org_array = [];
 $GooglePlay_array = [];
@@ -244,14 +248,16 @@ $FileString = '';
 	$stmt_NT_Audio_Media=$db->prepare($query);															// create a prepared statement
 	$query='SELECT COUNT(*) FROM OT_Audio_Media WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ? AND OT_Audio_Filename IS NOT NULL';	//OT_Audio REGEXP '^[0-9]{1,3}$'";
 	$stmt_OT_Audio_Media=$db->prepare($query);															// create a prepared statement
-	$query='SELECT company, company_title, URL, map FROM links WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ? AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND Bibles_org = 0 AND GooglePlay = 0 AND GRN = 0';
+	$query='SELECT company, company_title, URL, map FROM links WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ? AND buy = 0 AND BibleIs = 0 AND BibleIsGospelFilm = 0 AND YouVersion = 0 AND Bibles_org = 0 AND GooglePlay = 0 AND GRN = 0';
 	$stmt_links=$db->prepare($query);																	// create a prepared statement
 	$query='SELECT organization, buy_what, URL FROM buy WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ?';
 	$stmt_links_first_buy=$db->prepare($query);															// create a prepared statement
 	$query='SELECT company, company_title, URL FROM links WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ? AND buy = 1';
 	$stmt_links_buy=$db->prepare($query);																// create a prepared statement
-	$query='SELECT company, company_title, URL FROM links WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ? AND BibleIs = 1';
+	$query='SELECT company, company_title, URL FROM links WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ? AND BibleIs > 0';
 	$stmt_links_BibleIs=$db->prepare($query);															// create a prepared statement
+	$query='SELECT company, company_title, URL FROM links WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ? AND BibleIsGospelFilm = 1';
+	$stmt_links_BibleIsGospelFilm=$db->prepare($query);													// create a prepared statement
 	$query='SELECT company, company_title, URL FROM links WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ? AND YouVersion = 1';
 	$stmt_links_YouVersion=$db->prepare($query);														// create a prepared statement
 	$query='SELECT company, company_title, URL FROM links WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ? AND Bibles_org = 1';
@@ -286,7 +292,7 @@ $FileString = '';
 		$AllLanguages_Handle = fopen("All_SE_Resources_".date("M.Y").".csv", 'w');		// Open for writing only; place the file pointer at the beginning of the file and truncate the file to zero length. If the file does not exist, attempt to create it. 
 	}
 
-	fwrite($AllLanguages_Handle, 'English Language Name	Alternate Language Name	iso	rod	var	URL	Country(ies)	NT PDF count	NT Audio count	NT Partial PDF count	NT Partial Audio count	NT PDF Whole count	NT Audio Whole count	OT PDF count	OT Audio count	OT Partial PDF count	OT Partial Audio count	OT PDF Whole count	OT Audio Whole count	Bible PDF count	Bible Audio count	Scripture App Builder HTML (SE)	Online Viewer (SE)	Google Play (Android app) (SE)	Android App (SE)	iOS (SE)	Buy	BibleIs	YouVersion	GRN	eBible	GoBible (SE)	MySword (Android) (SE)	Playlist Audio (SE)	Jesus Film	Luke Vidoe	John Video	Acts Video	Genesis Video	God\'s Story Video	The Good Samaritan Video	Magdalena Video	John Animation Video (SE)	Scripture Animation Video (SE)	The Last Day Video	Story of Jesus for Children Video	History	5fish	iTunes	One Story	Bibles for India	Bibles for Russia	Maps	'."\r\n");
+	fwrite($AllLanguages_Handle, 'English Language Name	Alternate Language Name	iso	rod	var	URL	Country(ies)	NT PDF count	NT Audio count	NT Partial PDF count	NT Partial Audio count	NT PDF Whole count	NT Audio Whole count	OT PDF count	OT Audio count	OT Partial PDF count	OT Partial Audio count	OT PDF Whole count	OT Audio Whole count	Bible PDF count	Bible Audio count	Scripture App Builder HTML (SE)	Online Viewer (SE)	Google Play (Android app) (SE)	Android App (SE)	iOS (SE)	Buy	BibleIs	BibleIs Gospel Film	YouVersion	GRN	eBible	GoBible (SE)	MySword (Android) (SE)	Playlist Audio (SE)	Jesus Film	Luke Vidoe	John Video	Acts Video	Genesis Video	God\'s Story Video	The Good Samaritan Video	Magdalena Video	John Animation Video (SE)	Scripture Animation Video (SE)	The Last Day Video	Story of Jesus for Children Video	History	5fish	iTunes	One Story	Bibles for India	Bibles for Russia	Maps	'."\r\n");
 
 	while ($row = $result->fetch_array()) {
 		$ISO = $row['ISO'];
@@ -324,7 +330,7 @@ $FileString = '';
 			$Variant_Eng=$row_Var['Variant_Eng'];
 		}
 
-		$FileString = "$LN	$alt	$ISO	$temp_ROD_Code	$Variant_Eng	https://www.scriptureearth.org/00i-Scripture_Index.php?sortby=lang&iso=${ISO}${temp_ROD_Code_string}${temp_Variant_Code_string}	";
+		$FileString = "$LN	$alt	$ISO	$temp_ROD_Code	$Variant_Eng	https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$ISO$temp_ROD_Code_string$temp_Variant_Code_string	";
 
 		$stmt_countries_Eng->bind_param('ss', $ISO, $ROD_Code);										// bind parameters for markers
 		$stmt_countries_Eng->execute();																// execute query
@@ -361,6 +367,7 @@ $FileString = '';
 		$viewer=$rm['viewer'];							// boolean: viewer
 		$CellPhone=$rm['CellPhone'];					// boolean: CellPhone						// CellPhone table: Field "Cell_Phone_Title": "Android App", "GoBible (Java)", "MySword (Android)"
 		$BibleIs=$rm['BibleIs'];						// boolean: Bible.is
+		$BibleIsGospelFilm=$rm['BibleIsGospelFilm'];	// boolean: Bible.is Gospel Film
 		$YouVersion=$rm['YouVersion'];					// boolean: YouVersion
 		$Bibles_org=$rm['Bibles_org'];					// boolean: Bibles_org
 		$PlaylistAudio=$rm['PlaylistAudio'];			// boolean: PlaylistAudio
@@ -497,19 +504,19 @@ $FileString = '';
 		$result_links_SAB = $stmt_links_SAB->get_result();									// instead of bind_result (used for only 1 record):
 		while ($r_links = $result_links_SAB->fetch_array()) {
 			array_push($SAB_array, ['1', $ISO, $ROD_Code, $Variant_Code]);					// add to $SAB_array
-			//echo $SABtemp . ': ' . $ISO . ' ' . $ROD_Code . ' ' . $Variant_Code . '<br />';
-			$SABtemp++;
+			//echo $SAB_Count_Display . ': ' . $ISO . ' ' . $ROD_Code . ' ' . $Variant_Code . '<br />';
+			$SAB_Count_Display++;
 		}
 		$SAB_count = 0;
 		foreach ($SAB_array as $key => $value) {
 			$SAB_count++;
 		}
-		if ($SAB_count == 0) {
+		if ($SAB_count === 0) {
 			$SAB_count = NULL;
 		}
 		$SAB_array = [];
 		
-		if ($viewer == 0) {
+		if ($viewer === 0) {
 			$viewer = NULL;
 		}
 
@@ -564,6 +571,7 @@ $FileString = '';
 		}
 		$BibleIs = '';
 		foreach ($BibleIs_array as $key => $value) {
+			$BibleIs_Count_Display++;
 			if ($N == 1) {
 				$BibleIs = (string)((int)$BibleIs + 1);
 				continue;
@@ -579,6 +587,34 @@ $FileString = '';
 		}
 		$BibleIs_array = [];
 
+		// BibleIsGospelFilm = 1
+		$stmt_links_BibleIsGospelFilm->bind_param('sss', $ISO, $ROD_Code, $Variant_Code);			// bind parameters for markers
+		$stmt_links_BibleIsGospelFilm->execute();													// execute query
+		$result_links_BibleIsGospelFilm = $stmt_links_BibleIsGospelFilm->get_result();				// instead of bind_result (used for only 1 record):
+		while ($r_links = $result_links_BibleIsGospelFilm->fetch_array()) {
+			$company = $r_links['company'];
+			$URL = $r_links['URL'];
+			$gospel = $r_links['company_title'];
+			array_push($BibleIsGospelFilm_array, [$URL, $company, $gospel, $ISO, $ROD_Code, $Variant_Code]);		// add to $BibleIsGospelFilm_array
+		}
+		$BibleIsGospelFilm = '';
+		foreach ($BibleIsGospelFilm_array as $key => $value) {
+			$BibleIsGospelFilm_Count_Display++;
+			if ($N == 1) {
+				$BibleIsGospelFilm = (string)((int)$BibleIsGospelFilm + 1);
+				continue;
+			}
+			if ($key > 0) {
+				$BibleIsGospelFilm .=  " ## ";
+			}
+			if ($value[2] != '') {
+				$BibleIsGospelFilm .= $value[2] . ': ';
+			}
+			//$BibleIsGospelFilm .= '('.$value[1] . '): ';
+			$BibleIsGospelFilm .= $value[0];
+		}
+		$BibleIsGospelFilm_array = [];
+
 		// YouVersion = 1
 		$stmt_links_YouVersion->bind_param('sss', $ISO, $ROD_Code, $Variant_Code);					// bind parameters for markers
 		$stmt_links_YouVersion->execute();															// execute query
@@ -592,9 +628,9 @@ $FileString = '';
 		$YouVersion = '';
 		$YouVersion_count = 0;
 		foreach ($YouVersion_array as $key => $value) {
+			$YouVersion_Count_Display++;
 			if ($N == 1) {
 				$YouVersion_count++;
-			$y++;
 				continue;
 			}
 			if ($key > 0) {
@@ -780,7 +816,7 @@ $FileString = '';
 			$eBible = NULL;
 		}
 		
-		$FileString .= "$GooglePlay	$App	$iOS	$buy	$BibleIs	$YouVersion	$GRN	$eBible	$GoBible	$MySword	";
+		$FileString .= "$GooglePlay	$App	$iOS	$buy	$BibleIs	$BibleIsGospelFilm	$YouVersion	$GRN	$eBible	$GoBible	$MySword	";
 
 		// PlaylistAudio table: PlaylistAudioTitle	PlaylistAudioFilename (*txt)
 		$stmt_links_PlaylistAudio->bind_param('sss', $ISO, $ROD_Code, $Variant_Code);				// bind parameters for markers
@@ -1020,6 +1056,7 @@ $FileString = '';
 		
 		$PlaylistJesus = '';
 		foreach ($PlaylistJesus_array as $key => $value) {
+			$Jesus_Count_Display++;
 			if ($N == 1) {
 				$PlaylistJesus = (string)((int)$PlaylistJesus + 1);
 				continue;
@@ -1125,7 +1162,7 @@ $FileString = '';
 		}
 		$LastDay_array = [];
 		
-		//$query="SELECT company, company_title, URL, map FROM links WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND Variant_Code = '$Variant_Code' AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND Bibles_org = 0";
+		//$query="SELECT company, company_title, URL, map FROM links WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND Variant_Code = '$Variant_Code' AND buy = 0 AND BibleIs = 0 AND BibleIsGospelFilm = 0 AND YouVersion = 0 AND Bibles_org = 0";
 		//$result_links = $db->query($query);
 		$stmt_links->bind_param('sss', $ISO, $ROD_Code, $Variant_Code);							// bind parameters for markers
 		$stmt_links->execute();																	// execute query
@@ -1262,8 +1299,11 @@ $FileString = '';
 	$db->query('DROP TABLE LN_Temp');
 	
 echo '<p style="color: blue; font-weight: bold; ">End.</p>';
-echo 'SAB: ' .$SABtemp . '<br />';
-echo 'YouVersion: ' . $y . '<br />';
+echo 'SAB: ' .$SAB_Count_Display . '<br />';
+echo 'Jesus Video: ' .$Jesus_Count_Display . '<br />';
+echo 'Bible.is: ' .$BibleIs_Count_Display . '<br />';
+echo 'Bible.is Gospel Film: ' .$BibleIsGospelFilm_Count_Display . '<br />';
+echo 'YouVersion: ' . $YouVersion_Count_Display . '<br />';
 ?>
 </body>
 </html>
