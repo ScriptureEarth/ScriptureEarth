@@ -82,7 +82,7 @@ include ('./NT_Books.php');			// include the books of the NT
 <title>Scripture Add</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Add.css" />
 <script type="text/javascript" language="javascript" src="_js/Scripture_Add.js?v=1.0.3"></script>
-<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.1.0"></script>
+<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.1.1"></script>
 <script>
 	//let ALNindex = 1;
 	//let Otherindex = 1;
@@ -1539,6 +1539,7 @@ include ('./NT_Books.php');			// include the books of the NT
 			${'linksMap-1'}=1;
 			${'linksGooglePlay-1'}=0;
 		}
+		$i=1;
 		// 12/3/19 - Joshua Project
 		//${'linksMap-1'}=1;
 		?>
@@ -1566,9 +1567,27 @@ include ('./NT_Books.php');			// include the books of the NT
 				<td width="8%">
                     <div style="text-align: left; ">
                         <select name="linksIcon-1" id="linksIcon-1" style='color: navy; '>
+							<?php
+							/*
 							<option value="linksOther-1" <?php echo ( isset($_POST['linksOther-1']) ? ($_POST['linksOther-1'] == 1 ? " selected='selected'" : '') : (${'linksOther-1'}==1 ? " selected='selected'" : '' ) ) ?>>Other</option>
-							<option value="linksMap-1>" <?php echo ( isset($_POST['linksMap-1']) ? ($_POST['linksMap-1'] == 1 ? " selected='selected'" : '') : " selected='selected'" ) ?>>Map</option>
+							<option value="linksMap-1" <?php echo ( isset($POST['linksMap-1']) ? ($_POST['linksMap-1'] == 1 ? " selected='selected'" : '') : (${'linksMap-1'}==1 ? " selected='selected'" : '' ) ) ?>>Map</option>
 							<option value="linksGooglePlay-1" <?php echo ( isset($_POST['linksGooglePlay-1']) ? ($_POST['linksGooglePlay-1'] == 1 ? " selected='selected'" : '') : (${'linksGooglePlay-1'}==1 ? " selected='selected'" : '' ) ) ?>>Google Play</option>
+							*/
+							if (isset($_POST['linksIcon-1'])) {
+								if ($_POST['linksIcon-1'] == 'linksOther-1') ${'linksOther-1'}=1; else ${'linksOther-1'}=0;
+								if ($_POST['linksIcon-1'] == 'linksMap-1') ${'linksMap-1'}=1; else ${'linksMap-1'}=0;
+								if ($_POST['linksIcon-1'] == 'linksGooglePlay-1') ${'linksGooglePlay-1'}=1; else ${'linksGooglePlay-1'}=0;
+							}
+							else {
+								${'linksIcon-1'} = 'linksMap-1';
+								${'linksOther-1'} = 0;
+								${'linksMap-1'} = 1;
+								${'linksGooglePlay-1'} = 0;
+							}
+							?>	
+							<option value="linksOther-1" <?php echo ( isset($_POST['linksIcon-1']) ? ($_POST['linksOther-1'] == 1 ? " selected='selected'" : '') : '') ?>>Other</option>
+							<option value="linksMap-1" <?php echo ( isset($_POST['linksIcon-1']) ? ($_POST['linksMap-1'] == 1 ? " selected='selected'" : '') : " selected='selected'" ) ?>>Map</option>
+							<option value="linksGooglePlay-1" <?php echo ( isset($_POST['linksIcon-1']) ? ($_POST['linksGooglePlay-1'] == 1 ? " selected='selected'" : '') : '' ) ?>>Google Play</option>
                        </select>
                     </div>
                     <span style="font-size: 10pt; ">&nbsp;&nbsp;Map</span>
@@ -1580,7 +1599,7 @@ include ('./NT_Books.php');			// include the books of the NT
 				</td>
 			</tr>
 			<?php
-			$i = 2;
+			$i=2;
 			while (isset($_POST['txtLinkCompany-'.(string)$i]) || isset($_POST['txtLinkCompanyTitle-'.(string)$i]) || isset($_POST['txtLinkURL-'.(string)$i])) {
 				echo "<tr>";
 					echo "<td width='12%'>";

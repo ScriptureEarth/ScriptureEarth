@@ -1275,8 +1275,8 @@ function All_Audio_OT_Chapters() { // fills in OT audio chapters
                     //alert("charBefore: " + charBefore + "\r\ncharAfter: " + charAfter);
                     if (OT_chapters == 1) {
                         //document.getElementById("OT_Audio_Filename-"+index+"-"+z).value = document.getElementById("OT_Audio_Filename-"+index+"-"+z).value.replace(ChapterNumberArray[0], "");
-                        document.getElementById("OT_Audio_Filename-" + index + "-" + z).value = charBefore + charAfter;
-                        document.getElementById("OT_Audio_Filename-" + index + "-" + z).value = document.getElementById("OT_Audio_Filename-" + index + "-" + z).value.replace(Hyphen_RegExp, "$1");
+//                        document.getElementById("OT_Audio_Filename-" + index + "-" + z).value = charBefore + charAfter;                                                                               // remove chapter='01'
+//                        document.getElementById("OT_Audio_Filename-" + index + "-" + z).value = document.getElementById("OT_Audio_Filename-" + index + "-" + z).value.replace(Hyphen_RegExp, "$1");   // remove '-|_'
                     } else {
                         if (z < 9) {
                             //document.getElementById("OT_Audio_Filename-"+index+"-"+z).value = document.getElementById("OT_Audio_Filename-"+index+"-"+z).value.replace(ChapterNumberArray[0], "0"+y);
@@ -1407,19 +1407,19 @@ function All_Audio_NT_Chapters() { // fills in NT audio chapters
     try {
         var Audio_Filename = document.getElementById("NT_Audio_Filename-0-0");
         if (Audio_Filename.value != "") {
-            var ISOCode_RegExp = new RegExp(/[a-z]{3}/);
-            var BookNumber_RegExp = new RegExp(/[0-9]+/);
-            var BookName_RegExp = new RegExp(/[0-9A-Z][A-Z]{2}/);
-            var ChapterNumber_RegExp = new RegExp(/01/);
-            var Hyphen_RegExp = new RegExp(/[-_]{1,}([.].*$)/);
-            var ISOCodeArray = Audio_Filename.value.match(ISOCode_RegExp);
-            var BookNumberArray = Audio_Filename.value.match(BookNumber_RegExp);
-            var BookNameArray = Audio_Filename.value.match(BookName_RegExp);
-            var ChapterNumberArray = Audio_Filename.value.match(ChapterNumber_RegExp);
-            for (index = 0; index < 27; index++) {
-                NT_abbr = NT_abbr_array[index];
-                NT_chapters = NT_How_Many_Chapters_array[index];
-                for (z = 0; z < NT_chapters; z++) {
+            var ISOCode_RegExp = new RegExp(/[a-z]{3}/);                                    // ISO code
+            var BookNumber_RegExp = new RegExp(/[0-9]+/);                                   // 0 - 26 Book numbers
+            var BookName_RegExp = new RegExp(/[0-9A-Z][A-Z]{2}/);                           // abbreviation for book name
+            var ChapterNumber_RegExp = new RegExp(/01/);                                    // chapter number
+            var Hyphen_RegExp = new RegExp(/[-_]{1,}([.].*$)/);                             // hyphen?
+            var ISOCodeArray = Audio_Filename.value.match(ISOCode_RegExp);                  // match ISO code
+            var BookNumberArray = Audio_Filename.value.match(BookNumber_RegExp);            // match book number
+            var BookNameArray = Audio_Filename.value.match(BookName_RegExp);                // match abbreviation for book name
+            var ChapterNumberArray = Audio_Filename.value.match(ChapterNumber_RegExp);      // match chapter number
+            for (index = 0; index < 27; index++) {                                          // iterate through books
+                NT_abbr = NT_abbr_array[index];                                             // gives one book
+                NT_chapters = NT_How_Many_Chapters_array[index];                            // gives total number of chapters
+                for (z = 0; z < NT_chapters; z++) {                                         // iterate through chapters
                     if (BookNumber_RegExp.test(Audio_Filename.value)) {
                         document.getElementById("NT_Audio_Filename-" + index + "-" + z).value = Audio_Filename.value.replace(BookNumberArray[0], Number(BookNumberArray[0]) + index);
                     } else {
@@ -1431,10 +1431,10 @@ function All_Audio_NT_Chapters() { // fills in NT audio chapters
                         alert("Error. The Book Name abbreviation provided is not valid for " + NT_abbr + ".");
                     }
                     y = z + 1;
-                    if (ChapterNumber_RegExp.test(Audio_Filename.value)) { // The Audio_Filename.value should be here!
-                        if (NT_chapters == 1) {
-                            document.getElementById("NT_Audio_Filename-" + index + "-" + z).value = document.getElementById("NT_Audio_Filename-" + index + "-" + z).value.replace(ChapterNumberArray[0], "");
-                            document.getElementById("NT_Audio_Filename-" + index + "-" + z).value = document.getElementById("NT_Audio_Filename-" + index + "-" + z).value.replace(Hyphen_RegExp, "$1");
+                    if (ChapterNumber_RegExp.test(Audio_Filename.value)) { // The Audio_Filename.value should be here
+                        if (NT_chapters == 1) {                                             // is the NT chapter only 1?
+//                            document.getElementById("NT_Audio_Filename-" + index + "-" + z).value = document.getElementById("NT_Audio_Filename-" + index + "-" + z).value.replace(ChapterNumberArray[0], ""); // remove chapter='01'
+//                            document.getElementById("NT_Audio_Filename-" + index + "-" + z).value = document.getElementById("NT_Audio_Filename-" + index + "-" + z).value.replace(Hyphen_RegExp, "$1");       // remove '-|_'
                         } else {
                             if (z < 9) {
                                 document.getElementById("NT_Audio_Filename-" + index + "-" + z).value = document.getElementById("NT_Audio_Filename-" + index + "-" + z).value.replace(ChapterNumberArray[0], "0" + y);

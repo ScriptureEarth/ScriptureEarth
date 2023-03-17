@@ -35,7 +35,7 @@ if (!$retval) {
 <title>Scripture Edit</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Edit.css" />
 <script type="text/javascript" language="javascript" src="_js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.1.0"></script>
+<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.1.2"></script>
 <!-- see the bottom of this html file for CMS_events.js -->
 </head>
 <body>
@@ -1946,7 +1946,7 @@ function NT_Test($PDF, $NT_Index) {
             ${'txtSABdescription-1'} = $_POST['txtSABdescription-1'];
             ${'txtSABpreScriptoria-1'} = $_POST['txtSABpreScriptoria-1'];
 		}
-		elseif ($SM_row['SAB'] >= 1) {														// if data comes from sab_scriptoria table
+		elseif ($SM_row['SAB'] >= 1) {													// if data comes from sab_scriptoria table
             $query="SELECT url, subfolder, description, pre_scriptoria FROM SAB_scriptoria WHERE ISO_ROD_index = $idx";
             $resultSAB_scriptoria=$db->query($query);
             $numSAB_scriptoria = $resultSAB_scriptoria->num_rows;
@@ -1986,11 +1986,11 @@ function NT_Test($PDF, $NT_Index) {
 			${'txtSABsubFirstPath-1'} = 'sab';
 			${'txtSABsubfolder-1'} = ${'txtSABpreScriptoria-1'};
 		}
-		elseif (${'txtSABsubfolder-1'} !== '') {											// if there is data in subfolder-1
-				${'txtSABsubFirstPath-1'} = substr(${'txtSABsubfolder-1'}, 0, strpos(${'txtSABsubfolder-1'}, '/'));
-				${'txtSABsubfolder-1'} = substr(${'txtSABsubfolder-1'}, strpos(${'txtSABsubfolder-1'}, '/')+1, -1);		// remove first "path" and remove last "/"
+		elseif (${'txtSABsubfolder-1'} !== '' && strpos(${'txtSABsubfolder-1'}, '/')) {										// if there is data in subfolder-1
+			${'txtSABsubFirstPath-1'} = substr(${'txtSABsubfolder-1'}, 0, strpos(${'txtSABsubfolder-1'}, '/'));
+			${'txtSABsubfolder-1'} = substr(${'txtSABsubfolder-1'}, strpos(${'txtSABsubfolder-1'}, '/')+1, -1);		// remove first "path" and remove last "/"
 		}
-		else {		// url != ''
+			else {		// url != ''
 		}
 		?>
 		<tbody name="tableSABHTMLEdit" id="tableSABHTMLEdit">
@@ -2026,8 +2026,10 @@ function NT_Test($PDF, $NT_Index) {
 				while (isset($_POST['txtSABsubfolder-'.(string)$i])) {
 					if ($_POST['txtpreScriptoria-'.(string)$i] === '') {
 						${"txtSABsubfolder-$i"} = $_POST['txtSABsubfolder-'.(string)$i];
-						${"txtSABsubFirstPath-$i"} = substr(${"txtSABsubfolder-$i"}, 0, strpos(${"txtSABsubfolder-$i"}, '/'));		// save first "path"
-						${"txtSABsubfolder-$i"} = substr(${"txtSABsubfolder-$i"}, strpos(${"txtSABsubfolder-$i"}, '/')+1, -1);		// remove first "path" and remove last "/"
+						if (strpos(${"txtSABsubfolder-$i"}, '/')) {
+							${"txtSABsubFirstPath-$i"} = substr(${"txtSABsubfolder-$i"}, 0, strpos(${"txtSABsubfolder-$i"}, '/'));		// save first "path"
+							${"txtSABsubfolder-$i"} = substr(${"txtSABsubfolder-$i"}, strpos(${"txtSABsubfolder-$i"}, '/')+1, -1);		// remove first "path" and remove last "/"
+						}
 					}
 					else {
 						${"txtSABsubfolder-$i"} = 'sab/';
@@ -2065,7 +2067,7 @@ function NT_Test($PDF, $NT_Index) {
 						${"txtSABpreScriptoria-$i"} = $tempSAB_scriptoria['pre_scriptoria'];
 						${"txtSABsubFirstPath-$i"} = '';
 						if (${"txtSABurl-$i"} == '') {
-							if (${"txtSABpreScriptoria-$i"} == '') {
+							if (${"txtSABpreScriptoria-$i"} == '' && strpos(${"txtSABsubfolder-$i"}, '/')) {
 								${"txtSABsubFirstPath-$i"} = substr(${"txtSABsubfolder-$i"}, 0, strpos(${"txtSABsubfolder-$i"}, '/'));		// save first "path"
 								${"txtSABsubfolder-$i"} = substr(${"txtSABsubfolder-$i"}, strpos(${"txtSABsubfolder-$i"}, '/')+1, -1);		// remove first "path" and remove last "/"
 							}
@@ -2213,10 +2215,14 @@ function NT_Test($PDF, $NT_Index) {
 							echo "<input type='text' name='txtLinkBibleIsTitle-$i' id='txtLinkBibleIsTitle-$i' style='color: navy; ' size='30' value='" . ( isset($_POST['txtLinkBibleIsTitle-'.(string)$i]) ? $_POST['txtLinkBibleIsTitle-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='8%'>";
-							if ($_POST['BibleIsDefault-'.(string)$i] == 'BibleIsDefault-'.$i) ${'BibleIsDefault-$i'}=1; else ${'BibleIsDefault-$i'}=0;
-							if ($_POST['BibleIsText-'.(string)$i] == 'BibleIsText-'.$i) ${'BibleIsText-$i'}=2; else ${'BibleIsText-$i'}=0;
-							if ($_POST['BibleIsAudio-'.(string)$i] == 'BibleIsAudio-'.$i) ${'BibleIsAudio-$i'}=3; else ${'BibleIsAudio-$i'}=0;
-							if ($_POST['BibleIsVideo-'.(string)$i] == 'BibleIsVideo-'.$i) ${'BibleIsVideo-$i'}=4; else ${'BibleIsVideo-$i'}=0;
+							${'BibleIsDefault-$i'}=1;
+							${'BibleIsText-$i'}=1;
+							${'BibleIsAudio-$i'}=1;
+							${'BibleIsVideo-$i'}=1;
+							if ($_POST['txtLinkBibleIs-'.(string)$i] == 'BibleIsDefault-'.$i) { ${'BibleIsDefault-$i'}=1; }
+							if ($_POST['txtLinkBibleIs-'.(string)$i] == 'BibleIsText-'.$i) { ${'BibleIsText-$i'}=2; }
+							if ($_POST['txtLinkBibleIs-'.(string)$i] == 'BibleIsAudio-'.$i) { ${'BibleIsAudio-$i'}=3; }
+							if ($_POST['txtLinkBibleIs-'.(string)$i] == 'BibleIsVideo-'.$i) { ${'BibleIsVideo-$i'}=4; }
 							?>
 							<select name="txtLinkBibleIs-<?php echo $i ?>" id="txtLinkBibleIs-<?php echo $i ?>" style='color: navy; '>
 								<option value="BibleIsDefault-<?php echo $i ?>" <?php echo ( ${'BibleIsDefault-$i'} == 1 ? " selected='selected'" : '' ) ?>>Default</option>

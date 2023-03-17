@@ -600,7 +600,7 @@ function check_input($value) {
 				$inputs["txtLinkCompanyTitle-".(string)$i] = check_input($_POST["txtLinkCompanyTitle-".(string)$i]);
 				$inputs["txtLinkURL-".(string)$i] = check_input($_POST["txtLinkURL-".(string)$i]);
 				if ($_POST["linksIcon-".(string)$i] == 'linksOther-'.$i) $inputs["linksOther-$i"] = 1; else $inputs["linksOther-$i"] = 0;
-				if ($_POST["linksIcon-".(string)$i] == 'linksBuy-'.$i) $inputs["linksBuy-$i"] = 1; else $inputs["linksBuy-$i"] = 0;
+				//if ($_POST["linksIcon-".(string)$i] == 'linksBuy-'.$i) $inputs["linksBuy-$i"] = 1; else $inputs["linksBuy-$i"] = 0;
 				if ($_POST["linksIcon-".(string)$i] == 'linksMap-'.$i) $inputs["linksMap-$i"] = 1; else $inputs["linksMap-$i"] = 0;
 				if ($_POST["linksIcon-".(string)$i] == 'linksGooglePlay-'.$i) $inputs["linksGooglePlay-$i"] = 1; else $inputs["linksGooglePlay-$i"] = 0;
 				$i++;
@@ -671,6 +671,7 @@ function check_input($value) {
 					$inputs['SILlink'] = 1;			// checkbox = checked
 				}
 			}
+// SIL List end
 		}
 	}
 	else {

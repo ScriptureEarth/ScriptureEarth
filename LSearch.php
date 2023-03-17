@@ -178,17 +178,17 @@ if (strlen($TryLanguage) > 2) {
 				$bool = 0;
 				while ($row_alt = $result_alt->fetch_assoc()) {
 					$alt_temp = $row_alt['alt_lang_name'];
-					$temp_TL = str_replace('(', '\(', $TryLanguage);
-					$temp_TL = str_replace(')', '\)', $temp_TL);
-					$temp_TL = str_replace('.', '\.', $temp_TL);
-					if (preg_match("/(\s|-|^)".$temp_TL."/i", $alt_temp)) {
+					//$temp_TL = str_replace('(', '\(', $TryLanguage);
+					//$temp_TL = str_replace(')', '\)', $temp_TL);
+					//$temp_TL = str_replace('.', '\.', $temp_TL);
+					//if (preg_match("/(\s|-|^)".$temp_TL."/i", $alt_temp)) {
 						if ($bool == 0) {
 							$alt = $alt_temp;
 							$bool = 1;
 							continue;
 						}
 						$alt .= ', '.$alt_temp;
-					}
+					//}
 				}
 			}
 			

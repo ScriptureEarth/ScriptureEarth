@@ -233,7 +233,7 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 		<div style='width: 100%; '>
 			<div class='Country' style='margin-bottom: 8px; '><?php echo translate('Country:', $st, 'sys'); ?>&nbsp;<span class='Country'><?php echo $country; ?></span></div>
 			<?php if ($ISO != 'qqq') { ?>
-			<div class='languageCode'><?php echo translate('Language Code:', $st, 'sys'); ?>&nbsp;<?php echo $ISO; ?></div>
+			<div class='languageCode'><?php echo translate('Language Code:', $st, 'sys'); ?>&nbsp;<?php echo $ISO; ?>&nbsp;&nbsp;&nbsp;&nbsp;<span style='font-size: 90%; font-weight: normal; '>(<?php echo translate('Index', $st, 'sys'); ?>:&nbsp;<?php echo $ISO_ROD_index; ?>)</span></div>
 			<?php } ?>
 		</div>
 	</h2>
@@ -978,13 +978,14 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 					<tr>
 						<td style='width: 45px; '>
 							<?php
-							echo "<img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
+							echo "<div class='linePointer' onclick='window.open(\"https://apps.apple.com/us/app/scripture-earth/id1580089704\", \"_blank\");'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
 						echo "</td>";
 						echo "<td>";
-							echo translate('The ScriptureEarth App is available in the Apple Store.', $st, 'sys');
+						echo "<div class='linePointer' title='" . translate('The ScriptureEarth App is available in the Apple Store.', $st, 'sys') . "' onclick='window.open(\"https://apps.apple.com/us/app/scripture-earth/id1580089704\", \"_blank\");'>" . translate('The ScriptureEarth App is available in the Apple Store.', $st, 'sys');
 							if ($optional != '' && !is_null($optional)) {
 								echo ' (' . (substr($optional, 0, 2) == '- ' ? substr($optional, 2) : $optional) . ')';
 							}
+							echo '</div>';
 							?>
 						</td>
 					</tr>
@@ -1038,7 +1039,7 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 						<tr>
 							<td style='width: 45px; '>
 								<?php
-								echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/android_module-icon.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
+								echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/android_module-icon.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
 							echo "</td>";
 							echo "<td>";
 								echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the app for', $st, 'sys') . ' ' . ($Cell_Phone_Title == 'Android App' ? 'Android' : $Cell_Phone_Title);
@@ -1060,10 +1061,10 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 						<tr>
 							<td style='width: 45px; '>
 								<?php
-								echo "<div class='linePointer' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /><div>";
+								echo "<div class='linePointer' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
 							echo "</td>";
 							echo "<td>";
-								echo "<div class='linePointer' title='" . translate('Download the Scripture Earth app for iOS', $st, 'sys') . "' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'>" . translate('Download', $st, 'sys') . " " . translate('the Scripture Earth app for iOS', $st, 'sys');
+								echo "<div class='linePointer' title='" . translate('Download the Scripture Earth app for iOS', $st, 'sys') . "' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'>" . translate('Download the Scripture Earth app for iOS', $st, 'sys');
 								echo ' ' . $optional . '</div>';
 								?>
 							</td>
