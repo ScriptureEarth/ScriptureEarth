@@ -196,6 +196,7 @@
 			else {
 				$inputs["txtSABpreScriptoria-".(string)$i] = '';
 			}
+			
 			if ($inputs["txtSABpreScriptoria-".(string)$i] !== '') {
 				$inputs["txtSABsubfolder-".(string)$i] = 'sab/'.$inputs["txtSABpreScriptoria-".(string)$i];
 				$inputs["txtSABsubFirstPath-".(string)$i] = '';

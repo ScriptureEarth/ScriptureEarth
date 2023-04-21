@@ -200,7 +200,7 @@
 	$db->query("DELETE FROM SAB_scriptoria WHERE ISO_ROD_index = $inputs[idx]");
 	if ($inputs['SAB'] >= 1) {
 		$i = 1;
-		$query="INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, url, subfolder, description, pre_scriptoria, SAB_number) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, ?, ?)";
+		$query="INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `url`, `subfolder`, `description`, `pre_scriptoria`, `SAB_number`) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, ?, ?)";
 		$stmt_SAB_scriptoria=$db->prepare($query);
 		//		while (isset($inputs["txtSABsubfolder-".(string)$i]) && trim($inputs["txtSABsubfolder-".(string)$i]) != '') {		//strlen(trim($inputs["txtSABsubFirstPath-".(string)$i]) >= 4)) {			// $inputs["txtSABsubFirstPath-".(string)$i]) = "sab" by default
 		while (isset($inputs["txtSABsubfolder-".(string)$i])) {		//strlen(trim($inputs["txtSABsubFirstPath-".(string)$i]) >= 4)) {			// $inputs["txtSABsubFirstPath-".(string)$i]) = "sab" by default

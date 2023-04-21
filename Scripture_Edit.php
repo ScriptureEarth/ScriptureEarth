@@ -1924,16 +1924,16 @@ function NT_Test($PDF, $NT_Index) {
 				<td width="13%">&nbsp;
 				</td>
 				<td width="13%" style="padding-left: 3px; ">
-					subfolder under 'sab' <span style="font-weight: bold; font-size: 9pt; ">AND</span> all of the HTML files that go under the subfolder
+					SE subfolder under 'sab/' <!--span style="font-weight: bold; font-size: 9pt; ">AND</span> all of the HTML files that go under the subfolder-->
 				</td>
 				<td width="24%" style="padding-left: 3px; ">
-					URL <i>(URL or subfolder)</i>
+					<b>OR</b> URL (not on the SE server)
 				</td>
 				<td width="24%" style="padding-left: 3px; ">
 					Description <i>(optional)</i>
 				</td>
 				<td width="36%" colspan="2" style="padding-left: 3px; ">
-					Pre-Scriptoria HTML files
+					&nbsp;	<!--remove: Pre-Scriptoria HTML files-->
 				</td>
 			</tr>
 		</thead>
@@ -1947,7 +1947,7 @@ function NT_Test($PDF, $NT_Index) {
             ${'txtSABpreScriptoria-1'} = $_POST['txtSABpreScriptoria-1'];
 		}
 		elseif ($SM_row['SAB'] >= 1) {													// if data comes from sab_scriptoria table
-            $query="SELECT url, subfolder, description, pre_scriptoria FROM SAB_scriptoria WHERE ISO_ROD_index = $idx";
+            $query="SELECT `url`, `subfolder`, `description`, `pre_scriptoria` FROM SAB_scriptoria WHERE ISO_ROD_index = $idx";
             $resultSAB_scriptoria=$db->query($query);
             $numSAB_scriptoria = $resultSAB_scriptoria->num_rows;
 			if ($numSAB_scriptoria > 0) {
@@ -1986,7 +1986,7 @@ function NT_Test($PDF, $NT_Index) {
 			${'txtSABsubFirstPath-1'} = 'sab';
 			${'txtSABsubfolder-1'} = ${'txtSABpreScriptoria-1'};
 		}
-		elseif (${'txtSABsubfolder-1'} !== '' && strpos(${'txtSABsubfolder-1'}, '/')) {										// if there is data in subfolder-1
+		elseif (${'txtSABsubfolder-1'} !== '' && strpos(${'txtSABsubfolder-1'}, '/')) {								// if there is data in subfolder-1
 			${'txtSABsubFirstPath-1'} = substr(${'txtSABsubfolder-1'}, 0, strpos(${'txtSABsubfolder-1'}, '/'));
 			${'txtSABsubfolder-1'} = substr(${'txtSABsubfolder-1'}, strpos(${'txtSABsubfolder-1'}, '/')+1, -1);		// remove first "path" and remove last "/"
 		}
@@ -1999,9 +1999,9 @@ function NT_Test($PDF, $NT_Index) {
 					<div style="margin-top: 10px; ">Enter "SAB HTMLs":</div>For example:
 				</td>
 				<td width="13%">
-					<input type='text' style='color: navy; ' size='15' name='txtSABsubfolder-1' id='txtSABsubfolder-1' value="<?php echo ${'txtSABsubfolder-1'}; ?>" />
+					<input type='text' style='color: navy; ' size='13' name='txtSABsubfolder-1' id='txtSABsubfolder-1' value="<?php echo ${'txtSABsubfolder-1'}; ?>" />
 					<input type='hidden' name='txtSABsubFirstPath-1' id='txtSABsubFirstPath-1' value="<?php echo ${'txtSABsubFirstPath-1'}; ?>" />
-                    <br /><span style="font-size: 10pt; margin-left: 3px; ">tuo or tuoB or tuo2019</span>
+                    <br /><span style="font-size: 10pt; margin-left: 3px; ">tuo <b>or</b> tuoB <b>or</b> tuo2019</span>
 				</td>
 				<td width="24%">
 					<input type='text' style='color: navy; ' size='31' name='txtSABurl-1' id='txtSABurl-1' value="<?php echo ${'txtSABurl-1'}; ?>" />
@@ -2009,11 +2009,13 @@ function NT_Test($PDF, $NT_Index) {
 				</td>
 				<td width="24%">
 					<input type='text' style='color: navy; ' size='31' name='txtSABdescription-1' id='txtSABdescription-1' value="<?php echo ${'txtSABdescription-1'}; ?>" />
-                    <br /><span style="font-size: 10pt; margin-left: 1px; ">- Brazil or version 2019</span>
+                    <br /><span style="font-size: 10pt; margin-left: 1px; ">- Brazil <b>or</b> version 2019</span>
 				</td>
 				<td width="16%">
-					<input type='text' style='color: black; ' size='12' name='txtSABpreScriptoria-1' id='txtSABpreScriptoria-1' value="<?php echo ${'txtSABpreScriptoria-1'}; ?>" />
-                    <br /><span style="font-size: 10pt; margin-left: 1px; ">tuo (if pre-Scriptoria<br />HTML files)</span>
+					&nbsp;
+					<input type='hidden' name='txtSABpreScriptoria-1' id='txtSABpreScriptoria-1' value="<?php echo ${'txtSABpreScriptoria-1'}; ?>" />
+					<!--input type='text' style='color: black; ' size='12' name='txtSABpreScriptoria-1' id='txtSABpreScriptoria-1' value="< ?php echo ${'txtSABpreScriptoria-1'}; ?>" />
+                    <br /><span style="font-size: 10pt; margin-left: 1px; ">tuo (if pre-Scriptoria<br />HTML files)</span-->
 				</td>
                 <td width="20%" style="text-align: right; vertical-align: top; ">
                     <input id='addSABHTMLEdit' style="font-size: 9pt; " type="button" onClick="addRowToTableSABHTMLEdit()" value="Add" />
@@ -2049,7 +2051,8 @@ function NT_Test($PDF, $NT_Index) {
 							echo "<input type='text' name='txtSABdescription-$i' id='txtSABdescription-$i' style='color: navy; ' size='31' value='" . ( isset($_POST['txtSABdescription-'.(string)$i]) ? $_POST['txtSABdescription-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='16%'>";
-							echo "<input type='text' readonly name='txtSABpreScriptoria-$i' id='txtSABpreScriptoria-$i' style='color: navy; ' size='15' value='" . ( isset($_POST['txtSABpreScriptoria-'.(string)$i]) ? $_POST['txtSABpreScriptoria-'.(string)$i] : '' ) . "' />";
+							echo '&nbsp;';
+							//echo "<input type='text' readonly name='txtSABpreScriptoria-$i' id='txtSABpreScriptoria-$i' style='color: navy; ' size='15' value='" . ( isset($_POST['txtSABpreScriptoria-'.(string)$i]) ? $_POST['txtSABpreScriptoria-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='20%'>";
 							echo "&nbsp;";
@@ -2094,7 +2097,8 @@ function NT_Test($PDF, $NT_Index) {
 								echo "<input type='text' name='txtSABdescription-$i' id='txtSABdescription-$i' style='color: navy; ' size='31' value='" . ${"txtSABdescription-$i"} . "' />";
 							echo "</td>";
 							echo "<td width='16%'>";
-								echo "<input type='text' readonly name='txtSABpreScriptoria-$i' id='txtSABpreScriptoria-$i' style='color: navy; ' size='12' value='" . ${"txtSABpreScriptoria-$i"} . "' />";
+								echo '&nbsp;';
+								//echo "<input type='text' readonly name='txtSABpreScriptoria-$i' id='txtSABpreScriptoria-$i' style='color: navy; ' size='12' value='" . ${"txtSABpreScriptoria-$i"} . "' />";
 							echo "</td>";
 							echo "<td width='20%'>";
 								echo "&nbsp;";

@@ -90,7 +90,12 @@ echo "<a style='float: right; font-size: small; font-weight: normal; vertical-al
 echo "<a style='float: right; font-size: small; font-weight: normal; vertical-align: bottom; margin: 10px 10px 0px 0px; ' href='Scripture_Edit.php'>[Scripture Edit]</a>";
 
 // Checks that the form was submitted after Scripture_Examine.php submitted.
-if (isset($_POST['accept'])) {          // the "Submit" button
+/*************************************************************************************
+ * 
+ *          is 'accept' button clicked
+ * 
+ *************************************************************************************/
+if (isset($_POST['accept'])) {                      // the "Submit" button
     if (!isset($_POST['iso']) || !isset($_POST['rod']) || !isset($_POST['var']) || !isset($_POST['idx']) || !isset($_POST['type']) || !isset($_POST['email']) || !isset($_POST['projectName']) || !isset($_POST['url']) || !isset($_POST['projectDescription']) || !isset($_POST['subfolder'])) {
         /*if (!isset($_POST['iso'])) echo 'iso is not POSTed.<br />';
         if (!isset($_POST['rod'])) echo 'rod is not POSTed.<br />';
@@ -130,15 +135,16 @@ if (isset($_POST['accept'])) {          // the "Submit" button
     //      "ios" (CellPhone table: ISO	ROD_Code	Variant_Code	ISO_ROD_index	Cell_Phone_Title = 'iOS Asset Package'	Cell_Phone_File = url),
     //      and "google_play" (links table:  ISO	ROD_Code	Variant_Code	ISO_ROD_index	company = 'Google Play Store'   company_title =  projectDescription URL = url	buy	map	BibleIs	YouVersion	Bibles_org	GooglePlay = 1	GRN)
     // UPDATE add_resource to accept = 1
-    /******************************************************************************************************
-            potential problem. What if the user wants to update from $subfolder to sab/$subfolder/?
-     ******************************************************************************************************/
+
     if ($type == 'sab_html') {
-        if ($subfolder != '') {                 // SAB HTML
+        /*******************************************************************************************************************
+                There is a potential problem here. What if the user wants to update from $subfolder to sab/$subfolder/?
+        *******************************************************************************************************************/
+        if ($subfolder != '') {                         // SAB HTML
             $query = "SELECT * FROM SAB_scriptoria WHERE ISO_ROD_index = $idx AND subfolder = 'sab/$subfolder/'";
             $result = $db->query($query);
             if ($result->num_rows == 0) {
-                $db->query("INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `url`, subfolder, `description`, pre_scriptoria, SAB_number) VALUES ('$iso', '$rod', '$var', $idx, '$url', 'sab/$subfolder/', '$projectDescription', '', 1)");
+                $db->query("INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `url`, subfolder, `description`, pre_scriptoria, SAB_number) VALUES ('$iso', '$rod', '$var', $idx, '', 'sab/$subfolder/', '$projectDescription', '', 1)");
                 $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
                 $db->query("UPDATE scripture_main SET SAB = 1 WHERE ISO_ROD_index = $idx");
                 $SAB_number = 1;
@@ -157,9 +163,12 @@ if (isset($_POST['accept'])) {          // the "Submit" button
                 $row = $result->fetch_assoc();
                 $SAB_number = $row['SAB_number'];
             }
-            include 'api/include/SAB_inc.php';      // add html files to the SAB table
+            include 'api/include/SAB_inc.php';          // add html files to the SAB table
         }
-        else {                                  // SAB HTML links
+        else {                                          // SAB HTML links
+            if (preg_match('/^data\//', $url)) {
+                echo 'There is a problem. The URL begins with "data/..." not "https://...".<br />';
+            }
             $query = "SELECT * FROM SAB_scriptoria WHERE ISO_ROD_index = $idx AND `url` = '$url'";
             $result = $db->query($query);
             if ($result->num_rows == 0) {
@@ -252,8 +261,10 @@ if (isset($_POST['accept'])) {          // the "Submit" button
 //}
 
 /************************************************
-	does NOT have idx
-************************************************/
+ * 
+ *  	does NOT have idx
+ *
+ ************************************************/
 	if (!isset($_GET["idx"])) {
 		?>
 		<h2>Choose the 'pencil' to examine</h2>
@@ -316,8 +327,10 @@ if (isset($_POST['accept'])) {          // the "Submit" button
 	}
 
 /************************************************
-	does have idx
-************************************************/
+ * 
+ *	    does have idx
+ *
+ ************************************************/
 	elseif (isset($_GET['idx'])) {
 		$idx = (int)$_GET['idx'];
 		if (!is_numeric($idx)) {
@@ -331,7 +344,7 @@ if (isset($_POST['accept'])) {          // the "Submit" button
         }
         $type = $_GET['type'];
         if (!preg_match('/^([_a-zA-Z0-9])+/', $type)) {
-            die('You are a hack!er');
+            die('You are a hack!er!');
         }
 		echo '<br />';
 		

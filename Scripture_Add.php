@@ -514,10 +514,11 @@ include ('./NT_Books.php');			// include the books of the NT
 				<td width="13%">&nbsp;
 				</td>
 				<td width="13%" style="padding-left: 3px; ">
-					subfolder under 'sab' <span style="font-weight: bold; font-size: 9pt; ">AND</span><br />all of the HTML files that go<br />under the subfolder
+					SE subfolder under 'sab/' <!--under 'sab' <span style="font-weight: bold; font-size: 9pt; ">AND</span><br />all of the HTML files that go<br />under the subfolder-->
 				</td>
 				<td width="32%" style="padding-left: 3px; ">
-					URL <i>(URL or subfolder)</i>
+					<b>OR</b> URL (not on the SE server)
+					<!--URL (URL or subfolder)-->
 				</td>
 				<td width="42%" colspan="2" style="padding-left: 3px; ">
 					Description <i>(optional)</i>
@@ -525,13 +526,13 @@ include ('./NT_Books.php');			// include the books of the NT
 			</tr>
 		</thead>
 		<tbody name="tableSABHTMLAdd" id="tableSABHTMLAdd">
-			<tr valign="bottom" style="line-height: 10pt; ">
+			<tr valign="top" style="line-height: 10pt; ">
 				<td width="13%" style="font-size: 10pt; ">
 					<div style="margin-top: 10px; ">Enter "SAB HTMLs":</div>For example:
 				</td>
 				<td width="13%">
-					<input type='text' style='color: navy; ' size='15' name='txtSABsubfolderAdd-1' id='txtSABsubfolderAdd-1' value="<?php if (isset($_POST['txtSABsubfolderAdd-1'])) echo $_POST['txtSABsubfolderAdd-1']; ?>" />
-                    <br /><span style="font-size: 10pt; margin-left: 3px; ">tuo or tuoB or tuo2019</span>
+					<input type='text' style='color: navy; ' size='13' name='txtSABsubfolderAdd-1' id='txtSABsubfolderAdd-1' value="<?php if (isset($_POST['txtSABsubfolderAdd-1'])) echo $_POST['txtSABsubfolderAdd-1']; ?>" />
+                    <br /><span style="font-size: 10pt; margin-left: 3px; ">tuo <b>or</b> tuoB <b>or</b> tuo2019</span>
 				</td>
 				<td width="32%">
 					<input type='text' style='color: navy; ' size='41' name='txtSABurlAdd-1' id='txtSABurlAdd-1' value="<?php if (isset($_POST['txtSABurlAdd-1'])) echo $_POST['txtSABurlAdd-1']; ?>" />
