@@ -35,7 +35,7 @@ if (!$retval) {
 <title>Scripture Edit</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Edit.css" />
 <script type="text/javascript" language="javascript" src="_js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.1.2"></script>
+<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.1.3"></script>
 <!-- see the bottom of this html file for CMS_events.js -->
 </head>
 <body>

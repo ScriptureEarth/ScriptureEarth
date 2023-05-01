@@ -82,7 +82,7 @@ include ('./NT_Books.php');			// include the books of the NT
 <title>Scripture Add</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Add.css" />
 <script type="text/javascript" language="javascript" src="_js/Scripture_Add.js?v=1.0.3"></script>
-<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.1.1"></script>
+<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.1.3"></script>
 <script>
 	//let ALNindex = 1;
 	//let Otherindex = 1;
