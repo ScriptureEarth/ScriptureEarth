@@ -98,7 +98,7 @@
 			if (isset($_POST['subject'])) {
 				$subject = $_POST['subject'];
 				$subject = trim($subject);
-				if (preg_match('/(^[-_\.@0-9 ]+$|\(\)|&#|\$\(|\.\.\/|\$\{|@@|\)\)|\(\(|\|\||\\ )/', $subject)) {
+				if (preg_match('/(^[-_\.@0-9 ]+$|\(\)|&#|\$\(|\.\.\/|\$\{|@@|\)\)|\(\(|\|\|)/', $subject, $match)) {
 					$subjectError = 'Special characters and/or numbers found in your subject.'; 
 					$hasError = true;
 				}
@@ -109,6 +109,7 @@
 				$hasError = true;
 			}
 			*/
+
 		// Validate Message
 			//$message = filter_input( INPUT_POST, 'message', FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES); 	
 			if (isset($_POST['message'])) {
