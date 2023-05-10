@@ -544,12 +544,38 @@ function getHTTPObject() { // get the AJAX object; can be used more than once
     }
 }
 
-function eBibleShow(URL, st, mobile) { // the AJAX for the live search on the iso input
+let eBibleVisible_0 = 0;
+let eBibleVisible_1 = 0;
+let eBibleVisible_2 = 0;
+let eBibleVisible_3 = 0;
+let eBibleVisible_4 = 0;
+let eBibleVisible_5 = 0;
+let eBibleVisible_6 = 0;
+let eBibleVisible_7 = 0;
+let eBibleVisible_8 = 0;
+let eBibleVisible_9 = 0;
+function eBibleClick(eBibleCnt) {
+	let eBibleCount = String(eBibleCnt);
+    let eBibleVisible = window.eval("eBibleVisible_" + eBibleCount); // Set assign a variable + variable to ZFVD (because of the + sign)
+	let eBibleClick = "#eBibleClick_"+eBibleCount;
+    if (eBibleVisible == 0) {
+        $(eBibleClick).show();
+        //eBibleVisible+'_'+eBibleCount = 1;
+		window.eval("eBibleVisible_" + eBibleCount + " = 1");
+    } else {
+        $(eBibleClick).hide();
+        //eBibleVisible+'_'+eBibleCount = 0;
+ 		window.eval("eBibleVisible_" + eBibleCount + " = 0");
+   }
+}
+
+function eBibleShow(URL, st, mobile, eBibleCnt) { // the AJAX for the live search on the iso input
     eBibleItems = getHTTPObject(); // the eBible object (see JavaScript function getHTTPObject() above)
     if (eBibleItems == null) {
         return;
     }
-    var url = "eBibleItems.php";
+	let eBibleCount = String(eBibleCnt);			// convert a number to a string
+    let url = "eBibleItems.php";
     url = url + "?URL=" + URL;
     url = url + "&st=" + st;
     url = url + "&mobile=" + mobile;
@@ -558,13 +584,13 @@ function eBibleShow(URL, st, mobile) { // the AJAX for the live search on the is
     eBibleItems.send(null);
     eBibleItems.onreadystatechange = function() { // the function that returns for AJAX object
         if (eBibleItems.readyState == 4) { // if the readyState = 4 then eBible is displayed
-            var tempArray = [];
+            let tempArray = [];
             tempArray = eBibleItems.responseText.split("|");
             if (tempArray.length == 1) {
-                document.getElementById("eBibleItems").innerHTML = tempArray[0];
+                document.getElementById("eBibleItems_"+eBibleCount).innerHTML = tempArray[0];
             } else {
-                document.getElementById("vernacularTitle").innerHTML = tempArray[0];
-                document.getElementById("eBibleItems").innerHTML = tempArray[1];
+                document.getElementById("vernacularTitle_"+eBibleCount).innerHTML = tempArray[0];
+                document.getElementById("eBibleItems_"+eBibleCount).innerHTML = tempArray[1];
             }
         }
     }
@@ -621,9 +647,8 @@ var ZipFilesVideoDownload_7 = 0;
 var ZipFilesVideoDownload_8 = 0;
 var ZipFilesVideoDownload_9 = 0;
 var ZipFilesVideoDownload_10 = 0;
-
 function DownloadVideoPlaylistClick(a_index, VideoFile, z) { // check box name, the book
-    eval("var ZFVD = ZipFilesVideoDownload_" + z); // Set assign a variable + variable to ZFVD (because of the + sign)
+    var ZFVD = window.eval("ZipFilesVideoDownload_" + z); // Set assign a variable + variable to ZFVD (because of the + sign)
     if (document.getElementById("DVideoPlaylist_" + z + "_" + a_index).checked) {
         ZFVD += VideoFile;
     } else {
@@ -649,7 +674,6 @@ var AllDownloadVideoPlaylist_7 = false;
 var AllDownloadVideoPlaylist_8 = false;
 var AllDownloadVideoPlaylist_9 = false;
 var AllDownloadVideoPlaylist_10 = false;
-
 function DownloadAllVideoPlaylistClick(VideoPlaylistGroupIndex, AllText, NoText) {
     var totalCheckboxes = document.querySelectorAll('input[name="DownloadVideoPlaylist_' + VideoPlaylistGroupIndex + '"]').length; // retrieve all of the checkboxes in this "input" in the "name" tag
     var Playlist_Video_Download_MB = "PlaylistVideoDownload_MB_" + VideoPlaylistGroupIndex;

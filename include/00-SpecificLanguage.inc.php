@@ -13,6 +13,8 @@
 * 			use "Scripture_[Add|Edit].php" just to make sure that the document.getElementById('...') name is current.
 *			But, BE CAREFUL!
 *
+*
+*
 **************************************************************************************************************************************/
 
 	if (!isset($LN)) die('Hacked!');
@@ -963,111 +965,109 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 	if ($CellPhone) {
 		$query="SELECT * FROM CellPhone WHERE ISO_ROD_index = '$ISO_ROD_index' AND (Cell_Phone_Title = 'Android App' OR Cell_Phone_Title = 'iOS Asset Package') ORDER BY Cell_Phone_Title";
 		$result2=$db->query($query);
-		if ($result2) {
-			$c = 0;
-			while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
-				$Cell_Phone_Title=$r2['Cell_Phone_Title'];
-				if (!$check_iOS && $Cell_Phone_Title=='iOS Asset Package') {
-					//do this later when IOS packages become live (9.10.2022)
-					// came alive on 1/4/23
-					$optional=$r2['optional'];
+		$c = 0;
+		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
+			$Cell_Phone_Title=$r2['Cell_Phone_Title'];
+			if (!$check_iOS && $Cell_Phone_Title=='iOS Asset Package') {
+				//do this later when IOS packages become live (9.10.2022)
+				// came alive on 1/4/23
+				$optional=$r2['optional'];
+				?>
+				<tr>
+					<td style='width: 45px; '>
+						<?php
+						echo "<div class='linePointer' onclick='window.open(\"https://apps.apple.com/us/app/scripture-earth/id1580089704\", \"_blank\");'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
+					echo "</td>";
+					echo "<td>";
+					echo "<div class='linePointer' title='" . translate('The ScriptureEarth App is available in the Apple Store.', $st, 'sys') . "' onclick='window.open(\"https://apps.apple.com/us/app/scripture-earth/id1580089704\", \"_blank\");'>" . translate('The ScriptureEarth App is available in the Apple Store.', $st, 'sys');
+						if ($optional != '' && !is_null($optional)) {
+							echo ' (' . (substr($optional, 0, 2) == '- ' ? substr($optional, 2) : $optional) . ')';
+						}
+						echo '</div>';
+						?>
+					</td>
+				</tr>
+				<?php
+			}
+			else {
+				$Cell_Phone_File=trim($r2['Cell_Phone_File']);
+				$Cell_Phone_File = str_replace("&", "%26", $Cell_Phone_File);
+				$optional=$r2['optional'];
+				if ($optional === null) {
+					$optional='';
+				}
+				else {
+					$optional=trim($optional);
+				}
+				$pos = strpos($Cell_Phone_File, '://');															// check to see if "://" is present (https://zzzzz)
+				$c++;
+				if ($pos === false) {
+					if (!file_exists('./data/' . $ISO . '/study/' . $Cell_Phone_File)) {
+						$matches = [];
+						preg_match('/(.*-)[0-9.]+\.apk/', $Cell_Phone_File, $matches);							// SE (keep track of everything but the number)
+						$list = [];
+						$list = glob('./data/' . $ISO . '/study/' . $matches[1] . '*.apk');						// server (glob = find a file based on wildcards)
+						if (empty($list)) {
+							echo 'WARNING: Android App (apk) downloadable cell phone file is not there!<br />';
+						}
+						else {
+							$matches = [];
+							preg_match('/.*\/(.*\.apk)/', $list[0], $matches);									// server
+							if (empty($matches)) {
+								echo 'WARNING: Android App (apk) downloadable cell phone file is not there!<br />';
+							}
+							else {
+								$Cell_Phone_File = $matches[1];
+								if (file_exists('./data/' . $ISO . '/study/' . $Cell_Phone_File)) {
+									//$db->query("UPDATE CellPhone SET Cell_Phone_File = '$Cell_Phone_File' WHERE ISO_ROD_index = '$ISO_ROD_index' AND Cell_Phone_Title = 'Android App'");
+									echo $c . ') would have UPDATE CellPhone<br />';
+								}
+								else {
+									echo 'WARNING: Android App (apk) downloadable cell phone file is not there!<br />';
+								}
+							}
+						}
+					}
+					else {
+						// file exists so don't do anything right now
+					}
+				}
+				if ($Cell_Phone_Title == 'Android App') {
 					?>
 					<tr>
 						<td style='width: 45px; '>
 							<?php
-							echo "<div class='linePointer' onclick='window.open(\"https://apps.apple.com/us/app/scripture-earth/id1580089704\", \"_blank\");'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
+							echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/android_module-icon.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
 						echo "</td>";
 						echo "<td>";
-						echo "<div class='linePointer' title='" . translate('The ScriptureEarth App is available in the Apple Store.', $st, 'sys') . "' onclick='window.open(\"https://apps.apple.com/us/app/scripture-earth/id1580089704\", \"_blank\");'>" . translate('The ScriptureEarth App is available in the Apple Store.', $st, 'sys');
-							if ($optional != '' && !is_null($optional)) {
-								echo ' (' . (substr($optional, 0, 2) == '- ' ? substr($optional, 2) : $optional) . ')';
-							}
-							echo '</div>';
+							echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the app for', $st, 'sys') . ' ' . ($Cell_Phone_Title == 'Android App' ? 'Android' : $Cell_Phone_Title);
+							echo ' ' . $optional . '</div>';
 							?>
 						</td>
 					</tr>
 					<?php
 				}
+				// do this later when IOS packages become live (9.10.2022)
+				// came alive on 1/4/23
 				else {
-					$Cell_Phone_File=trim($r2['Cell_Phone_File']);
-					$Cell_Phone_File = str_replace("&", "%26", $Cell_Phone_File);
-					$optional=$r2['optional'];
-					if ($optional === null) {
-						$optional='';
-					}
-					else {
-						$optional=trim($optional);
-					}
-					$pos = strpos($Cell_Phone_File, '://');															// check to see if "://" is present (https://zzzzz)
-					$c++;
-					if ($pos === false) {
-						if (!file_exists('./data/' . $ISO . '/study/' . $Cell_Phone_File)) {
-							$matches = [];
-							preg_match('/(.*-)[0-9.]+\.apk/', $Cell_Phone_File, $matches);							// SE (keep track of everything but the number)
-							$list = [];
-							$list = glob('./data/' . $ISO . '/study/' . $matches[1] . '*.apk');						// server (glob = find a file based on wildcards)
-							if (empty($list)) {
-								echo 'WARNING: Android App (apk) downloadable cell phone file is not there!<br />';
-							}
-							else {
-								$matches = [];
-								preg_match('/.*\/(.*\.apk)/', $list[0], $matches);									// server
-								if (empty($matches)) {
-									echo 'WARNING: Android App (apk) downloadable cell phone file is not there!<br />';
-								}
-								else {
-									$Cell_Phone_File = $matches[1];
-									if (file_exists('./data/' . $ISO . '/study/' . $Cell_Phone_File)) {
-										//$db->query("UPDATE CellPhone SET Cell_Phone_File = '$Cell_Phone_File' WHERE ISO_ROD_index = '$ISO_ROD_index' AND Cell_Phone_Title = 'Android App'");
-										echo $c . ') would have UPDATE CellPhone<br />';
-									}
-									else {
-										echo 'WARNING: Android App (apk) downloadable cell phone file is not there!<br />';
-									}
-								}
-							}
-						}
-						else {
-							// file exists so don't do anything right now
-						}
-					}
-					if ($Cell_Phone_Title == 'Android App') {
-						?>
-						<tr>
-							<td style='width: 45px; '>
-								<?php
-								echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/android_module-icon.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
-							echo "</td>";
-							echo "<td>";
-								echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the app for', $st, 'sys') . ' ' . ($Cell_Phone_Title == 'Android App' ? 'Android' : $Cell_Phone_Title);
-								echo ' ' . $optional . '</div>';
-								?>
-							</td>
-						</tr>
-						<?php
-					}
-					// do this later when IOS packages become live (9.10.2022)
-					// came alive on 1/4/23
-					else {
-						$query = "SELECT Cell_Phone_File, optional FROM CellPhone WHERE ISO_ROD_index = $ISO_ROD_index AND Cell_Phone_Title = 'iOS Asset Package'";
-						$result_iOS = $db->query($query);
-						$row_iOS = $result_iOS->fetch_array(MYSQLI_ASSOC);
-						$Cell_Phone_File = $row_iOS['Cell_Phone_File'];
-						$optional = $row_iOS['optional'];
-						?>
-						<tr>
-							<td style='width: 45px; '>
-								<?php
-								echo "<div class='linePointer' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
-							echo "</td>";
-							echo "<td>";
-								echo "<div class='linePointer' title='" . translate('Download the Scripture Earth app for iOS', $st, 'sys') . "' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'>" . translate('Download the Scripture Earth app for iOS', $st, 'sys');
-								echo ' ' . $optional . '</div>';
-								?>
-							</td>
-						</tr>
-						<?php
-					}
+					$query = "SELECT Cell_Phone_File, optional FROM CellPhone WHERE ISO_ROD_index = $ISO_ROD_index AND Cell_Phone_Title = 'iOS Asset Package'";
+					$result_iOS = $db->query($query);
+					$row_iOS = $result_iOS->fetch_array(MYSQLI_ASSOC);
+					$Cell_Phone_File = $row_iOS['Cell_Phone_File'];
+					$optional = $row_iOS['optional'];
+					?>
+					<tr>
+						<td style='width: 45px; '>
+							<?php
+							echo "<div class='linePointer' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
+						echo "</td>";
+						echo "<td>";
+							echo "<div class='linePointer' title='" . translate('Download the Scripture Earth app for iOS', $st, 'sys') . "' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'>" . translate('Download the Scripture Earth app for iOS', $st, 'sys');
+							echo ' ' . $optional . '</div>';
+							?>
+						</td>
+					</tr>
+					<?php
 				}
 			}
 		}
@@ -3117,45 +3117,41 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 		// This takes care of all of the rest of the links.
 		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND email = 0 AND map = 0 AND buy = 0 AND BibleIs = 0 AND BibleIsGospelFilm = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 ORDER BY URL";
 		$result2=$db->query($query);
-		if ($result2) {
-			if ($Internet) {
-				while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
-					$company_title=trim($r2['company_title']);
-					$company=trim($r2['company']);
-					$URL=trim($r2['URL']);
-					?>
-					<tr>
-						<td style='width: 45px; '>
-							<?php
-							if (preg_match('/onestory/i', $URL)) {
-								echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/onestory-icon.jpg' alt='OneStory' title='OneStory' />";
-							}
-							elseif (preg_match('/itunes/i', $URL) || preg_match('/\.apple\./i', $URL)) {
-								echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/iTunes-icon.jpg' alt='iTunes' title='iTunes' />";
-							}
-							elseif (preg_match('/\.facebook\./i', $URL)) {
-								echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/facebook-icon.jpg' alt='Facebook' title='Facebook' />";
-							}
-							elseif (preg_match('/\bdeaf\.?bible\./i', $URL)) {
-								echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/deaf_bible_icon.png' alt='Deaf Bible' title='Deaf Bible' />";
-							}
-							else {
-								echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/links-icon.jpg' alt='".translate('Link', $st, 'sys')."' title='".translate('Link', $st, 'sys')."' />";
-							}
-							echo "</div>";
-						echo "</td>";
-						echo "<td>";
-							echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to the organization.', $st, 'sys')."'>".translate('Link', $st, 'sys')." : ";
-							if ($company_title != "" && $company_title != NULL) {
-								echo "$company_title: ";
-							}
-							echo "$company</div>";
-							?>
-						</td>
-					</tr>
+		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
+			$company_title=trim($r2['company_title']);
+			$company=trim($r2['company']);
+			$URL=trim($r2['URL']);
+			?>
+			<tr>
+				<td style='width: 45px; '>
 					<?php
-				}
-			}
+					if (preg_match('/onestory/i', $URL)) {
+						echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/onestory-icon.jpg' alt='OneStory' title='OneStory' />";
+					}
+					elseif (preg_match('/itunes/i', $URL) || preg_match('/\.apple\./i', $URL)) {
+						echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/iTunes-icon.jpg' alt='iTunes' title='iTunes' />";
+					}
+					elseif (preg_match('/\.facebook\./i', $URL)) {
+						echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/facebook-icon.jpg' alt='Facebook' title='Facebook' />";
+					}
+					elseif (preg_match('/\bdeaf\.?bible\./i', $URL)) {
+						echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/deaf_bible_icon.png' alt='Deaf Bible' title='Deaf Bible' />";
+					}
+					else {
+						echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/links-icon.jpg' alt='".translate('Link', $st, 'sys')."' title='".translate('Link', $st, 'sys')."' />";
+					}
+					echo "</div>";
+				echo "</td>";
+				echo "<td>";
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to the organization.', $st, 'sys')."'>".translate('Link', $st, 'sys')." : ";
+					if ($company_title != "" && $company_title != NULL) {
+						echo "$company_title: ";
+					}
+					echo "$company</div>";
+					?>
+				</td>
+			</tr>
+			<?php
 		}
 	}
 
@@ -3165,10 +3161,10 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 	*************************************************************************************************************
 */
 	if ($eBible && $Internet) {
+		$eBibleCount=0;
 		$query="SELECT homeDomain, translationId FROM eBible_list WHERE ISO_ROD_index = '$ISO_ROD_index'";			// used to have vernacularTitle!
 		$result2=$db->query($query);
-		if ($result2->num_rows > 0) {
-			$r2 = $result2->fetch_array(MYSQLI_ASSOC);
+		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
 			$homeDomain=trim($r2['homeDomain']);
 			$translationId=trim($r2['translationId']);
 			if ($homeDomain == 'inscript.org') {
@@ -3202,23 +3198,23 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 					<tr>
 						<td style='width: 45px; '>
 							<?php
-							echo "<div class='linePointer' onclick='eBibleClick()'><img class='iconActions' src='../images/eBible-icon.jpg' alt='".translate('Scripture Resources from eBible.org', $st, 'sys')."' title='".translate('Scripture Resources from eBible.org', $st, 'sys')."' /></div>";
+							echo "<div class='linePointer' onclick='eBibleClick($eBibleCount)'><img class='iconActions' src='../images/eBible-icon.jpg' alt='".translate('Scripture Resources from eBible.org', $st, 'sys')."' title='".translate('Scripture Resources from eBible.org', $st, 'sys')."' /></div>";
 						echo "</td>";
 						echo "<td>";
-							echo "<div class='linePointer' title='".translate('Scripture Resources from eBible.org', $st, 'sys')."' onclick='eBibleClick()'>".translate('Scripture Resources from eBible.org', $st, 'sys').'</div><br />';
-							echo '<div id="eBibleClick">';
-							echo '<br />';
+							echo "<div class='linePointer' title='".translate('Scripture Resources from eBible.org', $st, 'sys')."' onclick='eBibleClick($eBibleCount)'>".translate('Scripture Resources from eBible.org', $st, 'sys').' - </div>';
+							echo '<div id="vernacularTitle_'.$eBibleCount.'" style="display: inline; text-align: center; "></div>';
+							echo "<div id='eBibleClick_$eBibleCount' style='display: none; '>";
 							// start of eBible AJAX
 							echo '<script>';
-							echo 'eBibleShow("'.$publicationURL.'","'.$st.'","'.$mobile.'")';
+							echo 'eBibleShow("'.$publicationURL.'","'.$st.'","'.$mobile.'",'.$eBibleCount.')';
 							echo '</script>';
-							echo '<div id="vernacularTitle" style="text-align: center; "></div>';
-							echo '<div id="eBibleItems"></div>';
+							echo "<div id='eBibleItems_$eBibleCount'></div>";
 							echo '</div>';
 							?>
 						</td>
 					</tr>
 					<?php
+					$eBibleCount++;
 				}
 			}
 		}

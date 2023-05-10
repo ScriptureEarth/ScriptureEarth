@@ -2,8 +2,7 @@
 // SpecificLanguage.js
 // Created by Scott Starker
 
-var ZipFilesOT = 0;
-
+let ZipFilesOT = 0;
 function OTAudioClick(a_index, Books) { // check box name, the book
     if (document.getElementById("OT_audio_" + a_index).checked) {
         ZipFilesOT += Books;
@@ -19,8 +18,7 @@ function OTAudioClick(a_index, Books) { // check box name, the book
     }
 }
 
-var ZipFilesNT = 0;
-
+let ZipFilesNT = 0;
 function NTAudioClick(a_index, Books) { // check box name, the book
     if (document.getElementById("NT_audio_" + a_index).checked) {
         ZipFilesNT += Books;
@@ -61,10 +59,10 @@ function send(sel, GN) {
     //number = SwitchArray[1];
     //BegLetter = SwitchArray[2];
     // hack! The best way to the Beg in js so it can be passed from JavaScript function Send(zzz, zzz) in SpecificLanguage.js called by 00-MainScript.inc.php.
-    var Beg = document.getElementById('myBeg').innerHTML;
+    let Beg = document.getElementById('myBeg').innerHTML;
     // languageName = 'block'; which = 2
     // languageCode = 'block'; which = 1
-    var which = 0;
+    let which = 0;
     if (document.getElementById('languageCode').style.display == 'block') {
         which = 1;
     } else {
@@ -122,7 +120,7 @@ function sendCountries_m(sel) {
 }
 
 function sendCountry_m(sel, GN) {
-    var which = 0;
+    let which = 0;
     if (document.getElementById('languageCode').style.display == 'block') {
         which = 1;
     } else {
@@ -145,11 +143,10 @@ function sendCountry_m(sel, GN) {
     }
 }
 
-var FCBHVisible = 0;
-
+let FCBHVisible = 0;
 function FCBHClick(FCBHnumOfiframes) {
     FCBHnumOfiframes = typeof(FCBHnumOfiframes) != 'undefined' ? FCBHnumOfiframes : 1;
-    var divHeight = 0;
+    let divHeight = 0;
     if (FCBHVisible == 0) {
         $("#FCBHb").show();
         FCBHVisible = 1;
@@ -159,10 +156,9 @@ function FCBHClick(FCBHnumOfiframes) {
     }
 }
 
-var OTTableVisible = 0;
-
+let OTTableVisible = 0;
 function OTTableClick() {
-    var divHeight = 0;
+    let divHeight = 0;
     if (OTTableVisible == 0) {
         $("#OTTable").show();
         OTTableVisible = 1;
@@ -172,11 +168,10 @@ function OTTableClick() {
     }
 }
 
-var NTTableVisible = 0;
-
+let NTTableVisible = 0;
 function NTTableClick() {
-    //var intElemScrollTop = $(window).scrollTop();
-    var divHeight = 0;
+    //let intElemScrollTop = $(window).scrollTop();
+    let divHeight = 0;
     if (NTTableVisible == 0) {
         //$("#NTTable").show(0, function() {			// 0 is to simulate display="block" immediatley
         // your codes to scrolltop comes here
@@ -187,18 +182,5 @@ function NTTableClick() {
     } else {
         $("#NTTable").hide();
         NTTableVisible = 0;
-    }
-}
-
-var eBibleVisible = 0;
-
-function eBibleClick() {
-    var divHeight = 0;
-    if (eBibleVisible == 0) {
-        $("#eBibleClick").show();
-        eBibleVisible = 1;
-    } else {
-        $("#eBibleClick").hide();
-        eBibleVisible = 0;
     }
 }
