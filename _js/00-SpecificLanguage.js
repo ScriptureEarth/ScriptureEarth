@@ -579,13 +579,14 @@ function eBibleShow(URL, st, mobile, eBibleCnt) { // the AJAX for the live searc
     url = url + "?URL=" + URL;
     url = url + "&st=" + st;
     url = url + "&mobile=" + mobile;
+	url = url + "&eBibleCount=" + eBibleCount;
     url = url + "&sid=" + Math.random();
     eBibleItems.open("GET", url, true); // open the AJAX object
     eBibleItems.send(null);
     eBibleItems.onreadystatechange = function() { // the function that returns for AJAX object
-        if (eBibleItems.readyState == 4) { // if the readyState = 4 then eBible is displayed
+        if (this.readyState == 4 && this.status == 200) { 		// if the readyState = 4 then eBible is displayed
             let tempArray = [];
-            tempArray = eBibleItems.responseText.split("|");
+            tempArray = this.responseText.split("|");
             if (tempArray.length == 1) {
                 document.getElementById("eBibleItems_"+eBibleCount).innerHTML = tempArray[0];
             } else {

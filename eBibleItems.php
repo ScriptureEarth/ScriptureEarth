@@ -36,7 +36,8 @@
 </head>
 <body>
 <?php
-	if (isset($_GET["URL"])) {
+// eBibleItems.php?URL=ebible.org/fraLSG&st=eng&mobile=0&eBibleCount=0
+if (isset($_GET["URL"])) {
 		$URL = $_GET["URL"];
 	}
 	else
@@ -59,7 +60,14 @@
 	}
 	else
 		$mobile = 0;
-		
+	if (isset($_GET["eBibleCount"])) {
+		$eBibleCount = $_GET["eBibleCount"];
+		$eBibleCount = preg_replace('/^([0-9]+)/', '$1', $eBibleCount);
+		if ($eBibleCount == NULL) {
+			die ('‘eBibleCount’ is empty.</body></html>');
+		}
+	}
+			
 	$inScript = '';
 	$epub = '';
 	$mobi = '';
@@ -83,12 +91,32 @@
 		return;
 	}
 
+	require_once './include/conn.inc.php';														// connect to the database named 'scripture'
+	$db = get_my_db();
+
+	$query="SELECT description FROM eBible_list WHERE translationId = ?";
+	$stmt=$db->prepare($query);
+	
 	$homepage = @file_get_contents("https://$URL");						// get the HTML from the eBible.org
 	$convert = explode("\n", $homepage);								// create array separate by new line
 	for ($i=0; $i<count($convert); $i++) {
 		if (preg_match('/\<title\>(.*)\<\/title\>/i', $convert[$i], $match)) {
 			//$vernacularTitle = trim(preg_replace("/\<title\>(.*)\<\/title\>/i", $convert[$i], $match));
-			$vernacularTitle = trim($match[1]);
+			if (substr($URL, strripos($URL, "/")+1, 3) == 'grc') {								// get sub string (in reverse order) if <title> isn't distigishable from other ROD Codes
+				$temp = substr($URL, strripos($URL, "/")+1);
+				$stmt->bind_param('s', $temp);													// bind parameters for markers
+				$stmt->execute();																// execute query
+				$result = $stmt->get_result();													// instead of bind_result (used for only 1 record):
+				if ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+					$vernacularTitle = trim($row['description']);
+				}
+				else {
+					$vernacularTitle = trim($match[1]);
+				}
+			}
+			else {
+				$vernacularTitle = trim($match[1]);
+			}
 			echo $vernacularTitle . '|';
 			continue;
 		}
@@ -119,7 +147,7 @@
 				//$sword = '<div><a href=' . $matches[1] . '><span class="lineAction">'.translate('Crosswire Sword format', $st, 'sys').'</span></a></div>';
 				$sword = $matches[1];
 			}
-			if (preg_match("/PDF/", $convert[$i])) {
+			if (preg_match("/pdf/i", $convert[$i])) {
 				// http://zURLz/pdf/zISOz/;
 				preg_match("/href=['\"](.*)\/['\"]/i", $convert[$i], $matches);
 				$PDFline = $matches[1];										// save the line for the next steps
@@ -128,17 +156,17 @@
 	}
 	
 	if ($PDFline != '') {
-		if (file_exists($PDFline)) {
-		/*$file_headers = @get_headers($PDFline);
+		echo "<br /><form name='eBible_list_$eBibleCount'>";
+		//if (file_exists($PDFline)) {										// only works on the SE server
+		$file_headers = @get_headers($PDFline);
 		if (preg_match('/404 Not Found/', $file_headers[0])) {
 			//echo "The file $PDFline does not exist.";
 		}
 		else if (preg_match('/302 Found/', $file_headers[0]) && preg_match('/404 Not Found/', $file_headers[7])) {
 			//echo "The file $PDFline does not exist and so the script has been redirected to a custom 404 page.";
 		}
-		else {*/
+		else {
 			// echo "The file $PDFline exists";
-			echo '<br /><form name="eBible_list">';
 			$PDFpage = file_get_contents($PDFline);							// get the HTML PDF from the eBible.org
 			$convertPDF = explode("\n", $PDFpage);							// create array separate by new line
 			echo '&nbsp;&nbsp;•&nbsp;<span class="lineAction">'.translate('Read', $st, 'sys').'</span> - '.translate('PDFs:', $st, 'sys');
@@ -152,6 +180,7 @@
 			echo '<option class="selectOption">'.translate('Choose One...', $st, 'sys').'</option>';
 			for ($j=0; $j<count($convertPDF); $j++) {
 				if (preg_match("/\.pdf['\"]/i", $convertPDF[$j])) {
+					if (preg_match("/point/i", $convertPDF[$j])) continue; 
 					$pages = '';
 					$title = '';
 					if (preg_match("/page/i", $convertPDF[$j])) {

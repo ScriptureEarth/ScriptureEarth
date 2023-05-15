@@ -47,7 +47,7 @@ if (session_status() == PHP_SESSION_NONE) {
 <script type="text/javascript" language="javascript"	src="_js/jplayer.playlist.min.js"></script>
 <script type="text/javascript" language="javascript" 	src="_js/user_events.js?v=1.0.2"></script>
 <script type="text/javascript" language="javascript" 	src="_js/SpecificLanguage.js?v=1.0.5"></script>
-<script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.5"></script>
+<script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.7"></script>
 <!--script type='text/javascript' language='javascript'	src="_js/LangSearch.js?v=1.0.3"></script-->
 <!--link rel='stylesheet' type='text/css' 	href='_css/boilerplate.css' /-->
 <link rel='stylesheet' type='text/css' 		href='_css/FGL.css' />
@@ -89,8 +89,8 @@ $db = get_my_db();
 //session_unset();
 
 if (!isset($_SESSION['MajorLanguage'])) {
-	$_SESSION['Variant_major'] = $Variant_major;
 	$_SESSION['MajorLanguage'] = $MajorLanguage;
+	$_SESSION['Variant_major'] = $Variant_major;
 	$_SESSION['SpecificCountry'] = $SpecificCountry;
 	$_SESSION['counterName'] = $counterName;
 	$_SESSION['Scriptname'] = $Scriptname;

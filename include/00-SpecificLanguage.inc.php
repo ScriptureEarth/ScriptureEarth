@@ -251,65 +251,60 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 */
 	$query="SELECT interest_index FROM interest WHERE ISO_ROD_index = '$ISO_ROD_index' AND NoLang = 1";
 	$result2=$db->query($query);
-	if ($result2) {
-		if ($result2->num_rows == 1) {
-			$query="SELECT Goto_ISO_ROD_index, Goto_ISO, Goto_ROD_Code, Goto_Variant_Code, `Percentage` FROM GotoInterest WHERE ISO_ROD_index = '$ISO_ROD_index'";
-			$result2=$db->query($query);
-			if ($result2) {
-				$GotoInterest = $result2->num_rows;
-				if ($GotoInterest > 0) {
-					$i_GI=0;
-					?>
-					<tr>
-						<td colspan="2">
-							<?php
-							echo translate('Speakers of this language may be able to use media in', $st, 'sys');
-							while ($row_Goto = $result2->fetch_array(MYSQLI_ASSOC)) {
-								$Goto_ISO_ROD_index=trim($row_Goto['Goto_ISO_ROD_index']);
-								$Goto_ISO=trim($row_Goto['Goto_ISO']);
-								$Goto_ROD_Code=trim($row_Goto['Goto_ROD_Code']);
-								if ($Goto_ROD_Code == '') $Goto_ROD_Code='00000';
-								$Goto_Variant_Code=trim($row_Goto['Goto_Variant_Code']);
-								$Percentage=trim($row_Goto['Percentage']);
-								/*
-									*********************************************************************************************
-										Get the "Goto' language name.
-									*********************************************************************************************
-								*/
-								$query="SELECT * FROM nav_ln WHERE ISO_ROD_index = '$Goto_ISO_ROD_index'";
-								$result3=$db->query($query);
-								$row_Goto_ISO = $result3->fetch_array(MYSQLI_ASSOC);
-								$ML_Interest=$row_Goto_ISO["$MajorLanguage"];										// boolean
-								$def_LN_Interest=$row_Goto_ISO['Def_LN'];											// default langauge (a 2 digit number for the national langauge)
-								if (!$ML_Interest) {																// if the country then the major default langauge name
-									foreach ($_SESSION['nav_ln_array'] as $code => $nav_ln_temp_array){
-										if ($nav_ln_temp_array[3] == $def_LN_Interest){
-											$query="SELECT LN_".$nav_ln_temp_array[1]." FROM LN_".$nav_ln_temp_array[1]." WHERE ISO_ROD_index = '$Goto_ISO_ROD_index'";
-											$result_LN=$db->query($query);
-											$row_LN=$result_LN->fetch_array(MYSQLI_ASSOC);
-											$LN=trim($row_LN['LN_'.$nav_ln_temp_array[1]]);
-										}
-									}
-								}
-								else {
-									$query="SELECT $MajorLanguage FROM $MajorLanguage WHERE ISO_ROD_index = '$Goto_ISO_ROD_index'";
-									$result_LN=$db->query($query);
-									$row_LN = $result_LN->fetch_array(MYSQLI_ASSOC);
-									$LN=trim($row_LN["$MajorLanguage"]);
-								}
-
-								if ($i_GI > 0) 
-									echo ", " . translate('or', $st, 'sys');
-								echo " <a href='https://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $_SERVER['PHP_SELF'] . "?sortby=lang&name=".$Goto_ISO."&ROD_Code=".$Goto_ROD_Code."&Variant_Code=".$Goto_Variant_Code."' style='text-decoration: underline; color: red; '>" . $LN . "</a> (" . $Percentage . ")";
-								$i_GI++;
-							}
-							echo ".";
-							?>
-						</td>
-					</tr>
+	if ($result2->num_rows == 1) {
+		$query="SELECT Goto_ISO_ROD_index, Goto_ISO, Goto_ROD_Code, Goto_Variant_Code, `Percentage` FROM GotoInterest WHERE ISO_ROD_index = '$ISO_ROD_index'";
+		$result2=$db->query($query);
+		if ($result2->num_rows > 0) {
+			$i_GI=0;
+			?>
+			<tr>
+				<td colspan="2">
 					<?php
-				}
-			}
+					echo translate('Speakers of this language may be able to use media in', $st, 'sys');
+					while ($row_Goto = $result2->fetch_array(MYSQLI_ASSOC)) {
+						$Goto_ISO_ROD_index=trim($row_Goto['Goto_ISO_ROD_index']);
+						$Goto_ISO=trim($row_Goto['Goto_ISO']);
+						$Goto_ROD_Code=trim($row_Goto['Goto_ROD_Code']);
+						if ($Goto_ROD_Code == '') $Goto_ROD_Code='00000';
+						$Goto_Variant_Code=trim($row_Goto['Goto_Variant_Code']);
+						$Percentage=trim($row_Goto['Percentage']);
+						/*
+							*********************************************************************************************
+								Get the "Goto' language name.
+							*********************************************************************************************
+						*/
+						$query="SELECT * FROM nav_ln WHERE ISO_ROD_index = '$Goto_ISO_ROD_index'";
+						$result3=$db->query($query);
+						$row_Goto_ISO = $result3->fetch_array(MYSQLI_ASSOC);
+						$ML_Interest=$row_Goto_ISO["$MajorLanguage"];										// boolean
+						$def_LN_Interest=$row_Goto_ISO['Def_LN'];											// default langauge (a 2 digit number for the national langauge)
+						if (!$ML_Interest) {																// if the country then the major default langauge name
+							foreach ($_SESSION['nav_ln_array'] as $code => $nav_ln_temp_array){
+								if ($nav_ln_temp_array[3] == $def_LN_Interest){
+									$query="SELECT LN_".$nav_ln_temp_array[1]." FROM LN_".$nav_ln_temp_array[1]." WHERE ISO_ROD_index = '$Goto_ISO_ROD_index'";
+									$result_LN=$db->query($query);
+									$row_LN=$result_LN->fetch_array(MYSQLI_ASSOC);
+									$LN=trim($row_LN['LN_'.$nav_ln_temp_array[1]]);
+								}
+							}
+						}
+						else {
+							$query="SELECT $MajorLanguage FROM $MajorLanguage WHERE ISO_ROD_index = '$Goto_ISO_ROD_index'";
+							$result_LN=$db->query($query);
+							$row_LN = $result_LN->fetch_array(MYSQLI_ASSOC);
+							$LN=trim($row_LN["$MajorLanguage"]);
+						}
+
+						if ($i_GI > 0) 
+							echo ", " . translate('or', $st, 'sys');
+						echo " <a href='https://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $_SERVER['PHP_SELF'] . "?sortby=lang&name=".$Goto_ISO."&ROD_Code=".$Goto_ROD_Code."&Variant_Code=".$Goto_Variant_Code."' style='text-decoration: underline; color: red; '>" . $LN . "</a> (" . $Percentage . ")";
+						$i_GI++;
+					}
+					echo ".";
+					?>
+				</td>
+			</tr>
+			<?php
 		}
 	}
 			
@@ -587,7 +582,7 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND NOT BibleIs = 0";
 		$result2=$db->query($query);
 		$num=$result2->num_rows;
-		if ($result2 && $num > 0) {
+		if ($num > 0) {
 			while ($r_links=$result2->fetch_array(MYSQLI_ASSOC)) {
 				$URL=trim($r_links['URL']);
 				if (preg_match('/^(.*\/)[a-zA-Z0-9][a-zA-Z]{2}\/[0-9]+$/', $URL, $matches)) {		// remove e.g. Mat/1
@@ -679,7 +674,7 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 		$rtl = 0;
 		$query="SELECT viewer_ROD_Variant, rtl FROM viewer WHERE ISO_ROD_index = '$ISO_ROD_index' AND Variant_Code = '$Variant_Code'";						// check if there is a viewer
 		$resultViewer=$db->query($query);
-		if ($resultViewer && $resultViewer->num_rows >= 1) {
+		if ($resultViewer->num_rows >= 1) {
 			$r_Viewer = $resultViewer->fetch_array(MYSQLI_ASSOC);
 			$ROD_Var=trim($r_Viewer['viewer_ROD_Variant']);
 			$rtl=trim($r_Viewer['rtl']);
@@ -932,28 +927,26 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 	if ($links) {
 		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND GooglePlay = 1";
 		$result2=$db->query($query);
-		if ($result2) {
-			while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
-				$company_title=trim($r2['company_title']);
-				$company=trim($r2['company']);
-				$URL=trim($r2['URL']);
-				?>
-				<tr>
-					<td style='width: 45px; '>
-						<?php
-						echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to organization.', $st, 'sys')."'><img class='iconActions' src='../images/Google_Play-icon.jpg' alt='".translate('Google Play', $st, 'sys')."' title='".translate('Google Play', $st, 'sys')."' /></div>";
-					echo "</td>";
-					echo "<td>";
-						echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to organization.', $st, 'sys')."'>".translate('Link', $st, 'sys')." : ";
-						if ($company_title != "" && $company_title != NULL) {
-							echo "$company_title: ";
-						}
-						echo "$company</div>";
-						?>
-					</td>
-				</tr>
-				<?php
-			}
+		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
+			$company_title=trim($r2['company_title']);
+			$company=trim($r2['company']);
+			$URL=trim($r2['URL']);
+			?>
+			<tr>
+				<td style='width: 45px; '>
+					<?php
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to organization.', $st, 'sys')."'><img class='iconActions' src='../images/Google_Play-icon.jpg' alt='".translate('Google Play', $st, 'sys')."' title='".translate('Google Play', $st, 'sys')."' /></div>";
+				echo "</td>";
+				echo "<td>";
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to organization.', $st, 'sys')."'>".translate('Link', $st, 'sys')." : ";
+					if ($company_title != "" && $company_title != NULL) {
+						echo "$company_title: ";
+					}
+					echo "$company</div>";
+					?>
+				</td>
+			</tr>
+			<?php
 		}
 	}
 
@@ -2249,55 +2242,52 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 	if ($Internet && $BibleIs && $SAB) {
 		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND NOT BibleIs = 0";
 		$result2=$db->query($query);
-		$num=$result2->num_rows;
-		if ($result2 && $num > 0) {
-			while ($r_links=$result2->fetch_array(MYSQLI_ASSOC)) {
-				$URL=trim($r_links['URL']);
-				if (preg_match('/^(.*\/)[a-zA-Z0-9][a-zA-Z]{2}\/[0-9]+$/', $URL, $matches)) {		// remove e.g. Mat/1
-					$URL=$matches[1];
-				}
-				$BibleIsVersion=trim($r_links['company_title']);
-				$BibleIsLink=$r_links['BibleIs'];
-				$BibleIsIcon = '';
-				$BibleIsActText = '';
-				switch ($BibleIsLink) {
-					case 1:
-						$BibleIsIcon = 'BibleIs-icon.jpg';
-						$BibleIsActText = translate('Read and Listen', $st, 'sys');
-						break;
-					case 2:
-						$BibleIsIcon = 'BibleIs-icon.jpg';
-						$BibleIsActText = translate('Read', $st, 'sys');
-						break;			
-					case 3:
-						$BibleIsIcon = 'BibleIsAudio.jpg';
-						$BibleIsActText = translate('Read and Listen', $st, 'sys');
-						break;			
-					case 4:
-						$BibleIsIcon = 'BibleIsVideo.jpg';
-						$BibleIsActText = translate('Read, Listen, and View', $st, 'sys');
-						break;			
-					default:
-						break;
-				}
-				?>
-				<tr>
-					<td>
-						<?php
-						echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'><img class='iconActions' src='../images/".$BibleIsIcon."' alt='".$BibleIsActText."' title='".$BibleIsActText."' /></div>";
-					echo "</td>";
-					echo "<td>";
-						echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")' title='".translate('Read/Listen/View from Bible.is', $st, 'sys')."'>" . $BibleIsActText . " ";
-						echo translate('on Bible.is', $st, 'sys');
-						if ($BibleIsVersion!='') {
-							echo ' ' . $BibleIsVersion;
-						}
-						echo "</div>";
-						?>
-					</td>
-				</tr>
-				<?php
+		while ($r_links=$result2->fetch_array(MYSQLI_ASSOC)) {
+			$URL=trim($r_links['URL']);
+			if (preg_match('/^(.*\/)[a-zA-Z0-9][a-zA-Z]{2}\/[0-9]+$/', $URL, $matches)) {		// remove e.g. Mat/1
+				$URL=$matches[1];
 			}
+			$BibleIsVersion=trim($r_links['company_title']);
+			$BibleIsLink=$r_links['BibleIs'];
+			$BibleIsIcon = '';
+			$BibleIsActText = '';
+			switch ($BibleIsLink) {
+				case 1:
+					$BibleIsIcon = 'BibleIs-icon.jpg';
+					$BibleIsActText = translate('Read and Listen', $st, 'sys');
+					break;
+				case 2:
+					$BibleIsIcon = 'BibleIs-icon.jpg';
+					$BibleIsActText = translate('Read', $st, 'sys');
+					break;			
+				case 3:
+					$BibleIsIcon = 'BibleIsAudio.jpg';
+					$BibleIsActText = translate('Read and Listen', $st, 'sys');
+					break;			
+				case 4:
+					$BibleIsIcon = 'BibleIsVideo.jpg';
+					$BibleIsActText = translate('Read, Listen, and View', $st, 'sys');
+					break;			
+				default:
+					break;
+			}
+			?>
+			<tr>
+				<td>
+					<?php
+					echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'><img class='iconActions' src='../images/".$BibleIsIcon."' alt='".$BibleIsActText."' title='".$BibleIsActText."' /></div>";
+				echo "</td>";
+				echo "<td>";
+					echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")' title='".translate('Read/Listen/View from Bible.is', $st, 'sys')."'>" . $BibleIsActText . " ";
+					echo translate('on Bible.is', $st, 'sys');
+					if ($BibleIsVersion!='') {
+						echo ' ' . $BibleIsVersion;
+					}
+					echo "</div>";
+					?>
+				</td>
+			</tr>
+			<?php
 		}
 	}
 /*
@@ -2337,48 +2327,43 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 	*************************************************************************************************************
 */
 	if ($YouVersion && $Internet) {
+		$text='';
+		$text1='';
+		$text2='';
+		$match=[];
 		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND YouVersion = 1";
 		$result2=$db->query($query);
-		if ($result2) {
-			if ($Internet) {
-				//$num=mysql_num_rows($result2);
-				$text='';
-				$text1='';
-				$text2='';
-				$match=array();
-				while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
-					$URL=trim($r2['URL']);
-					$organization=trim($r2['company_title']);
-					$text = trim($r2['company']);
-					if (strpos($text, ' on') !== false) {
-						preg_match("/([^ ]*)( .*)/", $text, $match);
-						$text1 = $match[1];
-						$text2 = $match[2];
-						if (preg_match("/ on/", $text2)) {
-							$matchTemp=array();
-							preg_match("/(.*) on/", $text2, $matchTemp);
-							$text2 = $matchTemp[1];
-						}
-						$text2 = trim($text2);
-					}
-					else {
-						$text1 = $text;
-						$text2='';
-					}
-					?>
-					<tr>
-						<td style='width: 45px; '>
-							<?php
-							echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/YouVersion-icon.jpg' alt='".translate('Read', $st, 'sys')."' title='".translate('Read', $st, 'sys')."' /></div>";
-						echo "</td>";
-						echo "<td>";
-							echo "<div class='linePointer' onclick=\"window.open('$URL')\"  title='".translate('Read from YouVersion (Bible.com)', $st, 'sys')."'>" . translate($text1, $st, 'sys') . ' ' . translate($text2, $st, 'sys') . ': ' . $organization . '</div>';
-							?>
-						</td>
-					</tr>
-				<?php
+		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
+			$URL=trim($r2['URL']);
+			$organization=trim($r2['company_title']);
+			$text = trim($r2['company']);
+			if (strpos($text, ' on') !== false) {
+				preg_match("/([^ ]*)( .*)/", $text, $match);
+				$text1 = $match[1];
+				$text2 = $match[2];
+				if (preg_match("/ on/", $text2)) {
+					$matchTemp=array();
+					preg_match("/(.*) on/", $text2, $matchTemp);
+					$text2 = $matchTemp[1];
 				}
+				$text2 = trim($text2);
 			}
+			else {
+				$text1 = $text;
+				$text2='';
+			}
+			?>
+			<tr>
+				<td style='width: 45px; '>
+					<?php
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/YouVersion-icon.jpg' alt='".translate('Read', $st, 'sys')."' title='".translate('Read', $st, 'sys')."' /></div>";
+				echo "</td>";
+				echo "<td>";
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\"  title='".translate('Read from YouVersion (Bible.com)', $st, 'sys')."'>" . translate($text1, $st, 'sys') . ' ' . translate($text2, $st, 'sys') . ': ' . $organization . '</div>';
+					?>
+				</td>
+			</tr>
+		<?php
 		}
 	}
 
@@ -2388,51 +2373,46 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 	*************************************************************************************************************
 */
 	if ($Biblesorg && $Internet) {
+		$text='';
+		$text1='';
+		$text2='';
+		$match=[];
 		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND `Bibles_org` = 1";
 		$result2=$db->query($query);
-		if ($result2) {
-			if ($Internet) {
-				//$num=mysql_num_rows($result2);
-				$text='';
-				$text1='';
-				$text2='';
-				$match=array();
-				while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
-					$URL=trim($r2['URL']);
-					if ($MajorCountryAbbr == 'es' || $MajorCountryAbbr == 'pt' || $MajorCountryAbbr == 'fr') {
-						$URL = preg_replace('/(.*\/?\/?).*(bibles\.org.*)/', '$1' . ($MajorCountryAbbr == 'pt' ? 'pt-br.' : $MajorCountryAbbr.'.') . '$2', $URL);
-					}
-					$organization=trim($r2['company_title']);
-					$text = trim($r2['company']);
-					if (strpos($text, ' on') !== false) {
-						preg_match("/([^ ]*)( .*)/", $text, $match);
-						$text1 = $match[1];
-						$text2 = $match[2];
-						if (preg_match("/ on/", $text2)) {
-							$matchTemp=array();
-							preg_match("/(.*) on/", $text2, $matchTemp);
-							$text2 = $matchTemp[1];
-						}
-						$text2 = trim($text2);
-					}
-					else {
-						$text1 = $text;
-						$text2='';
-					}
-					?>
-					<tr>
-						<td style='width: 45px; '>
-							<?php
-							echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/BibleSearch-icon.jpg' alt='".translate('Study', $st, 'sys')."' title='".translate('Study', $st, 'sys')."' /></div>";
-						echo "</td>";
-						echo "<td>";
-							echo "<div class='linePointer' onclick=\"window.open('$URL')\">" . translate($text1, $st, 'sys') . ' ' . translate($text2, $st, 'sys') . ': ' . $organization . '</div>';
-							?>
-						</td>
-					</tr>
-					<?php
-				}
+		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
+			$URL=trim($r2['URL']);
+			if ($MajorCountryAbbr == 'es' || $MajorCountryAbbr == 'pt' || $MajorCountryAbbr == 'fr') {
+				$URL = preg_replace('/(.*\/?\/?).*(bibles\.org.*)/', '$1' . ($MajorCountryAbbr == 'pt' ? 'pt-br.' : $MajorCountryAbbr.'.') . '$2', $URL);
 			}
+			$organization=trim($r2['company_title']);
+			$text = trim($r2['company']);
+			if (strpos($text, ' on') !== false) {
+				preg_match("/([^ ]*)( .*)/", $text, $match);
+				$text1 = $match[1];
+				$text2 = $match[2];
+				if (preg_match("/ on/", $text2)) {
+					$matchTemp=array();
+					preg_match("/(.*) on/", $text2, $matchTemp);
+					$text2 = $matchTemp[1];
+				}
+				$text2 = trim($text2);
+			}
+			else {
+				$text1 = $text;
+				$text2='';
+			}
+			?>
+			<tr>
+				<td style='width: 45px; '>
+					<?php
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/BibleSearch-icon.jpg' alt='".translate('Study', $st, 'sys')."' title='".translate('Study', $st, 'sys')."' /></div>";
+				echo "</td>";
+				echo "<td>";
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\">" . translate($text1, $st, 'sys') . ' ' . translate($text2, $st, 'sys') . ': ' . $organization . '</div>';
+					?>
+				</td>
+			</tr>
+			<?php
 		}
 	}
 
@@ -2459,45 +2439,43 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 	if ($CellPhone) {
 		$query="SELECT * FROM CellPhone WHERE ISO_ROD_index = '$ISO_ROD_index' AND (Cell_Phone_Title <> 'Android App' AND Cell_Phone_Title <> 'iOS Asset Package')";
 		$result2=$db->query($query);
-		if ($result2) {
-			while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
-				$Cell_Phone_Title=$r2['Cell_Phone_Title'];
-				$Cell_Phone_File=trim($r2['Cell_Phone_File']);
-				$optional=$r2['optional'];
-				if ($optional === null) {
-					$optional='';
-				}
-				else {
-					$optional=trim($optional);
-				}
-				?>
-				<tr>
-					<td style='width: 45px; '>
-						<?php
-						if ($Cell_Phone_Title == 'MySword (Android)')
-							echo "<div class='linePointer' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/mysword-icon.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
-						elseif ($Cell_Phone_Title == 'iPhone') {		// only one "iPhone" record in the table (6/27/2022)
-							echo "<div class='linePointer' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
-						}
-						else {
-							echo "<div class='linePointer' $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/CellPhoneIcon.png' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
-						}
-						echo '</div>';
-					echo '</td>';
-					echo '<td>';
-						if ($Cell_Phone_Title == 'MySword (Android)')
-							if ($Internet)
-								echo "<div class='linePointer' title='" . translate('Download the cell phone module for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the cell phone module for', $st, 'sys') . "</div> <a href='https://www.mysword.info/' title='" . translate('Download the cell phone module for', $st, 'sys') . "' target='_blank'><span class='lineAction'>$Cell_Phone_Title</span></a>";
-							else
-								echo "<div class='linePointer' title='" . translate('Download the cell phone module for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the cell phone module for', $st, 'sys') . ' ' . $Cell_Phone_Title . '</div>';
-						else
-							echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the app for', $st, 'sys') . ' ' . $Cell_Phone_Title . '</div>';
-						echo ' ' . $optional;
-						?>
-					</td>
-				</tr>
-				<?php
+		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
+			$Cell_Phone_Title=$r2['Cell_Phone_Title'];
+			$Cell_Phone_File=trim($r2['Cell_Phone_File']);
+			$optional=$r2['optional'];
+			if ($optional === null) {
+				$optional='';
 			}
+			else {
+				$optional=trim($optional);
+			}
+			?>
+			<tr>
+				<td style='width: 45px; '>
+					<?php
+					if ($Cell_Phone_Title == 'MySword (Android)')
+						echo "<div class='linePointer' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/mysword-icon.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
+					elseif ($Cell_Phone_Title == 'iPhone') {		// only one "iPhone" record in the table (6/27/2022)
+						echo "<div class='linePointer' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
+					}
+					else {
+						echo "<div class='linePointer' $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/CellPhoneIcon.png' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
+					}
+					echo '</div>';
+				echo '</td>';
+				echo '<td>';
+					if ($Cell_Phone_Title == 'MySword (Android)')
+						if ($Internet)
+							echo "<div class='linePointer' title='" . translate('Download the cell phone module for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the cell phone module for', $st, 'sys') . "</div> <a href='https://www.mysword.info/' title='" . translate('Download the cell phone module for', $st, 'sys') . "' target='_blank'><span class='lineAction'>$Cell_Phone_Title</span></a>";
+						else
+							echo "<div class='linePointer' title='" . translate('Download the cell phone module for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the cell phone module for', $st, 'sys') . ' ' . $Cell_Phone_Title . '</div>';
+					else
+						echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the app for', $st, 'sys') . ' ' . $Cell_Phone_Title . '</div>';
+					echo ' ' . $optional;
+					?>
+				</td>
+			</tr>
+			<?php
 		}
 	}
 
@@ -2507,63 +2485,58 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 	*************************************************************************************************************
 */
 	if ($GRN && $Internet) {
+		$text='';
+		$text1='';
+		$text2='';
+		$match=[];
+		$deaf = 0;
 		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND GRN = 1";
 		$result2=$db->query($query);
-		if ($result2) {
-			if ($Internet) {
-				//$num=mysql_num_rows($result2);
-				$text='';
-				$text1='';
-				$text2='';
-				$match=array();
-				$deaf = 0;
-				$query="SELECT LN_English FROM LN_English WHERE ISO_ROD_index = '$ISO_ROD_index'";
-				$result3=$db->query($query);
-				if ($result3->num_rows > 0) {
-					$r_LN = $result3->fetch_array(MYSQLI_ASSOC);
-					if (str_contains($r_LN['LN_English'], 'Sign Language')) {						// The only way I know how to see if the language is a sign language
-						$deaf = 1;
-					}
-				}
-				while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
-					$URL=trim($r2['URL']);
-					if ($st == 'spa' && strpos($URL, 'globalrecordings.net') !== false) {							// if $URL is GRN
-						$URL = str_replace('/en/', '/es/', $URL);
-					}
-					$organization=trim($r2['company']);												// usually 'Global Recordings Network'
-					$text = trim($r2['company_title']);												// usually 'Audio recordings'
-					if ($deaf) {																	// if $dead
-						$text = str_replace('Audio recordings', 'View', $text);
-					}
-					if (strpos($text, ' on') !== false) {
-						preg_match("/([^ ]*)( .*)/", $text, $match);
-						$text1 = $match[1];
-						$text2 = $match[2];
-						if (preg_match("/ on/", $text2)) {
-							$matchTemp=array();
-							preg_match("/(.*) on/", $text2, $matchTemp);
-							$text2 = $matchTemp[1];
-						}
-						$text2 = trim($text2);
-					}
-					else {
-						$text1 = $text;
-						$text2='';
-					}
-					?>
-					<tr>
-						<td style='width: 45px; '>
-							<?php
-							echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/GRN-icon.jpg' alt='".translate('Read', $st, 'sys')."' title='".translate('Read', $st, 'sys')."' /></div>";
-						echo "</td>";
-						echo "<td>";
-							echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='Global Recordings Network'>" . translate($text1, $st, 'sys') . ' ' . translate($text2, $st, 'sys') . ': ' . $organization . '</div>';
-							?>
-						</td>
-					</tr>
-				<?php
-				}
+		$query="SELECT LN_English FROM LN_English WHERE ISO_ROD_index = '$ISO_ROD_index'";
+		$result3=$db->query($query);
+		if ($result3->num_rows > 0) {
+			$r_LN = $result3->fetch_array(MYSQLI_ASSOC);
+			if (str_contains($r_LN['LN_English'], 'Sign Language')) {						// The only way I know how to see if the language is a sign language
+				$deaf = 1;
 			}
+		}
+		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
+			$URL=trim($r2['URL']);
+			if ($st == 'spa' && strpos($URL, 'globalrecordings.net') !== false) {			// if $URL is GRN
+				$URL = str_replace('/en/', '/es/', $URL);
+			}
+			$organization=trim($r2['company']);												// usually 'Global Recordings Network'
+			$text = trim($r2['company_title']);												// usually 'Audio recordings'
+			if ($deaf) {																	// if $dead
+				$text = str_replace('Audio recordings', 'View', $text);
+			}
+			if (strpos($text, ' on') !== false) {
+				preg_match("/([^ ]*)( .*)/", $text, $match);
+				$text1 = $match[1];
+				$text2 = $match[2];
+				if (preg_match("/ on/", $text2)) {
+					$matchTemp=array();
+					preg_match("/(.*) on/", $text2, $matchTemp);
+					$text2 = $matchTemp[1];
+				}
+				$text2 = trim($text2);
+			}
+			else {
+				$text1 = $text;
+				$text2='';
+			}
+			?>
+			<tr>
+				<td style='width: 45px; '>
+					<?php
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/GRN-icon.jpg' alt='".translate('Read', $st, 'sys')."' title='".translate('Read', $st, 'sys')."' /></div>";
+				echo "</td>";
+				echo "<td>";
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='Global Recordings Network'>" . translate($text1, $st, 'sys') . ' ' . translate($text2, $st, 'sys') . ': ' . $organization . '</div>';
+					?>
+				</td>
+			</tr>
+		<?php
 		}
 	}
 
@@ -2575,94 +2548,92 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 	if ($watch && $Internet) {
 		$query="SELECT * FROM watch WHERE ISO_ROD_index = '$ISO_ROD_index'";
 		$result2=$db->query($query);
-		if ($result2) {
-			while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
-				$organization=trim($r2['organization']);
-				$watch_what=trim($r2['watch_what']);
-				$URL=trim($r2['URL']);
-				$JesusFilm=trim($r2['JesusFilm']);							// booleon
-				$YouTube=trim($r2['YouTube']);								// booleon
-				if ($st == 'spa' && $watch_what == 'The Story of Jesus for Children') $watch_what = 'la historia de Jesús para niños';
-				if ($st == 'eng' && $watch_what == 'la historia de Jesús para niños') $watch_what = 'The Story of Jesus for Children';
-				?>
-				<tr>
-				<td style='width: 45px; '>
-					
-					<?php
-					if ($JesusFilm) {
-						// JESUS Film
-						if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
-							?>
-								<div class='linePointer' onclick="window.open('JESUSFilmView.php?<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300'); return false;" title="<?php echo $LN ?>">
-								<img class='iconActions' src='../images/JESUS-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
-						</div>
-							<?php
-						}
-						else {
-							?>
-								<div class='linePointer' onclick="window.open('<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300'); return false;" title="<?php echo $LN ?>">
-								<img class='iconActions' src='../images/JESUS-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
-						</div>
-							<?php
-						}
-					}
-					elseif ($YouTube) {
-						// YouTube
-						//     href="#" onclick="w=screen.availWidth; h=screen.availHeight; window.open('<?php echo $URL ? >','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width='+w+',height='+h+',top=0,left=0'); return false;" title="< ?php echo $LN ? >">
-						?>
-							<div class='linePointer' onclick="window.open('<?php echo $URL ?>')">
-							<img class='iconActions' src='../images/youtube-icon.jpg'  alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
-							</div>
-						<?php
-					}
-					else {
-						?>
-							<div class='linePointer' onclick="window.open('<?php echo $URL ?>')">
-							<img class='iconActions' src='../images/watch-icon.jpg'  alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
-							</div>
-						<?php
-					}
-					?>
-				</td>
-				<td>
-					<?php
-					if ($JesusFilm) {
-						// JESUS Film
-						if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
-								echo "<div class='linePointer' onclick='window.open(\"JESUSFilmView.php?$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300\"); return false;' title='$LN'>";
-						}
-						else {
-							echo "<div class='linePointer' onclick='window.open(\"$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300\"); return false;' title='$LN'>";
-						}
-					}
-					elseif ($YouTube) {
-						// YouTube
-						//    href="#" onclick="w=screen.availWidth; h=screen.availHeight; window.open('<?php echo $URL ? >','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width='+w+',height='+h+',top=0,left=0'); return false;" title="<?php echo $LN ? >">
-						echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='$LN'>";
-					}
-					else {
-						echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='translate(\"View\", $st, \"sys\")'>";
-					}
-
-					if ($JesusFilm) {
-						// JESUS Film
-						//echo $watch_what;
-						echo translate('View the JESUS Film', $st, 'sys');
-					}
-					else if ($YouTube) {
-						// YouTube
-						echo translate('View', $st, 'sys').' (YouTube)'."&nbsp;: $organization $watch_what";
-					}
-					else {
-						//echo translate('View', $st, 'sys')."</span> ".translate('by', $st, 'sys')." $organization:&nbsp;$watch_what";
-						echo translate('View', $st, 'sys')." $organization:&nbsp;$watch_what";
-					}
-					?>
-					</div>
-				</td>
-				</tr>
+		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
+			$organization=trim($r2['organization']);
+			$watch_what=trim($r2['watch_what']);
+			$URL=trim($r2['URL']);
+			$JesusFilm=trim($r2['JesusFilm']);							// booleon
+			$YouTube=trim($r2['YouTube']);								// booleon
+			if ($st == 'spa' && $watch_what == 'The Story of Jesus for Children') $watch_what = 'la historia de Jesús para niños';
+			if ($st == 'eng' && $watch_what == 'la historia de Jesús para niños') $watch_what = 'The Story of Jesus for Children';
+			?>
+			<tr>
+			<td style='width: 45px; '>
+				
 				<?php
-			}
+				if ($JesusFilm) {
+					// JESUS Film
+					if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
+						?>
+							<div class='linePointer' onclick="window.open('JESUSFilmView.php?<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300'); return false;" title="<?php echo $LN ?>">
+							<img class='iconActions' src='../images/JESUS-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
+					</div>
+						<?php
+					}
+					else {
+						?>
+							<div class='linePointer' onclick="window.open('<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300'); return false;" title="<?php echo $LN ?>">
+							<img class='iconActions' src='../images/JESUS-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
+					</div>
+						<?php
+					}
+				}
+				elseif ($YouTube) {
+					// YouTube
+					//     href="#" onclick="w=screen.availWidth; h=screen.availHeight; window.open('<?php echo $URL ? >','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width='+w+',height='+h+',top=0,left=0'); return false;" title="< ?php echo $LN ? >">
+					?>
+						<div class='linePointer' onclick="window.open('<?php echo $URL ?>')">
+						<img class='iconActions' src='../images/youtube-icon.jpg'  alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
+						</div>
+					<?php
+				}
+				else {
+					?>
+						<div class='linePointer' onclick="window.open('<?php echo $URL ?>')">
+						<img class='iconActions' src='../images/watch-icon.jpg'  alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
+						</div>
+					<?php
+				}
+				?>
+			</td>
+			<td>
+				<?php
+				if ($JesusFilm) {
+					// JESUS Film
+					if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
+							echo "<div class='linePointer' onclick='window.open(\"JESUSFilmView.php?$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300\"); return false;' title='$LN'>";
+					}
+					else {
+						echo "<div class='linePointer' onclick='window.open(\"$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300\"); return false;' title='$LN'>";
+					}
+				}
+				elseif ($YouTube) {
+					// YouTube
+					//    href="#" onclick="w=screen.availWidth; h=screen.availHeight; window.open('<?php echo $URL ? >','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width='+w+',height='+h+',top=0,left=0'); return false;" title="<?php echo $LN ? >">
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='$LN'>";
+				}
+				else {
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='translate(\"View\", $st, \"sys\")'>";
+				}
+
+				if ($JesusFilm) {
+					// JESUS Film
+					//echo $watch_what;
+					echo translate('View the JESUS Film', $st, 'sys');
+				}
+				else if ($YouTube) {
+					// YouTube
+					echo translate('View', $st, 'sys').' (YouTube)'."&nbsp;: $organization $watch_what";
+				}
+				else {
+					//echo translate('View', $st, 'sys')."</span> ".translate('by', $st, 'sys')." $organization:&nbsp;$watch_what";
+					echo translate('View', $st, 'sys')." $organization:&nbsp;$watch_what";
+				}
+				?>
+				</div>
+			</td>
+			</tr>
+			<?php
 		}
 	}
 
@@ -2673,25 +2644,22 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 */
 	$query="SELECT other, other_title, download_video FROM other_titles WHERE ISO_ROD_index = '$ISO_ROD_index' AND (download_video IS NOT NULL AND trim(download_video) <> '')";
 	$result_DV=$db->query($query);
-	$DV_num=$result_DV->num_rows;
-	if ($DV_num > 0) {
-		while ($r_DV = $result_DV->fetch_array(MYSQLI_ASSOC)) {
-			$other = $r_DV['other'];
-			$other_title = $r_DV['other_title'];
-			$download_video = $r_DV['download_video'];
-			?>
-			<tr style='margin-top: -2px; '>
-			<td style='width: 45px; '>
-			<?php
-			echo "<div class='linePointer' onclick=\"window.open('./data/".$ISO.'/video/'.$download_video."')\" download><img class='iconActions' src='../images/download-icon.jpg' alt='".translate('Download', $st, 'sys')."' title='".translate('Download', $st, 'sys')."' /></div>";
-			echo "</td>";
-			echo "<td>";
-			echo "<div class='linePointer' onclick=\"window.open('./data/".$ISO.'/video/'.$download_video."')\" title='".translate('Download the video.', $st, 'sys')."' download>".translate('Download', $st, 'sys').' '.$other. ' ' . $other_title . ' ' .translate('video', $st, 'sys').' (MP4)</div>';
-			?>
-			</td>
-			</tr>
-			<?php
-		}
+	while ($r_DV = $result_DV->fetch_array(MYSQLI_ASSOC)) {
+		$other = $r_DV['other'];
+		$other_title = $r_DV['other_title'];
+		$download_video = $r_DV['download_video'];
+		?>
+		<tr style='margin-top: -2px; '>
+		<td style='width: 45px; '>
+		<?php
+		echo "<div class='linePointer' onclick=\"window.open('./data/".$ISO.'/video/'.$download_video."')\" download><img class='iconActions' src='../images/download-icon.jpg' alt='".translate('Download', $st, 'sys')."' title='".translate('Download', $st, 'sys')."' /></div>";
+		echo "</td>";
+		echo "<td>";
+		echo "<div class='linePointer' onclick=\"window.open('./data/".$ISO.'/video/'.$download_video."')\" title='".translate('Download the video.', $st, 'sys')."' download>".translate('Download', $st, 'sys').' '.$other. ' ' . $other_title . ' ' .translate('video', $st, 'sys').' (MP4)</div>';
+		?>
+		</td>
+		</tr>
+		<?php
 	}
 
 /*
@@ -2995,77 +2963,75 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 	if ($study) {
 		$query="SELECT * FROM study WHERE ISO_ROD_index = '$ISO_ROD_index'";
 		$result2=$db->query($query);
-		if ($result2) {
-			while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
-				$Testament=$r2['Testament'];
-				$alphabet=$r2['alphabet'];
-				$ScriptureURL=trim($r2['ScriptureURL']);
-				$othersiteURL=trim($r2['othersiteURL']);
-				?>
-				<tr>
-					<td style='width: 45px; '>
-						<?php
-						// I have to use a table, float: left or display: inline-block.
-						// Using table is "old fashioned".
-						// Using float: left you can't have vertical-align: middle.
-						// However, if you use display: inline-block you are faced with a whitespace problem.
-						// See http://designshack.net/articles/css/whats-the-deal-with-display-inline-block/
-						// In an HTML file you must use a /p followed immediatly with another p (or /li with a li)
-						// to make up for the extra whitespace.
-						// In a PHP file it doesn't seem to matter as long as it is in PHP.
-						// $ScriptureDescription
-						//echo "<a href='#' style='font-size: .9em; ' title='".translate('Download the module.', $st, 'sys')."' onclick='Study(\"$ISO\", \"ROD_Code\", \"$ScriptureURL\")'><img class='iconActions' src='../images/study-icon.jpg' alt='".translate('Study', $st, 'sys')."' title='".translate('Study', $st, 'sys')."' />&nbsp;&nbsp;<span class='lineAction'>".translate('Download', $st, 'sys')."</span> ".translate('the New Testament', $st, 'sys')."</a><span style='font-size: .85em; '>&nbsp;";
-						//echo "<a href='#' style='font-size: .9em; ' title='".translate('Download the module.', $st, 'sys')."' onclick='Study(\"$ISO\", \"ROD_Code\", \"$ScriptureURL\")'><img class='iconActions' src='../images/study-icon.jpg' alt='".translate('Study', $st, 'sys')."' title='".translate('Study', $st, 'sys')."' />&nbsp;&nbsp;<span class='lineAction'>".translate('Download', $st, 'sys')."</span> ";
-						echo "<div class='linePointer' onclick='Study(\"$st\", \"$ISO\", \"ROD_Code\", \"$ScriptureURL\")'>";
-						echo "<img class='iconActions' style='margin-top: 4px; ' src='../images/TheWord-icon.jpg' alt='".translate('Study', $st, 'sys')."' title='".translate('Study', $st, 'sys')."' />";
-						echo "</div>";
-					echo "</td>";
-					echo "<td>";
-						echo "<div class='linePointer' title='$LN: ".translate('Download the module for The Word.', $st, 'sys')."' onclick='Study(\"$st\", \"$ISO\", \"ROD_Code\", \"$ScriptureURL\")'>";
-						echo translate('Download', $st, 'sys')." ";
-						switch ($Testament) {
-							case "New Testament":				// NT
-								echo translate('the New Testament', $st, 'sys');
-								break;
-							case "Old Testament":				// OT
-								echo translate('the Old Testament', $st, 'sys');
-								break;
-							case "Bible":						// Bible
-								echo translate('the Bible', $st, 'sys');
-								break;
-							default:							// ?????
-								echo translate('what Testament?', $st, 'sys');
-								break;
-						}
-						switch ($alphabet) {
-							case "Standard alphabet":			// standard alphabet
-								break;
-							case "Traditional alphabet":		// traditional alphabet
-								echo " <span style='font-size: .8em; '>" . translate('(traditional alphabet)', $st, 'sys') . '</span>';
-								break;
-							case "New alphabet":				// new alphabet
-								echo " <span style='font-size: .8em; '>" . translate('(new alphabet)', $st, 'sys') . '</span>';
-								break;
-							default:							// ?????
-								echo " <span style='font-size: .8em; '>" . translate('(what alphabet?)', $st, 'sys') . '</span>';
-								break;
-						}					
-						echo "</div><span style='font-size: 1em; '>&nbsp;";
-						// $statement
-						echo translate('for use with the Bible study software', $st, 'sys');
-						// $othersiteDescription
-						// “ and ” wont work under 00i-SpecificLanguage.php!
-						if ($Internet) {
-							echo "&nbsp;</span><a href='$othersiteURL' style='font-size: 1em; ' title='The Word Windows software' target='_blank'><span class='lineAction'>&ldquo;The Word&rdquo;</span></a>";
-						}
-						else {
-							echo "&nbsp;</span>&ldquo;The Word&rdquo;";
-						}
-						?>
-						</td>
-					</tr>
-				<?php
-			}
+		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
+			$Testament=$r2['Testament'];
+			$alphabet=$r2['alphabet'];
+			$ScriptureURL=trim($r2['ScriptureURL']);
+			$othersiteURL=trim($r2['othersiteURL']);
+			?>
+			<tr>
+				<td style='width: 45px; '>
+					<?php
+					// I have to use a table, float: left or display: inline-block.
+					// Using table is "old fashioned".
+					// Using float: left you can't have vertical-align: middle.
+					// However, if you use display: inline-block you are faced with a whitespace problem.
+					// See http://designshack.net/articles/css/whats-the-deal-with-display-inline-block/
+					// In an HTML file you must use a /p followed immediatly with another p (or /li with a li)
+					// to make up for the extra whitespace.
+					// In a PHP file it doesn't seem to matter as long as it is in PHP.
+					// $ScriptureDescription
+					//echo "<a href='#' style='font-size: .9em; ' title='".translate('Download the module.', $st, 'sys')."' onclick='Study(\"$ISO\", \"ROD_Code\", \"$ScriptureURL\")'><img class='iconActions' src='../images/study-icon.jpg' alt='".translate('Study', $st, 'sys')."' title='".translate('Study', $st, 'sys')."' />&nbsp;&nbsp;<span class='lineAction'>".translate('Download', $st, 'sys')."</span> ".translate('the New Testament', $st, 'sys')."</a><span style='font-size: .85em; '>&nbsp;";
+					//echo "<a href='#' style='font-size: .9em; ' title='".translate('Download the module.', $st, 'sys')."' onclick='Study(\"$ISO\", \"ROD_Code\", \"$ScriptureURL\")'><img class='iconActions' src='../images/study-icon.jpg' alt='".translate('Study', $st, 'sys')."' title='".translate('Study', $st, 'sys')."' />&nbsp;&nbsp;<span class='lineAction'>".translate('Download', $st, 'sys')."</span> ";
+					echo "<div class='linePointer' onclick='Study(\"$st\", \"$ISO\", \"ROD_Code\", \"$ScriptureURL\")'>";
+					echo "<img class='iconActions' style='margin-top: 4px; ' src='../images/TheWord-icon.jpg' alt='".translate('Study', $st, 'sys')."' title='".translate('Study', $st, 'sys')."' />";
+					echo "</div>";
+				echo "</td>";
+				echo "<td>";
+					echo "<div class='linePointer' title='$LN: ".translate('Download the module for The Word.', $st, 'sys')."' onclick='Study(\"$st\", \"$ISO\", \"ROD_Code\", \"$ScriptureURL\")'>";
+					echo translate('Download', $st, 'sys')." ";
+					switch ($Testament) {
+						case "New Testament":				// NT
+							echo translate('the New Testament', $st, 'sys');
+							break;
+						case "Old Testament":				// OT
+							echo translate('the Old Testament', $st, 'sys');
+							break;
+						case "Bible":						// Bible
+							echo translate('the Bible', $st, 'sys');
+							break;
+						default:							// ?????
+							echo translate('what Testament?', $st, 'sys');
+							break;
+					}
+					switch ($alphabet) {
+						case "Standard alphabet":			// standard alphabet
+							break;
+						case "Traditional alphabet":		// traditional alphabet
+							echo " <span style='font-size: .8em; '>" . translate('(traditional alphabet)', $st, 'sys') . '</span>';
+							break;
+						case "New alphabet":				// new alphabet
+							echo " <span style='font-size: .8em; '>" . translate('(new alphabet)', $st, 'sys') . '</span>';
+							break;
+						default:							// ?????
+							echo " <span style='font-size: .8em; '>" . translate('(what alphabet?)', $st, 'sys') . '</span>';
+							break;
+					}					
+					echo "</div><span style='font-size: 1em; '>&nbsp;";
+					// $statement
+					echo translate('for use with the Bible study software', $st, 'sys');
+					// $othersiteDescription
+					// “ and ” wont work under 00i-SpecificLanguage.php!
+					if ($Internet) {
+						echo "&nbsp;</span><a href='$othersiteURL' style='font-size: 1em; ' title='The Word Windows software' target='_blank'><span class='lineAction'>&ldquo;The Word&rdquo;</span></a>";
+					}
+					else {
+						echo "&nbsp;</span>&ldquo;The Word&rdquo;";
+					}
+					?>
+					</td>
+				</tr>
+			<?php
 		}
 	}
 
@@ -3077,34 +3043,32 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 	if ($other_titles) {
 		$query="SELECT * FROM other_titles WHERE ISO_ROD_index = '$ISO_ROD_index' AND (download_video IS NULL OR trim(download_video) = '')";
 		$result2=$db->query($query);
-		if ($result2) {
-			while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
-				$other=trim($r2['other']);
-				$other_title=trim($r2['other_title']);
-				$other_PDF=trim($r2['other_PDF']);
-				$other_audio=trim($r2['other_audio']);
-				?>
-				<tr>
-					<td style='width: 45px; '>
-						<?php
-						if (!empty($other_PDF)) {
-							echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$other_PDF')\"><img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Books', $st, 'sys')."' title='".translate('Books', $st, 'sys')."' /></div>";
-							echo "</td>";
-							echo "<td>";
-							echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$other_PDF')\" title='".translate('Read this title.', $st, 'sys')."'>".translate('Read', $st, 'sys');
-						}
-						else {
-							echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/audio/$other_audio')\"><img class='iconActions' src='../images/listen-icon.jpg' alt='".translate('Books', $st, 'sys')."' title='".translate('Books', $st, 'sys')."' /></div>";
-							echo "</td>";
-							echo "<td>";
-							echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/audio/$other_audio')\" title='".translate('Listen this title.', $st, 'sys')."'>".translate('Listen', $st, 'sys');
-						}
-						echo "&nbsp;$other:&nbsp;$other_title</div>";
-						?>
-					</td>
-				</tr>
-				<?php
-			}
+		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
+			$other=trim($r2['other']);
+			$other_title=trim($r2['other_title']);
+			$other_PDF=trim($r2['other_PDF']);
+			$other_audio=trim($r2['other_audio']);
+			?>
+			<tr>
+				<td style='width: 45px; '>
+					<?php
+					if (!empty($other_PDF)) {
+						echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$other_PDF')\"><img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Books', $st, 'sys')."' title='".translate('Books', $st, 'sys')."' /></div>";
+						echo "</td>";
+						echo "<td>";
+						echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$other_PDF')\" title='".translate('Read this title.', $st, 'sys')."'>".translate('Read', $st, 'sys');
+					}
+					else {
+						echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/audio/$other_audio')\"><img class='iconActions' src='../images/listen-icon.jpg' alt='".translate('Books', $st, 'sys')."' title='".translate('Books', $st, 'sys')."' /></div>";
+						echo "</td>";
+						echo "<td>";
+						echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/audio/$other_audio')\" title='".translate('Listen this title.', $st, 'sys')."'>".translate('Listen', $st, 'sys');
+					}
+					echo "&nbsp;$other:&nbsp;$other_title</div>";
+					?>
+				</td>
+			</tr>
+			<?php
 		}
 	}
 
@@ -3253,33 +3217,31 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 	if ($links && $Internet) {
 		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND map = 1";
 		$result2=$db->query($query);
-		if ($result2) {
-			while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
-				$company_title=stripslashes(trim($r2['company_title']));
-				$company=trim($r2['company']);
-				$URL=trim($r2['URL']);
-				?>
-				<tr>
-					<td style='width: 45px; '>
-						<?php
-						echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/globe-icon.png' alt='".translate('Map', $st, 'sys')."' title='".translate('Map', $st, 'sys')."' /></div>";
-					echo "</td>";
-					echo "<td>";
-						echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to the organization.', $st, 'sys')."'>".translate('Link', $st, 'sys')." : ";
-						if ($company_title != "" && $company_title != NULL) {
-							if ($company_title == 'language map') {
-								echo translate('language map', $st, 'sys').': ';
-							}
-							else {
-								echo "$company_title: ";
-							}
+		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
+			$company_title=stripslashes(trim($r2['company_title']));
+			$company=trim($r2['company']);
+			$URL=trim($r2['URL']);
+			?>
+			<tr>
+				<td style='width: 45px; '>
+					<?php
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/globe-icon.png' alt='".translate('Map', $st, 'sys')."' title='".translate('Map', $st, 'sys')."' /></div>";
+				echo "</td>";
+				echo "<td>";
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to the organization.', $st, 'sys')."'>".translate('Link', $st, 'sys')." : ";
+					if ($company_title != "" && $company_title != NULL) {
+						if ($company_title == 'language map') {
+							echo translate('language map', $st, 'sys').': ';
 						}
-						echo "$company</div>";
-						?>
-					</td>
-				</tr>
-				<?php
-			}
+						else {
+							echo "$company_title: ";
+						}
+					}
+					echo "$company</div>";
+					?>
+				</td>
+			</tr>
+			<?php
 		}
 	}
 
@@ -3291,24 +3253,22 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 	if ($links && $Internet) {
 		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND email = 1";
 		$result2=$db->query($query);
-		if ($result2) {
-			while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
-				$company_title=stripslashes(trim($r2['company_title']));
-				//$company=trim($r2['company']);
-				$URL=trim($r2['URL']);
-				?>
-				<tr>
-					<td style='width: 45px; '>
-						<?php
-						echo "<img class='iconActions' src='../images/email-icon.jpg' alt='Email' title='Email' />";
-					echo "</td>";
-					echo "<td>";
-						echo "<div title='Email'>$company_title : <a style='text-decoration: none; border-bottom: 2px solid red; ' href='mailto:$URL'>$URL</a></div>";
-						?>
-					</td>
-				</tr>
-				<?php
-			}
+		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
+			$company_title=stripslashes(trim($r2['company_title']));
+			//$company=trim($r2['company']);
+			$URL=trim($r2['URL']);
+			?>
+			<tr>
+				<td style='width: 45px; '>
+					<?php
+					echo "<img class='iconActions' src='../images/email-icon.jpg' alt='Email' title='Email' />";
+				echo "</td>";
+				echo "<td>";
+					echo "<div title='Email'>$company_title : <a style='text-decoration: none; border-bottom: 2px solid red; ' href='mailto:$URL'>$URL</a></div>";
+					?>
+				</td>
+			</tr>
+			<?php
 		}
 	}
 
