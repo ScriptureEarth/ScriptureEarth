@@ -116,7 +116,7 @@ if (strlen($iso) == 3) {																		// if not, exit this ISOShow.php scrip
 <div id='addingROD' name='addingROD' style='display: none; position: relative; top: -115px; left: 0px; '>
 	<br />
 	<form>
-	<table width="100%" border="0" cellspacing="2" cellpadding="4" align="center" style="padding: 15px; color: navy; background-color: #F7889E; ">
+	<table width="100%" cellspacing="2" cellpadding="4" style="margin-left: auto; margin-right: auto; border: 0; " style="padding: 15px; color: navy; background-color: #F7889E; ">
 		<tr>
 		<th colspan="6">
 			Add ROD Code
@@ -186,7 +186,7 @@ if (strlen($iso) == 3) {																		// if not, exit this ISOShow.php scrip
 <div id='replacingROD' name='replacingROD' style='display: none; position: relative; top: -115px; left: 0px; '>
 	<br />
 	<form>
-	<table width="45%" border="0" cellspacing="2" cellpadding="4" align="center" style="padding: 15px; color: navy; background-color: #F7889E; ">
+	<table width="45%" cellspacing="2" cellpadding="4" style="padding: 15px; color: navy; background-color: #F7889E; margin-left: auto; margin-right: auto; border: 0; ">
 		<tr>
 		<th colspan="3">
 			Replace ROD Code
@@ -198,11 +198,11 @@ if (strlen($iso) == 3) {																		// if not, exit this ISOShow.php scrip
 		</tr>
 		<td style="border: navy thin solid; "><?php echo $iso ?></td>
 		<td style="border: navy thin solid; "><?php echo $RODCode ?></td>
-		<td style="border: navy thin solid; "><input type="text" value='' name='ChangeCode' size='8' maxlenght='5' /></td>
+		<td style="border: navy thin solid; "><input type="text" value='' id='ChangeCodeID' name='ChangeCode' size='8' maxlenght='5' /></td>
 		</tr>
 	</table>
 	<div style='text-align: center; '>
-		<input type="button" value="Submit" onClick="replaceSubmit('rod', 'replacingROD', '<?php echo $iso ?>', '<?php echo $RODCode ?>', this.form)" />
+		<input type="button" value="Submit" onClick="replaceSubmit('rod', 'replacingROD', '<?php echo $iso ?>', '<?php echo $RODCode ?>', document.getElementById('ChangeCodeID').value)" />
 		<input type="button" value="Cancel" onClick="replaceCancel('rod', 'replacingROD')" />
 	</div>
 	</form>
@@ -280,7 +280,7 @@ echo "</div>";
 <div id="addingVariant" name="addingVariant" style="position: relative; top: -130px; left: 0px; z-index: 5; display: none; ">
 	<br />
 	<form id='Variants' name='Variants' action='#'>
-	<table width="100%" border="0" cellspacing="2" cellpadding="4" align="center" style="padding: 15px; color: navy; background-color: #F7889E; ">
+	<table width="100%" cellspacing="2" cellpadding="4" style="padding: 15px; color: navy; background-color: #F7889E; margin-left: auto; margin-right: auto; border: 0; ">
 		<tr>
 		<th width="100%" colspan="3">
 			Add Variant

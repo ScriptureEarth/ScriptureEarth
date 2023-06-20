@@ -1,5 +1,6 @@
 <?php
 	// Called from Scripture_Add.php in JavaScript function ISOShow(str, ROD_Code, Variant_Code); str=ISO and ROD_Code=ROD_Code and Variant_Code=Variant_Code
+	// replaceRODVal.php?iso=" + iso + "&rod=" + ROD_Code + "&ChangeCode=" + ChangeCode
 
 	// ISO (iso), RODCode (Frod), ChangeCode (Trod), CountryCode, Language, Dialect, Location
 	
@@ -8,12 +9,7 @@
 			scripture_main
 			ROD_Dialect
 			isop
-			LN_English
-			LN_Spanish
-			LN_Portuguese
-			LN_French
-			LN_Dutch
-			LN_German
+			all navigational languages
 			ISO_countries
 			alt_lang_names
 			OT_PDF_Media
@@ -38,12 +34,15 @@
 	// The number of failed validations
 	$count_failed = 0;
 
+	$audioSet = 0;
+	$videoSet = 0;
+
 	if (isset($_GET["iso"])) {
 		$iso = trim($_GET["iso"]);
 		$iso = preg_replace('/^([a-z]{3})/', '$1', $iso);
 		if ($iso == NULL) {
 			$count_failed++;
-			$messages[] = '�ISO� is empty.';
+			$messages[] = '“ISO” is empty.';
 		}
 	}
 	else {
@@ -51,16 +50,36 @@
 		$messages[] = 'No ISO was found.';
 	}
 
-	$Frod = trim($_GET['rod']);
-	$Trod = trim($_GET['ChangeCode']);
-
-	if ($Frod=="") {
-		// Increments the number of failed validations
+	if (isset($_GET["rod"])) {
+		$Frod = trim($_GET['rod']);
+		$Frod = preg_replace('/^([0-9a-zA-Z]{1,5})/', '$1', $Frod);
+		if ($Frod == NULL) {
+			// Increments the number of failed validations
+			$count_failed++;
+			// Adds a message to the message queue.
+			$messages[] = "Error. From ROD Code is empty.";
+		}
+	}
+	else {
 		$count_failed++;
-		// Adds a message to the message queue.
-		$messages[] = "Error. From ROD Code is empty.";
+		$messages[] = 'No ISO was found.';
 	}
 	
+	if (isset($_GET["ChangeCode"])) {
+		$Trod = trim($_GET['ChangeCode']);
+		$Trod = preg_replace('/^([0-9a-zA-Z]{1,5})/', '$1', $Trod);
+		if ($Trod == NULL) {
+			// Increments the number of failed validations
+			$count_failed++;
+			// Adds a message to the message queue.
+			$messages[] = "Error. From ROD Code is empty.";
+		}
+	}
+	else {
+		$count_failed++;
+		$messages[] = 'No ISO was found.';
+	}
+
 	// connect to the database 
 	include './include/conn.inc.php';
 	$db = get_my_db();
@@ -82,11 +101,11 @@
 		
 		$query="SELECT * FROM ROD_Dialect WHERE ISO = '$iso' AND ROD_Code = '$Trod'";
 		$result=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
-		if ($result->num_rows <= 0) {																// no Trod
+		if ($result->num_rows === 0) {																// no - To rod (ChangeCode)
 			$query="SELECT * FROM ROD_Dialect WHERE ISO = '$iso' AND ROD_Code = '$Frod'";
-			$result=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
-			$r = $result->fetch_assoc();
-			$iso = $r['ISO'];
+			$resultROD=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
+			$r = $resultROD->fetch_assoc();
+			//$iso = $r['ISO'];
 			//$ROD_Code = $r['ROD_Code'];
 			$Variant_Code = $r['Variant_Code'];
 			$ISO_ROD_index = (int)$r['ISO_ROD_index'];
@@ -94,9 +113,9 @@
 			$language_name = $r['language_name'];
 			$dialect_name = $r['dialect_name'];
 			$location = $r['location'];
-			$result=$db->query("INSERT INTO ROD_Dialect (iso, ROD_Code, Variant_Code, ISO_ROD_index, ISO_country, language_name, dialect_name, location) VALUES ('$iso', '$Trod', '$Variant_Code', $ISO_ROD_index, '$ISO_country', '$language_name', '$dialect_name', '$location')");
+			$result=$db->query("INSERT INTO ROD_Dialect (iso, ROD_Code, Variant_Code, ISO_ROD_index, ISO_country, language_name, dialect_name, `location`) VALUES ('$iso', '$Trod', '$Variant_Code', $ISO_ROD_index, '$ISO_country', '$language_name', '$dialect_name', '$location')");
 		}
-		else {																						// Trod
+		else {																						// yes - To rod (ChangeCode)
 			$r = $result->fetch_assoc();
 			//$iso = $r['ISO'];
 			//$ROD_Code = $r['ROD_Code'];
@@ -106,13 +125,13 @@
 			//$language_name = $r['language_name'];
 			$dialect_name = $r['dialect_name'];
 			$location = $r['location'];
-			$query="UPDATE ROD_Dialect SET Variant_Code = '$Variant_Code', dialect_name = '$dialect_name', location = '$location' WHERE ISO = '$iso' AND ROD_Code = '$Trod'";
+			$query="UPDATE ROD_Dialect SET Variant_Code = '$Variant_Code', dialect_name = '$dialect_name', `location` = '$location' WHERE ISO = '$iso' AND ROD_Code = '$Trod'";
 			$result=$db->query($query);
 			if (!$result) {
 				die('Could not update the ROD_Dialect data: ' . $db->error);
 			}
 		}
-		
+
 		$query="UPDATE scripture_main SET ROD_Code = '$Trod' WHERE ISO = '$iso' AND ROD_Code = '$Frod'";
 		$result=$db->query($query);
 		if (!$result) {
@@ -122,10 +141,20 @@
 		$query="UPDATE isop SET ROD_Code = '$Trod' WHERE ISO = '$iso' AND ROD_Code = '$Frod'";
 		$result=$db->query($query);
 		
-		foreach($_SESSION['nav_ln_array'] as $code => $array){
-			$query="UPDATE LN_".$array[1]." SET ROD_Code = '$Trod' WHERE ISO = '$iso' AND ROD_Code = '$Frod'";
-			$result=$db->query($query);
+		$nav_LN_names = [];											// save all of the LN_... natianal language names
+		//$k=1;
+		$res=$db->query("SHOW COLUMNS FROM nav_ln WHERE Field LIKE 'LN_%'");
+		while ($row_LN = $res->fetch_assoc()) {
+			if (preg_match('/^LN_/', $row_LN['Field'])) {
+				$query="UPDATE ".$row_LN['Field']." SET ROD_Code = '$Trod' WHERE ISO = '$iso' AND ROD_Code = '$Frod'";
+				$result=$db->query($query);
+				//$nav_LN_names[$k++] = $row_LN['Field'];			// $nav_LN_names see below
+			}
 		}
+		//foreach($_SESSION['nav_ln_array'] as $code => $array){
+		//	$query="UPDATE LN_".$array[1]." SET ROD_Code = '$Trod' WHERE ISO = '$iso' AND ROD_Code = '$Frod'";
+		//	$result=$db->query($query);
+		//}
 	
 		$query="UPDATE ISO_countries SET ROD_Code = '$Trod' WHERE ISO = '$iso' AND ROD_Code = '$Frod'";
 		$result=$db->query($query);
@@ -167,12 +196,14 @@
 		$result=$db->query($query);
 		if ($db->affected_rows > 0) {
 			echo 'PlaylistAudio: Make sure that you rename audio files from ' . $iso . '/audio/' . $Frod . ' to ' . $iso . '/audio/' . $Trod . '.';
+			$audio = 1;
 		}
 
 		$query="UPDATE PlaylistVideo SET ROD_Code = '$Trod' WHERE ISO = '$iso' AND ROD_Code = '$Frod'";
 		$result=$db->query($query);
 		if ($db->affected_rows > 0) {
 			echo 'PlaylistVideo: Make sure that you rename videa files from ' . $iso . '/video/' . $Frod . ' to ' . $iso . '/video/' . $Trod . '.';
+			$video = 1;
 		}
 
 		$query="UPDATE SAB SET ROD_Code = '$Trod' WHERE ISO = '$iso' AND ROD_Code = '$Frod'";
@@ -187,7 +218,19 @@
 		// require "'Scripture_Add.php?ISO='.$iso.'&RODCode='.$Trod";		WON'T WORK!
 		?>
 		<script type="text/javascript" language="javascript">
-			parent.location='Scripture_Add.php?iso=<?php echo $iso ?>&rod=<?php echo $Trod ?>';
+			<?php
+			if ($audio) {
+			?>
+				alert('PlaylistAudio: Make sure that you rename audio files from <?php echo $iso . '/audio/' . $Frod . ' to ' . $iso . '/audio/' . $Trod; ?>.');
+			<?php
+			}
+			if ($video) {
+			?>
+				alert('PlaylistVideo: Make sure that you rename videa files from <?php echo $iso . '/video/' . $Frod . ' to ' . $iso . '/video/' . $Trod; ?>.');
+			<?php
+			}
+			?>
+			window.open('Scripture_Add.php?iso=<?php echo $iso ?>&rod=<?php echo $Trod ?>', '_parent');
 		</script>
 		<?php
 	}

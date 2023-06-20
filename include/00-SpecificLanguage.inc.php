@@ -80,7 +80,8 @@
 <?php
 $check_iOS = 0;
 if (isset($_SERVER['HTTP_USER_AGENT'])) {
-	if (preg_match('/Macintosh|iPhone|iPod|iPad/', $_SERVER['HTTP_USER_AGENT'])) {
+	//if (preg_match('/Macintosh|iPhone|iPod|iPad/', $_SERVER['HTTP_USER_AGENT'])) {
+	if (preg_match('/iPhone|iPod|iPad/', $_SERVER['HTTP_USER_AGENT'])) {
 		/* This is iOS */
 		$check_iOS = 1;
 	}
@@ -585,9 +586,9 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 		if ($num > 0) {
 			while ($r_links=$result2->fetch_array(MYSQLI_ASSOC)) {
 				$URL=trim($r_links['URL']);
-				if (preg_match('/^(.*\/)[a-zA-Z0-9][a-zA-Z]{2}\/[0-9]+$/', $URL, $matches)) {		// remove e.g. Mat/1
-					$URL = $matches[1];
-				}
+				//if (preg_match('/^(.*\/)[a-zA-Z0-9][a-zA-Z]{2}\/[0-9]+$/', $URL, $matches)) {		// remove e.g. Mat/1
+				//	$URL = $matches[1];
+				//}
 				$BibleIsVersion=trim($r_links['company_title']);
 				$BibleIsLink=$r_links['BibleIs'];
 				$BibleIsIcon = '';
@@ -961,37 +962,11 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 		$c = 0;
 		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
 			$Cell_Phone_Title=$r2['Cell_Phone_Title'];
-			if (!$check_iOS && $Cell_Phone_Title=='iOS Asset Package') {
-				//do this later when IOS packages become live (9.10.2022)
-				// came alive on 1/4/23
-				$optional=$r2['optional'];
-				?>
-				<tr>
-					<td style='width: 45px; '>
-						<?php
-						echo "<div class='linePointer' onclick='window.open(\"https://apps.apple.com/us/app/scripture-earth/id1580089704\", \"_blank\");'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
-					echo "</td>";
-					echo "<td>";
-					echo "<div class='linePointer' title='" . translate('The ScriptureEarth App is available in the Apple Store.', $st, 'sys') . "' onclick='window.open(\"https://apps.apple.com/us/app/scripture-earth/id1580089704\", \"_blank\");'>" . translate('The ScriptureEarth App is available in the Apple Store.', $st, 'sys');
-						if ($optional != '' && !is_null($optional)) {
-							echo ' (' . (substr($optional, 0, 2) == '- ' ? substr($optional, 2) : $optional) . ')';
-						}
-						echo '</div>';
-						?>
-					</td>
-				</tr>
-				<?php
-			}
-			else {
-				$Cell_Phone_File=trim($r2['Cell_Phone_File']);
-				$Cell_Phone_File = str_replace("&", "%26", $Cell_Phone_File);
-				$optional=$r2['optional'];
-				if ($optional === null) {
-					$optional='';
-				}
-				else {
-					$optional=trim($optional);
-				}
+			$optional=$r2['optional'];
+			$optional = is_null($optional) ? '' : trim($optional);
+			$Cell_Phone_File = trim($r2['Cell_Phone_File']);
+			$Cell_Phone_File = str_replace("&", "%26", $Cell_Phone_File);
+			if ($Cell_Phone_Title == 'Android App') {
 				$pos = strpos($Cell_Phone_File, '://');															// check to see if "://" is present (https://zzzzz)
 				$c++;
 				if ($pos === false) {
@@ -1013,7 +988,7 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 								$Cell_Phone_File = $matches[1];
 								if (file_exists('./data/' . $ISO . '/study/' . $Cell_Phone_File)) {
 									//$db->query("UPDATE CellPhone SET Cell_Phone_File = '$Cell_Phone_File' WHERE ISO_ROD_index = '$ISO_ROD_index' AND Cell_Phone_Title = 'Android App'");
-									echo $c . ') would have UPDATE CellPhone<br />';
+									echo $c . ') will have to UPDATE CellPhone: '.$Cell_Phone_File.'<br />';
 								}
 								else {
 									echo 'WARNING: Android App (apk) downloadable cell phone file is not there!<br />';
@@ -1025,43 +1000,55 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 						// file exists so don't do anything right now
 					}
 				}
-				if ($Cell_Phone_Title == 'Android App') {
-					?>
-					<tr>
-						<td style='width: 45px; '>
-							<?php
-							echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/android_module-icon.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
-						echo "</td>";
-						echo "<td>";
-							echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the app for', $st, 'sys') . ' ' . ($Cell_Phone_Title == 'Android App' ? 'Android' : $Cell_Phone_Title);
-							echo ' ' . $optional . '</div>';
-							?>
-						</td>
-					</tr>
-					<?php
-				}
-				// do this later when IOS packages become live (9.10.2022)
-				// came alive on 1/4/23
-				else {
-					$query = "SELECT Cell_Phone_File, optional FROM CellPhone WHERE ISO_ROD_index = $ISO_ROD_index AND Cell_Phone_Title = 'iOS Asset Package'";
-					$result_iOS = $db->query($query);
-					$row_iOS = $result_iOS->fetch_array(MYSQLI_ASSOC);
-					$Cell_Phone_File = $row_iOS['Cell_Phone_File'];
-					$optional = $row_iOS['optional'];
-					?>
-					<tr>
-						<td style='width: 45px; '>
-							<?php
-							echo "<div class='linePointer' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
-						echo "</td>";
-						echo "<td>";
-							echo "<div class='linePointer' title='" . translate('Download the Scripture Earth app for iOS', $st, 'sys') . "' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'>" . translate('Download the Scripture Earth app for iOS', $st, 'sys');
-							echo ' ' . $optional . '</div>';
-							?>
-						</td>
-					</tr>
-					<?php
-				}
+				?>
+				<tr>
+					<td style='width: 45px; '>
+						<?php
+						echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/android_module-icon.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
+					echo "</td>";
+					echo "<td>";
+						echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the app for', $st, 'sys') . ' ' . ($Cell_Phone_Title == 'Android App' ? 'Android' : $Cell_Phone_Title);
+						echo ' ' . $optional . '</div>';
+						?>
+					</td>
+				</tr>
+				<?php
+			}
+			elseif ($asset && $check_iOS && $Cell_Phone_Title == 'iOS Asset Package') {
+				?>
+				<tr>
+					<td style='width: 45px; '>
+						<?php
+						echo "<div class='linePointer' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
+					echo "</td>";
+					echo "<td>";
+						echo "<div class='linePointer' title='" . translate('Download the Scripture Earth app for iOS', $st, 'sys') . "' onclick='iOSAssetPackage(\"".$Cell_Phone_File."\")'>" . translate('Download the Scripture Earth app for iOS', $st, 'sys');
+						if ($optional != '') {
+							echo ' (' . (substr($optional, 0, 2) == '- ' ? substr($optional, 2) : $optional) . ')';
+						}
+						echo '</div>';
+						?>
+					</td>
+				</tr>
+				<?php
+			}
+			else {
+				?>
+				<tr>
+					<td style='width: 45px; '>
+						<?php
+						echo "<div class='linePointer' onclick='window.open(\"https://apps.apple.com/us/app/scripture-earth/id1580089704\", \"_blank\");'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
+					echo "</td>";
+					echo "<td>";
+					echo "<div class='linePointer' title='" . translate('The ScriptureEarth App is available in the Apple Store.', $st, 'sys') . "' onclick='window.open(\"https://apps.apple.com/us/app/scripture-earth/id1580089704\", \"_blank\");'>" . translate('The ScriptureEarth App is available in the Apple Store.', $st, 'sys');
+						if ($optional != '' && !is_null($optional)) {
+							echo ' (' . (substr($optional, 0, 2) == '- ' ? substr($optional, 2) : $optional) . ')';
+						}
+						echo '</div>';
+						?>
+					</td>
+				</tr>
+				<?php
 			}
 		}
 	}
@@ -2244,9 +2231,9 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 		$result2=$db->query($query);
 		while ($r_links=$result2->fetch_array(MYSQLI_ASSOC)) {
 			$URL=trim($r_links['URL']);
-			if (preg_match('/^(.*\/)[a-zA-Z0-9][a-zA-Z]{2}\/[0-9]+$/', $URL, $matches)) {		// remove e.g. Mat/1
-				$URL=$matches[1];
-			}
+			//if (preg_match('/^(.*\/)[a-zA-Z0-9][a-zA-Z]{2}\/[0-9]+$/', $URL, $matches)) {		// remove e.g. Mat/1
+			//	$URL=$matches[1];
+			//}
 			$BibleIsVersion=trim($r_links['company_title']);
 			$BibleIsLink=$r_links['BibleIs'];
 			$BibleIsIcon = '';

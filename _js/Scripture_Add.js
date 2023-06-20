@@ -25,6 +25,8 @@ function showResult(str) { // the AJAX for the live search on the ISO input
     if (str.length === 0) { // if the string length is 0 then clear out the livesearch display
         document.getElementById("livesearch").innerHTML = "";
         document.getElementById("livesearch").style.border = "0px";
+        document.getElementById("Countrys").innerHTML = "";
+        document.getElementById("txtLinkURL-1").innerHTML = "";
         return;
     }
     if (str.length >= 4) { // ISO only allows the string length to be 3
@@ -157,10 +159,11 @@ function addCancel(rod, Add) {
     document.getElementById(Add).style.display = 'none';
 }
 
-function replaceSubmit(rod, Replace, iso, ROD_Code, thisForm) {
+function replaceSubmit(rod, Replace, iso, ROD_Code, ChangeCode) {
+    alert(ChangeCode);
     document.getElementById(rod).style.display = 'inline';
     document.getElementById(Replace).style.display = 'none';
-    window.location.href = "replaceRODVal.php?iso=" + iso + "&rod=" + ROD_Code + "&ChangeCode=" + thisForm.ChangeCode.value;
+    window.location.href = "replaceRODVal.php?iso=" + iso + "&rod=" + ROD_Code + "&ChangeCode=" + ChangeCode;
 }
 
 function replaceCancel(rod, Replace) {
