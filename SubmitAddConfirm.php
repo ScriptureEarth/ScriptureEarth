@@ -246,7 +246,7 @@
 // complete Scripture PDF
 	if ($inputs['complete_Scripture_PDF']) {
 		if ($inputs['complete_Scripture'] != '') {
-			$query="INSERT INTO Scripture_and_or_Bible SET ISO = '$inputs[iso]', ROD_Code = '$inputs[rod]', Variant_Code = '$inputs[var]', ISO_ROD_index = $idx, Item = 'S', Scripture_Bible_Filename = '$inputs[complete_Scripture]'";
+			$query="INSERT INTO Scripture_and_or_Bible SET ISO = '$inputs[iso]', ROD_Code = '$inputs[rod]', Variant_Code = '$inputs[var]', ISO_ROD_index = $idx, Item = 'S', Scripture_Bible_Filename = '$inputs[complete_Scripture]', `description` = '$inputs[ScriptureDescription]'";
 			$result=$db->query($query);
 			if (!$result) {
 				echo 'Could not update the data "Scripture_and_or_Bible": ' . $db->error;
@@ -565,19 +565,19 @@
 		$stmt_buy->close();
 	}
 
-// links: buy, map, and GooglePlay
+// links: map, and GooglePlay
 	if ($inputs['links']) {
 		$i = 1;
-		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, buy, map, GooglePlay) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, ?, ?, ?)";
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, buy, map, GooglePlay) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, 0, ?, ?)";
 		$stmt_links=$db->prepare($query);
 		while (isset($inputs["txtLinkCompany-".(string)$i])) {
 			$temp1 = "txtLinkCompany-".(string)$i;
 			$temp2 = "txtLinkCompanyTitle-".(string)$i;
 			$temp3 = "txtLinkURL-".(string)$i;
-			$temp4 = "linksBuy-$i";
+			//$temp4 = "linksBuy-$i";
 			$temp5 = "linksMap-$i";
 			$temp6 = "linksGooglePlay-$i";
-			$stmt_links->bind_param("sssiii", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3], $inputs[$temp4], $inputs[$temp5], $inputs[$temp6]);		// bind parameters for markers
+			$stmt_links->bind_param("sssii", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3], $inputs[$temp5], $inputs[$temp6]);		// bind parameters for markers
 			$result=$stmt_links->execute();														// execute query
 			if (!$result) {
 				echo 'Could not insert the data "links": ' . $db->error;

@@ -386,7 +386,7 @@
 		}
 	}
 
-// Scripture_and_or_Bible PDF
+// whole Bible PDF
 	$query="DELETE FROM Scripture_and_or_Bible WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if (!$result) {
@@ -405,7 +405,7 @@
 // complete Scripture PDF
 	if ($inputs['complete_Scripture_PDF']) {
 		if ($inputs['complete_Scripture'] != "") {
-			$query="INSERT INTO Scripture_and_or_Bible SET ISO = '$inputs[iso]', ROD_Code = '$inputs[rod]', Variant_Code = '$inputs[var]', ISO_ROD_index = $inputs[idx], Item = 'S', Scripture_Bible_Filename = '$inputs[complete_Scripture]'";
+			$query="INSERT INTO Scripture_and_or_Bible SET ISO = '$inputs[iso]', ROD_Code = '$inputs[rod]', Variant_Code = '$inputs[var]', ISO_ROD_index = $inputs[idx], Item = 'S', Scripture_Bible_Filename = '$inputs[complete_Scripture]', `description` = '$inputs[ScriptureDescription]'";
 			$result=$db->query($query);
 			if (!$result) {
 				echo 'Could not update the data "Scripture_and_or_Bible": ' . $db->error;

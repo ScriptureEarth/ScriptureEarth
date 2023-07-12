@@ -266,13 +266,16 @@ include ('./NT_Books.php');			// include the books of the NT
         
 		<?php
 /************************************************
-	Whole Bible PDF and complete Scripture publication PDF
+	whole Bible PDF and complete Scripture publication PDF
 *************************************************/
 		?>
 		<div class='enter'>Enter the PDF file name of the whole Bible in this language: <input type='text' name='whole_Bible' id='whole_Bible' size='35' value="<?php if (isset($_POST['whole_Bible'])) echo $_POST['whole_Bible'] ?>" /></div>
         <br />
         
-		<div class='enter'><span style='font-size: 11pt; '>Enter the PDF file name of the complete Scripture publication (although NOT the OT nor NT) in this language: </span><input type='text' name='complete_Scripture' id='complete_Scripture' size='35' value="<?php if (isset($_POST['complete_Scripture'])) echo $_POST['complete_Scripture'] ?>" /></div>
+		<div class='enter'>
+			<span style='font-size: 11pt; '>Enter the PDF file name of the complete Scripture publication (although NOT the OT nor NT) in this language: </span><input type='text' name='complete_Scripture' id='complete_Scripture' size='35' value="<?php if (isset($_POST['complete_Scripture'])) echo $_POST['complete_Scripture'] ?>" />&nbsp;
+			<span style='font-size: 11pt; '>description (optional): </span><input type='text' name='ScriptureDescription' id='ScriptureDescription' size='35' value="<?php if (isset($_POST['ScriptureDescription'])) echo $_POST['ScriptureDescription'] ?>" />
+		</div>
 		
 		<br />
         <hr align="center" width="90%" color="#0066CC" />

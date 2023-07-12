@@ -696,16 +696,17 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 
 /*
 	*************************************************************************************************************
-		Is it PDF?
+		Is it Scripture_and_or_Bible and PDF?
 	*************************************************************************************************************
 */
 	$SB_PDF=0;														// boolean
-	$query_SB="SELECT Item, Scripture_Bible_Filename FROM Scripture_and_or_Bible WHERE ISO_ROD_index = '$ISO_ROD_index'";		// then look to the Scripture_and_or_Bible table
+	$query_SB="SELECT Item, Scripture_Bible_Filename, `description` FROM Scripture_and_or_Bible WHERE ISO_ROD_index = '$ISO_ROD_index'";		// then look to the Scripture_and_or_Bible table
 	$result_SB=$db->query($query_SB);
 	if (!$result_SB)
 		$SB_PDF = 0;
 	else
 		$SB_PDF=$result_SB->num_rows;
+
 	if ($NT_PDF > 0 || $OT_PDF > 0 || $SB_PDF > 0) {				// if it is 1 then
 		if ($SB_PDF > 0) {
 			while ($r_SB = $result_SB->fetch_array(MYSQLI_ASSOC)) {
@@ -714,19 +715,28 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 					<td>
 						<?php
 						$Item = $r_SB['Item'];
-						if ($Item == 'B') {
+						$description = trim($r_SB['description']);
+						if ($Item == 'B') {		// Bible
 							$whole_Bible=trim($r_SB['Scripture_Bible_Filename']);
 							echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$whole_Bible')\"><img class='iconActions' src='images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' /></div>";
 							echo "</td>";
 							echo "<td>";
-							echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$whole_Bible')\" title='".translate('Read the Bible.', $st, 'sys')."'>".translate('Read', $st, 'sys')." ".translate('the Bible', $st, 'sys')." (PDF)</div>";
+							echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$whole_Bible')\" title='".translate('Read the Bible.', $st, 'sys')."'>".translate('Read', $st, 'sys')." ".translate('the Bible', $st, 'sys')." (PDF)";
+							if ($description != '') {
+								echo " ($description)";
+							}
+							echo '</div>';
 						}
-						else {
+						else {					// $Item == 'S' (Read a Scripture portion)
 							$complete_Scripture=trim($r_SB['Scripture_Bible_Filename']);
 							echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$complete_Scripture')\"><img class='iconActions' src='../images/read-icon.jpg' alt='".translate('Read', $st, 'sys')." (PDF)"."' title='".translate('Read', $st, 'sys')."' /></div>";
 							echo "</td>";
 							echo "<td>";
-							echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$complete_Scripture')\" title='".translate('Read a Scripture portion.', $st, 'sys')."' target='_blank'>".translate('Read', $st, 'sys')." ".translate('a Scripture portion', $st, 'sys')." (PDF)</div>";
+							echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/PDF/$complete_Scripture')\" title='".translate('Read a Scripture portion.', $st, 'sys')."' target='_blank'>".translate('Read', $st, 'sys')." ".translate('a Scripture portion', $st, 'sys')." (PDF)";
+							if ($description != '') {
+								echo " ($description)";
+							}
+							echo '</div>';
 						}
 						?>
 					</td>
@@ -734,6 +744,7 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 				<?php
 			}
 		}
+
 		if ($OT_PDF > 0) {
 			$query="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = '$ISO_ROD_index' AND OT_PDF = 'OT'";			// check if there is a OT
 			$result1=$db->query($query);

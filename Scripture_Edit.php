@@ -722,22 +722,24 @@ function NT_Test($PDF, $NT_Index) {
         
 		<?php
 /************************************************
-	OT PDF books
+	whole Bible and complete Scripture
 *************************************************/
 		$whole_Bible = '';
 		$complete_Scripture = '';
+		$ScriptureDescription = '';
         if (isset($_POST['whole_Bible']) || isset($_POST['Scripture_Bible_Filename'])) {
 			
 		}
 		else {
 			$whole_Bible = '';
 			$Scripture_Bible_Filename = '';
-			$query="SELECT Item, Scripture_Bible_Filename FROM Scripture_and_or_Bible WHERE ISO_ROD_index = $idx";
+			$query="SELECT Item, Scripture_Bible_Filename, `description` FROM Scripture_and_or_Bible WHERE ISO_ROD_index = $idx";
 			$result1=$db->query($query);
 			$num=$result1->num_rows;
 			if ($result1 && $num > 0) {
 				while ($r = $result1->fetch_assoc()) {
 					$Item = $r['Item'];
+					$ScriptureDescription = $r['description'];
 					if ($Item == 'B') {																	// "B"ible
 						$whole_Bible = $r['Scripture_Bible_Filename'];
 					}
@@ -752,14 +754,20 @@ function NT_Test($PDF, $NT_Index) {
         Enter the PDF file name of the whole Bible in this language:
         <input type='text' name='whole_Bible' id='whole_Bible' style='color: navy; ' size='40' value="<?php if (isset($_POST['whole_Bible'])) echo $_POST['whole_Bible']; else echo ${'whole_Bible'}; ?>" />
         <br /><br />
+
         <span style='font-size: 11pt; '>Enter the PDF file name of the complete Scripture publication (although NOT the OT nor NT) in this language:</span>
         <input type='text' name='complete_Scripture' id='complete_Scripture' style='color: navy; ' size='40' value="<?php if (isset($_POST['complete_Scripture'])) echo $_POST['complete_Scripture']; else echo ${'complete_Scripture'}; ?>" />
+        <span style='font-size: 11pt; '>description (optional):</span>
+        <input type='text' name='ScriptureDescription' id='ScriptureDescription' style='color: navy; ' size='40' value="<?php if (isset($_POST['ScriptureDescription'])) echo $_POST['ScriptureDescription']; else echo ${'ScriptureDescription'}; ?>" />
 
 		<br /><br />
         <hr align="center" width="90%" color="#0066CC" />
         <br />
 
 		<?php
+/************************************************
+	OT PDF books
+*************************************************/
 		if ($SM_row['OT_PDF']) {
 			$query="SELECT * FROM OT_PDF_Media WHERE ISO_ROD_index = $idx AND OT_PDF = 'OT'";
 			$result1=$db->query($query);

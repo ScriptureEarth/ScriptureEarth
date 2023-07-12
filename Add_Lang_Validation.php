@@ -217,7 +217,7 @@ function check_input($value) {
 				$i++;
 			}
 
-// Bible PDF
+// whole Bible PDF
 			$inputs["Bible_PDF"] = 0;
 			if (check_input($_POST["whole_Bible"]) != '') {
 				$inputs['whole_Bible'] = check_input($_POST["whole_Bible"]);
@@ -231,10 +231,12 @@ function check_input($value) {
 			$inputs["complete_Scripture_PDF"] = 0;
 			if (check_input($_POST["complete_Scripture"]) != '') {
 				$inputs['complete_Scripture'] = check_input($_POST["complete_Scripture"]);
+				$inputs['ScriptureDescription'] = check_input($_POST["ScriptureDescription"]);
 				$inputs["complete_Scripture_PDF"] = 1;
 			}
 			else {
 				$inputs['complete_Scripture'] = '';
+				$inputs['ScriptureDescription'] = '';
 			}
 
 // OT PDF
