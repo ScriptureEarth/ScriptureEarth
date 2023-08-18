@@ -936,7 +936,7 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 		Is it GooglePlay? (table links)
 	*************************************************************************************************************
 */
-	if ($links) {
+	if ($links && $Internet) {
 		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND GooglePlay = 1";
 		$result2=$db->query($query);
 		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
@@ -951,10 +951,11 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 				echo "</td>";
 				echo "<td>";
 					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to organization.', $st, 'sys')."'>".translate('Link', $st, 'sys')." : ";
-					if ($company_title != "" && $company_title != NULL) {
-						echo "$company_title: ";
+					echo $company;
+					if ($company_title != '' && !is_null($company_title)) {
+						echo ' ' . $company_title;
 					}
-					echo "$company</div>";
+					echo '</div>';
 					?>
 				</td>
 			</tr>
@@ -2544,9 +2545,24 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 	*************************************************************************************************************
 */
 	if ($watch && $Internet) {
+		?>
+		<script>
+			function myWatchVideo(i) {
+				var x = document.getElementById(i);
+				if (x.style.display === 'none') {
+					x.style.display = 'block';
+				}
+				else {
+					x.style.display = 'none';
+				}
+			}
+		</script>
+		<?php
 		$query="SELECT * FROM watch WHERE ISO_ROD_index = '$ISO_ROD_index'";
 		$result2=$db->query($query);
+		$k = 0;
 		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
+			$k++;
 			$organization=trim($r2['organization']);
 			$watch_what=trim($r2['watch_what']);
 			$URL=trim($r2['URL']);
@@ -2554,84 +2570,125 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 			$YouTube=trim($r2['YouTube']);								// booleon
 			if ($st == 'spa' && $watch_what == 'The Story of Jesus for Children') $watch_what = 'la historia de Jesús para niños';
 			if ($st == 'eng' && $watch_what == 'la historia de Jesús para niños') $watch_what = 'The Story of Jesus for Children';
-			?>
-			<tr>
-			<td style='width: 45px; '>
-				
-				<?php
-				if ($JesusFilm) {
-					// JESUS Film
-					if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
-						?>
-							<div class='linePointer' onclick="window.open('JESUSFilmView.php?<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300'); return false;" title="<?php echo $LN ?>">
-							<img class='iconActions' src='../images/JESUS-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
-					</div>
-						<?php
-					}
-					else {
-						?>
-							<div class='linePointer' onclick="window.open('<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300'); return false;" title="<?php echo $LN ?>">
-							<img class='iconActions' src='../images/JESUS-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
-					</div>
-						<?php
-					}
-				}
-				elseif ($YouTube) {
-					// YouTube
-					//     href="#" onclick="w=screen.availWidth; h=screen.availHeight; window.open('<?php echo $URL ? >','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width='+w+',height='+h+',top=0,left=0'); return false;" title="< ?php echo $LN ? >">
-					?>
-						<div class='linePointer' onclick="window.open('<?php echo $URL ?>')">
-						<img class='iconActions' src='../images/youtube-icon.jpg'  alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
-						</div>
-					<?php
-				}
-				else {
-					?>
-						<div class='linePointer' onclick="window.open('<?php echo $URL ?>')">
+			if (preg_match('/^https?:\/\/scriptureearth\.org/', $URL) || preg_match('/^\/?data\//' , $URL)) {
+				$URL_path = '';
+				?>
+				<tr>
+				<td style='width: 45px; '>
+					<div class='linePointer' onclick="myWatchVideo('video_<?php echo $k; ?>')">
 						<img class='iconActions' src='../images/watch-icon.jpg'  alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
-						</div>
+					</div>
+				</td>
+				<td>
 					<?php
-				}
-				?>
-			</td>
-			<td>
+						// need to have mp4, webm, and/or ogg to display
+						$extension = 0;
+						$pos = strripos($URL, '.');									// Find the position of the last occurrence of a case-insensitive substring in a string
+						if ($pos===false) {
+							echo $k . ' watch is false so skip it.<br />';
+							continue;
+						}
+						else {
+							$extension = strtolower(substr($URL, $pos+1));			// file extension of URL
+							$URL_path = substr($URL, 0, $pos+1);					// file name minus extension
+							$URL_path = preg_replace('/^https?:\/\/scriptureearth\.org\/(.*)$/', './$1', $URL_path);
+						}
+						if ($extension != 'mp4' && $extension != 'webm' && $extension != 'ogg') {
+							echo $k . ' watch contains no "mp4", "webm", nor "ogg" so skip it.<br />';
+							continue;
+						}
+						?>
+						<video id="video_<?php echo $k ?>" style="max-width: 100%; display: none; " controls="true" width="1080">
+							<?php
+							if (file_exists($URL_path . 'mp4')) {
+								echo '<source src="'.$URL_path . 'mp4" type="video/mp4">';
+							}
+							if (file_exists($URL_path . 'webm')) {
+								echo '<source src="'.$URL_path . 'webm" type="video/webm">';
+							}
+							if (file_exists($URL_path . 'ogg')) {
+								echo '<source src="'.$URL_path . 'ogg" type="video/ogg">';
+							}
+							?>
+							Your browser does not support HTMLS video. 
+						</video>
+						<?php
+						echo "<div class='linePointer' onclick=\"myWatchVideo('video_$k')\" title='translate(\"View\", $st, \"sys\")'>";
+						echo translate('View', $st, 'sys')." $organization:&nbsp;$watch_what";
+						echo '</div>';
+					?>
+				</td>
+				</tr>
 				<?php
-				if ($JesusFilm) {
-					// JESUS Film
-					if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
-							echo "<div class='linePointer' onclick='window.open(\"JESUSFilmView.php?$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300\"); return false;' title='$LN'>";
+			}
+			else {			// if ($JesusFilm || $YouTube || ) {
+				?>
+				<tr>
+				<td style='width: 45px; '>
+					<?php
+					if ($JesusFilm) {
+						// JESUS Film
+						if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
+							?>
+								<div class='linePointer' onclick="window.open('JESUSFilmView.php?<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300'); return false;" title="<?php echo $LN ?>">
+								<img class='iconActions' src='../images/JESUS-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
+						</div>
+							<?php
+						}
+						else {
+							?>
+								<div class='linePointer' onclick="window.open('<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300'); return false;" title="<?php echo $LN ?>">
+								<img class='iconActions' src='../images/JESUS-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
+						</div>
+							<?php
+						}
+					}
+					elseif ($YouTube) {
+						// YouTube
+						//     href="#" onclick="w=screen.availWidth; h=screen.availHeight; window.open('<?php echo $URL ? >','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width='+w+',height='+h+',top=0,left=0'); return false;" title="< ?php echo $LN ? >">
+						?>
+							<div class='linePointer' onclick="window.open('<?php echo $URL ?>')">
+							<img class='iconActions' src='../images/youtube-icon.jpg'  alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
+							</div>
+						<?php
 					}
 					else {
-						echo "<div class='linePointer' onclick='window.open(\"$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300\"); return false;' title='$LN'>";
+						echo "<div class='linePointer' onclick=\"window.open('$URL')\">";
+						echo "<img class='iconActions' src='../images/watch-icon.jpg'  alt=\"".translate('View', $st, 'sys')."\" title=\"".translate('View', $st, 'sys')."\" />";
+						echo '</div>';
 					}
-				}
-				elseif ($YouTube) {
-					// YouTube
-					//    href="#" onclick="w=screen.availWidth; h=screen.availHeight; window.open('<?php echo $URL ? >','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width='+w+',height='+h+',top=0,left=0'); return false;" title="<?php echo $LN ? >">
-					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='$LN'>";
-				}
-				else {
-					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='translate(\"View\", $st, \"sys\")'>";
-				}
-
-				if ($JesusFilm) {
-					// JESUS Film
-					//echo $watch_what;
-					echo translate('View the JESUS Film', $st, 'sys');
-				}
-				else if ($YouTube) {
-					// YouTube
-					echo translate('View', $st, 'sys').' (YouTube)'."&nbsp;: $organization $watch_what";
-				}
-				else {
-					//echo translate('View', $st, 'sys')."</span> ".translate('by', $st, 'sys')." $organization:&nbsp;$watch_what";
-					echo translate('View', $st, 'sys')." $organization:&nbsp;$watch_what";
-				}
-				?>
-				</div>
-			</td>
-			</tr>
-			<?php
+					?>
+				</td>
+				<td>
+					<?php
+					if ($JesusFilm) {
+						// JESUS Film
+						if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
+							echo "<div class='linePointer' onclick='window.open(\"JESUSFilmView.php?$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300\"); return false;' title='$LN'>";
+						}
+						else {
+							echo "<div class='linePointer' onclick='window.open(\"$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300\"); return false;' title='$LN'>";
+						}
+						echo translate('View the JESUS Film', $st, 'sys');
+						echo '</div>';
+					}
+					elseif ($YouTube) {
+						// YouTube
+						//    href="#" onclick="w=screen.availWidth; h=screen.availHeight; window.open('<?php echo $URL ? >','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width='+w+',height='+h+',top=0,left=0'); return false;" title="<?php echo $LN ? >">
+						echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='$LN'>";
+						echo translate('View', $st, 'sys').' (YouTube)'."&nbsp;: $organization $watch_what";
+						echo '</div>';
+					}
+					else {
+						echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='translate(\"View\", $st, \"sys\")'>";
+						echo translate('View', $st, 'sys')." $organization:&nbsp;$watch_what";
+						echo '</div>';
+					}
+					?>
+				</td>
+				</tr>
+				<?php
+			}
 		}
 	}
 
@@ -3106,10 +3163,11 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 				echo "</td>";
 				echo "<td>";
 					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to the organization.', $st, 'sys')."'>".translate('Link', $st, 'sys')." : ";
-					if ($company_title != "" && $company_title != NULL) {
-						echo "$company_title: ";
+					echo $company;
+					if ($company_title != '' && !is_null($company_title)) {
+						echo ' ' . $company_title;
 					}
-					echo "$company</div>";
+					echo '</div>';
 					?>
 				</td>
 			</tr>
@@ -3227,15 +3285,16 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 				echo "</td>";
 				echo "<td>";
 					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to the organization.', $st, 'sys')."'>".translate('Link', $st, 'sys')." : ";
-					if ($company_title != "" && $company_title != NULL) {
+					echo $company;
+					if ($company_title != '' && !is_null($company_title)) {
 						if ($company_title == 'language map') {
-							echo translate('language map', $st, 'sys').': ';
+							echo ' ' . translate('language map', $st, 'sys');
 						}
 						else {
-							echo "$company_title: ";
+							echo ' ' . $company_title;
 						}
 					}
-					echo "$company</div>";
+					echo '</div>';
 					?>
 				</td>
 			</tr>

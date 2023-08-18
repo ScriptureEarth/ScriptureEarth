@@ -196,6 +196,9 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 				}
 				else {
 					$query = '';
+					if (!isset($asset)) {
+						$asset = 0;
+					}
 					if (isset($_GET['ISO_ROD_index']) || isset($_GET['idx'])) {
 						//$ISO_ROD_index = $_GET['ISO_ROD_index'];
 						$ISO_ROD_index = isset($_GET['ISO_ROD_index']) ? $_GET['ISO_ROD_index'] : $_GET['idx'];
@@ -205,12 +208,11 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 							die('Die hacker!</div></div></body></html>');
 						}
 						// here check
-						if (isset($asset) && $asset == 1) {
+						if ($asset == 1) {
 							$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO_ROD_index = '$ISO_ROD_index' AND `nav_ln`.`ISO_ROD_index` = `CellPhone`.`ISO_ROD_index` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 						}
 						else {
 							$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO_ROD_index = '$ISO_ROD_index'";
-							$asset = 0;
 						}
 					}
 					else {
@@ -252,7 +254,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 							}
 						}
 						// here - check						
-						if (isset($asset) && $asset == 1) {
+						if ($asset == 1) {
 							if (!isset($ROD_Code) && !isset($Variant_Code)) {
 								$resultTest=$db->query("SELECT nav_ln.ISO FROM nav_ln, CellPhone WHERE nav_ln.ISO = '$ISO' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'");
 								$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO = '$ISO' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
@@ -394,8 +396,8 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
                     
                     <?php
 					// here check
-					if (isset($asset) && $asset === 1) {
-						echo "<div style='background-color: white; color: navy; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; cursor: pointer; ' onclick='iOSLanguage(\"".$st."\", $ISO_ROD_index, \"".$LN."\, \"".$URL."\")'>$LN | $ISO | $country</div>";
+					if ($asset == 1) {
+						echo "<div style='background-color: white; color: navy; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; cursor: pointer; ' onclick='iOSLanguage(\"".$st."\", $ISO_ROD_index, \"".$LN."\, \"".$URL."\")'>$LN ($optional != '' ? $optional : '') | $ISO | $country</div>";
 						return;
 					}
 
@@ -720,10 +722,10 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 					<form id="myForm" style="display: <?php echo ($asset == 1 ? 'block; ' : 'inline; ') ?>" action="#">
 						<select id="sM" style="font-size: 1em; padding: 6px; " title="<?php echo translate('Click here to choose the interface language.', $st, 'sys'); ?>">
 							<?php
-							foreach ($_SESSION['nav_ln_array'] as $code => $array){
+							foreach ($_SESSION['nav_ln_array'] as $code => $array) {
 								// Scott:
 								echo "<option style='text-align-last: left; ' value='$array[2]".($asset == 1 ? '?asset=1' : '').'\''.($st == $array[0] ? ' selected=\'selected\'' : '').">".translate($array[1], $array[0], 'sys').'</option>';
-							/*
+								/*
 								// Laerke:
 								$html = "<option style='text-align: left; ' value='".$array[2].($asset == 1 ? '?asset=1' : '')."' here>".translate($array[1], $array[0], 'sys')."</option>";
 								if ($st == $array[0]){
@@ -787,4 +789,4 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 	</div>
 </div>
 <?php // This script HAS to be down here for the major language dropdown box to work! ?>
-<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.2.2"></script>
+<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.2.5"></script>

@@ -63,8 +63,11 @@ if (strlen($TryLanguage) > 2) {
 	$stmt_c = $db->prepare("SELECT ISO_Country FROM countries WHERE $SpecificCountry = ?");
 	$stmt_Var = $db->prepare("SELECT $Variant_major FROM Variants WHERE Variant_Code = ?");
 	$stmt_alt = $db->prepare("SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = ?");
+	$stmt_asset = $db->prepare("SELECT `Cell_Phone_File`, `optional` FROM `CellPhone` WHERE ISO_ROD_index = ? AND `Cell_Phone_Title` = 'iOS Asset Package'");
 
-	// ISO
+	/******************************************************************************
+			try ISO
+	*******************************************************************************/
 	if (strlen($TryLanguage) == 3) {
 	// here 1/2 lines - check
 		$query="SELECT DISTINCT `nav_ln`.`ISO_ROD_index`, `nav_ln`.`ISO`, `nav_ln`.`ROD_Code`, `nav_ln`.`Variant_Code`, `$MajorLanguage`, `Def_LN`, `Cell_Phone_File`, `optional` FROM `nav_ln`, `CellPhone` WHERE `nav_ln`.`ISO` = '$TryLanguage' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `nav_ln`.`ROD_Code` = `CellPhone`.`ROD_Code` AND `nav_ln`.`Variant_Code` = `CellPhone`.`Variant_Code` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' ORDER BY `nav_ln`.`ISO`";
@@ -80,6 +83,9 @@ if (strlen($TryLanguage) > 2) {
 				$optional = $row['optional'];
 				include './include/00-DBLanguageCountryName.inc.php';							// returns LN
 				//$LN = htmlspecialchars($LN, ENT_QUOTES, 'UTF-8');								// The results are wrong because it changes ' to &#039;
+				if ($optional != '') {
+					$LN = $LN . ' ' .  $optional;
+				}
 				
 				//$query = "SELECT DISTINCT $SpecificCountry, ISO_countries FROM scripture_main, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO_ROD_index = $ISO_ROD_index";
 				$stmt_SC->bind_param('i', $ISO_ROD_index);										// bind parameters for markers
@@ -182,11 +188,11 @@ if (strlen($TryLanguage) > 2) {
 				//}
 				
 				if ($hint == 0) {
-					$response = $LN.'|'.$alt.'|'.$ISO.'|'.$country.'|'.$ROD_Code.'|'.$VD.'|'.$ISO_ROD_index.'|'.$URL;
+					$response = $LN.'@'.$alt.'@'.$ISO.'@'.$country.'@'.$ROD_Code.'@'.$VD.'@'.$ISO_ROD_index.'@'.$URL;
 					$hint = 1;
 				}
 				else {
-					$response .= '<br />'.$LN.'|'.$alt.'|'.$ISO.'|'.$country.'|'.$ROD_Code.'|'.$VD.'|'.$ISO_ROD_index.'|'.$URL;
+					$response .= '<br />'.$LN.'@'.$alt.'@'.$ISO.'@'.$country.'@'.$ROD_Code.'@'.$VD.'@'.$ISO_ROD_index.'@'.$URL;
 				}
 				$langISOrod[] = $ISO_ROD_index;
 				$ISO_only = $ISO;
@@ -202,7 +208,9 @@ if (strlen($TryLanguage) > 2) {
 	
 	$TryLanguage = str_replace("'", "\'", $TryLanguage);
 
-	// Try languages names:
+	/******************************************************************************
+			try languages names
+	*******************************************************************************/
 	//$query="SELECT DISTINCT $MajorLanguage, ISO, ROD_Code, Variant_Code, ISO_ROD_index FROM LN_English WHERE ISO_ROD_index IS NOT NULL ORDER BY $MajorLanguage";
 	// here 1/2 line - check
 	$query="SELECT DISTINCT `nav_ln`.`ISO_ROD_index`, `nav_ln`.`ISO`, `nav_ln`.`ROD_Code`, `nav_ln`.`Variant_Code`, `$MajorLanguage`, Def_LN, `Cell_Phone_File`, `optional` FROM `nav_ln`, `CellPhone` WHERE `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `nav_ln`.`ROD_Code` = `CellPhone`.`ROD_Code` AND `nav_ln`.`Variant_Code` = `CellPhone`.`Variant_Code` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' ORDER BY `nav_ln`.`ISO`";
@@ -322,19 +330,26 @@ if (strlen($TryLanguage) > 2) {
 					}
 				}
 				
+				if ($optional != '') {
+					$LN = $LN . ' ' .  $optional;
+				}
+
 				if ($hint == 0) {
-					$response = $LN.'|'.$alt.'|'.$ISO.'|'.$country.'|'.$ROD_Code.'|'.$VD.'|'.$ISO_ROD_index.'|'.$URL;
+					$response = $LN.'@'.$alt.'@'.$ISO.'@'.$country.'@'.$ROD_Code.'@'.$VD.'@'.$ISO_ROD_index.'@'.$URL;
 					$hint = 1;
 				}
 				else {
-					$response .= '<br />'.$LN.'|'.$alt.'|'.$ISO.'|'.$country.'|'.$ROD_Code.'|'.$VD.'|'.$ISO_ROD_index.'|'.$URL;
+					$response .= '<br />'.$LN.'@'.$alt.'@'.$ISO.'@'.$country.'@'.$ROD_Code.'@'.$VD.'@'.$ISO_ROD_index.'@'.$URL;
 				}
+
 				$langISOrod[] = $ISO_ROD_index;
 			}
 		}
 	}
 
-	// Try alt_lang_names:
+	/******************************************************************************
+			try alt_lang_names
+	*******************************************************************************/
 	// REGEXP '[[:<:]]... = in PHP '\b... (word boundries)
 	if (empty($langISOrod)) {
 	// here - check
@@ -355,8 +370,6 @@ if (strlen($TryLanguage) > 2) {
 					$ROD_Code = $row['ROD_Code'];
 					$Variant_Code = $row['Variant_Code'];
 					$VD = '';
-					$URL = $row['Cell_Phone_File'];
-					$optional = $row['optional'];
 					include './include/00-DBLanguageCountryName.inc.php';							// returns LN
 					//$LN = htmlspecialchars($LN, ENT_QUOTES, 'UTF-8');
 					//$query = "SELECT DISTINCT $SpecificCountry, ISO_countries FROM scripture_main, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO_ROD_index = $ISO_ROD_index";
@@ -447,12 +460,25 @@ if (strlen($TryLanguage) > 2) {
 						}
 					}
 					
-					if ($hint == 0) {
-						$response = $LN.'|'.$alt.'|'.$ISO.'|'.$country.'|'.$ROD_Code.'|'.$VD.'|'.$ISO_ROD_index.'|'.$URL;
-						$hint = 1;
-					}
-					else {
-						$response .= '<br />'.$LN.'|'.$alt.'|'.$ISO.'|'.$country.'|'.$ROD_Code.'|'.$VD.'|'.$ISO_ROD_index.'|'.$URL;
+					$stmt_asset->bind_param('i', $ISO_ROD_index);									// bind parameters for markers
+					$stmt_asset->execute();															// execute query
+					$result_asset = $stmt_asset->get_result();
+					$LN_original = $LN;
+					while ($row_asset = $result_asset->fetch_assoc()) {
+						// URL from Cell_Phone_File
+						$URL = $row_asset['Cell_Phone_File'];
+						$optional = $row_asset['optional'];
+						if ($optional != '') {
+							$LN = $LN_original . ' ' .  $optional;
+						}
+						
+						if ($hint == 0) {
+							$response = $LN.'@'.$alt.'@'.$ISO.'@'.$country.'@'.$ROD_Code.'@'.$VD.'@'.$ISO_ROD_index.'@'.$URL;
+							$hint = 1;
+						}
+						else {
+							$response .= '<br />'.$LN.'@'.$alt.'@'.$ISO.'@'.$country.'@'.$ROD_Code.'@'.$VD.'@'.$ISO_ROD_index.'@'.$URL;
+						}
 					}
 				}
 			}

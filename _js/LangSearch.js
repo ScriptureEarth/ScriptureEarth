@@ -56,7 +56,7 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
         nonLatinScript = 1;
     } else {
         // saltillo: ?; U+A78C
-        var re = /[-. ,'?()a-záéíóúàèìòùÑñçãõâêîôûäëöüï]/ui; // the '-' has to go first
+        var re = /[-. ,'?()a-záéíóúàèìòùÑñçãõâêîôûäëöüïǃǂǁǀ!|]/ui; // the '-' has to go first
         var foundArray = re.exec(str.substring(str.length - 1)); // the last character of the str
         if (!foundArray) { // is the value of the last character of the str isn't A-Za - z then it returns
             document.getElementById("ID").value = document.getElementById("ID").value.substring(0, document.getElementById("ID").value.length - 1);
@@ -122,7 +122,7 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
             var splits = xmlhttp.responseText.split('<br />'); // Display all of the languages that have 'language' as a part of it.
             document.getElementById("LangSearch").innerHTML = '';
             document.getElementById("CountSearch").innerHTML = '';
-            if (splits.length == 1 && splits[0].indexOf('|') === -1) {
+            if (splits.length == 1 && splits[0].indexOf('@') === -1) {
                 langNotFound = splits[0];
                 document.getElementById("LangSearch").innerHTML = '<div style="display: inline; padding: 10px; margin-left: auto; margin-right: auto; color: red; background-color: white; font-size: 1.3em; "> ' + langNotFound + '</div>';
                 document.getElementById("CountrySearch").innerHTML = '';
@@ -145,7 +145,7 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
             table += '</div>';
             for (var i = 0; i < splits.length - 4; i++) {
                 table += "<p style='line-height: 2px; '>&nbsp;</p>"; // empty line between records
-                var firstSplit = splits[i].split('|');
+                var firstSplit = splits[i].split('@');
                 var LN = firstSplit[0];
                 var alt = firstSplit[1];
                 var iso = firstSplit[2];
@@ -546,7 +546,7 @@ function showiOSLanguage(str, st, Internet, MajorLanguage, Variant_major, Specif
             var splits = xmlhttp.responseText.split('<br />'); // Display all of the languages that have 'language' as a part of it.
             document.getElementById("LangSearch").innerHTML = '';
             document.getElementById("CountSearch").innerHTML = '';
-            if (splits.length == 1 && splits[0].indexOf('|') === -1) {
+            if (splits.length == 1 && splits[0].indexOf('@') === -1) {
                 langNotFound = splits[0];
                 document.getElementById("LangSearch").innerHTML = '<div style="display: inline; padding: 10px; margin-left: auto; margin-right: auto; color: red; background-color: white; font-size: 1.3em; "> ' + langNotFound + '</div>';
                 document.getElementById("CountrySearch").innerHTML = '';
@@ -569,8 +569,8 @@ function showiOSLanguage(str, st, Internet, MajorLanguage, Variant_major, Specif
             table += '</div>';
             for (var i = 0; i < splits.length - 4; i++) {
                 table += "<p style='line-height: 2px; '>&nbsp;</p>"; // empty line between records
-                var firstSplit = splits[i].split('|');
-                // $LN.'|'.$alt.'|'.$iso.'|'.$country.'|'.$rod.'|'.$VD.'|'.$idx;
+                var firstSplit = splits[i].split('@');
+                // $LN.'@'.$alt.'@'.$iso.'@'.$country.'@'.$rod.'@'.$VD.'@'.$idx;
                 var LN = firstSplit[0];
                 var alt = firstSplit[1];
                 var iso = firstSplit[2];

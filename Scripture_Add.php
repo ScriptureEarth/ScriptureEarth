@@ -82,7 +82,7 @@ include ('./NT_Books.php');			// include the books of the NT
 <title>Scripture Add</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Add.css" />
 <script type="text/javascript" language="javascript" src="_js/Scripture_Add.js?v=1.0.3"></script>
-<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.1.3"></script>
+<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.1.4"></script>
 <script>
 	//let ALNindex = 1;
 	//let Otherindex = 1;
@@ -1381,7 +1381,7 @@ include ('./NT_Books.php');			// include the books of the NT
 				</td>
 				<td width="13%">
 					<input type='text' size='18' name='txtOtherTitle-1' id='txtOtherTitle-1' value="<?php if (isset($_POST['txtOtherTitle-1'])) echo $_POST['txtOtherTitle-1'] ?>" />
-                    <br /><span style="font-size: 7pt; ">Selections from the Old Testament</span>
+                    <br /><span style="font-size: 7pt; ">Selections from the OT</span>
 				</td>
 				<td width="13%">
 					<input type='text' size='18' name='txtOtherPDF-1' id='txtOtherPDF-1' value="<?php if (isset($_POST['txtOtherPDF-1'])) echo $_POST['txtOtherPDF-1'] ?>" />
@@ -1517,10 +1517,10 @@ include ('./NT_Books.php');			// include the books of the NT
 				<td width="12%">&nbsp;
 				</td>
 				<td width="21%" style="padding-left: 3px; ">
-					Resource Description
+					Organization/Source
 				</td>
 				<td width="21%" style="padding-left: 3px; ">
-					Web Source
+					Description
 				</td>
 				<td width="22%" style="padding-left: 3px; ">
 					URL Link
@@ -1554,19 +1554,19 @@ include ('./NT_Books.php');			// include the books of the NT
                     <br /><span style="font-size: 10pt; ">For example:</span>
 				</td>
 				<td width="21%">
-					<!--input type='text' style='color: navy; ' size='25' name='txtLinkCompanyTitle-1' id='txtLinkCompanyTitle-1' value="< ?php if (isset($_POST['txtLinkCompanyTitle-1'])) echo $_POST['txtLinkCompanyTitle-1'] ?>" /-->
-					<input type='text' style='color: navy; ' size='25' name='txtLinkCompanyTitle-1' id='txtLinkCompanyTitle-1' value="language map" />
-                    <br /><span style="font-size: 10pt; ">language of Brazil</span>
-				</td>
-				<td width="21%">
 					<!--input type='text' style='color: navy; ' size='25' name='txtLinkCompany-1' id='txtLinkCompany-1' value="< ?php if (isset($_POST['txtLinkCompany-1'])) echo $_POST['txtLinkCompany-1'] ?>" /-->
 					<input type='text' style='color: navy; ' size='25' name='txtLinkCompany-1' id='txtLinkCompany-1' value="Joshua Project" />
-                    <br /><span style="font-size: 10pt; ">Google map</span>
+                    <br /><span style="font-size: 10pt; ">Google Play Store</span>
+				</td>
+				<td width="21%">
+					<!--input type='text' style='color: navy; ' size='25' name='txtLinkCompanyTitle-1' id='txtLinkCompanyTitle-1' value="< ?php if (isset($_POST['txtLinkCompanyTitle-1'])) echo $_POST['txtLinkCompanyTitle-1'] ?>" /-->
+					<input type='text' style='color: navy; ' size='25' name='txtLinkCompanyTitle-1' id='txtLinkCompanyTitle-1' value="language map" />
+                    <br /><span style="font-size: 10pt; "> - with links to audio online</span>
 				</td>
 				<td width="22%">
 					<!--input type='text' style='color: navy; ' size='27' name='txtLinkURL-1' id='txtLinkURL-1' value="< ?php if (isset($_POST['txtLinkURL-1'])) echo $_POST['txtLinkURL-1'] ?>" /-->
 					<input type='text' style='color: navy; ' size='27' name='txtLinkURL-1' id='txtLinkURL-1' value="https://joshuaproject.net/languages/" />
-                    <br /><span style="font-size: 9pt; ">https://maps.google.com/maps/...</span>
+                    <br /><span style="font-size: 9pt; ">https://play.google.com/store/apps/...</span>
 				</td>
 				<td width="8%">
                     <div style="text-align: left; ">
@@ -1594,7 +1594,7 @@ include ('./NT_Books.php');			// include the books of the NT
 							<option value="linksGooglePlay-1" <?php echo ( isset($_POST['linksIcon-1']) ? ($_POST['linksGooglePlay-1'] == 1 ? " selected='selected'" : '') : '' ) ?>>Google Play</option>
                        </select>
                     </div>
-                    <span style="font-size: 10pt; ">&nbsp;&nbsp;Map</span>
+                    <span style="font-size: 10pt; ">&nbsp;Google Play</span>
                 </td>
 				<td width="16%" style="text-align: right; ">
 					<input style="font-size: 9pt; " type="button" id="addLinks" value="Add" />
@@ -1610,10 +1610,10 @@ include ('./NT_Books.php');			// include the books of the NT
 						echo "&nbsp;";
 					echo "</td>";
 					echo "<td width='21%'>";
-						echo "<input type='text' name='txtLinkCompanyTitle-$i' id='txtLinkCompanyTitle-$i' style='color: navy; ' size='25' value='" . ( isset($_POST['txtLinkCompanyTitle-'.(string)$i]) ? $_POST['txtLinkCompanyTitle-'.(string)$i] : '' ) . "' />";
+						echo "<input type='text' name='txtLinkCompany-$i' id='txtLinkCompany-$i' style='color: navy; ' size='25' value='" . ( isset($_POST['txtLinkCompany-'.(string)$i]) ? $_POST['txtLinkCompany-'.(string)$i] : '' ) . "' />";
 					echo "</td>";
 					echo "<td width='21%'>";
-						echo "<input type='text' name='txtLinkCompany-$i' id='txtLinkCompany-$i' style='color: navy; ' size='25' value='" . ( isset($_POST['txtLinkCompany-'.(string)$i]) ? $_POST['txtLinkCompany-'.(string)$i] : '' ) . "' />";
+						echo "<input type='text' name='txtLinkCompanyTitle-$i' id='txtLinkCompanyTitle-$i' style='color: navy; ' size='25' value='" . ( isset($_POST['txtLinkCompanyTitle-'.(string)$i]) ? $_POST['txtLinkCompanyTitle-'.(string)$i] : '' ) . "' />";
 					echo "</td>";
 					echo "<td width='22%'>";
 						echo "<input type='text' name='txtLinkURL-$i' id='txtLinkURL-$i' style='color: navy; ' size='27' value='" . ( isset($_POST['txtLinkURL-'.(string)$i]) ? $_POST['txtLinkURL-'.(string)$i] : '' ) . "' />";
@@ -1890,7 +1890,7 @@ include ('./NT_Books.php');			// include the books of the NT
 		document.getElementById("iso").focus();					// focus on the ISO input
 	</script>
     
-	<script type="text/javascript" src="_js/CMS_events.js?v=1.0.3"></script>
+	<script type="text/javascript" src="_js/CMS_events.js?v=1.0.4"></script>
 
 </body>
 </html>

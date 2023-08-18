@@ -37,7 +37,7 @@
 		else {
 			//document.getElementById("languageSearchID").size = "6";			// WONT WORK!
 		}
-		var re = /[ A-Za-záéíóúÑñç.,'-()ãõâêîôûäëöüï&]/;
+		var re = /[ A-Za-záéíóúÑñç.,'-()ãõâêîôûäëöüï&ǃǂǁǀ!|]/;
 		var foundArray = re.exec(str.substring(str.length - 1));				// the last character of the str
 		if (!foundArray) {														// is the value of the last character of the str isn't A-Za - z then it returns
 			document.getElementById("showLanguageID").value = document.getElementById("showLanguageID").value.substring(0, document.getElementById("showLanguageID").value.length-1);

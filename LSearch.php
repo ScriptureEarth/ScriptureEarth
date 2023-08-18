@@ -39,7 +39,7 @@ You must ensure that all parties (your app, mysql connection, your table or colu
 
 // display all of the language names, ROD codes and variant codes from a major and alternate languages names
 if (isset($_GET['language'])) $TryLanguage = $_GET['language']; else { die('Hack!'); }
-if (preg_match("/^[-. ,'\?()a-záéíóúàèìòùÑñçãõâêîôûäëöüï&]+/ui", $TryLanguage)) {
+if (preg_match("/^[-. ,'\?()a-záéíóúàèìòùÑñçãõâêîôûäëöüï&ǃǂǁǀ!|]+/ui", $TryLanguage)) {
 }
 else {
 	die('1) Hack!');
@@ -193,11 +193,11 @@ if (strlen($TryLanguage) > 2) {
 			}
 			
 			if ($hint == 0) {
-				$response = $LN.'|'.$alt.'|'.$ISO.'|'.$country.'|'.$ROD_Code.'|'.$VD.'|'.$ISO_ROD_index;
+				$response = $LN.'@'.$alt.'@'.$ISO.'@'.$country.'@'.$ROD_Code.'@'.$VD.'@'.$ISO_ROD_index;
 				$hint = 1;
 			}
 			else {
-				$response .= '<br />'.$LN.'|'.$alt.'|'.$ISO.'|'.$country.'|'.$ROD_Code.'|'.$VD.'|'.$ISO_ROD_index;
+				$response .= '<br />'.$LN.'@'.$alt.'@'.$ISO.'@'.$country.'@'.$ROD_Code.'@'.$VD.'@'.$ISO_ROD_index;
 			}
 			$langISOrod[] = $ISO_ROD_index;
 			$ISO_only = $ISO;
@@ -322,11 +322,11 @@ if (strlen($TryLanguage) > 2) {
 				}
 				
 				if ($hint == 0) {
-					$response = $LN.'|'.$alt.'|'.$ISO.'|'.$country.'|'.$ROD_Code.'|'.$VD.'|'.$ISO_ROD_index;
+					$response = $LN.'@'.$alt.'@'.$ISO.'@'.$country.'@'.$ROD_Code.'@'.$VD.'@'.$ISO_ROD_index;
 					$hint = 1;
 				}
 				else {
-					$response .= '<br />'.$LN.'|'.$alt.'|'.$ISO.'|'.$country.'|'.$ROD_Code.'|'.$VD.'|'.$ISO_ROD_index;
+					$response .= '<br />'.$LN.'@'.$alt.'@'.$ISO.'@'.$country.'@'.$ROD_Code.'@'.$VD.'@'.$ISO_ROD_index;
 				}
 				$langISOrod[] = $ISO_ROD_index;
 			}
@@ -335,17 +335,17 @@ if (strlen($TryLanguage) > 2) {
 	// Try alt_lang_names:
 	// REGEXP '[[:<:]]... = in PHP '\b... (word boundries)
 	if (empty($langISOrod)) {
-		$query="SELECT DISTINCT ISO_ROD_index FROM alt_lang_names WHERE alt_lang_name REGEXP '[[:<:]]$TryLanguage'";
+		//$query="SELECT DISTINCT `ISO_ROD_index` FROM `alt_lang_names` WHERE `alt_lang_name` REGEXP '[[:<:]]$TryLanguage'";
+		$query="SELECT DISTINCT `ISO_ROD_index` FROM `alt_lang_names` WHERE `alt_lang_name` REGEXP '(^| )$TryLanguage' AND ISO_ROD_index IS NOT NULL";
 	}
 	else {
 		//$query="SELECT DISTINCT ISO_ROD_index FROM alt_lang_names WHERE alt_lang_name REGEXP '[[:<:]]$TryLanguage' AND ISO_ROD_index NOT IN (".implode(',', $langISOrod).")";		// won't quick work under MariaDB 10.1.44
 		$query="SELECT DISTINCT ISO_ROD_index FROM alt_lang_names WHERE alt_lang_name REGEXP '(^| )$TryLanguage' AND ISO_ROD_index NOT IN (".implode(',', $langISOrod).")";
 	}
-
 	if ($result = $db->query($query)) {
 		while ($r = $result->fetch_assoc()) {
 			$ISO_ROD_index = $r['ISO_ROD_index'];
-			$stmt_nav_ln_idx->bind_param('i', $ISO_ROD_index);									// bind parameters for markers								// 
+			$stmt_nav_ln_idx->bind_param('i', $ISO_ROD_index);									// bind parameters for markers
 			$stmt_nav_ln_idx->execute();														// execute query
 			$result_SM = $stmt_nav_ln_idx->get_result();
 			if ($row = $result_SM->fetch_assoc()) {
@@ -445,11 +445,11 @@ if (strlen($TryLanguage) > 2) {
 				}
 				
 				if ($hint == 0) {
-					$response = $LN.'|'.$alt.'|'.$ISO.'|'.$country.'|'.$ROD_Code.'|'.$VD.'|'.$ISO_ROD_index;
+					$response = $LN.'@'.$alt.'@'.$ISO.'@'.$country.'@'.$ROD_Code.'@'.$VD.'@'.$ISO_ROD_index;
 					$hint = 1;
 				}
 				else {
-					$response .= '<br />'.$LN.'|'.$alt.'|'.$ISO.'|'.$country.'|'.$ROD_Code.'|'.$VD.'|'.$ISO_ROD_index;
+					$response .= '<br />'.$LN.'@'.$alt.'@'.$ISO.'@'.$country.'@'.$ROD_Code.'@'.$VD.'@'.$ISO_ROD_index;
 				}
 			}
 		}

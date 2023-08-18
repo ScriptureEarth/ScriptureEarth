@@ -808,7 +808,7 @@
 		$stmt_links=$db->prepare($query);
 		//while (isset($inputs["txtLinkCompany-$i"]) && $inputs["linksGooglePlay-$i"]) {
 		for (; isset($inputs["txtLinkCompany-$i"]); $i++) {
-			if (!isset($inputs["linksGooglePlay-$i"])) continue;
+			if (!isset($inputs["linksGooglePlay-$i"])) continue;	// || $inputs["linksGooglePlay-$i"] == 0 Bill ????
 			$temp1 = "txtLinkCompany-$i";
 			$temp2 = "txtLinkCompanyTitle-$i";
 			$temp3 = "txtLinkURL-$i";

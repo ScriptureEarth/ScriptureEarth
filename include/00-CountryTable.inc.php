@@ -84,7 +84,7 @@ $stmt->close();																				// close statement
 
 <div id='countryTable'>
 	<?php
-    echo '<div style="color: black; background: white; font-size: 1.4em; padding-top: 10px; padding-bottom: 10px; ">'.$country.'</div';
+    echo '<div style="color: black; background: white; font-size: 1.4em; padding-top: 10px; padding-bottom: 10px; ">'.$country.'</div>';
     // language name and ISO code here
     // The width and padding-left are what changes the spaces around the words.
     // When doing a Switch() Netscape 9 drops the table down a 1/2 inch. I don't know why.
@@ -126,12 +126,12 @@ $stmt->close();																				// close statement
     <?php
     $i=0;
 
-    $query = "SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = ?";			// alt_lang_names table
-    $stmt_alt = $db->prepare($query);														// create a prepared statement
-    $query = "SELECT Variant_Description FROM Variants WHERE Variant_Code = ?";				// Variants table
-    $stmt_Var = $db->prepare($query);														// create a prepared statement
+    $query = "SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = ?";				// alt_lang_names table
+    $stmt_alt = $db->prepare($query);															// create a prepared statement
+    $query = "SELECT Variant_Description FROM Variants WHERE Variant_Code = ?";					// Variants table
+    $stmt_Var = $db->prepare($query);															// create a prepared statement
     $query="SELECT $SpecificCountry, ISO_countries FROM ISO_countries, countries WHERE ISO_countries.ISO_ROD_index = ? AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY $SpecificCountry";
-    $stmt_ISO_countries = $db->prepare($query);												// create a prepared statement
+    $stmt_ISO_countries = $db->prepare($query);													// create a prepared statement
         
     echo '<div id="CT">';
         while ($i < $num) {
@@ -145,21 +145,35 @@ $stmt->close();																				// close statement
             // Cross Site Scripting (XSS) attack happens where client side code (usually JavaScript) gets injected into the output of your PHP script. The next line cleans it up.
             $LN = htmlspecialchars($LN, ENT_QUOTES, 'UTF-8');
 
+			$increment_index = 1;																// 
+			$URL = '';
+			$optional = '';
+			$URL_items = [];
+			$optional_items = [];
 			if ($asset == 1) {
 				// URL from CellPhone.Cell_Phone_File
-				$stmt_asset->bind_param('i', $ISO_ROD_index);										// bind parameters for markers
-				$stmt_asset->execute();																// execute query
+				$stmt_asset->bind_param('i', $ISO_ROD_index);									// bind parameters for markers
+				$stmt_asset->execute();															// execute query
 				$result_asset = $stmt_asset->get_result();
-				$row_asset = $result_asset->fetch_assoc();
-				$URL = $row_asset['Cell_Phone_File'];
-				$optional = $row_asset['optional'];
+				for ($increment_index=0; $row_asset = $result_asset->fetch_assoc(); $increment_index++) {
+					$URL_items[] = $row_asset['Cell_Phone_File'];
+					$optional_items[] = $row_asset['optional'];
+				}
 			}
 
-            echo "<div class='countrySecond'>";
+            for ($k=0; $k < $increment_index; $k++) {
+				if ($asset == 1) {
+					$URL = $URL_items[$k];
+					$optional = $optional_items[$k];
+				}
+				echo "<div class='countrySecond'>";
 				// language
-// here - check
+				// here - check
 				if ($asset == 1) {
 					echo "<div class='countryLN2' onclick='iOSLanguage(\"$st\",$ISO_ROD_index,\"$LN\", \"$URL\")'>$LN";
+					if ($optional != '') {
+						echo ' ' . $optional;
+					}
 				}
 				else {
 					if ($ISO == 'qqq') {
@@ -169,40 +183,40 @@ $stmt->close();																				// close statement
 						echo "<div class='countryLN2' onclick='location.href=\"./$Scriptname?idx=$ISO_ROD_index&language=$LN&iso_code=$ISO\"'>$LN";
 					}
 				}
-                $VD = '';
-                if (!is_null($Variant_Code) && $Variant_Code != '') {
-                    $stmt_Var->bind_param("s", $Variant_Code);										// bind parameters for markers
-                    $stmt_Var->execute();															// execute query
-                    $resultVar = $stmt_Var->get_result();											// instead of bind_result (used for only 1 record):
-                    if ($resultVar) {
-                        $rowVar = $resultVar->fetch_array();
-                        $VD = $rowVar['Variant_Description'];
-                        include ("./include/00-MajorLanguageVariantCode.inc.php");
-                        echo "<div>($VD)</div>";
-                    }
-                    $resultVar->free();
-                }
+				$VD = '';
+				if (!is_null($Variant_Code) && $Variant_Code != '') {
+					$stmt_Var->bind_param("s", $Variant_Code);										// bind parameters for markers
+					$stmt_Var->execute();															// execute query
+					$resultVar = $stmt_Var->get_result();											// instead of bind_result (used for only 1 record):
+					if ($resultVar) {
+						$rowVar = $resultVar->fetch_array();
+						$VD = $rowVar['Variant_Description'];
+						include ("./include/00-MajorLanguageVariantCode.inc.php");
+						echo "<div>($VD)</div>";
+					}
+					$resultVar->free();
+				}
 				echo '</div>';
 				
 				// Country(ies)
-                $stmt_ISO_countries->bind_param("i", $ISO_ROD_index);								// bind parameters for markers
-                $stmt_ISO_countries->execute();														// execute query
-                $result_ISO_countries = $stmt_ISO_countries->get_result();							// instead of bind_result (used for only 1 record):
-                $row_ISO_countries = $result_ISO_countries->fetch_array();
-                $countryTemp = $SpecificCountry;
-                if (strpos("$SpecificCountry", '.')) $countryTemp = substr("$SpecificCountry", strpos("$SpecificCountry", '.')+1);		// In case there's a "." in the "country"
-                $countryTextarea = trim($row_ISO_countries["$countryTemp"]);						// name of the country in the language version
-                $country = '<a class="indivCountry" href="./'.$Scriptname.'?sortby=country&name=' . trim($row_ISO_countries["ISO_countries"]) . '">' . trim($row_ISO_countries["$countryTemp"]) . '</a>';
-                while ($row_ISO_countries = $result_ISO_countries->fetch_array()) {
-                    $countryTextarea = $countryTextarea . ', ' . trim($row_ISO_countries["$countryTemp"]);
-                    $country = $country . ', <a class="indivCountry" href="./'.$Scriptname.'?sortby=country&name=' . trim($row_ISO_countries["ISO_countries"]) . '">' . trim($row_ISO_countries["$countryTemp"]) . '</a>';			// name of the country in the language version
-                }
-                echo "<p class='countryCountry2'>";
-                    echo "<span style='font-size: .9em; '>$country</span>";
-                echo "</p>";
+				$stmt_ISO_countries->bind_param("i", $ISO_ROD_index);								// bind parameters for markers
+				$stmt_ISO_countries->execute();														// execute query
+				$result_ISO_countries = $stmt_ISO_countries->get_result();							// instead of bind_result (used for only 1 record):
+				$row_ISO_countries = $result_ISO_countries->fetch_array();
+				$countryTemp = $SpecificCountry;
+				if (strpos("$SpecificCountry", '.')) $countryTemp = substr("$SpecificCountry", strpos("$SpecificCountry", '.')+1);		// In case there's a "." in the "country"
+				$countryTextarea = trim($row_ISO_countries["$countryTemp"]);						// name of the country in the language version
+				$country = '<a class="indivCountry" href="./'.$Scriptname.'?sortby=country&name=' . trim($row_ISO_countries["ISO_countries"]) . '">' . trim($row_ISO_countries["$countryTemp"]) . '</a>';
+				while ($row_ISO_countries = $result_ISO_countries->fetch_array()) {
+					$countryTextarea = $countryTextarea . ', ' . trim($row_ISO_countries["$countryTemp"]);
+					$country = $country . ', <a class="indivCountry" href="./'.$Scriptname.'?sortby=country&name=' . trim($row_ISO_countries["ISO_countries"]) . '">' . trim($row_ISO_countries["$countryTemp"]) . '</a>';			// name of the country in the language version
+				}
+				echo "<p class='countryCountry2'>";
+					echo "<span style='font-size: .9em; '>$country</span>";
+				echo "</p>";
 					
 				// ISO
-// here - check
+				// here - check
 				if ($asset == 1) {
 					echo "<div class='countryCode2' onclick='iOSLanguage(\"".$st."\",".$ISO_ROD_index.",\"".$LN."\",\"".$URL."\")'>$ISO</div>";
 				}
@@ -210,17 +224,17 @@ $stmt->close();																				// close statement
 					if ($ISO == 'qqq') {
 					}
 					else {
-                		echo "<div class='countryCode2' onclick='location.href=\"./$Scriptname?idx=$ISO_ROD_index&language=$LN&iso_code=$ISO\"'>$ISO</div>";
+						echo "<div class='countryCode2' onclick='location.href=\"./$Scriptname?idx=$ISO_ROD_index&language=$LN&iso_code=$ISO\"'>$ISO</div>";
 					}
 				}
-               
+				
 				// alternate language names
-                $stmt_alt->bind_param("i", $ISO_ROD_index);											// bind parameters for markers
-                $stmt_alt->execute();																// execute query
-                $result_alt = $stmt_alt->get_result();												// instead of bind_result (used for only 1 record):
-                $alt_lang_names = '';
-                if ($result_alt) {
-// here - check
+				$stmt_alt->bind_param("i", $ISO_ROD_index);											// bind parameters for markers
+				$stmt_alt->execute();																// execute query
+				$result_alt = $stmt_alt->get_result();												// instead of bind_result (used for only 1 record):
+				$alt_lang_names = '';
+				if ($result_alt) {
+					// here - check
 					if ($asset == 1) {
 						echo "<div class='countryAlt2' onclick='iOSLanguage(\"".$st."\",".$ISO_ROD_index.",\"".$LN."\",\"".$URL."\")'>";
 					}
@@ -233,23 +247,25 @@ $stmt->close();																				// close statement
 						}
 					}
 					$alt_item = '';
-                    $i_alt=0;
-                    while ($row_temp = $result_alt->fetch_array()) {
-                        if ($i_alt > 0) {
-                            $alt_item .= ', ';
-                        }
-                        $alt_lang_name=trim($row_temp['alt_lang_name']);
-                        // Cross Site Scripting (XSS) attack happens where client side code (usually JavaScript) gets injected into the output of your PHP script. The next line cleans it up.
-                        $alt_lang_name = htmlspecialchars($alt_lang_name, ENT_QUOTES, 'UTF-8');
-                        $alt_item .= $alt_lang_name;
-                        $i_alt++;
-                    }
+					$i_alt=0;
+					while ($row_temp = $result_alt->fetch_array()) {
+						if ($i_alt > 0) {
+							$alt_item .= ', ';
+						}
+						$alt_lang_name=trim($row_temp['alt_lang_name']);
+						// Cross Site Scripting (XSS) attack happens where client side code (usually JavaScript) gets injected into the output of your PHP script. The next line cleans it up.
+						$alt_lang_name = htmlspecialchars($alt_lang_name, ENT_QUOTES, 'UTF-8');
+						$alt_item .= $alt_lang_name;
+						$i_alt++;
+					}
 					echo "<div style='display: inline; font-size: .95em; '>$alt_item</div>";
-                    echo "</div>";
-                }
-                else
-                    echo "<div width='40%'>&nbsp;</div>";
-            echo "</div>";
+					echo "</div>";
+				}
+				echo '</div>';
+			}
+			//else
+			//	echo "<div width='40%'>&nbsp;</div>";
+            //echo "</div>";
             $i++;
         }
     	echo '</div>';

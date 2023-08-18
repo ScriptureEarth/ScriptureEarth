@@ -28,6 +28,7 @@
 			echo "<div class='countryCode1' style='cursor: pointer; '>".translate('Code', $st, 'sys')."</div>";
 			echo "<div class='countryAlt1'>".translate('Alternate Language Names', $st, 'sys')."</div>";
 		echo '</div>';
+		
 		echo '<div class="MTORODCode">';
 		while ($row = $result->fetch_assoc()) {												// scripture_main - all ROD and variant codes for just one ISO
 			echo "<p style='line-height: 2px; '>&nbsp;</p>";
@@ -124,9 +125,12 @@
 			
 			// Cross Site Scripting (XSS) attack happens where client side code (usually JavaScript) gets injected into the output of your PHP script. The next line cleans it up.
 			echo "<div class='moreThanOneRODCode'>";
-// here: checked
+			// here: checked
 			if ($asset == 1) {
 				echo "<div class='moreThanLN2' onclick='iOSLanguage(\"$st\", \"$idx\", \"$LN\", \"$URL\")'>".$LN;
+				if ($optional != '') {
+					echo ' ' . $optional;
+				}
 			}
 			else {
 				echo "<div class='moreThanLN2' onclick='window.open(\"".$Scriptname."?idx=".$idx."\", \"_self\")'>".$LN;
@@ -150,9 +154,9 @@
 				$country_no_abbrev = preg_replace('/:[A-Z]{2}/', '', $country);				// delete the ":" and the abberviation ZZ of the country leaving the full country(ies)
 				echo "<textarea rows='2' readonly style='width: 100%; height: 100%; border: none; '>".$country_no_abbrev."</textarea>";
 			}
-			
 			echo "</p>";
-// here: checked
+			
+			// here: checked
 			if ($asset == 1) {
 				echo "<div class='moreThanAlt2' onclick='iOSLanguage(\"$st\", \"$idx\", \"$LN\", \"$URL\")'>".$alt."</div>";
 			}
@@ -160,7 +164,7 @@
 				echo "<div class='moreThanAlt2' onclick='window.open(\"".$Scriptname."?idx=".$idx."\", \"_self\")'>".$alt."</div>";
 			}
 			
-// here: checked
+			// here: checked
 			if ($asset == 1) {
 				echo "<div class='moreThanCode2' onclick='iOSLanguage(\"$st\", \"$idx\", \"$LN\", \"$URL\")'>".$ISO."<br />[".$rod."]";
 			}
@@ -180,6 +184,7 @@
 			echo '</div>';
 		}
 		echo "</div>";
+		
 		echo '<br />';
 	}
 ?>

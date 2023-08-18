@@ -35,7 +35,7 @@ if (!$retval) {
 <title>Scripture Edit</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Edit.css" />
 <script type="text/javascript" language="javascript" src="_js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.1.3"></script>
+<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.1.4"></script>
 <!-- see the bottom of this html file for CMS_events.js -->
 </head>
 <body>
@@ -3541,7 +3541,7 @@ function NT_Test($PDF, $NT_Index) {
 				</td>
 				<td width="13">
 					<input type='text' style='color: navy; ' size='18' name='txtOtherTitle-1' id='txtOtherTitle-1' onclick='Otheridx(1)' value="<?php if (isset($_POST['txtOtherTitle-1'])) echo $_POST['txtOtherTitle-1']; else echo ${'txtOtherTitle-$i'}; ?>" />
-                    <br /><span style="font-size: 7pt; ">Selections from the Old Testament</span>
+                    <br /><span style="font-size: 7pt; ">Selections from the OT</span>
 				</td>
 				<td width="13%">
 					<input type='text' style='color: navy; ' size='18' name='txtOtherPDF-1' id='txtOtherPDF-1' onclick='Otheridx(1)' value="<?php if (isset($_POST['txtOtherPDF-1'])) echo $_POST['txtOtherPDF-1']; else echo ${'txtOtherPDF-$i'}; ?>" />
@@ -3769,10 +3769,10 @@ function NT_Test($PDF, $NT_Index) {
 				<td width="12%">&nbsp;
 				</td>
 				<td width="21%" style="padding-left: 3px; ">
-					Resource Description
+					Organization/Source
 				</td>
 				<td width="21%" style="padding-left: 3px; ">
-					Web Source
+					Description
 				</td>
 				<td width="22%" style="padding-left: 3px; ">
 					URL Link
@@ -3850,16 +3850,16 @@ function NT_Test($PDF, $NT_Index) {
                     <br /><span style="font-size: 10pt; ">For example:</span>
 				</td>
 				<td width="21%">
-					<input type='text' style='color: navy; ' size='25' name='txtLinkCompanyTitle-1' id='txtLinkCompanyTitle-1' value="<?php if (isset($_POST['txtLinkCompanyTitle-1'])) echo $_POST['txtLinkCompanyTitle-1']; else echo ${'txtLinkCompanyTitle-1'}; ?>" />
-                    <br /><span style="font-size: 10pt; ">language of Brazil</span>
+					<input type='text' style='color: navy; ' size='25' name='txtLinkCompany-1' id='txtLinkCompany-1' value="<?php if (isset($_POST['txtLinkCompany-1'])) echo $_POST['txtLinkCompany-1']; else echo ${'txtLinkCompany-1'}; ?>" />
+                    <br /><span style="font-size: 10pt; ">Google Play Store</span>
 				</td>
 				<td width="21%">
-					<input type='text' style='color: navy; ' size='25' name='txtLinkCompany-1' id='txtLinkCompany-1' value="<?php if (isset($_POST['txtLinkCompany-1'])) echo $_POST['txtLinkCompany-1']; else echo ${'txtLinkCompany-1'}; ?>" />
-                    <br /><span style="font-size: 10pt; ">Google map</span>
+					<input type='text' style='color: navy; ' size='25' name='txtLinkCompanyTitle-1' id='txtLinkCompanyTitle-1' value="<?php if (isset($_POST['txtLinkCompanyTitle-1'])) echo $_POST['txtLinkCompanyTitle-1']; else echo ${'txtLinkCompanyTitle-1'}; ?>" />
+                    <br /><span style="font-size: 10pt; "> - with links to audio online</span>
 				</td>
 				<td width="22%">
                 	<input type='text' style='color: navy; ' size='27' name='txtLinkURL-1' id='txtLinkURL-1' value="<?php if (isset($_POST['txtLinkURL-1'])) echo $_POST['txtLinkURL-1']; else echo ${'txtLinkURL-1'}; ?>" />
-                    <br /><span style="font-size: 9pt; ">http://maps.google.com/maps/...</span>
+                    <br /><span style="font-size: 9pt; ">https://play.google.com/store/apps/...</span>
                 </td>
 				<td width="8%">
                     <select name="linksIcon-1" id="linksIcon-1" style='color: navy; '>
@@ -3868,7 +3868,7 @@ function NT_Test($PDF, $NT_Index) {
                         <option value="linksMap-1" <?php echo ( isset($_POST['linksMap-1']) ? ($_POST['linksMap-1'] == 1 ? " selected='selected'" : "") : (${'linksMap-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Map</option>
                         <option value="linksGooglePlay-1" <?php echo ( isset($_POST['linksGooglePlay-1']) ? ($_POST['linksGooglePlay-1'] == 1 ? " selected='selected'" : "") : (${'linksGooglePlay-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Google Play</option>
                     </select>
-                    <span style="font-size: 10pt; ">Map</span>
+                    <span style="font-size: 10pt; ">Google Play</span>
                 </td>
 				<td width="16%" style="text-align: right; ">
 					<input style="font-size: 9pt; " type="button" id="addLinks" value="Add" />
@@ -3885,10 +3885,10 @@ function NT_Test($PDF, $NT_Index) {
 							echo "&nbsp;";
 						echo "</td>";
 						echo "<td width='21%'>";
-							echo "<input type='text' name='txtLinkCompanyTitle-$i' id='txtLinkCompanyTitle-$i' style='color: navy; ' size='25' value='" . ( isset($_POST['txtLinkCompanyTitle-'.(string)$i]) ? $_POST['txtLinkCompanyTitle-'.(string)$i] : '' ) . "' />";
+							echo "<input type='text' name='txtLinkCompany-$i' id='txtLinkCompany-$i' style='color: navy; ' size='25' value='" . ( isset($_POST['txtLinkCompany-'.(string)$i]) ? $_POST['txtLinkCompany-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='21%'>";
-							echo "<input type='text' name='txtLinkCompany-$i' id='txtLinkCompany-$i' style='color: navy; ' size='25' value='" . ( isset($_POST['txtLinkCompany-'.(string)$i]) ? $_POST['txtLinkCompany-'.(string)$i] : '' ) . "' />";
+							echo "<input type='text' name='txtLinkCompanyTitle-$i' id='txtLinkCompanyTitle-$i' style='color: navy; ' size='25' value='" . ( isset($_POST['txtLinkCompanyTitle-'.(string)$i]) ? $_POST['txtLinkCompanyTitle-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='22%'>";
 							echo "<input type='text' name='txtLinkURL-$i' id='txtLinkURL-$i' style='color: navy; ' size='27' value='" . ( isset($_POST['txtLinkURL-'.(string)$i]) ? $_POST['txtLinkURL-'.(string)$i] : '' ) . "' />";
@@ -3933,10 +3933,10 @@ function NT_Test($PDF, $NT_Index) {
 								echo "&nbsp;";
 							echo "</td>";
 							echo "<td width='21%'>";
-								echo "<input type='text' name='txtLinkCompanyTitle-$i' id='txtLinkCompanyTitle-$i' style='color: navy; ' size='25' value='" . ${'txtLinkCompanyTitle-$i'} . "' />";
+								echo "<input type='text' name='txtLinkCompany-$i' id='txtLinkCompany-$i' style='color: navy; ' size='25' value='" . ${'txtLinkCompany-$i'} . "' />";
 							echo "</td>";
 							echo "<td width='21%'>";
-								echo "<input type='text' name='txtLinkCompany-$i' id='txtLinkCompany-$i' style='color: navy; ' size='25' value='" . ${'txtLinkCompany-$i'} . "' />";
+								echo "<input type='text' name='txtLinkCompanyTitle-$i' id='txtLinkCompanyTitle-$i' style='color: navy; ' size='25' value='" . ${'txtLinkCompanyTitle-$i'} . "' />";
 							echo "</td>";
 							echo "<td width='22%'>";
 								echo "<input type='text' name='txtLinkURL-$i' id='txtLinkURL-$i' style='color: navy; ' size='27' value='" . ${'txtLinkURL-$i'} . "' />";
@@ -4466,6 +4466,6 @@ function Switch(number, Beg) {
 }
 ?>
 
-<script type="text/javascript" src="_js/CMS_events.js?v=1.0.3"></script>
+<script type="text/javascript" src="_js/CMS_events.js?v=1.0.4"></script>
 </body>
 </html>

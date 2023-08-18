@@ -7,6 +7,8 @@
  *
  * Written by: Jpmaster77 a.k.a. The Grandmaster of C++ (GMC)
  * Last Updated: August 19, 2004
+ 
+ password = [0-9a-zA-Z]+
  */
 include("database.php");
 include("mailer.php");
@@ -289,7 +291,7 @@ class Session
             $form->setError($field, "* Password too short");
          }
          /* Check if password is not alphanumeric */
-         else if(0 == preg_match("/^([0-9a-zA-Z])+$/", ($subpass = trim($subpass)))){
+         else if(0 == preg_match("/^([0-9a-zA-Z`~!@#/%\$\^&\*\(\)-=_\+;:,\.\<\>\?]+)$/", ($subpass = trim($subpass)))){
             $form->setError($field, "* Password not alphanumeric");
          }
          /**
@@ -352,7 +354,7 @@ class Session
          else{
             /* Check if password too short or is not alphanumeric */
             $subcurpass = stripslashes($subcurpass);
-            if(strlen($subcurpass) < 4 || 0 == preg_match("/^([0-9a-z])+$/", ($subcurpass = trim($subcurpass)))){
+            if(strlen($subcurpass) < 4 || 0 == preg_match("/^([0-9a-zA-Z`~!@#/%\$\^&\*\(\)-=_\+;:,\.\<\>\?]+)$/", ($subcurpass = trim($subcurpass)))){
                $form->setError($field, "* Current Password incorrect");
             }
             /* Password entered is incorrect */
@@ -370,8 +372,8 @@ class Session
             $form->setError($field, "* New Password too short");
          }
          /* Check if password is not alphanumeric */
-         else if(0 == preg_match("/^([0-9a-z])+$/", ($subnewpass = trim($subnewpass)))){
-            $form->setError($field, "* New Password be lowercase alphanumeric");
+         else if(0 == preg_match("/^([0-9a-zA-Z`~!@#/%\$\^&\*\(\)-=_\+;:,\.\<\>\?]+)$/", ($subnewpass = trim($subnewpass)))){
+            $form->setError($field, "* New Password be alphanumeric");
          }
       }
       /* Change password attempted */
@@ -400,17 +402,17 @@ class Session
       /* Update password since there were no errors */
       if($subcurpass && $subnewpass){
       	 /**
-		 * increase the default cost for BCRYPT to 12
-		 * switched to BCRYPT, which will always be 60 characters
-		 */
-		$options = [
-			'cost' => 12,
-		];
-		/* 'password_hash' WORKS! Scott Starker - 4/19/17 */
-//        $database->updateUserField($this->username,"password",password_hash($value, PASSWORD_BCRYPT, $options)); 
-        $database->updateUserField($this->username,"password",password_hash($subnewpass, PASSWORD_BCRYPT, $options)); 
-		//$database->updateUserField($this->username,"password",md5($subnewpass));
-		//$database->updateUserField($this->username,"password",$subnewpass);
+            * increase the default cost for BCRYPT to 12
+            * switched to BCRYPT, which will always be 60 characters
+            */
+            $options = [
+               'cost' => 12,
+            ];
+            /* 'password_hash' WORKS! Scott Starker - 4/19/17 */
+            //        $database->updateUserField($this->username,"password",password_hash($value, PASSWORD_BCRYPT, $options)); 
+            $database->updateUserField($this->username,"password",password_hash($subnewpass, PASSWORD_BCRYPT, $options)); 
+            //$database->updateUserField($this->username,"password",md5($subnewpass));
+            //$database->updateUserField($this->username,"password",$subnewpass);
       }
       
       /* Change Email */

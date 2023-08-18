@@ -355,7 +355,7 @@ function addRowToTableCol3(DatabaseTable) {
 /*************************************************
 			Links
 *************************************************/
-function addLinksRowToTableCol4() {
+function addLinksRowToTable() {
     var tbl = document.getElementById("tableLinks");
     var lastRow = tbl.rows.length;
     var iteration = lastRow + 1;
@@ -366,24 +366,24 @@ function addLinksRowToTableCol4() {
     var textNode1 = document.createTextNode(" ");
     cellHead.appendChild(textNode1);
 
-    // left center cell
-    var cellLeft = row.insertCell(1);
-    var el = document.createElement("input");
-    el.type = "text";
-    el.name = "txtLinkCompanyTitle-" + iteration;
-    el.id = "txtLinkCompanyTitle-" + iteration;
-    el.size = 25;
-    el.style.color = "navy"
-    cellLeft.appendChild(el);
-
     // left cell
-    var cellLeftCenter = row.insertCell(2);
+    var cellLeft = row.insertCell(1);
     var el = document.createElement("input");
     el.type = "text";
     el.name = "txtLinkCompany-" + iteration;
     el.id = "txtLinkCompany-" + iteration;
     el.size = 25;
-    el.style.color = "navy"
+    el.style.color = "navy";
+    cellLeft.appendChild(el);
+
+    // left center cell
+    var cellLeftCenter = row.insertCell(2);
+    var el = document.createElement("input");
+    el.type = "text";
+    el.name = "txtLinkCompanyTitle-" + iteration;
+    el.id = "txtLinkCompanyTitle-" + iteration;
+    el.size = 25;
+    el.style.color = "navy";
     cellLeftCenter.appendChild(el);
 
     // right center cell
@@ -393,7 +393,7 @@ function addLinksRowToTableCol4() {
     el.name = "txtLinkURL-" + iteration;
     el.id = "txtLinkURL-" + iteration;
     el.size = 27;
-    el.style.color = "navy"
+    el.style.color = "navy";
     cellRightCenter.appendChild(el);
 
     // right cell

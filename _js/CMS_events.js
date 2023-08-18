@@ -112,7 +112,7 @@ document.getElementById('addBuy').addEventListener('click', function() { addRowT
 
 document.getElementById('removeBuy').addEventListener('click', function() { removeRowFromTable('tableBuy'); });
 
-document.getElementById('addLinks').addEventListener('click', function() { addLinksRowToTableCol4(); });
+document.getElementById('addLinks').addEventListener('click', function() { addLinksRowToTable(); });
 
 document.getElementById('removeLinks').addEventListener('click', function() { removeRowFromTable('tableLinks'); });
 
