@@ -224,39 +224,19 @@ function addRowToCellPhone() {
     //el.options.add(objOption);
     el.appendChild(objOption);
 
-    //objOption = document.createElement('option');
-    //objOption.text="Windows";
-    //objOption.appendChild(document.createTextNode('Map'));
-    //objOption.value = "CPWindows-" + iteration;
-    //el.options.add(objOption);
-    //el.appendChild(objOption);
-
-    //objOption = document.createElement('option');
-    //objOption.text="Blackberry";
-    //objOption.appendChild(document.createTextNode('Map'));
-    //objOption.value = "CPBlackberry-" + iteration;
-    //el.options.add(objOption);
-    //el.appendChild(objOption);
-
-    //objOption = document.createElement('option');
-    //objOption.text="Standard Cell Phone";
-    //objOption.appendChild(document.createTextNode('Map'));
-    //objOption.value = "CPStandard-" + iteration;
-    //el.options.add(objOption);
-    //el.appendChild(objOption);
-
     objOption = document.createElement('option');
     objOption.text = "Android App (apk)";
-    //objOption.appendChild(document.createTextNode('Map'));
     objOption.value = "CPAndroidApp-" + iteration;
-    //el.options.add(objOption);
     el.appendChild(objOption);
 
     objOption = document.createElement('option');
     objOption.text = "iOS Asset Package";
-    //objOption.appendChild(document.createTextNode('Map'));
     objOption.value = "CPiOSAssetPackage-" + iteration;
-    //el.options.add(objOption);
+    el.appendChild(objOption);
+
+    objOption = document.createElement('option');
+    objOption.text = "ePub";
+    objOption.value = "CPePub-" + iteration;
     el.appendChild(objOption);
 
     // File cell

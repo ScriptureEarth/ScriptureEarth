@@ -2429,14 +2429,12 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 		GoBible (Java)
 		MySword (Android)
 		iPhone		// only one "iPhone" record in the table (6/27/2022)
-		Windows
-		Blackberry
-		Standard Cell Phone
 		Android App (apk) (not here but up above)
 		iOS Asset Package (not here but up above)
+		ePub
 	*/
 	if ($CellPhone) {
-		$query="SELECT * FROM CellPhone WHERE ISO_ROD_index = '$ISO_ROD_index' AND (Cell_Phone_Title <> 'Android App' AND Cell_Phone_Title <> 'iOS Asset Package')";
+		$query="SELECT * FROM CellPhone WHERE ISO_ROD_index = '$ISO_ROD_index' AND (Cell_Phone_Title <> 'Android App' AND Cell_Phone_Title <> 'iOS Asset Package') ORDER BY Cell_Phone_Title";
 		$result2=$db->query($query);
 		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
 			$Cell_Phone_Title=$r2['Cell_Phone_Title'];
@@ -2452,24 +2450,39 @@ $i=0;											// used in 00-DBLanguageCountryName.inc.php include
 			<tr>
 				<td style='width: 45px; '>
 					<?php
-					if ($Cell_Phone_Title == 'MySword (Android)')
-						echo "<div class='linePointer' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/mysword-icon.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
-					elseif ($Cell_Phone_Title == 'iPhone') {		// only one "iPhone" record in the table (6/27/2022)
-						echo "<div class='linePointer' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
+					switch ($Cell_Phone_Title) {
+						case 'MySword (Android)':
+							echo "<div class='linePointer' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/mysword-icon.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
+							break;
+						case 'GoBible (Java)':
+							echo "<div class='linePointer' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/CellPhoneIcon.png' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
+							break;
+						case 'iPhone':		// only one "iPhone" record in the table (6/27/2022)
+							echo "<div class='linePointer' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' /></div>";
+							break;
+						case 'ePub':
+							echo "<div class='linePointer' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/epub_icon.png' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('ePub', $st, 'sys')."' /></div>";
+							break;
+						default:
+							echo 'This is not suppose to happend. (Cell Phone).<br />';
 					}
-					else {
-						echo "<div class='linePointer' $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'><img class='iconActions' src='../images/CellPhoneIcon.png' alt='".translate('Cell Phone', $st, 'sys')."' title='".translate('Cell Phone', $st, 'sys')."' />";
-					}
-					echo '</div>';
 				echo '</td>';
 				echo '<td>';
-					if ($Cell_Phone_Title == 'MySword (Android)')
-						if ($Internet)
-							echo "<div class='linePointer' title='" . translate('Download the cell phone module for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the cell phone module for', $st, 'sys') . "</div> <a href='https://www.mysword.info/' title='" . translate('Download the cell phone module for', $st, 'sys') . "' target='_blank'><span class='lineAction'>$Cell_Phone_Title</span></a>";
-						else
-							echo "<div class='linePointer' title='" . translate('Download the cell phone module for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the cell phone module for', $st, 'sys') . ' ' . $Cell_Phone_Title . '</div>';
-					else
-						echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the app for', $st, 'sys') . ' ' . $Cell_Phone_Title . '</div>';
+					switch ($Cell_Phone_Title) {
+						case 'MySword (Android)':
+							if ($Internet)
+								echo "<div class='linePointer' title='" . translate('Download the cell phone module for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the cell phone module for', $st, 'sys') . "</div> <a href='https://www.mysword.info/' title='" . translate('Download the cell phone module for', $st, 'sys') . "' target='_blank'><span class='lineAction'>$Cell_Phone_Title</span></a>";
+							else
+								echo "<div class='linePointer' title='" . translate('Download the cell phone module for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the cell phone module for', $st, 'sys') . ' ' . $Cell_Phone_Title . '</div>';
+							break;
+						case 'GoBible (Java)':
+						case 'iPhone':		// only one "iPhone" record in the table (6/27/2022)
+						case 'ePub':
+							echo "<div class='linePointer' title='" . translate('Download the app for', $st, 'sys') . " $Cell_Phone_Title' onclick='CellPhoneModule(\"$st\", \"$ISO\", \"$ROD_Code\", \"$Cell_Phone_File\")'>" . translate('Download', $st, 'sys') . " " . translate('the app for', $st, 'sys') . ' ' . $Cell_Phone_Title . '</div>';
+							break;
+						default:
+							echo 'This is not suppose to happend. (Cell Phone).<br />';
+					}
 					echo ' ' . $optional;
 					?>
 				</td>

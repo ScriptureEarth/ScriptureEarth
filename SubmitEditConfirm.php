@@ -625,11 +625,9 @@
 			if ($inputs["CPJava-".(string)$i] == 1) $temp1 = "GoBible (Java)";
 			if ($inputs["CPAndroid-".(string)$i] == 1) $temp1 = "MySword (Android)";
 			if ($inputs["CPiPhone-".(string)$i] == 1) $temp1 = "iPhone";
-			//if ($inputs["CPWindows-".(string)$i] == 1) $temp1 = "Windows";
-			//if ($inputs["CPBlackberry-".(string)$i] == 1) $temp1 = "Blackberry";
-			//if ($inputs["CPStandard-".(string)$i] == 1) $temp1 = "Standard Cell Phone";
 			if ($inputs["CPAndroidApp-".(string)$i] == 1) $temp1 = "Android App";
 			if ($inputs["CPiOSAssetPackage-".(string)$i] == 1) $temp1 = "iOS Asset Package";
+			if ($inputs["CPePub-".(string)$i] == 1) $temp1 = "ePub";
 			$temp2 = "txtCellPhoneFile-$i";
 			$temp3 = "txtCellPhoneOptional-$i";
 			$stmt_cell->bind_param("sss", $temp1, $inputs[$temp2], $inputs[$temp3]);			// bind parameters for markers								// 

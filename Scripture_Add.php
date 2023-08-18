@@ -1,30 +1,31 @@
 <?php
 // Change PHP.ini from max_input_vars = 1000 to max_input_vars = 3000 because POST has to be set for 3000!
 
+/*************************************************************************************************************************************
+ *
+ * 			CAREFUL when your making any additions! Any "onclick", "change", etc. that occurs on "input", "a", "div", etc.
+ * 			should be placed in "_js/CMS_events.js". Also, in "_js/CMS_events.js" any errors in previous statements will
+ * 			not works in any of the satesments then on. It can also help in the Firefox browser (version 79.0+) run
+ * 			"Scripture_Edit.php", menu "Tools", "Web developement", and "Toggle Tools". Then menu "Debugger". In the left
+ * 			side of the windows click on "Scripture Add", Localhost", "_js", and "CMS_events.js". Look down the js file
+ * 			and find out if there are errors using the "underline" indicator and fix them if there are any. You can also
+ * 			use "Scripture_Add.php" just to make sure that the document.getElementById('...') name is corrent.
+ *			But, BE CAREFUL!
+ *
+**************************************************************************************************************************************/
+
 include './include/session.php';
 global $session;
 /* Login attempt */
 $retval = $session->checklogin();
 if (!$retval) {
 	echo "<br /><div style='text-align: center; font-size: 16pt; font-weight: bold; padding: 10px; color: navy; background-color: #dddddd; '>You are not logged in!</div>";
-	/* Link back to main */
+	/* Link back to the main page */
 	header('Location: login.php');
 	exit;
 }
-// <input type='hidden'...> must be place underneath the form
 
-/*************************************************************************************************************************************
-*
-* 			CAREFUL when your making any additions! Any "onclick", "change", etc. that occurs on "input", "a", "div", etc.
-* 			should be placed in "_js/CMS_events.js". Also, in "_js/CMS_events.js" any errors in previous statements will
-* 			not works in any of the satesments then on. It can also help in the Firefox browser (version 79.0+) run
-* 			"Scripture_Edit.php", menu "Tools", "Web developement", and "Toggle Tools". Then menu "Debugger". In the left
-* 			side of the windows click on "Scripture Add", Localhost", "_js", and "CMS_events.js". Look down the js file
-* 			and find out if there are errors using the "underline" indicator and fix them if there are any. You can also
-* 			use "Scripture_Add.php" just to make sure that the document.getElementById('...') name is corrent.
-*			But, BE CAREFUL!
-*
-**************************************************************************************************************************************/
+// <input type='hidden'...> must be place underneath the form
 
 // To tie the script together and prevent direct access to Add_Lang_Validation.php and SumbitConfirmation.php.
 define('RIGHT_ON', true);
@@ -82,7 +83,7 @@ include ('./NT_Books.php');			// include the books of the NT
 <title>Scripture Add</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Add.css" />
 <script type="text/javascript" language="javascript" src="_js/Scripture_Add.js?v=1.0.3"></script>
-<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.1.4"></script>
+<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.1.5"></script>
 <script>
 	//let ALNindex = 1;
 	//let Otherindex = 1;
@@ -1011,11 +1012,9 @@ include ('./NT_Books.php');			// include the books of the NT
 			if ($_POST['txtCellPhoneTitle-1'] == 'CPJava-1') $_POST['CPJava-1']=1;
 			if ($_POST['txtCellPhoneTitle-1'] == 'CPAndroid-1') $_POST['CPAndroid-1']=1;
 			if ($_POST['txtCellPhoneTitle-1'] == 'CPiPhone-1') $_POST['CPiPhone-1']=1;
-			//if ($_POST['txtCellPhoneTitle-1'] == 'CPWindows-1') $_POST['CPWindows-1']=1;
-			//if ($_POST['txtCellPhoneTitle-1'] == 'CPBlackberry-1') $_POST['CPBlackberry-1']=1;
-			//if ($_POST['txtCellPhoneTitle-1'] == 'CPStandard-1') $_POST['CPStandard-1']=1;
 			if ($_POST['txtCellPhoneTitle-1'] == 'CPAndroidApp-1') $_POST['CPAndroidApp-1']=1;
 			if ($_POST['txtCellPhoneTitle-1'] == 'CPiOSAssetPackage-1') $_POST['CPiOSAssetPackage-1']=1;
+			if ($_POST['txtCellPhoneTitle-1'] == 'CPePub-1') $_POST['CPePub-1']=1;
 		}
 		?>
 		<tbody name="tableCellPhone" id="tableCellPhone">
@@ -1030,21 +1029,17 @@ include ('./NT_Books.php');			// include the books of the NT
                         GoBible (Java)
                         MySword (Android)
                         iPhone
-                        Windows
-                        Blackberry
-                        Standard Cell Phone
                         Android App
-                        Apple App
+                        iOS Asset Package
+						ePub
                     -->
                     <select name="txtCellPhoneTitle-1" id="txtCellPhoneTitle-1" style='color: navy; '>
                         <option value="CPJava-1" <?php echo ( isset($_POST['CPJava-1']) ? ($_POST['CPJava-1'] == 1 ? " selected='selected'" : "") : '' ) ?>>GoBible (Java)</option>
                         <option value="CPAndroid-1" <?php echo ( isset($_POST['CPAndroid-1']) ? ($_POST['CPAndroid-1'] == 1 ? " selected='selected'" : "") : '' ) ?>>MySword (Android)</option>
                         <option value="CPiPhone-1" <?php echo ( isset($_POST['CPiPhone-1']) ? ($_POST['CPiPhone-1'] == 1 ? " selected='selected'" : "") : '' ) ?>>iPhone</option>
-                        <!--option value="CPWindows-1" < ?php echo ( isset($_POST['CPWindows-1']) ? ($_POST['CPWindows-1'] == 1 ? " selected='selected'" : "") : '' ) ?>>Windows</option-->
-                        <!--option value="CPBlackberry-1" < ?php echo ( isset($_POST['CPBlackberry-1']) ? ($_POST['CPBlackberry-1'] == 1 ? " selected='selected'" : "") : '' ) ?>>Blackberry</option-->
-                        <!--option value="CPStandard-1" < ?php echo ( isset($_POST['CPStandard-1']) ? ($_POST['CPStandard-1'] == 1 ? " selected='selected'" : "") : '' ) ?>>Standard Cell Phone</option-->
                         <option value="CPAndroidApp-1" <?php echo ( isset($_POST['CPAndroidApp-1']) ? ($_POST['CPAndroidApp-1'] == 1 ? " selected='selected'" : "") : " selected='selected'") ?>>Android App (apk)</option>
                         <option value="CPiOSAssetPackage-1" <?php echo ( isset($_POST['CPiOSAssetPackage-1']) ? ($_POST['CPiOSAssetPackage-1'] == 1 ? " selected='selected'" : "") : ('CPiOSAssetPackage-1' == 1 ? " selected='selected'" : '' ) ) ?>>iOS Asset Package</option>
+                        <option value="CPePub-1" <?php echo ( isset($_POST['CPePub-1']) ? ($_POST['CPePub-1'] == 1 ? " selected='selected'" : "") : ('CPePub-1' == 1 ? " selected='selected'" : '' ) ) ?>>ePub</option>
                     </select>
                     <br /><span style="font-size: 10pt; ">&nbsp;GoBible (Java)</span>
 				</td>
@@ -1074,6 +1069,7 @@ include ('./NT_Books.php');			// include the books of the NT
 						if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPiPhone-'.$i) ${'CPiPhone-$i'}=1; else ${'CPiPhone-$i'}=0;
 						if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPAndroidApp-'.$i) ${'CPAndroidApp-$i'}=1; else ${'CPAndroidApp-$i'}=0;
 						if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPiOSAssetPackage-'.$i) ${'CPiOSAssetPackage-$i'}=1; else ${'CPiOSAssetPackage-$i'}=0;
+						if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPePub-'.$i) ${'CPePub-$i'}=1; else ${'CPePub-$i'}=0;
 						?>
           				<select name="txtCellPhoneTitle-<?php echo $i ?>" id="txtCellPhoneTitle-<?php echo $i ?>" style='color: navy; '>
                             <option value="CPJava-<?php echo $i ?>" <?php echo ( isset($_POST['CPJava-'.(string)$i]) ? ($_POST['CPJava-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'CPJava-$i'}==1 ? " selected='selected'" : '' ) ) ?>>GoBible (Java)</option>
@@ -1081,6 +1077,7 @@ include ('./NT_Books.php');			// include the books of the NT
                             <option value="CPiPhone-<?php echo $i ?>" <?php echo ( isset($_POST['CPiPhone-'.(string)$i]) ? ($_POST['CPiPhone-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'CPiPhone-$i'}==1 ? " selected='selected'" : '' ) ) ?>>iPhone</option>
                             <option value="CPAndroidApp-<?php echo $i ?>" <?php echo ( isset($_POST['CPAndroidApp-'.(string)$i]) ? ($_POST['CPAndroidApp-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'CPAndroidApp-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Android App (apk)</option>
                             <option value="CPiOSAssetPackage-<?php echo $i ?>" <?php echo ( isset($_POST['CPiOSAssetPackage-'.(string)$i]) ? ($_POST['CPiOSAssetPackage-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'CPiOSAssetPackage-$i'}==1 ? " selected='selected'" : '' ) ) ?>>iOS Asset Package</option>
+                            <option value="CPePub-<?php echo $i ?>" <?php echo ( isset($_POST['CPePub-'.(string)$i]) ? ($_POST['CPePub-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'CPePub-$i'}==1 ? " selected='selected'" : '' ) ) ?>>ePub</option>
          				</select>
 						<?php
                     echo "</td>";

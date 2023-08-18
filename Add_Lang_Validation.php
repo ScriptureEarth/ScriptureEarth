@@ -456,6 +456,7 @@ function check_input($value) {
 					if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPiPhone-'.$i) $inputs["CPiPhone-$CellPhoneIndex"] = 1; else $inputs["CPiPhone-$CellPhoneIndex"] = 0;
 					if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPAndroidApp-'.$i) $inputs["CPAndroidApp-$CellPhoneIndex"] = 1; else $inputs["CPAndroidApp-$CellPhoneIndex"] = 0;
 					if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPiOSAssetPackage-'.$i) $inputs["CPiOSAssetPackage-$CellPhoneIndex"] = 1; else $inputs["CPiOSAssetPackage-$CellPhoneIndex"] = 0;
+					if ($_POST["txtCellPhoneTitle-".(string)$i] == 'CPePub-'.$i) $inputs["CPePub-$CellPhoneIndex"] = 1; else $inputs["CPePub-$CellPhoneIndex"] = 0;
 					$inputs["txtCellPhoneFile-$CellPhoneIndex"] = check_input($_POST["txtCellPhoneFile-".(string)$i]);
 					$inputs["txtCellPhoneOptional-$CellPhoneIndex"] = check_input($_POST["txtCellPhoneOptional-".(string)$i]);
 					$CellPhoneIndex++;

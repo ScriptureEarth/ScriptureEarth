@@ -454,6 +454,7 @@
 			if ($inputs["CPiPhone-".(string)$i] == 1) $temp1 = "iPhone";
 			if ($inputs["CPAndroidApp-".(string)$i] == 1) $temp1 = "Android App";
 			if ($inputs["CPiOSAssetPackage-".(string)$i] == 1) $temp1 = "iOS Asset Package";
+			if ($inputs["CPePub-".(string)$i] == 1) $temp1 = "ePub";
 			$temp2 = "txtCellPhoneFile-".(string)$i;
 			$temp3 = "txtCellPhoneOptional-".(string)$i;
 			$stmt_cell->bind_param("sss", $temp1, $inputs[$temp2], $inputs[$temp3]);				// bind parameters for markers

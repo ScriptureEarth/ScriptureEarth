@@ -19,6 +19,7 @@ global $session;
 /* Login attempt */
 $retval = $session->checklogin();
 if (!$retval) {
+	echo "<br /><div style='text-align: center; font-size: 16pt; font-weight: bold; padding: 10px; color: navy; background-color: #dddddd; '>You are not logged in!</div>";
 	/* Link back to the main page */
 	header('Location: login.php');
 	exit;
@@ -35,7 +36,7 @@ if (!$retval) {
 <title>Scripture Edit</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Edit.css" />
 <script type="text/javascript" language="javascript" src="_js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.1.4"></script>
+<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.1.5"></script>
 <!-- see the bottom of this html file for CMS_events.js -->
 </head>
 <body>
@@ -2878,11 +2879,9 @@ function NT_Test($PDF, $NT_Index) {
 			if ($_POST['txtCellPhoneTitle-1'] == 'CPJava-1') ${'CPJava-$i'}=1; else ${'CPJava-$i'}=0;
 			if ($_POST['txtCellPhoneTitle-1'] == 'CPAndroid-1') ${'CPAndroid-$i'}=1; else ${'CPAndroid-$i'}=0;
 			if ($_POST['txtCellPhoneTitle-1'] == 'CPiPhone-1') ${'CPiPhone-$i'}=1; else ${'CPiPhone-$i'}=0;
-			//if ($_POST['txtCellPhoneTitle-1'] == 'CPWindows-1') ${'CPWindows-$i'}=1; else ${'CPWindows-$i'}=0;
-			//if ($_POST['txtCellPhoneTitle-1'] == 'CPBlackberry-1') ${'CPBlackberry-$i'}=1; else ${'CPBlackberry-$i'}=0;
-			//if ($_POST['txtCellPhoneTitle-1'] == 'CPStandard-1') ${'CPStandard-$i'}=1; else ${'CPStandard-$i'}=0;
 			if ($_POST['txtCellPhoneTitle-1'] == 'CPAndroidApp-1') ${'CPAndroidApp-$i'}=1; else ${'CPAndroidApp-$i'}=0;
 			if ($_POST['txtCellPhoneTitle-1'] == 'CPiOSAssetPackage-1') ${'CPiOSAssetPackage-$i'}=1; else ${'CPiOSAssetPackage-$i'}=0;
+			if ($_POST['txtCellPhoneTitle-1'] == 'CPePub-1') ${'CPePub-$i'}=1; else ${'CPePub-$i'}=0;
 		}
 		elseif ($SM_row['CellPhone']) {
 			$query="SELECT * FROM CellPhone WHERE ISO_ROD_index = $idx";
@@ -2894,11 +2893,9 @@ function NT_Test($PDF, $NT_Index) {
 			if ($temp1 == 'GoBible (Java)') ${'CPJava-$i'}=1; else ${'CPJava-$i'}=0;
 			if ($temp1 == 'MySword (Android)') ${'CPAndroid-$i'}=1; else ${'CPAndroid-$i'}=0;
 			if ($temp1 == 'iPhone') ${'CPiPhone-$i'}=1; else ${'CPiPhone-$i'}=0;
-			//if ($temp1 == 'Windows') ${'CPWindows-$i'}=1; else ${'CPWindows-$i'}=0;
-			//if ($temp1 == 'Blackberry') ${'CPBlackberry-$i'}=1; else ${'CPBlackberry-$i'}=0;
-			//if ($temp1 == 'Standard Cell Phone') ${'CPStandard-$i'}=1; else ${'CPStandard-$i'}=0;
 			if ($temp1 == 'Android App') ${'CPAndroidApp-$i'}=1; else ${'CPAndroidApp-$i'}=0;
 			if ($temp1 == 'iOS Asset Package') ${'CPiOSAssetPackage-$i'}=1; else ${'CPiOSAssetPackage-$i'}=0;
+			if ($temp1 == 'ePub') ${'CPePub-$i'}=1; else ${'CPePub-$i'}=0;
 			${'txtCellPhoneFile-$i'}=$r['Cell_Phone_File'];
 			${'txtCellPhoneOptional-$i'}=$r['optional'];
 		}
@@ -2907,11 +2904,9 @@ function NT_Test($PDF, $NT_Index) {
 			${'CPJava-$i'}=0;
 			${'CPAndroid-$i'}=0;
 			${'CPiPhone-$i'}=0;
-			//${'CPWindows-$i'}=0;
-			//${'CPBlackberry-$i'}=0;
-			//${'CPStandard-$i'}=0;
 			${'CPAndroidApp-$i'}=1;
 			${'CPiOSAssetPackage-$i'}=0;
+			${'CPePub-$i'}=0;
 			${'txtCellPhoneFile-$i'}='';
 			${'txtCellPhoneOptional-$i'}='';
 		}
@@ -2926,21 +2921,17 @@ function NT_Test($PDF, $NT_Index) {
                         GoBible (Java)
                         MySword (Android)
                         iPhone
-                        Windows
-                        Blackberry
-                        Standard Cell Phone
                         Android App
                         iOS Asset Package
+						ePub
                     -->
                     <select name="txtCellPhoneTitle-1" id="txtCellPhoneTitle-1" style='color: navy; '>
                         <option value="CPJava-1" <?php echo ( ${'CPJava-$i'} == 1 ? " selected='selected'" : "") ?>>GoBible (Java)</option>
                         <option value="CPAndroid-1" <?php echo ( ${'CPAndroid-$i'} == 1 ? " selected='selected'" : "") ?>>MySword (Android)</option>
                         <option value="CPiPhone-1" <?php echo ( ${'CPiPhone-$i'} == 1 ? " selected='selected'" : "") ?>>iPhone</option>
-                        <!--option value="CPWindows-1" < ?php echo ( ${'CPWindows-$i'} == 1 ? " selected='selected'" : "") ?>>Windows</option-->
-                        <!--option value="CPBlackberry-1" < ?php echo ( ${'CPBlackberry-$i'} == 1 ? " selected='selected'" : "") ?>>Blackberry</option-->
-                        <!--option value="CPStandard-1" < ?php echo ( ${'CPStandard-$i'} == 1 ? " selected='selected'" : "") ?>>Standard Cell Phone</option-->
                         <option value="CPAndroidApp-1" <?php echo ( ${'CPAndroidApp-$i'} == 1 ? " selected='selected'" : "") ?>>Android App (apk)</option>
                         <option value="CPiOSAssetPackage-1" <?php echo ( ${'CPiOSAssetPackage-$i'} == 1 ? " selected='selected'" : "") ?>>iOS Asset Package</option>
+                        <option value="CPePub-1" <?php echo ( ${'CPePub-$i'} == 1 ? " selected='selected'" : "") ?>>ePub</option>
                     </select>
                     <br /><span style="font-size: 10pt; ">&nbsp;GoBible (Java)</span>
 				</td>
@@ -2970,21 +2961,17 @@ function NT_Test($PDF, $NT_Index) {
 							if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPJava-'.$i) ${'CPJava-$i'}=1; else ${'CPJava-$i'}=0;
 							if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPAndroid-'.$i) ${'CPAndroid-$i'}=1; else ${'CPAndroid-$i'}=0;
 							if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPiPhone-'.$i) ${'CPiPhone-$i'}=1; else ${'CPiPhone-$i'}=0;
-							//if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPWindows-'.$i) ${'CPWindows-$i'}=1; else ${'CPWindows-$i'}=0;
-							//if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPBlackberry-'.$i) ${'CPBlackberry-$i'}=1; else ${'CPBlackberry-$i'}=0;
-							//if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPStandard-'.$i) ${'CPStandard-$i'}=1; else ${'CPStandard-$i'}=0;
 							if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPAndroidApp-'.$i) ${'CPAndroidApp-$i'}=1; else ${'CPAndroidApp-$i'}=0;
 							if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPiOSAssetPackage-'.$i) ${'CPiOSAssetPackage-$i'}=1; else ${'CPiOSAssetPackage-$i'}=0;
+							if ($_POST['txtCellPhoneTitle-'.(string)$i] == 'CPePub-'.$i) ${'CPePub-$i'}=1; else ${'CPePub-$i'}=0;
 							?>
 							<select name="txtCellPhoneTitle-<?php echo $i ?>" id="txtCellPhoneTitle-<?php echo $i ?>" style='color: navy; '>
 								<option value="CPJava-<?php echo $i ?>" <?php echo ( ${'CPJava-$i'} == 1 ? " selected='selected'" : '' ) ?>>GoBible (Java)</option>
 								<option value="CPAndroid-<?php echo $i ?>" <?php echo ( ${'CPAndroid-$i'} == 1 ? " selected='selected'" : '' ) ?>>MySword (Android)</option>
 								<option value="CPiPhone-<?php echo $i ?>" <?php echo ( ${'CPiPhone-$i'} == 1 ? " selected='selected'" : '' ) ?>>iPhone</option>
-								<!--option value="CPWindows-< ?php echo $i ?>" < ?php echo ( ${'CPWindows-$i'} == 1 ? " selected='selected'" : '' ) ?>>Windows</option-->
-								<!--option value="CPBlackberry-< ?php echo $i ?>" < ?php echo ( ${'CPBlackberry-$i'} == 1 ? " selected='selected'" : '' ) ?>>Blackberry</option-->
-								<!--option value="CPStandard-< ?php echo $i ?>" < ?php echo ( ${'CPStandard-$i'} == 1 ? " selected='selected'" : '' ) ?>>Standard Cell Phone</option-->
 								<option value="CPAndroidApp-<?php echo $i ?>" <?php echo ( ${'CPAndroidApp-$i'} == 1 ? " selected='selected'" : '' ) ?>>Android App (apk)</option>
 								<option value="CPiOSAssetPackage-<?php echo $i ?>" <?php echo ( ${'CPiOSAssetPackage-$i'} == 1 ? " selected='selected'" : '' ) ?>>iOS Asset Package</option>
+								<option value="CPePub-<?php echo $i ?>" <?php echo ( ${'CPePub-$i'} == 1 ? " selected='selected'" : '' ) ?>>ePub</option>
 							</select>
 							<?php
 						echo "</td>";
@@ -3011,11 +2998,9 @@ function NT_Test($PDF, $NT_Index) {
 						if ($temp1 == 'GoBible (Java)') ${'CPJava-$i'}=1; else ${'CPJava-$i'}=0;
 						if ($temp1 == 'MySword (Android)') ${'CPAndroid-$i'}=1; else ${'CPAndroid-$i'}=0;
 						if ($temp1 == 'iPhone') ${'CPiPhone-$i'}=1; else ${'CPiPhone-$i'}=0;
-						//if ($temp1 == 'Windows') ${'CPWindows-$i'}=1; else ${'CPWindows-$i'}=0;
-						//if ($temp1 == 'Blackberry') ${'CPBlackberry-$i'}=1; else ${'CPBlackberry-$i'}=0;
-						//if ($temp1 == 'Standard Cell Phone') ${'CPStandard-$i'}=1; else ${'CPStandard-$i'}=0;
 						if ($temp1 == 'Android App') ${'CPAndroidApp-$i'}=1; else ${'CPAndroidApp-$i'}=0;
 						if ($temp1 == 'iOS Asset Package') ${'CPiOSAssetPackage-$i'}=1; else ${'CPiOSAssetPackage-$i'}=0;
+						if ($temp1 == 'ePub') ${'CPePub-$i'}=1; else ${'CPePub-$i'}=0;
 						${'txtCellPhoneFile-$i'}=$r['Cell_Phone_File'];
 						${'txtCellPhoneOptional-$i'}=$r['optional'];
 						echo "<tr valign='bottom' style='line-height: 10pt; '>";
@@ -3028,11 +3013,9 @@ function NT_Test($PDF, $NT_Index) {
 									<option value="CPJava-<?php echo $i ?>" <?php echo ( ${'CPJava-$i'} == 1 ? " selected='selected'" : '' ) ?>>GoBible (Java)</option>
 									<option value="CPAndroid-<?php echo $i ?>" <?php echo ( ${'CPAndroid-$i'} == 1 ? " selected='selected'" : '' ) ?>>MySword (Android)</option>
 									<option value="CPiPhone-<?php echo $i ?>" <?php echo ( ${'CPiPhone-$i'} == 1 ? " selected='selected'" : '' ) ?>>iPhone</option>
-									<!--option value="CPWindows-< ?php echo $i ?>" < ?php echo ( ${'CPWindows-$i'} == 1 ? " selected='selected'" : '' ) ?>>Windows</option-->
-									<!--option value="CPBlackberry-< ?php echo $i ?>" < ?php echo ( ${'CPBlackberry-$i'} == 1 ? " selected='selected'" : '' ) ?>>Blackberry</option-->
-									<!--option value="CPStandard-< ?php echo $i ?>" < ?php echo ( ${'CPStandard-$i'} == 1 ? " selected='selected'" : '' ) ?>>Standard Cell Phone</option-->
 									<option value="CPAndroidApp-<?php echo $i ?>" <?php echo ( ${'CPAndroidApp-$i'} == 1 ? " selected='selected'" : '' ) ?>>Android App (apk)</option>
 									<option value="CPiOSAssetPackage-<?php echo $i ?>" <?php echo ( ${'CPiOSAssetPackage-$i'} == 1 ? " selected='selected'" : '' ) ?>>iOS Asset Package</option>
+									<option value="CPePub-<?php echo $i ?>" <?php echo ( ${'CPePub-$i'} == 1 ? " selected='selected'" : '' ) ?>>ePub</option>
 								</select>
 								<?php
 							echo "</td>";
