@@ -140,7 +140,13 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
         /*******************************************************************************************************************
                 There is a potential problem here. What if the user wants to update from $subfolder to sab/$subfolder/?
         *******************************************************************************************************************/
-        if ($subfolder != '') {                         // SAB HTML
+        if ($url != '' && preg_match('/^\/?data\//', $url)) {
+            echo 'There is a problem. The URL begins with "data/..." not "https://..." so deleted URL and inserted subfolder.<br />';
+            if ($url[-1] == '/') $url = substr($url, 0, strlen($url) - 1);
+            $subfolder = substr($url, strrpos($url, '/') + 1);
+            $url = '';
+        }
+        if ($subfolder != '' && $url == '') {                         // SAB HTML
             $query = "SELECT * FROM SAB_scriptoria WHERE ISO_ROD_index = $idx AND subfolder = 'sab/$subfolder/'";
             $result = $db->query($query);
             if ($result->num_rows == 0) {
@@ -166,9 +172,6 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
             include 'api/include/SAB_inc.php';          // add html files to the SAB table
         }
         else {                                          // SAB HTML links
-            if (preg_match('/^data\//', $url)) {
-                echo 'There is a problem. The URL begins with "data/..." not "https://...".<br />';
-            }
             $query = "SELECT * FROM SAB_scriptoria WHERE ISO_ROD_index = $idx AND `url` = '$url'";
             $result = $db->query($query);
             if ($result->num_rows == 0) {

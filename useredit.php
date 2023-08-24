@@ -51,14 +51,12 @@ if($form->num_errors > 0){
 <table align="left" border="0" cellspacing="0" cellpadding="3">
 <tr>
 <td>Current Password:</td>
-<td><input type="text" name="curpass" maxlength="30" value="
-<?php echo $form->value("curpass"); ?>"></td>
+<td><input type="text" name="curpass" maxlength="30" value="<?php echo $form->value("curpass"); ?>"></td>
 <td><?php echo $form->error("curpass"); ?></td>
 </tr>
 <tr>
 <td>New Password:</td>
-<td><input type="text" name="newpass" maxlength="30" value="
-<?php echo $form->value("newpass"); ?>"></td>
+<td><input type="text" name="newpass" maxlength="30" value="<?php echo $form->value("newpass"); ?>"></td>
 <td><?php echo $form->error("newpass"); ?></td>
 </tr>
 <tr>

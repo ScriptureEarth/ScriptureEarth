@@ -136,19 +136,24 @@ else {
 	<table width="100%" style="text-align: left; " border="0" cellspacing="0" cellpadding="3">
 		<tr>
 			<td width="10%">Username:</td>
-			<td width="15%"><input type="text" name="user" autofocus maxlength="30" value="<?php echo $form->value("user"); ?>"></td>
-			<td width="75%"><?php echo $form->error("user"); ?></td>
+			<td width="26%"><input type="text" name="user" autofocus maxlength="30" value="<?php echo $form->value("user"); ?>"></td>
+			<td width="64%"><?php echo $form->error("user"); ?></td>
 		</tr>
 		
 		<tr>
 			<td>Password:</td>
-			<td><input type="password" name="pass" maxlength="30" value="<?php echo $form->value("pass"); ?>"></td>
+			<td>
+				<div class="input-container">
+					<input type="password" name="pass" placeholder="Password" required="on" maxlength="30" value="<?php echo $form->value("pass"); ?>">
+					<span class="material-icons visibility" style="font-size: 94%; ">show</span>
+				</div>
+			</td>
 			<td><?php echo $form->error("pass"); ?></td>
 		</tr>
 	
 		<tr>
-			<td colspan="3" align="left"><input type="checkbox" name="remember" <?php if($form->value("remember") != ""){ echo "checked"; } ?>>
-				<font size="2">Remember me next time</font> &nbsp;&nbsp;&nbsp;&nbsp;
+			<td style="padding-top: 24px; " colspan="3"><input type="checkbox" name="remember" <?php if($form->value("remember") != ""){ echo "checked"; } ?>>
+				<span style="font-size: 90%; ">Remember me next time</span> &nbsp;&nbsp;&nbsp;&nbsp;
 				<input type="hidden" name="sublogin" value="1" />
 				<input type="submit" value="Login" />
 			</td>
@@ -156,6 +161,25 @@ else {
 		
 	</table>
 	</form>
+	
+	<script>
+		const visibilityToggle1 = document.querySelectorAll('.visibility')[0];
+		visibilityToggle1.style.cursor = "pointer";
+		const input1 = document.querySelectorAll('.input-container input')[0];
+		var pass = true;
+
+		visibilityToggle1.addEventListener('click', function() {
+			if (pass) {
+				input1.setAttribute('type', 'text');
+				visibilityToggle1.innerHTML = 'hide';
+			} else {
+				input1.setAttribute('type', 'password');
+				visibilityToggle1.innerHTML = 'show';
+			}
+			pass = !pass;
+		});
+	</script>
+
 	<br />
 	<?php
 }

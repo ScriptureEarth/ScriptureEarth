@@ -14,8 +14,7 @@ include("database.php");
 include("mailer.php");
 include("form.php");
 
-class Session
-{
+class Session {
    var $username;     //Username given on sign-up
    var $userid;       //Random value generated on current login
    var $userlevel;    //The level to which the user pertains
@@ -262,7 +261,7 @@ class Session
             $form->setError($field, "* Username above 30 characters");
          }
          /* Check if username is not alphanumeric */
-         else if(0 == preg_match("/^([0-9a-zA-Z])+$/", $subuser)){
+         else if(preg_match("/^[-_\.0-9a-zA-Z]+$/", $subuser) === false){
             $form->setError($field, "* Username not alphanumeric");
          }
          /* Check if username is reserved */
@@ -291,7 +290,7 @@ class Session
             $form->setError($field, "* Password too short");
          }
          /* Check if password is not alphanumeric */
-         else if(0 == preg_match("/^([0-9a-zA-Z`~!@#/%\$\^&\*\(\)-=_\+;:,\.\<\>\?]+)$/", ($subpass = trim($subpass)))){
+         else if(preg_match("/^[0-9a-zA-Z`~!@#%\$\^&\*\(\)-=_\+;:,\.\<\>\?]+$/", ($subpass = trim($subpass))) === false){
             $form->setError($field, "* Password not alphanumeric");
          }
          /**
@@ -310,8 +309,8 @@ class Session
       else{
          /* Check if valid email address */
          //$regex = "/^[_+a-zA-Z0-9-]+(\.[_+a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]{1,})*\.([a-z]{2,}){1}$/";	old
-		 $regex = "/[a-zA-Z]+[._a-zA-Z0-9-]*@[a-z0-9-]+\.[a-z0-9-]+/";									// Scott - 7/29/2021
-         if(0 == preg_match($regex,$subemail)){
+		   $regex = "/[a-zA-Z]+[._a-zA-Z0-9-]*@[a-z0-9-]+\.[a-z0-9-]+/";									// Scott - 7/29/2021
+         if(preg_match($regex,$subemail) === false){
             $form->setError($field, "* Email invalid");
          }
          $subemail = stripslashes($subemail);
@@ -354,7 +353,7 @@ class Session
          else{
             /* Check if password too short or is not alphanumeric */
             $subcurpass = stripslashes($subcurpass);
-            if(strlen($subcurpass) < 4 || 0 == preg_match("/^([0-9a-zA-Z`~!@#/%\$\^&\*\(\)-=_\+;:,\.\<\>\?]+)$/", ($subcurpass = trim($subcurpass)))){
+            if(strlen($subcurpass) < 4 || preg_match("/^[0-9a-zA-Z`~!@#%\$\^&\*\(\)-=_\+;:,\.\<\>\?]+$/", ($subcurpass = trim($subcurpass))) === false){
                $form->setError($field, "* Current Password incorrect");
             }
             /* Password entered is incorrect */
@@ -372,7 +371,7 @@ class Session
             $form->setError($field, "* New Password too short");
          }
          /* Check if password is not alphanumeric */
-         else if(0 == preg_match("/^([0-9a-zA-Z`~!@#/%\$\^&\*\(\)-=_\+;:,\.\<\>\?]+)$/", ($subnewpass = trim($subnewpass)))){
+         else if(preg_match("/^[0-9a-zA-Z`~!@#%\$\^&\*\(\)-=_\+;:,\.\<\>\?]+$/", ($subnewpass = trim($subnewpass))) === false){
             $form->setError($field, "* New Password be alphanumeric");
          }
       }
@@ -388,7 +387,7 @@ class Session
       if($subemail && strlen($subemail = trim($subemail)) > 0){
          /* Check if valid email address */
          $regex = "/^[_+a-zA-Z0-9-]+(\.[_+a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]{1,})*\.([a-z]{2,}){1}$/";
-         if(0 == preg_match($regex,$subemail)){
+         if(preg_match($regex,$subemail) === false){
             $form->setError($field, "* Email invalid");
          }
          $subemail = stripslashes($subemail);

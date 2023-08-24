@@ -67,10 +67,10 @@ class MySQLDB
 	      $username = addslashes($username);
       //}
 	  
-	// Quote if not a number
-	if (!is_numeric($username)) {
-	  $username = $this->connection->real_escape_string($username);
-	}
+      // Quote if not a number
+      if (!is_numeric($username)) {
+      $username = $this->connection->real_escape_string($username);
+      }
 
       /* Verify that user is in database */
       $q = "SELECT password FROM ".TBL_USERS." WHERE username = '$username'";
