@@ -8,7 +8,7 @@ $db = get_my_db();
 
 include 'include/v.key.php';																	// get v and key
 
-$stmt_iso = $db->prepare("SELECT * FROM scripture_main, nav_ln WHERE scripture_main.ISO_ROD_index = nav_ln.ISO_ROD_index ORDER BY ISO, ROD_Code, Variant_Code");
+$stmt_iso = $db->prepare("SELECT * FROM scripture_main, nav_ln WHERE scripture_main.ISO_ROD_index = nav_ln.ISO_ROD_index ORDER BY scripture_main.ISO, scripture_main.ROD_Code, scripture_main.Variant_Code");
 //$stmt_main = $db->prepare("SELECT * FROM scripture_main WHERE ISO_ROD_index = ?");
 $stmt_var = $db->prepare("SELECT Variant_Eng FROM Variants WHERE Variant_Code = ?");
 $stmt_country = $db->prepare("SELECT ISO_countries, English FROM countries, ISO_countries WHERE ISO_countries.ISO_ROD_index = ? AND ISO_countries.ISO_countries = countries.ISO_Country");
@@ -18,7 +18,7 @@ $stmt_NT_PDF = $db->prepare("SELECT COUNT(*) AS NT_PDF_temp FROM NT_PDF_Media WH
 $stmt_OT_Audio = $db->prepare("SELECT COUNT(*) AS OT_Audio_temp FROM OT_Audio_Media WHERE ISO_ROD_index = ?");
 $stmt_NT_Audio = $db->prepare("SELECT COUNT(*) AS NT_Audio_temp FROM NT_Audio_Media WHERE ISO_ROD_index = ?");
 $stmt_SAB = $db->prepare("SELECT COUNT(*) AS SAB_temp FROM SAB WHERE ISO_ROD_index = ? AND SAB_Audio = ?");
-$stmt_links = $db->prepare("SELECT LOWER(company) as company_temp, map, YouVersion, GooglePlay FROM links WHERE ISO_ROD_index = ? AND (map >= 1 OR YouVersion >= 1 OR GooglePlay >= 1 OR company = 'website' OR company = 'webpage')");
+$stmt_links = $db->prepare("SELECT LOWER(company) as company_temp, map, BibleIs, BibleIsGospelFilm, YouVersion, GooglePlay, GRN FROM links WHERE ISO_ROD_index = ? AND (map >= 1 OR YouVersion >= 1 OR GooglePlay >= 1 OR company = 'website' OR company = 'webpage')");
 $stmt_CellPhone = $db->prepare("SELECT Cell_Phone_Title FROM CellPhone WHERE ISO_ROD_index = ?");
 $stmt_PlaylistVideo = $db->prepare("SELECT PlaylistVideoDownload FROM PlaylistVideo WHERE ISO_ROD_index = ?");
 $stmt_English = $db->prepare("SELECT LN_English FROM LN_English WHERE ISO_ROD_index = ?");
@@ -39,10 +39,11 @@ if ($result_iso->num_rows <= 0) {
 $m=0;
 
 $first = '{';
+
 while ($row = $result_iso->fetch_assoc()) {
     $m++;
 
-    include("include/ISO_details.php");
+    include('include/ISO_details.php');
 
     include('include/LN_details.php');
 

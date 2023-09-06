@@ -172,6 +172,7 @@ $MySwordNum = 0;
 $iPhoneCellNum = 0;
 $AndroidAppCellNum = 0;
 $AppleAppCellNum = 0;
+$ePubCellNum = 0;
 if ($CellPhone === 1) {
 //	$query="SELECT Cell_Phone_Title FROM CellPhone WHERE ISO_ROD_index = $idx";
 //	$result_temp = $db->query($query);
@@ -199,6 +200,9 @@ if ($CellPhone === 1) {
 					break;
 				case "iOS Asset Package";
 					$AppleAppCellNum++;
+					break;		
+				case "ePub";
+					$ePubCellNum++;
 					break;		
 				default:
 					echo "This is not suppose to happen.<br />";

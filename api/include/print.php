@@ -75,6 +75,7 @@
 		$first .= '"se_online_viewer":	'.$viewer.',';
 		$first .= '"se_media": {';
 		$first .= '"text":				'.($OT_PDF + $NT_PDF).',';
+		$first .= '"ePub":				'.$ePubCellNum.',';
 		$first .= '"audio": 			'.($OT_Audio + $NT_Audio).',';
 		$first .= '"video":				0,';
 		$first .= '"playlist_audio":	'.$PlaylistAudio.',';									// .txt
@@ -94,7 +95,7 @@
 		$first .= '},';
 		$first .= '"links_media": {';
 		$first .= '"Bible.is":			'.$BibleIs.',';
-		$first .= '"Bible.is Gospel Film":	'.$BibleIsGospelFilm.',';
+		$first .= '"Bible.is_Gospel_Film":	'.$BibleIsGospelFilm.',';
 		$first .= '"YouVersion":		'.$YouVersion.',';
 		$first .= '"eBible":			'.$eBible.',';
 		$first .= '"GRN":				'.$GRN;

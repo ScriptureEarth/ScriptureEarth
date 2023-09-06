@@ -9,7 +9,7 @@
  * Written by: Jpmaster77 a.k.a. The Grandmaster of C++ (GMC)
  * Last Updated: August 19, 2004
  
- password = [0-9a-zA-Z]+
+ password = [0-9a-zA-Z`~!@#%\$\^&\*\(\)-=_\+;:,\.\<\>\?]+
  */
 include("include/session.php");
 ?>
