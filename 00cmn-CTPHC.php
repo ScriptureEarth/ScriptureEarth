@@ -191,13 +191,18 @@ div.container {
 	document.title = "Contact/Links";
 </script>
 <h2 style='margin-left: 0; '>联系/链接</h2>
-<div style='margin-top: 30px; margin-bottom: 40px; margin-left: 5px; font-size: 120%; '>
-	<div>
-    <strong><span id="docs-internal-guid-bc86aad7-7fff-a134-23aa-11e47547ca1a"><img src="https://lh3.googleusercontent.com/FX0TXNvzTLQ4ZZ5r8fQM24RFe_aghVg1EvAUvKA6Y-GHYu2W_PoGENclOwVMRyaRutJW2jdiQfxcOhK2mAEEI1X2O4zKlvETN5fVjEtjCEI0QB_BJyNenxPdneuWnvciopicVmCw" alt="SIL International" width="32" height="32" /></span> SIL 国际</strong><br />
-		<a href="https://www.sil.org/">www.sil.org</a><br />
+
+<div class='clearfix' style='margin-top: 30px; margin-bottom: 40px; margin-left: 5px; font-size: 120%; '>
+	<div class='contacts'>
 		如有问题或反馈，请联系。<br />
-    	<a href="mailto:info&#64;ScriptureEarth.org">info&#64;ScriptureEarth.org</a>
+		<img src='images/app-icon.jpg' alt="feedback" style='margin-bottom: -6px; ' width="32" height="32" />
+    	<a href="mailto:info&#64;ScriptureEarth.org">info&#64;ScriptureEarth.org</a><br /><br />
+    	<strong><span id="docs-internal-guid-bc86aad7-7fff-a134-23aa-11e47547ca1a"><img src="https://lh3.googleusercontent.com/FX0TXNvzTLQ4ZZ5r8fQM24RFe_aghVg1EvAUvKA6Y-GHYu2W_PoGENclOwVMRyaRutJW2jdiQfxcOhK2mAEEI1X2O4zKlvETN5fVjEtjCEI0QB_BJyNenxPdneuWnvciopicVmCw" alt="SIL International" width="32" height="32" /></span> SIL 国际</strong><br />
+		<a href="https://www.sil.org/">www.sil.org</a><br />
     </div>
+    <div class='contacts'>
+		&nbsp;
+	</div>
 </div>
 
 <hr>

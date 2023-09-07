@@ -191,13 +191,18 @@ div.container {
 	document.title = "Contact/Links";
 </script>
 <h2 style='margin-left: 0; '>Contact/Links</h2>
-<div style='margin-top: 30px; margin-bottom: 40px; margin-left: 5px; font-size: 120%; '>
-	<div>
-    <strong><span id="docs-internal-guid-bc86aad7-7fff-a134-23aa-11e47547ca1a"><img src="https://lh3.googleusercontent.com/FX0TXNvzTLQ4ZZ5r8fQM24RFe_aghVg1EvAUvKA6Y-GHYu2W_PoGENclOwVMRyaRutJW2jdiQfxcOhK2mAEEI1X2O4zKlvETN5fVjEtjCEI0QB_BJyNenxPdneuWnvciopicVmCw" alt="SIL International" width="32" height="32" /></span> SIL International</strong><br />
-		<a href="https://www.sil.org/">www.sil.org</a><br />
+
+<div class='clearfix' style='margin-top: 30px; margin-bottom: 40px; margin-left: 5px; font-size: 120%; '>
+	<div class='contacts'>
 		For questions or to give feedback contact:<br />
-    	<a href="mailto:info&#64;ScriptureEarth.org">info&#64;ScriptureEarth.org</a>
+		<img src='images/app-icon.jpg' alt="feedback" style='margin-bottom: -6px; ' width="32" height="32" />
+    	<a href="mailto:info&#64;ScriptureEarth.org">info&#64;ScriptureEarth.org</a><br /><br />
+    	<strong><span id="docs-internal-guid-bc86aad7-7fff-a134-23aa-11e47547ca1a"><img src="https://lh3.googleusercontent.com/FX0TXNvzTLQ4ZZ5r8fQM24RFe_aghVg1EvAUvKA6Y-GHYu2W_PoGENclOwVMRyaRutJW2jdiQfxcOhK2mAEEI1X2O4zKlvETN5fVjEtjCEI0QB_BJyNenxPdneuWnvciopicVmCw" alt="SIL International" width="32" height="32" /></span> SIL International</strong><br />
+		<a href="https://www.sil.org/">www.sil.org</a>
     </div>
+    <div class='contacts'>
+		SE Promotion Materials: <button type='button' onclick="location.href='promotionMaterials/promotion.php'" style='font-size: 13pt; '>Promotion Materials</button>
+	</div>
 </div>
 
 <hr>
@@ -206,7 +211,7 @@ div.container {
 
 <div class='clearfix'>
     <div class='contacts'>
-      <strong><span id="docs-internal-guid-20da3ac7-7fff-3a3f-83b7-0669ad24e42d"><img src="https://lh3.googleusercontent.com/IU4KXtCaasavRkLvdD9U8B1t7cQhu5rBPUwGOl478-pgTqWyxHD3OK0n7_YyUHVKaG9t3ETWnWXE_H2t7028NhtPJ5eYWVwcmfj4h-WfKMv3wjkUpSyHNc1kQaUVQZwjE5jEkKyn" alt="Fath Comes By Hearing" width="32" height="32" /></span>Faith Comes By Hearing / Hosanna</strong><br />
+      <strong><span id="docs-internal-guid-20da3ac7-7fff-3a3f-83b7-0669ad24e42d"><img src="https://lh3.googleusercontent.com/IU4KXtCaasavRkLvdD9U8B1t7cQhu5rBPUwGOl478-pgTqWyxHD3OK0n7_YyUHVKaG9t3ETWnWXE_H2t7028NhtPJ5eYWVwcmfj4h-WfKMv3wjkUpSyHNc1kQaUVQZwjE5jEkKyn" alt="Fath Comes By Hearing" width="32" height="32" /></span>Faith Comes By Hearing / Hosanna / Bible.is</strong><br />
         <a href="https://www.faithcomesbyhearing.com/">https://www.faithcomesbyhearing.com</a>
     </div>
     <div class='contacts'>

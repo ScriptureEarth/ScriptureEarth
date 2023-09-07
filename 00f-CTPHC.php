@@ -179,13 +179,18 @@ div.container {
 	document.title = "Contacter/Liens";
 </script>
 <h2 style='margin-left: 0; '>Contacter/Liens</h2>
-<div style='margin-top: 30px; margin-bottom: 40px; margin-left: 5px; font-size: 120%; '>
-	<div>
-      <strong><span id="docs-internal-guid-9a8db584-7fff-df01-2632-4cfe182522fc"><img src="https://lh3.googleusercontent.com/FX0TXNvzTLQ4ZZ5r8fQM24RFe_aghVg1EvAUvKA6Y-GHYu2W_PoGENclOwVMRyaRutJW2jdiQfxcOhK2mAEEI1X2O4zKlvETN5fVjEtjCEI0QB_BJyNenxPdneuWnvciopicVmCw" alt="" width="32" height="32" /></span> SIL International</strong><br />
+
+<div class='clearfix' style='margin-top: 30px; margin-bottom: 40px; margin-left: 5px; font-size: 120%; '>
+<div class='contacts'>
+    	Vous souhaitez donner votre avis ou vous avez une demande :<br />
+		<img src='images/app-icon.jpg' alt="feedback" style='margin-bottom: -6px; ' width="32" height="32" />
+    	<a href="mailto:info&#64;ScriptureEarth.org">info&#64;ScriptureEarth.org</a><br /><br />
+		<strong><span id="docs-internal-guid-9a8db584-7fff-df01-2632-4cfe182522fc"><img src="https://lh3.googleusercontent.com/FX0TXNvzTLQ4ZZ5r8fQM24RFe_aghVg1EvAUvKA6Y-GHYu2W_PoGENclOwVMRyaRutJW2jdiQfxcOhK2mAEEI1X2O4zKlvETN5fVjEtjCEI0QB_BJyNenxPdneuWnvciopicVmCw" alt="" width="32" height="32" /></span> SIL International</strong><br />
 		<a href="https://www.sil.org/">www.sil.org</a><br />
-		Vous souhaitez donner votre avis ou vous avez une demande.<br />Afin de répondre à mieux à votre demande, nous vous invitons à contacter ScriptureEarth :<br />
-    	<a href="mailto:info&#64;ScriptureEarth.org">info&#64;ScriptureEarth.org</a>
     </div>
+    <div class='contacts'>
+		&nbsp;
+	</div>
 </div>
 
 <hr>
