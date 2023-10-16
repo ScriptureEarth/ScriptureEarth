@@ -10,7 +10,7 @@ if (isset($_GET["st"])) {
 	$st = $_GET["st"];
 	$st = preg_replace('/^([a-z]{3})/', '$1', $st);
 	if ($st == NULL) {
-		die ('‘st’ is empty.</body></html>');
+		die ('ï¿½stï¿½ ' . translate('is empty', $st, 'sys') . '.</body></html>');
 	}
 }
 
@@ -18,7 +18,7 @@ if (isset($_GET["iso"])) {
 	$iso = $_GET["iso"];
 	$iso = preg_replace('/^([a-z]{3})/', '$1', $iso);
 	if ($iso == NULL) {
-		die ('‘ISO’ ' . translate('is empty', $st, 'sys') . '.</body></html>');
+		die ('ï¿½ISOï¿½ ' . translate('is empty', $st, 'sys') . '.</body></html>');
 	}
 }
 else
@@ -133,8 +133,7 @@ if (basename($_SERVER['PHP_SELF']) == $ScriptFilename) {
         }
 		else {
             // Requested file does not exist (File not found)
-            echo(translate('Requested file does not exist.', $st, 'sys'));
-			die();
+            die(translate('Requested file does not exist.', $st, 'sys'));
         }
     }
 }

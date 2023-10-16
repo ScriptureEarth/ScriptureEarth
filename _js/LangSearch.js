@@ -92,16 +92,17 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
     if (xmlhttp == null) {
         return;
     }
-    var color = '';
-    var table = '';
-    var Country_Total = [];
+    let color = '';
+    let table = '';
+    let Country_Total = [];
 
     Scriptname = window.location.href;
+    Scriptname = Scriptname.substr(0, Scriptname.indexOf('?'));     // my computer localhost?
 	
     /****************************************************************************************************************
     	AJAX - languageSearch.php
     ****************************************************************************************************************/
-    var url = "LSearch.php";
+    let url = "LSearch.php";
     url = url + "?language=" + str;
     if (st == 'cmn' && nonLatinScript == 0) { // test to see if st = Chinese and if it's Latin
         url = url + "&st=eng";
@@ -119,7 +120,7 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
     xmlhttp.onreadystatechange = function() { // the function that returns for AJAX object
         if (xmlhttp.readyState == 4) { // if the readyState = 4 then livesearch is displayed
             //            alert(xmlhttp.responseText);
-            var splits = xmlhttp.responseText.split('<br />'); // Display all of the languages that have 'language' as a part of it.
+            let splits = xmlhttp.responseText.split('<br />'); // Display all of the languages that have 'language' as a part of it.
             document.getElementById("LangSearch").innerHTML = '';
             document.getElementById("CountSearch").innerHTML = '';
             if (splits.length == 1 && splits[0].indexOf('@') === -1) {
@@ -143,26 +144,36 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
             table += '<p class="colCode1">' + colCode + '</p>';
             table += '<p class="colAlt1">' + colAlt + '</p>';
             table += '</div>';
-            for (var i = 0; i < splits.length - 4; i++) {
+            let firstSplit = '';
+            let LN = '';
+            let alt = '';
+            let iso = '';
+            let country = '';
+            let rod = '';
+            let VD = '';
+            let idx = '';
+            for (let i = 0; i < splits.length - 4; i++) {
                 table += "<p style='line-height: 2px; '>&nbsp;</p>"; // empty line between records
-                var firstSplit = splits[i].split('@');
-                var LN = firstSplit[0];
-                var alt = firstSplit[1];
-                var iso = firstSplit[2];
-                var country = firstSplit[3];
-                var rod = firstSplit[4];
-                var VD = firstSplit[5];
-                var idx = firstSplit[6];
+                firstSplit = splits[i].split('@');
+                LN = firstSplit[0];
+                alt = firstSplit[1];
+                iso = firstSplit[2];
+                country = firstSplit[3];
+                rod = firstSplit[4];
+                VD = firstSplit[5];
+                idx = firstSplit[6];
                 // Cross Site Scripting (XSS) attack happens where client side code (usually JavaScript) gets injected into the output of your PHP script. The next line cleans it up.
                 table += "<div class='colSecond'>";
                 table += "<div class='colLN2' onclick='window.open(\"" + Scriptname + "?idx=" + idx + "&language=" + LN + "&iso_code=" + iso + "\", \"_self\")'>" + LN;
                 if (VD != '') { table += "<div>(" + VD + ")</div>" };
                 table += "</div>";
                 table += "<p class='colCountry2'>";
-                var countrySplit = country.split(', '); // full country name : ZZ abbreviated country name
-                for (var k = 0; k < countrySplit.length; k++) {
-                    var tempCountry = countrySplit[k].substring(0, countrySplit[k].length - 3); // full country name (split ':')
-                    var tempAbbCountry = countrySplit[k].substring(countrySplit[k].length - 2); // ZZ abbreviated country name (split ':')
+                let countrySplit = country.split(', '); // full country name : ZZ abbreviated country name
+                let tempCountry = ''; // full country name (split ':')
+                let tempAbbCountry = ''; // ZZ abbreviated country name (split ':')
+                for (let k = 0; k < countrySplit.length; k++) {
+                    tempCountry = countrySplit[k].substring(0, countrySplit[k].length - 3); // full country name (split ':')
+                    tempAbbCountry = countrySplit[k].substring(countrySplit[k].length - 2); // ZZ abbreviated country name (split ':')
                     table += '<span style="font-size: .9em; cursor: pointer; " onclick="window.open(\'' + Scriptname + '?sortby=country&name=' + tempAbbCountry + '\', \'_self\')">' + tempCountry + '</span>, ';
                 }
                 table = table.substring(0, table.length - 2); // take out the last ', '

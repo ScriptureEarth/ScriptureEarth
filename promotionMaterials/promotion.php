@@ -44,7 +44,12 @@ li {
 <body>
 <h1 style='text-align: center; '>Promotion Materials for ScriptureEarth.org</h1>
 <h2 style='margin-bottom: 6px; '>English Items</h2>
-<!--ScriptureEarth.org.mp4<br /-->
+<video style="width: 500px; height: auto; " controls>
+  <source src="ScriptureEarth.org.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+Jim McCabe - 3 minute video<br />
+<br />
 <img src='SE.org%20card%20-%20globe%20-%20QR.jpg' alt='SE.org card - globe - QR' style='width: 500px; height: auto; ' /> SE.org card - globe - QR<br />
 <img src='SE.org%20card%20-%20globe.jpg' alt='SE.org card - globe' style='width: 500px; height: auto; ' /> SE.org card - globe<br />
 <img src='SE.org%20card%20-%20LUMO.jpg' alt='SE.org card - LUMO' style='width: 500px; height: auto; ' /> SE.org card - LUMO<br />
