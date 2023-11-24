@@ -285,6 +285,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	}
 
 	$GooglePlay = 0;
+	$iTunes = 0;
 	$moreLinks = 0;
 	$linksMaps = 0;
 	$linksEmail = 0;
@@ -293,8 +294,12 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		$result_GP=$db->query($query);
 		$GooglePlay = $result_GP->num_rows;					// number of rows
 
+		$query = "SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND company = 'iTunes Play Store'";
+		$result_iTunes = $db->query($query);
+		$iTunes = $result_iTunes->num_rows;					// number of rows
+
 		// onestory, itunes, facebook, deaf\.?bible, and anything else
-		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND email = 0 AND map = 0 AND buy = 0 AND BibleIs = 0 AND BibleIsGospelFilm = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 ORDER BY URL";
+		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND company <> 'iTunes Play Store' AND email = 0 AND map = 0 AND buy = 0 AND BibleIs = 0 AND BibleIsGospelFilm = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 ORDER BY URL";
 		$result_moreLinks=$db->query($query);
 		$moreLinks = $result_moreLinks->num_rows;			// number of rows
 
@@ -324,6 +329,13 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		$query="SELECT PlaylistVideoTitle, PlaylistVideoFilename FROM PlaylistVideo WHERE ISO_ROD_index = '$ISO_ROD_index' AND PlaylistVideoDownload = 1";
 		$result_PlaylistVideo_download=$db->query($query);
 		$PlaylistVideo_download = $result_PlaylistVideo_download->num_rows;			// number of rows
+	}
+
+	$Dis_watch = 0;
+	if ($watch) {
+		$query = "SELECT * FROM watch WHERE ISO_ROD_index = '$ISO_ROD_index'";
+		$result_Watch = $db->query($query);
+		$Dis_watch = $result_Watch->num_rows;
 	}
 
 	$otherTitles = 0;
@@ -375,12 +387,12 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	setTitle("<?php echo ($whichBible == '' ? '' : $whichBible . ' ') . $LN . ($ISO == 'qqq' ? '' : '['.$ISO.']'); ?>");		// qqq equals Deaf
 
 	// Object.entries() takes an object like { a: 1, b: 2, c: 3 } and turns it into an array of key-value pairs: [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ].
-	const DisplayText = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_otherTitles': <?php echo $otherTitles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_buy': <?php echo $buy; ?>};
-	const DisplayAudio = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_other_titles': <?php echo $other_titles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
+	const DisplayText = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_otherTitles': <?php echo $otherTitles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_buy': <?php echo $buy; ?>};
+	const DisplayAudio = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_other_titles': <?php echo $other_titles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
 	const DisplayVideo = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
-	const DisplayApp = {'Dis_App': <?php echo $App; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>};
+	const DisplayApp = {'Dis_App': <?php echo $App; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>};
 	const DisplayOther = {'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>, 'Dis_eBible': <?php echo $eBible; ?>};
-	const DisplayAll = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_otherTitles': <?php echo $other_titles; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_links': <?php echo $links; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_App': <?php echo $App; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>};
+	const DisplayAll = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_otherTitles': <?php echo $other_titles; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_links': <?php echo $links; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_App': <?php echo $App; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>};
 
 	// set display = "table" for all "DisplayZZZZZZ" Object.entries()
 	function menuEnableText() {
@@ -1579,6 +1591,43 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		}
 		echo '</table>';
 	}
+
+/*
+	*************************************************************************************************************
+		Does it have any links to iTunes? (links table)
+	*************************************************************************************************************
+*/
+	if ($iTunes && $Internet) {
+		// This takes care of all of the rest of the links.
+		echo '<table id="Dis_iTunes">';
+		while ($r2 = $result_iTunes->fetch_array(MYSQLI_ASSOC)) {
+			$company_title=trim($r2['company_title']);
+			$company=trim($r2['company']);
+			$URL=trim($r2['URL']);
+			?>
+			<tr>
+				<td style='width: 45px; '>
+					<?php
+					if (preg_match('/itunes/i', $URL) || preg_match('/\.apple\./i', $URL)) {
+						echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/iTunes-icon.jpg' alt='iTunes' title='iTunes' />";
+					}
+					echo "</div>";
+				echo "</td>";
+				echo "<td>";
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('iTunes', $st, 'sys')."'>".translate('Link', $st, 'sys')." : ";
+					echo $company;
+					if ($company_title != '' && !is_null($company_title)) {
+						echo ' ' . $company_title;
+					}
+					echo '</div>';
+					?>
+				</td>
+			</tr>
+			<?php
+		}
+		echo '</table>';
+	}
+	
 /*
 	*************************************************************************************************************
 		Is it audio playable?
@@ -1602,12 +1651,12 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 						echo '<table id="Dis_OT_Audio">';
 						$OTNT = $NT_Audio + $OT_Audio;
 						echo '<tr>';
-						echo '<td style="width: 45px; "">';
-							$OT_Book = array();
-							$OT_Book_Chapter = array();
-							$a_index = 0;
-							echo "<div class='linePointer' title='".translate('Listen to the Old Testament.', $st, 'sys')."' onclick='ListenAudio(document.form_OT_Chapters_mp3.OT_Chapters_mp3, true, \"OTListenNow\", $OTNT)'><img  class='iconActions' src='../images/listen-icon.jpg' alt='".translate('Listen', $st, 'sys')."' title='".translate('Listen', $st, 'sys')."' /></div>";
-						echo '</td>';
+							echo '<td style="width: 45px; ">';
+								$OT_Book = array();
+								$OT_Book_Chapter = array();
+								$a_index = 0;
+								echo "<div class='linePointer' title='".translate('Listen to the Old Testament.', $st, 'sys')."' onclick='ListenAudio(document.form_OT_Chapters_mp3.OT_Chapters_mp3, true, \"OTListenNow\", $OTNT)'><img  class='iconActions' src='../images/listen-icon.jpg' alt='".translate('Listen', $st, 'sys')."' title='".translate('Listen', $st, 'sys')."' /></div>";
+							echo '</td>';
 						echo '<td>';
 						?>
 						<div class='OTAudio'>
@@ -1694,22 +1743,22 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 							}
 							?>
 								<span id='OTBookChapter' style='vertical-align: top; '> listenBook " " listenChapter </span> &nbsp;&nbsp; 
-								<div id="jquery_jplayer_<?php echo ( $OT_Audio > 0 ? '2' : '1' ) ?>" class="jp-jplayer"></div>
+								<div id="jquery_jplayer_<?php echo ( $OT_Audio > 0 ? '2' : '1' ) ?>" class="jp-jplayer" style="display: inline; "></div>
 								<div id="jp_container_<?php echo ( $OT_Audio > 0 ? '2' : '1' ) ?>" class="jp-audio">
 									<div class="jp-type-single">
 										<div class="jp-gui jp-interface">
 											<ul class="jp-controls">
-												<li><a href="#" class="jp-play" tabindex="1">play</a></li>
-												<li><a href="#" class="jp-pause" tabindex="1">pause</a></li>
-												<li><a href="#" class="jp-stop" tabindex="1">stop</a></li>
+												<li><a href="#" class="jp-play" tabindex="0">play</a></li>
+												<li><a href="#" class="jp-pause" tabindex="0">pause</a></li>
+												<li><a href="#" class="jp-stop" tabindex="0">stop</a></li>
 												<?php
 												if (isset($mobile) && $mobile == 1) {
 												}
 												else {
 													?>
-													<li><a href="#" class="jp-mute" tabindex="1" title="mute">mute</a></li>
-													<li><a href="#" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
-													<li><a href="#" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+													<li><a href="#" class="jp-mute" tabindex="0" title="mute">mute</a></li>
+													<li><a href="#" class="jp-unmute" tabindex="0" title="unmute">unmute</a></li>
+													<li><a href="#" class="jp-volume-max" tabindex="0" title="max volume">max volume</a></li>
 													<?php
 												}
 												?>
@@ -1731,8 +1780,8 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 													<div class="jp-current-time"></div>
 													<div class="jp-duration"></div>
 													<!--ul class="jp-toggles">
-														<li><a href="#" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
-														<li><a href="#" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
+														<li><a href="#" class="jp-repeat" tabindex="0" title="repeat">repeat</a></li>
+														<li><a href="#" class="jp-repeat-off" tabindex="0" title="repeat off">repeat off</a></li>
 													</ul-->
 												</div>
 												<?php
@@ -1803,7 +1852,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 							if ($result_array && $num_array > 0) {
 								$NT_Book[] = $a_index;
 								$j=(string)$a_index;
-								while ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {						// display the chapters
+								while ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {			// display the chapters
 									$NT_Audio_Filename = trim($r_array['NT_Audio_Filename']);
 									if (!empty($NT_Audio_Filename)) {
 										$NT_Audio_Chapter = trim($r_array['NT_Audio_Chapter']);
@@ -1832,7 +1881,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 							$num_array=$result_array->num_rows;
 							if ($result_array && $num_array > 0) {
 								$i=0;
-								while ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {						// display the chapters
+								while ($r_array = $result_array->fetch_array(MYSQLI_ASSOC)) {			// display the chapters
 									$NT_Audio_Filename = trim($r_array['NT_Audio_Filename']);
 									if (!empty($NT_Audio_Filename)) {
 										$NT_Audio_Chapter = trim($r_array['NT_Audio_Chapter']);
@@ -1862,22 +1911,22 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 							?>
 								<!--div id="slideshow"></div test for 00-SpecificLanguage.js for function ListenAudio(mp3Info, autostart, whichListenTo, OTNT)-->
 								<span id='NTBookChapter' style='vertical-align: top; '> listenBook " " listenChapter </span> &nbsp;&nbsp; 
-								<div id="jquery_jplayer_1" class="jp-jplayer"></div>
+								<div id="jquery_jplayer_1" class="jp-jplayer" style="display: inline; "></div>
 								<div id="jp_container_1" class="jp-audio">
 									<div class="jp-type-single">
 										<div class="jp-gui jp-interface">
 											<ul class="jp-controls">
-												<li><a href="#" class="jp-play" tabindex="1">play</a></li>
-												<li><a href="#" class="jp-pause" tabindex="1">pause</a></li>
-												<li><a href="#" class="jp-stop" tabindex="1">stop</a></li>
+												<li><a href="#" class="jp-play" tabindex="0">play</a></li>
+												<li><a href="#" class="jp-pause" tabindex="0">pause</a></li>
+												<li><a href="#" class="jp-stop" tabindex="0">stop</a></li>
 												<?php
 												if (isset($mobile) && $mobile == 1) {
 												}
 												else {
 													?>
-													<li><a href="#" class="jp-mute" tabindex="1" title="mute">mute</a></li>
-													<li><a href="#" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
-													<li><a href="#" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+													<li><a href="#" class="jp-mute" tabindex="0" title="mute">mute</a></li>
+													<li><a href="#" class="jp-unmute" tabindex="0" title="unmute">unmute</a></li>
+													<li><a href="#" class="jp-volume-max" tabindex="0" title="max volume">max volume</a></li>
 													<?php
 												}
 												?>
@@ -1899,8 +1948,8 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 													<div class="jp-current-time"></div>
 													<div class="jp-duration"></div>
 													<!--ul class="jp-toggles">
-														<li><a href="#" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
-														<li><a href="#" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
+														<li><a href="#" class="jp-repeat" tabindex="0" title="repeat">repeat</a></li>
+														<li><a href="#" class="jp-repeat-off" tabindex="0" title="repeat off">repeat off</a></li>
 													</ul-->
 												</div>
 												<?php
@@ -2206,14 +2255,14 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 								<div class="jp-type-playlist">
 									<div class="jp-gui jp-interface" style="background-color: #ddd; ">
 										<ul class="jp-controls" style="background: none; ">
-											<li><a href="#" class="jp-previous" tabindex="1">previous</a></li>
-											<li><a href="#" class="jp-play" tabindex="1">play</a></li>
-											<li><a href="#" class="jp-pause" tabindex="1">pause</a></li>
-											<li><a href="#" class="jp-next" tabindex="1">next</a></li>
-											<li><a href="#" class="jp-stop" tabindex="1">stop</a></li>
-											<li><a href="#" class="jp-mute" tabindex="1" title="mute">mute</a></li>
-											<li><a href="#" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
-											<li><a href="#" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+											<li><a href="#" class="jp-previous" tabindex="0">previous</a></li>
+											<li><a href="#" class="jp-play" tabindex="0">play</a></li>
+											<li><a href="#" class="jp-pause" tabindex="0">pause</a></li>
+											<li><a href="#" class="jp-next" tabindex="0">next</a></li>
+											<li><a href="#" class="jp-stop" tabindex="0">stop</a></li>
+											<li><a href="#" class="jp-mute" tabindex="0" title="mute">mute</a></li>
+											<li><a href="#" class="jp-unmute" tabindex="0" title="unmute">unmute</a></li>
+											<li><a href="#" class="jp-volume-max" tabindex="0" title="max volume">max volume</a></li>
 										</ul>
 										<div class="jp-progress">
 											<div class="jp-seek-bar">
@@ -2378,8 +2427,9 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		if ($result_PlaylistVideo->num_rows > 0) {
 			echo '<table id="Dis_PlaylistVideo">';
 			$z=0;
-			$SEVideoPlaylist=10;
+			$SEVideoPlaylist=100;
 			while ($r_Playlist = $result_PlaylistVideo->fetch_array(MYSQLI_ASSOC)) {
+				$SEVideoPlaylist++;
 				$PlaylistVideoTitle = $r_Playlist['PlaylistVideoTitle'];
 				$PlaylistVideoFilename = $r_Playlist['PlaylistVideoFilename'];
 				$SEVideoPlaylistIndex=0;
@@ -2441,15 +2491,24 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				$image = 0;																	// just the ISO
 				$bookName = '';
 				$tempArray = [];
+				$videoIcon = '';
 				
-				$tempArray = explode("\t", $VideoConvertContents[1]);						// $Internet test
+				$tempArray = explode("\t", $VideoConvertContents[2]);						// $Internet test. skips first 2 lines
 				if (count($tempArray) < 3) {
 					file_put_contents('SpecificLanguage.txt', 'filename: #'.$filename.'#; $VideoConvertContents[1]: #'.$VideoConvertContents[1]."#\n", FILE_APPEND | LOCK_EX);
 				}
-				if (stripos($tempArray[3], 'http', 0) === 0 && !$Internet) {				// returns 0 means 'http' starts at column 0. === needs to be this way (and not ==) because jPlayer wont work.
+				if (!stripos($tempArray[3], 'http') === false && !$Internet) {				// returns 0 means 'http' starts at column 0. === needs to be this way (and not ==) because jPlayer wont work.
 					continue;
 				}
-				
+				if (stripos($tempArray[3], 'data') === 0) {									// at the very first column
+					$videoIcon = 'SEvideoIcon.jpg';
+				}
+				elseif (stripos($tempArray[3], 'deditos')) {								// anywhere
+					$videoIcon = 'DeditosIcon.jpg';
+				}
+				else {
+					$videoIcon = 'youtube-icon.jpg';
+				}
 				if (preg_match("/image/i", $VideoConvertContents[0])) {						// first line of $filename
 					preg_match("/^([^\t]*)\t/", $VideoConvertContents[0], $match);			// first word of the first line (Genesis, Luke, Acts, Jesus Film, etc.)
 					$bookName = str_replace(' ', '', $match[0]);							// take out spaces
@@ -2465,7 +2524,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				/*******************************************************************************************************************
 						set $PlaylistVideoTitle for 'tool tip'
 				********************************************************************************************************************/
-				if ($PLVideo == 'jesusfilm' || $PLVideo == 'magdalena' || $PLVideo == 'scriptureanim' || $PLVideo == 'johnanim' || $PLVideo == 'johnslide' || $PLVideo == 'lukevid' || $PLVideo == 'actsvid' || $PLVideo == 'genvid' || $PLVideo == 'johnmovie' || substr($PlaylistVideoFilename, 0, strlen('scripture-videos')) == 'scripture-videos') {																		// first word of the first line (The Jesus Film, etc.) of txt file
+				if ($PLVideo == 'jesusfilm' || $PLVideo == 'magdalena' || $PLVideo == 'scriptureanim' || $PLVideo == 'johnanim' || $PLVideo == 'johnslide' || $PLVideo == 'lukevid' || $PLVideo == 'actsvid' || $PLVideo =='genvid' || $PLVideo == 'lukevideo' || $PLVideo == 'actsvideo' || $PLVideo == 'genvideo' || $PLVideo =='johnmovie' || $PLVideo == 'johnvids' || substr($PlaylistVideoFilename, 0, strlen('scripture-videos')) == 'scripture-videos') {																		// first word of the first line (The Jesus Film, etc.) of txt file
 					$VT = '';																// get everything after "-" from $PlaylistVideoTitle
 					if (preg_match("/- *(.*)/", $VideoConvertContents[0], $match)) {
 						$VT = $match[1];
@@ -2492,13 +2551,23 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 						break;
 					}
 				}
+				if ($st == 'eng') {
+					$temp = strtolower($PlaylistVideoTitle);
+					if ($temp == 'luke video') $PlaylistVideoTitle = 'The LUKE Video';
+					if ($temp == 'genesis video') $PlaylistVideoTitle = 'The GENESIS Video';
+					if ($temp == 'acts video') $PlaylistVideoTitle = 'The ACTS Video';
+					if ($temp == 'the luke video') $PlaylistVideoTitle = 'The LUKE Video';
+					if ($temp == 'the genesis video') $PlaylistVideoTitle = 'The GENESIS Video';
+					if ($temp == 'the acts video') $PlaylistVideoTitle = 'The ACTS Video';
+				}
 				if ($st == 'spa') {
-					if ($PlaylistVideoTitle == 'Luke Video') $PlaylistVideoTitle = 'video de San Lucas';
-					if ($PlaylistVideoTitle == 'Genesis Video') $PlaylistVideoTitle = 'video de Genesis';
-					if ($PlaylistVideoTitle == 'Acts Video') $PlaylistVideoTitle = 'video de Hechos';
-					if ($PlaylistVideoTitle == 'the Luke Video') $PlaylistVideoTitle = 'el video de San Lucas';
-					if ($PlaylistVideoTitle == 'the Genesis Video') $PlaylistVideoTitle = 'el video de Genesis';
-					if ($PlaylistVideoTitle == 'the Acts Video') $PlaylistVideoTitle = 'el video de Hechos';
+					$temp = strtolower($PlaylistVideoTitle);
+					if ($temp == 'luke video') $PlaylistVideoTitle = 'El video de San Lucas';
+					if ($temp == 'genesis video') $PlaylistVideoTitle = 'El video de Genesis';
+					if ($temp == 'acts video') $PlaylistVideoTitle = 'El video de Hechos';
+					if ($temp == 'the luke video') $PlaylistVideoTitle = 'El video de San Lucas';
+					if ($temp == 'the genesis video') $PlaylistVideoTitle = 'El video de Genesis';
+					if ($temp == 'the acts video') $PlaylistVideoTitle = 'El video de Hechos';
 				}
 				// $i = the number of rows beginning with the number 1 in the first column
 				?>
@@ -2508,12 +2577,12 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				<tr>
 					<td style='width: 45px; '>
 						<?php
-						echo "<div class='linePointer' onclick='PlaylistVideo(orgVideoPixels_$z, \"PlaylistVideoNow_$z\", $mobile)'><img class='iconActions' src='../images/youtube-icon.jpg' alt='".translate('View', $st, 'sys')."' title='".translate('View', $st, 'sys')."' /></div>";
+						echo "<div class='linePointer' onclick='PlaylistVideo($SEVideoPlaylist, \"PlaylistVideoNow_$z\", $mobile)'><img class='iconActions' src='../images/$videoIcon' alt='".translate('View', $st, 'sys')."' title='".translate('View', $st, 'sys')."' /></div>";
 						?>
 					</td>
 					<td>
 						<?php
-						echo "<div class='linePointer' title='".translate('View', $st, 'sys')." $PlaylistVideoTitle' onclick='PlaylistVideo(orgVideoPixels_$z, \"PlaylistVideoNow_$z\", $mobile)'>".translate('View', $st, 'sys').' '.$PlaylistVideoTitle . "</div>";
+						echo "<div class='linePointer' title='".translate('View', $st, 'sys')." $PlaylistVideoTitle' onclick='PlaylistVideo($SEVideoPlaylist, \"PlaylistVideoNow_$z\", $mobile)'>".translate('View', $st, 'sys').' '.$PlaylistVideoTitle . "</div>";
 						// Get and display Playlist
 						?>
 					</td>
@@ -2526,20 +2595,33 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 						if ($BibleStory != 0 ) {
 							$VideoConvertContents[$BibleStory] = str_replace("\r", "", $VideoConvertContents[$BibleStory]);		// Windows text files have a carrage return at the end.
 							$VideoConvertWithTab = explode("\t", $VideoConvertContents[$BibleStory]);							// split the line up by tabs
+							if ($st == 'eng') {
+								$temp = strtolower($VideoName);
+								if ($temp == 'luke video') $VideoName = 'The LUKE Video';
+								if ($temp == 'genesis video') $VideoName = 'The GENESIS Video';
+								if ($temp == 'acts video') $VideoName = 'The ACTS Video';
+								if ($temp == 'the luke video') $VideoName = 'The LUKE Video';
+								if ($temp == 'the genesis video') $VideoName = 'The GENESIS Video';
+								if ($temp == 'the acts video') $VideoName = 'The ACTS Video';
+							}
 							if ($st == 'spa') {
-								if ($VideoName == 'Luke Video') $VideoName = 'video de San Lucas';
-								if ($VideoName == 'Genesis Video') $VideoName = 'video de Genesis';
-								if ($VideoName == 'Acts Video') $VideoName = 'video de Hechos';
-								if ($VideoName == 'the Luke Video') $VideoName = 'el video de San Lucas';
-								if ($VideoName == 'the Genesis Video') $VideoName = 'el video de Genesis';
-								if ($VideoName == 'the Acts Video') $VideoName = 'el video de Hechos';
+								$temp = strtolower($VideoName);
+								if ($temp == 'luke video') $VideoName = 'El video de San Lucas';
+								if ($temp == 'genesis video') $VideoName = 'El video de Genesis';
+								if ($temp == 'acts video') $VideoName = 'El video de Hechos';
+								if ($temp == 'the luke video') $VideoName = 'El video de San Lucas';
+								if ($temp == 'the genesis video') $VideoName = 'El video de Genesis';
+								if ($temp == 'the acts video') $VideoName = 'El video de Hechos';
 							}
 							if (count($VideoConvertWithTab) < 3) {
 								file_put_contents('SpecificLanguage.txt', 'filename: #'.$filename.'#; count($VideoConvertWithTab): ' . count($VideoConvertWithTab) . '; $BibleStory: #' . $BibleStory . '#; $VideoConvertContents[$BibleStory]: #'.$VideoConvertContents[$BibleStory]."#\n", FILE_APPEND | LOCK_EX);
+								echo "<div style='text-align: center; '>";
 							}
 							if (stripos($VideoConvertWithTab[3], 'http', 0) === 0) {									// returns 0 means 'http' starts at column 0. === needs to be this way (and not ==) because jPlayer wont work.
-								echo "<div style='text-align: center; '><div style='cursor: pointer; display: inline; text-align: center; '";
-								echo " onclick='window.open(\"$VideoConvertWithTab[3]\")'>";
+								echo "<div style='cursor: pointer; text-align: center; ' onclick='window.open(\"$VideoConvertWithTab[3]\")'>";
+							}
+							else {
+								echo "<div style='text-align: center; '>";
 							}
 							if ($image != 2) {																			// != 2 ScriptureAnim to make sure the first picture is skipped
 								if ($image == 1) {
@@ -2550,7 +2632,11 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 								}
 								else {
 								}
-								echo $VideoConvertWithTab[2]."' alt='".translate('View', $st, 'sys')." ".$VideoName."' title='".translate('View', $st, 'sys')." ".$VideoName."' /></div></div>";
+								echo $VideoConvertWithTab[2]."' alt='".translate('View', $st, 'sys')." ".$VideoName."' title='".translate('View', $st, 'sys')." ".$VideoName."' />";
+								echo '</div>';
+								if (count($VideoConvertWithTab) < 3) {
+									echo '</div>';
+								}
 								echo '<div style="text-align: center; font-size: .9em; margin-bottom: 10px; font-weight: normal; ">'.$VideoName.'</div>';
 								echo '<hr style="color: navy; text-align: center; width: 75%; " />';
 							}
@@ -2587,7 +2673,8 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 										}
 										else {
 											$SEVideoPlaylistArray[$SEVideoPlaylistIndex] = $VideoConvertWithTab[1]. '|' . $VideoConvertWithTab[2] . '|' . $VideoConvertWithTab[3];
-											echo " id='PV_".$SEVideoPlaylist."_".$SEVideoPlaylistIndex."' onclick='PlaylistVideo_$SEVideoPlaylist($SEVideoPlaylistIndex)'>";
+											echo " id='PV_" . $SEVideoPlaylist . "_" . $SEVideoPlaylistIndex . "' onclick='document.getElementById(\"PlaylistVideoEnd_$SEVideoPlaylist\").scrollIntoView({ behavior: \"smooth\" })'>";
+											
 											$SEVideoPlaylistIndex++;
 										}
 										if ($image == 1) {
@@ -2633,7 +2720,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 													{
 														title: "<?php echo $pieces[0]; ?>",
 														m4v: "<?php echo $pieces[2]; ?>",
-														poster: "./data/~images/ScriptureAnim/<?php echo $pieces[1]; ?>"
+														poster: "./data/~images/<?php echo $bookName. '/'. $pieces[1]; ?>"
 													},
 													<?php
 													$j++;
@@ -2662,7 +2749,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 											?>
 											$("#PV_<?php echo $SEVideoPlaylist; ?>_<?php echo $a; ?>").click( function() {
 												myPlaylist_<?php echo $SEVideoPlaylist; ?>.play(<?php echo $a; ?>);
-												<?php $VideoConvertWithTab = explode("\t", $VideoConvertContents[$a+2]); ?>;		// split the line up by tabs. $VideoConvertContents[$a+1] with title. $VideoConvertContents[$a+2] without title. ?>
+												<?php $VideoConvertWithTab = explode("\t", $VideoConvertContents[$a+2]); ?>		// split the line up by tabs. $VideoConvertContents[$a+1] with title. $VideoConvertContents[$a+2] without title. ?>
 												$( "#videoTitle<?php echo $SEVideoPlaylist; ?>" ).html( "<?php echo $VideoConvertWithTab[1]; ?>" );
 												// This is a weird one with the ' and " and / !
 												$( "#VideoDownloadButton<?php echo $SEVideoPlaylist; ?>" ).html( "<button type='button' tabindex='0' onclick='saveAsVideo(\"<?php echo $ISO; ?>\", \"<?php echo $st; ?>\", <?php echo $mobile; ?>, \"<?php echo $VideoConvertWithTab[3]; ?>\", \"<?php echo translate("Please wait!<br>Creating the ZIP file<br>which will take a while.", $st, 'sys'); ?>\")'><?php echo translate("Download this video", $st, 'sys'); ?><\/button>" );
@@ -2671,21 +2758,15 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 										}
 										?>
 									});
-
-									// http://ryanve.com/lab/dimensions/ = "Documents" heights
 									var orgPixels_<?php echo $SEVideoPlaylist; ?> = 0;
-									function PlaylistVideo_<?php echo $SEVideoPlaylist; ?>(futureNumber) {
-										$(document).ready(function() {
-											$("#container").redrawShadow({left: 5, top: 5, blur: 2, opacity: 0.5, color: "black", swap: false});
-										});
-									}
 								</script>
 								
-								<div id="jp_container_<?php echo $SEVideoPlaylist; ?>" class="jp-video jp-video-270p" role="application" aria-label="media player">
+								<div id="PlaylistVideoEnd_<?php echo $SEVideoPlaylist; ?>"></div>						<!-- used for document.getElementById(\"PlaylistVideoEnd_$SEVideoPlaylist\").scrollIntoView() above -->
+								<div id="jp_container_<?php echo $SEVideoPlaylist; ?>" class="jp-video jp-video-360p" style='margin-top: 20px; margin-left: auto; margin-right: auto; ' role="application" aria-label="media player">
 									<div class="jp-type-playlist">
 										<div id="jquery_jplayer_<?php echo $SEVideoPlaylist; ?>" class="jp-jplayer"></div>
 										<div class="jp-gui" style='background-color: white; '>
-											<div class="jp-video-play">
+											<div class="jp-video-play">													<!-- style="display: block; " -->
 												<button class="jp-video-play-icon" role="button" tabindex="0">play</button>
 											</div>
 											<div class="jp-interface">
@@ -2726,8 +2807,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 											</ul>
 										</div-->
 										<div class="jp-no-solution">
-											<span>Update Required</span>
-											To play the media you will need to either update your browser to a recent version or update your <a href="https://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+											<span>Update Required.</span> To play the video media you will need to update your browser to a recent version.
 										</div>
 									</div>
 								</div>
@@ -2735,8 +2815,11 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 								<!-- The following lines are NOT assiciated with jPlayer! -->
 								<div class="jp-details">
 									<?php $VideoConvertWithTab = explode("\t", $VideoConvertContents[2]);			// split the line up by tabs. $VideoConvertContents[1] with title and $VideoConvertContents[2] without title ?>
-									<div class="jp-title" aria-label="title" style='background-color: #369; width: 88%; '><span id="videoTitle<?php echo $SEVideoPlaylist; ?>" style='margin-left: auto; margin-right: auto; color: #EEE; '><?php echo $VideoConvertWithTab[1]; ?></span></div>
-									<div id="VideoDownloadButton<?php echo $SEVideoPlaylist; ?>" style="text-align: right; margin-right: 12%; "><button type="button" tabindex="0" onClick="saveAsVideo('<?php echo $ISO; ?>', '<?php echo $st; ?>', <?php echo $mobile; ?>, '<?php echo $VideoConvertWithTab[3]; ?>', '<?php echo translate('Please wait!<br />Creating the ZIP file<br />which will take a while.', $st, 'sys'); ?>')"><?php echo translate("Download this video", $st, "sys"); ?></button></div>
+									<!--div class="jp-title" aria-label="title" style='background-color: #369; line-height: 40px; '><span id="videoTitle< ?php echo $SEVideoPlaylist; ?>" style='margin-left: auto; margin-right: auto; color: #EEE; '>< ?php echo $VideoConvertWithTab[1]; ?></span></div-->
+									<div aria-label="title" style='background-color: #369; line-height: 40px; '><span id="videoTitle<?php echo $SEVideoPlaylist; ?>" style='margin-left: auto; margin-right: auto; color: #EEE; '><?php echo $VideoConvertWithTab[1]; ?></span></div>
+									<!--div id="VideoDownloadButton< ?php echo $SEVideoPlaylist; ?>" style="text-align: right; margin-right: 12%; ">
+										<button type="button" tabindex="0" onClick="saveAsVideo('< ?php echo $ISO; ?>', '< ?php echo $st; ?>', < ?php echo $mobile; ?>, '< ?php echo $VideoConvertWithTab[3]; ?>', '< ?php echo translate('Please wait!<br />Creating the ZIP file<br />which will take a while.', $st, 'sys'); ?>')">< ?php echo translate("Download this video", $st, "sys"); ?></button>
+									</div-->
 								</div>
 							</div>
 						<?php
@@ -2759,7 +2842,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	if ($PlaylistVideo_download) {														//  test for $Internet is 1 1/2 screens down
 		echo '<table id="Dis_PlaylistVideo_download">';
 		$z=0;
-		$SEVideoPlaylist=0;
+		$SEVideoPlaylist=100;
 		while ($r_Playlist = $result_PlaylistVideo_download->fetch_array(MYSQLI_ASSOC)) {
 			$PlaylistVideoTitle = $r_Playlist['PlaylistVideoTitle'];
 			$PlaylistVideoFilename = $r_Playlist['PlaylistVideoFilename'];
@@ -2812,7 +2895,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 			if (array_key_exists('3', $tempArray) && stripos($tempArray[3], 'http', 0) === 0) {		// returns 0 means 'http' starts at column 0. === needs to be this way (and not ==) because jPlayer wont work.
 				continue;
 			}
-			if ($PLVideo == 'jesusfilm' || $PLVideo == 'lukevideo' || $PLVideo == 'magdalena' || $PLVideo == 'scriptureanim' || substr($PlaylistVideoFilename, 0, strlen('scripture-videos')) == 'scripture-videos') {																		// first word of the first line (The Jesus Film, etc.) of txt file
+			if ($PLVideo == 'jesusfilm' || $PLVideo == 'magdalena' || $PLVideo == 'scriptureanim' || $PLVideo == 'johnanim' || $PLVideo == 'johnslide' || $PLVideo == 'lukevid' || $PLVideo == 'actsvid' || $PLVideo == 'genvid' || $PLVideo == 'lukevideo' || $PLVideo == 'actsvideo' || $PLVideo == 'genvideo' || $PLVideo =='johnmovie' || $PLVideo == 'johnvids' || substr($PlaylistVideoFilename, 0, strlen('scripture-videos')) == 'scripture-videos') {																		// first word of the first line (The Jesus Film, etc.) of txt file
 				if (preg_match("/\t(.*) — /", $VideoConvertContents[0], $match)) {
 					$PlaylistVideoTitle = $match[1];
 				}
@@ -2835,13 +2918,23 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					break;
 				}
 			}
+			if ($st == 'eng') {
+				$temp = strtolower($PlaylistVideoTitle);
+				if ($temp == 'luke video') $PlaylistVideoTitle = 'The LUKE Video';
+				if ($temp == 'genesis video') $PlaylistVideoTitle = 'The GENESIS Video';
+				if ($temp == 'acts video') $PlaylistVideoTitle = 'The ACTS Video';
+				if ($temp == 'the luke video') $PlaylistVideoTitle = 'The LUKE Video';
+				if ($temp == 'the genesis video') $PlaylistVideoTitle = 'The GENESIS Video';
+				if ($temp == 'the acts video') $PlaylistVideoTitle = 'The ACTS Video';
+			}
 			if ($st == 'spa') {
-				if ($PlaylistVideoTitle == 'Luke Video') $PlaylistVideoTitle = 'video de San Lucas';
-				if ($PlaylistVideoTitle == 'Genesis Video') $PlaylistVideoTitle = 'video de Genesis';
-				if ($PlaylistVideoTitle == 'Acts Video') $PlaylistVideoTitle = 'video de Hechos';
-				if ($PlaylistVideoTitle == 'the Luke Video') $PlaylistVideoTitle = 'el video de San Lucas';
-				if ($PlaylistVideoTitle == 'the Genesis Video') $PlaylistVideoTitle = 'el video de Genesis';
-				if ($PlaylistVideoTitle == 'the Acts Video') $PlaylistVideoTitle = 'el video de Hechos';
+				$temp = strtolower($PlaylistVideoTitle);
+				if ($temp == 'luke video') $PlaylistVideoTitle = 'El video de San Lucas';
+				if ($temp == 'genesis video') $PlaylistVideoTitle = 'El video de Genesis';
+				if ($temp == 'acts video') $PlaylistVideoTitle = 'El video de Hechos';
+				if ($temp == 'the luke video') $PlaylistVideoTitle = 'El video de San Lucas';
+				if ($temp == 'the genesis video') $PlaylistVideoTitle = 'El video de Genesis';
+				if ($temp == 'the acts video') $PlaylistVideoTitle = 'El video de Hechos';
 			}
 			// $i = the number of rows beginning with the number 1 in the first column
 			?>
@@ -2869,13 +2962,23 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					$VideoConvertContents[$BibleStory] = str_replace("\r", "", $VideoConvertContents[$BibleStory]);	// Windows text files have a carrage return at the end.
 					$VideoConvertWithTab = explode("\t", $VideoConvertContents[$BibleStory]);						// split the line up by tabs
 					// $VideoConvertWithTab[0] = number; $VideoConvertWithTab[1] = text; $VideoConvertWithTab[2] = data filename for png or jpg; $VideoConvertWithTab[3] = URL
+					if ($st == 'eng') {
+						$temp = strtolower($VideoName);
+						if ($temp == 'luke video') $VideoName = 'The LUKE Video';
+						if ($temp == 'genesis video') $VideoName = 'The GENESIS Video';
+						if ($temp == 'acts video') $VideoName = 'The ACTS Video';
+						if ($temp == 'the luke video') $VideoName = 'The LUKE Video';
+						if ($temp == 'the genesis video') $VideoName = 'The GENESIS Video';
+						if ($temp == 'the acts video') $VideoName = 'The ACTS Video';
+					}
 					if ($st == 'spa') {
-						if ($VideoName == 'Luke Video') $VideoName = 'Video de San Lucas';
-						if ($VideoName == 'Genesis Video') $VideoName = 'Video de Genesis';
-						if ($VideoName == 'Acts Video') $VideoName = 'Video de Hechos';
-						if ($VideoName == 'the Luke Video') $VideoName = 'el video de San Lucas';
-						if ($VideoName == 'the Genesis Video') $VideoName = 'el video de Genesis';
-						if ($VideoName == 'the Acts Video') $VideoName = 'el video de Hechos';
+						$temp = strtolower($VideoName);
+						if ($temp == 'luke video') $VideoName = 'El video de San Lucas';
+						if ($temp == 'genesis video') $VideoName = 'El video de Genesis';
+						if ($temp == 'acts video') $VideoName = 'El video de Hechos';
+						if ($temp == 'the luke video') $VideoName = 'El video de San Lucas';
+						if ($temp == 'the genesis video') $VideoName = 'El video de Genesis';
+						if ($temp == 'the acts video') $VideoName = 'El video de Hechos';
 					}
 					$z++;
 				}
@@ -2957,7 +3060,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 								<?php
 								$j++;																				// column count
 							}
-							for (; $j <= $media_index; $j++) {
+							for (; $j < $media_index; $j++) {
 								?>
 								<td style='width: <?php echo $num_array_col; ?>; ' colspan='<?php echo $col_span; ?>'>&nbsp;</td>
 								<?php
@@ -3195,7 +3298,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	*/
 	if ($NotAndroidiOS) {
 		echo '<table id="Dis_NotAndroidiOS">';
-		while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
+		while ($r2 = $result_NotAndroidiOS->fetch_array(MYSQLI_ASSOC)) {
 			$Cell_Phone_Title=$r2['Cell_Phone_Title'];
 			$Cell_Phone_File=trim($r2['Cell_Phone_File']);
 			$optional=$r2['optional'];
@@ -3256,7 +3359,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		Can it be watched?
 	*************************************************************************************************************
 */
-	if ($watch && $Internet) {
+	if ($Dis_watch && $Internet) {
 		?>
 		<script>
 			function myWatchVideo(i) {
@@ -3271,141 +3374,141 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		</script>
 		<?php
 		$k = 0;
-		$query="SELECT * FROM watch WHERE ISO_ROD_index = '$ISO_ROD_index'";
-		$result2=$db->query($query);
-		if ($result2->num_rows > 0) {
-			echo '<table id="Dis_watch">';
-			while ($r2 = $result2->fetch_array(MYSQLI_ASSOC)) {
-				$k++;
-				$organization=trim($r2['organization']);
-				$watch_what=trim($r2['watch_what']);
-				$URL=trim($r2['URL']);
-				$JesusFilm=trim($r2['JesusFilm']);							// booleon
-				$YouTube=trim($r2['YouTube']);								// booleon
-				if ($st == 'spa' && $watch_what == 'The Story of Jesus for Children') $watch_what = 'la historia de Jesús para niños';
-				if ($st == 'eng' && $watch_what == 'la historia de Jesús para niños') $watch_what = 'The Story of Jesus for Children';
-				if (preg_match('/^https?:\/\/scriptureearth\.org/', $URL) || preg_match('/^\/?data\//' , $URL)) {
-					$URL_path = '';
-					?>
-					<tr>
-					<td style='width: 45px; '>
-						<div class='linePointer' onclick="myWatchVideo('video_<?php echo $k; ?>')">
-							<img class='iconActions' src='../images/watch-icon.jpg'  alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
-						</div>
-					</td>
-					<td>
-						<?php
-							// need to have mp4, webm, and/or ogg to display
-							$extension = 0;
-							$pos = strripos($URL, '.');									// Find the position of the last occurrence of a case-insensitive substring in a string
-							if ($pos===false) {
-								echo $k . ' watch is false so skip it.<br />';
-								continue;
-							}
-							else {
-								$extension = strtolower(substr($URL, $pos+1));			// file extension of URL
-								$URL_path = substr($URL, 0, $pos+1);					// file name minus extension
-								$URL_path = preg_replace('/^https?:\/\/scriptureearth\.org\/(.*)$/', './$1', $URL_path);
-							}
-							if ($extension != 'mp4' && $extension != 'webm' && $extension != 'ogg') {
-								echo $k . ' watch contains no "mp4", "webm", nor "ogg" so skip it.<br />';
-								continue;
-							}
-							?>
-							<video id="video_<?php echo $k ?>" style="max-width: 100%; display: none; " controls="true" width="1080">
-								<?php
-								if (file_exists($URL_path . 'mp4')) {
-									echo '<source src="'.$URL_path . 'mp4" type="video/mp4">';
-								}
-								if (file_exists($URL_path . 'webm')) {
-									echo '<source src="'.$URL_path . 'webm" type="video/webm">';
-								}
-								if (file_exists($URL_path . 'ogg')) {
-									echo '<source src="'.$URL_path . 'ogg" type="video/ogg">';
-								}
-								?>
-								Your browser does not support HTMLS video. 
-							</video>
-							<?php
-							echo "<div class='linePointer' onclick=\"myWatchVideo('video_$k')\" title='translate(\"View\", $st, \"sys\")'>";
-							echo translate('View', $st, 'sys')." $organization:&nbsp;$watch_what";
-							echo '</div>';
-						?>
-					</td>
-					</tr>
-					<?php
-				}
-				else {			// if ($JesusFilm || $YouTube || ) {
-					?>
-					<tr>
-					<td style='width: 45px; '>
-						<?php
-						if ($JesusFilm) {
-							// JESUS Film
-							if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
-								?>
-									<div class='linePointer' onclick="window.open('JESUSFilmView.php?<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300'); return false;" title="<?php echo $LN ?>">
-									<img class='iconActions' src='../images/JESUS-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
-							</div>
-								<?php
-							}
-							else {
-								?>
-									<div class='linePointer' onclick="window.open('<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300'); return false;" title="<?php echo $LN ?>">
-									<img class='iconActions' src='../images/JESUS-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
-							</div>
-								<?php
-							}
-						}
-						elseif ($YouTube) {
-							// YouTube
-							//     href="#" onclick="w=screen.availWidth; h=screen.availHeight; window.open('<?php echo $URL ? >','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width='+w+',height='+h+',top=0,left=0'); return false;" title="< ?php echo $LN ? >">
-							?>
-								<div class='linePointer' onclick="window.open('<?php echo $URL ?>')">
-								<img class='iconActions' src='../images/youtube-icon.jpg'  alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
-								</div>
-							<?php
-						}
-						else {
-							echo "<div class='linePointer' onclick=\"window.open('$URL')\">";
-							echo "<img class='iconActions' src='../images/watch-icon.jpg'  alt=\"".translate('View', $st, 'sys')."\" title=\"".translate('View', $st, 'sys')."\" />";
-							echo '</div>';
-						}
-						?>
-					</td>
-					<td>
-						<?php
-						if ($JesusFilm) {
-							// JESUS Film
-							if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
-								echo "<div class='linePointer' onclick='window.open(\"JESUSFilmView.php?$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300\"); return false;' title='$LN'>";
-							}
-							else {
-								echo "<div class='linePointer' onclick='window.open(\"$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300\"); return false;' title='$LN'>";
-							}
-							echo translate('View the JESUS Film', $st, 'sys');
-							echo '</div>';
-						}
-						elseif ($YouTube) {
-							// YouTube
-							//    href="#" onclick="w=screen.availWidth; h=screen.availHeight; window.open('<?php echo $URL ? >','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width='+w+',height='+h+',top=0,left=0'); return false;" title="<?php echo $LN ? >">
-							echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='$LN'>";
-							echo translate('View', $st, 'sys').' (YouTube)'."&nbsp;: $organization $watch_what";
-							echo '</div>';
-						}
-						else {
-							echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='translate(\"View\", $st, \"sys\")'>";
-							echo translate('View', $st, 'sys')." $organization:&nbsp;$watch_what";
-							echo '</div>';
-						}
-						?>
-					</td>
-					</tr>
-					<?php
-				}
+		$watchIcon = 'watch-icon.jpg';
+		echo '<table id="Dis_watch">';
+		while ($r2 = $result_Watch->fetch_array(MYSQLI_ASSOC)) {
+			$k++;
+			$organization=trim($r2['organization']);
+			$watch_what=trim($r2['watch_what']);
+			$URL=trim($r2['URL']);
+			$JesusFilm=trim($r2['JesusFilm']);							// booleon
+			$YouTube=trim($r2['YouTube']);								// booleon
+			if (stripos($URL, 'deditos')) {
+				$watchIcon = 'DeditosIcon.jpg';
 			}
-			echo '</table>';
+			if ($st == 'spa' && $watch_what == 'The Story of Jesus for Children') $watch_what = 'la historia de Jesús para niños';
+			if ($st == 'eng' && $watch_what == 'la historia de Jesús para niños') $watch_what = 'The Story of Jesus for Children';
+			if (preg_match('/^https?:\/\/scriptureearth\.org/', $URL) || preg_match('/^\/?data\//' , $URL)) {
+				$URL_path = '';
+				?>
+				<tr>
+				<td style='width: 45px; '>
+					<div class='linePointer' onclick="myWatchVideo('video_<?php echo $k; ?>')">
+						<img class='iconActions' src='../images/watch-icon.jpg'  alt="<?php echo translate('View', $st, 'sys'); ?>" title="<?php echo translate('View', $st, 'sys'); ?>" />
+					</div>
+				</td>
+				<td>
+					<?php
+						// need to have mp4, webm, and/or ogg to display
+						$extension = 0;
+						$pos = strripos($URL, '.');									// Find the position of the last occurrence of a case-insensitive substring in a string
+						if ($pos===false) {
+							echo $k . ' watch is false so skip it.<br />';
+							continue;
+						}
+						else {
+							$extension = strtolower(substr($URL, $pos+1));			// file extension of URL
+							$URL_path = substr($URL, 0, $pos+1);					// file name minus extension
+							$URL_path = preg_replace('/^https?:\/\/scriptureearth\.org\/(.*)$/', './$1', $URL_path);
+						}
+						if ($extension != 'mp4' && $extension != 'webm' && $extension != 'ogg') {
+							echo $k . ' watch contains no "mp4", "webm", nor "ogg" so skip it.<br />';
+							continue;
+						}
+						?>
+						<video id="video_<?php echo $k ?>" style="max-width: 100%; display: none; " controls="true" width="1080">
+							<?php
+							if (file_exists($URL_path . 'mp4')) {
+								echo '<source src="'.$URL_path . 'mp4" type="video/mp4">';
+							}
+							if (file_exists($URL_path . 'webm')) {
+								echo '<source src="'.$URL_path . 'webm" type="video/webm">';
+							}
+							if (file_exists($URL_path . 'ogg')) {
+								echo '<source src="'.$URL_path . 'ogg" type="video/ogg">';
+							}
+							?>
+							Your browser does not support HTML5 video. 
+						</video>
+						<?php
+						echo "<div class='linePointer' onclick=\"myWatchVideo('video_$k')\" title='translate(\"View\", $st, \"sys\")'>";
+						echo translate('View', $st, 'sys')." $organization:&nbsp;$watch_what";
+						echo '</div>';
+					?>
+				</td>
+				</tr>
+				<?php
+			}
+			else {			// if ($JesusFilm || $YouTube || ) {
+				?>
+				<tr>
+				<td style='width: 45px; '>
+					<?php
+					if ($JesusFilm) {
+						// JESUS Film
+						if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
+							?>
+								<div class='linePointer' onclick="window.open('JESUSFilmView.php?<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300'); return false;" title="<?php echo $LN ?>">
+								<img class='iconActions' src='../images/JESUS-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
+						</div>
+							<?php
+						}
+						else {
+							?>
+								<div class='linePointer' onclick="window.open('<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300'); return false;" title="<?php echo $LN ?>">
+								<img class='iconActions' src='../images/JESUS-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
+						</div>
+							<?php
+						}
+					}
+					elseif ($YouTube) {
+						// YouTube
+						//     href="#" onclick="w=screen.availWidth; h=screen.availHeight; window.open('<?php echo $URL ? >','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width='+w+',height='+h+',top=0,left=0'); return false;" title="< ?php echo $LN ? >">
+						?>
+							<div class='linePointer' onclick="window.open('<?php echo $URL ?>')">
+							<img class='iconActions' src='../images/youtube-icon.jpg'  alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
+							</div>
+						<?php
+					}
+					else {
+						echo "<div class='linePointer' onclick=\"window.open('$URL')\">";
+						echo "<img class='iconActions' src='../images/$watchIcon'  alt=\"".translate('View', $st, 'sys')."\" title=\"".translate('View', $st, 'sys')."\" />";
+						echo '</div>';
+					}
+					?>
+				</td>
+				<td>
+					<?php
+					if ($JesusFilm) {
+						// JESUS Film
+						if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
+							echo "<div class='linePointer' onclick='window.open(\"JESUSFilmView.php?$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300\"); return false;' title='$LN'>";
+						}
+						else {
+							echo "<div class='linePointer' onclick='window.open(\"$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300\"); return false;' title='$LN'>";
+						}
+						echo translate('View the JESUS Film', $st, 'sys');
+						echo '</div>';
+					}
+					elseif ($YouTube) {
+						// YouTube
+						//    href="#" onclick="w=screen.availWidth; h=screen.availHeight; window.open('<?php echo $URL ? >','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width='+w+',height='+h+',top=0,left=0'); return false;" title="<?php echo $LN ? >">
+						echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='$LN'>";
+						echo translate('View', $st, 'sys').' (YouTube)'."&nbsp;: $organization $watch_what";
+						echo '</div>';
+					}
+					else {
+						echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='translate(\"View\", $st, \"sys\")'>";
+						echo translate('View', $st, 'sys')." $organization:&nbsp;$watch_what";
+						echo '</div>';
+					}
+					?>
+				</td>
+				</tr>
+				<?php
+			}
 		}
+		echo '</table>';
 	}
 
 /*
@@ -3606,9 +3709,6 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					<?php
 					if (preg_match('/onestory/i', $URL)) {
 						echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/onestory-icon.jpg' alt='OneStory' title='OneStory' />";
-					}
-					elseif (preg_match('/itunes/i', $URL) || preg_match('/\.apple\./i', $URL)) {
-						echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/iTunes-icon.jpg' alt='iTunes' title='iTunes' />";
 					}
 					elseif (preg_match('/\.facebook\./i', $URL)) {
 						echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/facebook-icon.jpg' alt='Facebook' title='Facebook' />";

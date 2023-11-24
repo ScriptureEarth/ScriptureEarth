@@ -492,9 +492,8 @@ function GoSAB_subfolder(iso, Book_HTML, subfolder) {
     return false; // cancels href action 
 }
 
-function PlaylistVideo(orgVideoPixels, getElById, mobile) { // passing argument by reference (this.)
+function PlaylistVideo(videos, getElById, mobile) { // passing argument by reference (this.)
     "use strict";
-    // I need windows height to go here
     // The extra styles are for the mobile Andoid to work! (6/17/17)
     if (mobile == 1) {
         if (document.getElementById(getElById).style.display === "table-row") {
@@ -502,7 +501,8 @@ function PlaylistVideo(orgVideoPixels, getElById, mobile) { // passing argument 
             document.getElementById(getElById).style.overflow = "hidden";
             document.getElementById(getElById).style.float = "left";
             document.getElementById(getElById).style.lineHeight = "0px";
-        } else {
+            $("#jquery_jplayer_" + videos).jPlayer("pause");
+       } else {
             document.getElementById(getElById).style.display = "table-row";
             document.getElementById(getElById).style.overflow = "visible";
             document.getElementById(getElById).style.float = "none";
@@ -514,6 +514,7 @@ function PlaylistVideo(orgVideoPixels, getElById, mobile) { // passing argument 
             document.getElementById(getElById).style.overflow = "hidden";
             document.getElementById(getElById).style.float = "left";
             document.getElementById(getElById).style.lineHeight = "0px";
+            $("#jquery_jplayer_"+videos).jPlayer("pause");
         } else {
             document.getElementById(getElById).style.display = "table-row";
             document.getElementById(getElById).style.overflow = "visible";
