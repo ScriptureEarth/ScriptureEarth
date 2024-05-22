@@ -16,8 +16,19 @@ if(session_status() === PHP_SESSION_NONE) @session_start();
 <meta name="Maintained-by" content="Website" />
 <meta name="Approved-by" content="Bill Dyck, Access Coordinator" />
 <meta name="Copyright" content="6.2009 - <?php echo date("Y"); ?>" /> <!-- auto_copyright("2009") -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="ObjectType" content="Document" />
+<meta http-equiv="Window-target" content="_top" />
+<meta name="Created-by" content="Scott Starker" />
+<meta name="Updated-by" content="Scott Starker, Lærke Roager" />
+<meta name="Maintained-by" content="Website" />
+<meta name="Approved-by" content="Bill Dyck, Access Coordinator" />
+<meta name="Copyright" content="6.2009 - <?php echo date("Y"); ?>" /> <!-- auto_copyright("2009") -->
 <!-- For IE 9 and below. ICO should be 32x32 pixels in size -->
 <!--[if IE]><link rel="shortcut icon" href="path/to/favicon.ico"><![endif]-->
+<!-- Touch Icons - iOS and Android 2.1+ 180x180 pixels in size. -->
+<link rel="apple-touch-icon-precomposed" href="./icons/apple-touch-icon-precomposed.png">
 <!-- Touch Icons - iOS and Android 2.1+ 180x180 pixels in size. -->
 <link rel="apple-touch-icon-precomposed" href="./icons/apple-touch-icon-precomposed.png">
 <!-- Firefox, Chrome, Safari, IE 11+ and Opera. 196x196 pixels in size. -->
@@ -27,7 +38,14 @@ if(session_status() === PHP_SESSION_NONE) @session_start();
 <meta name="apple-mobile-web-app-title" content="Scripture Earth" /> <!-- title for iOS mobile icon -->
 <link rel="icon" sizes="192x192" href="./icons/nice-highres.png" /> <!-- Android mobile icon -->
 <meta name="application-name" content="Scripture Earth" /> <!-- title for Android mobile icon -->
+<link rel="icon" href="./icons/favicon.png">
+<link rel="manifest" href="./manifest.webmanifest" /> <!-- The browser should behave when the PWA installs on the user's desktop or mobile device. -->
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" /> <!-- iOS mobile icon -->
+<meta name="apple-mobile-web-app-title" content="Scripture Earth" /> <!-- title for iOS mobile icon -->
+<link rel="icon" sizes="192x192" href="./icons/nice-highres.png" /> <!-- Android mobile icon -->
+<meta name="application-name" content="Scripture Earth" /> <!-- title for Android mobile icon -->
 <!--link rel="stylesheet" type='text/css'		href="button.css" /-->
+<link rel="stylesheet" type='text/css' href="JQuery/css/style.css" />
 <link rel="stylesheet" type='text/css' href="JQuery/css/style.css" />
 <!-- link rel="stylesheet" type="text/css" 	href="_css/Scripture_Index.css" /-->
 <link rel="stylesheet" type="text/css" href="_css/SpecificLanguage.css?v=0.0.3" />
@@ -39,6 +57,13 @@ if(session_status() === PHP_SESSION_NONE) @session_start();
 <link rel='stylesheet' type='text/css' href='_css/jplayer.playlist.BlueMonday.css' /> <!-- Playlist Audio -->
 <link rel="stylesheet" type='text/css' href="JQuery/css/jquery-ui-1.12.1.css" />
 <!--script type="text/javascript" language="javascript" src="_js/jquery-1.10.1.min.js"></script-->
+<script type="text/javascript" language="javascript" src="JQuery/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" language="javascript" src="JQuery/js/jquery-ui-1.12.1.min.js"></script>
+<script type="text/javascript" language="javascript" src="_js/jquery.jplayer-2.9.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="_js/jplayer.playlist.min.js"></script>
+<script type="text/javascript" language="javascript" src="_js/user_events.js?v=1.0.2"></script>
+<script type="text/javascript" language="javascript" src="_js/SpecificLanguage.js?v=1.0.5"></script>
+<script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.8"></script>
 <script type="text/javascript" language="javascript" src="JQuery/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" language="javascript" src="JQuery/js/jquery-ui-1.12.1.min.js"></script>
 <script type="text/javascript" language="javascript" src="_js/jquery.jplayer-2.9.2.min.js"></script>
@@ -503,9 +528,12 @@ if (!isset($_SESSION['nav_ln_array'])) {
 	$ln_temp_var = '';
 	$ln_query = 'SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `ln_number`';
 	$ln_result_temp = $db->query($ln_query) or die('Query failed:  ' . $db->error . '</body></html>');
+	$ln_result_temp = $db->query($ln_query) or die('Query failed:  ' . $db->error . '</body></html>');
 	if ($ln_result_temp->num_rows == 0) {
 		die('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
+		die('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
 	}
+	while ($ln_row = $ln_result_temp->fetch_array()) {
 	while ($ln_row = $ln_result_temp->fetch_array()) {
 		$ln_temp[0] = $ln_row['translation_code'];
 		$ln_temp[1] = $ln_row['name'];
@@ -513,6 +541,7 @@ if (!isset($_SESSION['nav_ln_array'])) {
 		$ln_temp[3] = $ln_row['ln_number'];
 		$ln_temp[4] = $ln_row['ln_abbreviation'];
 		$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;
+		$ln_temp_var .= 'LN_' . $ln_temp[1] . ', ';								// must have a space (' ') here
 		$ln_temp_var .= 'LN_' . $ln_temp[1] . ', ';								// must have a space (' ') here
 	}
 	$ln_result = $ln_temp_var;
@@ -545,9 +574,11 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 <script language="javascript" type="application/javascript">
 	$(function() {
 		$("#sM").selectmenu({
+		$("#sM").selectmenu({
 			width: 150
 		});
 	});
+
 
 	function setTitle(text) {
 		document.title = 'Scripture Earth: ' + text;
@@ -555,6 +586,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 </script>
 
 </head>
+
 
 <body>
 	<div class="gridContainer clearfix">
@@ -815,6 +847,11 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 								// <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2FScriptureEarth.org/$Scriptname?sortby=lang&name=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code&width=450&layout=standard&action=like&size=small&show_faces=false&share=true&height=35&appId=167214120125396" width="450" height="35" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
 								echo '<div class="FaceBk" style="margin-top: 30px; margin-left: auto; margin-right: auto; ">';
 							?>
+								<!-- Your FB like button code -->
+								<!-- https://developers.facebook.com/docs/plugins/like-button -->
+								<!-- data-width default is 450px -->
+								<div class="fb-like" data-href="https://ScriptureEarth.org/<?php echo $Scriptname . "?iso=" . $ISO . "&rod=" . $ROD_Code . "&var=" . $Variant_Code . "; " ?>" data-width="600px" data-layout="standard" data-action="like" data-size="small" data-share="true" data-show-faces="false">
+								</div>
 								<!-- Your FB like button code -->
 								<!-- https://developers.facebook.com/docs/plugins/like-button -->
 								<!-- data-width default is 450px -->
