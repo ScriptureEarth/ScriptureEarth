@@ -36,14 +36,32 @@ if (!$retval) {
 <title>Scripture Edit</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Edit.css" />
 <script type="text/javascript" language="javascript" src="_js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.1.5"></script>
-<!-- see the bottom of this html file for CMS_events.js -->
+<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.1.6"></script>
+<!-- see the bottom of this PHP file for CMS_events.js -->
 </head>
 <body>
 
 <?php
 function check_input($value) {
-	return trim($value);
+	return str_replace("'", "ꞌ", trim($value));					// for input tag (single quote "'" to glottal stop "ꞌ")
+}
+function OT_Test($PDF, $OT_Index) {
+	global $OT_array;
+	$a_index = 0;
+	foreach ($OT_array[$OT_Index] as $a) {
+		if ($PDF == $a_index) return true;
+		$a_index++;
+	}
+	return false;
+}
+function NT_Test($PDF, $NT_Index) {
+	global $NT_array;
+	$a_index = 0;
+	foreach ($NT_array[$NT_Index] as $a) {
+		if ($PDF == $a_index) return true;
+		$a_index++;
+	}
+	return false;
 }
 
 // To tie the script together and prevent direct access to Edit_Lang_Validation.php and SumbitEditConfirm.php.
@@ -67,28 +85,6 @@ if (isset($_POST['btnSubmit'])) {
 	// Runs the validation script which only returns to the form page if validation fails.
 	require_once './Edit_Lang_Validation.php';
 	// Returns from Edit_Lang_Validation.php if the validation failed.
-}
-
-function OT_Test($PDF, $OT_Index) {
-	global $OT_array;
-	
-	$a_index = 0;
-	foreach ($OT_array[$OT_Index] as $a) {
-		if ($PDF == $a_index) return true;
-		$a_index++;
-	}
-	return false;
-}
-
-function NT_Test($PDF, $NT_Index) {
-	global $NT_array;
-	
-	$a_index = 0;
-	foreach ($NT_array[$NT_Index] as $a) {
-		if ($PDF == $a_index) return true;
-		$a_index++;
-	}
-	return false;
 }
 
 	$GetName = 'all';
@@ -450,16 +446,16 @@ function NT_Test($PDF, $NT_Index) {
 /************************************************
 	Countries
 *************************************************/
-			$Eng_country = '';
-			$query="SELECT countries.English, countries.ISO_Country FROM countries, ISO_countries WHERE ISO_countries.ISO_ROD_index = $idx AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY countries.English";
-			$result=$db->query($query);
-			$num=$result->num_rows;
-			if ($result && $num > 0) {
-				$temp_Country = $result->fetch_assoc();
-				$Eng_country = $temp_Country['English'];
-				$Eng_country=str_replace("'","&#x27;",$Eng_country);					// for input tag
-				$ISO_Country = $temp_Country['ISO_Country'];							// save it till almost through with this page of the script
-			}
+		$Eng_country = '';
+		$query="SELECT countries.English, countries.ISO_Country FROM countries, ISO_countries WHERE ISO_countries.ISO_ROD_index = $idx AND ISO_countries.ISO_countries = countries.ISO_Country ORDER BY countries.English";
+		$result=$db->query($query);
+		$num=$result->num_rows;
+		if ($result && $num > 0) {
+			$temp_Country = $result->fetch_assoc();
+			$Eng_country = $temp_Country['English'];
+			$Eng_country=str_replace("'","&#x27;",$Eng_country);					// for input tag (single quote to "&#x27;")
+			$ISO_Country = $temp_Country['ISO_Country'];							// save it till almost through with this page of the script
+		}
 		?>
 		<br />
 		<div class='enter' style='font-weight: bold; '>COUNTRIES</div>
@@ -2748,7 +2744,7 @@ function NT_Test($PDF, $NT_Index) {
 			}
 			else {
 				if ($num > 1) {
-					while ($r = $result1->fetch_assoc()) {
+					while ($r = $resultl->fetch_assoc()) {
 						${'txtLinkGRNName-$i'}=$r['company'];
 						${'txtLinkGRNTitle-$i'}=$r['company_title'];
 						${'txtLinkGRNURL-$i'}=$r['URL'];
@@ -3101,11 +3097,11 @@ function NT_Test($PDF, $NT_Index) {
                     <br /><span style="font-size: 9pt; ">http://media.inspirationalfilms.com?id=...</span>
 				</td>
 				<td width="6%" style='text-align: center; '>
-					<input type='checkbox' style='color: navy; ' name='txtWatchJesusFilm-1' id='txtWatchJesusFilm-1' <?php echo (isset($_POST['txtWatchJesusFilm-1']) ? " checked='checked'" : (isset(${'txtWatchJesusFilm-1'}) && (${'txtWatchJesusFilm-1'}==1) ? " checked='checked'" : '')); ?> />
+					<input type='checkbox' style='color: navy; ' name='txtWatchJesusFilm-1' id='txtWatchJesusFilm-1' <?php echo ((isset($_POST['txtWatchJesusFilm-1']) && $_POST['txtWatchJesusFilm-1'] == 'on') ? " checked='checked'" : (isset(${'txtWatchJesusFilm-1'}) && ${'txtWatchJesusFilm-1'}==1 ? " checked='checked'" : '')); ?> />
                     <br /><span style="font-size: 10pt; font-family: 'Times New Roman'; ">&#9745;</span>
    				</td>
 				<td width="4%" style='text-align: center; '>
-					<input type='checkbox' style='color: navy; margin-right: 10px; ' name='txtWatchYouTube-1' id='txtWatchYouTube-1' <?php echo (isset($_POST['txtWatchYouTube-1']) ? " checked='checked'" : (isset(${'txtWatchYouTube-1'}) && (${'txtWatchYouTube-1'}==1) ? " checked='checked'" : '')); ?> />
+					<input type='checkbox' style='color: navy; margin-right: 10px; ' name='txtWatchYouTube-1' id='txtWatchYouTube-1' <?php echo ((isset($_POST['txtWatchYouTube-1']) && $_POST['txtWatchYouTube-1'] == 'on') ? " checked='checked'" : (isset(${'txtWatchYouTube-1'}) && ${'txtWatchYouTube-1'}==1 ? " checked='checked'" : '')); ?> />
                     <br /><span style="font-size: 10pt; margin-right: 6px; ">&#9744;</span>
    				</td>
 				<td width="16%" style="text-align: right; ">
@@ -3132,15 +3128,15 @@ function NT_Test($PDF, $NT_Index) {
 							echo "<input type='text' name='txtWatchURL-$i' id='txtWatchURL-$i' style='color: navy; ' size='29' value='" . ( isset($_POST['txtWatchURL-'.(string)$i]) ? $_POST['txtWatchURL-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='6%' style='text-align: center; '>";
-                			if (isset($_POST['txtWatchJesusFilm-$i'])) $WatchJesusFilm = $_POST['txtWatchJesusFilm-$i']; else $WatchJesusFilm = ${'txtWatchJesusFilm-$i'};
+                			if (isset($_POST["txtWatchJesusFilm-".(string)$i])) $WatchJesusFilm = $_POST["txtWatchJesusFilm-".(string)$i]; else $WatchJesusFilm = ${"txtWatchJesusFilm-$i"};
 							echo "<input type='checkbox' name='txtWatchJesusFilm-$i' id='txtWatchJesusFilm-$i' style='color: navy; text-align: center; ' value='$WatchJesusFilm'";
-							if ($WatchJesusFilm) echo " checked='checked'";
+							if ($WatchJesusFilm == 'on') echo " checked='checked'";
 							echo " />";
 						echo "</td>";
 						echo "<td width='4%' style='text-align: center; '>";
-                			if (isset($_POST['txtWatchYouTube-$i'])) $WatchYouTube = $_POST['txtWatchYouTube-$i']; else $WatchYouTube = ${'txtWatchYouTube-$i'};
+                			if (isset($_POST["txtWatchYouTube-".(string)$i])) $WatchYouTube = $_POST["txtWatchYouTube-".(string)$i]; else $WatchYouTube = ${"txtWatchYouTube-$i"};
 							echo "<input type='checkbox' name='txtWatchYouTube-$i' id='txtWatchYouTube-$i' style='color: navy; text-align: center; ' value='$WatchYouTube'";
-							if ($WatchYouTube) echo " checked='checked'";
+							if ($WatchYouTube == 'on') echo " checked='checked'";
 							echo " />";
 						echo "</td>";
 						echo "<td width='16%'>";
@@ -4090,7 +4086,7 @@ function NT_Test($PDF, $NT_Index) {
 			$result1=$db->query($query);
 			$num=$result1->num_rows;
 			$r = $result1->fetch_assoc();
-			${'txtPlaylistVideoTitle-1'}=$r['PlaylistVideoTitle'];
+			${'txtPlaylistVideoTitle-1'}=check_input($r['PlaylistVideoTitle']);
 			${'txtPlaylistVideoFilename-1'}=$r['PlaylistVideoFilename'];
 			if ($r['PlaylistVideoDownload'] == 1) {
 				${'PlaylistVideoView-1'} = 0;
@@ -4144,7 +4140,7 @@ function NT_Test($PDF, $NT_Index) {
 							echo "&nbsp;";
 						echo "</td>";
 						echo "<td width='30%'>";
-							echo "<input type='text' name='txtPlaylistVideoTitle-$i' id='txtPlaylistVideoTitle-$i' style='color: navy; ' size='40' value='" . ( isset($_POST['txtPlaylistVideoTitle-'.(string)$i]) ? $_POST['txtPlaylistVideoTitle-'.(string)$i] : '' ) . "' />";
+							echo "<input type='text' name='txtPlaylistVideoTitle-$i' id='txtPlaylistVideoTitle-$i' style='color: navy; ' size='40' value='" . ( isset($_POST['txtPlaylistVideoTitle-'.(string)$i]) ? check_input($_POST['txtPlaylistVideoTitle-'.(string)$i]) : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='31%'>";
 							echo "<input type='text' name='txtPlaylistVideoFilename-$i' id='txtPlaylistVideoFilename-$i' style='color: navy; ' size='40' value='" . ( isset($_POST['txtPlaylistVideoFilename-'.(string)$i]) ? $_POST['txtPlaylistVideoFilename-'.(string)$i] : '' ) . "' />";
@@ -4170,7 +4166,7 @@ function NT_Test($PDF, $NT_Index) {
 				//for (; $i <= $num; $i++) {
 				if ($num > 1) {
 					while ($r = $result1->fetch_assoc()) {
-						${'txtPlaylistVideoTitle-$i'}=$r['PlaylistVideoTitle'];
+						${'txtPlaylistVideoTitle-$i'}=check_input($r['PlaylistVideoTitle']);
 						${'txtPlaylistVideoFilename-$i'}=$r['PlaylistVideoFilename'];
 						if ($r['PlaylistVideoDownload'] == 1) {
 							${'PlaylistVideoView-$i'} = 0;
@@ -4218,14 +4214,19 @@ function NT_Test($PDF, $NT_Index) {
 /*************************************************
 	"Scripture Resources from eBible.org" checkbox
 **************************************************/
-		if (isset($_POST['eBibleer'])) {
+		// IMPORTANT: input disabled='disabled' doesn't send value and checked through POST! So, use type="hidden" which contain the value of checked.
+		if (isset($_POST['eBible'])) {
 			?>
-			<input type='checkbox' name='eBible' id='eBible' <?php echo (isset($_POST['eBible']) && $_POST['eBible'] == 'on' ? ' checked' : '') ?> /> Does this have the "Scripture Resources from eBible.org" URL?
+			<input type='checkbox' name='eBible' <?php echo ($_POST['eBible'] == 'on' ? 'checked="checked"' : '') ?> disabled='disabled' />
+			<label for='eBible'> Does this have the "Scripture Resources from eBible.org" URL?</label>
+			<input type="hidden" name="eBible" id='eBible' value="<?php echo ($_POST['eBible'] == 'on' ? 'on' : 'off') ?>" />
 			<?php
         }
 		else {
 			?>
-			<input type='checkbox' name='eBible' id='eBible' <?php echo ($SM_row['eBible'] == 1 ? ' checked' : '') ?> /> Does this have the "Scripture Resources from eBible.org" URL?
+			<input type='checkbox' name='eBible' <?php echo ($SM_row['eBible'] == 1 ? 'checked="checked"' : '')?> disabled='disabled' />
+			<label for='eBible'> Does this have the "Scripture Resources from eBible.org" URL?</label>
+			<input type="hidden" name="eBible" id='eBible' value="<?php echo ($SM_row['eBible'] == 1 ? 'on' : 'off') ?>" />
 			<?php
 		}
 		echo '<br />';
@@ -4235,7 +4236,7 @@ function NT_Test($PDF, $NT_Index) {
 		if (isset($_POST['SILlink'])) {
 			?>
             <br />
-			<input type='checkbox' name='SILlink' id='SILlink' <?php echo (isset($_POST['SILlink']) && $_POST['SILlink'] == 'on' ? ' checked' : '') ?> /> Does this have the "SIL link" URL?
+			<input type='checkbox' name='SILlink' id='SILlink' <?php echo ($_POST['SILlink'] == 'on' ? ' checked' : '') ?> /> Does this have the "SIL link" URL?
 			<?php
         }
 		else {

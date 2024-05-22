@@ -57,7 +57,7 @@ include './include/conn.inc.php';
 $db = get_my_db();
 include './translate/functions.php';							// translation function
 
-$query="SELECT DISTINCT ISO_Country, $SpecificCountry FROM countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND countries.$SpecificCountry LIKE '".$TryCountry."%' ORDER BY $SpecificCountry";														// create a prepared statement
+$query="SELECT DISTINCT ISO_Country, $SpecificCountry FROM countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND (countries.$SpecificCountry LIKE '".$TryCountry."%' || countries.$SpecificCountry LIKE '% " . $TryCountry . "%') ORDER BY $SpecificCountry";														// create a prepared statement
 if ($result = $db->query($query)) {
 	while ($row = $result->fetch_assoc()) {
 		$ISO_Country = $row['ISO_Country'];

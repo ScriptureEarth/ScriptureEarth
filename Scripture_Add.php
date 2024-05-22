@@ -83,7 +83,7 @@ include ('./NT_Books.php');			// include the books of the NT
 <title>Scripture Add</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Add.css" />
 <script type="text/javascript" language="javascript" src="_js/Scripture_Add.js?v=1.0.3"></script>
-<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.1.5"></script>
+<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.1.6"></script>
 <script>
 	//let ALNindex = 1;
 	//let Otherindex = 1;
@@ -1162,13 +1162,13 @@ include ('./NT_Books.php');			// include the books of the NT
 							echo "<input type='text' name='txtWatchURL-$i' id='txtWatchURL-$i' style='color: navy; ' size='29' value='" . ( isset($_POST['txtWatchURL-'.(string)$i]) ? $_POST['txtWatchURL-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='6%' style='text-align: center; '>";
-                			if (isset($_POST['txtWatchJesusFilm-$i'])) $WatchJesusFilm = $_POST['txtWatchJesusFilm-$i']; else $WatchJesusFilm = ${'txtWatchJesusFilm-$i'};
+                			if (isset($_POST["txtWatchJesusFilm-$i"])) $WatchJesusFilm = $_POST["txtWatchJesusFilm-$i"]; else $WatchJesusFilm = ${"txtWatchJesusFilm-$i"};
 							echo "<input type='checkbox' name='txtWatchJesusFilm-$i' id='txtWatchJesusFilm-$i' style='color: navy; text-align: center; ' value='$WatchJesusFilm'";
 							if ($WatchJesusFilm) echo " checked='checked'";
 							echo " />";
 						echo "</td>";
 						echo "<td width='4%' style='text-align: center; '>";
-                			if (isset($_POST['txtWatchYouTube-$i'])) $WatchYouTube = $_POST['txtWatchYouTube-$i']; else $WatchYouTube = ${'txtWatchYouTube-$i'};
+                			if (isset($_POST["txtWatchYouTube-$i"])) $WatchYouTube = $_POST["txtWatchYouTube-$i"]; else $WatchYouTube = ${"txtWatchYouTube-$i"};
 							echo "<input type='checkbox' name='txtWatchYouTube-$i' id='txtWatchYouTube-$i' style='color: navy; text-align: center; ' value='$WatchYouTube'";
 							if ($WatchYouTube) echo " checked='checked'";
 							echo " />";
@@ -1700,7 +1700,7 @@ include ('./NT_Books.php');			// include the books of the NT
 					$i++;
 				}
 /************************************************
-	Video Playlist mp3s
+	Video Playlist mp4s
 *************************************************/
 			?>
 		</table>
@@ -1795,7 +1795,8 @@ include ('./NT_Books.php');			// include the books of the NT
 	Scripture Resources from eBible.org
 *************************************************/
 	?>
-        <input type='checkbox' name='eBible' id='eBible' <?php echo (isset($_POST['eBible']) ? ' checked' : '') ?> /> Is there the "Scripture Resources from eBible.org" URL?
+        <!--input type='checkbox' name='eBible' id='eBible' < ?php echo (isset($_POST['eBible']) ? ' checked' : '') ?> /> Is there the "Scripture Resources from eBible.org" URL?-->
+        <input type='checkbox' name='eBible' id='eBible' disabled='disabled' /> Is there the "Scripture Resources from eBible.org" URL?
 		<br />
 
 	<?php		

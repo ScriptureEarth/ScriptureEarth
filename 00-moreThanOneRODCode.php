@@ -4,7 +4,7 @@
 		in case someone does ?iso=[ISO] and there is more than one ROD and/or variant codes
 	*********************************************************************************************
 */
-	echo '<div id="langBackground" style="cursor: pointer; " onclick="window.open(\''.$Scriptname.'\', \'_self\')">';
+	echo '<div id="langBackground" style="cursor: pointer; width: 80%; " onclick="window.open(\''.$Scriptname.'\', \'_self\')">';
 	echo "<img src='images/00".$st."-ScriptureEarth_header.jpg' class='langHeader' alt='".translate('Scripture Resources in Thousands of Languages', $st, 'sys')."' />";									// just the ScriptureEarth.org icon
 	echo '</div>';
 	$stmt_SC = $db->prepare("SELECT DISTINCT $SpecificCountry, ISO_Country FROM scripture_main, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = scripture_main.ISO AND scripture_main.ISO = ?");														// create a prepared statement
@@ -20,7 +20,7 @@
 	$query="SELECT DISTINCT ISO_ROD_index, ISO, ROD_Code, Variant_Code, ".$ln_result."Def_LN FROM nav_ln WHERE ISO = '$ISO'";
 	if ($result = $db->query($query)) {
 		$LN = '';
-		echo '<br /><div style="color: navy; background-color: white; font-size: 20pt; ">'.translate('Choose one...', $st, 'sys').'</div><br />';
+		echo '<div style="color: navy; background-color: white; font-size: 20pt; margin-top: 200px; ">'.translate('Choose one...', $st, 'sys').'</div><br />';
 		echo "<p style='line-height: 2px; '>&nbsp;</p>";
 		echo "<div id='languageName' class='countryFirst'>";
 			echo "<div class='countryLN1'>".translate('Language Name', $st, 'sys')."</div>";

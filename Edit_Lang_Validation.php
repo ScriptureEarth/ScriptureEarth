@@ -172,15 +172,12 @@
 	}
 
 // SAB
-
 	/*
-			SAB_scriptoria
-	url		subfolder	description		pre_scriptoria
-				sab/
-
-			Scripture_Edit.php
-	txtSABurl		txtSABsubfolder		txtSABdescription		txtSABpreScriptoria
-	(hidden) txtSABsubFirstPath
+		SAB_scriptoria table
+			fields:	url		subfolder	description		pre_scriptoria
+			data:			sab/
+		Scripture_Edit.php script
+			variables:	txtSABurl		txtSABsubfolder		txtSABdescription		txtSABpreScriptoria		(hidden) txtSABsubFirstPath
 	*/
 	$inputs["SAB"] = 0;
 	$i = 1;
@@ -476,16 +473,22 @@
 		$inputs["txtWatchURL-$i"] = check_input($_POST["txtWatchURL-$i"]);
 		$inputs["txtWatchJesusFilm-$i"] = 0;
 		if (isset($_POST["txtWatchJesusFilm-$i"])) {
-			if ($_POST["txtWatchJesusFilm-$i"] == 'on') $inputs["txtWatchJesusFilm-$i"] = 1;		// checkbox = checked
+			if ($_POST["txtWatchJesusFilm-$i"] == 'on') $inputs["txtWatchJesusFilm-$i"] = 1; else $inputs["txtWatchJesusFilm-$i"] = 0;		// checkbox = checked
+			$_POST["txtWatchYouTube-$i"] = 'off';
+			$inputs["txtWatchYouTube-$i"] = 0;
 		}
 		$inputs["txtWatchYouTube-$i"] = 0;
 		if (isset($_POST["txtWatchYouTube-$i"])) {
-			if ($_POST["txtWatchYouTube-$i"] == 'on') $inputs["txtWatchYouTube-$i"] = 1;			// checkbox = checked
+			if ($_POST["txtWatchYouTube-$i"] == 'on') $inputs["txtWatchYouTube-$i"] = 1; else $inputs["txtWatchYouTube-$i"] = 0;			// checkbox = checked
+			$_POST["txtWatchJesusFilm-$i"] = 'off';
+			$inputs["txtWatchJesusFilm-$i"] = 0;
 		}
 		if ($inputs["txtWatchJesusFilm-$i"] == 1 && $inputs["txtWatchYouTube-$i"] == 1) {
-				$count_failed++;
-				$messages[] = "Watch: Use 'Jesus Film' or 'YouTube' ONLY on line # " . $i;
+			$count_failed++;
+			$messages[] = "Watch: Use 'Jesus Film' or 'YouTube' ONLY on line # " . $i;
 		}
+		//$count_failed++;
+		//$messages[] = $i . ') post WatchJesusFilm: "' . $_POST["txtWatchJesusFilm-$i"] . '"; inputs: ' . $inputs["txtWatchJesusFilm-$i"] . '; post WatchYouTube: "' . $_POST["txtWatchYouTube-$i"] . '"; inputs: ' . $inputs["txtWatchYouTube-$i"] . '<br />';
 		$i++;
 	}
 
@@ -729,7 +732,7 @@
 	while (isset($_POST["txtPlaylistVideoTitle-".(string)$i])) {
 		if (check_input($_POST["txtPlaylistVideoTitle-".(string)$i]) != "" && check_input($_POST["txtPlaylistVideoFilename-".(string)$i]) != "") $inputs["VideoPlaylist"] = 1;
 		if (empty($_POST["txtPlaylistVideoTitle-".(string)$i]) || empty($_POST["txtPlaylistVideoFilename-".(string)$i])) {
-			if ((check_input($_POST["txtPlaylistVideoTitle-$i"]) != "") || (check_input($_POST["txtPlaylistVideoFilename-$i"]) != "")) {
+			if ((check_input($_POST["txtPlaylistVideoTitle-$i"]) != '') || (check_input($_POST["txtPlaylistVideoFilename-$i"]) != '')) {
 				$count_failed++;
 				$messages[] = "View Video or Download Video Playlist #" . $i . " is blank.";
 			}
@@ -744,10 +747,12 @@
 // eBible
 	$inputs["eBibleer"] = "off";
 	$inputs["eBible"] = 0;
-	if ((isset($_POST["eBibleer"]) && $_POST["eBibleer"] == "on") || (isset($_POST["eBible"]) && $_POST["eBible"])) {
+	if ((isset($_POST["eBibleer"]) && $_POST["eBibleer"] == "on") || (isset($_POST["eBible"]) && $_POST["eBible"] == 'on')) {
 		$inputs["eBibleer"] = 'on';			// checkbox = checked
 		$inputs["eBible"] = 1;				// checkbox = checked
 	}
+	//$count_failed++;
+	//$messages[] = 'inputs: ' . $inputs["eBibleer"] . '; post eBible: "' . $_POST["eBible"] . '"; inputs: ' . $inputs["eBible"] . '<br />';
 
 // SIL link
 	$inputs["SILlinker"] = "off";
@@ -757,6 +762,7 @@
 		$inputs["SILlink"] = 1;				// checkbox = checked
 	}
 
+// completed
 	// If there are no failures, the inputs passed validation
 	if ($count_failed == 0) {
 		require_once 'SubmitEditConfirm.php';

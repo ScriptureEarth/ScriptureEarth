@@ -9,12 +9,19 @@
 </head>
 <body>
 <?php
+set_time_limit(0);		// set time limit to maximum
+
 $SAB_Count_Display = 0;
 $Jesus_Count_Display = 0;
 $BibleIs_Count_Display = 0;
 $BibleIsGospelFilm_Count_Display = 0;
 $YouVersion_Count_Display = 0;
+$eBible_Count_Display = 0;
+
 /********************************************************************************************************************************************************************
+
+		Check if there are multiple ROD codes for each ISO that have the same eBible records.
+
 		Creates 'AllLanguages.csv'
 
 		If AllEnglishLanguagesReport.php?number=1 then write "1" in all of the numbers instead of writing https://zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz to the csv file
@@ -50,6 +57,7 @@ $BibleIs_array = [];
 $BibleIsGospelFilm_array = [];
 $YouVersion_array = [];
 //$Bibles_org_array = [];
+$eBible_array = [];
 $GooglePlay_array = [];
 $GRN_array = [];
 $PlaylistAudio_array = [];
@@ -138,7 +146,7 @@ $FileString = '';
 				case 1:
 					//$query="SELECT LN_English FROM LN_English WHERE LN_English.ISO = '$ISO' AND LN_English.ROD_Code = '$ROD_Code'";
 					//$result_LN=$db->query($query);
-					$stmt_LN_English->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
+					$stmt_LN_English->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers
 					$stmt_LN_English->execute();															// execute query
 					$result_LN_English = $stmt_LN_English->get_result();									// instead of bind_result (used for only 1 record):
 					$r = $result_LN_English->fetch_array();
@@ -147,7 +155,7 @@ $FileString = '';
 				case 2:
 					//$query="SELECT LN_Spanish FROM LN_Spanish WHERE LN_Spanish.ISO = '$ISO' AND LN_Spanish.ROD_Code = '$ROD_Code'";
 					//$result_LN=$db->query($query);
-					$stmt_LN_Spanish->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
+					$stmt_LN_Spanish->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers
 					$stmt_LN_Spanish->execute();															// execute query
 					$result_LN_Spanish = $stmt_LN_Spanish->get_result();									// instead of bind_result (used for only 1 record):
 					$r = $result_LN_Spanish->fetch_array();
@@ -156,41 +164,41 @@ $FileString = '';
 				case 3:
 					//$query="SELECT LN_Portuguese FROM LN_Portuguese WHERE LN_Portuguese.ISO = '$ISO' AND LN_Portuguese.ROD_Code = '$ROD_Code'";
 					//$result_LN=$db->query($query);
-					$stmt_LN_Portuguese->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
+					$stmt_LN_Portuguese->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers
 					$stmt_LN_Portuguese->execute();															// execute query
-					$result_LN_Portuguese = $stmt_LN_Portuguese->get_result();									// instead of bind_result (used for only 1 record):
+					$result_LN_Portuguese = $stmt_LN_Portuguese->get_result();								// instead of bind_result (used for only 1 record):
 					$r = $result_LN_Portuguese->fetch_array();
 					$LN=$r['LN_Portuguese'];
 					break;	
 				case 4:
 					//$query="SELECT LN_French FROM LN_French WHERE LN_French.ISO = '$ISO' AND LN_French.ROD_Code = '$ROD_Code'";
 					//$result_LN=$db->query($query);
-					$stmt_LN_French->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
-					$stmt_LN_French->execute();															// execute query
-					$result_LN_French = $stmt_LN_French->get_result();									// instead of bind_result (used for only 1 record):
+					$stmt_LN_French->bind_param('ss', $ISO, $ROD_Code);										// bind parameters for markers
+					$stmt_LN_French->execute();																// execute query
+					$result_LN_French = $stmt_LN_French->get_result();										// instead of bind_result (used for only 1 record):
 					$r = $result_LN_French->fetch_array();
 					$LN=$r['LN_French'];
 					break;	
 				case 5:
 					//$query="SELECT LN_Dutch FROM LN_Dutch WHERE LN_Dutch.ISO = '$ISO' AND LN_Dutch.ROD_Code = '$ROD_Code'";
 					//$result_LN=$db->query($query);
-					$stmt_LN_Dutch->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
-					$stmt_LN_Dutch->execute();															// execute query
-					$result_LN_Dutch = $stmt_LN_Dutch->get_result();									// instead of bind_result (used for only 1 record):
+					$stmt_LN_Dutch->bind_param('ss', $ISO, $ROD_Code);										// bind parameters for markers
+					$stmt_LN_Dutch->execute();																// execute query
+					$result_LN_Dutch = $stmt_LN_Dutch->get_result();										// instead of bind_result (used for only 1 record):
 					$r = $result_LN_Dutch->fetch_array();
 					$LN=$r['LN_Dutch'];
 					break; 	
 				case 6:
 					//$query="SELECT LN_German FROM LN_German WHERE LN_German.ISO = '$ISO' AND LN_German.ROD_Code = '$ROD_Code'";
 					//$result_LN=$db->query($query);
-					$stmt_LN_German->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
-					$stmt_LN_German->execute();															// execute query
-					$result_LN_German = $stmt_LN_German->get_result();									// instead of bind_result (used for only 1 record):
+					$stmt_LN_German->bind_param('ss', $ISO, $ROD_Code);										// bind parameters for markers
+					$stmt_LN_German->execute();																// execute query
+					$result_LN_German = $stmt_LN_German->get_result();										// instead of bind_result (used for only 1 record):
 					$r = $result_LN_German->fetch_array();
 					$LN=$r['LN_German'];
 					break; 	
 				case 7:
-					$stmt_LN_Chinese->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
+					$stmt_LN_Chinese->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers
 					$stmt_LN_Chinese->execute();															// execute query
 					$result_LN_Chinese = $stmt_LN_Chinese->get_result();									// instead of bind_result (used for only 1 record):
 					$r = $result_LN_Chinese->fetch_array();
@@ -266,6 +274,8 @@ $FileString = '';
 	$stmt_links_GooglePlay=$db->prepare($query);														// create a prepared statement
 	$query='SELECT company, company_title, URL FROM links WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ? AND GRN = 1';
 	$stmt_links_GRN=$db->prepare($query);																// create a prepared statement
+	$query='SELECT translationId, rodCode, languageNameInEnglish, publicationURL, shortTitle FROM eBible_list WHERE languageCode = ?';
+	$stmt_eBible=$db->prepare($query);																	// create a prepared statement
 	$query='SELECT Cell_Phone_Title, Cell_Phone_File, optional FROM CellPhone WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ?';
 	$stmt_links_CellPhone=$db->prepare($query);
 	$query='SELECT PlaylistAudioTitle, PlaylistAudioFilename FROM PlaylistAudio WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ?';
@@ -278,7 +288,6 @@ $FileString = '';
 	$stmt_links_SAB=$db->prepare($query);
 	$query='SELECT COUNT(*) FROM study WHERE ISO = ? AND ROD_Code = ? AND Variant_Code = ?';
 	$stmt_links_study=$db->prepare($query);
-
 
 	$query='SELECT DISTINCT LN_Temp.LN, nav_ln.ISO, nav_ln.ROD_Code, nav_ln.Variant_Code FROM LN_Temp, nav_ln WHERE LN_Temp.ISO = nav_ln.ISO AND LN_Temp.ROD_Code = nav_ln.ROD_Code ORDER BY LN_Temp.LN';
 	$result = $db->query($query);
@@ -812,11 +821,27 @@ $FileString = '';
 		}
 		$MySword_array = [];
 		
-		if ($eBible == 0) {
-			$eBible = NULL;
+		// eBible = 1
+		$stmt_eBible->bind_param('s', $ISO);														// bind parameters for markers
+		$stmt_eBible->execute();																	// execute query
+		$result_eBible = $stmt_eBible->get_result();												// instead of bind_result (used for only 1 record):
+		$eBible_count = 0;
+		while ($r_eBible = $result_eBible->fetch_array()) {
+			// translationId, rodCode, languageNameInEnglish, shortTitle, publicationURL
+			$translationId = $r_eBible['translationId'];
+			$rodCode = $r_eBible['rodCode'];
+			$languageNameInEnglish = $r_eBible['languageNameInEnglish'];
+			$shortTitle = $r_eBible['shortTitle'];
+			$publicationURL = $r_eBible['publicationURL'];
+			array_push($eBible_array, [$ISO, $rodCode, $translationId, $languageNameInEnglish, $shortTitle, $publicationURL]);	// add to $eBible_array
+			$eBible_Count_Display++;
+			$eBible_count++;
+		}
+		if ($eBible_count == 0) {
+			$eBible_count = NULL;
 		}
 		
-		$FileString .= "$GooglePlay	$App	$iOS	$buy	$BibleIs	$BibleIsGospelFilm	$YouVersion	$GRN	$eBible	$GoBible	$MySword	";
+		$FileString .= "$GooglePlay	$App	$iOS	$buy	$BibleIs	$BibleIsGospelFilm	$YouVersion	$GRN	$eBible_count	$GoBible	$MySword	";
 
 		// PlaylistAudio table: PlaylistAudioTitle	PlaylistAudioFilename (*txt)
 		$stmt_links_PlaylistAudio->bind_param('sss', $ISO, $ROD_Code, $Variant_Code);				// bind parameters for markers
@@ -1304,6 +1329,7 @@ echo 'Jesus Video: ' .$Jesus_Count_Display . '<br />';
 echo 'Bible.is: ' .$BibleIs_Count_Display . '<br />';
 echo 'Bible.is Gospel Film: ' .$BibleIsGospelFilm_Count_Display . '<br />';
 echo 'YouVersion: ' . $YouVersion_Count_Display . '<br />';
+echo 'eBible: ' . $eBible_Count_Display . '<br />';
 ?>
 </body>
 </html>

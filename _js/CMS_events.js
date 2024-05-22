@@ -36,29 +36,36 @@ document.getElementById('Open_OT_PDFs').addEventListener('click', function() { c
 
 document.getElementById('Close_OT_PDF').addEventListener('click', function() { classChange('OT_Books', 'DisplayNone', 'OT_PDF_Button'); });
 
+
 document.getElementById('OT_PDF_Books').addEventListener('click', function() { All_PDF_OT_Books(); });
 
 document.getElementById('No_OT_PDF_Books').addEventListener('click', function() { No_PDF_OT_Books(); });
+
 
 document.getElementById('Open_NT_PDFs').addEventListener('click', function() { classChange('NT_Books', 'DisplayBlock', 'PDF_Button'); });
 
 document.getElementById('Close_NT_PDF').addEventListener('click', function() { classChange('NT_Books', 'DisplayNone', 'PDF_Button'); });
 
+
 document.getElementById('NT_PDF_Books').addEventListener('click', function() { All_PDF_NT_Books(); });
 
 document.getElementById('No_NT_PDF_Books').addEventListener('click', function() { No_PDF_NT_Books(); });
+
 
 document.getElementById('Open_OT_audio').addEventListener('click', function() { classChange('OT_Audio', 'DisplayBlock', 'OT_Audio_Button'); });
 
 document.getElementById('Close_OT_audio').addEventListener('click', function() { classChange('OT_Audio', 'DisplayNone', 'OT_Audio_Button'); });
 
+
 document.getElementById('OT_Audio_Chapters').addEventListener('click', function() { All_Audio_OT_Chapters(); });
 
 document.getElementById('No_OT_Audio_Chapters').addEventListener('click', function() { No_Audio_OT_Chapters(); });
 
+
 document.getElementById('Open_NT_audio').addEventListener('click', function() { classChange('NT_Audio', 'DisplayBlock', 'Audio_Button'); });
 
 document.getElementById('Close_NT_audio').addEventListener('click', function() { classChange('NT_Audio', 'DisplayNone', 'Audio_Button'); });
+
 
 document.getElementById('NT_Audio_Chapters').addEventListener('click', function() { All_Audio_NT_Chapters(); });
 

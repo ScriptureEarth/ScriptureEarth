@@ -644,14 +644,16 @@
 	}
 
 // eBible
+	/* not needed (5/2024)
 	if ($inputs['eBible']) {
 		$query="UPDATE eBible_list SET ISO_ROD_index = $idx WHERE languageId = '$inputs[iso]' AND rodCode = '$inputs[rod]'";
 		$result=$db->query($query);
 		if (!$result) {
 			echo 'Could not update the data eBible_list table. '. $iso . ' might not be in eBible_list table. ' . $db->error;
 		}
-	}
-	
+	}*/
+
+// completed
 	echo "<h2 style='text-align: center; '>You have successfully completed<br />";
 	/*
 	 * It is safe to echo $_POST['txtName'] here because

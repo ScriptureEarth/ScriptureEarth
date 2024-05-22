@@ -77,12 +77,12 @@ foreach ($data as $items => $value) {
         if (isset($data[$items]["subfolder"])) {
             $subfolder = $data[$items]["subfolder"];
             if (stripos($url, 'scriptureearth.org') !== false) {
-                $url = preg_replace('/.+\.org\/(data\/[a-z]{3}\/sab\/[a-zA-Z0-9]{3,})\/index\.html/i', '$1', $url);
+                $url = preg_replace('/.+\.org\/(data\/[a-z]{3}\/sab\/[a-zA-Z0-9]{3,})\/.*/i', '$1', $url);
             }
         }
         elseif (stripos($url, 'scriptureearth.org') !== false) {
-            $subfolder = preg_replace('/.+\.org\/data\/[a-z]{3}\/sab\/([a-zA-Z0-9]{3,})\/index\.html/i', '$1', $url);
-            $url = preg_replace('/.+\.org\/(data\/[a-z]{3}\/sab\/[a-zA-Z0-9]{3,})\/index\.html/i', '$1', $url);
+            $subfolder = preg_replace('/.+\.org\/data\/[a-z]{3}\/sab\/([a-zA-Z0-9]{3,})\/.*/i', '$1', $url);
+            $url = preg_replace('/.+\.org\/(data\/[a-z]{3}\/sab\/[a-zA-Z0-9]{3,})\/.*/i', '$1', $url);
         }
         else {
             // $subfolder = '' && $url != 'scriptureearth.org'

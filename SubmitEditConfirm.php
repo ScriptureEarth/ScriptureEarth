@@ -35,8 +35,8 @@
 	$db = get_my_db();
 	
 	echo "<div style='background-color: white; padding: 20px; width: 1020px; margin-left: auto; margin-right: auto; border-radius: 15px; -moz-border-radius: 15px; -webkit-box-shadow: 15px; '>";
+
 //Change here??
-	
 	$query="UPDATE scripture_main SET Variant_Code = '$inputs[var]', OT_PDF = '$inputs[OT_PDF]', NT_PDF = '$inputs[NT_PDF]', FCBH = 0, OT_Audio = '$inputs[OT_Audio]', NT_Audio = '$inputs[NT_Audio]', links = '$inputs[links]', other_titles = '$inputs[other_titles]', watch = '$inputs[watch]', buy = '$inputs[buy]', study = '$inputs[study]', viewer = '$inputs[viewer]', CellPhone  = '$inputs[CellPhone]', AddNo = '$inputs[AddNo]', AddTheBibleIn = '$inputs[AddTheBibleIn]', AddTheScriptureIn = '$inputs[AddTheScriptureIn]', BibleIs = '$inputs[BibleIs]', BibleIsGospelFilm = '$inputs[BibleIsGospelFilm]', `Bibles_org` = '$inputs[Biblesorg]', YouVersion = '$inputs[YouVersion]', PlaylistAudio = '$inputs[AudioPlaylist]', PlaylistVideo = '$inputs[VideoPlaylist]', SAB = '$inputs[SAB]', eBible = '$inputs[eBible]', SILlink = '$inputs[SILlink]', `GRN` = '$inputs[GRN]' WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);
 	if (!$result) {
@@ -267,7 +267,7 @@
 								$SAB_Read = '';
 							}
 							//else {
-			//					$SAB_Error_Chapter .= 'SAB: ' . $SAB_Path . $filename . ' does not exist. If it should exist did you make a copy of the HTML file to the server?<br />';
+							//	$SAB_Error_Chapter .= 'SAB: ' . $SAB_Path . $filename . ' does not exist. If it should exist did you make a copy of the HTML file to the server?<br />';
 							//	$OT_Error_Books = 1;		// only if all of the OT chapters are not found would this get set to 0
 							//}
 						}
@@ -286,7 +286,6 @@
 					else {
 						$SAB_OT_Book_Count = 0;
 					}
-			
 					// SAB NT
 					$book_number = 0;
 					$SAB_Book_Count = 0;
@@ -330,13 +329,12 @@
 								$SAB_Read = '';
 							}
 							//else {
-			//					$SAB_Error_Chapter .= 'SAB: ' . $SAB_Path . $filename . ' does not exist. If it should exist did you made a copy of the HTML file to the server?<br />';
+							//	$SAB_Error_Chapter .= 'SAB: ' . $SAB_Path . $filename . ' does not exist. If it should exist did you made a copy of the HTML file to the server?<br />';
 							//	$NT_Error_Books = 1;		// only if all of the NT chapters are not found would this get set to 0
 							//}
 						}
 					}
 					$stmt_SAB->close();
-					
 					if ($NT_Error_Books == 1) {
 						$SAB_Book_Count = 0;
 						if ($SAB_NT_Book_Count == 0) {			// 1 (binary) - NT Synchronized text and audio
@@ -359,20 +357,23 @@
 					$SAB_Path = './data/'.$inputs['iso'].'/'.$inputs[$SABsubfolder];
 					$query="INSERT INTO SAB (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Book_Chapter_HTML, SAB_Book, SAB_Chapter, SAB_Audio, SAB_number) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, 0, ?)";
 					$stmt_SAB=$db->prepare($query);
-					$SAB_array = glob($SAB_Path.'*.html');
-					if (empty($SAB_array) === false) {																	// there are html files here
+					$SAB_array = [];
+					$SAB_array = glob($SAB_Path."*.html");
+					if (!empty($SAB_array)) {																	// there are html files here
 						foreach ($SAB_array as $SAB_record) {															// $SAB_array = glob($SAB_Path.'*.html'). e.g. "tuoC-02-GEN-001.html"
-							$SAB_record = substr($SAB_record, strrpos($SAB_record, '/')+1);								// gets rids of directories. strrpos - returns the poistion of the last occurrence of the substring
-							if (preg_match('/-([0-9]+)-[A-Z0-9][A-Z]{2}-/', $SAB_record, $match)) {
+							$SAB_record = substr($SAB_record, strrpos($SAB_record, '/')+1);								// IMPORTANT! Gets rids of directories just before the html name. strrpos - returns the poistion of the last occurrence of the substring
+							if (preg_match('/-([0-9]+)-[A-Z0-9][A-Z]{2}-/', $SAB_record, $match)) {						// match the book from the html file
 							}
 							else {
-								continue;
+								continue;																				// continue with a new html file
 							}
-							$book_number = (int)$match[1];
-							preg_match('/-([0-9]+)\.html/', $SAB_record, $match);
-							$chapter = (int)$match[1];
+							$book_number = (int)$match[1];																// book_number = match
+							preg_match('/-([0-9]+)\.html/', $SAB_record, $match);										// match the chapter from the html file
+							$chapter = (int)$match[1];																	// chapter = match
+							//echo "<script>console.log('book_number and chapter: " . $book_number . ' ' . $chapter . "');</script>";
 							$stmt_SAB->bind_param("siii", $SAB_record, $book_number, $chapter, $i);						// bind parameters for markers
-							$stmt_SAB->execute();
+							$stmt_SAB->execute() or trigger_error($stmt_SAB_Script->error, E_USER_ERROR);				// execute query
+							//echo "<script>console.log('done: book_number and chapter: " . $book_number . ' ' . $chapter . "');</script>";
 						}
 					}
 					else {
@@ -550,7 +551,7 @@
 		}
 		$stmt_NT->close();
 	}
-	
+
 // links: Read: YouVersion
 	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND YouVersion = 1";
 	$result=$db->query($query);
@@ -911,7 +912,7 @@
 	if ($inputs['FCBH']) {
 		$query="SELECT * FROM FCBHLanguageList WHERE ISO = '$inputs[iso]' AND ROD_Code = '$inputs[rod]' AND DAM_ID IS NOT NULL"; 	//AND (Variant_Code = '$inputs[var]' OR '$inputs[var]' IS NULL OR '$inputs[var]' = '')
 		$result=$db->query($query);
-		if (!$result or ($result->num_rows == 0)) {
+		if (!$result || ($result->num_rows === 0)) {
 			 echo '<div style="font-size: 14pt; font-weight: bold; text-align: center; ">';
 			 echo 'There is an error writing to the FCBH table where DAM_ID is not found.<br />';
 			 echo "Send an email message to <a href=\'mailto:Scott_Starker&#64;sil.org?subject=Edit:%20FCBH%20error:%20'$inputs[iso]',%20'$inputs[rod]',%20'$inputs[var]'\>Scott Starker</a> ";
@@ -929,21 +930,21 @@
 			}
 		}
 	}
-	
 // eBible
-	$result=$db->query("SELECT translationId FROM eBible_list WHERE ISO_ROD_index = $inputs[idx]");
-	if ($r = $result->fetch_assoc()) {
-		$translationId=$r['translationId'];
-		$result=$db->query("UPDATE eBible_list SET ISO_ROD_index = NULL WHERE ISO_ROD_index = $inputs[idx]");
-		if ($inputs['eBible']) {
-			$query="UPDATE eBible_list SET ISO_ROD_index = $inputs[idx] WHERE translationId = '$translationId'";
-			$result=$db->query($query);
-			if (!$result) {
-				echo 'Could not update the data "eBible_list": ' . $db->error;
-			}
+	/* not needed (5/2024)
+	if ($inputs['eBible']) {
+		$result=$db->query("SELECT translationId FROM eBible_list WHERE ISO_ROD_index = $inputs[idx]");
+		if ($result->num_rows > 0) {
+			$r = $result->fetch_assoc();
+			//$translationId=$r['translationId'];
+			//$result=$db->query("UPDATE eBible_list SET ISO_ROD_index = NULL WHERE ISO_ROD_index = $inputs[idx]");
+			//$query="UPDATE eBible_list SET ISO_ROD_index = $inputs[idx] WHERE translationId = '$translationId'";
+			//$result=$db->query($query);
+			//if (!$result) {
+			//	echo 'Could not update the data "eBible_list": ' . $db->error;
+			//}
 		}
-	}
-
+	}*/
 // completed
 	echo "<h2 style='text-align: center; '>You have successfully completed the edit to ";
     /*

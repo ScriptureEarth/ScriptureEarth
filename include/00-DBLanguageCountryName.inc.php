@@ -1,4 +1,6 @@
 <?php
+if(session_status() === PHP_SESSION_NONE) @session_start();
+
 // 00-DBLanguageCountryName.inc.php
 /*
 	*********************************************************************************************
@@ -37,9 +39,6 @@ else {
 
 if (!$ML) {											// if the navigational langauge name is 0 then the default langauge name is used
 	$ML = $def_LN;
-	if (session_status() == PHP_SESSION_NONE) {
-		session_start();
-	}
 	// from PHP
 	if (isset($_SESSION['nav_ln_array']) || !empty($_SESSION['nav_ln_array'])) {
 		foreach ($_SESSION['nav_ln_array'] as $code => $array){

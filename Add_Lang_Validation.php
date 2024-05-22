@@ -1,34 +1,30 @@
 <?php
-function check_input($value) {
-	$value = trim($value);
-    /* Automatic escaping is highly deprecated, but many sites do it anyway. */
-	// Stripslashes
-	//if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
-		$value = stripslashes($value);
-	//}
-	// Quote if not a number
-	if (!is_numeric($value)) {
-		$db = get_my_db();
-		$value = $db->real_escape_string($value);
-	}
-	return $value;
-}
-
 	// This script cannot be accessed directly.
 	if ( ! (defined('RIGHT_ON') && RIGHT_ON === true)) {
 		@include_once '403.php';
 		exit;
 	}
-	 
-	include("OT_Books.php");
-	include("NT_Books.php");
 
-	// The number of failed validations
-	$count_failed = 0;
+	$iso = '';
  
-	$iso = $_POST["iso"];
+	if (isset($_POST["iso"])) {
+		$iso = $_POST["iso"];
+	}
+	else {
+		die('Die!</body></html>');
+	}
 
 	if (strlen($iso) == 3) {
+		function check_input($value) {
+			return str_replace("'", "ꞌ", trim($value));	// for input tag (single quote "'" to glottal stop "ꞌ")
+		}
+
+		include("OT_Books.php");
+		include("NT_Books.php");
+
+		// The number of failed validations
+		$count_failed = 0;
+
 		if (isset($_POST["rod"])) {
 			$rod = $_POST["rod"];
 		}
@@ -487,8 +483,8 @@ function check_input($value) {
 					if ($_POST["txtWatchYouTube-".(string)$i] == 'on') $inputs["txtWatchYouTube-".(string)$i] = 1;			// checkbox = checked
 				}
 				if ($inputs["txtWatchJesusFilm-".(string)$i] == 1 && $inputs["txtWatchYouTube-".(string)$i] == 1) {
-						$count_failed++;
-						$messages[] = "Watch: Use 'Jesus Film' or 'YouTube' ONLY on line # " . $i;
+					$count_failed++;
+					$messages[] = "Watch: Use 'Jesus Film' or 'YouTube' ONLY on line # " . $i;
 				}
 				$i++;
 			}
@@ -660,12 +656,15 @@ function check_input($value) {
 			}
 
 // eBible
+			$_POST['eBible'] = 'off';
 			$inputs['eBible'] = 0;
+			/* not needed (5/2024)
 			if (isset($_POST['eBible'])) {
 				if ($_POST['eBible'] == 'on') {
 					$inputs['eBible'] = 1;			// checkbox = checked
 				}
 			}
+			*/
 
 // SIL link
 			$inputs['SILlink'] = 0;

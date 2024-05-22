@@ -7,30 +7,27 @@
 <meta name="Created-by" 					content="Scott Starker" />
 <title>AJAX - Create html subpage for eBible items</title>
 <style type="text/css">
-	html, body {
-		font: 100% Verdana, Arial, Helvetica, sans-serif;
-		/*background-color: white;		/* #AEB2BE */
-		/*background-image: url(../images/background.png);*/
-		height: 100%;
-		margin: 0; 			/* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
-		padding: 0;
-		text-align: center; /* this centers the container in IE 5* browsers. The text is then set to the left aligned default in the #container selector */
-		color: #000000;
-	}
-	a, a:hover, a:link, a:active {
-		color: navy;
-		text-decoration: none;
-		border-style: none;
-	}
-	span.lineAction {
-		color: crimson;
-		text-decoration: underline;	
-	}
-	.selectOption {
-		color: navy;
-		font-weight: bold;
+	/*option {
+		/*background-color: transparent !important;* /
 		font-size: .9em;
-		font-family: Verdana, Arial, Helvetica, sans-serif;
+		color: navy;
+		background-color: #d0d0d0;
+		font-family: Chivo, 'Gill Sans', Tahoma, Geneva, Verdana, sans-serif;
+		font-weight: normal;
+		/*border: 1px solid #e4e4e4;* /
+		/* safari * /
+		appearance: none;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		/*box-shadow: inset 20px 20px #f00;
+		text-align-last: left;* /
+	}*/
+	.linePointer {
+		cursor: pointer;
+		/*display: inline;*/
+	}
+	.linePointer:hover {
+		border-bottom:2px solid red;
 	}
 </style>
 </head>
@@ -130,21 +127,21 @@ if (isset($_GET["URL"])) {
 		if (preg_match("/['\"]toc['\"]/i", $convert[$i])) {
 			if (preg_match("/inScript/i", $convert[$i])) {
 				preg_match("/href=(['\"][^'\"].*['\"])/i", $convert[$i], $matches);
-				$inScript = '<div>&nbsp;&nbsp;•&nbsp;<a href=' . $matches[1] . ' target="_blank"><span class="lineAction">'.translate('Browser', $st, 'sys').'</span> - inScript.org</a></div>';
+				$inScript = '<div>&nbsp;&nbsp;•&nbsp;<a href=' . $matches[1] . ' target="_blank"><span class="linePointer">'.translate('Browser', $st, 'sys').'</span> - inScript.org</a></div>';
 			}
 			if (preg_match("/\.epub/i", $convert[$i])) {
 				preg_match("/href=(['\"].*\.epub['\"])/i", $convert[$i], $matches);
-				//$epub = '<div><a href=' . $matches[1] . '><span class="lineAction">'.translate('epub format', $st, 'sys').'</span></a></div>';
+				//$epub = '<div><a href=' . $matches[1] . '><span class="linePointer">'.translate('epub format', $st, 'sys').'</span></a></div>';
 				$epub = $matches[1];
 			}
 			if (preg_match("/\.mobi/i", $convert[$i])) {
 				preg_match("/href=(['\"].*\.mobi['\"])/i", $convert[$i], $matches);
-				//$mobi = '<div><a href=' . $matches[1] . '><span class="lineAction">'.translate('Kindle format', $st, 'sys').'</span></a></div>';
+				//$mobi = '<div><a href=' . $matches[1] . '><span class="linePointer">'.translate('Kindle format', $st, 'sys').'</span></a></div>';
 				$mobi = $matches[1];
 			}
 			if (preg_match("/sword/i", $convert[$i])) {
 				preg_match("/href=(['\"][^'\"].*['\"])/i", $convert[$i], $matches);
-				//$sword = '<div><a href=' . $matches[1] . '><span class="lineAction">'.translate('Crosswire Sword format', $st, 'sys').'</span></a></div>';
+				//$sword = '<div><a href=' . $matches[1] . '><span class="linePointer">'.translate('Crosswire Sword format', $st, 'sys').'</span></a></div>';
 				$sword = $matches[1];
 			}
 			if (preg_match("/pdf/i", $convert[$i])) {
@@ -169,7 +166,7 @@ if (isset($_GET["URL"])) {
 			// echo "The file $PDFline exists";
 			$PDFpage = file_get_contents($PDFline);							// get the HTML PDF from the eBible.org
 			$convertPDF = explode("\n", $PDFpage);							// create array separate by new line
-			echo '&nbsp;&nbsp;•&nbsp;<span class="lineAction">'.translate('Read', $st, 'sys').'</span> - '.translate('PDFs:', $st, 'sys');
+			echo '&nbsp;&nbsp;•&nbsp;<span class="linePointer">'.translate('Read', $st, 'sys').'</span> - '.translate('PDFs:', $st, 'sys');
 			if ($mobile == 1) {
 				echo "<br />";
 			}
@@ -177,7 +174,7 @@ if (isset($_GET["URL"])) {
 				echo " ";
 			}
 			echo "<select class='selectOption' name='list_eBible' onchange='if (this.options[this.selectedIndex].text != \"".translate('Choose One...', $st, 'sys')."\") { window.open(this.options[this.selectedIndex].value, \"_blank\"); }'>";
-			echo '<option class="selectOption">'.translate('Choose One...', $st, 'sys').'</option>';
+			echo '<option style="font-size: .9em;">'.translate('Choose One...', $st, 'sys').'</option>';
 			for ($j=0; $j<count($convertPDF); $j++) {
 				if (preg_match("/\.pdf['\"]/i", $convertPDF[$j])) {
 					if (preg_match("/point/i", $convertPDF[$j])) continue; 
@@ -202,7 +199,7 @@ if (isset($_GET["URL"])) {
 					}
 		//			$title = utf8_encode($title);
 					preg_match("/href=['\"](.*\.pdf)['\"]/i", $convertPDF[$j], $matches);		// the link which will take you to the title page
-					echo '<option class="selectOption" value="' . $PDFline . '/' . $matches[1] . '">' . $title . ' ' . ($pageSize != '' ? $pageSize . ' ' : '') . ($pages != '' ? '(' . $pages . ' ' . translate('pages', $st, 'sys') . ')' : '') . '</option>';
+					echo '<option style="font-size: .9em;" value="' . $PDFline . '/' . $matches[1] . '">' . $title . ' ' . ($pageSize != '' ? $pageSize . ' ' : '') . ($pages != '' ? '(' . $pages . ' ' . translate('pages', $st, 'sys') . ')' : '') . '</option>';
 					/*
 					<li><a href='aai_all.pdf'>aai_all.pdf TUR GEWASIN O BAIBASIT BOUBUN (letter size) 362 pages</a></li>
 					<li><a href='aai_a4.pdf'>aai_a4.pdf TUR GEWASIN O BAIBASIT BOUBUN (A4 size) 398 pages</a></li>
@@ -242,7 +239,7 @@ if (isset($_GET["URL"])) {
 			}
 			echo '</select>';
 		}
-		echo '<br />&nbsp;&nbsp;•&nbsp;<span class="lineAction">'.translate('Download', $st, 'sys').'</span> - '.translate('Modules', $st, 'sys').':';
+		echo '<br />&nbsp;&nbsp;•&nbsp;<span class="linePointer">'.translate('Download', $st, 'sys').'</span> - '.translate('Modules', $st, 'sys').':';
 		if ($mobile == 1) {
 			echo "<br />";
 		}
@@ -250,21 +247,21 @@ if (isset($_GET["URL"])) {
 			echo " ";
 		}
 		echo "<select class='selectOption' name='modules_eBible' onchange='if (this.options[this.selectedIndex].text != \"".translate('Choose One...', $st, 'sys')."\") { window.open(this.options[this.selectedIndex].value, \"_blank\"); }'>";
-		echo '<option class="selectOption">'.translate('Choose One...', $st, 'sys').'</option>';
+		echo '<option style="font-size: .9em;">'.translate('Choose One...', $st, 'sys').'</option>';
 		if ($epub != '') {
-			echo '<option class="selectOption" value=' . $epub . '>' . translate('epub format', $st, 'sys').'</option>';
+			echo '<option style="font-size: .9em;" value=' . $epub . '>' . translate('epub format', $st, 'sys').'</option>';
 		}
 		if ($mobi != '') {
-			echo '<option class="selectOption" value=' . $mobi . '>' . translate('Kindle format', $st, 'sys').'</option>';
+			echo '<option style="font-size: .9em;" value=' . $mobi . '>' . translate('Kindle format', $st, 'sys').'</option>';
 		}
 		if ($sword != '') {
-			echo '<option class="selectOption" value=' . $sword . '>' . translate('Crosswire Sword format', $st, 'sys').'</option>';
+			echo '<option style="font-size: .9em;" value=' . $sword . '>' . translate('Crosswire Sword format', $st, 'sys').'</option>';
 		}
 		echo '</select>';
 		echo '</form>';
 		echo $inScript;
 	}
-	echo "<div>&nbsp;&nbsp;•&nbsp;<a href='https://$URL/'". ' target="_blank"><span class="lineAction">'.translate('Go to', $st, 'sys').'</span> - eBible.org</a></div>';
+	echo "<div>&nbsp;&nbsp;•&nbsp;<a style='text-decoration: none; ' href='https://$URL/'". ' target="_blank"><span class="linePointer">'.translate('Go to', $st, 'sys').'</span> - eBible.org</a></div>';
 ?>
 </body>
 </html>

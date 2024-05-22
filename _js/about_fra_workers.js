@@ -17,8 +17,7 @@
 						"<li>PDF</li>"+
 						"<li>applications mobiles</li>"+
 						"<li>des liens pour acheter des Bibles imprimées et d’autres ressources</li>"+
-						"</ul>"+
-						"<br />"+
+						"</ul><br />"+
                          
                         "<hr width='96%' style='margin-bottom: 20px; ' /><br />"+
                         

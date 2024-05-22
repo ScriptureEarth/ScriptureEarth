@@ -316,7 +316,7 @@ function Counter2() {
 	}
 }
 
-$Dummy_Data = [1 => "There are nearly 3000 indigenous languages spoken today. Many of these languages have Bible translation work in progress.<br /><br />
+$Dummy_Data = [1 => "There are over 3000 indigenous languages spoken today. Many of these languages have Bible translation work in progress.<br /><br />
 We dedicate this website to the glory of God and to those who have spent their lives serving these
 people in the task of providing God’s Word in the language that speaks to their heart.",
 2 => "Actualmente en las Américas se hablan casi 3000 idiomas indígenas. Muchos de estos idiomas ya tienen un proyecto de traducción
