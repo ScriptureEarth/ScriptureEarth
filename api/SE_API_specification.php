@@ -515,7 +515,7 @@ div + p {                       /* div followed immediately by p  */
 <p>To get the apps.php of the (only 1 line per apps.php)</p>
 <ul>
   <li>  
-    With the ?v=1&key=[your key], you will also need
+    With the ?v=[1 or 2]&key=[your key], you will also need
   </li>
   <ul>
     <li>
@@ -555,6 +555,12 @@ div + p {                       /* div followed immediately by p  */
   </li>
   <li>
     link to iOS Asset Package
+  </li>
+</ul>
+<p>verion 2 will add</p>
+<ul>
+  <li>
+    the descriptions of each link
   </li>
 </ul>
 </div>

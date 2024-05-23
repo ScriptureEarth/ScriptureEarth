@@ -1,4 +1,7 @@
 <?php
+/*
+	both android and ios or one of each
+*/
 
 $index = 0;
 $first = '';
@@ -25,7 +28,7 @@ if (isset($_GET['rel'])) {
 }
 
 if ($index == 1) {
-    $stmt_app = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `Cell_Phone_Title`, `Cell_Phone_File`, `optional` FROM `CellPhone` WHERE ISO_ROD_index = ? AND (`Cell_Phone_Title` = 'iOS Asset Package' OR `Cell_Phone_Title` = 'Android App') ORDER BY `Cell_Phone_Title`");
+    $stmt_app = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `Cell_Phone_Title`, `Cell_Phone_File`, `optional` FROM `CellPhone` WHERE ISO_ROD_index = ? AND (`Cell_Phone_Title` = 'iOS Asset Package' OR `Cell_Phone_Title` = 'Android App') ORDER BY `ROD_Code`, `Variant_Code`, `Cell_Phone_Title`");
     $stmt_app->bind_param('i', $idx);															// bind parameters for markers
 }
 else {
@@ -33,19 +36,19 @@ else {
 		$stmt_app = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `Cell_Phone_Title`, `Cell_Phone_File`, `optional` FROM `CellPhone` WHERE (`Cell_Phone_Title` = 'iOS Asset Package' OR `Cell_Phone_Title` = 'Android App') ORDER BY `ISO`, `ROD_Code`, `Variant_Code`, `Cell_Phone_Title`");
 	}
 	elseif ($rod == 'ALL' && $var == 'ALL') {
-		$stmt_app = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `Cell_Phone_Title`, `Cell_Phone_File`, `optional` FROM `CellPhone` WHERE `ISO` = ? AND (`Cell_Phone_Title` = 'iOS Asset Package' OR `Cell_Phone_Title` = 'Android App') ORDER BY `Cell_Phone_Title`");
+		$stmt_app = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `Cell_Phone_Title`, `Cell_Phone_File`, `optional` FROM `CellPhone` WHERE `ISO` = ? AND (`Cell_Phone_Title` = 'iOS Asset Package' OR `Cell_Phone_Title` = 'Android App') ORDER BY `ROD_Code`, `Variant_Code`, `Cell_Phone_Title`");
 		$stmt_app->bind_param('s', $iso);														// bind parameters for markers
 	}
 	elseif ($rod == 'ALL') {
-		$stmt_app = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `Cell_Phone_Title`, `Cell_Phone_File`, `optional` FROM `CellPhone` WHERE `ISO` = ? AND `Variant_Code` = ? AND (`Cell_Phone_Title` = 'iOS Asset Package' OR `Cell_Phone_Title` = 'Android App') ORDER BY `Cell_Phone_Title`");
+		$stmt_app = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `Cell_Phone_Title`, `Cell_Phone_File`, `optional` FROM `CellPhone` WHERE `ISO` = ? AND `Variant_Code` = ? AND (`Cell_Phone_Title` = 'iOS Asset Package' OR `Cell_Phone_Title` = 'Android App') ORDER BY `ROD_Code`, `Variant_Code`, `Cell_Phone_Title`");
 		$stmt_app->bind_param('ss', $iso, $var);												// bind parameters for markers
 	}
 	elseif ($var == 'ALL') {
-			$stmt_app = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `Cell_Phone_Title`, `Cell_Phone_File`, `optional` FROM `CellPhone` WHERE `ISO` = ? AND `ROD_Code` = ? AND (`Cell_Phone_Title` = 'iOS Asset Package' OR `Cell_Phone_Title` = 'Android App') ORDER BY `Cell_Phone_Title`");
-			$stmt_app->bind_param('ss', $iso, $rod);											// bind parameters for markers
+		$stmt_app = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `Cell_Phone_Title`, `Cell_Phone_File`, `optional` FROM `CellPhone` WHERE `ISO` = ? AND `ROD_Code` = ? AND (`Cell_Phone_Title` = 'iOS Asset Package' OR `Cell_Phone_Title` = 'Android App') ORDER BY `ROD_Code`, `Variant_Code`, `Cell_Phone_Title`");
+		$stmt_app->bind_param('ss', $iso, $rod);												// bind parameters for markers
 	}
 	else {
-		$stmt_app = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `Cell_Phone_Title`, `Cell_Phone_File`, `optional` FROM `CellPhone` WHERE `ISO` = ? AND `ROD_Code` = ? AND `Variant_Code` = ? AND (`Cell_Phone_Title` = 'iOS Asset Package' OR `Cell_Phone_Title` = 'Android App') ORDER BY `Cell_Phone_Title`");
+		$stmt_app = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `Cell_Phone_Title`, `Cell_Phone_File`, `optional` FROM `CellPhone` WHERE `ISO` = ? AND `ROD_Code` = ? AND `Variant_Code` = ? AND (`Cell_Phone_Title` = 'iOS Asset Package' OR `Cell_Phone_Title` = 'Android App') ORDER BY `ROD_Code`, `Variant_Code`, `Cell_Phone_Title`");
 		$stmt_app->bind_param('sss', $iso, $rod, $var);											// bind parameters for markers
 	}
 }
@@ -156,6 +159,7 @@ if ($v != 2) {
 			$app_name = $row_links['Cell_Phone_Title'];
 			if ($app_name != 'Android App') continue;
 			$app_download = $row_links['Cell_Phone_File'];
+			$app_optional = $row_links['optional'];
 			if ($idx != $idxTemp) {																		// if idx doesn't equal to the idx of the last record
 				if ($m != 0) {																			// if the id doesn't equal the first id
 					$first = rtrim($first, ',');
@@ -201,10 +205,10 @@ if ($v != 2) {
 				$first .= '"android_app": {';
 			}
 			if (strpos($app_download, 'http') !== false) {
-				$first .= '"'.$p.'":							"'.$app_download.'",';
+				$first .= '"'.$p.'":					"'.$app_download.'",';
 			}
 			else {
-				$first .= '"'.$p.'":							"data/'.$iso.'/study/'.$app_download.'",';
+				$first .= '"'.$p.'":					"data/'.$iso.'/study/'.$app_download.'",';
 			}
 			$p++;
 		}
@@ -215,6 +219,7 @@ if ($v != 2) {
 			$app_name = $row_links['Cell_Phone_Title'];
 			if ($app_name != 'iOS Asset Package') continue;
 			$app_download = $row_links['Cell_Phone_File'];
+			$app_optional = $row_links['optional'];
 			if ($idx != $idxTemp) {																		// if idx doesn't equal to the idx of the last record
 				if ($m != 0) {																			// if the id doesn't equal the first id
 					$first = rtrim($first, ',');
@@ -256,14 +261,23 @@ if ($v != 2) {
 				$first .= '},';
 				$first .= '"relationships": {';
 			}
+			if ($p !== 0) {																			// if 'Android App' count is not eqaul to 0
+				//echo "<script>console.log('p=" . $p . "' );</script>";
+				$p = 0;
+				$first = rtrim($first, ',');
+				$first .= '},';
+			}
 			if ($n === 0) {
 				$first .= '"iOS": {';
 			}
+			elseif ($n === 0) {
+				$first .= '"iOS": {';
+			}
 			if (strpos($app_download, 'http') !== false) {
-				$first .= '"'.$n.'":							"'.$app_download.'",';
+				$first .= '"'.$n.'":						"'.$app_download.'",';
 			}
 			else {
-				$first .= '"'.$n.'":							"data/'.$iso.'/study/'.$app_download.'",';
+				$first .= '"'.$n.'":						"data/'.$iso.'/study/'.$app_download.'",';
 			}
 			$n++;
 		}
@@ -271,121 +285,97 @@ if ($v != 2) {
 	$first = rtrim($first, ',');
 	$first .= '}}}}';
 }
-else {																										// $v = 2
+else {																								// $v = 2
 	$first = '{';
 	if ($rel == '') {
-		$strive = true;
-		$row_links = $result_app->fetch_assoc();
-		$idx = (int)$row_links['ISO_ROD_index'];
-		$app_name = $row_links['Cell_Phone_Title'];
-		$app_download = $row_links['Cell_Phone_File'];
-		$app_optional = $row_links['optional'];
-		while ($strive)
-			//if ($m != 0) {																			// if the id doesn't equal the first id
-			//	$first = rtrim($first, ',');
-			//	$first .= '}}},';
-			//}
-			$idxTemp = $idx;
-			$m++;																					// id
-			$p=0;																					// Android App count
-			$n=0;																					// iOS Asset Package count
-			$iso = $row_links['ISO'];
-			$rod = $row_links['ROD_Code'];
-			$var = $row_links['Variant_Code'];
-			$Variant_name = '';
-			if ($var != '') {
-				$stmt_var->bind_param('s', $var);													// bind parameters for markers
-				$stmt_var->execute();																// execute query
-				$result_temp = $stmt_var->get_result();
-				$row_temp = $result_temp->fetch_assoc();
-				$Variant_name = $row_temp['Variant_Eng'];
-			}
-			$first .= '"'.($m-1).'": ';
-			$first .= '{"type":                     "Apps",';
-			$first .= '"id":                        "'.$m.'",';
-			$first .= '"attributes": {';
-			$first .= '"iso":                       "'.$iso.'",';
-			$first .= '"rod":				        "'.$rod.'",';
-			$first .= '"var_code":		    	    "'.$var.'",';
-			$first .= '"var_name":					"'.$Variant_name.'",';
-			$first .= '"iso_query_string":	        "iso='.$iso;
-			if ($rod != '00000') {
-				$first .= '&rod='.$rod;
-			}
-			if ($var != '') {
-				$first .= '&var='.$var;
-			}
-			$first .= '",';
-			$first .= '"idx":		                '.$idx.',';
-			$first .= '"idx_query_string":          "idx='.$idx.'"';	
-			$first .= '},';
-			$first .= '"relationships": {';
-			// 'Android App'
-			while ($app_name == 'Android App') {
-				if ($p === 0) {
-					$first .= '"android_app": [';
+		while ($row_links = $result_app->fetch_assoc()) {
+			$idx = (int)$row_links['ISO_ROD_index'];
+			$app_name = $row_links['Cell_Phone_Title'];
+			$app_download = $row_links['Cell_Phone_File'];
+			$app_optional = $row_links['optional'];
+			if ($idx != $idxTemp) {																		// if idx doesn't equal to the idx of the last record
+				if ($m != 0) {																			// if the id doesn't equal the first id
+					$first = rtrim($first, ',');
+					$first .= '}}},';
 				}
+				$idxTemp = $idx;
+				$m++;																					// id
+				$p=0;																					// Android App count
+				$n=0;																					// iOS Asset Package count
+				$iso = $row_links['ISO'];
+				$rod = $row_links['ROD_Code'];
+				$var = $row_links['Variant_Code'];
+				$Variant_name = '';
+				if ($var != '') {
+					$stmt_var->bind_param('s', $var);													// bind parameters for markers
+					$stmt_var->execute();																// execute query
+					$result_temp = $stmt_var->get_result();
+					$row_temp = $result_temp->fetch_assoc();
+					$Variant_name = $row_temp['Variant_Eng'];
+				}
+				$first .= '"'.($m-1).'": ';
+				$first .= '{"type":                     "Apps",';
+				$first .= '"id":                        "'.$m.'",';
+				$first .= '"attributes": {';
+				$first .= '"iso":                       "'.$iso.'",';
+				$first .= '"rod":				        "'.$rod.'",';
+				$first .= '"var_code":		    	    "'.$var.'",';
+				$first .= '"var_name":					"'.$Variant_name.'",';
+				$first .= '"iso_query_string":	        "iso='.$iso;
+				if ($rod != '00000') {
+					$first .= '&rod='.$rod;
+				}
+				if ($var != '') {
+					$first .= '&var='.$var;
+				}
+				$first .= '",';
+				$first .= '"idx":		                '.$idx.',';
+				$first .= '"idx_query_string":          "idx='.$idx.'"';	
+				$first .= '},';
+				$first .= '"relationships": {';
+			}
+			// 'Android App'
+			if ($app_name == 'Android App') {															// Android App
+				if ($p === 0) {
+					$first .= '"android_app": {';
+				}
+				$first .= '"'.$p.'": {';
 				if (strpos($app_download, 'http') !== false) {
-					$first .= '{"apk":							"'.$app_download.'",';
+					$first .= '"apk":					"'.$app_download.'",';
 				}
 				else {
-					$first .= '{"apk":							"data/'.$iso.'/study/'.$app_download.'",';
+					$first .= '"apk":					"data/'.$iso.'/study/'.$app_download.'",';
 				}
-				$first .= '"description":            			"'.$app_optional.'"';
-				$first .= '},';
+				$first .= '"description":				"'.$app_optional.'"},';
 				$p++;
-				if (null == ($row_links = $result_app->fetch_assoc())) {
-					goto JSONend;								// end create fetch
-				}
-				$idx = (int)$row_links['ISO_ROD_index'];
-				$app_name = $row_links['Cell_Phone_Title'];
-				$app_download = $row_links['Cell_Phone_File'];
-				$app_optional = $row_links['optional'];
-				if ($idx != $idxTemp) {
-					$first = rtrim($first, ',');
-					$first .= ']},';
-					break;
-				}
 			}
-			if ($idx = $idxTemp) {
-				//'iOS Asset Package'
-				while ($app_name == 'iOS Asset Package') {
-					if ($p !== 0) {																			// if 'Android App' count is not eqaul to 0
-						//echo "<script>console.log('p=" . $p . "' );</script>";
-						$p = 0;
-						$first = rtrim($first, ',');
-						$first .= '],';
-					}
-					if ($n === 0) {
-						$first .= '"iOS_app": [';
-					}
-					if (strpos($app_download, 'http') !== false) {
-						$first .= '{"iOS_asset":						"'.$app_download.'",';
-					}
-					else {
-						$first .= '{"iOS_asset":						"data/'.$iso.'/study/'.$app_download.'",';
-					}
-					$first .= '"description":                       "'.$app_optional.'"';
+			//'iOS Asset Package'
+			if ($app_name == 'iOS Asset Package') {														// iOS Asset Package
+				if ($p !== 0) {																			// if 'Android App' count is not eqaul to 0
+					//echo "<script>console.log('p=" . $p . "' );</script>";
+					$p = 0;
+					$first = rtrim($first, ',');
 					$first .= '},';
-					$n++;
-					if ($row_links = $result_app->fetch_assoc()) {
-					}
-					else {
-						goto JSONend;								// end create fetch
-					}
-					$idx = (int)$row_links['ISO_ROD_index'];
-					$app_name = $row_links['Cell_Phone_Title'];
-					$app_download = $row_links['Cell_Phone_File'];
-					$app_optional = $row_links['optional'];
-					if ($idx != $idxTemp) {
-						$first = rtrim($first, ',');
-						$first .= ']},';
-						break;
-					}
 				}
-			} 
+				if ($n === 0) {
+					$first .= '"iOS": {';
+				}
+				$first .= '"'.$n.'": {';
+				if (strpos($app_download, 'http') !== false) {
+					$first .= '"asset":					"'.$app_download.'",';
+				}
+				else {
+					$first .= '"asset":					"data/'.$iso.'/study/'.$app_download.'",';
+				}
+				$first .= '"description":				"'.$app_optional.'"},';
+				$n++;
+			}
 		}
-//JSONend
+		if ($n !== 0 || $p !== 0) {																			// if 'Android App' count is not eqaul to 0
+			$n = 0;
+			$first = rtrim($first, ',');
+			$first .= '}';
+		}
 	}
 	elseif ($rel == 'android') {																		// only 'Android App'
 		while ($row_links = $result_app->fetch_assoc()) {
@@ -393,6 +383,7 @@ else {																										// $v = 2
 			$app_name = $row_links['Cell_Phone_Title'];
 			if ($app_name != 'Android App') continue;
 			$app_download = $row_links['Cell_Phone_File'];
+			$app_optional = $row_links['optional'];
 			if ($idx != $idxTemp) {																		// if idx doesn't equal to the idx of the last record
 				if ($m != 0) {																			// if the id doesn't equal the first id
 					$first = rtrim($first, ',');
@@ -437,17 +428,19 @@ else {																										// $v = 2
 			if ($p === 0) {
 				$first .= '"android_app": {';
 			}
+			$first .= '"'.$p.'": {';
 			if (strpos($app_download, 'http') !== false) {
-				$first .= '"'.$p.'":							"'.$app_download.'",';
+				$first .= '"apk":						"'.$app_download.'",';
 			}
 			else {
-				$first .= '"'.$p.'":							"data/'.$iso.'/study/'.$app_download.'",';
+				$first .= '"apk":						"data/'.$iso.'/study/'.$app_download.'",';
 			}
-			$first .= '"optional": [ {';
-			$first .= '"description":                       	"'.$app_optional.'"';
-			$first .= '} ],';
+			$first .= '"description":					"'.$app_optional.'"},';
 			$p++;
 		}
+		$p = 0;
+		$first = rtrim($first, ',');
+		$first .= '}';
 	}
 	elseif ($rel == 'ios') {																			// only 'iOS Asset Package'
 		while ($row_links = $result_app->fetch_assoc()) {
@@ -455,6 +448,7 @@ else {																										// $v = 2
 			$app_name = $row_links['Cell_Phone_Title'];
 			if ($app_name != 'iOS Asset Package') continue;
 			$app_download = $row_links['Cell_Phone_File'];
+			$app_optional = $row_links['optional'];
 			if ($idx != $idxTemp) {																		// if idx doesn't equal to the idx of the last record
 				if ($m != 0) {																			// if the id doesn't equal the first id
 					$first = rtrim($first, ',');
@@ -499,25 +493,27 @@ else {																										// $v = 2
 			if ($n === 0) {
 				$first .= '"iOS": {';
 			}
+			$first .= '"'.$n.'": {';
 			if (strpos($app_download, 'http') !== false) {
-				$first .= '"'.$n.'":							"'.$app_download.'",';
+				$first .= '"asset":						"'.$app_download.'",';
 			}
 			else {
-				$first .= '"'.$n.'":							"data/'.$iso.'/study/'.$app_download.'",';
+				$first .= '"asset":						"data/'.$iso.'/study/'.$app_download.'",';
 			}
-			$first .= '"optional": [ {';
-			$first .= '"description":                       	"'.$app_optional.'"';
-			$first .= '} ],';
+			$first .= '"description":					"'.$app_optional.'"},';
 			$n++;
 		}
+		$n = 0;
+		$first = rtrim($first, ',');
+		$first .= '}';
 	}
 
 	$first = rtrim($first, ',');
 	$first .= '}}}';
 }
 
-echo '<pre>'.$first.'</pre>';
-exit;
+//echo '<pre>'.$first.'</pre>';
+//exit;
 
 $marks = [];
 $marks = json_decode($first);
