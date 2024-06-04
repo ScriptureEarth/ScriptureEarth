@@ -33,9 +33,21 @@ $first_c =
 	<link rel="shortcut icon" type="../../image/x-icon" href="favicon.ico" />
     <link rel="stylesheet" href="../../_css/leaflet.css" />
     <script src="../../_js/leaflet.min.js"></script>
+	<style type="text/css">
+		div.maps {
+			width: 640px;
+			/*width: 800px;*/
+			height: 480px;
+			/*height: 600px;*/
+			/*maxWidth: 700px;*/
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 20px;
+		}
+	</style>
 </head>
 <body>
-<div id="mapid" style="width: 600px; height: 400px; margin: auto; margin-right: auto; margin-top: 100px; "></div>
+<div id="mapid" class="maps"></div>
 <script>
 
 STRT;
@@ -75,7 +87,7 @@ $end =
 </html>
 END;
 
-$query="SELECT ISO FROM LN_English WHERE ISO_ROD_index IS NOT NULL AND ISO = ?";		// select the ISO from LN_English to $maps_array
+$query="SELECT ISO FROM LN_English WHERE ISO_ROD_index IS NOT NULL AND ISO = ?";	// select the ISO from LN_English to $maps_array
 $stmt_ISO=$db->prepare($query);														// create a prepared statement
 $query="SELECT LN_English FROM LN_English WHERE ISO = ?";							// select the language name from LN_English to $maps_array
 $stmt_LN=$db->prepare($query);														// create a prepared statement
@@ -89,15 +101,12 @@ $previous_CName = '';
 $maps_array = [];
 $lat_long_array = [];
 $save_lat_long = [];
-$family = 0;
-$family_array = [];
-$previou_ISO = '';
-$t = 0;
-$previousPartOfLanguageLatLong = '';
+$s_lat_long = '';
+$match = [];
 
 $query="SELECT ISO_Lang_Countries.ISO, ISO_Lang_Countries.ISO_Country, countries.English FROM ISO_Lang_Countries, countries WHERE countries.ISO_Country = ISO_Lang_Countries.ISO_Country ORDER BY ISO_Lang_Countries.ISO_Country";
 $result=$db->query($query);
-while ($row = $result->fetch_array()) {
+while ($row = $result->fetch_array()) {										// 1 ISO and its country
 	$ISO=$row['ISO'];														// ISO
 	$ISO_Country=$row['ISO_Country'];										// ISO_Country - ZZ
 	$English_Country=$row['English'];										// English Country name
@@ -106,159 +115,171 @@ while ($row = $result->fetch_array()) {
 		$previous_CC = $ISO_Country;
 		$previous_CName = $English_Country;
 	}
-	else {
-		if ($ISO_Country != $previous_CC) {									// when previous country doesn't equal the new country
-		
-			/******************************************************************************
-			*
-			*		Write the html files for all of the ISOs on one Country.
-			*
-			******************************************************************************/
-		
-			/*****************************************************************
-			*		get the arrays of $maps_array, $lat_long_value, and $save_lat_long
-			*****************************************************************/
-			if (!is_dir('leafletjs_maps/'.$previous_CC)) {
-				mkdir('leafletjs_maps/'.$previous_CC);
-			}
 
-			/**********************************************************************
-			*
-			*		add all of the lat.'s and long.'s to all of the ISOs of this country
-			*
-			***********************************************************************/
-			$temp = count($maps_array[0])-1;								// the previous column of the $maps_array
-			for ($z=0; $z < count($maps_array); $z++) {						// add all of the lat.'s and long.'s to all of the ISOs of this country
-				$ISO_map = array_keys($maps_array[$z]);						// create $key_maps_array from $maps_array only in (0 => key1, 1 => key2, etc.)
-				$family = 0;
-				$family_array = [];
-				$previou_ISO = '';
-				$t = 0;
-				$previousPartOfLanguageLatLong = '';
-				
-				/*************************************************************
-				*
-				*		add all of the $lat_long_array through one ISO
-				*
-				*************************************************************/
-				foreach($lat_long_array as $k => $lat_long_value) {			// loop through $lat_long_array
-					$key_maps_array = array_keys($maps_array[$k]);			// create $key_maps_array from $maps_array only in (0 => key1, 1 => key2, etc.)
-					$L_ISO = $key_maps_array[0];							// get ISO
-					$value_maps_array = array_values($maps_array[$k]);		// create $value_maps_array from $maps_array only in (0 => value1, 1 => value2, etc.)
-					$L_LN = $value_maps_array[0];							// get language name
-					$stmt_ISO->bind_param('s', $L_ISO);						// bind parameters for markers
-					$stmt_ISO->execute();									// execute query
-					$result_ISO = $stmt_ISO->get_result();
-					
-					if ($L_ISO == $ISO_map[0]) {							// if ISO = ISO array
-						if (empty($result_ISO->num_rows) || $result_ISO->num_rows == 0) {					// if ISO = LN_English table ISO
-							$lat_long = "	L.marker([$lat_long_value], {icon: myRedIcon}).addTo(mymap)\n";
-							$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b>\").openPopup();\n";
-						} 
-						else {
-							$lat_long = "	L.marker([$lat_long_value], {icon: myRedIcon}).addTo(mymap)\n";
-							$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$L_ISO'>$L_LN</a>)\").openPopup();\n";
-						}
-					}
-					else {
-						if (empty($result_ISO->num_rows) || $result_ISO->num_rows == 0) {
-							$lat_long = "	L.marker([$lat_long_value]).addTo(mymap)\n";
-							$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b>\");\n";
-						}
-						else {
-							$lat_long = "	L.marker([$lat_long_value]).addTo(mymap)\n";
-							$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$L_ISO'>$L_LN</a>)\");\n";
-						}
-					}
-					array_push($maps_array[$z], $lat_long);
-				}
-			}
+	/**************************************************************************************************
+	*
+	*		Write the htm files for all of the ISOs on one country.
+	*
+	***************************************************************************************************/
+	elseif ($ISO_Country != $previous_CC) {									// when previous country doesn't equal the new country
+		if (!is_dir('maps/'.$previous_CC)) {
+			mkdir('maps/'.$previous_CC);
+		}
 
-			
-			/*************************************************************************
-			*
-			*		Write the html files for all of the ISOs on one country.
-			*
-			*************************************************************************/
-			
+		/**********************************************************************
+		*
+		*		add all of the lat.'s and long.'s to all of the ISOs of this country
+		*
+		***********************************************************************/
+		//$temp = count($maps_array[0])-1;									// the previous column of the $maps_array
+		$key_maps_array = array_keys($maps_array);							// create $key_maps_array from $maps_array only in (0 => ISO, 1 => ISO, etc.)
+		$value_maps_array = array_values($maps_array);						// create $value_maps_array from $maps_array only in (0 => LN, 1 => LN, etc.)
+		for ($z=0; $z < count($lat_long_array); $z++) {						// add all of the lat.'s and long.'s to all of the ISOs of this country
+			$key_lat_long = array_keys($lat_long_array);					// create $key_lat_long from $lat_long_array only in (0 => ISO, 1 => ISO, etc.)
+			$value_lat_long = array_values($lat_long_array);				// create $value_lat_long from $lat_long_array only in (0 => lat_long, 1 => lat_long, etc.)
+			//echo '<br />140<br />';
+			//print_r($key_maps_array);
 			$enter = '';
 			$temp_value_array = [];
-			foreach($maps_array as $key => $value) {										// country html files output. $maps_array[z][y] = individual ISO with all of the lat. and long. there
-				$L_ISO = array_keys($value)[0];												// ISO and more
-				for ($ISO_index=0; $ISO_index < count($value)-1; $ISO_index++) {			// for each ISO for one country
-					if (strpos($value[$ISO_index], '{icon: myRedIcon}).addTo(mymap)')) {
-						//$enter .= $value[$ISO_index];
-						$J_LN = '';
-						// /s modifier a dot (.) metacharacter in the pattern matches all characters, including newlines.
-						// The /u modifier makes both the pattern and subject be interpreted as UTF-8 but the captured offsets are still counted in bytes.
-						// But try (*UTF8) before the RegEx pattern which I havn't done now.
-						// select language name by deleting everything around it!
-						$J_LN = preg_replace('/(.+\s+\.bindPopup\("[\<b\>]{0,3})/su', "", $value[$ISO_index]);
-						$J_LN = preg_replace('/[^-](- ISO 639-3: [a-z]{3}.*)/su', "", $J_LN);
-						$temp_value_array = [];
-						$match = [];
-						preg_match_all('/(\w+)[-\,\(\)]?/u', $J_LN, $match);				// get the word $J_LN
-						foreach ($match[1] as $temp) {
-							if ($temp == $previous_CName) continue;
-							if (preg_match('/^(on|the|and|of|south|north|northwest|northeast|Northwestern|Southwestern|Northeastern|Southeastern|southwest|southeast|southern|northern|Eastern|Western|central|Norte|sur|Sureste|Valley|river|Noroeste|Highland|Standard|Modern|de|del|Sta|santa|san|la|Alta|[0-9]+|Dos|west|east|^.)$/i', $temp)) continue;
-							$temp_value_array[] = $temp;									// words from value
-						}
+			//echo '<br />144: lat_long_array:<br />';
+			//print_r($lat_long_array);
+			for ($y=0; $y < count($lat_long_array); $y++) {					// add all of the lat.'s and long.'s to all of the ISOs of this country
+				$L_ISO = $key_lat_long[$y];									// ISO and more
+				$L_LN = $value_maps_array[$y];								// get language name
+			
+				/*************************************************************************
+				*
+				*		Add myRedIcon icon
+				*
+				*************************************************************************/
+				$stmt_ISO->bind_param('s', $L_ISO);							// bind parameters for markers
+				$stmt_ISO->execute();										// execute query
+				$result_ISO = $stmt_ISO->get_result();
+				preg_match("/L.marker\(\[([-0-9\., ]+)\]\)\.addTo/", $value_lat_long[$y], $match);	// lat and long
+				$s_lat_long = $match[1];									// save lat and long
+				if (empty($result_ISO->num_rows) || $result_ISO->num_rows == 0) {
+					$lat_long = "	L.marker([$s_lat_long], {icon: myRedIcon}).addTo(mymap)\n";
+					$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b>\").openPopup();\n";
+				} 
+				else {
+					$lat_long = "	L.marker([$s_lat_long], {icon: myRedIcon}).addTo(mymap)\n";
+					$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a target='_top' href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$L_ISO'>$L_LN</a>)\").openPopup();\n";
+				}
+				$lat_long_array[$L_ISO] = $lat_long;
+				//$key_lat_long = array_keys($lat_long_array);				// create $key_lat_long from $lat_long_array only in (0 => ISO, 1 => ISO, etc.)
+				$value_lat_long = array_values($lat_long_array);			// create $value_lat_long from $lat_long_array only in (0 => lat_long, 1 => lat_long, etc.)
+				// select language name by deleting everything around it!
+				$temp_value_array = [];
+				$match = [];
+				preg_match_all('/(\w+)[-\,\(\)]?/u', $L_LN, $match);		// get the words $L_LN
+				foreach ($match[1] as $temp) {
+					if ($temp == $previous_CName) continue;
+					if (preg_match('/^(on|the|and|of|south|north|northwest|northeast|Northwestern|Southwestern|Northeastern|Southeastern|southwest|southeast|southern|northern|Eastern|Western|central|Norte|sur|Sureste|Valley|river|Noroeste|Highland|Standard|Modern|de|del|Sta|santa|san|la|Alta|[0-9]+|Dos|west|east|^.)$/i', $temp)) continue;
+					$temp_value_array[] = $temp;							// get word
+				}
+				//echo '<br />first => 180: $temp_value_array:<br />';
+				//print_r($temp_value_array);
+			
+				/*************************************************************************
+				*
+				*		Add myPurpleIcon icons
+				*
+				*************************************************************************/
+				//echo '<br />188: lat_long_array:<br />';
+				//print_r($lat_long_array);
+				for ($latlong_index=0; $latlong_index < count($lat_long_array); $latlong_index++) {		// iterate all the way through latitude and longitude
+					//echo $value_lat_long[$latlong_index] . '<br />';
+					if (strpos($value_lat_long[$latlong_index], '{icon: myRedIcon}).addTo(mymap)')) continue;	// if myRedIcon continue
+					$J_LN = $value_maps_array[$latlong_index];				// get language name
+					// select language name by deleting everything around it!
+					$match = [];
+					preg_match_all('/(\w+)[-\,\(\)]?/u', $J_LN, $match);	// get the words $J_LN
+					$temp_latlong_array = [];
+					foreach ($match[1] as $temp) {
+						if ($temp == $previous_CName) continue;
+						if (preg_match('/^(on|the|and|of|south|north|northwest|northeast|Northwestern|Southwestern|Northeastern|Southeastern|southwest|southeast|southern|northern|Eastern|Western|central|Norte|sur|Sureste|Valley|river|Noroeste|Highland|Standard|Modern|de|del|Sta|santa|san|la|Alta|[0-9]+|Dos|west|east|^.)$/i', $temp)) continue;
+						$temp_latlong_array[] = $temp;						// get word
+					}
+					if ($temp_value_array == $temp_latlong_array) {			// if arrays = each other
 						continue;
 					}
-					
-					for ($latlong_index=0; $latlong_index < count($value)-1; $latlong_index++) {		// iterate all the way through latitude and longitude
-						if (strpos($value[$ISO_index], '{icon: myRedIcon}).addTo(mymap)')) continue;	// if myRedIcon continue
-						
-						$temp_J_LN = '';
-						// select language name by deleting everything around it!
-						$temp_J_LN = preg_replace('/(.+\s+\.bindPopup\("[\<b\>]{0,3})/su', "", $value[$latlong_index]);
-						$temp_J_LN = preg_replace('/[^-](- ISO 639-3: [a-z]{3}.*)/su', "", $temp_J_LN);
-						preg_match_all('/(\w+)[-\,\(\)]?/u', $temp_J_LN, $match);			// get the word $value[$latlong_index]
-						$temp_latlong_array = [];
-						foreach ($match[1] as $temp) {
-							if ($temp == $previous_CName) continue;
-							if (preg_match('/^(on|the|and|of|south|north|northwest|northeast|Northwestern|Southwestern|Northeastern|Southeastern|southwest|southeast|southern|northern|Eastern|Western|central|Norte|sur|Sureste|Valley|river|Noroeste|Highland|Standard|Modern|de|del|Sta|santa|san|la|Alta|[0-9]+|Dos|west|east|^.)$/i', $temp)) continue;
-							$temp_latlong_array[] = $temp;									// words from value
+					//echo '<br />second => 206: $temp_latlong_array:<br />';
+					//print_r($temp_latlong_array);
+					//$array_result = [];
+					//$array_result = array_intersect($temp_value_array, $temp_latlong_array);		// compare two arrays
+					$o = 0;
+					foreach($temp_value_array as $mmain) {					// compare myRedIcon words with interated words
+						foreach($temp_latlong_array as $mcur) {
+							/*if ($mmain == $mcur) {							// match so myPurpleIcon!
+								$o = 1;
+								break 2;
+							}*/
+							if ($mmain == $mcur) {							// match so myPurpleIcon!
+								if (strpos($L_LN, ',') && strpos($J_LN, ',')) {
+									if (substr($L_LN, 0, strpos($L_LN, ',')) == substr($J_LN, 0, strpos($J_LN, ','))) {
+										$o = 1;
+										break 2;						// break all of the way back to 2 foreach
+									}
+								}
+								else {
+									$o = 1;
+									break 2;							// break all of the way back to 2 foreach
+								}
+							}
 						}
-						if ($temp_value_array === $temp_latlong_array) {					// if arrays = each other
-							//$enter .= $value[$ISO_index];
-							continue;
-						}
-						$array_result = [];
-						$array_result = array_intersect($temp_value_array, $temp_latlong_array);		// compare two arrays
-						if (empty($array_result)) {
-						
-						}
-						else {
-							$value[$latlong_index] = str_replace("]).addTo(mymap)", "], {icon: myPurpleIcon}).addTo(mymap)", $value[$latlong_index]);
-						}
+					}
+					//if (empty($array_result)) {
+					//	
+					//}
+					//else {
+					if ($o == 1) {
+						$lat_long_array[$key_lat_long[$latlong_index]] = str_replace("]).addTo(mymap)", "], {icon: myPurpleIcon}).addTo(mymap)", $value_lat_long[$latlong_index]);
+						//echo '$lat_long_array[$key_lat_long[$latlong_index]]: '.$lat_long_array[$key_lat_long[$latlong_index]].'<br />';
+						//echo '<p>238: $value_lat_long[$latlong_index]: '.$value_lat_long[$latlong_index].'<br />';
+						//echo '239: $lat_long_array[$L_ISO]: '.$lat_long_array[$L_ISO].'</p>';
+						$value_lat_long = array_values($lat_long_array);	// create $value_lat_long from $lat_long_array only in (0 => lat_long, 1 => lat_long, etc.)
 					}
 				}		// end for
+				//echo '<br />';
+				//echo '<br />244: lat_long_array:<br />';
+				//print_r($lat_long_array);
 				
+				/*************************************************************************
+				*
+				*		Write the html files for all of the ISOs on one country.
+				*
+				*************************************************************************/
+				//echo '252: lat_long_array:<br />';
+				//print_r($lat_long_array);
 				$enter = '';
 				$b=0;
-				foreach($value as $k => $I_ISO) {
-					if ($b == 0) {
-						$b=1;
-						continue;
-					}
+				foreach($lat_long_array as $k => $I_ISO) {					// get string for body
 					$enter .= $I_ISO;
 				}
 
-				$first_b = $first_a . "	<title>Language map of ".$previous_CName." - Leaflet</title>";							// write out just 1 ISO
-				$first_d = $first_b . $first_c . "	var mymap = L.map('mapid').setView([".$save_lat_long[$key]."], 9);";
+				$first_b = $first_a . "	<title>Language map of ".$previous_CName." - Leaflet</title>";		// write out just 1 ISO
+				$first_d = $first_b . $first_c . "	var mymap = L.map('mapid').setView([".$s_lat_long."], 9);";
 				$first = $first_d  . $first_e;
-				//file_put_contents('leafletjs_maps/'.$previous_CName.'/'.$L_ISO.'.html', $first, LOCK_EX);
-				//file_put_contents('leafletjs_maps/'.$previous_CName.'/'.$L_ISO.'.html', $enter, FILE_APPEND | LOCK_EX);
-				// bottom of this html file
-				//file_put_contents('leafletjs_maps/'.$previous_CName.'/'.$L_ISO.'.html', $end, FILE_APPEND | LOCK_EX);
-				file_put_contents('leafletjs_maps/'.$previous_CC.'/'.$L_ISO.'.html', $first, LOCK_EX);
-				file_put_contents('leafletjs_maps/'.$previous_CC.'/'.$L_ISO.'.html', $enter, FILE_APPEND | LOCK_EX);
-				// bottom of this html file
-				file_put_contents('leafletjs_maps/'.$previous_CC.'/'.$L_ISO.'.html', $end, FILE_APPEND | LOCK_EX);
+				//file_put_contents('maps/'.$previous_CName.'/'.$L_ISO.'.html', $first, LOCK_EX);
+				//file_put_contents('maps/'.$previous_CName.'/'.$L_ISO.'.html', $enter, FILE_APPEND | LOCK_EX);
+				//file_put_contents('maps/'.$previous_CName.'/'.$L_ISO.'.html', $end, FILE_APPEND | LOCK_EX);
+				// top of this htm file
+				file_put_contents('maps/'.$previous_CC.'/'.$L_ISO.'.htm', $first, LOCK_EX);
+				// body of this htm file
+				file_put_contents('maps/'.$previous_CC.'/'.$L_ISO.'.htm', $enter, FILE_APPEND | LOCK_EX);
+				// bottom of this htm file
+				file_put_contents('maps/'.$previous_CC.'/'.$L_ISO.'.htm', $end, FILE_APPEND | LOCK_EX);
+
 				$first = '';
 				$enter = '';
+				//$maps_array = [];
+				//$key_maps_array = [];											// create $key_maps_array from $maps_array only in (0 => ISO, 1 => ISO, etc.)
+				//$value_maps_array = [];										// create $value_maps_array from $maps_array only in (0 => LN, 1 => LN, etc.)
+				$lat_long_array = $save_lat_long;							// lat_long template
+				$key_lat_long = array_keys($lat_long_array);				// IMPORTANT! array_keys AND array_arrays must be AGIAN set to $lat_long_array
+				$value_lat_long = array_values($lat_long_array);
 			}
+			//echo '<br />';
 			$maps_array = [];
 			$lat_long_array = [];
 			$save_lat_long = [];
@@ -269,24 +290,21 @@ while ($row = $result->fetch_array()) {
 
 	/**************************************************************************************************
 	*
-	*		save $latitude, $longitude in an array
+	*		first, save $latitude, $longitude in an array
 	*
 	***************************************************************************************************/
-
 	$stmt_lat_long->bind_param('s', $ISO);									// bind parameters for markers
 	$stmt_lat_long->execute();												// execute query
-	$result_map = $stmt_lat_long->get_result();
-	if ($result_map->num_rows == 0) {										// if lataude etc. is not in leafletjs table then continue
+	$result_map = $stmt_lat_long->get_result();								// get the latitude and longtude of the ISO
+	if ($result_map->num_rows == 0) {										// if latitude etc. is not in leafletjs table then continue
 		continue;
 	}
 	$r = $result_map->fetch_array();										// add the lat. and long. to $lat_long_array
 	$latitude=$r['latitude'];
 	$longitude=$r['longitude'];
-	array_push($lat_long_array, "$latitude, $longitude");
-	
 	$hid=$r['hid'];
 	if ($ISO == $hid) {
-		$save_lat_long[] = "$latitude, $longitude";							// save $latitude, $longitude for this ISO
+		// ?
 	}
 	
 	$stmt_LN->bind_param('s', $ISO);										// bind parameters for markers
@@ -294,128 +312,195 @@ while ($row = $result->fetch_array()) {
 	$result_LN = $stmt_LN->get_result();
 	if ($result_LN->num_rows == 0) {
 		$LN=$r['name'];
-		$maps_array[] = array($ISO => $LN);									// these next two are similar?
 	}
 	else {
 		$row_LN = $result_LN->fetch_array();
 		$LN=$row_LN['LN_English'];
-		$maps_array[] = array($ISO => $LN);									// these next two are similar?
 	}
+	$maps_array[$ISO] = $LN;												// these next two are similar?
+
+	$stmt_ISO->bind_param('s', $ISO);										// bind parameters for markers
+	$stmt_ISO->execute();													// execute query
+	$result_ISO = $stmt_ISO->get_result();
+	if (empty($result_ISO->num_rows) || $result_ISO->num_rows == 0) {
+		$lat_long = "	L.marker(["."$latitude, $longitude"."]).addTo(mymap)\n";
+		$lat_long .= "	.bindPopup(\"<b>$LN - ISO 639-3: $ISO</b>\");\n";
+	}
+	else {
+		$lat_long = "	L.marker(["."$latitude, $longitude"."]).addTo(mymap)\n";
+		$lat_long .= "	.bindPopup(\"<b>$LN - ISO 639-3: $ISO</b><br />ScriptureEarth (<a target='_top' href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$ISO'>$LN</a>)\");\n";
+	}
+	$lat_long_array[$ISO] = $lat_long;										// lat_long
+
+	$save_lat_long[$ISO] = $lat_long;										// lat_long template
 }
 
 
 
 // Last step for the last country
-if (!is_dir('leafletjs_maps/'.$ISO_Country)) {
-	mkdir('leafletjs_maps/'.$ISO_Country);
+if (!is_dir('maps/'.$ISO_Country)) {
+	mkdir('maps/'.$ISO_Country);
 }
 
-$temp = count($maps_array[0])-1;											// the previous column of the $maps_array
-for ($z=0; $z < count($maps_array); $z++) {									// add all of the lat.'s and long.'s to all of the ISOs of this country
-	$ISO_map = array_keys($maps_array[$z]);									// create $key_maps_array from $maps_array only in (0 => key1, 1 => key2, etc.)
-	foreach($lat_long_array as $k => $lat_long_value) {
-		$key_maps_array = array_keys($maps_array[$k]);						// create $key_maps_array from $maps_array only in (0 => key1, 1 => key2, etc.)
-		$L_ISO = $key_maps_array[0];
-		$value_maps_array = array_values($maps_array[$k]);					// create $value_maps_array from $maps_array only in (0 => value1, 1 => value2, etc.)
-		$L_LN = $value_maps_array[0];
-		$stmt_ISO->bind_param('s', $L_ISO);									// bind parameters for markers
-		$stmt_ISO->execute();												// execute query
+/**********************************************************************
+*
+*		add all of the lat.'s and long.'s to all of the ISOs of this country
+*
+***********************************************************************/
+//$temp = count($maps_array[0])-1;									// the previous column of the $maps_array
+$key_maps_array = array_keys($maps_array);							// create $key_maps_array from $maps_array only in (0 => ISO, 1 => ISO, etc.)
+$value_maps_array = array_values($maps_array);						// create $value_maps_array from $maps_array only in (0 => LN, 1 => LN, etc.)
+for ($z=0; $z < count($lat_long_array); $z++) {						// add all of the lat.'s and long.'s to all of the ISOs of this country
+	$key_lat_long = array_keys($lat_long_array);					// create $key_lat_long from $lat_long_array only in (0 => ISO, 1 => ISO, etc.)
+	$value_lat_long = array_values($lat_long_array);				// create $value_lat_long from $lat_long_array only in (0 => lat_long, 1 => lat_long, etc.)
+	//echo '<br />140<br />';
+	//print_r($key_maps_array);
+	$enter = '';
+	$temp_value_array = [];
+	//echo '<br />144: lat_long_array:<br />';
+	//print_r($lat_long_array);
+	for ($y=0; $y < count($lat_long_array); $y++) {					// add all of the lat.'s and long.'s to all of the ISOs of this country
+		$L_ISO = $key_lat_long[$y];									// ISO and more
+		$L_LN = $value_maps_array[$y];								// get language name
+	
+		/*************************************************************************
+		*
+		*		Add myRedIcon icon
+		*
+		*************************************************************************/
+		$stmt_ISO->bind_param('s', $L_ISO);							// bind parameters for markers
+		$stmt_ISO->execute();										// execute query
 		$result_ISO = $stmt_ISO->get_result();
-		if ($L_ISO == $ISO_map[0]) {
-			if (empty($result_ISO->num_rows) || $result_ISO->num_rows == 0) {
-				$lat_long = "	L.marker([$lat_long_value], {icon: myRedIcon}).addTo(mymap)\n";
-				$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b>\").openPopup();\n";
-			} 
-			else {
-				$lat_long = "	L.marker([$lat_long_value], {icon: myRedIcon}).addTo(mymap)\n";
-				$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$L_ISO'>$L_LN</a>)\").openPopup();\n";
-			}
-		}
+		preg_match("/L.marker\(\[([-0-9\., ]+)\]\)\.addTo/", $value_lat_long[$y], $match);	// lat and long
+		$s_lat_long = $match[1];									// save lat and long
+		if (empty($result_ISO->num_rows) || $result_ISO->num_rows == 0) {
+			$lat_long = "	L.marker([$s_lat_long], {icon: myRedIcon}).addTo(mymap)\n";
+			$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b>\").openPopup();\n";
+		} 
 		else {
-			if (empty($result_ISO->num_rows) || $result_ISO->num_rows == 0) {
-				$lat_long = "	L.marker([$lat_long_value]).addTo(mymap)\n";
-				$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b>\");\n";
-			}
-			else {
-				$lat_long = "	L.marker([$lat_long_value]).addTo(mymap)\n";
-				$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$L_ISO'>$L_LN</a>)\");\n";
-			}
+			$lat_long = "	L.marker([$s_lat_long], {icon: myRedIcon}).addTo(mymap)\n";
+			$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a target='_top' href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$L_ISO'>$L_LN</a>)\").openPopup();\n";
 		}
-		array_push($maps_array[$z], $lat_long);
-	}
-}
-
-$enter = '';
-$temp_value_array = [];
-foreach($maps_array as $key => $value) {										// country html files output. $maps_array[z][y] = individual ISO with all of the lat. and long. there
-	$L_ISO = array_keys($value)[0];												// ISO and more
-	for ($ISO_index=0; $ISO_index < count($value)-1; $ISO_index++) {			// for each ISO for one country
-		if (strpos($value[$ISO_index], '{icon: myRedIcon}).addTo(mymap)')) {
-			$J_LN = '';
+		$lat_long_array[$L_ISO] = $lat_long;
+		//$key_lat_long = array_keys($lat_long_array);				// create $key_lat_long from $lat_long_array only in (0 => ISO, 1 => ISO, etc.)
+		$value_lat_long = array_values($lat_long_array);			// create $value_lat_long from $lat_long_array only in (0 => lat_long, 1 => lat_long, etc.)
+		// select language name by deleting everything around it!
+		$temp_value_array = [];
+		$match = [];
+		preg_match_all('/(\w+)[-\,\(\)]?/u', $L_LN, $match);		// get the words $L_LN
+		foreach ($match[1] as $temp) {
+			if ($temp == $previous_CName) continue;
+			if (preg_match('/^(on|the|and|of|south|north|northwest|northeast|Northwestern|Southwestern|Northeastern|Southeastern|southwest|southeast|southern|northern|Eastern|Western|central|Norte|sur|Sureste|Valley|river|Noroeste|Highland|Standard|Modern|de|del|Sta|santa|san|la|Alta|[0-9]+|Dos|west|east|^.)$/i', $temp)) continue;
+			$temp_value_array[] = $temp;							// get word
+		}
+		//echo '<br />first => 180: $temp_value_array:<br />';
+		//print_r($temp_value_array);
+	
+		/*************************************************************************
+		*
+		*		Add myPurpleIcon icons
+		*
+		*************************************************************************/
+		//echo '<br />188: lat_long_array:<br />';
+		//print_r($lat_long_array);
+		for ($latlong_index=0; $latlong_index < count($lat_long_array); $latlong_index++) {		// iterate all the way through latitude and longitude
+			//echo $value_lat_long[$latlong_index] . '<br />';
+			if (strpos($value_lat_long[$latlong_index], '{icon: myRedIcon}).addTo(mymap)')) continue;	// if myRedIcon continue
+			$J_LN = $value_maps_array[$latlong_index];				// get language name
 			// select language name by deleting everything around it!
-			$J_LN = preg_replace('/(.+\s+\.bindPopup\("[\<b\>]{0,3})/su', "", $value[$ISO_index]);
-			$J_LN = preg_replace('/[^-](- ISO 639-3: [a-z]{3}.*)/su', "", $J_LN);
-			$temp_value_array = [];
 			$match = [];
-			preg_match_all('/(\w+)[-\,\(\)]?/u', $J_LN, $match);				// get the word $J_LN
-			foreach ($match[1] as $temp) {
-				if ($temp == $English_Country) continue;
-				if (preg_match('/^(on|the|and|of|south|north|northwest|northeast|Northwestern|Southwestern|Northeastern|Southeastern|southwest|southeast|southern|northern|Eastern|Western|central|Norte|sur|Sureste|Valley|river|Noroeste|Highland|Standard|Modern|de|del|Sta|santa|san|la|Alta|[0-9]*|Dos|west|east|^.)$/i', $temp)) continue;
-				$temp_value_array[] = $temp;									// words from value
-			}
-			continue;
-		}
-		
-		for ($latlong_index=0; $latlong_index < count($value)-1; $latlong_index++) {		// iterate all the way through latitude and longitude
-			if (strpos($value[$ISO_index], '{icon: myRedIcon}).addTo(mymap)')) continue;	// if myRedIcon continue
-			$temp_J_LN = '';
-			// select language name by deleting everything around it!
-			$temp_J_LN = preg_replace('/(.+\s+\.bindPopup\("[\<b\>]{0,3})/su', "", $value[$latlong_index]);
-			$temp_J_LN = preg_replace('/[^-](- ISO 639-3: [a-z]{3}.*)/su', "", $temp_J_LN);
-			preg_match_all('/(\w+)[-\,\(\)]?/u', $temp_J_LN, $match);			// get the word $value[$latlong_index]
+			preg_match_all('/(\w+)[-\,\(\)]?/u', $J_LN, $match);	// get the words $J_LN
 			$temp_latlong_array = [];
 			foreach ($match[1] as $temp) {
-				if ($temp == $English_Country) continue;
-				if (preg_match('/^(on|the|and|of|south|north|northwest|northeast|Northwestern|Southwestern|Northeastern|Southeastern|southwest|southeast|southern|northern|Eastern|Western|central|Norte|sur|Sureste|Valley|river|Noroeste|Highland|Standard|Modern|de|del|Sta|santa|san|la|Alta|[0-9]*|Dos|west|east|^.)$/i', $temp)) continue;
-				$temp_latlong_array[] = $temp;									// words from value
+				if ($temp == $previous_CName) continue;
+				if (preg_match('/^(on|the|and|of|south|north|northwest|northeast|Northwestern|Southwestern|Northeastern|Southeastern|southwest|southeast|southern|northern|Eastern|Western|central|Norte|sur|Sureste|Valley|river|Noroeste|Highland|Standard|Modern|de|del|Sta|santa|san|la|Alta|[0-9]+|Dos|west|east|^.)$/i', $temp)) continue;
+				$temp_latlong_array[] = $temp;						// get word
 			}
-			if ($temp_value_array === $temp_latlong_array) {					// if arrays = each other
+			if ($temp_value_array == $temp_latlong_array) {			// if arrays = each other
 				continue;
 			}
-			$array_result = [];
-			$array_result = array_intersect($temp_value_array, $temp_latlong_array);		// compare two arrays
-			if (empty($array_result)) {
-			
+			//echo '<br />second => 206: $temp_latlong_array:<br />';
+			//print_r($temp_latlong_array);
+			//$array_result = [];
+			//$array_result = array_intersect($temp_value_array, $temp_latlong_array);		// compare two arrays
+			$o = 0;
+			foreach($temp_value_array as $mmain) {					// compare myRedIcon words with interated words
+				foreach($temp_latlong_array as $mcur) {
+					/*if ($mmain == $mcur) {							// match so myPurpleIcon!
+						$o = 1;
+						break 2;
+					}*/
+					if ($mmain == $mcur) {							// match so myPurpleIcon!
+						if (strpos($L_LN, ',') && strpos($J_LN, ',')) {
+							if (substr($L_LN, 0, strpos($L_LN, ',')) == substr($J_LN, 0, strpos($J_LN, ','))) {
+								$o = 1;
+								break 2;						// break all of the way back to 2 foreach
+							}
+						}
+						else {
+							$o = 1;
+							break 2;							// break all of the way back to 2 foreach
+						}
+					}
+				}
 			}
-			else {
-				$value[$latlong_index] = str_replace("]).addTo(mymap)", "], {icon: myPurpleIcon}).addTo(mymap)", $value[$latlong_index]);
+			//if (empty($array_result)) {
+			//	
+			//}
+			//else {
+			if ($o == 1) {
+				$lat_long_array[$key_lat_long[$latlong_index]] = str_replace("]).addTo(mymap)", "], {icon: myPurpleIcon}).addTo(mymap)", $value_lat_long[$latlong_index]);
+				//echo '$lat_long_array[$key_lat_long[$latlong_index]]: '.$lat_long_array[$key_lat_long[$latlong_index]].'<br />';
+				//echo '<p>238: $value_lat_long[$latlong_index]: '.$value_lat_long[$latlong_index].'<br />';
+				//echo '239: $lat_long_array[$L_ISO]: '.$lat_long_array[$L_ISO].'</p>';
+				$value_lat_long = array_values($lat_long_array);	// create $value_lat_long from $lat_long_array only in (0 => lat_long, 1 => lat_long, etc.)
 			}
+		}		// end for
+		//echo '<br />';
+		//echo '<br />244: lat_long_array:<br />';
+		//print_r($lat_long_array);
+		
+		/*************************************************************************
+		*
+		*		Write the html files for all of the ISOs on one country.
+		*
+		*************************************************************************/
+		//echo '252: lat_long_array:<br />';
+		//print_r($lat_long_array);
+		$enter = '';
+		$b=0;
+		foreach($lat_long_array as $k => $I_ISO) {					// get string for body
+			$enter .= $I_ISO;
 		}
-	}		// end for
-	
-	$enter = '';
-	$b=0;
-	foreach($value as $k => $I_ISO) {
-		if ($b == 0) {
-			$b=1;
-			continue;
-		}
-		$enter .= $I_ISO;
+
+		$first_b = $first_a . "	<title>Language map of ".$previous_CName." - Leaflet</title>";		// write out just 1 ISO
+		$first_d = $first_b . $first_c . "	var mymap = L.map('mapid').setView([".$s_lat_long."], 9);";
+		$first = $first_d  . $first_e;
+		//file_put_contents('maps/'.$previous_CName.'/'.$L_ISO.'.html', $first, LOCK_EX);
+		//file_put_contents('maps/'.$previous_CName.'/'.$L_ISO.'.html', $enter, FILE_APPEND | LOCK_EX);
+		//file_put_contents('maps/'.$previous_CName.'/'.$L_ISO.'.html', $end, FILE_APPEND | LOCK_EX);
+		// top of this htm file
+		file_put_contents('maps/'.$previous_CC.'/'.$L_ISO.'.htm', $first, LOCK_EX);
+		// body of this htm file
+		file_put_contents('maps/'.$previous_CC.'/'.$L_ISO.'.htm', $enter, FILE_APPEND | LOCK_EX);
+		// bottom of this htm file
+		file_put_contents('maps/'.$previous_CC.'/'.$L_ISO.'.htm', $end, FILE_APPEND | LOCK_EX);
+
+		$first = '';
+		$enter = '';
+		//$maps_array = [];
+		//$key_maps_array = [];											// create $key_maps_array from $maps_array only in (0 => ISO, 1 => ISO, etc.)
+		//$value_maps_array = [];										// create $value_maps_array from $maps_array only in (0 => LN, 1 => LN, etc.)
+		$lat_long_array = $save_lat_long;							// lat_long template
+		$key_lat_long = array_keys($lat_long_array);				// IMPORTANT! array_keys AND array_arrays must be AGIAN set to $lat_long_array
+		$value_lat_long = array_values($lat_long_array);
 	}
-	
-	$first_b = $first_a . "	<title>Language map of ".$English_Country." - Leaflet</title>";
-	$first_d = $first_b . $first_c . "	var mymap = L.map('mapid').setView([".$save_lat_long[$key]."], 9);";
-	$first = $first_d  . $first_e;
-	//file_put_contents('leafletjs_maps/'.$English_Country.'/'.$L_ISO.'.html', $first, LOCK_EX);
-	//file_put_contents('leafletjs_maps/'.$English_Country.'/'.$L_ISO.'.html', $enter, FILE_APPEND | LOCK_EX);
-	// bottom of this html file
-	//file_put_contents('leafletjs_maps/'.$English_Country.'/'.$L_ISO.'.html', $end, FILE_APPEND | LOCK_EX);
-	file_put_contents('leafletjs_maps/'.$ISO_Country.'/'.$L_ISO.'.html', $first, LOCK_EX);
-	file_put_contents('leafletjs_maps/'.$ISO_Country.'/'.$L_ISO.'.html', $enter, FILE_APPEND | LOCK_EX);
-	// bottom of this html file
-	file_put_contents('leafletjs_maps/'.$ISO_Country.'/'.$L_ISO.'.html', $end, FILE_APPEND | LOCK_EX);
-	$first = '';
-	$enter = '';
+	//echo '<br />';
+	$maps_array = [];
+	$lat_long_array = [];
+	$save_lat_long = [];
+	$previous_CC = $ISO_Country;
+	$previous_CName = $English_Country;
 }
 ?>
 <h1>End</h1>

@@ -27,6 +27,7 @@ if (isset($_GET['country'])) $TryCountry = $_GET['country']; else { die('Hack!')
 if (!preg_match("/[-. ,'ꞌ()a-záéíóúàèìòùÑñçãõâêîôûäëöüï&]/ui", $TryCountry)) {
 	die('Hack!');
 }
+
 if (isset($_GET['st'])) {
 	$st = $_GET['st'];
 	if (!preg_match('/^[a-z]{3}/', $st)) {
@@ -37,8 +38,6 @@ else {
 	 die('Hack! 2');
 }
 $st = substr($st, 0, 3);
-
-$response = '';
 
 if (isset($_GET['SpecificCountry'])) {
 	$SpecificCountry = $_GET['SpecificCountry'];
@@ -56,6 +55,8 @@ $hint = 0;
 include './include/conn.inc.php';
 $db = get_my_db();
 include './translate/functions.php';							// translation function
+
+$response = '';
 
 $query="SELECT DISTINCT ISO_Country, $SpecificCountry FROM countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND (countries.$SpecificCountry LIKE '".$TryCountry."%' || countries.$SpecificCountry LIKE '% " . $TryCountry . "%') ORDER BY $SpecificCountry";														// create a prepared statement
 if ($result = $db->query($query)) {

@@ -61,17 +61,17 @@
 		padding: 0;
 		vertical-align: middle;
 		border-style: none;
-		width: 45px;
-		height: 45px;
-		min-width: 45px;
-		margin-right: 6px;
+		width: 30px;
+		height: 30px;
+		min-width: 30px;
+		margin-right: 4px;
 	}
 	div.linePointer {
 		cursor: pointer;
 		display: inline;
 	}
 	div.linePointer:hover {
-		border-bottom:2px solid red;
+		border-bottom: 2px solid red;
 	}
 
 	/* for the tables */
@@ -79,7 +79,7 @@
 	#Dis_PlaylistVideo, #Dis_watch, #Dis_YouVersion, #Dis_buy, #Dis_GRN, #Dis_study, #Dis_otherTitles, #Dis_otherTitles_download,
 	#Dis_links, #Dis_eBible, #Dis_SILlink, #Dis_SB, #Dis_GooglePlay, #Dis_All, #Dis_PlaylistVideo, #Dis_PlaylistVideo_download, #Dis_App,
 	#Dis_BibleIsSAB, #Dis_BibleIsGospelFilmSAB, #Dis_YouVersion, #Dis_NotAndroidiOS, #Dis_moreLinks, #Dis_maps, #Dis_OT_Audio_download,
-	#Dis_NT_Audio_download, #Dis_otherTitles_videoDownload {
+	#Dis_NT_Audio_download, #Dis_otherTitles_videoDownload, #Dis_Map {
 		display: none;
 	}
 	
@@ -110,37 +110,42 @@
 	}
 	/* tab icon width */
 	.tablinks {
-		width: 16.6%;
+		width: 14.28%;
 	}
 	/* individual width and height of the icons */
 	#tabText {
-		width: 65px;
-		height: 65px;
+		width: 60px;
+		height: 60px;
 		margin-top: 21px;
 	}
 	#tabAudio {
-		width: 65px;
-		height: 65px;
+		width: 60px;
+		height: 60px;
 		margin-top: 21px;
 	}
 	#tabVideo {
-		width: 65px;
-		height: 65px;
+		width: 60px;
+		height: 60px;
 		margin-top: 21px;
 	}
 	#tabApp {
-		width: 65px;
-		height: 65px;
+		width: 60px;
+		height: 60px;
 		margin-top: 21px;
 	}
 	#tabOther {
-		width: 65px;
-		height: 65px;
+		width: 60px;
+		height: 60px;
+		margin-top: 21px;
+	}
+	#tabMap {
+		width: 60px;
+		height: 60px;
 		margin-top: 21px;
 	}
 	#tabAll {
-		width: 65px;
-		height: 65px;
+		width: 60px;
+		height: 60px;
 		margin-top: 21px;
 	}
 	/* text to the icons */
@@ -204,7 +209,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	$watch=$rowSM['watch'];									// boolean
 	$YouVersion=$rowSM['YouVersion'];						// boolean
 	$buy=$rowSM['buy'];										// boolean
-	$Biblesorg=$rowSM['Bibles_org'];					// boolean
+	$Biblesorg=$rowSM['Bibles_org'];						// boolean
 	$GRN=$rowSM['GRN'];										// boolean
 	$CellPhone=$rowSM['CellPhone'];							// boolean
 	$study=$rowSM['study'];									// boolean
@@ -348,6 +353,8 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		$otherTitles = $result_otherTitles->num_rows;		// number of rows
 	}
 
+	$SE_Map = 1;											// SE map
+
 /*
 	*************************************************************************************************************
 		Get the Language name to display AND display the Text, Audio, Video, App, Other and All bottons.
@@ -390,6 +397,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	const DisplayVideo = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
 	const DisplayApp = {'Dis_App': <?php echo $App; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>};
 	const DisplayOther = {'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_eBible': <?php echo $eBible; ?>};
+	const DisplayMap = {'Dis_Map': <?php echo $SE_Map; ?>};
 	const DisplayAll = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_otherTitles': <?php echo $other_titles; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_links': <?php echo $links; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_App': <?php echo $App; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>};
 
 	// set display = "table" for all "DisplayZZZZZZ" Object.entries()
@@ -438,6 +446,15 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 			}
 		}
 	}
+	function menuEnableMap() {
+		for (let [ dis_key, dis_value ] of Object.entries(DisplayMap)) {
+			if (document.getElementById(dis_key)) {
+				if (dis_value != 0) {
+					document.getElementById(dis_key).style.display = "table";
+				}
+			}
+		}
+	}
 	function menuEnableAll() {
 		for (let [ dis_key, dis_value ] of Object.entries(DisplayAll)) {
 			if (document.getElementById(dis_key)) {
@@ -455,6 +472,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				}
 			}
 		}
+		document.getElementById("Dis_Map").style.display = "none";
 	}
 
 	// set the icons for the largest size
@@ -483,6 +501,11 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		document.getElementById('tabOther').style.height = "85px";
 		document.getElementById('tabOther').style.marginTop = "1px";
 	}
+	function iconEnableMap() {
+		document.getElementById('tabMap').style.width = "85px";
+		document.getElementById('tabMap').style.height = "85px";
+		document.getElementById('tabMap').style.marginTop = "1px";
+	}
 	function iconEnableAll() {
 		document.getElementById('tabAll').style.width = "85px";
 		document.getElementById('tabAll').style.height = "85px";
@@ -509,6 +532,10 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		document.getElementById('tabOther').style.height = "65px";
 		document.getElementById('tabOther').style.marginTop = "21px";
 
+		document.getElementById('tabMap').style.width = "65px";
+		document.getElementById('tabMap').style.height = "65px";
+		document.getElementById('tabMap').style.marginTop = "21px";
+
 		document.getElementById('tabAll').style.width = "65px";
 		document.getElementById('tabAll').style.height = "65px";
 		document.getElementById('tabAll').style.marginTop = "21px";
@@ -530,6 +557,9 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 			return;
 		}
 		if (menuTabName == 'Other' && otherCount === 0) {
+			return;
+		}
+		if (menuTabName == 'Map' && mapCount === 0) {
 			return;
 		}
 
@@ -566,6 +596,10 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 			case 'Other':
 				menuEnableOther();
 				iconEnableOther();
+				break;
+			case 'Map':
+				menuEnableMap();
+				iconEnableMap();
 				break;
 			case 'All':
 				menuEnableAll();
@@ -665,6 +699,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 			<button class="tablinks" onclick="openMenuTab(event, 'Video')"><img id="tabVideo" class='iconActions' src='../images/DisVideo.jpg' alt='<?php echo translate('Video', $st, 'sys'); ?>' title='<?php echo translate('Video', $st, 'sys'); ?>' /><figcaption><?php echo translate('Video', $st, 'sys'); ?></figcaption></button>
 			<button class="tablinks" onclick="openMenuTab(event, 'App')"><img id="tabApp" class='iconActions' src='../images/DisApp.jpg' alt='<?php echo translate('App', $st, 'sys'); ?>' title='<?php echo translate('App', $st, 'sys'); ?>' /><figcaption><?php echo translate('App', $st, 'sys'); ?></figcaption></button>
 			<button class="tablinks" onclick="openMenuTab(event, 'Other')"><img id="tabOther" class='iconActions' src='../images/DisOther.jpg' alt='<?php echo translate('Other', $st, 'sys'); ?>' title='<?php echo translate('Other', $st, 'sys'); ?>' /><figcaption><?php echo translate('Other', $st, 'sys'); ?></figcaption></button>
+			<button class="tablinks" onclick="openMenuTab(event, 'Map')"><img id="tabMap" class='iconActions' src='../images/DisMap.jpg' alt='<?php echo translate('Map', $st, 'sys'); ?>' title='<?php echo translate('Map', $st, 'sys'); ?>' /><figcaption><?php echo translate('Map', $st, 'sys'); ?></figcaption></button>
 			<button class="tablinks" onclick="openMenuTab(event, 'All')"><img id="tabAll" class='iconActions' src='../images/DisAll.jpg' alt='<?php echo translate('All', $st, 'sys'); ?>' title='<?php echo translate('All', $st, 'sys'); ?>' /><figcaption><?php echo translate('All', $st, 'sys'); ?></figcaption></button>
 		</div>
 	</div>
@@ -3978,6 +4013,32 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		echo '</table>';
 	}
 
+/*
+	*************************************************************************************************************
+		Does it have an SE map?
+	*************************************************************************************************************
+*/
+	if ($Internet && $SE_Map) {
+		echo '<table id="Dis_Map" style="width: 100%; margin-top: 20px; ">';
+		?>
+		<tr>
+			<td style='width: 350px; '>
+				<?php
+				echo '<div style="margin-left: 12px; margin-right: 12px; font-size: smaller; ">';
+				echo '<span style="color: red; font-weight: bold; ">'.translate('red', $st, 'sys').'</span>: '.translate('language you have selected', $st, 'sys').'<br />';
+				echo '<span style="color: purple; font-weight: bold; ">'.translate('purple', $st, 'sys').'</span>: '.translate('variants of this language', $st, 'sys').'<br />';
+				echo '<span style="color: blue; font-weight: bold; ">'.translate('blue', $st, 'sys').'</span>: '.translate('all of the other languages for this country', $st, 'sys');
+				echo '</div>';
+			echo "</td>";
+			echo "<td>";
+					echo '<iframe name="iframe_a" title="Iframe" style="width: 700px; height: 520px; margin 0; padding: 0; background-color: white; border: 6px solid #00B1F2; " src="../maps/'.$ISO_Country.'/'.$ISO.'.htm"></iframe>';
+				?>
+			</td>
+		</tr>
+		<?php
+		echo '</table>';
+	}
+
 ?>
 </div>
 <br />
@@ -4026,7 +4087,8 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
         //var x = document.getElementById("SAB_Book"+index).selectedIndex;
         //var y = document.getElementById("SAB_Book"+index).options;
 		//if (y[x].text != "< ?php echo translate('Choose One...', $st, 'sys'); ?>") {
-			window.open("./data/<?php echo $ISO; ?>/" + subfolder + "index.html", "SABPage");
+			//window.open("./data/<?php echo $ISO; ?>/" + subfolder + "index.html", "SABPage");
+			window.open("./data/<?php echo $ISO; ?>/" + subfolder, "SABPage");
 		//}
 	}
     function SAB_Scriptoria_Other(url) {
@@ -4092,6 +4154,15 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 			}
 		}
 	}
+	mapCount = 0;
+	for (let [dis_key, dis_value] of Object.entries(DisplayMap)) {
+		if (document.getElementById(dis_key)) {
+			if (dis_value != 0) {
+				mapCount = 1;
+				break;
+			}
+		}
+	}
 
 /*
 	*************************************************************************************************************
@@ -4119,6 +4190,10 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		document.getElementById('tabOther').style.cursor = 'auto';
 		document.getElementById('tabOther').style.filter = "opacity(20%) grayscale(100%)";
 	}
+	if (mapCount === 0) {
+		document.getElementById('tabMap').style.cursor = 'auto';
+		document.getElementById('tabMap').style.filter = "opacity(20%) grayscale(100%)";
+	}
 
 /*
 	*************************************************************************************************************
@@ -4139,6 +4214,9 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	}
 	else if (otherCount == 1) {
 		document.getElementById("tabOther").click();
+	}
+	else if (mapCount == 1) {
+		document.getElementById("tabMap").click();
 	}
 	else { // (allCount == 1)
 		document.getElementById("tabAll").click();
