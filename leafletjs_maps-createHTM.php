@@ -10,7 +10,7 @@
 <body>
 <h1>Start...</h1>
 <?php
-// Problem: languagae name location on the language name selects more ISOs than normal. A lot of them are ignored (211 and 226)
+// This script sdeems to have a prolblem running on the server so run on the local harddrive and then copy to the server.
 
 require_once './include/conn.inc.php';							// connect to the database named 'scripture'
 $db = get_my_db();

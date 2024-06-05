@@ -1,6 +1,5 @@
 <?php
-// Start the session
-session_start();
+session_start();															// Start the session
 
 // by Jesse Skinner modified by Scott Starker; Parse Accept-Language to detect a user's language; May 2008
 // Updated by Scott Starker, Lærke Roager
@@ -44,11 +43,11 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbr
 			die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
 		}
 		while ($ln_row = $ln_result->fetch_array()){
-			$ln_temp[0] = $ln_row['translation_code'];
-			$ln_temp[1] = $ln_row['name'];
-			$ln_temp[2] = $ln_row['nav_fileName'];
-			$ln_temp[3] = $ln_row['ln_number'];
-			$ln_temp[4] = $ln_row['ln_abbreviation'];
+			$ln_temp[0] = $ln_row['translation_code'];						// [iso] for the navigational langauges
+			$ln_temp[1] = $ln_row['name'];									// English name of the navigational langauges
+			$ln_temp[2] = $ln_row['nav_fileName'];							// index PHPs
+			$ln_temp[3] = $ln_row['ln_number'];								// based on the languages; 1 to 7 now; English being 1, etc.
+			$ln_temp[4] = $ln_row['ln_abbreviation'];						// SE.org abbrevigations for language names; 1 to 3 letters; English being "e"; Chinese being "cmn'
 			$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;
 		}
 	}
@@ -78,7 +77,7 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbr
 		$var = '';
 		$iso = isset($_GET['iso']) ? $_GET['iso'] : $_GET['name'];
 		if (preg_match('/^([a-z]{3})/', $iso, $match)) {
-			$redirectTo .= '?sortby=lang&iso='.$match[1] . ($asset == 1 ? '&asset=1' : '');
+			$redirectTo .= '?iso='.$match[1] . ($asset == 1 ? '&asset=1' : '');
 		}
 		else {
 			die('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The ISO code is not found. (index.php)</div>');
