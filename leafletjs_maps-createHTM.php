@@ -91,7 +91,7 @@ $query="SELECT ISO FROM LN_English WHERE ISO_ROD_index IS NOT NULL AND ISO = ?";
 $stmt_ISO=$db->prepare($query);														// create a prepared statement
 $query="SELECT LN_English FROM LN_English WHERE ISO = ?";							// select the language name from LN_English to $maps_array
 $stmt_LN=$db->prepare($query);														// create a prepared statement
-$query="SELECT latitude, longitude, name, hid FROM leafletjs_maps WHERE hid = ?";	// select the latitude, longitude, name, hid from leafletjs_maps to $lat_long_array and $save_lat_long
+$query="SELECT latitude, longitude, `name`, hid FROM leafletjs_maps WHERE hid = ? AND latitude IS NOT NULL AND longitude IS NOT NULL";	// select the latitude, longitude, name, hid from leafletjs_maps to $lat_long_array and $save_lat_long
 $stmt_lat_long=$db->prepare($query);												// create a prepared statement
 
 $enter = '';

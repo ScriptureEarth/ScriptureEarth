@@ -1,5 +1,5 @@
 <?php
-if(session_status() === PHP_SESSION_NONE) @session_start();
+if (session_status() === PHP_SESSION_NONE) @session_start();
 
 /*
 	Can't use <div id="langBackground" in FireFox 84.0.1 with cursor: pointer; inside the id because it is a bug.
@@ -7,26 +7,26 @@ if(session_status() === PHP_SESSION_NONE) @session_start();
 */
 
 ?>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-<meta name="ObjectType" content="Document" />
-<meta http-equiv="Window-target" content="_top" />
-<meta name="Created-by" content="Scott Starker" />
-<meta name="Updated-by" content="Scott Starker, Lærke Roager" />
-<meta name="Maintained-by" content="Website" />
-<meta name="Approved-by" content="Bill Dyck, Access Coordinator" />
-<meta name="Copyright" content="6.2009 - <?php echo date("Y"); ?>" /> <!-- auto_copyright("2009") -->
+<meta http-equiv="Content-Type" 		content="text/html; charset=utf-8" />
+<meta name="viewport" 					content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta name="ObjectType" 				content="Document" />
+<meta http-equiv="Window-target" 		content="_top" />
+<meta name="Created-by" 				content="Scott Starker" />
+<meta name="Updated-by" 				content="Scott Starker, Lærke Roager" />
+<meta name="Maintained-by" 				content="Website" />
+<meta name="Approved-by" 				content="Bill Dyck, Access Coordinator" />
+<meta name="Copyright"					content="6.2009 - <?php echo date("Y"); ?>" /> <!-- auto_copyright("2009") -->
 <!-- For IE 9 and below. ICO should be 32x32 pixels in size -->
 <!--[if IE]><link rel="shortcut icon" href="path/to/favicon.ico"><![endif]-->
 <!-- Touch Icons - iOS and Android 2.1+ 180x180 pixels in size. -->
 <link rel="apple-touch-icon-precomposed" href="./icons/apple-touch-icon-precomposed.png">
 <!-- Firefox, Chrome, Safari, IE 11+ and Opera. 196x196 pixels in size. -->
-<link rel="icon" href="./icons/favicon.png">
-<link rel="manifest" href="./manifest.webmanifest" /> <!-- The browser should behave when the PWA installs on the user's desktop or mobile device. -->
-<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" /> <!-- iOS mobile icon -->
+<link rel="icon"						href="./icons/favicon.png">
+<link rel="manifest" 					href="./manifest.webmanifest" /> <!-- The browser should behave when the PWA installs on the user's desktop or mobile device. -->
+<link rel="apple-touch-icon" 			href="./icons/apple-touch-icon.png" /> <!-- iOS mobile icon -->
 <meta name="apple-mobile-web-app-title" content="Scripture Earth" /> <!-- title for iOS mobile icon -->
-<link rel="icon" sizes="192x192" href="./icons/nice-highres.png" /> <!-- Android mobile icon -->
-<meta name="application-name" content="Scripture Earth" /> <!-- title for Android mobile icon -->
+<link rel="icon" sizes="192x192" 		href="./icons/nice-highres.png" /> <!-- Android mobile icon -->
+<meta name="application-name" 			content="Scripture Earth" /> <!-- title for Android mobile icon -->
 <!--link rel="stylesheet" type='text/css'		href="button.css" /-->
 <link rel="stylesheet" type='text/css' href="JQuery/css/style.css" />
 <!-- link rel="stylesheet" type="text/css" 	href="_css/Scripture_Index.css" /-->
@@ -67,32 +67,42 @@ if(session_status() === PHP_SESSION_NONE) @session_start();
 		padding: 0;
 	}
 
+/* ************************************************************************
+		begin hamburger css
+************************************************************************* */
 	.toggler {
 		/* ALWAYS KEEPING THE TOGGLER OR THE CHECKBOX ON TOP OF EVERYTHING :  */
 		position: absolute;
 		z-index: 10;
 		/* Can see it though. So, use the "Tools" from the menu of the browse, click on "Browser Tools", click on "Web Developer Tools". */
 		/* On the bottom menu click on "Inspector". Find <input id"togglerID" class="toggler" type="checkbox">. */
-		top: 110px;							/* top position */
-		width: 30px;						/* width of position */
-		right: 80px;						/* right position */
-		height: 30px;						/* height of position */
-		opacity: 0;							/* invisible! */
+		top: 2px;									/* top position */
+		width: 30px;								/* width of position */
+		right: 26px;								/* right position */
+		height: 30px;								/* height of position */
+		opacity: 0;									/* invisible! */
 		cursor: pointer;
+	}
+	.toggleLanguage {								/* Importent! .toggleLanguage goes AFTER .toggle! */
+		top: 85px;
+		right: 149px;
 	}
 
 	.hamburger {
 		position: absolute;
-		top: 108px;							/* top of hamburger */
-		right: 60px;						/* right of hamburger */
+		top: 8px;									/* top of hamburger */
+		right: -62px;								/* right of hamburger */
 		height: 40px;
 		width: 40px;
-		margin: 0;
 		padding: 0.6rem 0.3rem;
 		/* FOR DISPLAYING EVERY ELEMENT IN THE CENTER : */
 		display: flex;
 		align-items: center;
 		justify-content: center;
+
+		margin-right: 68px;
+		margin-top: -9px;
+		z-index: 5;
 	}
 
 	/* CREATING THE MIDDLE LINE OF THE HAMBURGER : */
@@ -100,11 +110,11 @@ if(session_status() === PHP_SESSION_NONE) @session_start();
 		/* postition of hamburger */
 		position: relative;
 		top: -13px;
-		right: 4px;							/* right of lines */
-		left: -10px;						/* left of lines */
-		background-color: white;			/* color of the middle line */
-		height: 2px;						/* height of the middle line */
-		width: 60%;							/* width  of the three lines */
+		right: 4px;									/* right of lines */
+		left: -10px;								/* left of lines */
+		background-color: white;					/* color of the middle line */
+		height: 2px;								/* height of the middle line */
+		width: 60%;									/* width  of the three lines */
 		transition: all 0.4s ease;
 	}
 
@@ -115,8 +125,8 @@ if(session_status() === PHP_SESSION_NONE) @session_start();
 		position: absolute;
 		top: -10px;
 		right: 0;
-		background-color: white;			/* color of the top and bottoms lines */
-		width: 100%;						/* width of the top and bottom lines */
+		background-color: white;					/* color of the top and bottoms lines */
+		width: 100%;								/* width of the top and bottom lines */
 		height: 2px;
 		transition: all 0.4s ease;
 	}
@@ -130,7 +140,7 @@ if(session_status() === PHP_SESSION_NONE) @session_start();
 	/* A toggled state! No JavaScript! */
 	/* If the .toggler:checked is checked the label '.hamburger>div' the CSS gets executed includeing ::before and ::after. */
 	.toggler:checked+.hamburger>div {
-		background: rgba(0, 0, 0, 0);		/* black so it is invisible */
+		background: rgba(0, 0, 0, 0);				/* black so it is invisible */
 	}
 
 	.toggler:checked+.hamburger>div::before {
@@ -152,22 +162,25 @@ if(session_status() === PHP_SESSION_NONE) @session_start();
 
 	/* MAIN MENU WITH THE WHITE BACKGROUND AND THE TEXT :  */
 	.menu {
-		/*background: white;*/
+		position: absolute;
+		z-index: 5;
+		/*left: -48px;
+		background: white;*/
 		/*background-color: rgba(0, 0, 0, 0.7);*/
-		margin-left: auto;
-		margin-right: 0;				/* right hand side */
-		width: 20%;						/* what this the width for??? */
-		/*height: 100vh;				/* what this the height for??? */
+		/*position: relative;*/
+		/*margin-left: auto;
+		margin-right: 0;							 right hand side */
+		/*width: 20%;									/* what this the width for??? */
+		/*height: 100vh;								/* what this the height for??? */
 		/* APPLYING TRANSITION TO THE MENU : */
 		/*transition: all 0.4s ease;*/
 	}
 
-
 	/* IF THE TOGGLER IS CHECKED, THEN INCREASE THE WIDTH OF THE MENU TO 30% , CREATING A SMOOTH EFFECT :  */
 	.toggler:checked~.menu {
-		width: 30%;						/* width of menu */
+		width: 30%;									/* width of menu */
 		/* width: 300px; */
-		/* height: 600px;				height: 100vh;*/
+		/* height: 600px;								height: 100vh;*/
 	}
 
 	/* STYLING THE LIST :  */
@@ -179,15 +192,18 @@ if(session_status() === PHP_SESSION_NONE) @session_start();
 		flex-direction: column;
 		position: fixed;
 		top: 116px;
-		right: 160px;
+		right: 70px;								/* text menu to the right */
 		/*padding-left: 20px;*/
-		width: 280px;
+		width: 340px;								/* position of hambuger menu texts */
 		height: 100vh;
-		margin-top: -5px;							/* position of hambuger menu text */
+		margin-top: -5px;							/* position of hambuger menu texts */
 		padding-top: 5px;
 		/* over from left side */
 		/* HIDDEN INITIALLY  :  */
 		visibility: hidden;
+	}
+	.menuDivUlLanguage {							/* Importent! .menuDivUlLanguage goes AFTER .menu>div>ul! */
+		margin-top: -18px;							/* position of hambuger menu texts */
 	}
 
 	.menu>div>ul>li {
@@ -248,7 +264,47 @@ if(session_status() === PHP_SESSION_NONE) @session_start();
 		/* won't work */
 		background-color: #101010;
 	}
+/* ************************************************************************
+		end hamburger css
+************************************************************************* */
 
+	.threeMenus {
+		position: absolute;
+		top: -20px;
+		left: 78%;
+		right: 80px;
+	}
+
+	/* 3 menu "select"s */
+	#sL, #sC, #navLang {
+		/* "select" tag: #sL = "select Language"; $sC = "select Country"; #navLang = "select nothing" */
+		position: absolute;
+		z-index: 5;
+		top: -6px;
+		/*right: 101px;*/
+		left: -48px;									/* left for the select nav. lang. */
+		/*color: #4079b0; */
+		color: white;
+		/* background-color: white;*/
+		font-size: 100%;
+		border-style: none;
+		padding: 3px;
+		padding-left: 16px;
+	}
+	#navLang {
+		margin-left: -7px;
+	}
+
+	.helpSelection {
+		position: relative;
+		z-index: 5;
+		margin-left: 5px;
+		margin-right: -8px;
+		margin-bottom: -10px;
+	}
+
+	/* .menu (up above) */
+	/* end  */
 
 	select {
 		color: black;
@@ -291,21 +347,6 @@ if(session_status() === PHP_SESSION_NONE) @session_start();
 		font-size: 12pt;
 		padding: 3px;
 		padding-left: 10px;
-	}
-
-	#sL, #sC, #navLang {
-		/* "select" tag: #sL = "select Language"; $sC = "select Country"; "select nothing" */
-		position: absolute;
-		z-index: 5;
-		top: -6px;
-		right: 101px;
-		/*color: #4079b0; */
-		color: white;
-		/* background-color: white;*/
-		font-size: 100%;
-		border-style: none;
-		padding: 3px;
-		padding-left: 16px;
 	}
 
 	#background_header {
@@ -359,6 +400,33 @@ if(session_status() === PHP_SESSION_NONE) @session_start();
 		margin: 0;
 		padding: 0;
 	}
+
+	.mapIframe {
+		width: 700px;
+		height: 520px;
+		margin: 0;
+		padding: 0;
+		background-color: white;
+		border: 5px solid #00B1F2;
+	}
+	.mapKey {
+		font-size: smaller;
+		margin-top: 8px;
+	}
+	.formNavAndHelp {
+		position: absolute;
+		top: 100px;
+		right: 115px;
+		width: 170px;
+		display: block;
+	}
+	.countryBlackTopImage {
+		background-color: black;
+		height: 120px;
+		margin-left: -10000px;
+		margin-right: -10000px; 
+	}
+
 
 	@media only screen and (max-width: 1250px) {
 		#langBackground {
@@ -415,12 +483,18 @@ if(session_status() === PHP_SESSION_NONE) @session_start();
 			/* position of earth; from 00-Scripture.css */
 			background-position: top;
 			background-size: 480px;					/* size of earth */
-			height: 780px;							/* height of 3 input lines */
+			height: 757px;							/* height of 3 input lines */								/* move to 00-Scripture.css */
 			margin-top: 90px;						/* top margin of both earth and 3 input lines */
 		}
 	}
 
 	@media only screen and (max-width: 480px) {
+		.hamburger {
+			right: -86px;								/* right of hamburger */
+			/*height: 40px;
+			width: 40px;*/
+		}
+
 		#background_header {
 			/* position of icon and text; from 00-Scripture.css */
 			background-position: top -7px left;
@@ -431,11 +505,11 @@ if(session_status() === PHP_SESSION_NONE) @session_start();
 			margin-left: -150px;
 			width: 100px;							/* this works along side of #background_header width */
 		}
-		#background {
-			/* position of earth; from 00-Scripture.css 
+		#background {																							/* move to 00-SEmobile.css */
+			/* position of earth; from 00-Scripture.css
 			background-position:  top 70px left 78px;*/
-			background-size: 430px;					/* size of earth */
-			height: 720px;							/* height of 3 input lines */
+			background-size: 420px;					/* size of the earth */
+			height: 670px;							/* height of 3 blue input lines */
 			margin-top: 80px;						/* top margin of both earth and 3 input lines */
 		}
 		#copyright {
@@ -444,12 +518,49 @@ if(session_status() === PHP_SESSION_NONE) @session_start();
 			bottom: 0;
 			font-size: 80%;
 		}
+
+		.threeMenus {
+			top: -20px;
+			left: 280px;
+		}
+		/* 3 menu "select"s */
+		#sL {										/* select specific Language */								/* move to 00-SEmobile.css */
+			left: 0;								/* navigational language selector */
+			margin-left: 10px;						/* nav lang select */
+			padding-left: 6px;
+			font-size: 80%;
+		}
 		#sC {
-			/* "select" tag: $sC = "select Language" */
+			left: 0;								/* select Country */										/* move to 00-SEmobile.css */
+			margin-left: -12px;						/* nav lang select */
 			padding-left: 10px;
-			left: 0;
-			margin-left: -44px;
-			margin-right: 0;
+			margin-top: 8px;
+		}
+		#navLang {									/* navigational language selector */						/* move to 00-SEmobile.css */
+			left: -30px;
+			margin-left: 18px;						/* nav lang select */
+			padding-left: 6px;
+			margin-top: 8px;
+		}
+
+		.helpSelection {																						/* help */
+			margin-left: 106px;																					/* move to 00-SEmobile.css */
+			margin-right: 40px;
+		}
+
+		/* .menu (up above) */
+		/* end */
+
+		.mapIframe {																							/* move to 00-SEmobile.css */
+			width: 390px;
+			height: 520px;
+			border: 1px solid #00B1F2;
+		}
+
+		.countryBlackTopImage {
+			width: 100%;
+			margin-left: auto;
+			margin-right: auto;
 		}
 	}
 </style>
@@ -707,6 +818,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 						//$i=0;			// used in 00-DBLanguageCountryName.inc.php include
 						include('./include/00-DBLanguageCountryName.inc.php');																// Get the variant language name. $row must be set! The 'return' value is $LN.
 
+						echo '<div class="countryBlackTopImage"></div>';		// black image at the very top window
 						/* <div id="background_header" style="background-image: url('../images/00<?php echo $st; ?>-ScriptureEarth_header.jpg'); "><div style="cursor: pointer; " onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><img id="empty" src="./images/empty.png" /></div></div> <!-- ScriptureEarth and the Earth image -->
 						<div id="background" style="background-image: url('../images/background_earth.jpg'); "></div> <!-- ScriptureEarth and the Earth image --> */
 						echo '<div id="langBackground" style="margin-top: -12px; ">';
@@ -720,18 +832,16 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 						$LN = htmlspecialchars($LN, ENT_QUOTES, 'UTF-8');
 						?>
 
-						<div style="position: absolute; top: -22px; right: 80px; ">
+						<div class="threeMenus">
 							<?php
 							/* -----------------------------------------------------------------------------------------
 								display 'English', 'Spanish', ... drop-down menu AND help button
 							------------------------------------------------------------------------------------------ */
-							// In the element 'form', display: block = center when there is no 'About' botton.
 							?>
-							<form id="myForm" style="position: relative; top: 83px; right: 115px; width: 170px; display: block; " action="#">
+							<form id="myForm" class="formNavAndHelp" action="#">
 								<?php
-								// Changed to work with the master array -- Laerke
+								// Changed to work with the master array -- Lærke
 								// Modified to (condition) ? value1 : value2 -- Scott
-								// <select id='navLang' class="navLangChoice" onchange="menuChange(< ?php echo $ISO_ROD_index; ? >)" title="< ?php echo translate('Click here to choose the interface language.', $st, 'sys'); ? >">
 								?>
 								<select id="sL" onchange="langChange('<?php echo $ISO_ROD_index; ?>', '<?php echo $LN; ?>', '<?php echo $ISO; ?>')">
 									<?php
@@ -740,42 +850,42 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 									}
 									?>
 								</select>
-								<a href='#' id='helpMenu' style='position: relative; z-index: 5; ' onclick="helpClick();"><img src='./images/iconHelp.png' alt="<?php echo translate('help', $st, 'sys'); ?>" style='margin-left: 0; margin-right: -8px; margin-bottom: -10px; ' width="32" height="32" /></a>
-							</form>
+								<a href='#' id='helpMenu' class='helpSelection' onclick="helpClick();"><img src='./images/iconHelp.png' alt="<?php echo translate('help', $st, 'sys'); ?>" style='margin-left: 0; margin-right: -8px; margin-bottom: -10px; ' width="32" height="32" /></a>
 
-							<?php
-							/* -----------------------------------------------------------------------------------------
-								display ☰ hamburger menu
-							----------------------------------------------------------------------------------------- */
-							?>
-							<input type="checkbox" id="togglerID" class="toggler" style="top: 85px; right: 149px; ">
-							<div class="hamburger" style='margin-right: 68px; margin-top: -25px; z-index: 5; '>		<!-- style = position of hambuger (position is different from other viewers) -->
-								<div></div>
-							</div>
-
-							<!--  document.querySelectorAll('div.hamburger')[0]  get div.hamburger -->
-							<div class="menu" style="position: relative; z-index: 5; ">
-								<div>
-									<ul id="submenu" style="top: 100px; ">
-										<li><a href='#' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></a></li>
-										<li><a href='#' onclick="aboutSection('H');"><?php echo translate('Help', $st, 'sys'); ?></a></li>
-										<li><a id='aboutArrow' style="cursor: pointer; margin-left: -16px; " onclick="AboutOO()">▸<?php echo translate('About', $st, 'sys'); ?></a></li>
-										<div id="AboutOffOn" style="display: none; text-align: left; ">
-											<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
-											<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partners', $st, 'sys'); ?></a></li>
-											<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
-											<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
-										</div>
-										<li><a href='#' onclick="menuSet = 0; window.open('./Feedback/Feedback.php?st=<?php echo $st; ?>')"><?php echo translate('Contact Us', $st, 'sys'); ?></a></li>
-										<?php if ($st == 'eng') { ?>
-											<li><a href='#' onclick="menuSet = 0; window.open('https://give.sil.org/give/531194/#!/donation/checkout')"><?php echo translate('Donate', $st, 'sys'); ?></a></li>
-										<?php }
-										if ($st == 'eng' || $st == 'spa') { ?>
-											<li><a href='#' onclick="menuSet = 0; window.open('./promotionMaterials/promotion.php?st=<?php echo $st; ?>')"><?php echo translate('Promotion Materials', $st, 'sys'); ?></a></li>
-										<?php } ?>
-									</ul>
+								<?php
+								/* -----------------------------------------------------------------------------------------
+									display ☰ hamburger menu
+								----------------------------------------------------------------------------------------- */
+								?>
+								<input type="checkbox" id="togglerID" class="toggler toogleLanguage">
+								<div class="hamburger">
+									<div></div>
 								</div>
-							</div>
+
+								<!--  document.querySelectorAll('div.hamburger')[0] => get div.hamburger -->
+								<div class="menu">
+									<div>
+										<ul id="submenu" class="menuDivUlLanguage">
+											<li><a href='#' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></a></li>
+											<li><a href='#' onclick="aboutSection('H');"><?php echo translate('Help', $st, 'sys'); ?></a></li>
+											<li><a id='aboutArrow' style="cursor: pointer; margin-left: -16px; " onclick="AboutOO()">▸<?php echo translate('About', $st, 'sys'); ?></a></li>
+											<div id="AboutOffOn" style="display: none; text-align: left; ">
+												<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
+												<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partners', $st, 'sys'); ?></a></li>
+												<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
+												<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
+											</div>
+											<li><a href='#' onclick="menuSet = 0; window.open('./Feedback/Feedback.php?st=<?php echo $st; ?>')"><?php echo translate('Contact Us', $st, 'sys'); ?></a></li>
+											<?php if ($st == 'eng') { ?>
+												<li><a href='#' onclick="menuSet = 0; window.open('https://give.sil.org/give/531194/#!/donation/checkout')"><?php echo translate('Donate', $st, 'sys'); ?></a></li>
+											<?php }
+											if ($st == 'eng' || $st == 'spa') { ?>
+												<li><a href='#' onclick="menuSet = 0; window.open('./promotionMaterials/promotion.php?st=<?php echo $st; ?>')"><?php echo translate('Promotion Materials', $st, 'sys'); ?></a></li>
+											<?php } ?>
+										</ul>
+									</div>
+								</div>
+							</form>
 						</div>
 
 						<iframe id="myFrame" allowfullscreen="true" frameborder="0" marginheight="0" marginwidth="0" style="display: block; height: 100%; width: 80%; overflow:hidden; border: none; display: none; margin:0; padding:0; position: absolute; top: 200px; bottom: 0; right: 10%; left: 10%; z-index: 10; background-color: white; border: 5px solid black; box-shadow: 20px 20px 10px black, 0 0 400px black, 0 0 400px navy; " src=""></iframe>
@@ -885,67 +995,66 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 					$country = trim($r["$countryTemp"]);								// name of the full country if there is one
 					?>
 
-					<!-- The id="background_header" in te next line is the error! -->
+					<!-- The id="background_header" in the next line is the error! -->
 					<!-- div id="background_header" style="background-image: url('../images/00< ?php echo $st; ?>-ScriptureEarth_header.jpg'); cursor: pointer; " onclick="window.open('< ?php echo $Scriptname; ?>', '_self')"><img id="empty" src="./images/empty.png" /></div> < !-- ScriptureEarth and the Earth image -->
 					<div id="background_header" style="background-image: url('../images/00<?php echo $st; ?>-ScriptureEarth_header.jpg'); "><div style="cursor: pointer; " onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><img id="empty" style="min-width: 300px; max-width: 550px; " src="./images/empty.png" /></div></div> <!-- ScriptureEarth and the Earth image -->
 					<div id="background" style="background-image: url('../images/background_earth.jpg'); "></div> <!-- ScriptureEarth and the Earth image -->
 
-					<div style="position: absolute; top: -20px; right: 80px; ">
+					<div class="threeMenus">
 						<?php
 						/* -----------------------------------------------------------------------------------------
 							display 'English', 'Spanish', ... drop-down menu AND help button
        					----------------------------------------------------------------------------------------- */
-						// In the element 'form', display: block = center when there is no 'About' botton.
 						?>
 						
-						<form id="myForm" style="position: relative; top: 100px; right: 115px; width: 170px; display: block; " action="#">
+						<form id="myForm" class="formNavAndHelp" action="#">
 							<?php
-							// Changed to work with the master array -- Laerke
+							// Changed to work with the master array -- Lærke
 							// Modified to (condition) ? value1 : value2 -- Scott
 							?>
-							<select id='sC' style='color: white; ' onchange="countryChange('<?php echo $GetName; ?>', <?php echo $asset; ?>)">
+							<select id='sC' onchange="countryChange('<?php echo $GetName; ?>', <?php echo $asset; ?>)">
 								<?php
 								foreach ($_SESSION['nav_ln_array'] as $tempArray) {
 									echo "<option value='$tempArray[2]" . ($asset == 1 ? '?asset=1' : '') . '\'' . ($st == $tempArray[0] ? ' selected=\'selected\'' : '') . ">" . translate($tempArray[1], $tempArray[0], 'sys') . '</option>';
 								}
 								?>
 							</select>
-							<a href='#' id='helpMenu' style='position: relative; z-index: 5; ' onclick="helpClick()"><img src='./images/iconHelp.png' alt="help" style='margin-left: 0; margin-right: -8px; margin-bottom: -10px; ' width="32" height="32" /></a>
-						</form>
+							<a href='#' id='helpMenu' class='helpSelection' onclick="helpClick()"><img src='./images/iconHelp.png' alt="help" style='margin-left: 0; margin-right: -8px; margin-bottom: -10px; ' width="32" height="32" /></a>
 
-						<?php
-						/* -----------------------------------------------------------------------------------------
-							display ☰ hamburger menu
-       					----------------------------------------------------------------------------------------- */
-						?>
-						<input type="checkbox" id="togglerID" class="toggler" style="top: 100px; right: 149px; ">
-						<div class="hamburger" style='margin-right: 68px; margin-top: -9px; z-index: 5; '>
-							<div></div>
-						</div>
-
-						<!--  document.querySelectorAll('div.hamburger')[0]  get div.hamburger -->
-						<div class="menu" style="position: relative; z-index: 5; ">
-							<div>
-								<ul id="submenu">
-									<li><a href='#' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></a></li>
-									<li><a href='#' onclick="aboutSection('H');"><?php echo translate('Help', $st, 'sys'); ?></a></li>
-									<li><a id='aboutArrow' style="cursor: pointer; margin-left: -16px; " onclick="AboutOO()">▸<?php echo translate('About', $st, 'sys'); ?></a></li>
-									<div id="AboutOffOn" style="display: none; text-align: left; ">
-										<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
-										<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partnerss', $st, 'sys'); ?></a></li>
-										<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
-										<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
-									</div>
-									<li><a href='#' onclick="menuSet = 0; window.open('./Feedback/Feedback.php?st=<?php echo $st; ?>')"><?php echo translate('Contact Us', $st, 'sys'); ?></a></li>
-									<?php if ($st == 'eng') { ?>
-										<li><a href='#' onclick="menuSet = 0; window.open('https://give.sil.org/give/531194/#!/donation/checkout')"><?php echo translate('Donate', $st, 'sys'); ?></a></li>
-									<?php }
-									if ($st == 'eng' || $st == 'spa') { ?>
-										<li><a href='#' onclick="menuSet = 0; window.open('./promotionMaterials/promotion.php?st=<?php echo $st; ?>')"><?php echo translate('Promotion Materials', $st, 'sys'); ?></a></li>
-									<?php } ?>
-								</ul>
+							<?php
+							/* -----------------------------------------------------------------------------------------
+								display ☰ hamburger menu
+							----------------------------------------------------------------------------------------- */
+							?>
+							<input type="checkbox" id="togglerID" class="toggler">
+							<div class="hamburger">
+								<div></div>
 							</div>
-						</div>
+
+							<!--  document.querySelectorAll('div.hamburger')[0]  get div.hamburger -->
+							<div class="menu">
+								<div>
+									<ul id="submenu">
+										<li><a href='#' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></a></li>
+										<li><a href='#' onclick="aboutSection('H');"><?php echo translate('Help', $st, 'sys'); ?></a></li>
+										<li><a id='aboutArrow' style="cursor: pointer; margin-left: -16px; " onclick="AboutOO()">▸<?php echo translate('About', $st, 'sys'); ?></a></li>
+										<div id="AboutOffOn" style="display: none; text-align: left; ">
+											<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
+											<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partnerss', $st, 'sys'); ?></a></li>
+											<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
+											<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
+										</div>
+										<li><a href='#' onclick="menuSet = 0; window.open('./Feedback/Feedback.php?st=<?php echo $st; ?>')"><?php echo translate('Contact Us', $st, 'sys'); ?></a></li>
+										<?php if ($st == 'eng') { ?>
+											<li><a href='#' onclick="menuSet = 0; window.open('https://give.sil.org/give/531194/#!/donation/checkout')"><?php echo translate('Donate', $st, 'sys'); ?></a></li>
+										<?php }
+										if ($st == 'eng' || $st == 'spa') { ?>
+											<li><a href='#' onclick="menuSet = 0; window.open('./promotionMaterials/promotion.php?st=<?php echo $st; ?>')"><?php echo translate('Promotion Materials', $st, 'sys'); ?></a></li>
+										<?php } ?>
+									</ul>
+								</div>
+							</div>
+						</form>
 					</div>
 
 					<iframe id="myFrame" allowfullscreen="true" frameborder="0" marginheight="0" marginwidth="0" style="display: block; height: 100%; width: 80%; overflow:hidden; border: none; display: none; margin:0; padding:0; position: absolute; top: 200px; bottom: 0; right: 10%; left: 10%; z-index: 10; background-color: white; border: 5px solid black; box-shadow: 20px 20px 10px black, 0 0 400px black, 0 0 400px navy; " src=""></iframe>
@@ -990,16 +1099,16 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 					<div style="position: relative; top: 0; left: 0; z-index: 10; cursor: pointer; " onclick="window.open('< ?php echo $Scriptname; ?>', '_self')"><img id="empty" src="./images/empty.png" /></div>
 				</div -->
 
-				<div style="position: absolute; top: -20px; right: 80px; ">
+				<div class="threeMenus">
 					<?php
 					/* -----------------------------------------------------------------------------------------
 						display 'English', 'Spanish', ... drop-down menu AND help button
        				-------------------------------------------------------------------------------------------- */
-					// In the element 'form', display: block = center when there is no 'About' botton.
 					?>
-					<form id="myForm" style="position: relative; top: 100px; right: 115px; width: 170px; display: block; " action="#">
+
+					<form id="myForm" class="formNavAndHelp" action="#">
 						<?php
-						// Changed to work with the master array -- Laerke
+						// Changed to work with the master array -- Lærke
 						// Modified to (condition) ? value1 : value2 -- Scott
 						?>
 						<select id='navLang' onchange="menuChange()" title="<?php echo translate('Click here to choose the interface language.', $st, 'sys'); ?>">
@@ -1009,42 +1118,42 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 							}
 							?>
 						</select>
-						<a href='#' id='helpMenu' style='position: relative; z-index: 5; ' onclick="helpClick();"><img src='./images/iconHelp.png' alt="help" style='margin-left: 0; margin-right: -8px; margin-bottom: -10px; ' width="32" height="32" /></a>
-					</form>
+						<a href='#' id='helpMenu' class='helpSelection' onclick="helpClick();"><img src='./images/iconHelp.png' alt="help" width="32" height="32" /></a>
 
-					<?php
-					/* -----------------------------------------------------------------------------------------
-						display ☰ hamburger menu
-       				-------------------------------------------------------------------------------------------- */
-					?>
-					<input type="checkbox" id="togglerID" class="toggler" style="top: 100px; right: 149px; ">
-					<div class="hamburger" style='margin-right: 68px; margin-top: -9px; z-index: 5; '>
-						<div></div>
-					</div>
-
-					<?php // document.querySelectorAll('div.hamburger')[0]  get div.hamburger ?>
-					<div class="menu">
-						<div>
-							<ul id="submenu">
-								<li><a href='#' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></a></li>
-								<li><a href='#' onclick="aboutSection('H');"><?php echo translate('Help', $st, 'sys'); ?></a></li>
-								<li><a id='aboutArrow' style="cursor: pointer; margin-left: -16px; " onclick="AboutOO()">▸<?php echo translate('About', $st, 'sys'); ?></a></li>
-								<div id="AboutOffOn" style="display: none; text-align: left; ">
-									<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
-									<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partners', $st, 'sys'); ?></a></li>
-									<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
-									<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
-								</div>
-								<li><a href='#' onclick="menuSet = 0; window.open('./Feedback/Feedback.php?st=<?php echo $st; ?>')"><?php echo translate('Contact Us', $st, 'sys'); ?></a></li>
-								<?php if ($st == 'eng') { ?>
-									<li><a href='#' onclick="menuSet = 0; window.open('https://give.sil.org/give/531194/#!/donation/checkout')"><?php echo translate('Donate', $st, 'sys'); ?></a></li>
-								<?php }
-								if ($st == 'eng' || $st == 'spa') { ?>
-									<li><a href='#' onclick="menuSet = 0; window.open('./promotionMaterials/promotion.php?st=<?php echo $st; ?>')"><?php echo translate('Promotion Materials', $st, 'sys'); ?></a></li>
-								<?php } ?>
-							</ul>
+						<?php
+						/* -----------------------------------------------------------------------------------------
+							display ☰ hamburger menu
+						-------------------------------------------------------------------------------------------- */
+						?>
+						<input type="checkbox" id="togglerID" class="toggler">
+						<div class="hamburger">
+							<div></div>
 						</div>
-					</div>
+
+						<?php // document.querySelectorAll('div.hamburger')[0] => get div.hamburger ?>
+						<div class="menu">
+							<div>
+								<ul id="submenu">
+									<li><a href='#' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></a></li>
+									<li><a href='#' onclick="aboutSection('H');"><?php echo translate('Help', $st, 'sys'); ?></a></li>
+									<li><a id='aboutArrow' style="cursor: pointer; margin-left: -16px; " onclick="AboutOO()">▸<?php echo translate('About', $st, 'sys'); ?></a></li>
+									<div id="AboutOffOn" style="display: none; text-align: left; ">
+										<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
+										<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partners', $st, 'sys'); ?></a></li>
+										<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
+										<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
+									</div>
+									<li><a href='#' onclick="menuSet = 0; window.open('./Feedback/Feedback.php?st=<?php echo $st; ?>')"><?php echo translate('Contact Us', $st, 'sys'); ?></a></li>
+									<?php if ($st == 'eng') { ?>
+										<li><a href='#' onclick="menuSet = 0; window.open('https://give.sil.org/give/531194/#!/donation/checkout')"><?php echo translate('Donate', $st, 'sys'); ?></a></li>
+									<?php }
+									if ($st == 'eng' || $st == 'spa') { ?>
+										<li><a href='#' onclick="menuSet = 0; window.open('./promotionMaterials/promotion.php?st=<?php echo $st; ?>')"><?php echo translate('Promotion Materials', $st, 'sys'); ?></a></li>
+									<?php } ?>
+								</ul>
+							</div>
+						</div>
+					</form>
 				</div>
 
 				<iframe id="myFrame" allowfullscreen="true" frameborder="0" marginheight="0" marginwidth="0" style="display: block; height: 100%; width: 80%; overflow:hidden; border: none; display: none; margin:0; padding:0; position: absolute; top: 200px; bottom: 0; right: 10%; left: 10%; z-index: 10; background-color: white; " src=""></iframe>

@@ -361,7 +361,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	*************************************************************************************************************
 */
 	?>
-	<h1 id='<?php echo $LN; ?>' style='position: relative; top: 110px; left: 0; z-index: -1; '>
+	<h1 id='<?php echo $LN; ?>' style='position: relative; top:0; left: 0; z-index: -1; '>
 		<?php
 		// font-size: 22pt
 		if ($AddTheBibleIn) {
@@ -612,7 +612,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 </script>
 
 <div style='display: inline; clear: both; '>
-<div id='SpecLang' style='margin-left: auto; margin-right: auto; text-align: left; margin-top: 100px; '>
+<div id='SpecLang' style='margin-left: auto; margin-right: auto; text-align: left; margin-top: 0; '>
 <br />
 
 <?php
@@ -4022,16 +4022,14 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		echo '<table id="Dis_Map" style="width: 100%; margin-top: 20px; ">';
 		?>
 		<tr>
-			<td style='width: 350px; '>
+			<td style='width: 100%; text-align: center; '>
 				<?php
-				echo '<div style="margin-left: 12px; margin-right: 12px; font-size: smaller; ">';
-				echo '<span style="color: red; font-weight: bold; ">'.translate('red', $st, 'sys').'</span>: '.translate('language you have selected', $st, 'sys').'<br />';
-				echo '<span style="color: purple; font-weight: bold; ">'.translate('purple', $st, 'sys').'</span>: '.translate('variants of this language', $st, 'sys').'<br />';
-				echo '<span style="color: blue; font-weight: bold; ">'.translate('blue', $st, 'sys').'</span>: '.translate('all of the other languages for this country', $st, 'sys');
+				echo '<iframe name="iframe_a" title="Iframe" class="mapIframe" src="../maps/'.$ISO_Country.'/'.$ISO.'.htm"></iframe>';
+				echo '<div class="mapKey">';
+					echo '<p><span style="color: red; font-weight: bold; ">'.translate('red', $st, 'sys').'</span>: '.translate('language you have selected', $st, 'sys').'</p>';
+					echo '<p><span style="color: purple; font-weight: bold; ">'.translate('purple', $st, 'sys').'</span>: '.translate('variants of this language', $st, 'sys').'</p>';
+					echo '<p><span style="color: blue; font-weight: bold; ">'.translate('blue', $st, 'sys').'</span>: '.translate('all of the other languages for this country', $st, 'sys').'</p>';
 				echo '</div>';
-			echo "</td>";
-			echo "<td>";
-					echo '<iframe name="iframe_a" title="Iframe" style="width: 700px; height: 520px; margin 0; padding: 0; background-color: white; border: 6px solid #00B1F2; " src="../maps/'.$ISO_Country.'/'.$ISO.'.htm"></iframe>';
 				?>
 			</td>
 		</tr>
