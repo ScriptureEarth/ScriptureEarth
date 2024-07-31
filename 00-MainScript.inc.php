@@ -2,6 +2,17 @@
 if (session_status() === PHP_SESSION_NONE) @session_start();
 
 /*
+	$st=
+		eng
+		spa
+		por
+		fra
+		nld
+		deu
+		cmn
+*/
+
+/*
 	Can't use <div id="langBackground" in FireFox 84.0.1 with cursor: pointer; inside the id because it is a bug.
 	Also, <div id="langBackground_'.$st.'" won't at all. See Web Developer, Toogle Tools on Tools.
 */
@@ -21,11 +32,11 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 <!-- Touch Icons - iOS and Android 2.1+ 180x180 pixels in size. -->
 <link rel="apple-touch-icon-precomposed" href="./icons/apple-touch-icon-precomposed.png">
 <!-- Firefox, Chrome, Safari, IE 11+ and Opera. 196x196 pixels in size. -->
-<link rel="icon"						href="./icons/favicon.png">
-<link rel="manifest" 					href="./manifest.webmanifest" /> <!-- The browser should behave when the PWA installs on the user's desktop or mobile device. -->
-<link rel="apple-touch-icon" 			href="./icons/apple-touch-icon.png" /> <!-- iOS mobile icon -->
+<link rel="icon"						href="icons/favicon.png" />
+<link rel="manifest" 					href="manifest.webmanifest" /> <!-- The browser should behave when the PWA installs on the user's desktop or mobile device. -->
+<link rel="apple-touch-icon" 			href="icons/apple-touch-icon.png" /> <!-- iOS mobile icon -->
 <meta name="apple-mobile-web-app-title" content="Scripture Earth" /> <!-- title for iOS mobile icon -->
-<link rel="icon" sizes="192x192" 		href="./icons/nice-highres.png" /> <!-- Android mobile icon -->
+<link rel="icon" sizes="192x192" 		href="icons/nice-highres.png" /> <!-- Android mobile icon -->
 <meta name="application-name" 			content="Scripture Earth" /> <!-- title for Android mobile icon -->
 <!--link rel="stylesheet" type='text/css'		href="button.css" /-->
 <link rel="stylesheet" type='text/css' href="JQuery/css/style.css" />
@@ -423,8 +434,9 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 	.countryBlackTopImage {
 		background-color: black;
 		height: 120px;
-		margin-left: -10000px;
-		margin-right: -10000px; 
+		position: absolute;
+		left: 0;
+		width: 100%;
 	}
 
 
@@ -912,7 +924,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 							Counter($counterName . 'ML_' . $GetName . '_Counter', false);	// All of the major language and the Country counter, don't display
 						?>
 
-						<div>
+						<div style="position: relative; top: 90px; ">
 							<div class="langCounter">
 								<?php
 								Counter($counterName . "ML_" . $GetName . "_" . $ISO . "_Counter", true);		// All of the major language and the Country and the varient language counter, display
@@ -938,7 +950,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 						</div>
 
 						<?php // display copyright ?>
-							<div id='copyright' style='top: 50px; '>
+							<div id='copyright' style='top: 140px; '>
 								<div id='aboutLang' title="<?php echo translate('Tap to find out more about the purpose and content of the site.', $st, 'sys'); ?>" onClick="aboutLang('<?php echo $st; ?>')">© <?php echo date('Y') . ' ' .  translate('About this site', $st, 'sys'); ?></div>
 							</div>
 						<?php

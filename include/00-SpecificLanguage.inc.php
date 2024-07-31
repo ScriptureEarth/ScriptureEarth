@@ -361,7 +361,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	*************************************************************************************************************
 */
 	?>
-	<h1 id='<?php echo $LN; ?>' style='position: relative; top:0; left: 0; z-index: -1; '>
+	<h1 id='<?php echo $LN; ?>' style='position: relative; top: 100px; left: 0; z-index: -1; '>
 		<?php
 		// font-size: 22pt
 		if ($AddTheBibleIn) {
@@ -388,7 +388,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		?>
 	</h1>
 
-<script type="text/javascript">
+<script>
 	setTitle("<?php echo ($whichBible == '' ? '' : $whichBible . ' ') . $LN . ($ISO == 'qqq' ? '' : '['.$ISO.']'); ?>");		// qqq equals Deaf
 
 	// Object.entries() takes an object like { a: 1, b: 2, c: 3 } and turns it into an array of key-value pairs: [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ].
@@ -611,7 +611,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	}
 </script>
 
-<div style='display: inline; clear: both; '>
+<div style='position: relative; top: 90px; display: inline; clear: both; '>
 <div id='SpecLang' style='margin-left: auto; margin-right: auto; text-align: left; margin-top: 0; '>
 <br />
 
@@ -679,7 +679,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		<div style='width: 100%; '>
 			<div class='Country' style='margin-bottom: 8px; '><?php echo translate('Country:', $st, 'sys'); ?>&nbsp;<span class='Country'><?php echo $country; ?></span></div>
 			<?php if ($ISO != 'qqq') { ?>
-			<div class='languageCode'><?php echo translate('Language Code:', $st, 'sys'); ?>&nbsp;<?php echo $ISO; ?>&nbsp;&nbsp;&nbsp;&nbsp;<span style='font-size: 90%; font-weight: normal; '>(<?php echo translate('Index', $st, 'sys'); ?>:&nbsp;<?php echo $ISO_ROD_index; ?>)</span></div>
+			<div class='languageCode'><?php echo translate('Language Code:', $st, 'sys'); ?>&nbsp;<a href='https://www.ethnologue.com/language/<?php echo $ISO; ?>/' target='_blank'><?php echo $ISO; ?></a>&nbsp;&nbsp;&nbsp;&nbsp;<span style='font-size: 90%; font-weight: normal; '>(<?php echo translate('Index', $st, 'sys'); ?>:&nbsp;<?php echo $ISO_ROD_index; ?>)</span></div>
 			<?php } ?>
 		</div>
 	</h2>
@@ -1045,6 +1045,10 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 			$BibleIsLink = 1: Read and Listen
 			$BibleIsLink = 3: Read and Listen
 			$BibleIsLink = 4: Read, Listen, and View
+			$BibleIsLink = 5: Listen
+			= 6: Listen and View (?)
+			= 7: View (?)
+			= 8: Read and View (?)
 		*/
 		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND BibleIs = 4";
 		$result2=$db->query($query);
@@ -1079,7 +1083,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 			}
 			echo '</table>';
 		}
-		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND (BibleIs = 1 OR BibleIs = 3)";
+		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND (BibleIs = 1 OR BibleIs = 3 OR BibleIs = 5)";
 		$result2=$db->query($query);
 		if ($result2->num_rows > 0) {
 			echo '<table id="Dis_BibleIsAudio">';
@@ -1100,6 +1104,10 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					case 3:
 						$BibleIsIcon = 'BibleIsAudio.jpg';
 						$BibleIsActText = translate('Read and Listen', $st, 'sys');
+						break;			
+					case 5:
+						$BibleIsIcon = 'BibleIsAudio.jpg';
+						$BibleIsActText = translate('Listen', $st, 'sys');
 						break;			
 					default:
 						break;
@@ -3493,7 +3501,12 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					<?php
 					if ($JesusFilm) {
 						// JESUS Film
-						if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
+						?>
+						<div class='linePointer' onclick="window.open('<?php echo $URL ?>')">
+							<img class='iconActions' src='../images/JFM-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
+						</div>
+						<?php
+						/*if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
 							?>
 								<div class='linePointer' onclick="window.open('JESUSFilmView.php?<?php echo $URL ?>','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300'); return false;" title="<?php echo $LN ?>">
 								<img class='iconActions' src='../images/JESUS-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
@@ -3506,20 +3519,20 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 								<img class='iconActions' src='../images/JESUS-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
 						</div>
 							<?php
-						}
+						}*/
 					}
 					elseif ($YouTube) {
 						// YouTube
 						//     href="#" onclick="w=screen.availWidth; h=screen.availHeight; window.open('<?php echo $URL ? >','clip','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width='+w+',height='+h+',top=0,left=0'); return false;" title="< ?php echo $LN ? >">
 						?>
 							<div class='linePointer' onclick="window.open('<?php echo $URL ?>')">
-							<img class='iconActions' src='../images/youtube-icon.jpg'  alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
+								<img class='iconActions' src='../images/youtube-icon.jpg' alt="<?php echo translate('View', $st, 'sys') ?>" title="<?php echo translate('View', $st, 'sys') ?>" />
 							</div>
 						<?php
 					}
 					else {
 						echo "<div class='linePointer' onclick=\"window.open('$URL')\">";
-						echo "<img class='iconActions' src='../images/$watchIcon'  alt=\"".translate('View', $st, 'sys')."\" title=\"".translate('View', $st, 'sys')."\" />";
+						echo "<img class='iconActions' src='../images/$watchIcon' alt=\"".translate('View', $st, 'sys')."\" title=\"".translate('View', $st, 'sys')."\" />";
 						echo '</div>';
 					}
 					?>
@@ -3528,14 +3541,19 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					<?php
 					if ($JesusFilm) {
 						// JESUS Film
-						if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
+						?>
+						<div class='linePointer' onclick="window.open('<?php echo $URL ?>')">
+							<?php echo translate('View the JESUS Film', $st, 'sys') ?>
+						</div>
+						<?php
+						/*if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
 							echo "<div class='linePointer' onclick='window.open(\"JESUSFilmView.php?$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=890,height=690,top=300,left=300\"); return false;' title='$LN'>";
 						}
 						else {
 							echo "<div class='linePointer' onclick='window.open(\"$URL\",\"clip\",\"toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=520,height=380,top=200,left=300\"); return false;' title='$LN'>";
 						}
 						echo translate('View the JESUS Film', $st, 'sys');
-						echo '</div>';
+						echo '</div>';*/
 					}
 					elseif ($YouTube) {
 						// YouTube
@@ -4043,7 +4061,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 </div>
 </div>
 
-<script type="text/javascript">
+<script>
 	function iOSAssetPackage(URL) {
 		if (URL.startsWith("http://") || URL.startsWith("https://")) {
 			if (URL.endsWith(".zip")) {

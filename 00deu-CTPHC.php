@@ -186,7 +186,7 @@
 					<strong>Kontakt für Fragen und Feedback:</strong><br />
 					<img src='images/app-icon.jpg' alt="feedback" style='margin-bottom: -6px; ' width="32" height="32" />
 					<a href="mailto:info&#64;ScriptureEarth.org">info&#64;ScriptureEarth.org</a><br /><br />
-					<img src="./images/SILInternationalIcon.jpg" alt="SIL International" width="32" height="32" /><strong> SIL International</strong><br />
+					<img src="./images/sil-icon.jpg" alt="SIL International" width="32" height="32" /><strong> SIL International</strong><br />
 					<a href="https://www.sil.org/">www.sil.org</a>
 				</div>
 			</div>
@@ -208,8 +208,8 @@
 
 			<div class='clearfix'>
 				<div class='contacts'>
-					<img src="./images/GlobalRecordingsNetworkIcon.png" alt="Global Recordings Network" width="20" /><strong> Global Recordings Network</strong><br />
-					<a href="https://globalrecordings.net/en">https://globalrecordings.net/en</a>
+					<img src="./images/eBible_icon.png" alt="eBible" width="30" height="30" /><strong> eBible</strong><br />
+					<a href='https://ebible.org/'>https://ebible.org/</a><br />
 				</div>
 				<div class='contacts'>
 					<img src="./images/YouVersionIcon.png" alt="YouVersion" width="32" height="32" /><strong> YouVersion</strong><br />
@@ -233,6 +233,10 @@
 					<img src="./images/VinaIcon.png" alt="Viña Studios" width="30" height="30" /><strong> Viña Studios</strong><br />
 					<a href='https://www.vinyastudios.org/en'>https://www.vinyastudios.org/en/</a><br />
 					<a href='https://deditos.org/'>https://deditos.org/</a>
+				</div>
+				<div class='contacts'>
+					<img src="./images/GlobalRecordingsNetworkIcon.png" alt="Global Recordings Network" width="20" /><strong> Global Recordings Network</strong><br />
+					<a href="https://globalrecordings.net/en">https://globalrecordings.net/en</a>
 				</div>
 			</div>
 
@@ -300,6 +304,16 @@
 					<a href="https://www.bibleleague.org/">https://www.bibleleague.org</a>
 				</div>
 			</div>
+
+			<h3>Other Websites</h3>
+
+			<div class='clearfix'>
+				<div class='contacts'>
+					<img src="./images/MegaVoive_icon.png" alt="MegaVoice" height="32" /><strong> MegaVoice</strong><br />
+					<a href="https://megavoice.com/">https://megavoice.com/</a>
+				</div>
+			</div>
+
 			<br />
 		<?php
 			break;
