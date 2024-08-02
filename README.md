@@ -24,7 +24,7 @@ If you are the user of SE.org, scripts are divided up into two sections: 1) the 
 
 ## Search For and Display Specific Minority Languages Page
 
-### `You have to have SE.org database operational before running the SE.org website!` See the [SE.org database structure](https://scriptureearth.org/MariaDB/scripture_structure.sql)
+### `You have to have SE.org database operational before running the SE.org website!` See the [SE.org database structure sql.](https://scriptureearth.org/MariaDB/scripture_structure.sql)
 
 ### Searches For the Minority Languages Page
 
@@ -38,7 +38,7 @@ All of the specific minority language is displayed on this page. There are 7 tab
 
 ## SE.org Database
 
-### `You have to have SE.org database operational before running the SE.org website!` See the [SE.org database structure](https://scriptureearth.org/MariaDB/scripture_structure.sql)
+### `You have to have SE.org database operational before running the SE.org website!` See the [SE.org database structure sql.](https://scriptureearth.org/MariaDB/scripture_structure.sql)
 
 ### Login Tables (4 tables)
 
@@ -53,7 +53,7 @@ All of the specific minority language is displayed on this page. There are 7 tab
 
 ### SAB Requests Table (1 table)
 
-* **add_resource** – SAB requests: accept, reject, or wait
+* **add_resource** – SAB requests: do you want to accept, reject, or wait?
 
 ### SE.org Tables (43 tables)
 
