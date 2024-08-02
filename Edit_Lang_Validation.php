@@ -148,6 +148,7 @@
 			$inputs["txtLinkBibleIs-".(string)$i] = check_input($_POST["txtLinkBibleIs-".(string)$i]);
 			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsDefault-'.$i) $inputs["BibleIsDefault-".(string)$BibleIsIndex] = 1; else $inputs["BibleIsDefault-".(string)$BibleIsIndex] = 0;
 			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsText-'.$i) $inputs["BibleIsText-".(string)$BibleIsIndex] = 2; else $inputs["BibleIsText-".(string)$BibleIsIndex] = 0;
+			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsListenOnly-'.$i) $inputs["BibleIsListenOnly-".(string)$BibleIsIndex] = 5; else $inputs["BibleIsListenOnly-".(string)$BibleIsIndex] = 0;
 			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsAudio-'.$i) $inputs["BibleIsAudio-".(string)$BibleIsIndex] = 3; else $inputs["BibleIsAudio-".(string)$BibleIsIndex] = 0;
 			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsVideo-'.$i) $inputs["BibleIsVideo-".(string)$BibleIsIndex] = 4; else $inputs["BibleIsVideo-".(string)$BibleIsIndex] = 0;
 			$BibleIsIndex++;

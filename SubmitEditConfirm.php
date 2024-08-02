@@ -148,11 +148,7 @@
 		while (isset($inputs["txtLinkBibleIsURL-".(string)$i])) {
 			$temp3 = "txtLinkBibleIsURL-".(string)$i;
 			$temp2 = "txtLinkBibleIsTitle-".(string)$i;
-			$temp4 = $inputs["BibleIsDefault-".(string)$i] + $inputs["BibleIsText-".(string)$i] + $inputs["BibleIsAudio-".(string)$i] + $inputs["BibleIsVideo-".(string)$i];		// only one is set
-			/*if ($inputs["BibleIsNT-".(string)$i] == 1) $temp4 = 1;
-			if ($inputs["BibleIsOT-".(string)$i] == 1) $temp4 = 2;
-			if ($inputs["BibleIsBible-".(string)$i] == 1) $temp4 = 3;
-			if ($inputs["BiblePortions-".(string)$i] == 1) $temp4 = 4;*/
+			$temp4 = $inputs["BibleIsDefault-".(string)$i] + $inputs["BibleIsText-".(string)$i] + $inputs["BibleIsListenOnly-".(string)$i] + $inputs["BibleIsAudio-".(string)$i] + $inputs["BibleIsVideo-".(string)$i];		// only one is set
 			$stmt_links->bind_param("ssi", $inputs[$temp2], $inputs[$temp3], $temp4);									// bind parameters for markers
 			$result=$stmt_links->execute();																				// execute query
 			if (!$result) {

@@ -2147,6 +2147,7 @@ if (isset($_POST['btnSubmit'])) {
 		if (isset($_POST['txtLinkBibleIsURL-1'])) {
 			if ($_POST['txtLinkBibleIs-1'] == 'BibleIsDefault-1') $_POST['BibleIsDefault-1']=1; else $_POST['BibleIsDefault-1']=0;
 			if ($_POST['txtLinkBibleIs-1'] == 'BibleIsText-1') $_POST['BibleIsText-1']=2; else $_POST['BibleIsText-1']=0;
+			if ($_POST['txtLinkBibleIs-1'] == 'BibleIsListenOnly-1') $_POST['BibleIsListenOnly-1']=5; else $_POST['BibleIsListenOnly-1']=0;
 			if ($_POST['txtLinkBibleIs-1'] == 'BibleIsAudio-1') $_POST['BibleIsAudio-1']=3; else $_POST['BibleIsAudio-1']=0;
 			if ($_POST['txtLinkBibleIs-1'] == 'BibleIsVideo-1') $_POST['BibleIsVideo-1']=4; else $_POST['BibleIsVideo-1']=0;
 		}
@@ -2161,6 +2162,7 @@ if (isset($_POST['btnSubmit'])) {
 			$temp1 = ${'txtLinkBibleIs-1'};
 			if ($temp1 == 1) ${'BibleIsDefault-1'}=1; else ${'BibleIsDefault-1'}=0;
 			if ($temp1 == 2) ${'BibleIsText-1'}=2; else ${'BibleIsText-1'}=0;
+			if ($temp1 == 5) ${'BibleIsListenOnly-1'}=5; else ${'BibleIsListenOnly-1'}=0;
 			if ($temp1 == 3) ${'BibleIsAudio-1'}=3; else ${'BibleIsAudio-1'}=0;
 			if ($temp1 == 4) ${'BibleIsVideo-1'}=4; else ${'BibleIsVideo-1'}=0;
         }
@@ -2170,17 +2172,18 @@ if (isset($_POST['btnSubmit'])) {
             ${'txtLinkBibleIs-1'}='BibleIsVideo';
 			${'BibleIsDefault-1'}=0;
 			${'BibleIsText-1'}=0;
+			${'BibleIsListenOnly-1'}=0;
 			${'BibleIsAudio-1'}=0;
 			${'BibleIsVideo-1'}=4;
         }
         ?>
 		<tbody name="tableBibleIs" id="tableBibleIs">
-			<tr valign="bottom" style="line-height: 10pt; ">
+			<tr valign="top" style="line-height: 10pt; ">
 				<td width="11%" style="font-size: 10pt; ">
-					<div style="margin-bottom: 6px; ">Enter "Bible.is":</div>For example:
+					<div style="margin-top: -4px; ">Enter "Bible.is":</div>For example:
 				</td>
 				<td width="40%">
-					<input type='text' style='color: navy; ' size='54' name='txtLinkBibleIsURL-1' id='txtLinkBibleIsURL-1' value="<?php if (isset($_POST['txtLinkBibleIsURL-1'])) echo $_POST['txtLinkBibleIsURL-1']; else echo ${'txtLinkBibleIsURL-1'}; ?>" />
+					<input type='text' style='color: navy; ' size='52' name='txtLinkBibleIsURL-1' id='txtLinkBibleIsURL-1' value="<?php if (isset($_POST['txtLinkBibleIsURL-1'])) echo $_POST['txtLinkBibleIsURL-1']; else echo ${'txtLinkBibleIsURL-1'}; ?>" />
                     <br /><span style="font-size: 10pt; margin-left: 3px; ">https://live.bible.is/bible/[FCBH code]/[book]/[chapter]</span>
 				</td>
 				<td width="24%">
@@ -2189,18 +2192,20 @@ if (isset($_POST['btnSubmit'])) {
 				</td>
 				<td width="8%">
                     <!--
-                        Default
-                        Text
-                        Audio
-                        Video
+                        Default = 1
+                        Read = 2
+						Listen = 5
+                        Read and Listen = 3
+                        Read, Listen, and View = 4
                     -->
                     <select name="txtLinkBibleIs-1" id="txtLinkBibleIs-1" style='color: navy; '>
                         <option value="BibleIsDefault-1" <?php echo ( isset($_POST['BibleIsDefault-1']) ? ($_POST['BibleIsDefault-1'] == 1 ? " selected='selected'" : "") : (${'BibleIsDefault-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Default</option>
-                        <option value="BibleIsText-1" <?php echo ( isset($_POST['BibleIsText-1']) ? ($_POST['BibleIsText-1'] == 2 ? " selected='selected'" : "") : (${'BibleIsText-1'} == 2 ? " selected='selected'" : '' ) ) ?>>Text</option>
-                        <option value="BibleIsAudio-1" <?php echo ( isset($_POST['BibleIsAudio-1']) ? ($_POST['BibleIsAudio-1'] == 3 ? " selected='selected'" : "") : (${'BibleIsAudio-1'} == 3 ? " selected='selected'" : '' ) ) ?>>Audio</option>
-                        <option value="BibleIsVideo-1" <?php echo ( isset($_POST['BibleIsVideo-1']) ? ($_POST['BibleIsVideo-1'] == 4 ? " selected='selected'" : "") : (${'BibleIsVideo-1'} == 4 ? " selected='selected'" : '' ) ) ?>>Video</option>
+                        <option value="BibleIsText-1" <?php echo ( isset($_POST['BibleIsText-1']) ? ($_POST['BibleIsText-1'] == 2 ? " selected='selected'" : "") : (${'BibleIsText-1'} == 2 ? " selected='selected'" : '' ) ) ?>>Read</option>
+                        <option value="BibleIsListenOnly-1" <?php echo ( isset($_POST['BibleIsListenOnly-1']) ? ($_POST['BibleIsListenOnly-1'] == 5 ? " selected='selected'" : "") : (${'BibleIsListenOnly-1'} == 5 ? " selected='selected'" : '' ) ) ?>>Listen</option>
+                        <option value="BibleIsAudio-1" <?php echo ( isset($_POST['BibleIsAudio-1']) ? ($_POST['BibleIsAudio-1'] == 3 ? " selected='selected'" : "") : (${'BibleIsAudio-1'} == 3 ? " selected='selected'" : '' ) ) ?>>Read and Listen</option>
+                        <option value="BibleIsVideo-1" <?php echo ( isset($_POST['BibleIsVideo-1']) ? ($_POST['BibleIsVideo-1'] == 4 ? " selected='selected'" : "") : (${'BibleIsVideo-1'} == 4 ? " selected='selected'" : '' ) ) ?>>Read, Listen, and View</option>
                     </select>
-                    <br /><span style="font-size: 10pt; margin-left: 1px; ">Video</span>
+                    <br /><span style="font-size: 10pt; margin-left: 1px; ">Read, Listen, and View</span>
 				</td>
                 <td width="17%" style="text-align: right; ">
                     <input style="font-size: 9pt; " type="button" id="addBibleIs" value="Add" />
@@ -2218,7 +2223,7 @@ if (isset($_POST['btnSubmit'])) {
 							echo "&nbsp;";
 						echo "</td>";
 						echo "<td width='40%'>";
-							echo "<input type='text' name='txtLinkBibleIsURL-$i' id='txtLinkBibleIsURL-$i' style='color: navy; ' size='53' value='" . ( isset($_POST['txtLinkBibleIsURL-'.(string)$i]) ? $_POST['txtLinkBibleIsURL-'.(string)$i] : '' ) . "' />";
+							echo "<input type='text' name='txtLinkBibleIsURL-$i' id='txtLinkBibleIsURL-$i' style='color: navy; ' size='52' value='" . ( isset($_POST['txtLinkBibleIsURL-'.(string)$i]) ? $_POST['txtLinkBibleIsURL-'.(string)$i] : '' ) . "' />";
 						echo "</td>";
 						echo "<td width='24%'>";
 							echo "<input type='text' name='txtLinkBibleIsTitle-$i' id='txtLinkBibleIsTitle-$i' style='color: navy; ' size='30' value='" . ( isset($_POST['txtLinkBibleIsTitle-'.(string)$i]) ? $_POST['txtLinkBibleIsTitle-'.(string)$i] : '' ) . "' />";
@@ -2226,18 +2231,21 @@ if (isset($_POST['btnSubmit'])) {
 						echo "<td width='8%'>";
 							${'BibleIsDefault-$i'}=1;
 							${'BibleIsText-$i'}=1;
+							${'BibleIsListenOnly-$i'}=1;
 							${'BibleIsAudio-$i'}=1;
 							${'BibleIsVideo-$i'}=1;
 							if ($_POST['txtLinkBibleIs-'.(string)$i] == 'BibleIsDefault-'.$i) { ${'BibleIsDefault-$i'}=1; }
 							if ($_POST['txtLinkBibleIs-'.(string)$i] == 'BibleIsText-'.$i) { ${'BibleIsText-$i'}=2; }
+							if ($_POST['txtLinkBibleIs-'.(string)$i] == 'BibleIsListenOnly-'.$i) { ${'BibleIsListenOnly-$i'}=5; }
 							if ($_POST['txtLinkBibleIs-'.(string)$i] == 'BibleIsAudio-'.$i) { ${'BibleIsAudio-$i'}=3; }
 							if ($_POST['txtLinkBibleIs-'.(string)$i] == 'BibleIsVideo-'.$i) { ${'BibleIsVideo-$i'}=4; }
 							?>
 							<select name="txtLinkBibleIs-<?php echo $i ?>" id="txtLinkBibleIs-<?php echo $i ?>" style='color: navy; '>
 								<option value="BibleIsDefault-<?php echo $i ?>" <?php echo ( ${'BibleIsDefault-$i'} == 1 ? " selected='selected'" : '' ) ?>>Default</option>
-								<option value="BibleIsText-<?php echo $i ?>" <?php echo ( ${'BibleIsText-$i'} == 2 ? " selected='selected'" : '' ) ?>>Text</option>
-								<option value="BibleIsAudio-<?php echo $i ?>" <?php echo ( ${'BibleIsAudio-$i'} == 3 ? " selected='selected'" : '' ) ?>>Audio</option>
-								<option value="BibleIsVideo-<?php echo $i ?>" <?php echo ( ${'BibleIsVideo-$i'} == 4 ? " selected='selected'" : '' ) ?>>Video</option>
+								<option value="BibleIsText-<?php echo $i ?>" <?php echo ( ${'BibleIsText-$i'} == 2 ? " selected='selected'" : '' ) ?>>Read</option>
+								<option value="BibleIsListenOnly-<?php echo $i ?>" <?php echo ( ${'BibleIsListenOnly-$i'} == 5 ? " selected='selected'" : '' ) ?>>Listen</option>
+								<option value="BibleIsAudio-<?php echo $i ?>" <?php echo ( ${'BibleIsAudio-$i'} == 3 ? " selected='selected'" : '' ) ?>>Read and Listen</option>
+								<option value="BibleIsVideo-<?php echo $i ?>" <?php echo ( ${'BibleIsVideo-$i'} == 4 ? " selected='selected'" : '' ) ?>>Read, Listen, and View</option>
 							</select>
 							<?php
 						echo "</td>";
@@ -2257,6 +2265,7 @@ if (isset($_POST['btnSubmit'])) {
 						$temp1 = ${'txtLinkBibleIs-$i'};
 						if ($temp1 == 1) ${'BibleIsDefault-$i'}=1; else ${'BibleIsDefault-$i'}=0;
 						if ($temp1 == 2) ${'BibleIsText-$i'}=2; else ${'BibleIsText-$i'}=0;
+						if ($temp1 == 5) ${'BibleIsListenOnly-$i'}=5; else ${'BibleIsListenOnly-$i'}=0;
 						if ($temp1 == 3) ${'BibleIsAudio-$i'}=3; else ${'BibleIsAudio-$i'}=0;
 						if ($temp1 == 4) ${'BibleIsVideo-$i'}=4; else ${'BibleIsVideo-$i'}=0;
 						echo "<tr valign='bottom' style='line-height: 10pt; '>";
@@ -2273,9 +2282,10 @@ if (isset($_POST['btnSubmit'])) {
 								?>
 								<select name="txtLinkBibleIs-<?php echo $i ?>" id="txtLinkBibleIs-<?php echo $i ?>" style='color: navy; '>
 									<option value="BibleIsDefault-<?php echo $i ?>" <?php echo ( ${'BibleIsDefault-$i'} == 1 ? " selected='selected'" : '' ) ?>>Default</option>
-									<option value="BibleIsText-<?php echo $i ?>" <?php echo ( ${'BibleIsText-$i'} == 2 ? " selected='selected'" : '' ) ?>>Text</option>
-									<option value="BibleIsAudio-<?php echo $i ?>" <?php echo ( ${'BibleIsAudio-$i'} == 3 ? " selected='selected'" : '' ) ?>>Audio</option>
-									<option value="BibleIsVideo-<?php echo $i ?>" <?php echo ( ${'BibleIsVideo-$i'} == 4 ? " selected='selected'" : '' ) ?>>Video</option>
+									<option value="BibleIsText-<?php echo $i ?>" <?php echo ( ${'BibleIsText-$i'} == 2 ? " selected='selected'" : '' ) ?>>Read</option>
+									<option value="BibleIsListenOnly-<?php echo $i ?>" <?php echo ( ${'BibleIsListenOnly-$i'} == 5 ? " selected='selected'" : '' ) ?>>Listen</option>
+									<option value="BibleIsAudio-<?php echo $i ?>" <?php echo ( ${'BibleIsAudio-$i'} == 3 ? " selected='selected'" : '' ) ?>>Read and Listen</option>
+									<option value="BibleIsVideo-<?php echo $i ?>" <?php echo ( ${'BibleIsVideo-$i'} == 4 ? " selected='selected'" : '' ) ?>>Read, Listen, and View</option>
 								</select>
 								<?php
 							echo "</td>";
@@ -2333,9 +2343,9 @@ if (isset($_POST['btnSubmit'])) {
 		}
 		?>
 		<tbody name="tableBibleIsGospelFilm" id="tableBibleIsGospelFilm">
-			<tr valign="bottom" style="line-height: 10pt; ">
+			<tr valign="top" style="line-height: 10pt; ">
 				<td width="11%" style="font-size: 10pt; ">
-					<div style="margin-bottom: 6px; ">Enter "Bible.is Gospel Film":</div>For example:
+					<div style="margin-top: -4px; ">Enter "Bible.is Gospel Film":</div>For example:
 				</td>
 				<td width="40%">
 					<input type='text' style='color: navy; ' size='54' name='txtLinkBibleIsGospelFilmURL-1' id='txtLinkBibleIsGospelFilmURL-1' value="<?php if (isset($_POST['txtLinkBibleIsGospelFilmURL-1'])) echo $_POST['txtLinkBibleIsGospelFilmURL-1']; else echo ${'txtLinkBibleIsGospelFilmURL-1'}; ?>" />

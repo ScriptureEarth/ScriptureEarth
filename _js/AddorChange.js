@@ -837,7 +837,7 @@ function addRowToTableBibleIs() {
     el.type = "text";
     el.name = "txtLinkBibleIsTitle-" + iteration;
     el.id = "txtLinkBibleIsTitle-" + iteration;
-    el.size = 54;
+    el.size = 52;
     el.style.color = "navy";
     cellLeft.appendChild(el);
 
@@ -898,17 +898,22 @@ function addRowToTableBibleIs() {
     el.appendChild(objOption);
 
     var objOption = document.createElement("option");
-    objOption.text = "Text";
+    objOption.text = "Read";
     objOption.value = "BibleIsText-" + iteration;
     el.appendChild(objOption);
 
     objOption = document.createElement('option');
-    objOption.text = "Audio";
+    objOption.text = "Listen";
+    objOption.value = "BibleIsListenOnly-" + iteration;
+    el.appendChild(objOption);
+
+    objOption = document.createElement('option');
+    objOption.text = "Read and Listen";
     objOption.value = "BibleIsAudio-" + iteration;
     el.appendChild(objOption);
 
     objOption = document.createElement('option');
-    objOption.text = "BibleIsVideo";
+    objOption.text = "Read, Listen, and View";
     objOption.value = "BibleIsVideo-" + iteration;
     el.appendChild(objOption);
 
