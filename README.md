@@ -24,6 +24,8 @@ If you are the user of SE.org, scripts are divided up into two sections: 1) the 
 
 ## Search For and Display Specific Minority Languages Page
 
+### `You have to have SE.org database operational before running the SE.org website!` See the [SE.org database structure](https://scriptureearth.org/MariaDB/scripture_structure.sql)
+
 ### Searches For the Minority Languages Page
 
 The image below shows how to use the home page to find a particular language. Whenever the user types in one of the search boxes or selects “List by Country” one or more choices will appear. The desired item can be selected from the list.
@@ -36,19 +38,25 @@ All of the specific minority language is displayed on this page. There are 7 tab
 
 ## SE.org Database
 
+### `You have to have SE.org database operational before running the SE.org website!` See the [SE.org database structure](https://scriptureearth.org/MariaDB/scripture_structure.sql)
+
 ### Login Tables (4 tables)
-* users – the users
-* active_guests – active guests
-* active_users – when the user logs in
-* banned_users – banned users
+
+* **users** – the users
+* **active_guests** – active guests
+* **active_users** – when the user logs in
+* **banned_users** – banned users
 
 ### API Users Table (1 table)
-* api_users – the key codes for SE.org API
+
+* **api_users** – the key codes for SE.org API
 
 ### SAB Requests Table (1 table)
-* add_resource – SAB requests: accept, reject, or wait
+
+* **add_resource** – SAB requests: accept, reject, or wait
 
 ### SE.org Tables (43 tables)
+
 * **alt_lang_names** – alternate language names
 * **buy** – buy print Bibles/NTs from links
 * **CellPhone** – MySword (Android), GoBible (Java), Android App, iOS Asset Package, ePub, and iPhone executable files
@@ -73,8 +81,8 @@ All of the specific minority language is displayed on this page. There are 7 tab
 * **other_titles** – other and other_title either other_PDF or other_audio or download_video
 * **OT_Audio_Media** – MP3 files for every book and chapter for OT
 * **OT_PDF_Media** – PDF files for every book and OT
-* **PlaylistAudio** – 1 up to 7 navigational language txt files and contains MP3 files
-* **PlaylistVideo** – 1 up to 7 navigational language txt files and contains MP4 files
+* **PlaylistAudio** – 1 up to 7 navigational language txt files and containing MP3 files
+* **PlaylistVideo** – 1 up to 7 navigational language txt files and containing MP4 files
 * **ROD_Dialect** – ISO_country (two uppercase letters), language_name, (langauge name that is larger that the dialect name), dialect_name, location (can be smaller than the country. E.g., India, Arunachal Pradesh)
 * **SAB** – contains the html (read, listen, and/or view) files for each book and chapter for each language
 * **SAB_scriptoria** – url (remote) or subfolder (local), description, and SAB_number (0 up to 3)
@@ -94,17 +102,21 @@ All of the specific minority language is displayed on this page. There are 7 tab
 * **watch** – organization, watch_what, URL, JesusFilm (0 or 1), YouTube (0 or 1)
 
 ## Content Management System (CMS)
+
 You will need to login (login.php).
 
 (under development)
 
 ### Add to ScripturesEarth’s Database
+
 (under development)
 
 ### Edit ScripturesEarth’s Database
+
 (under development)
 
 ## SE.org API
+
 This is the summary of the Application Programming Interface (API) for ScriptureEarth.org. You will need a key in order to run these PHP scripts. The API exposes the application's data to anyone who has a key. Each of the PHP scripts will pull out the JSON appropriate for that PHP. See the [ScriptureEarth.org API Introduction](https://scriptureearth.org/api/SE_API_specification.php) for more information.
 
 ### Summary of the API
