@@ -14,7 +14,7 @@
 
 ### Simplest Possible Way
 
-In our primary target audience we have noticed that in most of the Central and South America locations the Internet connections are inconsistent or the Internet bandwidth is frequently low. The objective is to provide Scripture resources in the simplest way possible that is accessible even in less than ideal Internet locations. We have been very careful to use the fonts, text, and images for the SE.org layout to be more sparse, simple, and streamlined than all of the other Scripture websites.
+In our primary target audience we have noticed that in most of the Central and South America locations the Internet connections are inconsistent or the Internet bandwidth is frequently low. The objective is to provide Scripture resources in the simplest way possible that is accessible even in less than ideal Internet locations. We have been very careful to use the fonts, text, and images for the SE.org layout to be more sparse, simple, and streamlined than all of the other Scripture websites. And, we would rather not want libraries for CSS and JavaScript to be on the server except for jQuery.
 
 ### The Scripts
 
