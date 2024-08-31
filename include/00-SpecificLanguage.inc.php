@@ -2284,7 +2284,6 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 										keyEnabled: true
 									});
 								});
-
 								var orgPixels_<?php echo $z; ?> = 0;
 								function PlaylistAudio_<?php echo $z; ?>(futureNumber, totalNumber) {
 									var divHeight = 0;

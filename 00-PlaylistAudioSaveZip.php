@@ -32,7 +32,7 @@ $dirname = './data/'.$iso.'/audio/';
 
 if (isset($_GET['Books'])) {
 	$Books = $_GET['Books'];
-	if (!preg_match('/^([0-9a-zA-Z._|-]+)$/', $Books)) {
+	if (!preg_match('/^([0-9a-zA-Z. _|-]+)$/', $Books)) {
 		die('Books were not just numbers!</body></html>');
 	}
 }
