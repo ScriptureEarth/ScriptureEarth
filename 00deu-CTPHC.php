@@ -169,7 +169,7 @@
 				erscheint eine oder mehrere Auswahlmöglichkeiten. Das gewünschte Element kann aus der Liste ausgewählt werden.
 			</p>
 			<div style="text-align: center; margin-right: auto; margin-left: auto; margin-top: 30px; margin-bottom: 40px; ">
-				<img src='./images/00de-AboutExplanation.jpg' style='height: 80%; width: 80%; ' />
+				<img src='./images/00deu-helpExplanation.jpg' style='height: 80%; width: 80%; ' />
 			</div>
 		<?php
 			break;

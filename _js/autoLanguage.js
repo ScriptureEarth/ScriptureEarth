@@ -110,6 +110,15 @@
 			case 'por':
 				root = '00p-Escrituras_Indice.php';
 				break;
+			case 'deu':
+				root = '00de-Sprachindex.php';
+				break;
+			case 'cmn':
+				root = '00cmn.php';
+				break;
+			case 'kor':
+				root = '00kor.php';
+				break;
 			default:
 				alert('"root" never found.');
 		}

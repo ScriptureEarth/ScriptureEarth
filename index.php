@@ -337,7 +337,8 @@ aan de taak Gods Woord beschikbaar te maken in de taal van het hart.",
 6 => "Es werden heutzutage über 3.000 indigene Sprachen gesprochen. In vielen dieser Sprachen wird die Bibel zur Zeit übersetzt.<br /><br />
 Wir haben diese Webseite der Ehre Gotes gewidmet sowie denen, die ihr Leben diesen Menschen gewidmet haben,
 indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre Herzen am besten erreicht.",
-7 => "今天有2900多种土著语言。 这些语言中有许多正在进行圣经翻译工作。 我们将这个网站奉献给上帝的荣耀，并献给那些毕生为这些人服务的人们，他们的任务是用他们心中的语言来传达上帝的话语。"];
+7 => "今天有2900多种土著语言。 这些语言中有许多正在进行圣经翻译工作。 我们将这个网站奉献给上帝的荣耀，并献给那些毕生为这些人服务的人们，他们的任务是用他们心中的语言来传达上帝的话语。",
+8 => "오늘날 3,000개 이상의 토착 언어가 사용되고 있습니다. 이러한 언어들 중 다수는 성서 번역 작업이 진행 중입니다. 우리는 이 웹사이트를 하나님의 영광을 위해, 그리고 이들을 위해 일생을 바친 사람들에게 바칩니다 자신의 마음에 와 닿는 언어로 하나님의 말씀을 제공하는 임무를 맡은 사람들."];
 ?>
 
 <div id="lblValues"></div>

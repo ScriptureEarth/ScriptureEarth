@@ -20,13 +20,42 @@
 <style type="text/css">
 	/* this version of classes are for Chinese only! */
 	div.topBannerImage {
-		background-image: url(images/00i-topBanerComp.png);
+		background-image: url('./images/00i-topBanerComp.png');
 		height: 136px;
 		text-align: right;
 	}
+	div.cmn-header {
+		/* Chinese */
+		background-image: url('./images/00cmn-BackgroundFistPage.jpg');
+	}
+	ul.ulChinese {
+		/*padding-left: 230px;*/
+		/* use padding-left and width to make the words correct position */
+		/*display: block;
+		display: inline;*/
+		text-align: center;
+		font-size: .86em;
+		font-weight: bold;
+		/*margin-top: -180px;*/
+		/*clear: both;*/
+		margin-left: -40px;
+	}
+	@media only screen and (max-width: 480px) {
+		/* (max-width: 412px) for Samsung S8+ 2/20/2019 */
+		div.cmn-header {
+			background-position: center;
+			position: relative;
+			top: -54px;
+		}
+		div.cmn-header {
+			background-image: url('./images/00cmn-BackgroundFistPage-mobile.jpg');
+		}
+    }
 </style>
 <script type="text/javascript" language="javascript">
-	var MajorLang = "Chi";
+	const MajorLang = "Chi";
+	const Major_OT_array = ["创世记", "出埃及记", "利未记", "民数记", "申命记", "约书亚记", "士師记", "路得记", "撒母耳记上", "撒母耳记下", "列王纪上", "列王纪下", "历代志上", "历代志下", "以斯拉记", "尼希米记", "以斯帖记", "约伯记", "诗篇", "箴言", "传道书", "雅歌", "以赛亚书", "耶利米书", "耶利米哀歌", "以西结书", "但以理书", "何西阿书", "约珥书", "阿摩司书", "俄巴底亚书", "约拿书", "弥迦书", "那鸿书", "哈巴谷书", "西番雅书", "哈该书", "撒迦利亚书", "玛拉基书"];
+    const Major_NT_array = ["马太福音", "马可福音", "路加福音", "约翰福音", "使徒行传", "罗马书", "哥林多前书", "哥林多后书", "加拉太书", "以弗所书", "腓立比书", "歌罗西书", "帖撒罗尼迦前书", "帖撒罗尼迦后书", "提摩太前书", "提摩太后书", "提多书", "腓利门书", "希伯来书", "雅各书", "彼得前书", "彼得后书", "约翰1书", "约翰2书", "约翰3书", "犹大书", "启示录"];
 </script>
 	<?php
 	$st = 'cmn';
@@ -53,6 +82,5 @@
 	
 	include ('./00-MainScript.inc.php');				// THE MAIN SCRIPT!!!!!
 	?>
-
 </body>
 </html>

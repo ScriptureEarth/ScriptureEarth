@@ -301,6 +301,11 @@ $Chinese_NT_array = array(
 "启示录"
 );
 
+// Korean
+$Korean_NT_array = array(
+"마태복음", "마가복음", "누가복음", "요한복음", "사도행전", "로마서", "고린도전서", "고린도후서", "갈라디아서", "에베소서", "빌립보서", "골로새서", "데살로니가전서", "데살로니가후서", "디모데전서", "디모데후서", "디도서", "빌레몬서", "히브리서", "야고보서", "베드로전서", "베드로후서", "요한1서", "요한2서", "요한3서", "유다서", "요한계시록"
+);
+
 $NT_array = array(
 	0 => $NT_Books_array,
 	1 => $NT_How_Many_Chapters_array,
@@ -311,7 +316,8 @@ $NT_array = array(
 	6 => $French_NT_array,
 	7 => $Dutch_NT_array,
 	8 => $Deu_NT_array,
-	9 => $Chinese_NT_array
+	9 => $Chinese_NT_array,
+	10 => $Korean_NT_array
 );
 
 

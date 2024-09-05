@@ -10,6 +10,7 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 		nld
 		deu
 		cmn
+		kor
 */
 
 /*
@@ -41,9 +42,9 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 <!--link rel="stylesheet" type='text/css'		href="button.css" /-->
 <link rel="stylesheet" type='text/css' href="JQuery/css/style.css" />
 <!-- link rel="stylesheet" type="text/css" 	href="_css/Scripture_Index.css" /-->
-<link rel="stylesheet" type="text/css" href="_css/SpecificLanguage.css?v=0.0.3" />
-<link rel='stylesheet' type='text/css' href='_css/00-Scripture.css?v=1.0.5' />
-<link rel='stylesheet' type='text/css' href='_css/00-SEmobile.css?v=0.0.2' />
+<link rel="stylesheet" type="text/css" href="_css/SpecificLanguage.css?v=0.0.4" />
+<link rel='stylesheet' type='text/css' href='_css/00-Scripture.css?v=1.0.6' />
+<link rel='stylesheet' type='text/css' href='_css/00-SEmobile.css?v=0.0.3' />
 <!--link rel='stylesheet' type='text/css' 	href='_css/CountryTable.css' /-->
 <!--link rel='stylesheet' type='text/css' href='_css/jplayer.BlueMonday.css' /-->
 <link rel='stylesheet' type='text/css' href='_css/jplayer.blue.monday.min.css?v=0.0.3' /> <!-- Playlist Video -->
@@ -54,9 +55,9 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 <script type="text/javascript" language="javascript" src="JQuery/js/jquery-ui-1.12.1.min.js"></script>
 <script type="text/javascript" language="javascript" src="_js/jquery.jplayer-2.9.2.min.js"></script>
 <script type="text/javascript" language="javascript" src="_js/jplayer.playlist.min.js"></script>
-<script type="text/javascript" language="javascript" src="_js/user_events.js?v=1.0.2"></script>
-<script type="text/javascript" language="javascript" src="_js/SpecificLanguage.js?v=1.0.5"></script>
-<script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.8"></script>
+<script type="text/javascript" language="javascript" src="_js/user_events.js?v=1.0.3"></script>
+<script type="text/javascript" language="javascript" src="_js/SpecificLanguage.js?v=1.0.6"></script>
+<script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.9"></script>
 <!--script type='text/javascript' language='javascript'	src="_js/LangSearch.js?v=1.0.3"></script-->
 <!--link rel='stylesheet' type='text/css' 	href='_css/boilerplate.css' /-->
 <link rel='stylesheet' type='text/css' href='_css/FGL.css' />
@@ -78,9 +79,9 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 		padding: 0;
 	}
 
-/* ************************************************************************
-		begin hamburger css
-************************************************************************* */
+	/* ************************************************************************
+			begin hamburger css
+	************************************************************************* */
 	.toggler {
 		/* ALWAYS KEEPING THE TOGGLER OR THE CHECKBOX ON TOP OF EVERYTHING :  */
 		position: absolute;
@@ -275,9 +276,9 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 		/* won't work */
 		background-color: #101010;
 	}
-/* ************************************************************************
-		end hamburger css
-************************************************************************* */
+	/* ************************************************************************
+			end hamburger css
+	************************************************************************* */
 
 	.threeMenus {
 		position: absolute;
@@ -502,7 +503,7 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 
 	@media only screen and (max-width: 480px) {
 		.hamburger {
-			right: -86px;								/* right of hamburger */
+			right: -86px;							/* right of hamburger */
 			/*height: 40px;
 			width: 40px;*/
 		}
@@ -517,7 +518,7 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 			margin-left: -150px;
 			width: 100px;							/* this works along side of #background_header width */
 		}
-		#background {																							/* move to 00-SEmobile.css */
+		#background {								/* move to 00-SEmobile.css */
 			/* position of earth; from 00-Scripture.css
 			background-position:  top 70px left 78px;*/
 			background-size: 420px;					/* size of the earth */
@@ -624,7 +625,7 @@ if (!isset($_SESSION['MajorLanguage'])) {
 if (!isset($_SESSION['nav_ln_array'])) {
 	$_SESSION['nav_ln_array'] = [];
 	$ln_temp_var = '';
-	$ln_query = 'SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `ln_number`';
+	$ln_query = 'SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `name`';
 	$ln_result_temp = $db->query($ln_query) or die('Query failed:  ' . $db->error . '</body></html>');
 	if ($ln_result_temp->num_rows == 0) {
 		die('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
@@ -1295,4 +1296,4 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 	</script>
 
 	<?php // This script HAS to be down here for the major language dropdown box to work! ?>
-	<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.2.6"></script>
+	<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.2.7"></script>

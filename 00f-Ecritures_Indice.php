@@ -19,8 +19,38 @@
     iPad , tablette, android, montre, vue, film de Jésus, Luc vidéo, acheter, impression à la demande, achat en ligne,
     librairie, étude, Word, Bible, Nouveau Testament, NT, Ancien Testament, OT, Écriture, carte, mobile app
 " />
+<style>
+	div.fra-header {
+		background-image: url('./images/00fra-BackgroundFistPage.jpg');
+	}
+	ul.ulFrench {
+		/*padding-left: 230px;*/
+		/* use padding-left and width to make the words correct position */
+		/*display: block;
+		display: inline;*/
+		text-align: center;
+		font-size: .86em;
+		font-weight: bold;
+		/*margin-top: -180px;*/
+		/*clear: both;*/
+		margin-left: -40px;
+	}
+	@media only screen and (max-width: 480px) {
+		/* (max-width: 412px) for Samsung S8+ 2/20/2019 */
+		div.fra-header {
+			background-position: center;
+			position: relative;
+			top: -54px;
+		}
+		div.fra-header {
+			background-image: url('./images/00fra-BackgroundFistPage-mobile.jpg');
+		}
+    }
+</style>
 <script type="text/javascript" language="javascript">
-	var MajorLang = "Fra";
+	const MajorLang = "Fra";
+	const Major_OT_array = ["Genèse", "Exode", "Lévitique", "Nombres", "Deutéronome", "Josué", "Juges", "Ruth", "1 Samuel", "2 Samuel", "1 Rois", "2 Rois", "1 Chroniques", "2 Chroniques", "Esdras", "Néhémie", "Esther", "Job", "Psaume", "Proverbes", "Ecclésiaste", "Cantique des Cantiqu", "Ésaïe", "Jérémie", "Lamentations", "Ézéchiel", "Daniel", "Osée", "Joël", "Amos", "Abdias", "Jonas", "Michée", "Nahum", "Habacuc", "Sophonie", "Aggée", "Zacharie", "Malachie"];
+    const Major_NT_array = ["Matthieu", "Marc", "Luc", "Jean", "Actes", "Romains", "1 Corinthiens", "2 Corinthiens", "Galates", "Éphésiens", "Philippiens", "Colossiens", "1 Thessaloniciens", "2 Thessaloniciens", "1 Timothée", "2 Timothée", "Tite", "Philémon", "Hébreux", "Jacques", "1 Pierre", "2 Pierre", "1 Jean", "2 Jean", "3 Jean", "Jude", "Apocalypse"];
 </script>
 	<?php
 		$st = 'fra';
@@ -46,6 +76,5 @@
 	
 		include ('./00-MainScript.inc.php');				// THE MAIN SCRIPT!!!!!
 	?>
-
 </body>
 </html>

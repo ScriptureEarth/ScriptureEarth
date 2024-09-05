@@ -18,8 +18,38 @@
     texto, PDF, áudio, relógio, MP3, filme Jesus, comprar, print-on-demand, compras on-line,
     livraria, estudar, The Word, a Bíblia, no Novo Testamento, NT, Antigo Testamento, OT
 " />
+<style>
+	div.por-header {
+		background-image: url('./images/00por-BackgroundFistPage.jpg');
+	}
+	ul.ulPortuguese {
+		/*padding-left: 230px;*/
+		/* use padding-left and width to make the words correct position */
+		/*display: block;
+		display: inline;*/
+		text-align: center;
+		font-size: .86em;
+		font-weight: bold;
+		/*margin-top: -180px;*/
+		/*clear: both;*/
+		margin-left: -40px;
+	}
+	@media only screen and (max-width: 480px) {
+		/* (max-width: 412px) for Samsung S8+ 2/20/2019 */
+		div.por-header {
+			background-position: center;
+			position: relative;
+			top: -54px;
+		}
+		div.por-header {
+			background-image: url('./images/00por-BackgroundFistPage-mobile.jpg');
+		}
+    }
+</style>
 <script type="text/javascript" language="javascript">
-	var MajorLang = "Port";
+	const MajorLang = "Port";
+	const Major_OT_array = ["Gênesis", "Êxodo", "Levítico", "Números", "Deuteronômio", "Josué", "Juízes", "Rute", "1 Samuel", "2 Samuel", "1 Reis", "2 Reis", "1 Crônicas", "2 Crônicas", "Ezdras", "Neemias", "Esther", "Jó", "Salmos", "Provérbios", "Eclesiastes", "Cantares de Salomão", "Isaías", "Jeremias", "Lamentações", "Ezequiel", "Daniel", "Oséias", "Joel", "Amós", "Obadias", "Jonas", "Miquéias", "Naum", "Habacuque", "Sofonias", "Ageu", "Zacarias", "Malaquias"];
+    const Major_NT_array = ["Mateus", "Marcos", "Lucas", "João", "Atos", "Romanos", "1 Coríntios", "2 Coríntios", "Gálatas", "Efésios", "Filipenses", "Colossenses", "1 Tessalonicenses", "2 Tessalonicenses", "1 Timóteo", "2 Timóteo", "Tito", "Filemón", "Hebreus", "Tiago", "1 Pedro", "2 Pedro", "1 João", "2 João", "3 João", "Judas", "Apocalipse"];
 </script>
 	<?php
 		$st = 'por';

@@ -421,6 +421,11 @@ $Chinese_OT_array = array(
 "玛拉基书"
 );
 
+// Korean
+$Korean_OT_array = array(
+"창세기", "출애굽기", "레위기", "민수기", "신명기", "여호수아", "사사기", "룻기", "사무엘상", "사무엘하", "열왕기상", "열왕기하", "역대상", "역대하", "에스라", "느헤미야", "에스더", "욥기", "시편", "잠언", "전도서", "아가", "이사야", "예레미야", "예레미야애가", "에스겔", "다니엘", "호세아", "요엘", "아모스", "오바댜", "요나", "미가", "나훔", "하박국", "스바냐", "학개", "스가랴", "말라기"
+);
+
 $OT_array = array(
 	0 => $OT_Books_array,
 	1 => $OT_How_Many_Chapters_array,
@@ -431,7 +436,8 @@ $OT_array = array(
 	6 => $French_OT_array,
 	7 => $Dutch_OT_array,
 	8 => $Deu_OT_array,
-	9 => $Chinese_OT_array
+	9 => $Chinese_OT_array,
+	10 => $Korean_OT_array
 );
 
 

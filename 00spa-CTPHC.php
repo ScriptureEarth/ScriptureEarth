@@ -169,7 +169,7 @@
 				una o más posibles respuestas. Luego se puede escoger el país que se desea buscar.
 			</p>
 			<div style="text-align: center; margin-right: auto; margin-left: auto; margin-top: 30px; margin-bottom: 40px; ">
-				<img src='./images/00e-AboutExplanation.jpg' style='height: 80%; width: 80%; ' />
+				<img src='./images/00spa-helpExplanation.jpg' style='height: 80%; width: 80%; ' />
 			</div>
 		<?php
 			break;

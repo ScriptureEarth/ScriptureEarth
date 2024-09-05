@@ -169,7 +169,7 @@
 				De optie ‘Lijst per Land’ is een snelle manier om de gewenste informatie te vinden.
 			</p>
 			<div style="text-align: center; margin-right: auto; margin-left: auto; margin-top: 30px; margin-bottom: 40px; ">
-				<img src='./images/00d-AboutExplanation.jpg' style='height: 80%; width: 80%; ' />
+				<img src='./images/00nld-helpExplanation.jpg' style='height: 80%; width: 80%; ' />
 			</div>
 		<?php
 			break;

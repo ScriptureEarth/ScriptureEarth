@@ -182,7 +182,7 @@
 				uma ou mais opções aparecerão. O item procurado poderá ser selecionado na lista.
 			</p>
 			<div style="text-align: center; margin-right: auto; margin-left: auto; margin-top: 30px; margin-bottom: 40px; ">
-				<img src='./images/00p-AboutExplanation.jpg' style='height: 80%; width: 80%; ' />
+				<img src='./images/00por-helpExplanation.jpg' style='height: 80%; width: 80%; ' />
 			</div>
 		<?php
 			break;

@@ -19,8 +19,39 @@
     watch, Jesus Film, Luke video, buy, print-on-demand, online purchase, bookstore, study, The Word,
     Bible, New Testament, NT, Old Testament, OT, Scripture, map
 " />
+<style>
+	div.deu-header {
+		/* German */
+		background-image: url('./images/00deu-BackgroundFistPage.jpg');
+	}
+	ul.ulGerman {
+		/*padding-left: 230px;*/
+		/* use padding-left and width to make the words correct position */
+		/*display: block;
+		display: inline;*/
+		text-align: center;
+		font-size: .86em;
+		font-weight: bold;
+		/*margin-top: -180px;*/
+		/*clear: both;*/
+		margin-left: -40px;
+	}
+	@media only screen and (max-width: 480px) {
+		/* (max-width: 412px) for Samsung S8+ 2/20/2019 */
+		div.deu-header {
+			background-position: center;
+			position: relative;
+			top: -54px;
+		}
+		div.deu-header {
+			background-image: url('./images/00deu-BackgroundFistPage-mobile.jpg');
+		}
+    }
+</style>
 <script type="text/javascript" language="javascript">
-	var MajorLang = "Deu";
+	const MajorLang = "Deu";
+	const Major_OT_array = ["Genesis", "Exodus", "Levitikus", "Numeri", "Deuteronomium", "Josua", "Richter", "Rut", "1 Samuel", "2 Samuel", "1 Könige", "2 Könige", "1 Chronik", "2 Chronik", "Esra", "Nehemia", "Ester", "Ijob", "Psalmen", "Sprichwörter", "Prediger", "Lied Salomos", "Jesaja", "Jeremia", "Klagelieder", "Ezechiel", "Daniel", "Hosea", "Joël", "Amos", "Obadja", "Jona", "Micha", "Nahum", "Habakuk", "Zefanja", "Haggai", "Sacharja", "Maleachi"];
+    const Major_NT_array = ["Matthäus", "Markus", "Lukas", "Johannes", "Apostelgeschichte", "Römer", "1 Korinther", "2 Korinther", "Galater", "Epheser", "Philipper", "Kolosser", "1 Thessalonicher", "2 Thessalonicher", "1 Timotheus", "2 Timotheus", "Titus", "Philemon", "Hebräer", "Jakobus", "1 Petrus", "2 Petrus", "1 Johannes", "2 Johannes", "3 Johannes", "Judas", "Offenbarung des Johannes"];
 </script>
 	<?php
 	$st = 'deu';
@@ -45,6 +76,5 @@
 	
 	include ('./00-MainScript.inc.php');				// THE MAIN SCRIPT!!!!!
 	?>
-
 </body>
 </html>

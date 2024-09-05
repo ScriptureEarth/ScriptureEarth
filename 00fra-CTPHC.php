@@ -169,7 +169,7 @@
 				des options apparaîtront. L’option voulue pourra alors être sélectionnée dans la liste.
 			</p>
 			<div style="text-align: center; margin-right: auto; margin-left: auto; margin-top: 30px; margin-bottom: 40px; ">
-				<img src='./images/00f-AboutExplanation.jpg' style='height: 80%; width: 80%; ' />
+				<img src='./images/00fra-helpExplanation.jpg' style='height: 80%; width: 80%; ' />
 			</div>
 		<?php
 			break;

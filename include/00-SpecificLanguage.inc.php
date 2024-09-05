@@ -4102,7 +4102,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
         //var x = document.getElementById("SAB_Book"+index).selectedIndex;
         //var y = document.getElementById("SAB_Book"+index).options;
 		//if (y[x].text != "< ?php echo translate('Choose One...', $st, 'sys'); ?>") {
-			//window.open("./data/<?php echo $ISO; ?>/" + subfolder + "index.html", "SABPage");
+			//window.open("./data/< ?php echo $ISO; ?>/" + subfolder + "index.html", "SABPage");
 			window.open("./data/<?php echo $ISO; ?>/" + subfolder, "SABPage");
 		//}
 	}

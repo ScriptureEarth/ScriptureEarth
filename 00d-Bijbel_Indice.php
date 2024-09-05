@@ -18,9 +18,40 @@
     Jezus film, kopen, print-on-demand, online kopen, boekhandel, studie, The Word, de Bijbel,
     Nieuwe Testament, NT, Oude Testament, OT
 " />
+<style>
+    div.nld-header {
+        /* Netherlands (Dutch) */
+        background-image: url('./images/00nld-BackgroundFistPage.jpg');
+    }
+    ul.ulDutch {
+        /*padding-left: 230px;*/
+        /* use padding-left and width to make the words correct position */
+        /*display: block;
+        display: inline;*/
+        text-align: center;
+        font-size: .86em;
+        font-weight: bold;
+        /*margin-top: -180px;*/
+        /*clear: both;*/
+        margin-left: -40px;
+    }
+    @media only screen and (max-width: 480px) {
+        /* (max-width: 412px) for Samsung S8+ 2/20/2019 */
+        div.nld-header {
+            background-position: center;
+            position: relative;
+            top: -54px;
+        }
+        div.nld-header {
+            background-image: url('./images/00nld-BackgroundFistPage-mobile.jpg');
+        }
+    }
+</style>
 <script type="text/javascript" language="javascript">
-	var MajorLang = "Nld";
-</script>
+	const MajorLang = "Nld";
+    const Major_OT_array = ["Genesis", "Exodus", "Leviticus", "Numberi", "Deuteronomium", "Jozua", "Richtere", "Ruth", "1 Samuel", "2 Samuel", "1 Koningen", "2 Koningen", "1 Kronieken", "2 Kronieken", "Ezra", "Nehemia", "Esther", "Job", "Psalmen", "Spreuken", "Prediker", "Hooglied", "Jesaja", "Jeremia", "Klaagliederen", "Ezechiël", "Daniël", "Hosea", "Joël", "Amos", "Obadja", "Jona", "Micha", "Nahum", "Habakuk", "Zefanja", "Haggaï", "Zacharia", "Maleachi"];
+    const Major_NT_array = ["Mattheüs", "Markus", "Lukas", "Johannes", "Handelingen", "Romeinen", "1 Corinthiërs", "2 Corinthiërs", "Galaten", "Efeziërs", "Filippenzen", "Colossenzen", "1 Thessalonicenzen", "2 Thessalonicenzen", "1 Timotheüs", "2 Timotheüs", "Titus", "Filémon", "Hebreeën", "Jakobus", "1 Petrus", "2 Petrus", "1 Johannes", "2 Johannes", "3 Johannes", "Judas", "Openbaring"];
+ </script>
 	<?php
         $st = 'nld';
         if (isset($_GET['st'])) {
