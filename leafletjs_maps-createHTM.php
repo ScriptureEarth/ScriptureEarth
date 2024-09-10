@@ -72,7 +72,7 @@ $first_e =
 
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 16,
-		attribution: 'language names: <a href="https://www.scriptureearth.org/00i-Scripture_Index.php">Scripture Earth</a>, ' +
+		attribution: 'language names: <a href="https://www.scriptureearth.org/00eng.php">Scripture Earth</a>, ' +
 			'map data: &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
 	}).addTo(mymap);
 
@@ -163,7 +163,7 @@ while ($row = $result->fetch_array()) {										// 1 ISO and its country
 				} 
 				else {
 					$lat_long = "	L.marker([$s_lat_long], {icon: myRedIcon}).addTo(mymap)\n";
-					$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a target='_top' href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$L_ISO'>$L_LN</a>)\").openPopup();\n";
+					$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a target='_top' href='https://www.scriptureearth.org/00eng?iso=$L_ISO'>$L_LN</a>)\").openPopup();\n";
 				}
 				$lat_long_array[$L_ISO] = $lat_long;
 				//$key_lat_long = array_keys($lat_long_array);				// create $key_lat_long from $lat_long_array only in (0 => ISO, 1 => ISO, etc.)
@@ -328,7 +328,7 @@ while ($row = $result->fetch_array()) {										// 1 ISO and its country
 	}
 	else {
 		$lat_long = "	L.marker(["."$latitude, $longitude"."]).addTo(mymap)\n";
-		$lat_long .= "	.bindPopup(\"<b>$LN - ISO 639-3: $ISO</b><br />ScriptureEarth (<a target='_top' href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$ISO'>$LN</a>)\");\n";
+		$lat_long .= "	.bindPopup(\"<b>$LN - ISO 639-3: $ISO</b><br />ScriptureEarth (<a target='_top' href='https://www.scriptureearth.org/00eng.php?iso=$ISO'>$LN</a>)\");\n";
 	}
 	$lat_long_array[$ISO] = $lat_long;										// lat_long
 
@@ -379,7 +379,7 @@ for ($z=0; $z < count($lat_long_array); $z++) {						// add all of the lat.'s an
 		} 
 		else {
 			$lat_long = "	L.marker([$s_lat_long], {icon: myRedIcon}).addTo(mymap)\n";
-			$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a target='_top' href='https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$L_ISO'>$L_LN</a>)\").openPopup();\n";
+			$lat_long .= "	.bindPopup(\"<b>$L_LN - ISO 639-3: $L_ISO</b><br />ScriptureEarth (<a target='_top' href='https://www.scriptureearth.org/00eng.php?iso=$L_ISO'>$L_LN</a>)\").openPopup();\n";
 		}
 		$lat_long_array[$L_ISO] = $lat_long;
 		//$key_lat_long = array_keys($lat_long_array);				// create $key_lat_long from $lat_long_array only in (0 => ISO, 1 => ISO, etc.)

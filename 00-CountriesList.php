@@ -58,7 +58,7 @@ session_start();
 			'en' (
 				[0] => eng							translation_code
 				[1] => English						name
-				[2] => 00i-Scripture_Index.php		nav_fileName
+				[2] => 00eng.php					nav_fileName
 				[3] => 1							ln_number
 				[4] => i							ln_abbreviation
 			)

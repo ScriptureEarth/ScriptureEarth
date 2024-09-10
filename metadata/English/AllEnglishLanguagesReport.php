@@ -126,6 +126,8 @@ $FileString = '';
 	$stmt_LN_German=$db->prepare($query);																// create a prepared statement
 	$query='SELECT LN_Chinese FROM LN_Chinese WHERE LN_Chinese.ISO = ? AND LN_Chinese.ROD_Code = ?';
 	$stmt_LN_Chinese=$db->prepare($query);																// create a prepared statement
+	$query='SELECT LN_Korean FROM LN_Korean WHERE LN_Korean.ISO = ? AND LN_Korean.ROD_Code = ?';
+	$stmt_LN_Korean=$db->prepare($query);																// create a prepared statement
 	$query='INSERT INTO LN_Temp (ISO, ROD_Code, Variant_Code, LN) VALUES (?, ?, ?, ?)';
 	$stmt_LN_Temp=$db->prepare($query);																	// create a prepared statement
 	
@@ -140,6 +142,7 @@ $FileString = '';
 		$LN_Dutch=$row_SM['LN_Dutch'];						// boolean
 		$LN_German=$row_SM['LN_German'];					// boolean
 		$LN_Chinese=$row_SM['LN_Chinese'];					// boolean
+		$LN_Korean=$row_SM['LN_Korean'];					// boolean
 		$def_LN=$row_SM['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
 		if (!$LN_English) {									// if the English then the default langauge
 			switch ($def_LN){
@@ -204,6 +207,13 @@ $FileString = '';
 					$r = $result_LN_Chinese->fetch_array();
 					$LN=$r['LN_Chinese'];
 					break; 	
+				case 8:
+					$stmt_LN_Korean->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers
+					$stmt_LN_Korean->execute();															// execute query
+					$result_LN_Korean = $stmt_LN_Korean->get_result();									// instead of bind_result (used for only 1 record):
+					$r = $result_LN_Korean->fetch_array();
+					$LN=$r['LN_Korean'];
+					break; 	
 				default:
 					echo "Isn't supposed to happen! The default language isn't here.";
 					break;
@@ -238,6 +248,7 @@ $FileString = '';
 	$stmt_LN_Portuguese->close();
 	$stmt_LN_German->close();
 	$stmt_LN_Chinese->close();
+	$stmt_LN_Korean->close();
 	$stmt_LN_Temp->close();
 	
 	$query='SELECT Variant_Eng FROM Variants WHERE Variant_Code = ?';									// Variant
@@ -339,7 +350,7 @@ $FileString = '';
 			$Variant_Eng=$row_Var['Variant_Eng'];
 		}
 
-		$FileString = "$LN	$alt	$ISO	$temp_ROD_Code	$Variant_Eng	https://www.scriptureearth.org/00i-Scripture_Index.php?iso=$ISO$temp_ROD_Code_string$temp_Variant_Code_string	";
+		$FileString = "$LN	$alt	$ISO	$temp_ROD_Code	$Variant_Eng	https://www.scriptureearth.org/00eng.php?iso=$ISO$temp_ROD_Code_string$temp_Variant_Code_string	";
 
 		$stmt_countries_Eng->bind_param('ss', $ISO, $ROD_Code);										// bind parameters for markers
 		$stmt_countries_Eng->execute();																// execute query

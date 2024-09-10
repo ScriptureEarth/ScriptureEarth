@@ -95,23 +95,23 @@
 		}
 		var root = '';
 		switch (st) {
-			case 'nld':
-				root = '00d-Bijbel_Indice.php';
+			case 'eng':
+				root = '00eng.php';
 				break;
 			case 'spa':
-				root = '00e-Escrituras_Indice.php';
+				root = '00spa.php';
 				break;
 			case 'fra':
-				root = '00f-Ecritures_Indice.php';
-				break;
-			case 'eng':
-				root = '00i-Scripture_Index.php';
+				root = '00fra.php';
 				break;
 			case 'por':
-				root = '00p-Escrituras_Indice.php';
+				root = '00por.php';
+				break;
+			case 'nld':
+				root = '00nld.php';
 				break;
 			case 'deu':
-				root = '00de-Sprachindex.php';
+				root = '00deu.php';
 				break;
 			case 'cmn':
 				root = '00cmn.php';

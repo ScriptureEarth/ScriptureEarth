@@ -251,7 +251,7 @@ function showCountry(str, st, Internet, SpecificCountry, asset) { // get the nam
         return;
     }
 
-    Scriptname = window.location.href; // e.g. https://www.scriptureearth.org/00i-Scripture_Index.php, http://localhost:90/00cmn.php, etc.
+    Scriptname = window.location.href; // e.g. https://www.scriptureearth.org/00eng.php, http://localhost:90/00cmn.php, etc.
 
     Countryxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
     if (Countryxmlhttp == null) {

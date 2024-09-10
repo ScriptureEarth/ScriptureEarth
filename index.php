@@ -116,7 +116,7 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbr
 }
 
 if (isset($_GET['name']) || isset($_GET['iso'])) {								// not the 5 major languages but 'name' is used
-	$redirectTo = "00e-Escrituras_Indice.php";
+	$redirectTo = "00spa.php";
 	$temp = '';
 	$temp = isset($_GET['name']) ? '?sortby=lang&name='.$_GET['name'].'&ROD_Code='.$_GET['ROD_Code'].'&Variant_Code='.$_GET['Variant_Code'] : '?iso='.$_GET['iso'].(isset($_GET['rod']) ? '&rod='.$_GET['rod'] : '&rod=').(isset($_GET['var']) ? '&var='.$_GET['var'] : '&var=');
 	$redirectTo .= $temp;

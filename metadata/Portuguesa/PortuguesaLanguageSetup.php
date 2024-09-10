@@ -255,7 +255,7 @@ $fileFifthPart = '</div>
 			echo "<td width='28%' style='background-color: #$color; margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>$LN</td>";
 		}
 		$fileFourthPart .= "<tr valign='bottom' style='color: navy; background-color: #$color; margin: 0px; padding: 0px; '>" . PHP_EOL .
-			"<td width='28%' style='background-color: #$color; margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '><a href='../../00p-Escrituras_Indice.php?sortby=lang&name=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code'>$LN</a></td>" . PHP_EOL;
+			"<td width='28%' style='background-color: #$color; margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '><a href='../../00por.php?sortby=lang&name=$ISO&ROD_Code=$ROD_Code&Variant_Code=$Variant_Code'>$LN</a></td>" . PHP_EOL;
 		//$alt_lang_names=$row['scripture_main.alt_lang_names");
 		//if ($alt_lang_names > 0) {
 		//$query_alt="SELECT alt_lang_name FROM alt_lang_names WHERE ISO = '$ISO' AND ROD_Code = '$ROD_Code' AND Variant_Code = '$Variant_Code'";				// alt_lang_names
