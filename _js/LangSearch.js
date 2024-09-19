@@ -386,9 +386,9 @@ function about(st) {
     };
 }
 
-function aboutLang(st) {
+/*function aboutLang(st) {
     window.open("include/aboutLang.inc.php?st=" + st, "_self");
-}
+}*/
 
 function loadWindow(ml, CTPHC, Window) {
     window.open("00" + ml + "-CTPHC.php?I=" + CTPHC + "&Window=" + Window);

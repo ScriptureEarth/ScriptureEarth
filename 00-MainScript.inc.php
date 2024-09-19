@@ -952,7 +952,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 
 						<?php // display copyright ?>
 							<div id='copyright' style='top: 140px; '>
-								<div id='aboutLang' title="<?php echo translate('Tap to find out more about the purpose and content of the site.', $st, 'sys'); ?>" onClick="aboutLang('<?php echo $st; ?>')">© <?php echo date('Y') . ' ' .  translate('About this site', $st, 'sys'); ?></div>
+								<div id='aboutLang' title="<?php echo translate('Tap to find out more about the purpose and content of the site.', $st, 'sys'); ?>" onclick="aboutSection('CR'); ">© <?php echo date('Y') . ' ' .  translate('About this site', $st, 'sys'); ?></div>
 							</div>
 						<?php
 					}

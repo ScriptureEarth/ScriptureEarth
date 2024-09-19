@@ -69,11 +69,12 @@ if (strlen($TryLanguage) > 2) {
 	
 	$nav_ln_array = [];																			// save all of the LN_... navigatianal language names
 	$k=1;
-	$res=$db->query("SHOW COLUMNS FROM nav_ln");												// save the column labels from nav_ln table
-	while ($row_LN = $res->fetch_assoc()){
-		if (preg_match('/^LN_/', $row_LN['Field'])) {
-			$nav_ln_array[$k++] = $row_LN['Field'];												// save with 'LN_...'
-		}
+	$res=$db->query("SHOW COLUMNS FROM `nav_ln` WHERE `Field` LIKE 'LN_%'");					// save the column labels from nav_ln table
+	while ($row_LN = $res->fetch_assoc()) {
+		$nav_ln_array[$k++] = $row_LN['Field'];													// save with 'LN_...'
+	}
+	if (!in_array($MajorLanguage, $nav_ln_array)) {
+		die ($MajorLanguage . ' is not in navgational language table!</body></html>');
 	}
 	$ln_result = implode(',', $nav_ln_array);
 	

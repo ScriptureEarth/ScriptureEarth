@@ -136,114 +136,114 @@ if (isset($_GET['name']) || isset($_GET['iso'])) {								// not the 5 major lan
 <meta name="robots" 						content="noindex" />
 <title>Splash page of Scripture Earth</title>
 <style type="text/css">
-body {
-	font: 100% Verdana, Arial, Helvetica, sans-serif;
-	background-color: #AEB2BE;
-	margin: 0; /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
-	text-align: center; /* this centers the container in IE 5* browsers. The text is then set to the left aligned default in the #container selector */
-	color: #000000;
-}
-#all {
-	margin: 0; /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
-	padding: 20px 0 0 0; /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
-	background-color: #AEB2BE;
-	background-repeat: repeat-x;
-}
-.oneColFixCtr #container {
-	width: 980px;  /* using 20px less than a full 800px width allows for browser chrome and avoids a horizontal scroll bar */
-	background-color: #FFFFFF;
-	margin: 0 auto 0 auto; /* the auto margins (in conjunction with a width) center the page */
-	padding-bottom: -20px;
-	text-align: left; /* this overrides the text-align: center on the body element. */
-	border-top: solid 2px black;
-	border-left: solid 3px black;
-	border-right: solid 2px black;
-}
-a.alink {
-	background-image: url(images/langNavBtn.jpg);
-	background-repeat: no-repeat;
-	display: block;
-	padding: 4px 0px 5px 0px;
-	text-align: center;
-	font-size: 12pt;
-	font-weight: bold;
-	text-decoration: none;
-	color: #080860;
-}
-a.eng {
-	color: white;
-}
-/* top margin and width of middle text */
-div.hover {
-	float: left;
-	width: 640px;
-	margin-top: 45px;			/* adjust height */
-}
-/*div.hoverSpanish, div.hoverPortuguese, div.hoverFrench, div.hoverDutch, div.hoverGerman {
-	display: none;
-} /* why is this here? */
-/* right margin of middle text */
-div.middleText {
-	color: #466884;
-	font-size: 11pt;
-	font-weight: bold;
-	margin: 0 50px 0;
-	height: 225px;
-}
-#bottomBanner {
-	width: 980px;				/* width and height of the graphic of the bottom banner */
-	height: 80px;
-	background-repeat: no-repeat;
-	border-left: solid 2px black;
-	/*border-bottom: solid 2px black;*/
-	clear: left;
-	position: relative;
-	left: -2px;
-	top: 0px;					/* the top position of the banner */
-}
-#bottomBanner ul {
-	margin: 0px 0px 0px 0px;
-}
-ul.list {
-	padding-left: 230px;		/* use padding-left and width to make the words correct  */
-	width: 750px;
-	display: block;
-	text-align: center;
-	font-size: 10pt;
-	font-weight: bold;
-	margin: 0px;
-	clear: both;
-}
-/*ul.ulFrench, ul.ulSpanish {
-	font-size: 9pt;
-	padding-top: 1px;
-} /* why is this here? */
-/*ul.ulSpanish, ul.ulPortuguese, ul.ulFrench, ul.ulDutch, ul.ulGerman {
-	display: none;
-} /* why is this here? */
-li.bottomBannerText {
-	vertical-align: middle;
-	display: inline;
-	margin: 0 5px 0 5px;
-	padding: 0px 0px 0px 0px;
-}
-a.bottomBannerWord {
-	color: #4b4b4b;
-	text-decoration: none;
-}
-div.counter {
-	color: #4b4b4b;
-	float: right;
-	font-size: 10pt;
-	font-weight: normal;
-	border: maroon 1px solid;
-	background-color: #eeeeee;
-	margin: 10px 10px 16px 10px;		/* Firefox: margin: 10px 10px 16px 10px; Netscape: top: -7px; IE8: top: 11px; Safari: top: 11px; Opera: top: 11px bottom: 17px -- vertical words at the bottom */
-	position: relative;
-	z-index: 1;
-	padding: 3px 8px 3px 8px;
-}
-/* remember that padding is the space inside the div box and margin is the space outside the div box */
+	body {
+		font: 100% Verdana, Arial, Helvetica, sans-serif;
+		background-color: #AEB2BE;
+		margin: 0; /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
+		text-align: center; /* this centers the container in IE 5* browsers. The text is then set to the left aligned default in the #container selector */
+		color: #000000;
+	}
+	#all {
+		margin: 0; /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
+		padding: 20px 0 0 0; /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
+		background-color: #AEB2BE;
+		background-repeat: repeat-x;
+	}
+	.oneColFixCtr #container {
+		width: 980px;  /* using 20px less than a full 800px width allows for browser chrome and avoids a horizontal scroll bar */
+		background-color: #FFFFFF;
+		margin: 0 auto 0 auto; /* the auto margins (in conjunction with a width) center the page */
+		padding-bottom: -20px;
+		text-align: left; /* this overrides the text-align: center on the body element. */
+		border-top: solid 2px black;
+		border-left: solid 3px black;
+		border-right: solid 2px black;
+	}
+	a.alink {
+		background-image: url(images/langNavBtn.jpg);
+		background-repeat: no-repeat;
+		display: block;
+		padding: 4px 0px 5px 0px;
+		text-align: center;
+		font-size: 12pt;
+		font-weight: bold;
+		text-decoration: none;
+		color: #080860;
+	}
+	a.eng {
+		color: white;
+	}
+	/* top margin and width of middle text */
+	div.hover {
+		float: left;
+		width: 640px;
+		margin-top: 45px;			/* adjust height */
+	}
+	/*div.hoverSpanish, div.hoverPortuguese, div.hoverFrench, div.hoverDutch, div.hoverGerman {
+		display: none;
+	} /* why is this here? */
+	/* right margin of middle text */
+	div.middleText {
+		color: #466884;
+		font-size: 11pt;
+		font-weight: bold;
+		margin: 0 50px 0;
+		height: 225px;
+	}
+	#bottomBanner {
+		width: 980px;				/* width and height of the graphic of the bottom banner */
+		height: 80px;
+		background-repeat: no-repeat;
+		border-left: solid 2px black;
+		/*border-bottom: solid 2px black;*/
+		clear: left;
+		position: relative;
+		left: -2px;
+		top: 0px;					/* the top position of the banner */
+	}
+	#bottomBanner ul {
+		margin: 0px 0px 0px 0px;
+	}
+	ul.list {
+		padding-left: 230px;		/* use padding-left and width to make the words correct  */
+		width: 750px;
+		display: block;
+		text-align: center;
+		font-size: 10pt;
+		font-weight: bold;
+		margin: 0px;
+		clear: both;
+	}
+	/*ul.ulFrench, ul.ulSpanish {
+		font-size: 9pt;
+		padding-top: 1px;
+	} /* why is this here? */
+	/*ul.ulSpanish, ul.ulPortuguese, ul.ulFrench, ul.ulDutch, ul.ulGerman {
+		display: none;
+	} /* why is this here? */
+	li.bottomBannerText {
+		vertical-align: middle;
+		display: inline;
+		margin: 0 5px 0 5px;
+		padding: 0px 0px 0px 0px;
+	}
+	a.bottomBannerWord {
+		color: #4b4b4b;
+		text-decoration: none;
+	}
+	div.counter {
+		color: #4b4b4b;
+		float: right;
+		font-size: 10pt;
+		font-weight: normal;
+		border: maroon 1px solid;
+		background-color: #eeeeee;
+		margin: 10px 10px 16px 10px;		/* Firefox: margin: 10px 10px 16px 10px; Netscape: top: -7px; IE8: top: 11px; Safari: top: 11px; Opera: top: 11px bottom: 17px -- vertical words at the bottom */
+		position: relative;
+		z-index: 1;
+		padding: 3px 8px 3px 8px;
+	}
+	/* remember that padding is the space inside the div box and margin is the space outside the div box */
 </style>
 
 <script type="text/javascript" language="JavaScript">
@@ -315,7 +315,7 @@ function Counter2() {
 	}
 }
 
-$Dummy_Data = [1 => "There are over 3000 indigenous languages spoken today. Many of these languages have Bible translation work in progress.<br /><br />
+$Dummy_Data = [1 => "There are over 3000 limited languages spoken today. While many languages now have translated Scripture, many are still in process.<br /><br />
 We dedicate this website to the glory of God and to those who have spent their lives serving these
 people in the task of providing God’s Word in the language that speaks to their heart.",
 2 => "Actualmente en las Américas se hablan casi 3000 idiomas indígenas. Muchos de estos idiomas ya tienen un proyecto de traducción
@@ -338,7 +338,10 @@ aan de taak Gods Woord beschikbaar te maken in de taal van het hart.",
 Wir haben diese Webseite der Ehre Gotes gewidmet sowie denen, die ihr Leben diesen Menschen gewidmet haben,
 indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre Herzen am besten erreicht.",
 7 => "今天有2900多种土著语言。 这些语言中有许多正在进行圣经翻译工作。 我们将这个网站奉献给上帝的荣耀，并献给那些毕生为这些人服务的人们，他们的任务是用他们心中的语言来传达上帝的话语。",
-8 => "오늘날 3,000개 이상의 토착 언어가 사용되고 있습니다. 이러한 언어들 중 다수는 성서 번역 작업이 진행 중입니다. 우리는 이 웹사이트를 하나님의 영광을 위해, 그리고 이들을 위해 일생을 바친 사람들에게 바칩니다 자신의 마음에 와 닿는 언어로 하나님의 말씀을 제공하는 임무를 맡은 사람들."];
+8 => "오늘날 3,000개 이상의 토착 언어가 사용되고 있습니다. 이러한 언어들 중 다수는 성서 번역 작업이 진행 중입니다. 우리는 이 웹사이트를 하나님의 영광을 위해, 그리고 이들을 위해 일생을 바친 사람들에게 바칩니다 자신의 마음에 와 닿는 언어로 하나님의 말씀을 제공하는 임무를 맡은 사람들.",
+9 => "Сегодня говорят на более чем 3000 ограниченных языках. Хотя на многие языки уже переведено Писание, многие все еще находятся в процессе.<br /><br />
+Мы посвящаем этот сайт славе Бога и тем, кто посвятил свою жизнь служению этим людям в задаче предоставления
+Слова Божьего на языке, который говорит с их сердцем."];
 ?>
 
 <div id="lblValues"></div>
