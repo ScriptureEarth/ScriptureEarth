@@ -7,7 +7,9 @@
 			$LN_Portuguese_check = $row['LN_Portuguese'];
 			$LN_German_check = $row['LN_German'];
 			$LN_Chinese_check = $row['LN_Chinese'];
-
+			$LN_Korean_check = $row['LN_Korean'];
+			$LN_Russian_check = $row['LN_Russian'];
+		
 			if ($LN_Dutch_check == 1) {
 //					$query="SELECT LN_Dutch FROM LN_Dutch WHERE ISO_ROD_index = $idx";
 				$stmt_Dutch->bind_param('i', $idx);												// bind parameters for markers
@@ -76,6 +78,26 @@
 				if ($result_LN->num_rows > 0) {
 					$row_temp=$result_LN->fetch_assoc();
 					$LN[]=trim($row_temp['LN_Chinese']);
+				}
+			}
+			if ($LN_Korean_check == 1) {
+//					$query="SELECT LN_Korean FROM LN_Korean WHERE ISO_ROD_index = $idx";
+				$stmt_Korean->bind_param('i', $idx);									// bind parameters for markers
+				$stmt_Korean->execute();														// execute query
+				$result_LN = $stmt_Korean->get_result();
+				if ($result_LN->num_rows > 0) {
+					$row_temp=$result_LN->fetch_assoc();
+					$LN_Korean=trim($row_temp['LN_Korean']);
+				}
+			}
+			if ($LN_Russian_check == 1) {
+//			$query="SELECT LN_Russian FROM LN_Russian WHERE ISO_ROD_index = $idx";
+				$stmt_Russian->bind_param('i', $idx);									// bind parameters for markers
+				$stmt_Russian->execute();														// execute query
+				$result_LN = $stmt_Russian->get_result();
+				if ($result_LN->num_rows > 0) {
+					$row_temp=$result_LN->fetch_assoc();
+					$LN_Russian=trim($row_temp['LN_Russian']);
 				}
 			}
 ?>

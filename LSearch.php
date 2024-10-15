@@ -39,11 +39,11 @@ You must ensure that all parties (your app, mysql connection, your table or colu
 
 // display all of the language names, ROD codes and variant codes from a major and alternate languages names
 if (isset($_GET['language'])) $TryLanguage = $_GET['language']; else { die('Hack!'); }
-if (preg_match("/^[-. ,'\?()a-záéíóúàèìòùÑñçãõâêîôûäëöüï&ǃǂǁǀ!|]+/ui", $TryLanguage)) {
-}
-else {
-	die('1) Hack!');
-}
+/////if (preg_match("/^[-. ,'\?()a-záéíóúàèìòùÑñçãõâêîôûäëöüï&ǃǂǁǀ!|]+/ui", $TryLanguage)) {
+/////}
+/////else {
+/////	die('1) Hack!');
+/////}
 if (isset($_GET['st'])) {
 	$st = $_GET['st'];
 	$st = preg_replace('/^([a-z]{3})/', "$1", $st);

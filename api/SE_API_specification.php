@@ -65,7 +65,7 @@ div + p {                       /* div followed immediately by p  */
     <p><a href="#sab">sab.php</a> with the ISO 639-3 code or index the SE API will pull out path and all of the SAB HTML files</p>
   </li>
   <li>
-    <p><a href="#other_se">other_se.php</a> with the ISO 639-3 code or index the SE API will pull out  the other SE audio/PDF/ePub files</p>
+    <p><a href="#other_se">other_se.php</a> with the ISO 639-3 code or index the SE API will pull out the other SE audio/PDF/ePub files</p>
   </li>
   <li>
     <p><a href="#website_links">website_links.php</a> with the ISO 639-3 code or index the SE API will pull out  the other website links (e.g. OneStory, iTunes, Facebook, and other links)</p>
@@ -120,10 +120,10 @@ div + p {                       /* div followed immediately by p  */
     index
   </li>
   <li>
-    6 navigational language query strings
+    9 navigational language query strings
   </li>
   <li>
-    6 major language names
+    9 major language names
   </li>
   <li>
     alternate language numbers

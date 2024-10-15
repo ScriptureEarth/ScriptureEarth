@@ -3733,11 +3733,12 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 								echo translate('the Bible', $st, 'sys');
 								break;
 							default:							// ?????
-								echo translate('what Testament?', $st, 'sys');
+								echo translate('which Testament?', $st, 'sys');
 								break;
 						}
 						switch ($alphabet) {
 							case "Standard alphabet":			// standard alphabet
+								echo " <span style='font-size: .8em; '>" . translate('(standard alphabet)', $st, 'sys') . '</span>';
 								break;
 							case "Traditional alphabet":		// traditional alphabet
 								echo " <span style='font-size: .8em; '>" . translate('(traditional alphabet)', $st, 'sys') . '</span>';
@@ -3746,7 +3747,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 								echo " <span style='font-size: .8em; '>" . translate('(new alphabet)', $st, 'sys') . '</span>';
 								break;
 							default:							// ?????
-								echo " <span style='font-size: .8em; '>" . translate('(what alphabet?)', $st, 'sys') . '</span>';
+								echo " <span style='font-size: .8em; '>" . translate('(which alphabet?)', $st, 'sys') . '</span>';
 								break;
 						}					
 						echo "</div><span style='font-size: 1em; '>&nbsp;";

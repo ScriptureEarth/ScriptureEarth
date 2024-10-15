@@ -129,7 +129,7 @@ while ($row_Scriptoria = $result_Scriptoria->fetch_assoc()) {
 			$first .= '"rod":				        "'.$rod.'",';
 			$first .= '"var_code":		    	    "'.$var.'",';
 			$first .= '"var_name":					"'.$Variant_name.'",';
-			$first .= '"iso_query_string":	        "sortby=lang&iso='.$iso;
+			$first .= '"iso_query_string":	        "iso='.$iso;
 			if ($rod != '00000') {
 				$first .= '&rod='.$rod;
 			}
@@ -138,7 +138,7 @@ while ($row_Scriptoria = $result_Scriptoria->fetch_assoc()) {
 			}
 			$first .= '",';
 			$first .= '"idx":		                '.$idx.',';
-			$first .= '"idx_query_string":          "sortby=lang&idx='.$idx.'",';	
+			$first .= '"idx_query_string":          "idx='.$idx.'",';	
 			$first .= '"path":          			"data/'.$iso.'/'.$path.'"';	
 			$first .= '},';
 			$first .= '"relationships": {';

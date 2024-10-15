@@ -29,12 +29,12 @@
             $first .= '"idx_query_string":	"sortby=lang&idx='.$idx.'",';
             $first .= '"ln_OR_alt":         "'.$ln_OR_alt.'",';
             $first .= '"language_name": {';
-            $first .= '"english":			"'.$LN_English.'"';
-            //$first .= '"spanish":			"'.$LN_Spanish.'",';
-            //$first .= '"portuguese":		"'.$LN_Portuguese.'",';
-            //$first .= '"french":			"'.$LN_French.'",';
-            //$first .= '"dutch":			"'.$LN_Dutch.'",';
-            //$first .= '"german":			"'.$LN_German.'",';
+            $first .= '"English":			"'.$LN_English.'"';
+            //$first .= '"Spanish":			"'.$LN_Spanish.'",';
+            //$first .= '"Portuguese":		"'.$LN_Portuguese.'",';
+            //$first .= '"French":			"'.$LN_French.'",';
+            //$first .= '"Dutch":			"'.$LN_Dutch.'",';
+            //$first .= '"German":			"'.$LN_German.'",';
             //$first .= '"minority":		""';
             $first .= '},';
             $first .= '"alternate_language_count":		'.$alt_count.',';                              // how many

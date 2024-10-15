@@ -1296,4 +1296,4 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 	</script>
 
 	<?php // This script HAS to be down here for the major language dropdown box to work! ?>
-	<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.2.7"></script>
+	<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.3.2"></script>

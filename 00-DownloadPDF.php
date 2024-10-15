@@ -10,7 +10,7 @@ if (isset($_GET["st"])) {
 	$st = $_GET["st"];
 	$st = preg_replace('/^([a-z]{3})/', '$1', $st);
 	if ($st == NULL) {
-		die ('‘st’ is empty.</body></html>');
+		die ('â€˜stâ€™ ' . translate('is empty', $st, 'sys') . '.</body></html>');
 	}
 }
 
@@ -18,7 +18,7 @@ if (isset($_GET["iso"])) {
 	$iso = $_GET["iso"];
 	$iso = preg_replace('/^([a-z]{3})/', '$1', $iso);
 	if ($iso == NULL) {
-		die ('‘ISO’ ' . translate('is empty', $st, 'sys') . '.</body></html>');
+		die ('[ISO] ' . translate('is empty', $st, 'sys') . '.</body></html>');
 	}
 }
 else
@@ -32,7 +32,7 @@ if (isset($_GET['T'])) {
     $Testament = $_GET['T'];
 	$Testament = preg_replace('/^(OT|NT)/', '$1', $Testament);
 	if ($Testament == NULL) {
-		die ('‘Testament’ ' . translate('is empty', $st, 'sys') . '.</body></html>');
+		die ('"Testament" ' . translate('is empty', $st, 'sys') . '.</body></html>');
 	}
 }
 else
@@ -49,7 +49,7 @@ $file = $BookFilename;
 // getting all files of desired extension from the dir using explode
   $desired_extension = 'pdf';								// extension we're looking for
 
-  $dir = opendir($dirname) or die(translate('There is no folder under', $st, 'sys') . " ‘$iso’.</body></html>");
+  $dir = opendir($dirname) or die(translate('There is no folder under', $st, 'sys') . " [$iso].</body></html>");
   $files = array();
   while (false != ($filedir = readdir($dir))) {
     if (($filedir != ".") && ($filedir != "..")) {

@@ -15,7 +15,7 @@
 */
 
 // Get the HTTP Object
-function getHTTPObject() { // get the AJAX object; it can be used more than once
+function getHTTPObject() {                                                  // get the AJAX object; it can be used more than once
     try {
         // IE 7+, Opera 8.0+, Firefox, Safari
         return new XMLHttpRequest();
@@ -52,13 +52,23 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
     }
 
     var nonLatinScript = 0;
+    // is it Chinese?
     if (/\p{Script=Han}/u.test(str.substring(str.length - 1)) || /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/.test(str.substring(str.length - 1))) { // https://stackoverflow.com/questions/21109011/javascript-unicode-string-chinese-character-but-no-punctuation
         nonLatinScript = 1;
-    } else {
-        // saltillo: ?; U+A78C
-        var re = /[-. ,'?()a-záéíóúàèìòùÑñçãõâêîôûäëöüïǃǂǁǀ!|]/ui; // the '-' has to go first
-        var foundArray = re.exec(str.substring(str.length - 1)); // the last character of the str
-        if (!foundArray) { // is the value of the last character of the str isn't A-Za - z then it returns
+    }
+    // is it Russian?
+    else if (/\p{Script=Cyrillic}/u.test(str.substring(str.length - 1)) || /[\u0400-\u04FF]/.test(str.substring(str.length - 1))) {
+        nonLatinScript = 1;
+    }
+    // is it Korean?
+    else if (/\p{sc=Hangul}/u.test(str.substring(str.length - 1)) || /[\u1100-\u11FF\u3130-\u318F\uA960-\uA97F\uAC00-\uD7AF\uD7B0-\uD7FF]/.test(str.substring(str.length - 1))) {
+        nonLatinScript = 1;
+    }
+    else {
+        // saltillo: ꞌ = U+A78C
+        var re = /[-. ,'?()a-záéíóúàèìòùÑñçãõâêîôûäëöüïǃǂǁǀ!|]/ui;          // the '-' has to go first
+        var foundArray = re.exec(str.substring(str.length - 1));            // the last character of the str
+        if (!foundArray) {                                                  // is the value of the last character of the str isn't A-Za - z then it returns
             document.getElementById("ID").value = document.getElementById("ID").value.substring(0, document.getElementById("ID").value.length - 1);
             alert(str.substring(str.length - 1) + " is an invalid character. Use an alphabetic character or - , ' ?[saltillo] ( )  [space]");
             str = str.substring(0, str.length - 1);
@@ -88,7 +98,7 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
         return;
     }
 
-    xmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
+    xmlhttp = getHTTPObject();                                              // the ISO object (see JavaScript function getHTTPObject() above)
     if (xmlhttp == null) {
         return;
     }
@@ -97,30 +107,30 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
     let Country_Total = [];
 
     Scriptname = window.location.href;
-    Scriptname = Scriptname.substr(0, Scriptname.indexOf('?'));     // my computer localhost?
+    Scriptname = Scriptname.substr(0, Scriptname.indexOf('?'));             // my computer localhost?
 	
     /****************************************************************************************************************
     	AJAX - languageSearch.php
     ****************************************************************************************************************/
     let url = "LSearch.php";
     url = url + "?language=" + str;
-    if ((st == 'cmn' || st == 'kor') && nonLatinScript == 0) { // test to see if st = Chinese or Korean and if it's Latin
+    if ((st == 'cmn') && nonLatinScript == 0) {                             // test to see if st = Chinese or Korean and if it's Latin
         url = url + "&st=eng";
         url = url + "&SpecificCountry=English";
     } else {
         url = url + "&SpecificCountry=" + SpecificCountry;
         url = url + "&st=" + st;
     }
-    url = url + "&MajorLanguage=" + MajorLanguage;			// e.g. 'LN_English'
-    url = url + "&Variant_major=" + Variant_major;			// e.g. 'Variant_Eng'
+    url = url + "&MajorLanguage=" + MajorLanguage;			                // e.g. 'LN_English'
+    url = url + "&Variant_major=" + Variant_major;			                // e.g. 'Variant_Eng'
     url = url + "&asset=" + asset;
     url = url + "&sid=" + Math.random();
-    xmlhttp.open("GET", url, true); // open the AJAX object with livesearch.php
+    xmlhttp.open("GET", url, true);                                         // open the AJAX object with livesearch.php
     xmlhttp.send(null);
-    xmlhttp.onreadystatechange = function() { // the function that returns for AJAX object
-        if (xmlhttp.readyState == 4) { // if the readyState = 4 then livesearch is displayed
+    xmlhttp.onreadystatechange = function() {                               // the function that returns for AJAX object
+        if (xmlhttp.readyState == 4) {                                      // if the readyState = 4 then livesearch is displayed
             //            alert(xmlhttp.responseText);
-            let splits = xmlhttp.responseText.split('<br />'); // Display all of the languages that have 'language' as a part of it.
+            let splits = xmlhttp.responseText.split('<br />');              // Display all of the languages that have 'language' as a part of it.
             document.getElementById("LangSearch").innerHTML = '';
             document.getElementById("CountSearch").innerHTML = '';
             if (splits.length == 1 && splits[0].indexOf('@') === -1) {
@@ -133,10 +143,10 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
             $("#feedback").hide();
             $("#copyright").hide();
             // the 'table' is caused by a buy in Firefox 63.0.1 (11/7/2018) thus I added the last 3 items
-            colCountry = splits[splits.length - 1]; // subtract 1 from splits.length
-            colCode = splits[splits.length - 2]; // subtract 2 from splits.length
-            colAlt = splits[splits.length - 3]; // subtract 3 from splits.length
-            colLN = splits[splits.length - 4]; // subtract 4 from splits.length
+            colCountry = splits[splits.length - 1];                         // subtract 1 from splits.length
+            colCode = splits[splits.length - 2];                            // subtract 2 from splits.length
+            colAlt = splits[splits.length - 3];                             // subtract 3 from splits.length
+            colLN = splits[splits.length - 4];                              // subtract 4 from splits.length
             table = '<div class="langCol">';
             table += '<div class="colFirst">';
             table += '<p class="colLN1">' + colLN + '</p>';
@@ -153,7 +163,7 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
             let VD = '';
             let idx = '';
             for (let i = 0; i < splits.length - 4; i++) {
-                table += "<p style='line-height: 2px; '>&nbsp;</p>"; // empty line between records
+                table += "<p style='line-height: 2px; '>&nbsp;</p>";        // empty line between records
                 firstSplit = splits[i].split('@');
                 LN = firstSplit[0];
                 alt = firstSplit[1];
@@ -168,15 +178,15 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
                 if (VD != '') { table += "<div>(" + VD + ")</div>" };
                 table += "</div>";
                 table += "<p class='colCountry2'>";
-                let countrySplit = country.split(', '); // full country name : ZZ abbreviated country name
-                let tempCountry = ''; // full country name (split ':')
-                let tempAbbCountry = ''; // ZZ abbreviated country name (split ':')
+                let countrySplit = country.split(', ');                     // full country name : ZZ abbreviated country name
+                let tempCountry = '';                                       // full country name (split ':')
+                let tempAbbCountry = '';                                    // ZZ abbreviated country name (split ':')
                 for (let k = 0; k < countrySplit.length; k++) {
                     tempCountry = countrySplit[k].substring(0, countrySplit[k].length - 3); // full country name (split ':')
                     tempAbbCountry = countrySplit[k].substring(countrySplit[k].length - 2); // ZZ abbreviated country name (split ':')
                     table += '<span style="font-size: .9em; cursor: pointer; " onclick="window.open(\'' + Scriptname + '?sortby=country&name=' + tempAbbCountry + '\', \'_self\')">' + tempCountry + '</span>, ';
                 }
-                table = table.substring(0, table.length - 2); // take out the last ', '
+                table = table.substring(0, table.length - 2);               // take out the last ', '
                 table += "</p>";
 				if (iso == "qqq") {
 					table += "<div class='colCode2' onclick='window.open(\"" + Scriptname + "?idx=" + idx + "&language=" + LN + "&iso_code=" + iso + "\", \"_self\")'>&nbsp;&nbsp;&nbsp;</div>";
@@ -210,7 +220,7 @@ function send(sel) {
 /*****************************************************************************************************************
 	showCountry()
 *****************************************************************************************************************/
-function showCountry(str, st, Internet, SpecificCountry, asset) { // get the names of the country
+function showCountry(str, st, Internet, SpecificCountry, asset) {           // get the names of the country
     if (str.length == 0) {
         document.getElementById("CountSearch").innerHTML = '';
         $("#showLanguageID").show();
@@ -228,13 +238,23 @@ function showCountry(str, st, Internet, SpecificCountry, asset) { // get the nam
         $("#whiteOpaque").hide();
     }
     var nonLatinScript = 0;
+    // is it Chinese?
     if (/\p{Script=Han}/u.test(str.substring(str.length - 1)) || /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/.test(str.substring(str.length - 1))) { // https://stackoverflow.com/questions/21109011/javascript-unicode-string-chinese-character-but-no-punctuation
         nonLatinScript = 1;
-    } else {
-        // saltillo: ?; U+A78C
+    }
+    // is it Russian?
+    else if (/\p{Script=Cyrillic}/u.test(str.substring(str.length - 1)) || /[\u0400-\u04FF]/.test(str.substring(str.length - 1))) {
+        nonLatinScript = 1;
+    }
+    // is it Korean?
+    else if (/\p{sc=Hangul}/u.test(str.substring(str.length - 1)) || /[\u1100-\u11FF\u3130-\u318F\uA960-\uA97F\uAC00-\uD7AF\uD7B0-\uD7FF]/.test(str.substring(str.length - 1))) {
+        nonLatinScript = 1;
+    }
+    else {
+        // saltillo: ' = U+A78C
         var re = /[-. ,'?()a-záéíóúàèìòùÑñçãõâêîôûäëöüï&]/ui;
-        var foundArray = re.exec(str.substring(str.length - 1)); // the last character of the str
-        if (!foundArray) { // is the value of the last character of the str isn't A-Za - z then it returns
+        var foundArray = re.exec(str.substring(str.length - 1));            // the last character of the str
+        if (!foundArray) {                                                  // is the value of the last character of the str isn't [A-Za-z] then it returns
             document.getElementById("CID").value = document.getElementById("CID").value.substring(0, document.getElementById("CID").value.length - 1);
             alert(str.substring(str.length - 1) + " is an invalid character. Use an alphabetic character.");
             str = str.substring(0, str.length - 1);
@@ -251,9 +271,9 @@ function showCountry(str, st, Internet, SpecificCountry, asset) { // get the nam
         return;
     }
 
-    Scriptname = window.location.href; // e.g. https://www.scriptureearth.org/00eng.php, http://localhost:90/00cmn.php, etc.
+    Scriptname = window.location.href;                                      // e.g. https://www.scriptureearth.org/00eng.php, http://localhost:90/00cmn.php, etc.
 
-    Countryxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
+    Countryxmlhttp = getHTTPObject();                                       // the ISO object (see JavaScript function getHTTPObject() above)
     if (Countryxmlhttp == null) {
         return;
     }
@@ -261,8 +281,8 @@ function showCountry(str, st, Internet, SpecificCountry, asset) { // get the nam
     	AJAX - languageSearch.php
     ****************************************************************************************************************/
     var url = "CSearch.php";
-    url = url + "?country=" + str;
-    if ((st == 'cmn' || st == 'kor') && nonLatinScript == 0) { // test to see if st = Chinese or Korean and if it's Latin
+    url = url + "?country=" + str;                                          // beginning of Country
+    if ((st == 'cmn') && nonLatinScript == 0) {                             // test to see if st = Chinese or Korean and if it's Latin
         url = url + "&st=eng";
         url = url + "&SpecificCountry=English";
     } else {
@@ -270,11 +290,11 @@ function showCountry(str, st, Internet, SpecificCountry, asset) { // get the nam
         url = url + "&SpecificCountry=" + SpecificCountry;
     }
     url = url + "&sid=" + Math.random();
-    Countryxmlhttp.open("GET", url, true); // open the AJAX object
+    Countryxmlhttp.open("GET", url, true);                                  // open the AJAX object
     Countryxmlhttp.send(null);
-    Countryxmlhttp.onreadystatechange = function() { // the function that returns for AJAX object
-        if (Countryxmlhttp.readyState == 4) { // if the readyState = 4 then livesearch is displayed
-            var splits = Countryxmlhttp.responseText.split('<br />'); // Display all of the languages that have 'language' as a part of it.
+    Countryxmlhttp.onreadystatechange = function() {                        // the function that returns for AJAX object
+        if (Countryxmlhttp.readyState == 4) {                               // if the readyState = 4 then livesearch is displayed
+            var splits = Countryxmlhttp.responseText.split('<br />');       // Display all of the languages that have 'language' as a part of it.
             document.getElementById("LangSearch").innerHTML = '';
             document.getElementById("CountrySearch").innerHTML = '';
             if (splits.length == 1 && splits[0].indexOf('|') === -1) {
@@ -283,10 +303,10 @@ function showCountry(str, st, Internet, SpecificCountry, asset) { // get the nam
                 return;
             }
             var Country_Total = '';
-            colCountries = splits[splits.length - 1]; // subtract 1 from splits.length
+            colCountries = splits[splits.length - 1];                       // subtract 1 from splits.length
             Country_Total = '<div class="countryTitle"><div class="countryTitleLine">' + colCountries + ':</div>';
             for (var i = 0; i < splits.length - 1; i++) {
-                var firstSplit = splits[i].split('|'); // split the 2: specific country and two uppercase code for the country
+                var firstSplit = splits[i].split('|');                      // split the 2: specific country and two uppercase code for the country
                 var Country = firstSplit[0];
                 var ISO_Country = firstSplit[1];
                 Country_Total += '<div class="pickCountry" onclick="window.open(\'' + Scriptname + '?sortby=country&name=' + ISO_Country + '\', \'_self\')">' + Country + '</div>';

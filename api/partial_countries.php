@@ -23,7 +23,7 @@ $SpecificCountry = 'English';
 if (isset($_GET['ml'])) {
 	$SpecificCountry = $_GET['ml'];
     // ISO_Country
-	if ($SpecificCountry == 'English' || $SpecificCountry == 'Spanish' || $SpecificCountry == 'Portuguese' || $SpecificCountry == 'French' || $SpecificCountry == 'Dutch' || $SpecificCountry == 'German') {
+	if ($SpecificCountry == 'English' || $SpecificCountry == 'Spanish' || $SpecificCountry == 'Portuguese' || $SpecificCountry == 'French' || $SpecificCountry == 'Dutch' || $SpecificCountry == 'German' || $SpecificCountry == 'Chinese' || $SpecificCountry == 'Korean' || $SpecificCountry == 'Russian') {
 	}
     else {
 		die ('HACK!');
@@ -91,7 +91,7 @@ while ($row = $result->fetch_assoc()) {
     $first .= '"rod":				        "'.$rod.'",';
     $first .= '"var_code":		    	    "'.$var.'",';
     $first .= '"var_name":			        "'.$Variant_name.'",';
-    $first .= '"iso_query_string":	        "sortby=lang&iso='.$iso;
+    $first .= '"iso_query_string":	        "iso='.$iso;
     if ($rod != '00000') {
         $first .= '&rod='.$rod;
     }
@@ -100,10 +100,10 @@ while ($row = $result->fetch_assoc()) {
     }
     $first .= '",';
     $first .= '"idx":		                '.$idx.',';
-    $first .= '"idx_query_string":          "sortby=lang&idx='.$idx.'",';
-    $first .= '"English_language_name":         "'.$LN.'",';
-    $first .= '"alternate_language_number":		'.$alt_ln.',';                                  // how many
-    $first .= '"alternate_language_names":		"'.$alt.'"';
+    $first .= '"idx_query_string":          "idx='.$idx.'",';
+    $first .= '"English_language_name":     "'.$LN.'",';
+    $first .= '"alternate_language_number":	'.$alt_ln.',';                                  // how many
+    $first .= '"alternate_language_names":  "'.$alt.'"';
     $first .= '}},';
 }
 $first = rtrim($first, ',');

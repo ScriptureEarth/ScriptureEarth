@@ -40,35 +40,35 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbr
 		$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `translation_code`";
 		$ln_result=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
 		if ($ln_result->num_rows == 0) {
-			die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
+			die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The translation_code is not found.</div></body></html>');
 		}
 		while ($ln_row = $ln_result->fetch_array()){
 			$ln_temp[0] = $ln_row['translation_code'];						// [iso] for the navigational langauges
 			$ln_temp[1] = $ln_row['name'];									// English name of the navigational langauges
-			$ln_temp[2] = $ln_row['nav_fileName'];							// index PHPs
-			$ln_temp[3] = $ln_row['ln_number'];								// based on the languages; 1 to 7 now; English being 1, etc.
+			$ln_temp[2] = $ln_row['nav_fileName'];							// 00eng.php, 00spa.php, etc.
+			$ln_temp[3] = $ln_row['ln_number'];								// based on the number of languages; 1 to 9 now; English being 1, etc.
 			$ln_temp[4] = $ln_row['ln_abbreviation'];						// SE.org abbrevigations for language names; 1 to 3 letters; English being "e"; Chinese being "cmn'
 			$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;
 		}
 	}
 
 	$redirectTo = '';
-	$ln_code = '';
-	foreach($langs as $lang => $val){
-		$lang_code = explode("-",$lang)[0];
-		if (array_key_exists($lang_code, $_SESSION['nav_ln_array'])){
+	$nav_iso = '';
+	foreach($langs as $lang => $val) {
+		$lang_code = explode("-", $lang)[0];
+		if (array_key_exists($lang_code, $_SESSION['nav_ln_array'])) {
 			$redirectTo = $_SESSION['nav_ln_array'][$lang_code][2];			// assigns the matching site to the language found
-			$ln_code = $_SESSION['nav_ln_array'][$lang_code][0];			// assigns the language code to a variable for later use
+			$nav_iso = $_SESSION['nav_ln_array'][$lang_code][0];			// assigns the language code to a variable for later use
 			break;
 		}
 	}
-	
+
 	if ($redirectTo == '') {
 		die('location is empty.');
 	}
 	
-	if (!isset($_GET['name']) && !isset($_GET['iso'])) {
-		header('Location: ' . $redirectTo . ($asset == 1 ? '?asset=1' : ''), true);							// Redirect to target
+	if (!isset($_GET['name']) && !isset($_GET['iso'])) {					// this is normal 
+		header('Location: ' . $redirectTo . ($asset == 1 ? '?asset=1' : ''), true);		// Redirect to target
 		exit;
 	}
 	else {
@@ -102,11 +102,11 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbr
 			$rod = $row['ROD_Code'];
 			$var = $row['Variant_Code'];
 			$idx = $row['ISO_ROD_index'];
-			header('Location: ' . $redirectTo.'&rod='.$rod.'&var='.$var, true); // Redirect to target
+			header('Location: ' . $redirectTo.'&rod='.$rod.'&var='.$var, true); 		// Redirect to target
 			exit();
 		}
-		elseif ($resultTest->num_rows > 1) {									// in case someone does ?sortby=lang&name=[ZZZ] and there is more than one ROD Code
-			header('Location: ' . $redirectTo. ($asset == 1 ? '?asset=1' : '' ), true);							// Redirect to target
+		elseif ($resultTest->num_rows > 1) {								// in case someone does ?sortby=lang&name=[ZZZ] and there is more than one ROD Code
+			header('Location: ' . $redirectTo. ($asset == 1 ? '?asset=1' : '' ), true);		// Redirect to target
 			exit;
 		}
 		else {
@@ -115,14 +115,50 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbr
 	}
 }
 
-if (isset($_GET['name']) || isset($_GET['iso'])) {								// not the 5 major languages but 'name' is used
+if (isset($_GET['name']) || isset($_GET['iso'])) {							// not the 5 major languages but 'name' is used
 	$redirectTo = "00spa.php";
 	$temp = '';
 	$temp = isset($_GET['name']) ? '?sortby=lang&name='.$_GET['name'].'&ROD_Code='.$_GET['ROD_Code'].'&Variant_Code='.$_GET['Variant_Code'] : '?iso='.$_GET['iso'].(isset($_GET['rod']) ? '&rod='.$_GET['rod'] : '&rod=').(isset($_GET['var']) ? '&var='.$_GET['var'] : '&var=');
 	$redirectTo .= $temp;
-	header('Location: ' . $redirectTo. ($asset == 1 ? '?asset=1' : '' ), true); // Redirect to target
+	header('Location: ' . $redirectTo. ($asset == 1 ? '?asset=1' : '' ), true); 		// Redirect to target
 	exit;
 }
+
+function Counter2() {
+	$filename = "counter/AllCounter.dat";
+	if (file_exists($filename)) {
+		$count = file($filename);											// doesn't need fclose. reading an array.
+		return $count[0];
+	}
+}
+
+$Dummy_Data = [1 => "There are over 3000 limited languages spoken today. While many languages now have translated Scripture, many are still in process.<br /><br />
+We dedicate this website to the glory of God and to those who have spent their lives serving these
+people in the task of providing God’s Word in the language that speaks to their heart.",
+2 => "Actualmente en las Américas se hablan casi 3000 idiomas indígenas. Muchos de estos idiomas ya tienen un proyecto de traducción
+en progreso. Cuando las traducciones esten disponibles, esperamos que usted pueda
+encontrarlos en este sitio web.<br /><br />Dedicamos este sitio a la gloria de Dios y
+a los que han dado sus vidas sirviendo a los hablantes de estos idiomas al traducir
+la Palabra de Dios al idioma que habla mejor a su corazón.",
+3 => "Há aproximadamente 3000 línguas nativas faladas hoje nas Américass.
+Muitas delas têm trabalhos de tradução da Bíblia em andamento.<br /><br />Dedicamos este site para a glória de Deus
+e para aqueles que têm gasto suas vidas servindo a estes povos na tarefa de prover a Palavra de Deus nas línguas
+que falam aos seus corações.",
+4 => "Plus de 3000 langues autochtones vernaculaires sont parlées aujourd'hui. Beaucoup de ces langues ont un travail de traduction
+de la Bible en cours.<br /><br />Nous consacrons ce site à la gloire de Dieu et à ceux qui ont passé leur vie à servir ces personnes
+dans l’espoir de fournir la Parole de Dieu dans une langue qui parle à leur coeur.",
+5 => "Er bestaan bijna 3000 inheemse gesproken talen in Noord-, Midden- en Zuid-Amerika.
+In veel van deze talen wordt of is Bijbelvertaalwerk gedaan.<br /><br />
+We dragen deze website op aan de glorie van God en aan degenen die hun leven gewijd hebben
+aan de taak Gods Woord beschikbaar te maken in de taal van het hart.",
+6 => "Es werden heutzutage über 3.000 indigene Sprachen gesprochen. In vielen dieser Sprachen wird die Bibel zur Zeit übersetzt.<br /><br />
+Wir haben diese Webseite der Ehre Gotes gewidmet sowie denen, die ihr Leben diesen Menschen gewidmet haben,
+indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre Herzen am besten erreicht.",
+7 => "今天有2900多种土著语言。 这些语言中有许多正在进行圣经翻译工作。 我们将这个网站奉献给上帝的荣耀，并献给那些毕生为这些人服务的人们，他们的任务是用他们心中的语言来传达上帝的话语。",
+8 => "오늘날 3,000개 이상의 토착 언어가 사용되고 있습니다. 이러한 언어들 중 다수는 성서 번역 작업이 진행 중입니다. 우리는 이 웹사이트를 하나님의 영광을 위해, 그리고 이들을 위해 일생을 바친 사람들에게 바칩니다 자신의 마음에 와 닿는 언어로 하나님의 말씀을 제공하는 임무를 맡은 사람들.",
+9 => "Сегодня говорят на более чем 3000 ограниченных языках. Хотя на многие языки уже переведено Писание, многие все еще находятся в процессе.<br /><br />
+Мы посвящаем этот сайт славе Бога и тем, кто посвятил свою жизнь служению этим людям в задаче предоставления
+Слова Божьего на языке, который говорит с их сердцем."];
 ?>
 
 <!DOCTYPE html>
@@ -245,104 +281,9 @@ if (isset($_GET['name']) || isset($_GET['iso'])) {								// not the 5 major lan
 	}
 	/* remember that padding is the space inside the div box and margin is the space outside the div box */
 </style>
-
-<script type="text/javascript" language="JavaScript">
-	// new generic hover and out function
-	function hover() {
-		document.getElementById('aclick').innerHTML = <?php translate('click to enter', $st, 'sys'); ?>;
-		document.getElementById('canvas').style.display = 'none';
-		ln_code = "<?php echo $ln_code?>"
-		hover = document.getElementsByClassName('hover');
-		for (element of hover){
-			element.style.display = 'none';
-		}
-		hover.getElementsByClassName(ln_code)[0].style.display = 'block';
-
-		list = document.getElementsByClassName('list');
-		for (element of list){
-			element.style.display = 'none';
-		}
-		list.getElementsByClassName(ln_code)[0].style.display = 'block';
-
-		alink = document.getElementsByClassName('alink')
-		for (element of alink){
-			element.style.color = '#080860';
-		}
-		hover.getElementsByClassName(ln_code)[0].style.color = 'white';
-
-		visit = document.getElementsByClassName('visit')
-		for (element of visit){
-			element.style.display = 'none';
-		}
-		visit.getElementsByClassName(ln_code)[0].style.display = 'inline';
-	}
-
-	// find the right place to connet. Is it even nessecery?
-	function out(){
-		hover = document.getElementsByClassName('hover');
-		for (element of hover){
-			element.style.display = 'none';
-		}
-	}
-
-	function SILMouse() {
-		window.open("https://www.sil.org");
-	}
-
-	function loadIFrame(ml, CTPHC) {
-		var canvas = document.getElementById("canvas");
-		canvas.style.display = 'none';
-		//canvas.innerHTML = '';
-		hover = document.getElementsByClassName('hover');
-		for (element of hover){
-			element.style.display = 'none';
-		}
-		canvas.setAttribute("src", "00"+ml+"-CTPHC.php?I="+CTPHC);
-		canvas.style.display = 'block';
-	}
-</script>
-
 <script type="text/javascript" src="_js/BrowserFixes.js"></script>
 </head>
 <body class="oneColFixCtr">
-
-<?php
-function Counter2() {
-	$filename = "counter/AllCounter.dat";
-	if (file_exists($filename)) {
-		$count = file($filename);					// doesn't need fclose. reading an array.
-		return $count[0];
-	}
-}
-
-$Dummy_Data = [1 => "There are over 3000 limited languages spoken today. While many languages now have translated Scripture, many are still in process.<br /><br />
-We dedicate this website to the glory of God and to those who have spent their lives serving these
-people in the task of providing God’s Word in the language that speaks to their heart.",
-2 => "Actualmente en las Américas se hablan casi 3000 idiomas indígenas. Muchos de estos idiomas ya tienen un proyecto de traducción
-en progreso. Cuando las traducciones esten disponibles, esperamos que usted pueda
-encontrarlos en este sitio web.<br /><br />Dedicamos este sitio a la gloria de Dios y
-a los que han dado sus vidas sirviendo a los hablantes de estos idiomas al traducir
-la Palabra de Dios al idioma que habla mejor a su corazón.",
-3 => "Há aproximadamente 3000 línguas nativas faladas hoje nas Américass.
-Muitas delas têm trabalhos de tradução da Bíblia em andamento.<br /><br />Dedicamos este site para a glória de Deus
-e para aqueles que têm gasto suas vidas servindo a estes povos na tarefa de prover a Palavra de Deus nas línguas
-que falam aos seus corações.",
-4 => "Plus de 3000 langues autochtones vernaculaires sont parlées aujourd'hui. Beaucoup de ces langues ont un travail de traduction
-de la Bible en cours.<br /><br />Nous consacrons ce site à la gloire de Dieu et à ceux qui ont passé leur vie à servir ces personnes
-dans l’espoir de fournir la Parole de Dieu dans une langue qui parle à leur coeur.",
-5 => "Er bestaan bijna 3000 inheemse gesproken talen in Noord-, Midden- en Zuid-Amerika.
-In veel van deze talen wordt of is Bijbelvertaalwerk gedaan.<br /><br />
-We dragen deze website op aan de glorie van God en aan degenen die hun leven gewijd hebben
-aan de taak Gods Woord beschikbaar te maken in de taal van het hart.",
-6 => "Es werden heutzutage über 3.000 indigene Sprachen gesprochen. In vielen dieser Sprachen wird die Bibel zur Zeit übersetzt.<br /><br />
-Wir haben diese Webseite der Ehre Gotes gewidmet sowie denen, die ihr Leben diesen Menschen gewidmet haben,
-indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre Herzen am besten erreicht.",
-7 => "今天有2900多种土著语言。 这些语言中有许多正在进行圣经翻译工作。 我们将这个网站奉献给上帝的荣耀，并献给那些毕生为这些人服务的人们，他们的任务是用他们心中的语言来传达上帝的话语。",
-8 => "오늘날 3,000개 이상의 토착 언어가 사용되고 있습니다. 이러한 언어들 중 다수는 성서 번역 작업이 진행 중입니다. 우리는 이 웹사이트를 하나님의 영광을 위해, 그리고 이들을 위해 일생을 바친 사람들에게 바칩니다 자신의 마음에 와 닿는 언어로 하나님의 말씀을 제공하는 임무를 맡은 사람들.",
-9 => "Сегодня говорят на более чем 3000 ограниченных языках. Хотя на многие языки уже переведено Писание, многие все еще находятся в процессе.<br /><br />
-Мы посвящаем этот сайт славе Бога и тем, кто посвятил свою жизнь служению этим людям в задаче предоставления
-Слова Божьего на языке, который говорит с их сердцем."];
-?>
 
 <div id="lblValues"></div>
 <div id="all">
@@ -358,7 +299,7 @@ indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre H
               <?php 
 			  		foreach ($_SESSION['nav_ln_array'] as $code => $array){
 						echo '<div style="margin: 13px 0px; ">
-						<a id="a'.$array[1].'" class="alink '.$array[0].'" href="'.$array[2].'" onMouseOver="hover()">'.translate($array[1], $array[0], 'sys'). ($asset == 1 ? '?asset=1' : '' ).'</a>
+						<a id="a'.$array[1].'" class="alink '.$array[0].'" href="'.$array[2].'" onMouseOver="hover(\''.$array[0].'\', \'' . translate('click to enter', $array[0], 'sys') . '\')">'.translate($array[1], $array[0], 'sys'). ($asset == 1 ? '?asset=1' : '' ).'</a>
 						</div>';
 					}
 			  ?>
@@ -416,5 +357,60 @@ indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre H
     <!-- end #container -->
     </div>
 </div>
+
+<script type="text/javascript" language="JavaScript">
+	// new generic hover and out function
+	function hover(nav_iso, clickToEnter) {
+		document.getElementById('aclick').innerHTML = clickToEnter;
+		document.getElementById('canvas').style.display = 'none';
+		hover = document.getElementsByClassName('hover');
+		for (element of hover){
+			element.style.display = 'none';
+		}
+		hover.getElementsByClassName(nav_iso)[0].style.display = 'block';
+
+		list = document.getElementsByClassName('list');
+		for (element of list){
+			element.style.display = 'none';
+		}
+		list.getElementsByClassName(nav_iso)[0].style.display = 'block';
+
+		alink = document.getElementsByClassName('alink')
+		for (element of alink){
+			element.style.color = '#080860';
+		}
+		hover.getElementsByClassName(nav_iso)[0].style.color = 'white';
+
+		visit = document.getElementsByClassName('visit')
+		for (element of visit){
+			element.style.display = 'none';
+		}
+		visit.getElementsByClassName(nav_iso)[0].style.display = 'inline';
+	}
+
+	// find the right place to connet. Is it even nessecery?
+	function out(){
+		hover = document.getElementsByClassName('hover');
+		for (element of hover){
+			element.style.display = 'none';
+		}
+	}
+
+	function SILMouse() {
+		window.open("https://www.sil.org");
+	}
+
+	function loadIFrame(ml, CTPHC) {
+		var canvas = document.getElementById("canvas");
+		canvas.style.display = 'none';
+		//canvas.innerHTML = '';
+		hover = document.getElementsByClassName('hover');
+		for (element of hover){
+			element.style.display = 'none';
+		}
+		canvas.setAttribute("src", "00"+ml+"-CTPHC.php?I="+CTPHC);
+		canvas.style.display = 'block';
+	}
+</script>
 </body>
 </html>

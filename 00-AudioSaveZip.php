@@ -14,7 +14,7 @@ $st = 'eng';
 if (isset($_GET['st'])) {
 	$st = $_GET['st'];
 	if (!preg_match('/^([a-z]{3})$/', $st)) {
-		die('‘st’ is more than 3 characters!</body></html>');
+		die('`st` is more than 3 characters!</body></html>');
 	}
 }
 
@@ -48,7 +48,7 @@ function NT_Test($PDF, $NT_Index) {					// returns true if the
 if (isset($_GET['iso'])) {
 	$iso = $_GET['iso'];
 	if (!preg_match('/^([a-z]{3})$/', $iso)) {
-		die('‘ISO’ is more than 3 characters!</body></html>');
+		die('`ISO` is more than 3 characters!</body></html>');
 	}
 }
 else
@@ -56,8 +56,8 @@ else
 	
 if (isset($_GET['rod'])) {
 	$rod = $_GET['rod'];
-	if (!preg_match('/^([a-zA_Z0-9]{1,5})$/', $rod)) {
-		die('‘ROD_Code’ is more than 3 characters!</body></html>');
+	if (!preg_match('/^([a-zA-Z0-9]{1,5})$/', $rod)) {
+		die('`ROD_Code` is more than 5 characters!</body></html>');
 	}
 }
 else
@@ -67,7 +67,7 @@ $Testament = '';
 if (isset($_GET['T'])) {
     $Testament = $_GET['T'];
 	if (!preg_match('/^(OT|NT)$/', $Testament)) {
-		die('‘Testament’ is not Old or New Testament!</body></html>');
+		die('`Testament` is not Old or New Testament!</body></html>');
 	}
 }
 else
@@ -76,7 +76,7 @@ else
 if (isset($_GET['Books'])) {													// numbers of the books
 	$Books = $_GET['Books'];
 	if (!preg_match('/^([, 0-9]+)$/', $Books)) {
-		die('Books’ were not just numbers!</body></html>');
+		die('`Books` were not just numbers!</body></html>');
 	}
 }
 else

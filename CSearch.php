@@ -23,10 +23,10 @@ You must ensure that all parties (your app, mysql connection, your table or colu
 // display all of the language names, ROD codes and variant codes from a major and alternate languages names
 
 if (isset($_GET['country'])) $TryCountry = $_GET['country']; else { die('Hack!'); }
-// saltillo: ꞌ; U+A78C
-if (!preg_match("/[-. ,'ꞌ()a-záéíóúàèìòùÑñçãõâêîôûäëöüï&]/ui", $TryCountry)) {
-	die('Hack!');
-}
+// saltillo: "ꞌ" U+A78C
+///////if (!preg_match("/[-. ,'ꞌ()a-záéíóúàèìòùÑñçãõâêîôûäëöüï&]/ui", $TryCountry)) {
+///////	die('Hack!');
+///////}
 
 if (isset($_GET['st'])) {
 	$st = $_GET['st'];

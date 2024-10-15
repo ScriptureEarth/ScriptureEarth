@@ -27,6 +27,8 @@ $stmt_Portuguese = $db->prepare("SELECT LN_Portuguese FROM LN_Portuguese WHERE I
 $stmt_French = $db->prepare("SELECT LN_French FROM LN_French WHERE ISO_ROD_index = ?");
 $stmt_Dutch = $db->prepare("SELECT LN_Dutch FROM LN_Dutch WHERE ISO_ROD_index = ?");
 $stmt_German = $db->prepare("SELECT LN_German FROM LN_German WHERE ISO_ROD_index = ?");
+$stmt_Korean = $db->prepare("SELECT LN_Korean FROM LN_Korean WHERE ISO_ROD_index = ?");
+$stmt_Russian = $db->prepare("SELECT LN_Russian FROM LN_Russian WHERE ISO_ROD_index = ?");
 //$stmt_iso_languages = $db->prepare("SELECT * FROM scripture_main ORDER BY ISO");
 
 $stmt_iso->execute();															                // execute query
