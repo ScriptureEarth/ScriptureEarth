@@ -4042,7 +4042,12 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		<tr>
 			<td style='width: 100%; text-align: center; '>
 				<?php
-				echo '<iframe name="iframe_a" title="Iframe" class="mapIframe" src="../maps/'.$ISO_Country.'/'.$ISO.'.htm"></iframe>';
+				if ($ROD_Code != '00000') {
+					echo '<iframe name="iframe_a" title="Iframe" class="mapIframe" src="../maps/'.$ISO_Country.'/'.$ISO.'_'.$ROD_Code.'.htm"></iframe>';
+				}
+				else {
+					echo '<iframe name="iframe_a" title="Iframe" class="mapIframe" src="../maps/'.$ISO_Country.'/'.$ISO.'.htm"></iframe>';
+				}
 				echo '<div class="mapKey">';
 					echo '<p><span style="color: red; font-weight: bold; ">'.translate('red', $st, 'sys').'</span>: '.translate('language you have selected', $st, 'sys').'</p>';
 					echo '<p><span style="color: purple; font-weight: bold; ">'.translate('purple', $st, 'sys').'</span>: '.translate('dialects of this language', $st, 'sys').'</p>';
