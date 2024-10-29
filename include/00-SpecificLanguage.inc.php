@@ -4042,7 +4042,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		<tr>
 			<td style='width: 100%; text-align: center; '>
 				<?php
-				if ($ROD_Code != '00000') {
+				if ($ISO == 'azb' && $ROD_Code == '07458') {
 					echo '<iframe name="iframe_a" title="Iframe" class="mapIframe" src="../maps/'.$ISO_Country.'/'.$ISO.'_'.$ROD_Code.'.htm"></iframe>';
 				}
 				else {
