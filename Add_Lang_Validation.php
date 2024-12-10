@@ -585,7 +585,7 @@
 				$i++;
 			}
 
-// links: buy, map, and GooglePlay
+// links: buy, map, GooglePlay, and Kalamm
   			$i = 1;
 			//$inputs["links"] = 0;
 			while (isset($_POST["txtLinkCompany-".(string)$i])) {
@@ -603,6 +603,7 @@
 				//if ($_POST["linksIcon-".(string)$i] == 'linksBuy-'.$i) $inputs["linksBuy-$i"] = 1; else $inputs["linksBuy-$i"] = 0;
 				if ($_POST["linksIcon-".(string)$i] == 'linksMap-'.$i) $inputs["linksMap-$i"] = 1; else $inputs["linksMap-$i"] = 0;
 				if ($_POST["linksIcon-".(string)$i] == 'linksGooglePlay-'.$i) $inputs["linksGooglePlay-$i"] = 1; else $inputs["linksGooglePlay-$i"] = 0;
+				if ($_POST["linksIcon-".(string)$i] == 'linksKalaam-'.$i) $inputs["linksKalaam-$i"] = 1; else $inputs["linksKalaam-$i"] = 0;
 				$i++;
 			}
 

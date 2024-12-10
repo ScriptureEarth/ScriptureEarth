@@ -94,7 +94,7 @@
 		case "CR":
 		?>
 			<script type="text/javascript" language="javascript">
-				document.title = "Copyright";
+				document.title = "저작권";
 			</script>
 			<h2>저작권</h2>
 			<p>© <?php echo date('Y'); ?> SIL International</p>
@@ -115,7 +115,7 @@
 		case "H":
 		?>
 			<script type="text/javascript" language="javascript">
-				document.title = "Help";
+				document.title = "도움";
 			</script>
 			<h2>도움</h2>
 			<p>
@@ -272,7 +272,7 @@
 		case "TC":
 		?>
 			<script type="text/javascript" language="javascript">
-				document.title = "Terms and Conditions";
+				document.title = "이용약관";
 			</script>
 			<h2>이용약관</h2>
 			<p>웹사이트 방문을 환영합니다. 본 웹사이트를 계속 탐색하고 사용하는 경우, 귀하는 개인정보 보호정책과 함께 본 웹사이트와 관련하여 SIL International과 귀하 사이의 관계를 규율하는 다음 이용 약관을 준수하고 이에 구속되는 데 동의하는 것으로 간주됩니다. 본 이용 약관의 일부에 동의하지 않는 경우 이 웹사이트를 이용할 수 없습니다.</p>
@@ -293,7 +293,7 @@
 		case "P":
 		?>
 			<script type="text/javascript" language="javascript">
-				document.title = "Privacy Policy";
+				document.title = "개인 정보 보호 정책";
 			</script>
 			<h2>개인 정보 보호 정책</h2>
 			<p>스크립처어스는 “쿠키” 기술을 사용하지 않습니다. 따라서 이 사이트는 사용자나 사용 패턴을 추적하지 않습니다.</p>

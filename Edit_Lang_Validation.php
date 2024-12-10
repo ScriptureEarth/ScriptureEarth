@@ -590,7 +590,6 @@
 	}
 
 // links: buy
-	//$inputs["links"] = 0;
 	$inputs['linksBuy'] = 0;
 	$i = 1;
 	for (; isset($_POST["txtLinkCompany-$i"]); $i++) {
@@ -608,14 +607,9 @@
 		$inputs["txtLinkURL-$i"] = check_input($_POST["txtLinkURL-$i"]);
 		$inputs["linksBuy-$i"] = 1;
 		$inputs['linksBuy'] = 1;
-		//if ($_POST["linksIcon-".(string)$i] == 'linksOther-'.$i) $inputs["linksOther-$i"] = 1; else $inputs["linksOther-$i"] = 0;
-		//if ($_POST["linksIcon-".(string)$i] == 'linksBuy-'.$i) $inputs["linksBuy-$i"] = 1; else $inputs["linksBuy-$i"] = 0;
-		//if ($_POST["linksIcon-".(string)$i] == 'linksMap-'.$i) $inputs["linksMap-$i"] = 1; else $inputs["linksMap-$i"] = 0;
-		//if ($_POST["linksIcon-".(string)$i] == 'linksGooglePlay-'.$i) $inputs["linksGooglePlay-$i"] = 1; else $inputs["linksGooglePlay-$i"] = 0;
 	}
 
 // links: map
-	//$inputs["links"] = 0;
 	$inputs['linksMap'] = 0;
 	$i = 1;
 	for (; isset($_POST["txtLinkCompany-$i"]); $i++) {
@@ -633,14 +627,9 @@
 		$inputs["txtLinkURL-$i"] = check_input($_POST["txtLinkURL-$i"]);
 		$inputs["linksMap-$i"] = 1;
 		$inputs['linksMap'] = 1;
-		//if ($_POST["linksIcon-".(string)$i] == 'linksOther-'.$i) $inputs["linksOther-$i"] = 1; else $inputs["linksOther-$i"] = 0;
-		//if ($_POST["linksIcon-".(string)$i] == 'linksBuy-'.$i) $inputs["linksBuy-$i"] = 1; else $inputs["linksBuy-$i"] = 0;
-		//if ($_POST["linksIcon-".(string)$i] == 'linksMap-'.$i) $inputs["linksMap-$i"] = 1; else $inputs["linksMap-$i"] = 0;
-		//if ($_POST["linksIcon-".(string)$i] == 'linksGooglePlay-'.$i) $inputs["linksGooglePlay-$i"] = 1; else $inputs["linksGooglePlay-$i"] = 0;
 	}
 
 // links: GooglePlay
-	//$inputs["links"] = 0;
 	$inputs['linksGooglePlay'] = 0;
 	$i = 1;
 	for (; isset($_POST["txtLinkCompany-$i"]); $i++) {
@@ -658,14 +647,28 @@
 		$inputs["txtLinkURL-$i"] = check_input($_POST["txtLinkURL-$i"]);
 		$inputs["linksGooglePlay-$i"] = 1;
 		$inputs['linksGooglePlay'] = 1;
-		//if ($_POST["linksIcon-".(string)$i] == 'linksOther-'.$i) $inputs["linksOther-$i"] = 1; else $inputs["linksOther-$i"] = 0;
-		//if ($_POST["linksIcon-".(string)$i] == 'linksBuy-'.$i) $inputs["linksBuy-$i"] = 1; else $inputs["linksBuy-$i"] = 0;
-		//if ($_POST["linksIcon-".(string)$i] == 'linksMap-'.$i) $inputs["linksMap-$i"] = 1; else $inputs["linksMap-$i"] = 0;
-		//if ($_POST["linksIcon-".(string)$i] == 'linksGooglePlay-'.$i) $inputs["linksGooglePlay-$i"] = 1; else $inputs["linksGooglePlay-$i"] = 0;
+	}
+// links: Kalaam
+	$inputs['linksKalaam'] = 0;
+	$i = 1;
+	for (; isset($_POST["txtLinkCompany-$i"]); $i++) {
+		if ($_POST["linksIcon-".(string)$i] != 'linksKalaam-'.$i) continue;
+		// Web Source = Company; Resource Description = CompanyTitle
+		if (check_input($_POST["txtLinkCompany-$i"]) != "") $inputs["links"] = 1;
+		if (empty($_POST["txtLinkCompany-$i"])) {
+			if ((check_input($_POST["txtLinkCompanyTitle-$i"]) != "") || (check_input($_POST["txtLinkURL-$i"]) != "")) {
+				$count_failed++;
+				$messages[] = "Kalaam Media Link #" . $i . " is blank.";
+			}
+		}
+		$inputs["txtLinkCompany-$i"] = check_input($_POST["txtLinkCompany-$i"]);
+		$inputs["txtLinkCompanyTitle-$i"] = check_input($_POST["txtLinkCompanyTitle-$i"]);
+		$inputs["txtLinkURL-$i"] = check_input($_POST["txtLinkURL-$i"]);
+		$inputs["linksKalaam-$i"] = 1;
+		$inputs['linksKalaam'] = 1;
 	}
 
 // links: other
-	//$inputs["links"] = 0;
 	$inputs['linksOther'] = 0;
 	$i = 1;
 	for (; isset($_POST["txtLinkCompany-$i"]); $i++) {
@@ -683,10 +686,6 @@
 		$inputs["txtLinkURL-$i"] = check_input($_POST["txtLinkURL-$i"]);
 		$inputs["linksOther-$i"] = 1;
 		$inputs['linksOther'] = 1;
-		//if ($_POST["linksIcon-".(string)$i] == 'linksOther-'.$i) $inputs["linksOther-$i"] = 1; else $inputs["linksOther-$i"] = 0;
-		//if ($_POST["linksIcon-".(string)$i] == 'linksBuy-'.$i) $inputs["linksBuy-$i"] = 1; else $inputs["linksBuy-$i"] = 0;
-		//if ($_POST["linksIcon-".(string)$i] == 'linksMap-'.$i) $inputs["linksMap-$i"] = 1; else $inputs["linksMap-$i"] = 0;
-		//if ($_POST["linksIcon-".(string)$i] == 'linksGooglePlay-'.$i) $inputs["linksGooglePlay-$i"] = 1; else $inputs["linksGooglePlay-$i"] = 0;
 	}
 
 	/*echo 'Web Source = Company			Resource Description = CompanyTitle<br />';
@@ -696,8 +695,8 @@
 	exit;*/
 
 // links: email
-	$i = 1;
 	$inputs["email"] = 0;
+	$i = 1;
 	while (isset($_POST['txtEmailTitle-'.(string)$i]) || isset($_POST['txtEmailAddress-'.(string)$i])) {
 		if (check_input($_POST["txtEmailAddress-$i"]) != "") $inputs["email"] = 1;
 		if (empty($_POST["txtEmailAddress-$i"])) {

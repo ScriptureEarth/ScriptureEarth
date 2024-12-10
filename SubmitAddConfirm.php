@@ -171,65 +171,79 @@
 
 // SAB
 	/*
-		$SAB (bitwise):
-			decimal		binary		meaning
-			1			000001		NT Synchronized text and audio
-			2			000010		OT Synchronized text and audio
-			4			000100		NT Synchronized audio where available
-			8			001000		OT Synchronized audio where available
-			16			010000		NT View text only
-			32			100000		OT View text only
+		column SAB_Audio is booleon
+		column SAB_number: The same ISO/ROD_Code/Variant_Code/ISO_ROD_index but diffenent "subfolder."			
 	*/
 	if ($inputs['SAB']) {
-		$i = 1;
-		$query="INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, url, subfolder, description, pre_scriptoria, SAB_number) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, '', ?)";
-		$stmt_SAB_scriptoria=$db->prepare($query);
-		while (isset($inputs["txtSABsubfolderAdd-".(string)$i])) {
-			$SABsubfolder = "txtSABsubfolderAdd-".(string)$i;
-			$SABdescription = "txtSABdescriptionAdd-".(string)$i;
-			$SABurl = "txtSABurlAdd-".(string)$i;
-			$inputs[$SABsubfolder] = 'sab/'.$inputs[$SABsubfolder].'/';
-			$stmt_SAB_scriptoria->bind_param("sssi", $inputs[$SABurl], $inputs[$SABsubfolder], $inputs[$SABdescription], $i);		// bind parameters for markers
-			$resultSAB_scriptoria=$stmt_SAB_scriptoria->execute();											// execute query
-			if (!$resultSAB_scriptoria) {
-				echo 'Could not update the data "SAB_scriptoria" table: ' . $db->error;
-			}
-			
-			if (trim($inputs[$SABurl]) == '') {
-				if ((is_dir("./data/".$inputs['iso']."/".$inputs[$SABsubfolder]."js") === false)) {
-					echo 'WARNING. The HTML files (SAB) are not on the SE server. You need to run Edit when html files are on the SE sever.<br />';
+		if (substr($_SERVER['REMOTE_ADDR'], 0, 7) != '192.168') {													// Is the script local?
+			$i = 1;
+			$query="INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `url`, subfolder, `description`, pre_scriptoria, SAB_number) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, '', ?)";
+			$stmt_SAB_scriptoria=$db->prepare($query);
+			while (isset($inputs["txtSABsubfolderAdd-".(string)$i])) {
+				$SABsubfolder = "txtSABsubfolderAdd-".(string)$i;
+				$SABdescription = "txtSABdescriptionAdd-".(string)$i;
+				$SABurl = "txtSABurlAdd-".(string)$i;
+				$inputs[$SABsubfolder] = 'sab/'.$inputs[$SABsubfolder].'/';
+				$stmt_SAB_scriptoria->bind_param("sssi", $inputs[$SABurl], $inputs[$SABsubfolder], $inputs[$SABdescription], $i);		// bind parameters for markers
+				$resultSAB_scriptoria=$stmt_SAB_scriptoria->execute();												// execute query
+				if (!$resultSAB_scriptoria) {
+					echo 'Could not UPDATE the SAB_scriptoria table: ' . $db->error . '<br />';
 				}
-				else {
-					$SAB_Path = './data/'.$inputs['iso'].'/'.$inputs[$SABsubfolder];
-					$SAB_array = glob($SAB_Path.'*.html');
-					if (empty($SAB_array) === false) {															// there are html files here
-						if (file_exists($SAB_Path.'sw.js') === false) {											// sw.js doesn't exist therefore the html files are old ( < 8/2020)
-						}
-						else {																					// sw.js does exist therefore the html files are new ( >= 8/2020) Scritporia s3 (AWS)
-							$query="INSERT INTO SAB (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Book_Chapter_HTML, SAB_Book, SAB_Chapter, SAB_Audio, SAB_number) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, 0, ?)";
-							$stmt_SAB=$db->prepare($query);
-							foreach ($SAB_array as $SAB_record) {												// $SAB_array = glob($SAB_Path.'*.html'). e.g. "tuoC-02-GEN-001.html"
-								$SAB_record = substr($SAB_record, strrpos($SAB_record, '/')+1);					// gets rids of directories. strrpos - returns the poistion of the last occurrence of the substring
-								if (preg_match('/-([0-9]+)-[A-Z0-9][A-Z]{2}-/', $SAB_record, $match)) {
-									//echo $SAB_record . '<br />';
-								}
-								else {
-									continue;
-								}
-								$book_number = (int)$match[1];
-								preg_match('/-([0-9]+)\.html/', $SAB_record, $match);
-								$chapter = (int)$match[1];
-								$stmt_SAB->bind_param("siii", $SAB_record, $book_number, $chapter, $i);			// bind parameters for markers
-								$stmt_SAB->execute();
+				if (trim($inputs[$SABurl]) == '') {
+					if ((is_dir("./data/".$ISO."/".$inputs[$SABsubfolder]."js") === false)) {
+						echo 'WARNING. The HTML files (SAB) are not on the SE server. So, you will need to re-run Scripture_Edit.php again when html files are on the SE sever.<br />';
+					}
+					else {
+						$ISO = $inputs['iso'];
+						$SAB_Path = './data/'.$ISO.'/'.$inputs[$SABsubfolder];
+						$SAB_array = glob($SAB_Path.'*.html', GLOB_MARK | GLOB_NOCHECK | GLOB_NOESCAPE | GLOB_NOSORT);		// all HTML files
+						if (empty($SAB_array) === false) {															// there are html files here
+							if (file_exists($SAB_Path.'sw.js') === false) {											// sw.js doesn't exist therefore the html files are old ( < 8/2020)
+								echo 'WARNING. Something is wrong. You will need to re-run Scripture_Edit.php again when html files are on the SE sever.<br />';
 							}
-							$stmt_SAB->close();
+							else {																					// sw.js does exist therefore the html files are new ( >= 8/2020) Scritporia s3 (AWS)
+								$query="INSERT INTO SAB (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Book_Chapter_HTML, SAB_Book, SAB_Chapter, SAB_Audio, SAB_number, SABDate, SABSize, deleteSAB) VALUES ('$ISO', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, 0, $i, CONVERT(?, datetime), ?, 0)";
+								$stmt_SAB=$db->prepare($query);
+								foreach ($SAB_array as $SAB_record) {												// $SAB_array = glob($SAB_Path.'*.html'). e.g. "tuoC-02-GEN-001.html"
+									if ($SAB_record == './data/'.$ISO.'/'.$inputs[$SABsubfolder].'index.html') continue;
+									if ($SAB_record == './data/'.$ISO.'/'.$inputs[$SABsubfolder].'about.partial.html') continue;
+									$fDate =  date("Y-m-d H:i", filemtime($SAB_record));							// was last changed; leading 0s; data convert the file date to a string
+									$fDate .= ':00';
+									clearstatcache();																// Clear cache and check filesize again
+									$fSize =  filesize($SAB_record);												// server
+
+									$SAB_record = substr($SAB_record, strrpos($SAB_record, '/')+1);					// gets rids of directories. strrpos - returns the poistion of the last occurrence of the substring
+									if (!preg_match('/(-|^)([0-9]+)-/', $SAB_record, $match)) {
+										echo $SAB_record . ' does not match the book for the html file. DELETEd from SAB table.<br />';
+										continue;
+									}
+									$book_number = (int)$match[2];
+
+									if (!preg_match('/-([0-9]+)\.html/', $SAB_record, $match)) {
+										echo $SAB_record . ' does not match the chapter for the html file. DELETEd from SAB table.<br />';
+										continue;																	// continue with a new html file
+									}
+									$chapter = (int)$match[1];
+
+									$stmt_SAB->bind_param("siisi", $SAB_record, $book_number, $chapter, $fDate, $fSize);	// bind parameters for markers
+									$stmt_SAB->execute();
+								}
+								$stmt_SAB->close();
+							}
+						}
+						else {
+							echo 'WARNING. The HTML files (SAB) are empty. So, you will to need to re-run Scripture_Edit.php again when html files are on the SE sever.<br />';
 						}
 					}
 				}
+				$i++;
 			}
-			$i++;
+			$stmt_SAB_scriptoria->close();
 		}
-		$stmt_SAB_scriptoria->close();
+		else {
+			echo '</h3>You are running the script on a local host. You have to run Scripture_Add.php or Scripture_Edit.php script<br />';
+			echo 'from a remote host (i.e., InMotion Hosting) in oder to INSERT the SAB table.</h3>';
+		}
 	}
 
 // Scripture_and_or_Bible PDF
@@ -566,10 +580,10 @@
 		$stmt_buy->close();
 	}
 
-// links: map, and GooglePlay
+// links: map, GooglePlay, and Kalaam
 	if ($inputs['links']) {
 		$i = 1;
-		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, buy, map, GooglePlay) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, 0, ?, ?)";
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, buy, map, GooglePlay, Kalaam) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, 0, ?, ?, ?)";
 		$stmt_links=$db->prepare($query);
 		while (isset($inputs["txtLinkCompany-".(string)$i])) {
 			$temp1 = "txtLinkCompany-".(string)$i;
@@ -578,7 +592,8 @@
 			//$temp4 = "linksBuy-$i";
 			$temp5 = "linksMap-$i";
 			$temp6 = "linksGooglePlay-$i";
-			$stmt_links->bind_param("sssii", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3], $inputs[$temp5], $inputs[$temp6]);		// bind parameters for markers
+			$temp7 = "linksKalaam-$i";
+			$stmt_links->bind_param("sssiii", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3], $inputs[$temp5], $inputs[$temp6], $inputs[$temp7]);		// bind parameters for markers
 			$result=$stmt_links->execute();														// execute query
 			if (!$result) {
 				echo 'Could not insert the data "links": ' . $db->error;

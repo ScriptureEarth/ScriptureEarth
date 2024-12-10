@@ -132,9 +132,10 @@ function Counter2() {
 	}
 }
 
-$Dummy_Data = [1 => "There are over 3000 limited languages spoken today. While many languages now have translated Scripture, many are still in process.<br /><br />
-We dedicate this website to the glory of God and to those who have spent their lives serving these
-people in the task of providing God’s Word in the language that speaks to their heart.",
+$Dummy_Data = [1 => "About half of the 7,400 languages in use today have at least some translated Scripture.
+Translation still continues for many of the “limited Scripture” languages, and projects are beginning every month
+for languages still in need.<br /><br />We dedicate this website to the glory of God and to those who have spent
+their lives serving these people in the task of providing God’s Word in the languages that speak to their heart.",
 2 => "Actualmente en las Américas se hablan casi 3000 idiomas indígenas. Muchos de estos idiomas ya tienen un proyecto de traducción
 en progreso. Cuando las traducciones esten disponibles, esperamos que usted pueda
 encontrarlos en este sitio web.<br /><br />Dedicamos este sitio a la gloria de Dios y
@@ -158,7 +159,8 @@ indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre H
 8 => "오늘날 3,000개 이상의 토착 언어가 사용되고 있습니다. 이러한 언어들 중 다수는 성서 번역 작업이 진행 중입니다. 우리는 이 웹사이트를 하나님의 영광을 위해, 그리고 이들을 위해 일생을 바친 사람들에게 바칩니다 자신의 마음에 와 닿는 언어로 하나님의 말씀을 제공하는 임무를 맡은 사람들.",
 9 => "Сегодня говорят на более чем 3000 ограниченных языках. Хотя на многие языки уже переведено Писание, многие все еще находятся в процессе.<br /><br />
 Мы посвящаем этот сайт славе Бога и тем, кто посвятил свою жизнь служению этим людям в задаче предоставления
-Слова Божьего на языке, который говорит с их сердцем."];
+Слова Божьего на языке, который говорит с их сердцем.",
+10 => "تُرجم الكتاب المقدس أو أجزاء منه إلى ما لا يقل عن نصف اللغات  المتداولة في العالم اليوم، والتي يبلغ عددها 7400 لغة. ولا تزال الترجمة جارية إلى العديد من اللغات التي لم تحظ سوى بترجمة ”أسفار محدودة“ من المكتاب المقدس. وكل شهر يشهد بداية مشروعات ترجمة جديدة لأجزاء من الكتاب المقدس للغات لا تزال تحتاج إلى هذه الترجمات. ولهذا، نحن نكرس هذا الموقع لمجد الله ونهديه لأولئك الذين خصصوا حياتهم لترجمة الكتاب المقدس بلغات مختلفة وإتاحته باللغات الأقرب لكل شعب من شعوب العالم."];
 ?>
 
 <!DOCTYPE html>

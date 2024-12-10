@@ -189,110 +189,94 @@
 		$db->query("DELETE FROM SAB_scriptoria WHERE ISO_ROD_index = $inputs[idx]");
 	}
 	else {
-		if (substr($_SERVER['REMOTE_ADDR'], 0, 7) != '192.168') {														// Is the script local?
+//		if (substr($_SERVER['REMOTE_ADDR'], 0, 7) != '192.168') {														// Is the script local?
 			$i = 1;
 			$query="UPDATE SAB_scriptoria SET `url` = ?, `subfolder` = ?, `description` = ? WHERE ISO_ROD_index = $inputs[idx] AND SAB_number = ?";
 			$stmt_SAB_scriptoria=$db->prepare($query);
-			
 			while (isset($inputs["txtSABsubfolder-".(string)$i])) {		//strlen(trim($inputs["txtSABsubFirstPath-".(string)$i]) >= 4)) {	// $inputs["txtSABsubFirstPath-".(string)$i]) = "sab" by default
 				$SABurl = "txtSABurl-".(string)$i;
 				$SABdescription = "txtSABdescription-".(string)$i;
 				$SABsubfolder = "txtSABsubfolder-".(string)$i;
-				//echo $inputs["txtSABsubfolder-".(string)$i] . ' ' . $SABurl . ' ' . $SABdescription . ' ' . $SABsubfolder . '<br />';
 	
-				$query="SELECT ISO FROM SAB_scriptoria WHERE ISO_ROD_index = $inputs[idx] AND ((`url` = '$inputs[$SABurl]' AND `url` <> '') OR (subfolder = '$inputs[$SABsubfolder]' AND subfolder <> '')) AND SAB_number = $i";
-				$result_temp=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
-				//echo 'INSERT or UPDATE: ' . $inputs['iso'] . ' ' . $inputs['rod'] . ' ' . $inputs['var'] . ' ' . $inputs['idx'] . ' ' . $inputs[$SABurl] . ' ' . $inputs[$SABsubfolder] . ' ' . $inputs[$SABdescription] . ' ' .  $i . '<br />';
-				if ($result_temp->num_rows === 0) {
-					$query = "INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `url`, subfolder, `description`, pre_scriptoria, SAB_number) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$SABurl]', '$inputs[$SABsubfolder]', '$inputs[$SABdescription]', '', $i)";
-					$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
-					//echo 'INSERT: ' . $inputs['iso'] . ' ' . $inputs['rod'] . ' ' . $inputs['var'] . ' ' . $inputs['idx'] . ' ' . $inputs[$SABurl] . ' ' . $inputs[$SABsubfolder] . ' ' . $inputs[$SABdescription] . ' ' .  $i . '<br />';
-				}
-				else {
-					$stmt_SAB_scriptoria->bind_param("sssi", $inputs[$SABurl], $inputs[$SABsubfolder], $inputs[$SABdescription], $i);	// bind parameters for markers
-					$stmt_SAB_scriptoria->execute();																		// execute query. $resultSAB_scriptoria returns a boolean
-					//echo 'UPDATE: ' . $inputs['iso'] . ' ' . $inputs['rod'] . ' ' . $inputs['var'] . ' ' . $inputs['idx'] . ' ' . $inputs[$SABurl] . ' ' . $inputs[$SABsubfolder] . ' ' . $inputs[$SABdescription] . ' ' .  $i . '<br />';
-				}
-
-				if ($inputs[$SABsubfolder] == '') {
-					$db->query("DELETE FROM SAB WHERE ISO_ROD_index = $inputs[idx] AND '$inputs[$SABurl]' AND SAB_number = $i");
-					// gui 	00000 		301 		sab/gui/ 	- Nuevo Testamento (1984) con audio y videos 		1
-					$query="SELECT ISO FROM SAB_scriptoria WHERE ISO_ROD_index = $inputs[idx] AND `description` = '$inputs[$SABdescription]' AND SAB_number = $i";
-					$result_SELECT_SAB_scriptoria=$db->query($query);
-					if ($result_SELECT_SAB_scriptoria->num_rows === 0) {
-						//  ISO 	ROD_Code 	Variant_Code 	ISO_ROD_index 	url Descending 1 	subfolder 	description 	pre_scriptoria 	SAB_number
-						$db->query("INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `url`, Descending, subfolder, `description`, pre_scriptoria, SAB_number) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$SABurl]', '', '$inputs[$SABdescription]', '', $i)");
-					}
-					else {
-						$db->query("UPDATE SAB_scriptoria SET subfolder = '', `url` = '$inputs[$SABurl]' WHERE ISO_ROD_index = $inputs[idx] AND `description` = '$inputs[$SABdescription]' AND SAB_number = $i");
-					}
-					$i++;
+				$stmt_SAB_scriptoria->bind_param("sssi", $inputs[$SABurl], $inputs[$SABsubfolder], $inputs[$SABdescription], $i);	// bind parameters for markers
+				$stmt_SAB_scriptoria->execute();																		// execute query. $resultSAB_scriptoria returns a boolean
+				$SAB_Path = './data/'.$inputs['iso'].'/'.$inputs[$SABsubfolder];
+				if (!is_dir($SAB_Path)) {
+					echo 'No path to '.$SAB_Path.' in SAB. Skipped the INSERTs/UPDATEs.<br />';
 					continue;
 				}
+				$SAB_array = glob($SAB_Path."*.html", GLOB_MARK | GLOB_NOCHECK | GLOB_NOESCAPE | GLOB_NOSORT);			// all HTML files
+				if (count($SAB_array) === 0) {																			// there are html files here
+					echo '<h3>No HTML files found in '.$SAB_Path.'. Be sure you uploaded the HTML files from you\'re comptuer to the SE server AND then re-run the Edit of CMS again.</h3>';
+				}
 				else {
-					$SAB_Path = './data/'.$inputs['iso'].'/'.$inputs[$SABsubfolder];
-					if (!is_dir($SAB_Path)) {
-						echo 'No path to '.$SAB_Path.' in SAB. Skipped the INSERTs/UPDATEs.<br />';
-						$i++;
-						continue;
-					}
-					$SAB_array = glob($SAB_Path."*.html", GLOB_MARK | GLOB_NOCHECK | GLOB_NOESCAPE | GLOB_NOSORT);			// all HTML files
-					if (count($SAB_array) === 0) {																			// there are html files here
-						echo '<h3>No HTML files found in '.$SAB_Path.'. Be sure you uploaded the HTML files from you\'re comptuer to the SE server AND then re-run the Edit of CMS again.</h3>';
+					$query="SELECT SABDate, SABSize FROM SAB WHERE ISO = ? AND ISO_ROD_index = ? AND Book_Chapter_HTML = ? AND SAB_number = ?";
+					$stmt_match_SELECT=$db->prepare($query);
+
+					// INSERT in SAB table
+					$query="INSERT INTO SAB (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Book_Chapter_HTML, SAB_Book, SAB_Chapter, SAB_Audio, SAB_number, SABDate, SABSize, deleteSAB) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, 0, $i, CONVERT(?, datetime), ?, 0)";
+					$stmt_SAB_INSERT=$db->prepare($query);
+
+					$query="SELECT ISO FROM SAB WHERE ISO_ROD_index = $inputs[idx] AND SAB_number = $i LIMIT 1";
+					$result_temp=$db->query($query) or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
+					if ($result_temp->num_rows == 0) {
+						foreach ($SAB_array as $SAB_record) {															// $SAB_array = glob($SAB_Path.'*.html'). e.g. "tuoC-02-GEN-001.html"
+							if ($SAB_record == './data/'.$ISO.'/'.$SABsubfolder.'index.html') continue;
+							if ($SAB_record == './data/'.$ISO.'/'.$SABsubfolder.'about.partial.html') continue;
+							// echo 'ISO: ' . $ISO . '. ISO_ROD_index: ' . $ISO_ROD_index . ' ISOPlus: ' . $ISOPlus . ' SAB_record: ' . $SAB_record . '<br />';
+							$fDate = date("Y-m-d H:i", filemtime($SAB_record));											// was last changed; leading 0s; data convert the file date to a string
+							$fDate .= ':00';
+							clearstatcache();																			// Clear cache and check filesize again
+							$fSize = filesize($SAB_record);																// server
+							//echo 'date: ' . $fDate . '; size: ' . $fSize . '<br />';
+							
+							$SAB_record = substr($SAB_record, strrpos($SAB_record, '/')+1);								// IMPORTANT! Gets rids of directories just before the html name. strrpos - returns the poistion of the last occurrence of the substring
+							if (!preg_match('/(-|^)([0-9]+)-/', $SAB_record, $match)) {									// match the book from the html file
+								echo '1) ' . $ISO . ': ' . $SAB_record . ' does not match the book for the html file. DELETEd from SAB table.<br />';
+								continue;																				// continue with a new html file
+							}
+							$book_number = (int)$match[2];																// book_number = match
+							
+							if (!preg_match('/-([0-9]+)\.html/', $SAB_record, $match)) {								// match the chapter from the html file
+								echo '2) ' . $ISO . ': ' . $SAB_record . ' does not match the chapter for the html file. DELETEd from SAB table.<br />';
+								continue;																				// continue with a new html file
+							}
+							$chapter = (int)$match[1];																	// chapter = match
+							
+							$stmt_SAB_INSERT->bind_param("siisi", $SAB_record, $book_number, $chapter, $fDate, $fSize);		// bind parameters for markers
+							$stmt_SAB_INSERT->execute() or trigger_error($stmt_SAB_INSERT->error, E_USER_ERROR);		// execute query
+						}
 					}
 					else {
-						/*$query="SELECT ISO_ROD_index FROM scripture_main WHERE ISO_ROD_index = $inputs[idx]";
-						$result=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
-						if ($result->num_rows === 0) {
-							echo 'ISO ROD index not found.<br />';
-							continue;
-						}
-						$row = $result->fetch_assoc();*/
-						$ISO = $inputs['iso'];
-						$ROD_Code = $inputs['rod'];
-						$Variant_Code = $inputs['var'];
-						$ISO_ROD_index = $inputs['idx'];
-
 						// in SAB table
-						// Already have SAB_Book ($book_number), SAB_Chapter ($chapter), Book_Chapter_HTML ("$SAB_record"), ISO ("$inputs[iso]"), ROD_Code ("$inputs[rod]"), Variant_Code ("$inputs[var]"), ISO_ROD_index ($ISO_ROD_index)
-						$query="SELECT SAB_Audio, SAB_number, SABDate, SABSize FROM SAB WHERE ISO_ROD_index = $ISO_ROD_index AND Book_Chapter_HTML = ? AND SAB_Book = ? AND SAB_Chapter = ? AND SAB_number = $i LIMIT 1";		// 1 chapter
+						// Already have SAB_Book ($book_number), SAB_Chapter ($chapter), Book_Chapter_HTML ("$SAB_record"), ISO ("$inputs[iso]"), ROD_Code ("$inputs[rod]"), Variant_Code ("$inputs[var]"), ISO_ROD_index ("$inputs[idx]")
+						$query="SELECT SAB_Audio, SAB_number, SABDate, SABSize FROM SAB WHERE ISO_ROD_index = $inputs[idx] AND Book_Chapter_HTML = ? AND SAB_Book = ? AND SAB_Chapter = ? AND SAB_number = $i LIMIT 1";		// 1 chapter
 						$stmt_SAB_SELECT=$db->prepare($query);
 
-						// INSERT in SAB table
-						$query="INSERT INTO SAB (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Book_Chapter_HTML, SAB_Book, SAB_Chapter, SAB_Audio, SAB_number, SABDate, SABSize, deleteSAB) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $ISO_ROD_index, ?, ?, ?, 0, $i, CONVERT(?, datetime), ?, 0)";
-						$stmt_SAB_INSERT=$db->prepare($query);
-						
 						// UPDATE SAB table SET SABDate and SABSize
-						$query="UPDATE SAB SET SABDate = CONVERT(?, datetime), SABSize = ?, deleteSAB = 0 WHERE ISO_ROD_index = $ISO_ROD_index AND Book_Chapter_HTML = ? AND SAB_Book = ? AND SAB_Chapter = ? AND SAB_number = $i";
+						$query="UPDATE SAB SET SABDate = CONVERT(?, datetime), SABSize = ?, deleteSAB = 0 WHERE ISO_ROD_index = $inputs[idx] AND Book_Chapter_HTML = ? AND SAB_Book = ? AND SAB_Chapter = ? AND SAB_number = $i";
 						$stmt_SAB_UPDATE=$db->prepare($query);
 
 						// UPDATE SAB table SET deleteSAB = 0
-						$query="UPDATE SAB SET deleteSAB = 0 WHERE ISO_ROD_index = $ISO_ROD_index AND Book_Chapter_HTML = ? AND SAB_Book = ? AND SAB_Chapter = ? AND SAB_number = $i";
+						$query="UPDATE SAB SET deleteSAB = 0 WHERE ISO_ROD_index = $inputs[idx] AND Book_Chapter_HTML = ? AND SAB_Book = ? AND SAB_Chapter = ? AND SAB_number = $i";
 						$stmt_SAB_UPDATE_Delete=$db->prepare($query);
 
-						$query="SELECT SABDate, SABSize FROM SAB WHERE ISO = ? AND ISO_ROD_index = ? AND Book_Chapter_HTML = ? AND SAB_number = $i";
-						$stmt_match_SELECT=$db->prepare($query);
-
-						$query="SELECT ISO FROM SAB WHERE ISO_ROD_index = $ISO_ROD_index AND SAB_number = $i LIMIT 1";	// used later
-						$result_empty=$db->query($query) or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
-
-						$ISOPlus = substr($inputs[$SABsubfolder], 4, -1);												// 'sab/[ISOPlus]/'
-						$query="UPDATE SAB SET deleteSAB = 1 WHERE Book_Chapter_HTML <> 'index.html' AND Book_Chapter_HTML <> 'about.partial.html' AND Book_Chapter_HTML LIKE '%".$ISOPlus."-%' AND ISO_ROD_index = $ISO_ROD_index AND SAB_number = $i";			// bind parameters for markers
+						$ISOPlus = substr($SABsubfolder, 4, -1);															// 'sab/[ISOPlus]/'
+						$query="UPDATE SAB SET deleteSAB = 1 WHERE Book_Chapter_HTML <> 'index.html' AND Book_Chapter_HTML <> 'about.partial.html' AND Book_Chapter_HTML LIKE '%".$ISOPlus."-%' AND ISO_ROD_index = $inputs[idx] AND SAB_number = $i";			// bind parameters for markers
 						$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
 						foreach ($SAB_array as $SAB_record) {															// all HTML files
-							if ($SAB_record == './data/'.$ISO.'/'.$inputs[$SABsubfolder].'index.html') continue;
-							if ($SAB_record == './data/'.$ISO.'/'.$inputs[$SABsubfolder].'about.partial.html') continue;
+							if ($SAB_record == './data/'.$inputs['iso'].'/'.$inputs[$SABsubfolder].'index.html') continue;
 							$fDate =  date("Y-m-d H:i", filemtime($SAB_record));										// was last changed; leading 0s; data convert the file date to a string
 							$fDate .= ':00';
 							clearstatcache();																			// Clear cache and check filesize again
 							$fSize =  filesize($SAB_record);															// server
 
 							$SAB_record = substr($SAB_record, strrpos($SAB_record, '/')+1);								// IMPORTANT! Gets rids of directories just before the html name. strrpos - returns the poistion of the last occurrence of the substring
-							if (!preg_match('/(-|^)([0-9]+)-/', $SAB_record, $match)) {									// match the book from the html file
+							if (!preg_match('/-([0-9]+)-[A-Z0-9][A-Z]{2}-/', $SAB_record, $match)) {					// match the book from the html file
 								echo $SAB_record . ' does not match the book for the html file. DELETEd from SAB table.<br />';
 								continue;																				// continue with a new html file
 							}
-							$book_number = (int)$match[2];																// book_number = match
+							$book_number = (int)$match[1];																// book_number = match
 							
 							if (!preg_match('/-([0-9]+)\.html/', $SAB_record, $match)) {								// match the chapter from the html file
 								echo $SAB_record . ' does not match the chapter for the html file. DELETEd from SAB table.<br />';
@@ -300,73 +284,56 @@
 							}
 							$chapter = (int)$match[1];																	// chapter = match
 
-							if ($result_empty->num_rows === 0) {														// INSERT the file to SAB table the SAB table is empty
-								$stmt_SAB_INSERT->bind_param("siisi", $SAB_record, $book_number, $chapter, $fDate, $fSize);		// bind parameters for markers
-								$stmt_SAB_INSERT->execute() or trigger_error($stmt_SAB_INSERT->error, E_USER_ERROR);	// execute query
-								//echo 'SAB table is empty so copy all of the files into SAB table.<br />';
-								continue;																				// continue with a new html file
-							}
-
-							//echo 'Book_Chapter_HTML: ' . $SAB_record . ' book_number: ' . $book_number . ' chapter: ' . $chapter . '<br />';
-							$stmt_match_SELECT->bind_param("sis", $ISO, $ISO_ROD_index, $SAB_record);					// Is Book_Chapter_HTML ($SAB_record) in SAB table?
+							$stmt_match_SELECT->bind_param("sisi", $ISO, $ISO_ROD_index, $SAB_record, $i);				// Is Book_Chapter_HTML ($SAB_record) in SAB table?
 							$stmt_match_SELECT->execute();																// execute query
-							$result_match_SELECT = $stmt_match_SELECT->get_result();									// instead of bind_result (used for only 1 record):
+							$result_match_SELECT = $stmt_SAB_SELECT->get_result();										// instead of bind_result (used for only 1 record):
 							if ($result_match_SELECT->num_rows === 0) {
 								//echo 'SAB_record: ' . $SAB_record . '. Not found in DB. So, INSERT it into DB.<br />';
 								$stmt_SAB_INSERT->bind_param("siisi", $SAB_record, $book_number, $chapter, $fDate, $fSize);		// bind parameters for markers
 								$stmt_SAB_INSERT->execute() or trigger_error($stmt_SAB_INSERT->error, E_USER_ERROR);	// execute query
-								//echo $SAB_record . ' is not in SAB table so INSERT the file book, chapter, date, and size into into the SAB table.<br />';
 								continue;
 							}
-							//echo $SAB_record . ' is in SAB table.<br />';
-
-							$rowMatch = $result_match_SELECT->fetch_assoc();
-							// "Y-m-d H:i:00"
-							$DBDate = $rowMatch['SABDate'];
-							$DBSize = $rowMatch['SABSize'];
-							//echo 'file date: ' . $fDate . ' DB date: ' . $DBDate . ' file size: ' . $fSize . ' DB size: ' . $DBSize . '<br />';
+							$r = $result_match_SELECT->fetch_assoc();
+							// "Y-m-d H:i:s"
+							$DBDate = $r['SABDate'];
+							// "Y-m-d H:i"
+							//$DBDate = substr($DBDate, 0, strrpos($DBDate, ':'));
+							//$DBDate .= ':00';
+							$DBSize = $r['SABSize'];
 							if ($fDate == $DBDate && $fSize == $DBSize) {												// Running: in takes about 20 seconds
-								$stmt_SAB_UPDATE_Delete->bind_param("sii", $SAB_record, $book_number, $chapter);		// bind parameters for markers
-								$stmt_SAB_UPDATE_Delete->execute() or trigger_error($stmt_SAB_UPDATE_Delete->error, E_USER_ERROR);	// execute query
-								//echo 'Date and time are the same, so UPDATE delete = 0<br />';
+								$stmt_SAB_UPDATE_Delete->bind_param("si", $SAB_record, $i);							// bind parameters for markers
+								$stmt_SAB_UPDATE_Delete->execute() or trigger_error($stmt_SAB_UPDATE->error, E_USER_ERROR);	// execute query
 							}
 							else {
-								//echo 'No match between Date and time.<br />';
-								$stmt_SAB_SELECT->bind_param("sii", $SAB_record, $book_number, $chapter);				// Is Book_Chapter_HTML (i.e., SAB_record) in SAB? Either INSERT or UPDATE
-								$stmt_SAB_SELECT->execute();															// execute query
-								$result_SAB_SELECT = $stmt_SAB_SELECT->get_result();									// instead of bind_result (used for only 1 record):
+								$stmt_SAB_SELECT->bind_param("sii", $SAB_record, $book_number, $chapter);					// Is Book_Chapter_HTML ($SAB_record) in SAB? Either INSERT or UPDATE
+								$stmt_SAB_SELECT->execute();																// execute query
+								$result_SAB_SELECT = $stmt_SAB_SELECT->get_result();										// instead of bind_result (used for only 1 record):
 								if ($result_SAB_SELECT->num_rows === 0) {
 									//echo 'SAB_record: ' . $SAB_record . '. Not found in DB. So, INSERT it into DB.<br />';
 									$stmt_SAB_INSERT->bind_param("siisi", $SAB_record, $book_number, $chapter, $fDate, $fSize);		// bind parameters for markers
 									$stmt_SAB_INSERT->execute() or trigger_error($stmt_SAB_INSERT->error, E_USER_ERROR);	// execute query
-									//echo 'Book_Chapter_HTML (i.e., SAB_record) in SAB? INSERT the date and time into SAB tables<br />';
 									//echo '<h3 style="color: darkred; ">INSERT SAB_record: ' . $SAB_record . ' Date: ' . $fDate . ' Time: ' . $fSize . ' ISO_ROD_index: ' . "$inputs[idx]" . ' subfolder: ' . $SABsubfolder . '</h3>';
 								}
 								else {
 									//echo 'SAB_record ' . $SAB_record . ': UPDATE ' . $fDate . ' ' . $fSize . ' ' . $book_number . ' ' . $chapter . '<br />';
-									$stmt_SAB_UPDATE->bind_param("sisii", $fDate, $fSize, $SAB_record, $book_number, $chapter);		// bind parameters for markers
+									$stmt_SAB_UPDATE->bind_param("siisi", $fDate, $fSize, "$inputs[idx]", $SAB_record, $i);					// bind parameters for markers
 									$stmt_SAB_UPDATE->execute() or trigger_error($stmt_SAB_UPDATE->error, E_USER_ERROR);	// execute query
-									//echo 'Book_Chapter_HTML (i.e., SAB_record) in SAB? UPDATE the date and time into SAB tables<br />';
 								}
 							}
-							$query="SELECT ISO FROM SAB WHERE ISO_ROD_index = $ISO_ROD_index AND SAB_number = $i AND deleteSAB = 1";
-							$result_temp=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
-							if ($result_temp->num_rows != 0) {
-								//echo 'Gobal DELETE WHERE deleteSAB = 1<br />';
-								// DELETE FROM SAB WHERE deleteSAB = 1
-								$query="DELETE FROM SAB WHERE ISO_ROD_index = $ISO_ROD_index AND SAB_number = $i AND deleteSAB = 1";
-								$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
-							}
+						}
+						$query="SELECT ISO FROM SAB WHERE ISO_ROD_index = $inputs[idx] AND SAB_number = $i AND deleteSAB = 1";
+						$result_temp=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
+						if ($result_temp->num_rows != 0) {
+							//echo 'Gobal DELETE WHERE deleteSAB = 1<br />';
+							// DELETE FROM SAB WHERE deleteSAB = 1
+							$query="DELETE FROM SAB WHERE ISO_ROD_index = $inputs[idx] AND SAB_number = $i AND deleteSAB = 1";
+							$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
 						}
 					}
 				}
 				$i++;
 			}
-		}
-		else {
-			echo '</h3>You are running the script on a local host. You have to re-run this script from a remote host (i.e., InMotion Hosting)<br />';
-			echo 'in oder to INSERT/UPDATE the SAB table.</h3>';
-		}
+//		}
 	}
 
 // whole Bible PDF
@@ -735,7 +702,7 @@
 // links: buy
 	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND buy = 1";
 	$result=$db->query($query);
-	if ($inputs['linksBuy']) {
+	if ($inputs['linksBuy']) {																		// test
 		$i = 1;
 		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, buy) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, 1)";
 		$stmt_links=$db->prepare($query);
@@ -759,7 +726,7 @@
 // links: map
 	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND map = 1";
 	$result=$db->query($query);
-	if ($inputs['linksMap']) {
+	if ($inputs['linksMap']) {																		// test
 		$i = 1;
 		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, map) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, 1)";
 		$stmt_links=$db->prepare($query);
@@ -783,7 +750,7 @@
 // links: GooglePlay
 	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND GooglePlay = 1";
 	$result=$db->query($query);
-	if ($inputs['linksGooglePlay']) {
+	if ($inputs['linksGooglePlay']) {																// test
 		$i = 1;
 		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, GooglePlay) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, 1)";
 		$stmt_links=$db->prepare($query);
@@ -793,40 +760,21 @@
 			$temp1 = "txtLinkCompany-$i";
 			$temp2 = "txtLinkCompanyTitle-$i";
 			$temp3 = "txtLinkURL-$i";
+			//$temp6 = "linksGooglePlay-$i";
 			$stmt_links->bind_param("sss", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3]);		// bind parameters for markers
 			$result=$stmt_links->execute();															// execute query
 			if (!$result) {
 				echo 'Could not insert the data "links Google Play": ' . $db->error;
 			}
-		}
-		$stmt_links->close();
-	}
-// links: Kalaam
-	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND Kalaam = 1";
-	$result=$db->query($query);
-	if ($inputs['linksKalaam']) {
-		$i = 1;
-		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, Kalaam) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, 1)";
-		$stmt_links=$db->prepare($query);
-		//while (isset($inputs["txtLinkCompany-$i"]) && $inputs["linksKalaam-$i"]) {
-		for (; isset($inputs["txtLinkCompany-$i"]); $i++) {
-			if (!isset($inputs["linksKalaam-$i"])) continue;	// || $inputs["linksKalaam-$i"] == 0 Bill ????
-			$temp1 = "txtLinkCompany-$i";
-			$temp2 = "txtLinkCompanyTitle-$i";
-			$temp3 = "txtLinkURL-$i";
-			$stmt_links->bind_param("sss", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3]);		// bind parameters for markers
-			$result=$stmt_links->execute();															// execute query
-			if (!$result) {
-				echo 'Could not insert the data "links Kalaam Media": ' . $db->error;
-			}
+			//$i++;
 		}
 		$stmt_links->close();
 	}
 
 // other links
-	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND (buy = 0 AND map = 0 AND GooglePlay = 0 AND BibleIs = 0 AND BibleIsGospelFilm = 0 AND YouVersion = 0 AND Bibles_org = 0 AND GRN = 0 AND email = 0 AND Kalaam = 0)";
+	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND (buy = 0 AND map = 0 AND GooglePlay = 0 AND BibleIs = 0 AND BibleIsGospelFilm = 0 AND YouVersion = 0 AND Bibles_org = 0 AND GRN = 0 AND email = 0)";
 	$result=$db->query($query);
-	if ($inputs['linksOther']) {
+	if ($inputs['linksOther']) {																	// test
 		$i = 1;
 		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?)";
 		$stmt_links=$db->prepare($query);

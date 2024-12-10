@@ -3,14 +3,16 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 
 /*
 	$st=
-		eng
-		spa
-		por
-		fra
-		nld
-		deu
-		cmn
-		kor
+		1 - eng
+		2 - spa
+		3 - por
+		4 - fra
+		5 - nld
+		6 - deu
+		7 - cmn
+		8 - kor
+		9 - rus
+		10 - arb
 */
 
 /*
@@ -580,7 +582,7 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 
 <?php
 if (!isset($st) || !isset($Variant_major) || !isset($MajorLanguage) || !isset($SpecificCountry) || !isset($counterName)) {
-	die('Hack!');
+	die('Suspicious behavior!');
 }
 
 /*
@@ -612,13 +614,13 @@ $db = get_my_db();
 //session_unset();
 
 if (!isset($_SESSION['MajorLanguage'])) {
-	$_SESSION['MajorLanguage'] = $MajorLanguage;
-	$_SESSION['Variant_major'] = $Variant_major;
-	$_SESSION['SpecificCountry'] = $SpecificCountry;
-	$_SESSION['counterName'] = $counterName;
-	$_SESSION['Scriptname'] = $Scriptname;
-	$_SESSION['FacebookCountry'] = $FacebookCountry;
-	$_SESSION['MajorCountryAbbr'] = $MajorCountryAbbr;
+	$_SESSION['MajorLanguage'] = $MajorLanguage;				// e.g., "LN_French"
+	$_SESSION['Variant_major'] = $Variant_major;				// e.g., 'Variant_Fre'
+	$_SESSION['SpecificCountry'] = $SpecificCountry;			// e.g., "French"
+	$_SESSION['counterName'] = $counterName;					// e.g., "French"
+	$_SESSION['Scriptname'] = $Scriptname;						// = basename($_SERVER["SCRIPT_NAME"])
+	$_SESSION['FacebookCountry'] = $FacebookCountry;			// e.g., "fr_CA"
+	$_SESSION['MajorCountryAbbr'] = $MajorCountryAbbr;			// e.g., "fr"
 }
 
 // master list of the naviagational languages
@@ -631,13 +633,13 @@ if (!isset($_SESSION['nav_ln_array'])) {
 		die('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
 	}
 	while ($ln_row = $ln_result_temp->fetch_array()) {
-		$ln_temp[0] = $ln_row['translation_code'];
-		$ln_temp[1] = $ln_row['name'];
-		$ln_temp[2] = $ln_row['nav_fileName'];
-		$ln_temp[3] = $ln_row['ln_number'];
-		$ln_temp[4] = $ln_row['ln_abbreviation'];
-		$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;
-		$ln_temp_var .= 'LN_' . $ln_temp[1] . ', ';								// must have a space (' ') here
+		$ln_temp[0] = $ln_row['translation_code'];				// e.g., 'eng' [3 lower case letters]
+		$ln_temp[1] = $ln_row['name'];							// e.g., 'English' [name of the navigational language]
+		$ln_temp[2] = $ln_row['nav_fileName'];					// e.g., '00eng.php' [00[3 lower case letters].php]
+		$ln_temp[3] = $ln_row['ln_number'];						// e.g., 1
+		$ln_temp[4] = $ln_row['ln_abbreviation'];				// e.g., 'i'
+		$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;		// e.g., 'en' [2 lower case letters]
+		$ln_temp_var .= 'LN_' . $ln_temp[1] . ', ';				// must have a space (' ') here
 	}
 	$ln_result = $ln_temp_var;
 	$_SESSION['ln_result'] = $ln_result;

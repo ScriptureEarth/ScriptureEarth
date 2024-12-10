@@ -20,7 +20,7 @@ if (isset($_GET['idx'])) { $idx = $_GET['idx']; } else { die('Hack!'); }
 if (is_numeric($idx)) { $idx = (int)$idx; } else { die('Hack!'); }
 if (isset($_GET['type'])) {
 	$type = $_GET['type'];
-	$type = preg_replace('/^([a-zA-Z0-9]+)/', '$1', $type);
+	$type = preg_replace('/^([_a-zA-Z0-9]+)/', '$1', $type);                                 // sab_html, apk, ios, or google_play
 	if ($type == NULL) { die('Hack!'); }
 }
 else { die('Hack!'); }

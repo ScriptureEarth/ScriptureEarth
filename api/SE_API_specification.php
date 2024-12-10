@@ -68,7 +68,7 @@ div + p {                       /* div followed immediately by p  */
     <p><a href="#other_se">other_se.php</a> with the ISO 639-3 code or index the SE API will pull out the other SE audio/PDF/ePub files</p>
   </li>
   <li>
-    <p><a href="#website_links">website_links.php</a> with the ISO 639-3 code or index the SE API will pull out  the other website links (e.g. OneStory, iTunes, Facebook, and other links)</p>
+    <p><a href="#website_links">website_links.php</a> with the ISO 639-3 code or index the SE API will pull out the other website links (e.g., Kalaam Media, OneStory, iTunes, Facebook, Deaf Bibles, SIL Papua New Guinea, and other links)</p>
   </li>
   <li>
     <p><a href="#download_media">download_media.php</a> with the ISO 639-3 code or index the SE API will pull out  the downloadable SE files (OT and NT audio files, playlist audio files, playlist video files, The Word for Windows, etc.)</p>
@@ -650,7 +650,7 @@ div + p {                       /* div followed immediately by p  */
   <li>variant code</li>
   <li>variant name</li>
   <li>index</li>
-  <li>all of the website links (e.g. OneStory, iTunes, Facebook, and other links)</li>
+  <li>all of the website links (e.g., Kalaam Media, OneStory, iTunes, Facebook, Deaf Bibles, SIL Papua New Guinea, and other links)</li>
 </ul>
 </div>
 <p id='download_media'>download_media.php</p>

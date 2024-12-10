@@ -39,7 +39,7 @@ function Counter($c, $display = false) {				// $c = AllCounter or ... counter
 	global $st;
 	//$pos = strpos($c, ' ');							// $c is not suppossed to have a space within it 
 	//if ($pos === false) {								// not found
-	if (preg_match("/^(All|AllML|EnglishML|SpanishML|PortugueseML|DutchML|FrenchML|GermanML|ChineseML|KoreanML|RussianML)_?([A-Z]{2}_[a-z]{3}|[A-Z]{2}|_?[a-z]{3}|)_?Counter/", $c)) {		// => ZZ_zzz or _?zzz
+	if (preg_match("/^(All|AllML|EnglishML|SpanishML|PortugueseML|DutchML|FrenchML|GermanML|ChineseML|KoreanML|RussianML|ArabicML)_?([A-Z]{2}_[a-z]{3}|[A-Z]{2}|_?[a-z]{3}|)_?Counter/", $c)) {		// => ZZ_zzz or _?zzz
 		$filename = "counter/" . $c . ".dat";
 		if (file_exists($filename)) {
 			$count = file($filename);					// doesn't need fclose. reading an array.

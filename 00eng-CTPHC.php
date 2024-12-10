@@ -288,7 +288,7 @@
 				<li>Your use of any information or materials on this website is entirely at your own risk, for which we shall not be liable. It shall be your own responsibility to ensure that any products, services or information available through this website meet your specific requirements.</li>
 				<li>This website contains material which we are authorized to post. This material includes, but is not limited to, the design, layout, look, appearance and graphics. Reproduction is prohibited other than in accordance with the copyright and licensing designated on each product.</li>
 				<li>All other names, logos, product and service names, designs, and slogans on ScriptureEarth are the trademarks of their respective owners.</li>
-				<li>Unauthorised use of this website may give rise to a claim for damages and/or be a criminal offence.</li>
+				<li>Unauthorized use of this website may give rise to a claim for damages and/or be a criminal offense.</li>
 				<li>This website includes links to other websites. These links are provided for your convenience to provide further information. They do not signify that we endorse the website(s). We have no responsibility for the content of the linked website(s).</li>
 			</ul>
 		<?php

@@ -1,14 +1,14 @@
 <?php 
-
 /******************************************************************************/
 /*  Developed by:  Ken Sladaritz                                              */
 /*                 Marshall Computer Service                                  */
 /*                 2660 E End Blvd S, Suite 122                               */
 /*                 Marshall, TX 75672                                         */
 /*                 ken@marshallcomputer.net                                   */
+/*                                                                            */
 /*	Updated by:    Scott Starker                                              */
 /*                 SIL Mexico branch                                          */
-/*                 Catalina, AZ  85739                                        */
+/*                 Catalina, AZ 85739                                         */
 /*                 Scott_Starker@sil.org                                      */
 /******************************************************************************/
 
@@ -17,6 +17,7 @@
 if (!function_exists('get_my_db')) {
 	@ include_once '../include/conn.inc.php';			// Because of the "view.php".
 }
+
 /*
 $db = get_my_db();
 
@@ -38,10 +39,10 @@ $preferred_google_keyboard = $myrow['google_keyboard'];
 
 // translate phrase
 function translate($phrase, string $st=null, $sys) {
+	$db = get_my_db();
 	if ($st == null) $st = 'eng';
 	$myrow = [];
 	$st = preg_replace('/^([a-z]{3}).*/', '$1', $st);
-	$db = get_my_db();
 	if ($st!='eng') {
 		$query  = "SELECT * FROM translations_eng WHERE phrase = '$phrase'";
 		$result = $db->query($query) or die ($db->error);

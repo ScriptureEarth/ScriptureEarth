@@ -5,7 +5,7 @@
 	1) You will need to have the script phrases in English in all the php files in the 'build_phrases()' (see below).
 	2) Run this script (translations.php).
 	3) The script creates the English language table and displays the English phrases.
-	4) Fill out the whole page. Eg.
+	4) Fill out the whole page. E.g.,
 		Translation language code: dut
 		Translation language name: Dutch
 		...
@@ -13,17 +13,17 @@
 	6) All of the phrases in English will be displayed.
 	7) Click on 'Translate all Records'.
 	8) Make the additions in the 'Dutch' column.
-	when you have finished all of the records
+	When you have finished all of the records:
 	9) Click on 'Accept All Records' to save the dutch records.
 	10) To display Dutch in other scripts: include "../translate/functions.php";
-	11) Place $s t = "dut"; in the script you want to display Dutch AFTER include "../translate/functions.php";.
-	12) Place translat e('phrase in English', $s t, 'sys') wherever you want to display Dutch.
+	11) Place $st = "dut"; in the script you want to display Dutch AFTER include "../translate/functions.php";.
+	12) Place translate('phrase in English', $st, 'sys') wherever you want to display Dutch.
 */
 
 // Be very care in that the translate function in phrase has to begin and end with ' and
-// there must be a space in the middle of , and $s t.
+// there must be a space in the middle of , and $st.
 // Don't use any preceding and ending spaces in 'phrase'.
-// For example: translat e('phrase in English', $s t, 'sys')
+// For example: translate('phrase in English', $st, 'sys')
 
 /******************************************************************************/
 /* system translations                                                        */
@@ -33,9 +33,9 @@
 /*                 2660 E End Blvd S, Suite 122                               */
 /*                 Marshall, TX 75672                                         */
 /*                 ken@marshallcomputer.net                                   */
-/*																			  */
-/*	Documentation by:  Scott Starker										  */
-/*					   scott_starker@sil.org								  */
+/*                                                                            */
+/*  Documentation by:  Scott Starker                                          */
+/*    and changes by:  scott_starker@sil.org                                  */
 /******************************************************************************/
 
 /*
@@ -56,7 +56,7 @@ include "functions.php";
 
 // directories to search for scripts
 $query  = "UPDATE translations_eng SET active = '0'";
-mysql_query($query) or die (mysql_error());
+$db->query($query) or die ($db->error());
 echo "<div style='font-size: 14pt; font-weight: bold; '>Beginning the subfolder '../00-...' and '../00i-...':</div>";
 build_phrases('../');
 echo "<div style='font-size: 14pt; font-weight: bold; '>Ending the subfolder '../'.</div>";
@@ -73,19 +73,22 @@ echo "<br />";
 // Fixes the encoding to utf8
 function fixEncoding($in_str) {
 	$cur_encoding = mb_detect_encoding($in_str);
-	if($cur_encoding == "UTF-8" && mb_check_encoding($in_str,"UTF-8")) {
+	if ($cur_encoding == "UTF-8" && mb_check_encoding($in_str, "UTF-8")) {
 		return $in_str;
-	} else {
-		return utf8_encode($in_str);
+	}
+  elseif ($cur_encoding == "ISO-8859-1" && mb_check_encoding($in_str, "ISO-8859-1"))  {
+		//return utf8_encode($in_str);                                      // $in_str assumes it must be encoded as ISO-8859-1 (also known as "Latin 1") and converts to UTF-8
+    return mb_convert_encoding($in_str, 'UTF-8', 'ISO-8859-1');
 	}
 }
 
 // find translate phrases in scripts
 function build_phrases($dir) {
-	$scripts = scandir($dir);									// get a directory of the file in dir
-	foreach ($scripts as $script) {								// take 1 filename each from the directory
+  $db = get_my_db();
+	$scripts = scandir($dir);									                            // get a directory of the file in dir
+	foreach ($scripts as $script) {								                        // take 1 filename each from the directory
 		if ((strtolower(substr($script,-4))=='.php')) {
-			if ($script[0] == 'z' || $script == 'functions.php') {							// find the first character of string
+			if ($script[0] == 'z' || $script == 'functions.php') {						// find the first character of string
 				//echo $script . " skipped" . "<br />";
 				continue;
 			}
@@ -98,15 +101,15 @@ function build_phrases($dir) {
 			// before it was translate\(['\"].*, *[a-z$][a-z][a-z], *['\"]sys['\"]\)
 			preg_match_all("/translate\(['\"][^,]+['\"], [$][a-z][a-z], ['\"]sys['\"]\)/", file_get_contents($dir.$script), $strings);
 			//print_r($strings[0]);
-			foreach ($strings[0] as $string) {								// get the string from strings
+			foreach ($strings[0] as $string) {								                // get the string from strings
 			//print_r($string);
 				$string = substr($string, 10);
 				//echo $string."<br />";
 				//echo $string."&nbsp;".strpos($string, '$st, '."'sys'")."<br />";
-				if (strpos($string, '$st, '."'sys'") !== false)	{		// get the string position
-					//list($phrase, $nu) = explode(', $st,', $string);	// get phrase as it exists before ', $st,'
+				if (strpos($string, '$st, '."'sys'") !== false)	{		            // get the string position
+					//list($phrase, $nu) = explode(', $st,', $string);	            // get phrase as it exists before ', $st,'
 					$phrase = strstr($string, ', $st,', TRUE);
-					$phrase = trim($phrase, "'");						// trim off the first '
+					$phrase = trim($phrase, "'");						                      // trim off the first '
 					// skip language names
 					$skip = false;
 					if (stripos($phrase, '$myrow') !== false) {$skip = true;}
@@ -118,20 +121,20 @@ function build_phrases($dir) {
 						//$phrase=mysql_real_escape_string($phrase); //for making ' to \'
 						//$phrase=addcslashes($phrase, '%_'); //for making % to \% and _ to \_
 						echo $phrase."<br />";
-						$query  = "SELECT * FROM translations_eng WHERE phrase = \"".$phrase."\" ";
-						$result = mysql_query($query) or die (mysql_error());
-						$myrow  = mysql_fetch_array($result);
-						if($myrow) {
-							$query  = "UPDATE translations_eng SET active = '1' WHERE phrase = \"".$phrase."\" ";
-							mysql_query($query) or die (mysql_error());
-							$query  = "SELECT * FROM translations_eng WHERE phrase = \"".$phrase."\" ";
-							$result = mysql_query($query) or die (mysql_error());
+						$query  = "SELECT * FROM translations_eng WHERE phrase = '$phrase'";
+						$result = $db->query($query) or die ($db->error());
+						$myrow  = $result->fetch_array($result);
+						if ($myrow) {
+							$query  = "UPDATE translations_eng SET active = '1' WHERE phrase = '$phrase'";
+							$db->query($query) or die ($db->error());
+							$query  = "SELECT * FROM translations_eng WHERE phrase = '$phrase'";
+							$result = $db->query($query) or die ($db->error());
 							//$num=mysql_num_rows($result);
 							//echo mysql_result($result,0,"active");
 						}
 						else {
 							$query  = "INSERT INTO translations_eng SET active = '1', phrase = '$phrase'";
-							mysql_query($query) or die (mysql_error());
+							$db->query($query) or die ($db->error());
 						}
 					}
 					else echo $phrase . "skipped<br />";
@@ -158,8 +161,8 @@ END;
 
 if (isset($_POST['devent']) && $_POST['devent'] == 'sname') {
 	$query = "SELECT * FROM translations WHERE translation_code = \"".$_POST['scode']."\" LIMIT 1";
-	$result_st = mysql_query($query) or die (mysql_error());
-	$myrow_st  = mysql_fetch_array($result_st);
+	$result_st = $db->query($query) or die ($db->error());
+	$myrow_st  = $db->fetch_array($result_st);
 	$_POST['dcode'] = $myrow_st['translation_code'];
 	$_POST['dname'] = $myrow_st['name'];
 	$_POST['dgoogle_code'] = $myrow_st['google_code'];
@@ -167,17 +170,17 @@ if (isset($_POST['devent']) && $_POST['devent'] == 'sname') {
 	$_POST['dlanguage_direction'] = $myrow_st['language_direction'];
 	// language index
 	$query = "SELECT * FROM translations_".$_POST['dcode']." WHERE id = 99999";
-	$result = mysql_query($query) or die (mysql_error());
-	$myrow  = mysql_fetch_array($result);
+	$result = $db->query($query) or die ($db->error());
+	$myrow  = $db->fetch_array($result);
 	$_POST['dcharIndex'] = $myrow['phrase'];
 }
 
 if (isset($_POST['devent']) && $_POST['devent'] == "delete" && $_POST['dcode']) {
-	$result=@mysql_query ("DELETE FROM translations WHERE translation_code = \"".$_POST['dcode']."\" LIMIT 1");
-	$myrow=@mysql_fetch_array($result);
+	$result=@$db->query ("DELETE FROM translations WHERE translation_code = \"".$_POST['dcode']."\" LIMIT 1");
+	$myrow=@$db->fetch_array($result);
 	$_POST['devent'] = "clear";  
 	$query = "DROP TABLE `translations_".$_POST['dcode']."`";
-	mysql_query($query);		// or die (mysql_error());
+	$db->query($query);		// or die ($db->error());
 	$submit_message = translate('Record deleted successfully', $st, 'sys');
 }
 
@@ -195,8 +198,8 @@ if (isset($_POST['dname']) && $_POST['dname'])
  if (isset($_POST['devent']) && $_POST['devent'] == "accept") 
  {
   $query  = "SELECT * FROM translations WHERE translation_code = \"".$_POST['dcode']."\" LIMIT 1";
-  $result = mysql_query($query) or die (mysql_error());
-  $myrow  = mysql_fetch_array($result);
+  $result = $db->query($query) or die ($db->error());
+  $myrow  = $db->fetch_array($result);
   if ($myrow)
   {
    $query = 
@@ -207,7 +210,7 @@ if (isset($_POST['dname']) && $_POST['dname'])
      language_direction  = '".$_POST['dlanguage_direction']."'
     WHERE translation_code = \"".$_POST['dcode']."\"
     LIMIT 1";
-   mysql_query($query) or die (mysql_error());
+    $db->query($query) or die ($db->error());
 
    // language index
    $query = 
@@ -215,7 +218,7 @@ if (isset($_POST['dname']) && $_POST['dname'])
      phrase = '".$_POST['dcharIndex']."'
      WHERE id = 99999
    ";
-   mysql_query($query) or die (mysql_error()); 
+   $db->query($query) or die ($db->error()); 
   }
  
   if(!$myrow)
@@ -228,14 +231,14 @@ if (isset($_POST['dname']) && $_POST['dname'])
     google_keyboard     = '".$_POST['dgoogle_keyboard']."',
     language_direction  = '".$_POST['dlanguage_direction']."'
    ";
-   mysql_query($query) or die (mysql_error()); 
+   $db->query($query) or die ($db->error()); 
 
    $query =
    "CREATE TABLE `translations_".$_POST['dcode']."` (
     `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,   
     `phrase` TEXT NOT NULL ) TYPE = MYISAM ;
    ";
-   mysql_query($query) or die (mysql_error()); 
+   $db->query($query) or die ($db->error()); 
   }
 
 
@@ -243,19 +246,19 @@ if (isset($_POST['dname']) && $_POST['dname'])
   foreach($_POST['phrase'] as $id=>$phrase)
   {
     $query  = "SELECT * FROM translations_".$_POST['dcode']." WHERE id = \"".$id."\" ";
-    $result = mysql_query($query) or die (mysql_error());
-    $myrow  = mysql_fetch_array($result);
+    $result = $db->query($query) or die ($db->error());
+    $myrow  = $db->fetch_array($result);
     if($myrow)
     {
      if($phrase)
      {
       $query  = "UPDATE translations_".$_POST['dcode']." SET phrase = \"".$phrase."\" WHERE id = \"".$id."\" ";
-      $result = mysql_query($query) or die (mysql_error());
+      $result = $db->query($query) or die ($db->error());
      }
      else
      {
       $query = "DELETE FROM translations_".$_POST['dcode']." WHERE id = \"".$id."\" LIMIT 1";
-      $result = mysql_query ($query);
+      $result = $db->query ($query);
      }
     }
     else
@@ -266,7 +269,7 @@ if (isset($_POST['dname']) && $_POST['dname'])
       "INSERT INTO translations_".$_POST['dcode']." SET 
         phrase = \"".$phrase."\", 
         id = \"".$id."\" ";
-      $result = mysql_query($query);
+      $result = $db->query($query);
      }
     }
   }
@@ -288,38 +291,38 @@ $query =
  `phrase` TEXT NOT NULL,   
  `active` VARCHAR(1) NOT NULL ) ENGINE = MYISAM ;
 ";
-mysql_query($query) or die (mysql_error()); 
+$db->query($query) or die ($db->error()); 
 
 //$query  = "UPDATE translations_eng SET active = 0";			// doesn't work -- Scott Starker
-//$result = mysql_query($query) or die (mysql_error());
+//$result = $db->query($query) or die ($db->error());
 
 $query  = 
 "SELECT LN_English FROM LN_English
  WHERE ISO = \"".$_POST['dcode']."\"
  LIMIT 1";
-$result_st = mysql_query($query) or die (mysql_error());
-$myrow_st  = mysql_fetch_array($result_st);
+$result_st = $db->query($query) or die ($db->error());
+$myrow_st  = $db->fetch_array($result_st);
 if(isset($_POST['dname']) && !$_POST['dname']) {$_POST['dname'] = $myrow_st['LN_English'];}
 
 // add language names to translations
 $t = array();
 $query  = "SELECT * FROM translations ORDER BY name";
-$result_t = mysql_query($query) or die (mysql_error());
-while ($myrow_t=mysql_fetch_array($result_t))
+$result_t = $db->query($query) or die ($db->error());
+while ($myrow_t=$db->fetch_array($result_t))
 	{$t[] = $myrow_t['name'];}
 $t[] = $_POST['dname'];
 print_r($t);
 foreach ($t as $name) {
 	$query  = "SELECT * FROM translations_eng WHERE phrase = \"".$name."\" ";
-	$result = mysql_query($query) or die (mysql_error());
-	$myrow  = mysql_fetch_array($result);
+	$result = $db->query($query) or die ($db->error());
+	$myrow  = $db->fetch_array($result);
 	if($myrow) {
 		$query  = "UPDATE translations_eng SET active = 1 WHERE phrase = \"".$name."\" ";
-		mysql_query($query) or die (mysql_error());
+		$db->query($query) or die ($db->error());
 	}
 	else {
 		$query  = "INSERT INTO translations_eng SET active = 1, phrase = \"".$name."\" ";
-		mysql_query($query);
+		$db->query($query);
 	}
 }
 
@@ -335,14 +338,14 @@ if(isset($_POST['dcode']) && $_POST['dcode'])
  else
  { 
   $query  = "SELECT * FROM translations_eng WHERE active = 1";
-  $result = mysql_query($query) or die (mysql_error());
-  while ($myrow=mysql_fetch_array($result))
+  $result = $db->query($query) or die ($db->error());
+  while ($myrow=$db->fetch_array($result))
   {
    if($_POST['dcode']!='eng')
    {
     $query  = "SELECT * FROM translations_".$_POST['dcode'] ." WHERE id = \"".$myrow['id']."\" ";
-    $result_alt = mysql_query($query); // or die (mysql_error());
-    $myrow_alt  = mysql_fetch_array($result_alt);
+    $result_alt = $db->query($query); // or die ($db->error());
+    $myrow_alt  = $db->fetch_array($result_alt);
 
     if($_POST['devent']=='translate' and !$myrow_alt['phrase'])
     {
@@ -397,8 +400,8 @@ if(isset($_POST['dcode']) && $_POST['dcode'])
 
 $sname_options = "";
 $query  = "SELECT * FROM translations ORDER BY name";
-$result = mysql_query($query) or die (mysql_error());
-while ($myrow=mysql_fetch_array($result))
+$result = $db->query($query) or die ($db->error());
+while ($myrow=$db->fetch_array($result))
 {$sname_options .= "<option value=\"". $myrow['translation_code']."\">".$myrow['translation_code']." ~ ".translate($myrow['name'], $st, 'sys');}
 
 

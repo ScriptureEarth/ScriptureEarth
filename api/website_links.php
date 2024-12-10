@@ -2,15 +2,18 @@
 /*
 links table have ISO, ROD_Code, Variant_Code, and ISO_ROD_index
 
-links table - map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0
+links table - map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 AND `email` = 0
 	company (text)
     company_title (text)
 	URL (https)
 
-    OneStory (company)
-	iTunes (company)
+    Kalaam (Kalaam field = 1)
+	OneStory (company)
 	Facebook (company)
+	iTunes (company)
 	Other Links (company)
+	Deaf Bibles (company)
+	Papua New Guinea (company)
 */
 
 $index = 0;
@@ -29,28 +32,28 @@ if ($index == 0) {
 }
 
 if ($index== 1) {
-    $stmt_links = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `company`, `company_title`, `URL` FROM `links` WHERE ISO_ROD_index = ? AND map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 ORDER BY `ISO`, `ROD_Code`, `Variant_Code`");
+    $stmt_links = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `company`, `company_title`, `URL` FROM `links` WHERE ISO_ROD_index = ? AND map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 AND `email` = 0 ORDER BY `ISO`, `ROD_Code`, `Variant_Code`");
     $stmt_links->bind_param('i', $idx);															// bind parameters for markers
 }
 else {
 	if ($iso == 'ALL') {
-		$stmt_links = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `company`, `company_title`, `URL` FROM `links` WHERE map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 ORDER BY `ISO`, `ROD_Code`, `Variant_Code`");
+		$stmt_links = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `company`, `company_title`, `URL` FROM `links` WHERE map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 AND `email` = 0 ORDER BY `ISO`, `ROD_Code`, `Variant_Code`");
 		//$stmt_links->bind_param();														// bind parameters for markers
 	}
 	elseif ($rod == 'ALL' && $var == 'ALL') {
-		$stmt_links = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `company`, `company_title`, `URL` FROM `links` WHERE `ISO` = ? AND map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 ORDER BY `ISO`, `ROD_Code`, `Variant_Code`");
+		$stmt_links = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `company`, `company_title`, `URL` FROM `links` WHERE `ISO` = ? AND map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 AND `email` = 0 ORDER BY `ISO`, `ROD_Code`, `Variant_Code`");
 		$stmt_links->bind_param('s', $iso);														// bind parameters for markers
 	}
 	elseif ($rod == 'ALL') {
-		$stmt_links = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `company`, `company_title`, `URL` FROM `links` WHERE `ISO` = ? AND `Variant_Code` = ? AND map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 ORDER BY `ISO`, `ROD_Code`, `Variant_Code`");
+		$stmt_links = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `company`, `company_title`, `URL` FROM `links` WHERE `ISO` = ? AND `Variant_Code` = ? AND map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 AND `email` = 0 ORDER BY `ISO`, `ROD_Code`, `Variant_Code`");
 		$stmt_links->bind_param('ss', $iso, $var);												// bind parameters for markers
 	}
 	elseif ($var == 'ALL') {
-			$stmt_links = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `company`, `company_title`, `URL` FROM `links` WHERE `ISO` = ? AND `ROD_Code` = ? AND map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 ORDER BY `ISO`, `ROD_Code`, `Variant_Code`");
+			$stmt_links = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `company`, `company_title`, `URL` FROM `links` WHERE `ISO` = ? AND `ROD_Code` = ? AND map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 AND `email` = 0 ORDER BY `ISO`, `ROD_Code`, `Variant_Code`");
 			$stmt_links->bind_param('ss', $iso, $rod);											// bind parameters for markers
 	}
 	else {
-		$stmt_links = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `company`, `company_title`, `URL` FROM `links` WHERE `ISO` = ? AND `ROD_Code` = ? AND `Variant_Code` = ? AND map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 ORDER BY `ISO`, `ROD_Code`, `Variant_Code`");
+		$stmt_links = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `company`, `company_title`, `URL` FROM `links` WHERE `ISO` = ? AND `ROD_Code` = ? AND `Variant_Code` = ? AND map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 AND `email` = 0 ORDER BY `ISO`, `ROD_Code`, `Variant_Code`");
 		$stmt_links->bind_param('sss', $iso, $rod, $var);										// bind parameters for markers
 	}
 }

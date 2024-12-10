@@ -288,6 +288,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	}
 
 	$GooglePlay = 0;
+	$Kalaam = 0;
 	$iTunes = 0;
 	$moreLinks = 0;
 	$linksMaps = 0;
@@ -297,12 +298,16 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		$result_GP=$db->query($query);
 		$GooglePlay = $result_GP->num_rows;					// number of rows
 
+		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND Kalaam = 1";
+		$result_KM=$db->query($query);
+		$Kalaam = $result_KM->num_rows;						// number of rows
+
 		$query = "SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND company = 'iTunes Play Store'";
 		$result_iTunes = $db->query($query);
 		$iTunes = $result_iTunes->num_rows;					// number of rows
 
 		// onestory, itunes, facebook, deaf\.?bible, and anything else
-		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND company <> 'iTunes Play Store' AND email = 0 AND map = 0 AND buy = 0 AND BibleIs = 0 AND BibleIsGospelFilm = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 ORDER BY URL";
+		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND company <> 'iTunes Play Store' AND email = 0 AND map = 0 AND buy = 0 AND BibleIs = 0 AND BibleIsGospelFilm = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 AND `Kalaam` = 0 ORDER BY `URL`";
 		$result_moreLinks=$db->query($query);
 		$moreLinks = $result_moreLinks->num_rows;			// number of rows
 
@@ -396,9 +401,9 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	const DisplayAudio = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_other_titles': <?php echo $other_titles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
 	const DisplayVideo = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
 	const DisplayApp = {'Dis_App': <?php echo $App; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>};
-	const DisplayOther = {'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_eBible': <?php echo $eBible; ?>};
+	const DisplayOther = {'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_Kalaam': <?php echo $Kalaam; ?>};
 	const DisplayMap = {'Dis_Map': <?php echo $SE_Map; ?>};
-	const DisplayAll = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_otherTitles': <?php echo $other_titles; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_links': <?php echo $links; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_App': <?php echo $App; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>};
+	const DisplayAll = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_otherTitles': <?php echo $other_titles; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_links': <?php echo $links; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_App': <?php echo $App; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_Kalaam': <?php echo $Kalaam; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>};
 
 	// set display = "table" for all "DisplayZZZZZZ" Object.entries()
 	function menuEnableText() {
@@ -771,18 +776,9 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	// The comments are for the implemenation of the chapters. Loren and Bill decided to delete the chapters.
 	if ($SAB) {
 		/*
-			$SAB (bitwise):
-				decimal		binary		meaning
-				1			000001		NT Text with audio
-				2			000010		OT Text with audio
-				4			000100		NT Text (with audio where available)
-				8			001000		OT Text (with audio where available)
-				16			010000		NT View text
-				32			100000		OT View text
-				64		  01000000		NT Video
-				128		  10000000		OT Video
+			column SAB_Audio is booleon
+			column SAB_number: The same ISO/ROD_Code/Variant_Code/ISO_ROD_index but diffenent "subfolder."
 		*/
-			// If the CMA person is SURE about whether is has video!
 		/*
 			How about creating a new table called SAB_folder table and a new field called sab_folder. ("tzoCHA") Then grab the data and create new records for SAB_folder using the code below.
 			But it won't work for previous records pre scriptoria.
@@ -791,7 +787,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 			Note: the js sessionStorage is extended to any new tabs and windows when they are opened from the parent window!
 		*/
 		$SABindex=0;
-		$query="SELECT `url`, `subfolder`, `description`, `pre_scriptoria` FROM `SAB_scriptoria` WHERE `ISO_ROD_index` = '$ISO_ROD_index'";			// parent table of SAB table
+		$query="SELECT `url`, `subfolder`, `description` FROM `SAB_scriptoria` WHERE `ISO_ROD_index` = '$ISO_ROD_index'";			// parent table of SAB table
 		$result_sub=$db->query($query);
 		if ($result_sub->num_rows > 0) {
 			echo '<table id="Dis_SAB">';
@@ -799,7 +795,6 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				$SABurl=trim($row_sub['url']);
 				$subfolder=trim($row_sub['subfolder']);
 				$description=trim($row_sub['description']);
-				$preScriptoria=trim($row_sub['pre_scriptoria']);
 				if ($SABurl != '') {
 					echo '<tr>';
 						echo '<td style="width: 45px; ">';
@@ -814,204 +809,6 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 							echo '</div>';
 						echo '</td>';
 					echo '</tr>';
-				}
-				elseif ($preScriptoria != '') {																		// field set with preScriptoria
-					$SAB_Path = './data/'.$ISO.'/sab/';
-					if (file_exists("./data/$ISO/sab/js/".(strlen($preScriptoria) == 3 ? '' : $preScriptoria.'-') . 'book-names.js')) {			// not on the PHP server but my office/home oomputer
-						$SAB_Read = file("./data/$ISO/sab/js/".(strlen($preScriptoria) == 3 ? '' : $preScriptoria.'-') . 'book-names.js');		// read the '[ISO][SABnum]-book-names.js' file
-						foreach ($SAB_Read as $line_num => $line) {													// read through the lines
-							$l = '';
-							$l = preg_replace('/.*-([0-9]{2}-[A-Z0-9][A-Z]{2})-.*/', "$1", $line);					// set $l to e.g. '01-GEN'
-							if ($l == $line) continue;																// if not $ln = $line
-							$ln = (int)substr($l, 0, 2);															// get the number of the book"
-							if ($ln > 0 && $ln <= 39) {							// OT books							// if the book from the OT
-								$SAB_OT_lists[] = $ln;
-							}
-							elseif ($ln >= 41 && $ln <= 66) {					// NT books							// if the book from the NT
-								$SAB_NT_lists[] = $ln;
-							}
-							else {
-								// this line perminently left empty
-							}
-						}
-					}
-					else {
-						continue;
-					}
-
-					$SAB_OT_lists = [];
-					$SAB_NT_lists = [];
-					/*
-						OT Scripture App Builder (SAB) HTML
-					*/
-					$query="SELECT `ISO_ROD_index` FROM `SAB` WHERE `ISO_ROD_index` = '$ISO_ROD_index' AND `SAB_Book` <= 39 LIMIT 1";	// test to see if OT is there
-					$result2=$db->query($query);
-					$num=$result2->num_rows;
-					if ($num > 0) {
-						$OT_SAB_Book = [];
-						$OT_SAB_Book_Chapter = [];
-						$OT_SAB_a_index = 0;
-						?>
-						<tr id="SAB">
-							<td style='width: 45px; '>
-								<?php
-								echo "<div style='display: inline; ' id='OT_SABRL_a'><img class='iconActions' ";
-								if ($SAB & 2) {
-									echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text with audio', $st, 'sys')."' title='".translate('Text with audio', $st, 'sys')."'";
-									$SynchronizedTextAndAudio = 1;
-								}
-								else if ($SAB & 8) {
-									echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text (with audio where available)', $st, 'sys')."' title='".translate('Text (with audio where available)', $st, 'sys')."'";
-								}
-								else {				// $SAB & 32
-									echo "src='../images/SAB-text-icon.jpg' alt='".translate('View text', $st, 'sys')."' title='".translate('View text', $st, 'sys')."'";
-								}
-								echo "/></div>";
-							echo "</td>";
-							echo "<td>";
-								?>
-								<div class='SABReadListen'>
-									<?php
-									echo "<div style='display: inline; ' id='OT_SABRL_b'>";
-									if ($SAB & 2) {
-										echo translate('Text with audio', $st, 'sys') . "</div>:";
-									}
-									else if ($SAB & 8) {
-										echo translate('Text (with audio where available)', $st, 'sys') . "</div>:";
-									}
-									else {		// $SAB & 32
-										echo translate('View text', $st, 'sys') . "</div>:";
-									}
-									echo " <div style='display: inline; ' id='OTSABSelects' style='display: inline; '>";
-									// Get and display Books
-									$query_array="SELECT * FROM SAB WHERE ISO_ROD_index = '$ISO_ROD_index' AND SAB_Book = ? AND (Book_Chapter_HTML IS NOT null AND trim(Book_Chapter_HTML) <> '') ORDER BY Book_Chapter_HTML ASC";
-									$stmt = $db->prepare($query_array);										// create a prepared statement
-									echo "<form name='form_OT_SAB_Books' id='form_OT_SAB_Books' style='display: inline; '>";
-									echo "<select name='OT_SAB_Book' id='OT_SAB_Book' class='selectOption'>";
-									echo "<option>".translate('Choose One...', $st, 'sys')."</option>";
-									foreach ($OT_array[OT_EngBook] as $a) {									// display the OT books in the English language. i.e. $a = 'Genesis', etc.
-										if (!empty($SAB_OT_lists)) {										// not on the PHP server but my office/home oomputer OR if $temp_Book_Chapter_HTML == ''
-											$t = 1;
-											foreach ($SAB_OT_lists as $SAB_OT_list) {						// go through the 'book-names.js' array from above
-												if ((int)$OT_array[0][$t] == ($SAB_OT_list + 0)) {			// see if the number of the book 'book-names.js' array matches the number of the $OT_array[0] book number
-													break;
-												}
-												$t++;
-											}
-											if ($t > count($OT_array[0])) continue;							// if the match is not found then continue
-										}
-										$temp = ($OT_SAB_a_index)+1;
-										$stmt->bind_param("i", $temp);										// bind parameters for markers
-										$stmt->execute();													// execute query
-										$result_array = $stmt->get_result();								// instead of bind_result (used for only 1 record):
-										$num_array=$result_array->num_rows;
-										if ($result_array && $num_array > 0) {
-											$OT_SAB_Book[] = $OT_SAB_a_index;
-											$r_array = $result_array->fetch_array(MYSQLI_ASSOC);			// now you can fetch the results into an array for 'for' - NICE (as oppossed to bind_result)
-											$OT_Book_Chapter_HTML = trim($r_array['Book_Chapter_HTML']);	// 1st chapter
-											$SAB_Audio = $r_array['SAB_Audio'];								// is there audio in the 1st chapter?
-											echo "<option id='OT_SAB_Book_{$OT_SAB_a_index}' name='OT_SAB_Book_{$OT_SAB_a_index}' class='speaker' value='{$OT_Book_Chapter_HTML}'>".($SAB_Audio ? '&#128266; ' : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;').$a."</option>";
-										}
-										$OT_SAB_a_index++;
-									}
-									echo "</select>";
-									echo "</form>";
-									$stmt->close();															// close statement
-									if ($description != '') {
-										echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
-									}
-									echo "</div>";
-									?>
-								</div>
-							</td>
-						</tr>
-						<?php
-					}
-					/*
-						NT Scripture App Builder (SAB) HTML
-					*/
-					$query="SELECT `ISO_ROD_index` FROM `SAB` WHERE `ISO_ROD_index` = '$ISO_ROD_index' AND `SAB_Book` >= 41 LIMIT 1";	// test to see if NT is there
-					$result2=$db->query($query);
-					$num=$result2->num_rows;
-					if ($num > 0) {
-						$NT_SAB_Book = [];
-						$NT_SAB_Book_Chapter = [];
-						$NT_SAB_a_index = 0;
-						?>
-						<tr>
-							<td style='width: 45px; '>
-								<?php
-								echo "<div style='display: inline; ' id='NT_SABRL_a'><img class='iconActions' ";
-								if ($SAB & 1) {
-									echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text with audio', $st, 'sys')."' title='".translate('Text with audio', $st, 'sys')."'";
-									$SynchronizedTextAndAudio = 1;
-								}
-								else if ($SAB & 4) {
-									echo "src='../images/SAB-readListen-icon.png' alt='".translate('Text (with audio where available)', $st, 'sys')."' title='".translate('Text (with audio where available)', $st, 'sys')."'";
-								}
-								else {		// $SAB & 16
-									echo "src='../images/SAB-text-icon.jpg' alt='".translate('View text', $st, 'sys')."' title='".translate('View text', $st, 'sys')."'";
-								}
-								echo "/></div>";
-							echo "</td>";
-							echo "<td>";
-								?>
-								<div class='SABReadListen'>
-									<?php
-									echo "<div style='display: inline; ' id='NT_SABRL_b'>";
-									if ($SAB & 1) {
-										echo translate('Text with audio', $st, 'sys') . "</div>";
-									}
-									else if ($SAB & 4) {
-										echo translate('Text (with audio where available)', $st, 'sys') . "</div>";
-									}
-									else {		// $SAB & 16
-										echo translate('View text', $st, 'sys') . "</div>";
-									}
-									echo " <div style='display: inline; ' id='NTSABSelects' style='display: inline; '>";
-									$query_array="SELECT * FROM SAB WHERE ISO_ROD_index = '$ISO_ROD_index' AND SAB_Book = ? AND (Book_Chapter_HTML IS NOT null AND trim(Book_Chapter_HTML) <> '') ORDER BY Book_Chapter_HTML ASC";
-									$stmt = $db->prepare($query_array);										// create a prepared statement
-									echo "<form name='form_NT_SAB_Books' id='form_NT_SAB_Books' style='display: inline; '>";
-									echo "<select name='NT_SAB_Book' id='NT_SAB_Book' class='selectOption'>";
-									echo "<option>".translate('Choose One...', $st, 'sys')."</option>";
-									foreach ($NT_array[NT_EngBook] as $a) {									// display the NT books in the MAJOR language!
-										if (!empty($SAB_NT_lists)) {										// not on the PHP server but my office/home oomputer OR if $temp_Book_Chapter_HTML == ''
-											$t = 1;
-											foreach ($SAB_NT_lists as $SAB_NT_list) {						// go through the 'book-names.js' array from above
-												if ((int)$NT_array[0][$t] == ($SAB_NT_list - 40)) {			// see if the number of the book 'book-names.js' array matches the number of the $OT_array[0] book number
-													break;
-												}
-												$t++;
-											}
-											if ($t > count($NT_array[0])) continue;							// if the match is not found then continue
-										}
-										$temp = ($NT_SAB_a_index)+41;
-										$stmt->bind_param("i", $temp);										// bind parameters for markers
-										$stmt->execute();													// execute query
-										$result_array = $stmt->get_result();								// instead of bind_result (used for only 1 record):
-										$num_array=$result_array->num_rows;
-										if ($result_array && $num_array > 0) {
-											$NT_SAB_Book[] = $NT_SAB_a_index;
-											$r_array = $result_array->fetch_array(MYSQLI_ASSOC);			// now you can fetch the results into an array for 'for' - NICE (as oppossed to bind_result)
-											$NT_Book_Chapter_HTML = trim($r_array['Book_Chapter_HTML']);	// 1st chapter
-											$SAB_Audio = $r_array['SAB_Audio'];								// is there audio in the 1st chapter?
-											echo "<option id='NT_SAB_Book_".$NT_SAB_a_index."' name='NT_SAB_Book_".$NT_SAB_a_index."' class='speaker' value='".$NT_Book_Chapter_HTML."'>".($SAB_Audio ? '&#128266; ' : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;').$a."</option>";
-										}
-										$NT_SAB_a_index++;
-									}
-									echo "</select>";
-									echo "</form>";
-									$stmt->close();															// close statement
-									if ($description != '') {
-											echo '&nbsp;&nbsp;&nbsp;&nbsp;' . $description;
-										}
-									echo "</div>";
-									?>
-								</div>
-							</td>
-						</tr>
-						<?php
-					}
 				}
 				else {
 					$SABindex++;
@@ -1528,6 +1325,37 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				<td style='width: 45px; '>
 					<?php
 					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to organization.', $st, 'sys')."'><img class='iconActions' src='../images/Google_Play-icon.jpg' alt='".translate('Google Play', $st, 'sys')."' title='".translate('Google Play', $st, 'sys')."' /></div>";
+				echo "</td>";
+				echo "<td>";
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to organization.', $st, 'sys')."'>".translate('Link', $st, 'sys')." : ";
+					echo $company;
+					if ($company_title != '' && !is_null($company_title)) {
+						echo ' ' . $company_title;
+					}
+					echo '</div>';
+					?>
+				</td>
+			</tr>
+			<?php
+		}
+		echo '</table>';
+	}
+/*
+	*************************************************************************************************************
+		Is it Kalaam? (table links)
+	*************************************************************************************************************
+*/
+	if ($Kalaam && $Internet) {
+		echo '<table id="Dis_Kalaam">';
+		while ($r2 = $result_KM->fetch_array(MYSQLI_ASSOC)) {
+			$company_title=trim($r2['company_title']);
+			$company=trim($r2['company']);
+			$URL=trim($r2['URL']);
+			?>
+			<tr>
+				<td style='width: 45px; '>
+					<?php
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to organization.', $st, 'sys')."'><img class='iconActions' src='../images/kalaam-icon.jpg' alt='".translate('Kalaam Media', $st, 'sys')."' title='".translate('Kalaam', $st, 'sys')."' /></div>";
 				echo "</td>";
 				echo "<td>";
 					echo "<div class='linePointer' onclick=\"window.open('$URL')\" title='".translate('Link to organization.', $st, 'sys')."'>".translate('Link', $st, 'sys')." : ";
@@ -2474,12 +2302,12 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		Is it playlist video?
 	*************************************************************************************************************
 */
-	if ($PlaylistVideo) {																					//  test for $Internet is 1 1/2 screens down
+	if ($PlaylistVideo) {																	//  test for $Internet is 1 1/2 screens down
 		$query="SELECT PlaylistVideoTitle, PlaylistVideoFilename FROM PlaylistVideo WHERE ISO_ROD_index = '$ISO_ROD_index' AND PlaylistVideoDownload = 0";
 		$result_PlaylistVideo=$db->query($query);
 		if ($result_PlaylistVideo->num_rows > 0) {
 			echo '<table id="Dis_PlaylistVideo">';
-			$z=0;
+			$z=0;																			// var orgVideoPixels_<?php echo $z; ? > = 0;
 			$SEVideoPlaylist=100;
 			while ($r_Playlist = $result_PlaylistVideo->fetch_array(MYSQLI_ASSOC)) {
 				$SEVideoPlaylist++;
@@ -2497,18 +2325,18 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				// JESUSFilm-bzs.txt, etc.
 				if (preg_match('/^[a-zA-Z]+-('.$ISO.'[a-zA-Z0-9]*)(-|\.)/', $PlaylistVideoFilename, $matches)) {	// get the ISO code and if there is anything attached before the '-'
 					$ISO_dialect = $matches[1];
-					preg_match('/^([a-zA-Z]+)-/i', $PlaylistVideoFilename, $matches);						// get the left most letters before the '-'
-					$PLVideo = strtolower($matches[1]);														// to lower case ('jesusfilm', etc.)
+					preg_match('/^([a-zA-Z]+)-/i', $PlaylistVideoFilename, $matches);		// get the left most letters before the '-'
+					$PLVideo = strtolower($matches[1]);										// to lower case ('jesusfilm', etc.)
 				}
 				// bzj-ScriptureAnim.txt, etc.
-				elseif (preg_match('/^('.$ISO.'[a-zA-Z0-9]*)-/', $PlaylistVideoFilename, $matches)) {		// get the ISO code and if there is anything attached before the '-'
+				elseif (preg_match('/^('.$ISO.'[a-zA-Z0-9]*)-/', $PlaylistVideoFilename, $matches)) {	// get the ISO code and if there is anything attached before the '-'
 					$ISO_dialect = $matches[1];
-					if (preg_match('/-([a-zA-Z]+)(-|\.)/i', $PlaylistVideoFilename, $matches)) {			// get the left most letters before the '-'
+					if (preg_match('/-([a-zA-Z]+)(-|\.)/i', $PlaylistVideoFilename, $matches)) {	// get the left most letters before the '-'
 						if (empty($matches[1])) {
-							//die('ERROR. Non-alphabetic characters in '.$matches[0]);							// produces "PHP Warning:  Undefined array key 1 in /home/se/public_html/include/00-SpecificLanguage.inc.php"
+							//die('ERROR. Non-alphabetic characters in '.$matches[0]);					// produces "PHP Warning:  Undefined array key 1 in /home/se/public_html/include/00-SpecificLanguage.inc.php"
 						}
 						else {
-							$PLVideo = strtolower($matches[1]);												// to lower case ('jesusfilm', etc.)
+							$PLVideo = strtolower($matches[1]);								// to lower case ('jesusfilm', etc.)
 						}
 					}
 					else {
@@ -2532,20 +2360,23 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				}
 				
 				/*******************************************************************************************************************
-					returns a string of the contents of the txt file
+					get a string of the contents of the txt file
 				********************************************************************************************************************/
 				$VideoFilenameContents = file_get_contents($filename);						// returns a string of the contents of the txt file
 				$VideoConvertContents = explode("\n", $VideoFilenameContents);				// create array separate by new line
 				
 				$VideoConvertWithTab = [];
+				$tempArray = [];
 				$i = 0;
 				$BibleStory = 0;
-				$VideoName = '';
 				$image = 0;																	// just the ISO
+				$VideoName = '';
 				$bookName = '';
-				$tempArray = [];
 				$videoIcon = '';
 				
+				/*******************************************************************************************************************
+					save the correct icon based on the third line of the txt file
+				********************************************************************************************************************/
 				$tempArray = explode("\t", $VideoConvertContents[2]);						// $Internet test. skips first 2 lines
 				if (count($tempArray) < 3) {
 					file_put_contents('SpecificLanguage.txt', 'filename: #'.$filename.'#; $VideoConvertContents[1]: #'.$VideoConvertContents[1]."#\n", FILE_APPEND | LOCK_EX);
@@ -2562,6 +2393,10 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				else {
 					$videoIcon = 'youtube-icon.jpg';
 				}
+
+				/*******************************************************************************************************************
+					save the image based on the first line of the txt file
+				********************************************************************************************************************/
 				if (preg_match("/image/i", $VideoConvertContents[0])) {						// first line of $filename
 					preg_match("/^([^\t]*)\t/", $VideoConvertContents[0], $match);			// first word of the first line (Genesis, Luke, Acts, Jesus Film, etc.)
 					$bookName = str_replace(' ', '', $match[0]);							// take out spaces
@@ -2594,16 +2429,17 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				}
 				
 				for (; $i < count($VideoConvertContents); $i++) {							// iterate through $VideoConvertContents looking for a 0 and 1 or a letter (the very first line of the txt file).
-					if (strstr($VideoConvertContents[$i], "\t", true) == '0') {				// true = before the first occurance (\t); the title
+					if (strstr($VideoConvertContents[$i], "\t", true) == '0') {				// true = get the string before the first occurance (\t); returns '0', '1', '2', etc.
 						$BibleStory = $i;													// Bible Story = $i
 						$VideoNames = explode("\t", $VideoConvertContents[0]);
-						$VideoName = $VideoNames[1];
+						$VideoName = $VideoNames[1];										// the title
 						continue;
 					}
-					if (strstr($VideoConvertContents[$i], "\t", true) == '1') {				// true = before the first occurance (\t); the 1st new testament entry
-						break;
+					if (strstr($VideoConvertContents[$i], "\t", true) == '1') {				// true = get the string before the first occurance (\t)
+						break;																// leaves $BibleStory and $VideoName
 					}
 				}
+
 				if ($st == 'eng') {
 					$temp = strtolower($PlaylistVideoTitle);
 					if ($temp == 'luke video') $PlaylistVideoTitle = 'The LUKE Video';
@@ -2645,7 +2481,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					</td>
 					<td>
 						<?php
-						if ($BibleStory != 0 ) {
+						if ($BibleStory != 0 ) {																				// $BibleStory is set to line '0' of $VideoConvertContents array
 							$VideoConvertContents[$BibleStory] = str_replace("\r", "", $VideoConvertContents[$BibleStory]);		// Windows text files have a carrage return at the end.
 							$VideoConvertWithTab = explode("\t", $VideoConvertContents[$BibleStory]);							// split the line up by tabs
 							if ($st == 'eng') {
@@ -2666,7 +2502,11 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 								if ($temp == 'the genesis video') $VideoName = 'El video de Genesis';
 								if ($temp == 'the acts video') $VideoName = 'El video de Hechos';
 							}
-							if (count($VideoConvertWithTab) < 3) {
+							
+							/*******************************************************************************************************************
+									display the top one
+							********************************************************************************************************************/
+							if (count($VideoConvertWithTab) < 3) {														// "\t" of $VideoConvertContents[$BibleStory] array
 								file_put_contents('SpecificLanguage.txt', 'filename: #'.$filename.'#; count($VideoConvertWithTab): ' . count($VideoConvertWithTab) . '; $BibleStory: #' . $BibleStory . '#; $VideoConvertContents[$BibleStory]: #'.$VideoConvertContents[$BibleStory]."#\n", FILE_APPEND | LOCK_EX);
 								echo "<div style='text-align: center; '>";
 							}
@@ -2675,7 +2515,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 							}
 							else {
 								echo "<div style='text-align: center; '>";
-								echo "<div style='cursor: pointer; text-align: center; ' onclick='window.open(\"$VideoConvertWithTab[3]\")'>";
+								echo "<div style='text-align: center; '>";		// cursor: pointer;  " onclick='window.open(\"$VideoConvertWithTab[3]\")'>";
 							}
 							if ($image != 2) {																			// != 2 ScriptureAnim to make sure the first picture is skipped
 								if ($image == 1) {
@@ -2691,24 +2531,28 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 								if (count($VideoConvertWithTab) < 3) {
 									echo '</div>';
 								}
-								echo '<div style="text-align: center; font-size: .9em; margin-bottom: 10px; font-weight: normal; ">'.$VideoName.'</div>';
-								echo '<hr style="color: navy; text-align: center; width: 75%; " />';
+								echo '<div style="text-align: center; font-size: .9em; margin-top: 5px; margin-bottom: 14px; font-weight: normal; ">'.$VideoName.'</div>';
+								echo '<hr style="color: navy; margin-bottom: 20px;  margin-left: auto; margin-right: auto; width: 75%; " />';
 							}
 						}
+
+						/*******************************************************************************************************************
+								display number two through the last one
+						********************************************************************************************************************/
 						$resource = '';
 						?>
 						<table style='width: 100%'>
-							<tr style="margin-top: 8px; margin-bottom: 8px; ">
+							<tr style="line-height: 22px; ">
 								<?php
 								$c = 0;
 								for ($a = $i; $i < count($VideoConvertContents); $i++, $c++) {							// continue using $i to iterate through $VideoConvertContents
-									if (trim($VideoConvertContents[$i]) == "") {										// test for blank line at the end of the txt file
+									if (trim($VideoConvertContents[$i]) == '') {										// test for blank line at the end of the txt file
 										continue;
 									}
 									if ($c % 4 == 0) {
 										if ($a != $i) {
 											echo '</tr>';
-											echo '<tr style="margin-top: 8px; margin-bottom: 8px; ">';
+											echo '<tr style="line-height: 22px; ">';
 										}
 									}
 									$VideoConvertContents[$i] = str_replace("\r", "", $VideoConvertContents[$i]);		// Windows text files have a carrage return at the end.
@@ -2728,7 +2572,6 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 										else {
 											$SEVideoPlaylistArray[$SEVideoPlaylistIndex] = $VideoConvertWithTab[1]. '|' . $VideoConvertWithTab[2] . '|' . $VideoConvertWithTab[3];
 											echo " id='PV_" . $SEVideoPlaylist . "_" . $SEVideoPlaylistIndex . "' onclick='document.getElementById(\"PlaylistVideoEnd_$SEVideoPlaylist\").scrollIntoView({ behavior: \"smooth\" })'>";
-											
 											$SEVideoPlaylistIndex++;
 										}
 										if ($image == 1) {
@@ -2740,8 +2583,8 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 										else {
 											echo "<img src='./data/~images/ScriptureAnim/";
 										}
-										echo $VideoConvertWithTab[2]."' alt='".translate('View', $st, 'sys')." ".$VideoConvertWithTab[1]."' title='".translate('View', $st, 'sys')." ".$VideoConvertWithTab[1]."' /></div>";
-										echo '<div style="text-align: center; font-size: .7em; font-weight: normal; ">'.$VideoConvertWithTab[1].'</div>';
+										echo $VideoConvertWithTab[2]."' alt='".translate('View', $st, 'sys')." ".$VideoConvertWithTab[1]."' title='".translate('View', $st, 'sys')." ".$VideoConvertWithTab[1]."' />";
+										echo '<div style="text-align: center; margin-bottom: 12px; font-size: .7em; font-weight: normal; ">'.$VideoConvertWithTab[1].'</div></div>';
 									echo '</td>';
 								}
 								for (; $c % 4 != 0; $c++) {
@@ -2961,14 +2804,14 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				}
 			}
 			
-			for (; $i < count($VideoConvertContents); $i++) {													// iterate through $VideoConvertContents looking for a 0 and 1 or a letter (the very first line of the txt file).
-				if (strstr($VideoConvertContents[$i], "\t", true) == '0') {										// true = before the first occurance (\t); the title
-					$BibleStory = $i;																			// Bible Story = $i
+			for (; $i < count($VideoConvertContents); $i++) {										// iterate through $VideoConvertContents looking for a 0 and 1 or a letter (the very first line of the txt file).
+				if (strstr($VideoConvertContents[$i], "\t", true) == '0') {							// true = before the first occurance (\t); the title
+					$BibleStory = $i;																// Bible Story = $i
 					$VideoNames = explode("\t", $VideoConvertContents[0]);
 					$VideoName = $VideoNames[1];
 					continue;
 				}
-				if (strstr($VideoConvertContents[$i], "\t", true) == '1') {										// true = before the first occurance (\t); the 1st new testament entry
+				if (strstr($VideoConvertContents[$i], "\t", true) == '1') {							// true = before the first occurance (\t); the 1st new testament entry
 					break;
 				}
 			}
@@ -3795,6 +3638,9 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					elseif (preg_match('/\bdeaf\.?bible\./i', $URL)) {
 						echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/deaf_bible_icon.png' alt='Deaf Bible' title='Deaf Bible' />";
 					}
+					elseif (preg_match('/savelonggod/i', $URL)) {
+						echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/SILPapuaNewGuinea_icon.png' alt='SIL Papua New Guinea' title='SIL Papua New Guinea' />";
+					}
 					else {
 						echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/links-icon.jpg' alt='".translate('Link', $st, 'sys')."' title='".translate('Link', $st, 'sys')."' />";
 					}
@@ -4049,9 +3895,9 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					echo '<iframe name="iframe_a" title="Iframe" class="mapIframe" src="../maps/'.$ISO_Country.'/'.$ISO.'.htm"></iframe>';
 				}
 				echo '<div class="mapKey">';
-					echo '<p><span style="color: red; font-weight: bold; ">'.translate('red', $st, 'sys').'</span>: '.translate('language you have selected', $st, 'sys').'</p>';
-					echo '<p><span style="color: purple; font-weight: bold; ">'.translate('purple', $st, 'sys').'</span>: '.translate('dialects of this language', $st, 'sys').'</p>';
-					echo '<p><span style="color: blue; font-weight: bold; ">'.translate('blue', $st, 'sys').'</span>: '.translate('all of the other languages for this country', $st, 'sys').'</p>';
+					echo '<p><span style="color: red; font-weight: bold; ">'.translate('red: language you have selected', $st, 'sys').'</span></p>';
+					echo '<p><span style="color: purple; font-weight: bold; ">'.translate('purple: dialects of this language', $st, 'sys').'</span></p>';
+					echo '<p><span style="color: blue; font-weight: bold; ">'.translate('blue: all of the other languages for this country', $st, 'sys').'</span></p>';
 				echo '</div>';
 				?>
 			</td>

@@ -65,7 +65,7 @@
 	$SpecificCountry = 'Korean';
 	$counterName = 'Korean';
 	$MajorLanguage = 'LN_Korean';
-	//$Scriptname = '00eng.php';
+	//$Scriptname = '00kor.php';
 	//$Scriptname = end(explode('/', $_SERVER["SCRIPT_NAME"]));
 	$Scriptname = basename($_SERVER["SCRIPT_NAME"]);
 	// to change language button go to https://developers.facebook.com/docs/plugins/like-button or http://www.visualmagnetic.com/html/fb-like-83-languages/#notes

@@ -413,7 +413,14 @@ function addLinksRowToTable() {
     //el.options.add(objOption);
     el.appendChild(objOption);
 
-    // tail cell
+    objOption = document.createElement('option');
+    objOption.text = "Kalaam Media";
+    //objOption.appendChild(document.createTextNode('Kalaam'));
+    objOption.value = "linksKalaam-" + iteration;
+    //el.options.add(objOption);
+    el.appendChild(objOption);
+
+   // tail cell
     var cellTail = row.insertCell(5);
     var textNode2 = document.createTextNode(" ");
     cellTail.appendChild(textNode2);

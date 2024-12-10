@@ -560,7 +560,7 @@ function showiOSLanguage(str, st, Internet, MajorLanguage, Variant_major, Specif
     ****************************************************************************************************************/
     var url = "LiOSSearch.php";
     url = url + "?language=" + str;
-    if ((st == 'cmn' || st == 'kor') && nonLatinScript == 0) { // test to see if st = Chinese or Korean and if it's Latin
+    if ((st == 'cmn' || st == 'kor' || st == 'arb') && nonLatinScript == 0) { // test to see if st = Chinese or Korean and if it's Latin
         url = url + "&st=eng";
         url = url + "&SpecificCountry=English";
     } else {
@@ -660,7 +660,7 @@ function showiOSCountry(str, st, Internet, SpecificCountry, asset, nonLatinScrip
     ****************************************************************************************************************/
     var url = "CiOSSearch.php";
     url = url + "?country=" + str;
-    if ((st == 'cmn' || st == 'kor') && nonLatinScript == 0) { // test to see if st = Chinese or Korean and if it's Latin
+    if ((st == 'cmn' || st == 'kor' || st == 'arb') && nonLatinScript == 0) { // test to see if st = Chinese or Korean and if it's Latin
         url = url + "&st=eng";
         url = url + "&SpecificCountry=English";
     } else {

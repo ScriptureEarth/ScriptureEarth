@@ -36,7 +36,7 @@ if (!$retval) {
 <title>Scripture Edit</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Edit.css" />
 <script type="text/javascript" language="javascript" src="_js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.1.6"></script>
+<script type="text/javascript" language="JavaScript" src="_js/AddorChange.js?v=1.1.7"></script>
 <!-- see the bottom of this PHP file for CMS_events.js -->
 </head>
 <body>
@@ -3745,7 +3745,7 @@ if (isset($_POST['btnSubmit'])) {
 				}
 			}
 /*************************************************
-	Links
+	Links: buy, map, GooglePlay, and Kalamm
 **************************************************/
 			?>
         </tbody>
@@ -3779,10 +3779,12 @@ if (isset($_POST['btnSubmit'])) {
 			//if ($_POST['linksIcon-1'] == 'linksBuy-1') $_POST['linksBuy-1']=1; else $_POST['linksBuy-1']=0;
 			if ($_POST['linksIcon-1'] == 'linksMap-1') $_POST['linksMap-1']=1; else $_POST['linksMap-1']=0;
 			if ($_POST['linksIcon-1'] == 'linksGooglePlay-1') $_POST['linksGooglePlay-1']=1; else $_POST['linksGooglePlay-1']=0;
+			if ($_POST['linksIcon-1'] == 'linksKalaam-1') $_POST['linksKalaam-1']=1; else $_POST['linksKalaam-1']=0;
 			$_POST['linksOther'] = $_POST['linksOther-1'];
 			//$_POST['linksBuy'] = $_POST['linksBuy-1'];									// to be tested
 			$_POST['linksMap'] = $_POST['linksMap-1'];									// to be tested
 			$_POST['linksGooglePlay'] = $_POST['linksGooglePlay-1'];					// to be tested
+			$_POST['linksKalaam'] = $_POST['linksKalaam-1'];							// to be tested
 		}
 		elseif ($SM_row['links']) {
 			$query="SELECT * FROM links WHERE ISO_ROD_index = $idx AND BibleIs = 0 AND BibleIsGospelFilm = 0 AND YouVersion = 0 AND Bibles_org = 0 AND GRN = 0 AND email = 0";
@@ -3795,8 +3797,9 @@ if (isset($_POST['btnSubmit'])) {
 				//${'linksBuy-1'}=$r['buy'];
 				${'linksMap-1'}=$r['map'];
 				${'linksGooglePlay-1'}=$r['GooglePlay'];
+				${'linksKalaam-1'}=$r['Kalaam'];
 				//if (${'linksBuy-1'} == 1 || ${'linksMap-1'} == 1 || ${'linksGooglePlay-1'} == 1) {
-				if (${'linksMap-1'} == 1 || ${'linksGooglePlay-1'} == 1) {
+				if (${'linksMap-1'} == 1 || ${'linksGooglePlay-1'} == 1 || ${'linksKalaam-1'} == 1) {
 					${'linksOther-1'}=0;
 					${'linksOther'}=0;													// to be tested
 				}
@@ -3813,10 +3816,12 @@ if (isset($_POST['btnSubmit'])) {
 				//${'linksBuy-1'}=0;
 				${'linksMap-1'}=0;
 				${'linksGooglePlay-1'}=0;
+				${'linksKalaam-1'}=0;
 			}
 			//${'linksBuy'}=${'linksBuy-1'};												// to be tested
 			${'linksMap'}=${'linksMap-1'};												// to be tested
 			${'linksGooglePlay'}=${'linksGooglePlay-1'};								// to be tested
+			${'linksKalaam'}=${'linksKalaam-1'};										// to be tested
 		}
 		else {
 			${'txtLinkCompany-1'}='';
@@ -3826,10 +3831,12 @@ if (isset($_POST['btnSubmit'])) {
 			//${'linksBuy-1'}=0;
 			${'linksMap-1'}=0;
 			${'linksGooglePlay-1'}=0;
+			${'linksKalaam-1'}=0;
 			${'linksOther'}=0;															// to be tested
 			//${'linksBuy'}=0;															// to be tested
 			${'linksMap'}=0;															// to be tested
 			${'linksGooglePlay'}=0;														// to be tested
+			${'linksKalaam'}=0;															// to be tested
 		}
 		?>
 		<tbody name="tableLinks" id="tableLinks">
@@ -3856,6 +3863,7 @@ if (isset($_POST['btnSubmit'])) {
                         <!--option value="linksBuy-1" < ?php echo ( isset($_POST['linksBuy-1']) ? ($_POST['linksBuy-1'] == 1 ? " selected='selected'" : "") : (${'linksBuy-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Buy</option-->
                         <option value="linksMap-1" <?php echo ( isset($_POST['linksMap-1']) ? ($_POST['linksMap-1'] == 1 ? " selected='selected'" : "") : (${'linksMap-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Map</option>
                         <option value="linksGooglePlay-1" <?php echo ( isset($_POST['linksGooglePlay-1']) ? ($_POST['linksGooglePlay-1'] == 1 ? " selected='selected'" : "") : (${'linksGooglePlay-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Google Play</option>
+                        <option value="linksKalaam-1" <?php echo ( isset($_POST['linksKalaam-1']) ? ($_POST['linksKalaam-1'] == 1 ? " selected='selected'" : "") : (${'linksKalaam-1'} == 1 ? " selected='selected'" : '' ) ) ?>>Kalaam Media</option>
                     </select>
                     <span style="font-size: 10pt; ">Google Play</span>
                 </td>
@@ -3887,12 +3895,14 @@ if (isset($_POST['btnSubmit'])) {
 							//if ($_POST['linksIcon-'.(string)$i] == 'linksBuy-'.$i) ${'linksBuy-$i'}=1; else ${'linksBuy-$i'}=0;
 							if ($_POST['linksIcon-'.(string)$i] == 'linksMap-'.$i) ${'linksMap-$i'}=1; else ${'linksMap-$i'}=0;
 							if ($_POST['linksIcon-'.(string)$i] == 'linksGooglePlay-'.$i) ${'linksGooglePlay-$i'}=1; else ${'linksGooglePlay-$i'}=0;
+							if ($_POST['linksIcon-'.(string)$i] == 'linksKalaam-'.$i) ${'linksKalaam-$i'}=1; else ${'linksKalaam-$i'}=0;
 							?>
                             <select name="linksIcon-<?php echo $i ?>" id="linksIcon-<?php echo $i ?>" style='color: navy; '>
                                 <option value="linksOther-<?php echo $i ?>" <?php echo ( isset($_POST['linksOther-'.(string)$i]) ? ($_POST['linksOther-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksOther-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Other</option>
                                 <!--option value="linksBuy-< ?php echo $i ?>" < ?php echo ( isset($_POST['linksBuy-'.(string)$i]) ? ($_POST['linksBuy-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksBuy-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Buy</option-->
                                 <option value="linksMap-<?php echo $i ?>" <?php echo ( isset($_POST['linksMap-'.(string)$i]) ? ($_POST['linksMap-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksMap-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Map</option>
                                 <option value="linksGooglePlay-<?php echo $i ?>" <?php echo ( isset($_POST['linksGooglePlay-'.(string)$i]) ? ($_POST['linksGooglePlay-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksGooglePlay-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Google Play</option>
+                                <option value="linksKalaam-<?php echo $i ?>" <?php echo ( isset($_POST['linksKalaam-'.(string)$i]) ? ($_POST['linksKalaam-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksKalaam-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Kalaam Media</option>
                             </select>
                            	<?php
 						echo "</td>";
@@ -3912,8 +3922,9 @@ if (isset($_POST['btnSubmit'])) {
 						//${'linksBuy-$i'}=$r['buy'];
 						${'linksMap-$i'}=$r['map'];
 						${'linksGooglePlay-$i'}=$r['GooglePlay'];
+						${'linksKalaam-$i'}=$r['Kalaam'];
 						//if (${'linksBuy-$i'} == "1" || ${'linksMap-$i'} == "1" || ${'linksGooglePlay-$i'} == "1" )
-						if (${'linksMap-$i'} == "1" || ${'linksGooglePlay-$i'} == "1" )
+						if (${'linksMap-$i'} == "1" || ${'linksGooglePlay-$i'} == "1" || ${'linksKalaam-$i'} == "1")
 							${'linksOther-$i'}="0";
 						else
 							${'linksOther-$i'}="1";
@@ -3937,6 +3948,7 @@ if (isset($_POST['btnSubmit'])) {
 									<!--option value="linksBuy-< ?php echo $i ?>" < ?php echo ( ${'linksBuy-$i'}==1 ? " selected='selected'" : '' ) ?>>Buy</option-->
 									<option value="linksMap-<?php echo $i ?>" <?php echo ( ${'linksMap-$i'}==1 ? " selected='selected'" : '' ) ?>>Map</option>
 									<option value="linksGooglePlay-<?php echo $i ?>" <?php echo ( ${'linksGooglePlay-$i'}==1 ? " selected='selected'" : '' ) ?>>Google Play</option>
+									<option value="linksKalaam-<?php echo $i ?>" <?php echo ( ${'linksKalaam-$i'}==1 ? " selected='selected'" : '' ) ?>>Kalaam Media</option>
 								</select>
 								<?php
 							echo "</td>";
