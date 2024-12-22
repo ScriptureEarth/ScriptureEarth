@@ -34,13 +34,9 @@
 		text-decoration: none;
 		/*margin-left: 10px;*/
 	}
-	tr {
-		text-align: left;
+	tr, td {
 		margin: 0;
 		padding: 0;
-	}
-	td {
-		text-align: left;
 	}
 
 	li.aboutText {
@@ -676,15 +672,15 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 
 /*
 	*************************************************************************************************************
-		Displays the country and the ISO code.
+		Displays the country(ies) and the ISO code.
 	*************************************************************************************************************
 */
 	?>
 	<h2>
 		<div style='width: 100%; '>
-			<div class='Country' style='margin-bottom: 8px; '><?php echo translate('Country:', $st, 'sys'); ?>&nbsp;<span class='Country'><?php echo $country; ?></span></div>
+			<div class='Country' style='margin-bottom: 8px; '><?php echo translate('Country', $st, 'sys'); ?>:&nbsp;<span class='Country'><?php echo $country; ?></span></div>
 			<?php if ($ISO != 'qqq') { ?>
-			<div class='languageCode'><?php echo translate('Language Code:', $st, 'sys'); ?>&nbsp;<a href='https://www.ethnologue.com/language/<?php echo $ISO; ?>/' target='_blank'><?php echo $ISO; ?></a>&nbsp;&nbsp;&nbsp;&nbsp;<span style='font-size: 90%; font-weight: normal; '>(<?php echo translate('Index', $st, 'sys'); ?>:&nbsp;<?php echo $ISO_ROD_index; ?>)</span></div>
+				<div class='languageCode'><?php echo translate('Language Code', $st, 'sys'); ?>:&nbsp;<a href='https://www.ethnologue.com/language/<?php echo $ISO; ?>/' target='_blank'><?php echo $ISO; ?></a>&nbsp;&nbsp;&nbsp;&nbsp;<span style='font-size: 90%; font-weight: normal; '>(<?php echo translate('Index', $st, 'sys'); ?>:&nbsp;<?php echo $ISO_ROD_index; ?>)</span></div>
 			<?php } ?>
 		</div>
 	</h2>
@@ -1311,7 +1307,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 
 /*
 	*************************************************************************************************************
-		Is it GooglePlay? (table links)
+		Is it GooglePlay? (links table)
 	*************************************************************************************************************
 */
 	if ($GooglePlay && $Internet) {
@@ -1342,7 +1338,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	}
 /*
 	*************************************************************************************************************
-		Is it Kalaam? (table links)
+		Is it Kalaam? (links table)
 	*************************************************************************************************************
 */
 	if ($Kalaam && $Internet) {
@@ -1545,7 +1541,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 						<?php
 						echo "<div class='linePointer' title='".translate('Listen to the Old Testament.', $st, 'sys')."' onclick='ListenAudio(document.form_OT_Chapters_mp3.OT_Chapters_mp3, true, \"OTListenNow\", $OTNT)'>".translate('Listen', $st, 'sys')." ".translate('to the audio Old Testament:', $st, 'sys').'</div>';
 						?>
-						<div id='OTAudioSelects' style='display: inline; '>
+						<div id='OTAudioSelects' style='display: inline; vertical-align: middle; '>
 						<?php
 						if (isset($mobile) && $mobile == 1) {
 							echo "<br />";
@@ -1750,7 +1746,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 						echo "</select>";
 						// Get and display chapters
 						?>
-						<form name='form_NT_Chapters_mp3' id='form_NT_Chapters_mp3' style='display: inline; '>
+						<form name='form_NT_Chapters_mp3' id='form_NT_Chapters_mp3' style='display: inline; vertical-align: middle; '>
 						<select name='NT_Chapters_mp3' id='NT_Chapters_mp3' class='selectOption' onchange='ListenAudio(this, true, "NTListenNow", <?php echo $OTNT; ?>)'>
 						<?php
 						$a_index = 0;

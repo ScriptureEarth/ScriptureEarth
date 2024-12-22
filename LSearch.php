@@ -42,31 +42,33 @@ if (isset($_GET['language'])) $TryLanguage = $_GET['language']; else { die('Hack
 /////if (preg_match("/^[-. ,'\?()a-záéíóúàèìòùÑñçãõâêîôûäëöüï&ǃǂǁǀ!|]+/ui", $TryLanguage)) {
 /////}
 /////else {
-/////	die('1) Hack!');
+/////	die('1) Suspicious activity!');
 /////}
 if (isset($_GET['st'])) {
 	$st = $_GET['st'];
 	$st = preg_replace('/^([a-z]{3})/', "$1", $st);
 	if ($st == NULL) {
-		die('2) Hack!');
+		echo '2) Suspicious activity!';
+		return;
 	}
 }
 else {
-	 die('3) Hack!');
+	 echo '3) Suspicious activity!';
+	 return;
 }
 
 if (strlen($TryLanguage) > 2) {
 	$response = '';
 	$ln_result = '';
 
-	$MajorLanguage = $_GET['MajorLanguage'];			// e.g. 'LN_English'
-	$Variant_major = $_GET['Variant_major'];			// e.g. 'Variant_Eng'
+	$MajorLanguage = $_GET['MajorLanguage'];			// e.g. 'LN_English' table
+	$Variant_major = $_GET['Variant_major'];			// e.g. 'Variant_Eng' field with 'Variant' table
 	$SpecificCountry = $_GET['SpecificCountry'];		// e.g. 'English'
 	$hint = 0;
 	include './include/conn.inc.php';
 	$db = get_my_db();
 	include './translate/functions.php';														// translation function
-	
+
 	$nav_ln_array = [];																			// save all of the LN_... navigatianal language names
 	$k=1;
 	$res=$db->query("SHOW COLUMNS FROM `nav_ln` WHERE `Field` LIKE 'LN_%'");					// save the column labels from nav_ln table
@@ -74,7 +76,8 @@ if (strlen($TryLanguage) > 2) {
 		$nav_ln_array[$k++] = $row_LN['Field'];													// save with 'LN_...'
 	}
 	if (!in_array($MajorLanguage, $nav_ln_array)) {
-		die ($MajorLanguage . ' is not in navgational language table!</body></html>');
+		echo $MajorLanguage . ' is not in navgational language table!';
+		return;
 	}
 	$ln_result = implode(',', $nav_ln_array);
 	
@@ -82,8 +85,8 @@ if (strlen($TryLanguage) > 2) {
 	$ISO_only = '';
 	$Country_Total = [];
 
-	$stmt_SC = $db->prepare("SELECT DISTINCT $SpecificCountry, ISO_Country FROM nav_ln, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO_ROD_index = ?");														// create a prepared statement
-	$stmt_ROD = $db->prepare("SELECT DISTINCT $SpecificCountry, ISO_Country FROM nav_ln, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND `ISO_countries`.`ROD_Code` = `nav_ln`.`ROD_Code` AND nav_ln.ISO_ROD_index = ?");														// create a prepared statement
+	$stmt_SC = $db->prepare("SELECT DISTINCT $SpecificCountry, ISO_Country FROM nav_ln, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO_ROD_index = ?");
+	$stmt_ROD = $db->prepare("SELECT DISTINCT $SpecificCountry, ISO_Country FROM nav_ln, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND `ISO_countries`.`ROD_Code` = `nav_ln`.`ROD_Code` AND nav_ln.ISO_ROD_index = ?");
 	$stmt_c = $db->prepare("SELECT ISO_Country FROM countries WHERE $SpecificCountry = ?");
 	$stmt_Var = $db->prepare("SELECT $Variant_major FROM Variants WHERE Variant_Code = ?");
 	$stmt_alt = $db->prepare("SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = ?");
@@ -117,7 +120,8 @@ if (strlen($TryLanguage) > 2) {
 				$stmt_SC->execute();															// execute query
 				$result_con=$stmt_SC->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
 				if ($result_con->num_rows == 0) {
-					die (translate('The ISO language code is not found.', $st, 'sys') . '</body></html>');
+					echo translate('The ISO language code is not found.', $st, 'sys');
+					return;
 				}
 				while ($row_con = $result_con->fetch_array()) {
 					$temp_Country = trim($row_con["$SpecificCountry"]);							// name of the full country in the language version
@@ -240,7 +244,8 @@ if (strlen($TryLanguage) > 2) {
 				$stmt_SC->execute();															// execute query
 				$result_con=$stmt_SC->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
 				if ($result_con->num_rows == 0) {
-					die (translate('The ISO language code is not found.', $st, 'sys') . '</body></html>');
+					echo translate('The ISO language code is not found.', $st, 'sys');
+					return;
 				}
 				if ($ISO == 'qqq') {																// Deaf is in one country
 					$stmt_ROD->bind_param('i', $ISO_ROD_index);										// bind parameters for markers (returns $SpecificCountry and country code)
@@ -360,7 +365,8 @@ if (strlen($TryLanguage) > 2) {
 				$stmt_SC->execute();															// execute query
 				$result_con=$stmt_SC->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
 				if ($result_con->num_rows == 0) {
-					die (translate('The ISO language code is not found.', $st, 'sys') . '</body></html>');
+					echo translate('The ISO language code is not found.', $st, 'sys');
+					return;
 				}
 				if ($ISO == 'qqq') {																// Deaf is in one country
 					$stmt_ROD->bind_param('i', $ISO_ROD_index);										// bind parameters for markers (returns $SpecificCountry and country code)
@@ -457,17 +463,16 @@ if (strlen($TryLanguage) > 2) {
 	}
 	
 	if ($hint == 0) {
-		$response = translate("This language is not found.", $st, "sys");
-		echo $response;
+		echo translate("This language is not found.", $st, "sys");							// id=259
 	}
 	else {
 		$temp = explode('<br />', $response);
 		sort($temp);
 		$response = implode('<br />', $temp);
-		$response .= '<br />'.translate("Language Name", $st, "sys");
-		$response .= '<br />'.translate("Alternate Language Names", $st, "sys");
-		$response .= '<br />'.translate("Code", $st, "sys");
-		$response .= '<br />'.translate("Country", $st, "sys");
+		$response .= '<br />'.translate("Language Name", $st, "sys");						// id=39
+		$response .= '<br />'.translate("Alternate Language Names", $st, "sys");			// id=40
+		$response .= '<br />'.translate("Code", $st, "sys");								// id=252
+		$response .= '<br />'.translate("Country", $st, "sys");								// id=16
 		echo $response;
 	}
 }

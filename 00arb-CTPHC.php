@@ -14,7 +14,8 @@
 	<title></title>
 	<style type="text/css">
 		div.contacts {
-			float: left;
+			direction: rtl;
+			float: right;
 			width: 46%;
 		}
 
@@ -23,8 +24,9 @@
 		}
 
 		body {
-			/*font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
-			font-family: Chivo, 'Gill Sans', Tahoma, Geneva, Verdana, sans-serif;
+			direction: rtl;
+			/*unicode-bidi: bidi-override;*/
+			font: 100% 'Calibri', 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
 			font-size: 120%;
 			background-color: white;
 			margin: 0;
@@ -64,8 +66,8 @@
 		}
 
 		div.contacts {
-			margin-left: 40px;
-			margin-right: 5px;
+			margin-left: 5px;
+			margin-right: 40px;
 			margin-top: 10px;
 			margin-bottom: 14px;
 		}

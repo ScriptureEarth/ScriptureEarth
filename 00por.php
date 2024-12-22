@@ -40,9 +40,13 @@
 			background-position: center;
 			position: relative;
 			top: -54px;
-		}
-		div.por-header {
 			background-image: url('./images/00por-BackgroundFistPage-mobile.jpg');
+		}
+		ul.ulPortuguese {
+			font-weight: normal;
+			font-size: 90%;
+			/*margin-left: -20px;
+			margin-right: 0;*/
 		}
     }
 </style>
@@ -61,6 +65,7 @@
 			}
 		}
 
+		$direction = 'ltr';
 		$Variant_major = 'Variant_Por';
 		$MajorLanguage = "LN_Portuguese";
 		$SpecificCountry = "Portuguese";

@@ -46,9 +46,13 @@
 			background-position: center;
 			position: relative;
 			top: -54px;
-		}
-		div.cmn-header {
 			background-image: url('./images/00cmn-BackgroundFistPage-mobile.jpg');
+		}
+		ul.ulChinese {
+			font-weight: normal;
+			font-size: 90%;
+			/*margin-left: -20px;
+			margin-right: 0;*/
 		}
     }
 </style>
@@ -67,6 +71,7 @@
 		}
 	}
 	
+	$direction = 'ltr';
 	$Variant_major = 'Variant_Chi';
 	$SpecificCountry = 'Chinese';
 	$counterName = 'Chinese';

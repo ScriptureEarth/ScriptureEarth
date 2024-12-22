@@ -188,27 +188,27 @@
 			$inputs["txtSABurl-".(string)$i] = '';
 			$inputs["txtSABdescription-".(string)$i] = check_input($_POST["txtSABdescription-".(string)$i]);
 			
-			if (isset($_POST["txtSABpreScriptoria-".(string)$i])) {
-				$inputs["txtSABpreScriptoria-".(string)$i] = check_input($_POST["txtSABpreScriptoria-".(string)$i]);
-			}
-			else {
-				$inputs["txtSABpreScriptoria-".(string)$i] = '';
-			}
+//			if (isset($_POST["txtSABpreScriptoria-".(string)$i])) {
+//				$inputs["txtSABpreScriptoria-".(string)$i] = check_input($_POST["txtSABpreScriptoria-".(string)$i]);
+//			}
+//			else {
+//				$inputs["txtSABpreScriptoria-".(string)$i] = '';
+//			}
 			
-			if ($inputs["txtSABpreScriptoria-".(string)$i] !== '') {
-				$inputs["txtSABsubfolder-".(string)$i] = 'sab/'.$inputs["txtSABpreScriptoria-".(string)$i];
-				$inputs["txtSABsubFirstPath-".(string)$i] = '';
-			}
-			else {
+//			if ($inputs["txtSABpreScriptoria-".(string)$i] !== '') {
+//				$inputs["txtSABsubfolder-".(string)$i] = 'sab/'.$inputs["txtSABpreScriptoria-".(string)$i];
+//				$inputs["txtSABsubFirstPath-".(string)$i] = '';
+//			}
+//			else {
 				$inputs["txtSABsubfolder-".(string)$i] = 'sab/'.$_POST["txtSABsubfolder-".(string)$i].'/';
 				$inputs["txtSABsubFirstPath-".(string)$i] = '';
-			}
+//			}
 		}
 		else {			// else isset($_POST["txtSABurl-".(string)$i]) && (trim($_POST["txtSABurl-".(string)$i]) != '')
 			$inputs["txtSABdescription-".(string)$i] = check_input($_POST["txtSABdescription-".(string)$i]);
 			$inputs["txtSABurl-".(string)$i] = check_input($_POST["txtSABurl-".(string)$i]);
 			$inputs["txtSABsubfolder-".(string)$i] = '';
-			$inputs["txtSABpreScriptoria-".(string)$i] = '';
+//			$inputs["txtSABpreScriptoria-".(string)$i] = '';
 			$inputs["txtSABsubFirstPath-".(string)$i] = '';
 		}
 		$i++;

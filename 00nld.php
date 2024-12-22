@@ -41,10 +41,14 @@
             background-position: center;
             position: relative;
             top: -54px;
-        }
-        div.nld-header {
             background-image: url('./images/00nld-BackgroundFistPage-mobile.jpg');
         }
+		ul.ulDutch {
+			font-weight: normal;
+			font-size: 90%;
+			/*margin-left: -20px;
+			margin-right: 0;*/
+		}
     }
 </style>
 <script type="text/javascript" language="javascript">
@@ -62,6 +66,7 @@
             }
         }
         
+        $direction = 'ltr';
         $Variant_major = 'Variant_Dut';
         $MajorLanguage = "LN_Dutch";
         $SpecificCountry = "Dutch";

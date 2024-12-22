@@ -41,8 +41,6 @@
 			background-position: center;
 			position: relative;
 			top: -54px;
-		}
-		div.rus-header {
 			background-image: url('./images/00rus-BackgroundFistPage-mobile.jpg');
 			/* This ensures your background image is center-positioned vertically and horizontally 
 			background-position: center;*/
@@ -53,6 +51,12 @@
 			position: relative;
 			top: -54px;*/
 		}
+		ul.ulRussian {
+			font-weight: normal;
+			font-size: 90%;
+			/*margin-left: -20px;
+			margin-right: 0;*/
+		}
     }
 </style>
 <script type="text/javascript" language="javascript">
@@ -61,30 +65,31 @@
     const Major_NT_array = ["От Матфея","От Марка","От Луки","От Иоанна","Деяния","Послание римлянам","1-е посл. коринфянам","2-е посл. коринфянам","Послание галатам","Послание эфесянам","Послание филиппийцам","Послание колоссянам","1-е посл. фессалоникийцам","2-е посл. фессалоникийцам","1-е посл. Тимофею","2-е посл. Тимофею","Послание Титу","Послание Филимону","Послание евреям","Послание евреям","1-е посл. Петра","2-е посл. Петра","1-е посл. Иоанна","2-е посл. Иоанна","2-е посл. Иоанна","Послание Иуды","Откровение"];
 </script>
 	<?php
-	$st = 'rus';
-	if (isset($_GET['st'])) {
-		$st = $_GET['st'];
-		$test = preg_match('/^[a-z]{3}/', $st);
-		if ($test === 0) {
-			die ("<body><br />$st wasn’t found.</body></html>");
+		$st = 'rus';
+		if (isset($_GET['st'])) {
+			$st = $_GET['st'];
+			$test = preg_match('/^[a-z]{3}/', $st);
+			if ($test === 0) {
+				die ("<body><br />$st wasn’t found.</body></html>");
+			}
 		}
-	}
-	
-	$Variant_major = 'Variant_Rus';
-	$SpecificCountry = 'Russian';
-	$counterName = 'Russian';
-	$MajorLanguage = 'LN_Russian';
-	//$Scriptname = '00rus.php';
-	//$Scriptname = end(explode('/', $_SERVER["SCRIPT_NAME"]));
-	$Scriptname = basename($_SERVER["SCRIPT_NAME"]);
-	// to change language button go to https://developers.facebook.com/docs/plugins/like-button or http://www.visualmagnetic.com/html/fb-like-83-languages/#notes
-	$FacebookCountry = 'ru_RU';
-	$MajorCountryAbbr = 'ru';
-	
-	define ('OT_EngBook', 11);							// Russian Bible book names
-	define ('NT_EngBook', 11);
-	
-	include ('./00-MainScript.inc.php');				// THE MAIN SCRIPT!!!!!
+		
+		$direction = 'ltr';
+		$Variant_major = 'Variant_Rus';
+		$SpecificCountry = 'Russian';
+		$counterName = 'Russian';
+		$MajorLanguage = 'LN_Russian';
+		//$Scriptname = '00rus.php';
+		//$Scriptname = end(explode('/', $_SERVER["SCRIPT_NAME"]));
+		$Scriptname = basename($_SERVER["SCRIPT_NAME"]);
+		// to change language button go to https://developers.facebook.com/docs/plugins/like-button or http://www.visualmagnetic.com/html/fb-like-83-languages/#notes
+		$FacebookCountry = 'ru_RU';
+		$MajorCountryAbbr = 'ru';
+		
+		define ('OT_EngBook', 11);							// Russian Bible book names
+		define ('NT_EngBook', 11);
+		
+		include ('./00-MainScript.inc.php');				// THE MAIN SCRIPT!!!!!
 	?>
 </body>
 </html>

@@ -361,6 +361,7 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 		font-size: 12pt;
 		padding: 3px;
 		padding-left: 10px;
+		margin: 0;
 	}
 
 	#background_header {
@@ -578,6 +579,105 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 			margin-right: auto;
 		}
 	}
+</style>
+
+<style>
+	<?php
+	// This has to stay in 00-MainScript.inc.php!
+	if ($direction == 'ltr') {
+		?>
+		/* left to right */
+		html, body, * {
+			direction: ltr;
+			font: 100% Verdana, Arial, Helvetica, sans-serif;
+		}
+		table {
+			font-family: Arial, Helvetica, sans-serif;
+		}
+		tr, td {
+			text-align: left;
+		}
+		#listCountriesID > button {
+			background-position: right;
+			text-align: left;
+		}
+		input[type=text] {
+			background-position: right;
+		}
+		#submenu > li {
+			text-align: left;
+		}
+		#AboutOffOn {
+			text-align: left;
+		}
+		#AboutOffOn > li {
+			margin-left: 84px;
+			margin-bottom: 8px;
+		}
+		div.alternativeLanguageNames,
+		div.Country,
+		div.languageCode {
+			font-family: Arial, Helvetica, sans-serif;
+			text-align: left;
+			margin-left: 20px;
+		}
+		div.OTAudio,
+		div.NTAudio {
+			float: left;
+		}
+		/* end left to right */
+		<?php
+	}
+	else {
+		?>
+		/* right to left */
+		html, body, * {
+			direction: rtl;
+			/*unicode-bidi: bidi-override;*/
+			font: 100% 'Calibri', 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+		}
+		table {
+			direction: rtl;
+			font-family: 'Calibri', 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+		}
+		tr, td {
+			text-align: right;						/* the three row boxes AND the icon texts in the specific languages */
+		}
+		/*#AID {
+			text-align: right;						/* third row box * /
+		} */
+		#listCountriesID > button {
+			background-position: left;				/* third row icon */
+			text-align: right;						/* third row box */
+		}
+		input[type=text] {							/* first and second icon */
+			background-position: left;
+		}
+		#submenu > li {
+			text-align: right;
+		}
+		#AboutOffOn {
+			text-align: right;
+		}
+		#AboutOffOn > li {
+			margin-right: 34px;
+			margin-bottom: 8px;
+		}
+		div.alternativeLanguageNames,
+		div.Country,
+		div.languageCode {
+			font-family: 'Calibri', 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+			text-align: right;
+			margin-left: 20px;
+		}
+		div.OTAudio,
+		div.NTAudio {
+			float: right;
+		}
+		/* end right to left */
+		<?php
+	}
+	?>
 </style>
 
 <?php
@@ -884,11 +984,11 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 											<li><a href='#' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></a></li>
 											<li><a href='#' onclick="aboutSection('H');"><?php echo translate('Help', $st, 'sys'); ?></a></li>
 											<li><a id='aboutArrow' style="cursor: pointer; margin-left: -16px; " onclick="AboutOO()">▸<?php echo translate('About', $st, 'sys'); ?></a></li>
-											<div id="AboutOffOn" style="display: none; text-align: left; ">
-												<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
-												<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partners', $st, 'sys'); ?></a></li>
-												<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
-												<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
+											<div id="AboutOffOn" style="display: none; ">
+												<li><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
+												<li><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partners', $st, 'sys'); ?></a></li>
+												<li><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
+												<li><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
 											</div>
 											<li><a href='#' onclick="menuSet = 0; window.open('./Feedback/Feedback.php?st=<?php echo $st; ?>')"><?php echo translate('Contact Us', $st, 'sys'); ?></a></li>
 											<?php if ($st == 'eng') { ?>
@@ -1053,11 +1153,11 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 										<li><a href='#' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></a></li>
 										<li><a href='#' onclick="aboutSection('H');"><?php echo translate('Help', $st, 'sys'); ?></a></li>
 										<li><a id='aboutArrow' style="cursor: pointer; margin-left: -16px; " onclick="AboutOO()">▸<?php echo translate('About', $st, 'sys'); ?></a></li>
-										<div id="AboutOffOn" style="display: none; text-align: left; ">
-											<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
-											<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partnerss', $st, 'sys'); ?></a></li>
-											<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
-											<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
+										<div id="AboutOffOn" style="display: none; ">
+											<li><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
+											<li><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partners', $st, 'sys'); ?></a></li>
+											<li><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
+											<li><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
 										</div>
 										<li><a href='#' onclick="menuSet = 0; window.open('./Feedback/Feedback.php?st=<?php echo $st; ?>')"><?php echo translate('Contact Us', $st, 'sys'); ?></a></li>
 										<?php if ($st == 'eng') { ?>
@@ -1133,7 +1233,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 							}
 							?>
 						</select>
-						<a href='#' id='helpMenu' class='helpSelection' onclick="helpClick();"><img src='./images/iconHelp.png' alt="help" width="32" height="32" /></a>
+						<a href='#' id='helpMenu' class='helpSelection' onclick="helpClick()"><img src='./images/iconHelp.png' alt="help" width="32" height="32" /></a>
 
 						<?php
 						/* -----------------------------------------------------------------------------------------
@@ -1152,11 +1252,11 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 									<li><a href='#' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></a></li>
 									<li><a href='#' onclick="aboutSection('H');"><?php echo translate('Help', $st, 'sys'); ?></a></li>
 									<li><a id='aboutArrow' style="cursor: pointer; margin-left: -16px; " onclick="AboutOO()">▸<?php echo translate('About', $st, 'sys'); ?></a></li>
-									<div id="AboutOffOn" style="display: none; text-align: left; ">
-										<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
-										<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partners', $st, 'sys'); ?></a></li>
-										<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
-										<li style="margin-left: 84px; margin-bottom: 8px; "><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
+									<div id="AboutOffOn" style="display: none; ">
+										<li><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
+										<li><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partners', $st, 'sys'); ?></a></li>
+										<li><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
+										<li><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
 									</div>
 									<li><a href='#' onclick="menuSet = 0; window.open('./Feedback/Feedback.php?st=<?php echo $st; ?>')"><?php echo translate('Contact Us', $st, 'sys'); ?></a></li>
 									<?php if ($st == 'eng') { ?>
@@ -1195,7 +1295,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 
 						<div id="listCountriesID" name="listCountriesID">
 							<?php // display all of the countries button ?>
-							<button title="<?php echo translate('Tap to get a list of countries available.', $st, 'sys'); ?>" id="AID" onclick="AllCountries('<?php echo $Scriptname; ?>', '<?php echo $st ?>', '<?php echo $SpecificCountry; ?>', <?php echo $Internet; ?>, <?php echo $asset; ?>)"><?php echo translate('List by Country', $st, 'sys'); ?></button>
+							<button id="AID" title="<?php echo translate('Tap to get a list of countries available.', $st, 'sys'); ?>" onclick="AllCountries('<?php echo $Scriptname; ?>', '<?php echo $st ?>', '<?php echo $SpecificCountry; ?>', <?php echo $Internet; ?>, <?php echo $asset; ?>)"><?php echo translate('List by Country', $st, 'sys'); ?></button>
 							
 							<?php // display all the countries list. 'hide' at first ?>
 							<div id="countryList" style="margin-top: 0; "></div>
@@ -1298,4 +1398,4 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 	</script>
 
 	<?php // This script HAS to be down here for the major language dropdown box to work! ?>
-	<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.3.2"></script>
+	<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.3.3"></script>

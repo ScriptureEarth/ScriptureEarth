@@ -83,7 +83,7 @@ include ('./NT_Books.php');			// include the books of the NT
 <title>Scripture Add</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Add.css" />
 <script type="text/javascript" language="javascript" src="_js/Scripture_Add.js?v=1.0.3"></script>
-<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.1.7"></script>
+<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.1.8"></script>
 <script>
 	//let ALNindex = 1;
 	//let Otherindex = 1;
@@ -535,7 +535,7 @@ include ('./NT_Books.php');			// include the books of the NT
 					<div style="margin-top: -4px; ">Enter "SAB HTMLs":</div>For example:
 				</td>
 				<td width="13%">
-					<input type='text' style='color: navy; ' size='13' name='txtSABsubfolderAdd-1' id='txtSABsubfolderAdd-1' value="<?php if (isset($_POST['txtSABsubfolderAdd-1'])) echo $_POST['txtSABsubfolderAdd-1']; ?>" />
+					<input type='text' style='color: navy; ' size='15' name='txtSABsubfolderAdd-1' id='txtSABsubfolderAdd-1' value="<?php if (isset($_POST['txtSABsubfolderAdd-1'])) echo $_POST['txtSABsubfolderAdd-1']; ?>" />
                     <br /><span style="font-size: 10pt; margin-left: 3px; ">tuo <b>or</b> tuoB <b>or</b> tuo2019</span>
 				</td>
 				<td width="32%">

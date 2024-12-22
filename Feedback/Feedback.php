@@ -149,7 +149,6 @@
 			
 		// If we didn't hit an error, send the email
 			if (!isset($hasError)) {
-
 				// Body:
 					$body = '
 						<p>Name: ' . $contactName . '</p>
@@ -261,7 +260,19 @@
 			$idx='';
 		}
 		?>
-          
+        
+		<?php
+		if ($st == 'arb') {
+		?>
+		<style>
+			* {
+				direction: rtl;
+			}
+		</style>
+		<?php
+		}
+		?>
+
         <!--h1>Contact Form</h1-->
         <h1><?php echo translate('Feedback', $st, 'sys') ?><br /><span style="letter-spacing: normal; font-size: 11pt; "><?php echo translate('All that is required is the ‘message’.', $st, 'sys') ?></span></h1>
         

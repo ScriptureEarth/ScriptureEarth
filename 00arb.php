@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
 <title><?php echo $title_text = 'Scripture Earth: مصادر للوصول إلى ترجمات كاملة وجزئية للكتاب المقدس بآلاف اللغات'; ?></title>
 <meta property="og:title" 					content="Language page of Scripture Earth" />
@@ -15,17 +15,6 @@
     لغات محلية معاصرة، العالم، اللغة الأقرب، اللغة الأم، الكتاب المقدس.is، عارض الإنترنت، تنزيل، لغات أصلية، نص، ملف PDF، تسجيل صوتي MP3، تسجيل صوتي mp3، تسجيل صوتي MP4، تسجيل صوتي mp4، جهاز iPod، جهاز آيفون، هاتف خلوي، هاتف ذكي، آيباد، تابليت، أندرويد، شاهد، عرض، فيلم يسوع، فيديو لوقا، شراء، طباعة حسب الطلب، شراء على الإنترنت، مكتبة، دراسة، الكلمة المقدسة، الكتاب المقدس، العهد الجديد، العهد الجديد، العهد القديم، العهد القديم، أجزاء الكتاب المقدس، خريطة، تطبيق، تطبيق المحمول
 " />
 <style>
-	html, body, * {
-		direction: rtl;
-		/*unicode-bidi: bidi-override;*/
-		font-family: Calibri, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
-		font-size: 12pt;
-	}
-	tr, td, div {
-		direction: rtl;
-		font-family: Calibri, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
-		font-size: 12pt;
-	}
 	div.arb-header {
 		background-image: url('./images/00arb-BackgroundFistPage.jpg');
 	}
@@ -44,20 +33,21 @@
 	@media only screen and (max-width: 480px) {
 		/* (max-width: 412px) for Samsung S8+ 2/20/2019 */
 		div.arb-header {
-			background-position: center;
 			position: relative;
 			top: -54px;
-		}
-		div.arb-header {
 			background-image: url('./images/00arb-BackgroundFistPage-mobile.jpg');
-			/* This ensures your background image is center-positioned vertically and horizontally 
-			background-position: center;*/
+			/* This ensures your background image is center-positioned vertically and horizontally*/
+			background-position: center;
 			/* This ensures your background image doesn’t tile */
 			/*background-repeat: no-repeat;*/
-			/* This makes your background image responsive and rescale according to the viewport or container size 
-			background-size: cover;
-			position: relative;
-			top: -54px;*/
+			/* This makes your background image responsive and rescale according to the viewport or container size*/
+			/*background-size: cover;*/
+		}
+		ul.ulArabic {
+			font-weight: normal;
+			font-size: 90%;
+			/*margin-left: -20px;
+			margin-right: 0;*/
 		}
     }
 </style>
@@ -76,7 +66,8 @@
 		}
 	}
 	
-	$Variant_major = 'Variant_Arb';
+	$direction = 'rtl';
+	$Variant_major = 'Variant_Ara';
 	$SpecificCountry = 'Arabic';
 	$counterName = 'Arabic';
 	$MajorLanguage = 'LN_Arabic';

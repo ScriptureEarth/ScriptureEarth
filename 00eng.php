@@ -38,20 +38,21 @@
 	@media only screen and (max-width: 480px) {
 		/* (max-width: 412px) for Samsung S8+ 2/20/2019 */
 		div.eng-header {
-			background-position: center;
 			position: relative;
 			top: -54px;
-		}
-		div.eng-header {
 			background-image: url('./images/00eng-BackgroundFistPage-mobile.jpg');
-			/* This ensures your background image is center-positioned vertically and horizontally 
-			background-position: center;*/
+			/* This ensures your background image is center-positioned vertically and horizontally*/
+			background-position: center;
 			/* This ensures your background image doesn’t tile */
 			/*background-repeat: no-repeat;*/
-			/* This makes your background image responsive and rescale according to the viewport or container size 
-			background-size: cover;
-			position: relative;
-			top: -54px;*/
+			/* This makes your background image responsive and rescale according to the viewport or container size*/
+			/*background-size: cover;*/
+		}
+		ul.ulEnglish {
+			font-weight: normal;
+			font-size: 90%;
+			/*margin-left: -20px;
+			margin-right: 0;*/
 		}
     }
 </style>
@@ -70,6 +71,7 @@
 		}
 	}
 	
+	$direction = 'ltr';
 	$Variant_major = 'Variant_Eng';
 	$SpecificCountry = 'English';
 	$counterName = 'English';

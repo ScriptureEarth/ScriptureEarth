@@ -42,9 +42,13 @@
 			background-position: center;
 			position: relative;
 			top: -54px;
-		}
-		div.spa-header {
 			background-image: url('./images/00spa-BackgroundFistPage-mobile.jpg');
+		}
+		ul.ulSpanish {
+			font-weight: normal;
+			font-size: 90%;
+			/*margin-left: -20px;
+			margin-right: 0;*/
 		}
     }
 </style>
@@ -63,6 +67,7 @@
 			}
 		}
 
+		$direction = 'ltr';
 		$Variant_major = 'Variant_Spa';
 		$MajorLanguage = "LN_Spanish";
 		$SpecificCountry = "Spanish";

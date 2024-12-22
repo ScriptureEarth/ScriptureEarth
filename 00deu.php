@@ -42,9 +42,13 @@
 			background-position: center;
 			position: relative;
 			top: -54px;
-		}
-		div.deu-header {
 			background-image: url('./images/00deu-BackgroundFistPage-mobile.jpg');
+		}
+		ul.ulGerman {
+			font-weight: normal;
+			font-size: 90%;
+			/*margin-left: -20px;
+			margin-right: 0;*/
 		}
     }
 </style>
@@ -63,6 +67,7 @@
 		}
 	}
 	
+	$direction = 'ltr';
 	$Variant_major = 'Variant_Ger';
 	$SpecificCountry = 'German';
 	$counterName = "German";

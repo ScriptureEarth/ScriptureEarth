@@ -40,10 +40,14 @@
             background-position: center;
             position: relative;
             top: -54px;
-        }
-        div.kor-header {
             background-image: url('./images/00kor-BackgroundFistPage-mobile.jpg');
         }
+		ul.ulKorean {
+			font-weight: normal;
+			font-size: 90%;
+			/*margin-left: -20px;
+			margin-right: 0;*/
+		}
     }
 </style>
 <script type="text/javascript" language="javascript">
@@ -52,30 +56,31 @@
     const Major_NT_array = ["마태복음", "마가복음", "누가복음", "요한복음", "사도행전", "로마서", "고린도전서", "고린도후서", "갈라디아서", "에베소서", "빌립보서", "골로새서", "데살로니가전서", "데살로니가후서", "디모데전서", "디모데후서", "디도서", "빌레몬서", "히브리서", "야고보서", "베드로전서", "베드로후서", "요한1서", "요한2서", "요한3서", "유다서", "요한계시록"];
 </script>
 	<?php
-	$st = 'kor';
-	if (isset($_GET['st'])) {
-		$st = $_GET['st'];
-		$test = preg_match('/^[a-z]{3}/', $st);
-		if ($test === 0) {
-			die ("<body><br />$st wasn’t found.</body></html>");
+		$st = 'kor';
+		if (isset($_GET['st'])) {
+			$st = $_GET['st'];
+			$test = preg_match('/^[a-z]{3}/', $st);
+			if ($test === 0) {
+				die ("<body><br />$st wasn’t found.</body></html>");
+			}
 		}
-	}
-	
-	$Variant_major = 'Variant_Kor';
-	$SpecificCountry = 'Korean';
-	$counterName = 'Korean';
-	$MajorLanguage = 'LN_Korean';
-	//$Scriptname = '00kor.php';
-	//$Scriptname = end(explode('/', $_SERVER["SCRIPT_NAME"]));
-	$Scriptname = basename($_SERVER["SCRIPT_NAME"]);
-	// to change language button go to https://developers.facebook.com/docs/plugins/like-button or http://www.visualmagnetic.com/html/fb-like-83-languages/#notes
-	$FacebookCountry = 'ko_KR';
-	$MajorCountryAbbr = 'ko';
-	
-	define ('OT_EngBook', 10);							// Koren Bible book names
-	define ('NT_EngBook', 10);
-	
-	include ('./00-MainScript.inc.php');				// THE MAIN SCRIPT!!!!!
+		
+		$direction = 'ltr';
+		$Variant_major = 'Variant_Kor';
+		$SpecificCountry = 'Korean';
+		$counterName = 'Korean';
+		$MajorLanguage = 'LN_Korean';
+		//$Scriptname = '00kor.php';
+		//$Scriptname = end(explode('/', $_SERVER["SCRIPT_NAME"]));
+		$Scriptname = basename($_SERVER["SCRIPT_NAME"]);
+		// to change language button go to https://developers.facebook.com/docs/plugins/like-button or http://www.visualmagnetic.com/html/fb-like-83-languages/#notes
+		$FacebookCountry = 'ko_KR';
+		$MajorCountryAbbr = 'ko';
+		
+		define ('OT_EngBook', 10);							// Koren Bible book names
+		define ('NT_EngBook', 10);
+		
+		include ('./00-MainScript.inc.php');				// THE MAIN SCRIPT!!!!!
 	?>
 </body>
 </html>

@@ -190,11 +190,15 @@
 	}
 	else {
 		if (substr($_SERVER['REMOTE_ADDR'], 0, 7) != '192.168') {														// Is the script local?
-			$i = 1;
 			$query="UPDATE SAB_scriptoria SET `url` = ?, `subfolder` = ?, `description` = ? WHERE ISO_ROD_index = $inputs[idx] AND SAB_number = ?";
 			$stmt_SAB_scriptoria=$db->prepare($query);
-			
-			while (isset($inputs["txtSABsubfolder-".(string)$i])) {		//strlen(trim($inputs["txtSABsubFirstPath-".(string)$i]) >= 4)) {	// $inputs["txtSABsubFirstPath-".(string)$i]) = "sab" by default
+
+			$SABTemp = 1;
+			while (isset($inputs["txtSABdescription-".(string)$SABTemp])) {												// maximum value of $i
+				$SABTemp++;
+			}
+
+			for ($i = 1; $i < $SABTemp; $i++) {		//strlen(trim($inputs["txtSABsubFirstPath-".(string)$i]) >= 4)) {	// $inputs["txtSABsubFirstPath-".(string)$i]) = "sab" by default
 				$SABurl = "txtSABurl-".(string)$i;
 				$SABdescription = "txtSABdescription-".(string)$i;
 				$SABsubfolder = "txtSABsubfolder-".(string)$i;
@@ -226,8 +230,6 @@
 					else {
 						$db->query("UPDATE SAB_scriptoria SET subfolder = '', `url` = '$inputs[$SABurl]' WHERE ISO_ROD_index = $inputs[idx] AND `description` = '$inputs[$SABdescription]' AND SAB_number = $i");
 					}
-					$i++;
-					continue;
 				}
 				else {
 					$SAB_Path = './data/'.$inputs['iso'].'/'.$inputs[$SABsubfolder];
@@ -360,7 +362,6 @@
 						}
 					}
 				}
-				$i++;
 			}
 		}
 		else {

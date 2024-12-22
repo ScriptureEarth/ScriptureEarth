@@ -41,9 +41,13 @@
 			background-position: center;
 			position: relative;
 			top: -54px;
-		}
-		div.fra-header {
 			background-image: url('./images/00fra-BackgroundFistPage-mobile.jpg');
+		}
+		ul.ulFrench {
+			font-weight: normal;
+			font-size: 90%;
+			/*margin-left: -20px;
+			margin-right: 0;*/
 		}
     }
 </style>
@@ -62,6 +66,7 @@
 			}
 		}
 
+		$direction = 'ltr';
 		$Variant_major = 'Variant_Fre';
 		$MajorLanguage = "LN_French";
 		$SpecificCountry = "French";

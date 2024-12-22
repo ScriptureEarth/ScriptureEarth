@@ -744,7 +744,7 @@ function addRowToTableSABHTMLEdit() {
     el.type = "text";
     el.name = "txtSABurl-" + iteration;
     el.id = "txtSABurl-" + iteration;
-    el.size = 31;
+    el.size = 36;
     el.style.color = "navy";
     cellSABurl.appendChild(el);
 
@@ -754,22 +754,22 @@ function addRowToTableSABHTMLEdit() {
     el.type = "text";
     el.name = "txtSABdescription-" + iteration;
     el.id = "txtSABdescription-" + iteration;
-    el.size = 31;
+    el.size = 36;
     el.style.color = "navy";
     cellSABdescription.appendChild(el);
 
     // SABpre_scriptoria cell
-    var cellSABpre_scriptoria = row.insertCell(4);
+    /*var cellSABpre_scriptoria = row.insertCell(4);
     var el = document.createElement("input");
     el.type = "text";
     el.name = "txtSABpre_scriptoria-" + iteration;
     el.id = "txtSABpre_scriptoria-" + iteration;
     el.size = 12;
     el.style.color = "navy";
-    cellSABpre_scriptoria.appendChild(el);
+    cellSABpre_scriptoria.appendChild(el);*/
 
     // tail cell
-    var cellTail = row.insertCell(5);
+    var cellTail = row.insertCell(4);
     var textNode2 = document.createTextNode(" ");
     cellTail.appendChild(textNode2);
 }
