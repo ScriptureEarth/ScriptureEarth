@@ -117,14 +117,11 @@
 		case "H":
 		?>
 			<script type="text/javascript" language="javascript">
-				document.title = "Help";
+				document.title = "مساعدة";
 			</script>
-			<h2>Help</h2>
+			<h2>مساعدة</h2>
 			<p>
-				The graphic below shows how to use the home page to find a particular language.
-				Whenever the user types in one of the search boxes or selects “List by Country” one or more choices will appear.
-				The desired item can be selected from the list.
-			</p>
+			يوضح الشكل التالي كيفية استعمال الصفحة الرئيسية للبحث عن لغة معينة. في كل مرة يبدأ المستخدم في الكتابة في أحد صناديق البحث أو يختار "عرض اللغات حسب الدولة" سيظهر اختيار أو عدة اختيارات حسب توفر اللغات المتطابقة مع كلمة البحث. يمكن اختيار اللغة من القائمة المعروضة.</p>			</p>
 			<div style="text-align: center; margin-right: auto; margin-left: auto; margin-top: 30px; margin-bottom: 40px; ">
 				<img src='./images/00arb-helpExplanation.jpg' style='height: 90%; width: 90%; ' />
 			</div>
