@@ -61,10 +61,14 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
         nonLatinScript = 1;
     }
     // is it Korean?
-    else if (/\p{sc=Hangul}/u.test(str.substring(str.length - 1)) || /[\u1100-\u11FF\u3130-\u318F\uA960-\uA97F\uAC00-\uD7AF\uD7B0-\uD7FF]/.test(str.substring(str.length - 1))) {
+    else if (/\p{Script=Hangul}/u.test(str.substring(str.length - 1)) || /[\u1100-\u11FF\u3130-\u318F\uA960-\uA97F\uAC00-\uD7AF\uD7B0-\uD7FF]/.test(str.substring(str.length - 1))) {
         nonLatinScript = 1;
     }
-    else {
+    // is it Arabic?
+    else if (/\p{Script=Arabic}/u.test(str.substring(str.length - 1)) || /[\u0600-\u06FF\u0020-\u0040\u005B-\u0060\u007B-\u007E]/.test(str.substring(str.length - 1))) {
+        nonLatinScript = 1;
+    }
+   else {
         // saltillo: ꞌ = U+A78C
         var re = /[-. ,'?()a-záéíóúàèìòùÑñçãõâêîôûäëöüïǃǂǁǀ!|]/ui;          // the '-' has to go first
         var foundArray = re.exec(str.substring(str.length - 1));            // the last character of the str
@@ -247,7 +251,11 @@ function showCountry(str, st, Internet, SpecificCountry, asset) {           // g
         nonLatinScript = 1;
     }
     // is it Korean?
-    else if (/\p{sc=Hangul}/u.test(str.substring(str.length - 1)) || /[\u1100-\u11FF\u3130-\u318F\uA960-\uA97F\uAC00-\uD7AF\uD7B0-\uD7FF]/.test(str.substring(str.length - 1))) {
+    else if (/\p{Script=Hangul}/u.test(str.substring(str.length - 1)) || /[\u1100-\u11FF\u3130-\u318F\uA960-\uA97F\uAC00-\uD7AF\uD7B0-\uD7FF]/.test(str.substring(str.length - 1))) {
+        nonLatinScript = 1;
+    }
+    // is it Arabic?
+    else if (/\p{Script=Arabic}/u.test(str.substring(str.length - 1)) || /[\u0600-\u06FF\u0020-\u0040\u005B-\u0060\u007B-\u007E]/.test(str.substring(str.length - 1))) {
         nonLatinScript = 1;
     }
     else {

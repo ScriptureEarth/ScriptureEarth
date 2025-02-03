@@ -742,7 +742,7 @@ if (!isset($_SESSION['nav_ln_array'])) {
 		$ln_temp_var .= 'LN_' . $ln_temp[1] . ', ';				// must have a space (' ') here
 	}
 	$ln_result = $ln_temp_var;
-	$_SESSION['ln_result'] = $ln_result;
+	$_SESSION['ln_result'] = $ln_result;						// LN_English, LN_Spanish, LN_Portuguese, ...
 }
 
 /*
@@ -1398,4 +1398,4 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 	</script>
 
 	<?php // This script HAS to be down here for the major language dropdown box to work! ?>
-	<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.3.3"></script>
+	<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.3.4"></script>

@@ -632,6 +632,32 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				<span class='alternativeLanguageName'>
 				<?php
 				$i_alt=0;
+				$st_temp = [];
+				$st_key=0;
+				// display navigational languages
+				foreach ($_SESSION['nav_ln_array'] as $tempArray) {						// e.g., 'en' [2 lower case letters]
+					if ($st == $tempArray[0]) {											// 'translation_code' e.g., 'eng' [3 lower case letters]
+						continue;
+					}
+					$t_temp = 'LN_'. $tempArray[1];										// e.g., 'English' [name of the navigational language]
+					$query_temp="SELECT $t_temp FROM $t_temp WHERE ISO_ROD_index = '$ISO_ROD_index'";
+					$result_temp=$db->query($query_temp);
+					if ($result_temp->num_rows === 0) {
+						continue;
+					}
+					$r_temp = $result_temp->fetch_array(MYSQLI_ASSOC);
+					$temp_lang = trim($r_temp["$t_temp"]);
+					$temp_lang = htmlspecialchars($temp_lang, ENT_QUOTES, 'UTF-8');
+					if (($st_key = array_search($temp_lang, $st_temp)) !== NULL) {		// search through $st_temp array
+						if ($i_alt != 0) {
+							echo ', ';
+						}
+						$st_temp[] = $temp_lang;
+						echo $temp_lang;
+						$i_alt++;
+					}
+				}
+				// display alternative language names
 				while ($r_alt = $result_alt->fetch_array(MYSQLI_ASSOC)) {
 					$alt_lang_name=trim($r_alt['alt_lang_name']);
 					$alt_lang_name = htmlspecialchars($alt_lang_name, ENT_QUOTES, 'UTF-8');
@@ -757,7 +783,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 
 				if ($i_GI > 0) 
 					echo ", " . translate('or', $st, 'sys');
-				echo " <a href='https://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $_SERVER['PHP_SELF'] . "?sortby=lang&name=".$Goto_ISO."&ROD_Code=".$Goto_ROD_Code."&Variant_Code=".$Goto_Variant_Code."' style='text-decoration: underline; color: red; '>" . $LN . "</a> (" . $Percentage . ")";
+				echo " <a href='https://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $_SERVER['PHP_SELF'] . "?iso=".$Goto_ISO."&rod=".$Goto_ROD_Code."&var=".$Goto_Variant_Code."' style='text-decoration: underline; color: red; '>" . $LN . "</a> (" . $Percentage . ")";
 				$i_GI++;
 			}
 			echo ".";
