@@ -3753,11 +3753,11 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		$result2=$db->query($query);
 		if ($result2->num_rows > 0) {
 			echo '<table id="Dis_GRN">';
-			$query="SELECT LN_English FROM LN_English WHERE ISO_ROD_index = '$ISO_ROD_index'";
+			$query="SELECT LN_English FROM LN_English WHERE ISO_ROD_index = '$ISO_ROD_index'";	// only one possible
 			$result3=$db->query($query);
 			if ($result3->num_rows > 0) {
 				$r_LN = $result3->fetch_array(MYSQLI_ASSOC);
-				if (str_contains($r_LN['LN_English'], 'Sign Language')) {						// The only way I know how to see if the language is a sign language
+				if (strpos($r_LN['LN_English'], 'Sign Language') !== false) {					// The only way I know how to see if the language is a sign language
 					$deaf = 1;
 				}
 			}
@@ -3885,7 +3885,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					echo "<img class='iconActions' src='../images/email-icon.jpg' alt='Email' title='Email' />";
 				echo "</td>";
 				echo "<td>";
-					if (str_contains('+()0123456789 ', substr($URL, 0, 1))) {
+					if (strpos('+()0123456789 ', substr($URL, 0, 1) !== false)) {									// if string contains the first character in $URL
 						echo "<div class='linePointer'>$company_title : $URL</div>";
 					}
 					else {

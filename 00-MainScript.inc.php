@@ -29,18 +29,18 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 <meta name="Updated-by" 				content="Scott Starker, Lærke Roager" />
 <meta name="Maintained-by" 				content="Website" />
 <meta name="Approved-by" 				content="Bill Dyck, Access Coordinator" />
-<meta name="Copyright"					content="6.2009 - <?php echo date("Y"); ?>" /> <!-- auto_copyright("2009") -->
+<meta name="Copyright"					content="6.2009 - <?php echo date("Y"); ?>" />		<!-- auto_copyright("2009") -->
 <!-- For IE 9 and below. ICO should be 32x32 pixels in size -->
 <!--[if IE]><link rel="shortcut icon" href="path/to/favicon.ico"><![endif]-->
 <!-- Touch Icons - iOS and Android 2.1+ 180x180 pixels in size. -->
 <link rel="apple-touch-icon-precomposed" href="./icons/apple-touch-icon-precomposed.png">
 <!-- Firefox, Chrome, Safari, IE 11+ and Opera. 196x196 pixels in size. -->
 <link rel="icon"						href="icons/favicon.png" />
-<link rel="manifest" 					href="manifest.webmanifest" /> <!-- The browser should behave when the PWA installs on the user's desktop or mobile device. -->
-<link rel="apple-touch-icon" 			href="icons/apple-touch-icon.png" /> <!-- iOS mobile icon -->
-<meta name="apple-mobile-web-app-title" content="Scripture Earth" /> <!-- title for iOS mobile icon -->
-<link rel="icon" sizes="192x192" 		href="icons/nice-highres.png" /> <!-- Android mobile icon -->
-<meta name="application-name" 			content="Scripture Earth" /> <!-- title for Android mobile icon -->
+<link rel="manifest" 					href="manifest.webmanifest" />						<!-- The browser should behave when the PWA installs on the user's desktop or mobile device. -->
+<link rel="apple-touch-icon" 			href="icons/apple-touch-icon.png" />				<!-- iOS mobile icon -->
+<meta name="apple-mobile-web-app-title" content="Scripture Earth" />						<!-- title for iOS mobile icon -->
+<link rel="icon" sizes="192x192" 		href="icons/nice-highres.png" />					<!-- Android mobile icon -->
+<meta name="application-name" 			content="Scripture Earth" />						<!-- title for Android mobile icon -->
 <!--link rel="stylesheet" type='text/css'		href="button.css" /-->
 <link rel="stylesheet" type='text/css' href="JQuery/css/style.css" />
 <!-- link rel="stylesheet" type="text/css" 	href="_css/Scripture_Index.css" /-->
@@ -49,8 +49,8 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 <link rel='stylesheet' type='text/css' href='_css/00-SEmobile.css?v=0.0.3' />
 <!--link rel='stylesheet' type='text/css' 	href='_css/CountryTable.css' /-->
 <!--link rel='stylesheet' type='text/css' href='_css/jplayer.BlueMonday.css' /-->
-<link rel='stylesheet' type='text/css' href='_css/jplayer.blue.monday.min.css?v=0.0.3' /> <!-- Playlist Video -->
-<link rel='stylesheet' type='text/css' href='_css/jplayer.playlist.BlueMonday.css' /> <!-- Playlist Audio -->
+<link rel='stylesheet' type='text/css' href='_css/jplayer.blue.monday.min.css?v=0.0.3' />	<!-- Playlist Video -->
+<link rel='stylesheet' type='text/css' href='_css/jplayer.playlist.BlueMonday.css' />		<!-- Playlist Audio -->
 <link rel="stylesheet" type='text/css' href="JQuery/css/jquery-ui-1.12.1.css" />
 <!--script type="text/javascript" language="javascript" src="_js/jquery-1.10.1.min.js"></script-->
 <script type="text/javascript" language="javascript" src="JQuery/js/jquery-1.12.4.min.js"></script>
