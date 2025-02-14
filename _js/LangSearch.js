@@ -71,7 +71,7 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
    else {
         // saltillo: ꞌ = U+A78C
         var re = /[-. ,'?()a-záéíóúàèìòùÑñçãõâêîôûäëöüïǃǂǁǀ!|]/ui;          // the '-' has to go first
-        var foundArray = re.exec(str.substring(str.length - 1));            // the last character of the str
+        var foundArray = re.test(str.substring(str.length - 1));            // the last character of the str
         if (!foundArray) {                                                  // is the value of the last character of the str isn't A-Za - z then it returns
             document.getElementById("ID").value = document.getElementById("ID").value.substring(0, document.getElementById("ID").value.length - 1);
             alert(str.substring(str.length - 1) + " is an invalid character. Use an alphabetic character or - , ' ?[saltillo] ( )  [space]");
@@ -79,6 +79,13 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
             if (str.length == 0) {
                 document.getElementById("ID").innerHTML = '';
             }
+            return;
+        }
+        if (st == "arb" && foundArray) {                                    // menu is set to Arabic but entering in Roman script!
+            alert("أدخل النص باللغة العربية");                            // "Enter your text in Arabic"
+            str.length = 0;                                                 // set str_length = 0;
+            document.getElementById("ID").value = '';
+            document.getElementById("LangSearch").innerHTML = '';
             return;
         }
     }
@@ -263,7 +270,7 @@ function showCountry(str, st, Internet, SpecificCountry, asset) {           // g
     else {
         // saltillo: ' = U+A78C
         var re = /[-. ,'?()a-záéíóúàèìòùÑñçãõâêîôûäëöüï&]/ui;
-        var foundArray = re.exec(str.substring(str.length - 1));            // the last character of the str
+        var foundArray = re.test(str.substring(str.length - 1));            // the last character of the str
         if (!foundArray) {                                                  // is the value of the last character of the str isn't [A-Za-z] then it returns
             document.getElementById("CID").value = document.getElementById("CID").value.substring(0, document.getElementById("CID").value.length - 1);
             alert(str.substring(str.length - 1) + " is an invalid character. Use an alphabetic character.");
@@ -273,7 +280,20 @@ function showCountry(str, st, Internet, SpecificCountry, asset) {           // g
             }
             return;
         }
-    }
+        if (st == "arb" && foundArray) {                                    // menu is set to Arabic but entering in Roman script!
+            alert("أدخل النص باللغة العربية");                            // "Enter your text in Arabic"
+            str.length = 0;                                                 // set str_length = 0;
+            document.getElementById("CID").value = "";
+            document.getElementById("CountSearch").innerHTML = "";
+            $("#showLanguageID").show();
+            $("#showSearchCountry").show();
+            $("#showCountryID").show();
+            $("#listCountriesID").show();
+            $("#mainContent").show();
+            $("#whiteOpaque").show();
+            return;
+        }
+   }
 
     // iOS Asset Package
     if (asset == 1) {
