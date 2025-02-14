@@ -71,6 +71,8 @@
 	}
 
 	/* for the tables */
+	#Dis_BibleIsReadAudio, #Dis_BibleIsRead, #Dis_BibleIsReadAudioVideo, #Dis_BibleIsAudio, #Dis_BibleIsAudioVideo,
+	#Dis_BibleIsVideo, #Dis_BibleIsReadVideo,
 	#Dis_SAB, #Dis_BibleIs, #Dis_viewer, #Dis_OT_PDF, #Dis_NT_PDF, #Dis_OT_Audio, #Dis_NT_Audio, #Dis_PlaylistAudio, #Dis_BibleIsGospelFilm,
 	#Dis_PlaylistVideo, #Dis_watch, #Dis_YouVersion, #Dis_buy, #Dis_GRN, #Dis_study, #Dis_otherTitles, #Dis_otherTitles_download,
 	#Dis_links, #Dis_eBible, #Dis_SILlink, #Dis_SB, #Dis_GooglePlay, #Dis_All, #Dis_PlaylistVideo, #Dis_PlaylistVideo_download, #Dis_App,
@@ -193,7 +195,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	$AddTheScriptureIn=$rowSM['AddTheScriptureIn'];			// boolean
 
 	$SAB=$rowSM['SAB'];										// boolean (1-32)
-	$BibleIs=$rowSM['BibleIs'];								// boolean
+	$BibleIs=$rowSM['BibleIs'];								// boolean (1 - 8)
 	$BibleIsGospelFilm=$rowSM['BibleIsGospelFilm'];			// boolean
 	$viewer=$rowSM['viewer'];								// boolean
 	$OT_PDF=$rowSM['OT_PDF'];								// boolean
@@ -255,9 +257,23 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	$SB_PDF=$result_SB->num_rows;							// number of rows
 
 	$BibleIsRead = 0;
+	$BibleIsReadAudio = 0;
+	$BibleIsReadAudioVideo = 0;
 	$BibleIsAudio = 0;
+	$BibleIsAudioVideo = 0;
 	$BibleIsVideo = 0;
+	$BibleIsReadVideo = 0;
 	if ($BibleIs) {
+		/*
+			$BibleIsLink = 1: Read and Listen
+			$BibleIsLink = 2: Read
+			$BibleIsLink = 3: Read and Listen
+			$BibleIsLink = 4: Read, Listen, and View
+			$BibleIsLink = 5: Listen
+			$BibleIsLink = 6: Listen and View
+			$BibleIsLink = 7: View
+			$BibleIsLink = 8: Read and View
+		*/
 		$query="SELECT BibleIs FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND NOT BibleIs = 0";
 		$result2=$db->query($query);
 		if ($result2->num_rows > 0) {
@@ -265,16 +281,28 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				$BibleIsLink=$r_links['BibleIs'];
 				switch ($BibleIsLink) {
 					case 1:
-						$BibleIsAudio = 3;		// default
+						$BibleIsReadAudio = 3;		// default
 						break;
 					case 2:
 						$BibleIsRead = 2;
 						break;			
 					case 3:
-						$BibleIsAudio = 3;
+						$BibleIsReadAudio = 3;
 						break;			
 					case 4:
-						$BibleIsVideo = 4;
+						$BibleIsReadAudioVideo = 4;
+						break;			
+					case 5:
+						$BibleIsAudio = 5;
+						break;
+					case 6:
+						$BibleIsAudioVideo = 6;
+						break;			
+					case 7:
+						$BibleIsVideo = 7;
+						break;			
+					case 8:
+						$BibleIsReadVideo = 8;
 						break;			
 					default:
 						break;
@@ -392,14 +420,24 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 <script>
 	setTitle("<?php echo ($whichBible == '' ? '' : $whichBible . ' ') . $LN . ($ISO == 'qqq' ? '' : '['.$ISO.']'); ?>");		// qqq equals Deaf
 
+		/*
+			$BibleIsLink = 1: Read and Listen			$BibleIsReadAudio
+			$BibleIsLink = 2: Read						$BibleIsRead
+			$BibleIsLink = 3: Read and Listen			$BibleIsReadAudio
+			$BibleIsLink = 4: Read, Listen, and View	$BibleIsReadAudioVideo
+			$BibleIsLink = 5: Listen					$BibleIsAudio
+			$BibleIsLink = 6: Listen and View			$BibleIsAudioVideo
+			$BibleIsLink = 7: View						$BibleIsVideo
+			$BibleIsLink = 8: Read and View				$BibleIsReadVideo
+		*/
 	// Object.entries() takes an object like { a: 1, b: 2, c: 3 } and turns it into an array of key-value pairs: [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ].
-	const DisplayText = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_otherTitles': <?php echo $otherTitles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>};
-	const DisplayAudio = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_other_titles': <?php echo $other_titles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
-	const DisplayVideo = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
+	const DisplayText = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_BibleIsReadVideo': <?php echo $BibleIsReadVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_otherTitles': <?php echo $otherTitles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>};
+	const DisplayAudio = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsAudioVideo': <?php echo $BibleIsAudioVideo; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_other_titles': <?php echo $other_titles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
+	const DisplayVideo = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_BibleIsAudioVideo': <?php echo $BibleIsAudioVideo; ?>, 'Dis_BibleIsReadVideo': <?php echo $BibleIsReadVideo; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
 	const DisplayApp = {'Dis_App': <?php echo $App; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>};
 	const DisplayOther = {'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_Kalaam': <?php echo $Kalaam; ?>};
 	const DisplayMap = {'Dis_Map': <?php echo $SE_Map; ?>};
-	const DisplayAll = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_otherTitles': <?php echo $other_titles; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_links': <?php echo $links; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_App': <?php echo $App; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_Kalaam': <?php echo $Kalaam; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>};
+	const DisplayAll = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsReadVideo': <?php echo $BibleIsReadVideo; ?>, 'Dis_BibleIsAudioVideo': <?php echo $BibleIsAudioVideo; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_otherTitles': <?php echo $other_titles; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_links': <?php echo $links; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_App': <?php echo $App; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_Kalaam': <?php echo $Kalaam; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>};
 
 	// set display = "table" for all "DisplayZZZZZZ" Object.entries()
 	function menuEnableText() {
@@ -632,31 +670,6 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				<span class='alternativeLanguageName'>
 				<?php
 				$i_alt=0;
-				$st_temp = [];
-				$st_key=0;
-				// display navigational languages
-				foreach ($_SESSION['nav_ln_array'] as $tempArray) {						// e.g., 'en' [2 lower case letters]
-					if ($st == $tempArray[0]) {											// 'translation_code' e.g., 'eng' [3 lower case letters]
-						continue;
-					}
-					$t_temp = 'LN_'. $tempArray[1];										// e.g., 'English' [name of the navigational language]
-					$query_temp="SELECT $t_temp FROM $t_temp WHERE ISO_ROD_index = '$ISO_ROD_index'";
-					$result_temp=$db->query($query_temp);
-					if ($result_temp->num_rows === 0) {
-						continue;
-					}
-					$r_temp = $result_temp->fetch_array(MYSQLI_ASSOC);
-					$temp_lang = trim($r_temp["$t_temp"]);
-					$temp_lang = htmlspecialchars($temp_lang, ENT_QUOTES, 'UTF-8');
-					if (($st_key = array_search($temp_lang, $st_temp)) !== NULL) {		// search through $st_temp array
-						if ($i_alt != 0) {
-							echo ', ';
-						}
-						$st_temp[] = $temp_lang;
-						echo $temp_lang;
-						$i_alt++;
-					}
-				}
 				// display alternative language names
 				while ($r_alt = $result_alt->fetch_array(MYSQLI_ASSOC)) {
 					$alt_lang_name=trim($r_alt['alt_lang_name']);
@@ -672,8 +685,40 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					}
 					$i_alt++;
 				}
+				$i_alt=0;
+				$preth = 0;
+				$temp_array = [];
+				// display navigational languages
+				foreach ($_SESSION['nav_ln_array'] as $tempArray) {						// e.g., 'en' [2 lower case letters]
+					if ($st == $tempArray[0]) {											// 'translation_code' e.g., 'eng' [3 lower case letters]
+						continue;
+					}
+					if ($preth === 0) {
+						echo ' (';
+						$preth = 1;
+					}
+					$t_temp = 'LN_'. $tempArray[1];										// e.g., 'English' [name of the navigational language]
+					$query_temp="SELECT $t_temp FROM $t_temp WHERE ISO_ROD_index = '$ISO_ROD_index'";
+					$result_temp=$db->query($query_temp);
+					if ($result_temp->num_rows === 0) {
+						continue;
+					}
+					$r_temp = $result_temp->fetch_array(MYSQLI_ASSOC);
+					$temp_lang = trim($r_temp["$t_temp"]);
+					$temp_lang = htmlspecialchars($temp_lang, ENT_QUOTES, 'UTF-8');
+					if (!in_array($temp_lang, $temp_array)) {							// search a string ($temp_lang) through array ($temp_array)
+						if ($i_alt != 0) {
+							echo ', ';
+						}
+						$temp_array[] = $temp_lang;
+						echo $temp_lang;
+						$i_alt++;
+					}
+				}
+				if ($preth == 1) {
+					echo ')';
+				}
 				?>
-				</span>
 			</div>
 		</h2>
 		<?php
@@ -858,54 +903,21 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		Is it BibleIs? (if "Text with audio" does not exists here and if exists then below)
 	*************************************************************************************************************
 */
+	$BibleIsTags = [];
 	if ($Internet && $BibleIs && !$SAB) {
 		/*
-			$BibleIsLink = 2: Read
-			$BibleIsLink = 1: Read and Listen
-			$BibleIsLink = 3: Read and Listen
-			$BibleIsLink = 4: Read, Listen, and View
-			$BibleIsLink = 5: Listen
-			= 6: Listen and View (?)
-			= 7: View (?)
-			= 8: Read and View (?)
+			$BibleIsLink = 1: Read and Listen			$BibleIsReadAudio
+			$BibleIsLink = 2: Read						$BibleIsRead
+			$BibleIsLink = 3: Read and Listen			$BibleIsReadAudio
+			$BibleIsLink = 4: Read, Listen, and View	$BibleIsReadAudioVideo
+			$BibleIsLink = 5: Listen					$BibleIsAudio
+			$BibleIsLink = 6: Listen and View			$BibleIsAudioVideo
+			$BibleIsLink = 7: View						$BibleIsVideo
+			$BibleIsLink = 8: Read and View				$BibleIsReadVideo
 		*/
-		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND BibleIs = 4";
+		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND BibleIs <> 0";
 		$result2=$db->query($query);
 		if ($result2->num_rows > 0) {
-			echo '<table id="Dis_BibleIsVideo">';
-			while ($r_links=$result2->fetch_array(MYSQLI_ASSOC)) {
-				$URL=trim($r_links['URL']);
-				//if (preg_match('/^(.*\/)[a-zA-Z0-9][a-zA-Z]{2}\/[0-9]+$/', $URL, $matches)) {		// remove e.g. Mat/1
-				//	$URL = $matches[1];
-				//}
-				$BibleIsVersion=trim($r_links['company_title']);
-				$BibleIsLink=$r_links['BibleIs'];
-				$BibleIsIcon = 'BibleIsVideo.jpg';
-				$BibleIsActText = translate('Read, Listen, and View', $st, 'sys');
-				?>
-				<tr>
-					<td style='width: 45px; '>
-						<?php
-						echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'><img class='iconActions' src='../images/".$BibleIsIcon."' alt='".$BibleIsActText."' title='".$BibleIsActText."' /></div>";
-					echo "</td>";
-					echo "<td>";
-						echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'>" . $BibleIsActText . " ";
-						echo translate('on Bible.is', $st, 'sys');
-						if ($BibleIsVersion!='') {
-							echo ' ' . $BibleIsVersion;
-						}
-						echo "</div>";
-						?>
-					</td>
-				</tr>
-				<?php
-			}
-			echo '</table>';
-		}
-		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND (BibleIs = 1 OR BibleIs = 3 OR BibleIs = 5)";
-		$result2=$db->query($query);
-		if ($result2->num_rows > 0) {
-			echo '<table id="Dis_BibleIsAudio">';
 			while ($r_links=$result2->fetch_array(MYSQLI_ASSOC)) {
 				$URL=trim($r_links['URL']);
 				//if (preg_match('/^(.*\/)[a-zA-Z0-9][a-zA-Z]{2}\/[0-9]+$/', $URL, $matches)) {		// remove e.g. Mat/1
@@ -917,19 +929,48 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				$BibleIsActText = '';
 				switch ($BibleIsLink) {
 					case 1:
-						$BibleIsIcon = 'BibleIs-icon.jpg';
+						echo '<table id="Dis_BibleIsReadAudio">';
+						$BibleIsIcon = 'BibleIsAudio.jpg';
 						$BibleIsActText = translate('Read and Listen', $st, 'sys');
 						break;
+					case 2:
+						echo '<table id="Dis_BibleIsRead">';
+						$BibleIsIcon = 'BibleIs-icon.jpg';
+						$BibleIsActText = translate('Read', $st, 'sys');
+						break;			
 					case 3:
+						echo '<table id="Dis_BibleIsReadAudio">';
 						$BibleIsIcon = 'BibleIsAudio.jpg';
 						$BibleIsActText = translate('Read and Listen', $st, 'sys');
 						break;			
+					case 4:
+						echo '<table id="Dis_BibleIsReadAudioVideo">';
+						$BibleIsIcon = 'BibleIsVideo.jpg';
+						$BibleIsActText = translate('Read, Listen, and View', $st, 'sys');
+						break;			
 					case 5:
+						echo '<table id="Dis_BibleIsAudio">';
 						$BibleIsIcon = 'BibleIsAudio.jpg';
 						$BibleIsActText = translate('Listen', $st, 'sys');
 						break;			
+					case 6:
+						echo '<table id="Dis_BibleIsAudioVideo">';
+						$BibleIsIcon = 'BibleIsVideo.jpg';
+						$BibleIsActText = translate('Listen and View', $st, 'sys');
+						break;			
+					case 7:
+						echo '<table id="Dis_BibleIsVideo">';
+						$BibleIsIcon = 'BibleIsVideo.jpg';
+						$BibleIsActText = translate('View', $st, 'sys');
+						break;			
+					case 8:
+						echo '<table id="Dis_BibleIReadVideo">';
+						$BibleIsIcon = 'BibleIsVideo.jpg';
+						$BibleIsActText = translate('Read and View', $st, 'sys');
+						break;			
 					default:
 						break;
+					$BibleIsTags[] = $BibleIsLink;											// number 1 to 8; used to enable this link [this needs to be done!]
 				}
 				?>
 				<tr>
@@ -948,41 +989,8 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					</td>
 				</tr>
 				<?php
+				echo '</table>';
 			}
-			echo '</table>';
-		}
-		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND BibleIs = 2";
-		$result2=$db->query($query);
-		if ($result2->num_rows > 0) {
-			echo '<table id="Dis_BibleIsRead">';
-			while ($r_links=$result2->fetch_array(MYSQLI_ASSOC)) {
-				$URL=trim($r_links['URL']);
-				//if (preg_match('/^(.*\/)[a-zA-Z0-9][a-zA-Z]{2}\/[0-9]+$/', $URL, $matches)) {		// remove e.g. Mat/1
-				//	$URL = $matches[1];
-				//}
-				$BibleIsVersion=trim($r_links['company_title']);
-				$BibleIsLink=$r_links['BibleIs'];
-				$BibleIsIcon = 'BibleIs-icon.jpg';
-				$BibleIsActText = translate('Read', $st, 'sys');
-				?>
-				<tr>
-					<td style='width: 45px; '>
-						<?php
-						echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'><img class='iconActions' src='../images/".$BibleIsIcon."' alt='".$BibleIsActText."' title='".$BibleIsActText."' /></div>";
-					echo "</td>";
-					echo "<td>";
-						echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'>" . $BibleIsActText . " ";
-						echo translate('on Bible.is', $st, 'sys');
-						if ($BibleIsVersion!='') {
-							echo ' ' . $BibleIsVersion;
-						}
-						echo "</div>";
-						?>
-					</td>
-				</tr>
-				<?php
-			}
-			echo '</table>';
 		}
 	}
 

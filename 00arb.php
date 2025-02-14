@@ -78,7 +78,7 @@
 	$FacebookCountry = 'ar_AB';
 	$MajorCountryAbbr = 'ar';
 	
-	define ('OT_EngBook', 12);							// English Bible book names
+	define ('OT_EngBook', 12);							// Arabic Bible book names
 	define ('NT_EngBook', 12);
 	
 	include ('./00-MainScript.inc.php');				// THE MAIN SCRIPT!!!!!

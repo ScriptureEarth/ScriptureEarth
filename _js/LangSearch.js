@@ -209,6 +209,8 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
     }
 }
 
+//showLanguage("تون", "arb", 1, "LN_Arabic", "Arabic_Ara", "Arabic", 0)
+
 // send
 function send(sel) {
     // languageName = 'block'; which = 2
@@ -324,6 +326,8 @@ function showCountry(str, st, Internet, SpecificCountry, asset) {           // g
         }
     }
 }
+
+//showCountry("أث", "arb", 1, "Arabic", 0);
 
 /*****************************************************************************************************************
 	AllCountries()

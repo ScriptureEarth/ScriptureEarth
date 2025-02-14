@@ -911,17 +911,32 @@ function addRowToTableBibleIs() {
 
     objOption = document.createElement('option');
     objOption.text = "Listen";
-    objOption.value = "BibleIsListenOnly-" + iteration;
-    el.appendChild(objOption);
-
-    objOption = document.createElement('option');
-    objOption.text = "Read and Listen";
     objOption.value = "BibleIsAudio-" + iteration;
     el.appendChild(objOption);
 
     objOption = document.createElement('option');
-    objOption.text = "Read, Listen, and View";
+    objOption.text = "View";
     objOption.value = "BibleIsVideo-" + iteration;
+    el.appendChild(objOption);
+
+    objOption = document.createElement('option');
+    objOption.text = "Read and Listen";
+    objOption.value = "BibleIsTextAudio-" + iteration;
+    el.appendChild(objOption);
+
+    objOption = document.createElement('option');
+    objOption.text = "Read and View";
+    objOption.value = "BibleIsTextVideo-" + iteration;
+    el.appendChild(objOption);
+
+    objOption = document.createElement('option');
+    objOption.text = "Listen and View";
+    objOption.value = "BibleIsAudioVideo-" + iteration;
+    el.appendChild(objOption);
+
+    objOption = document.createElement('option');
+    objOption.text = "Read, Listen, and View";
+    objOption.value = "BibleIsTextAudioVideo-" + iteration;
     el.appendChild(objOption);
 
     // tail cell

@@ -797,7 +797,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 				******************************************************************************************************  */
 				if ((isset($_GET['sortby']) && $_GET['sortby'] == 'lang') || isset($_GET['iso']) || isset($_GET['ISO_ROD_index']) || isset($_GET['idx'])) {
 					if (!isset($_GET['name']) && !isset($_GET['iso']) && !isset($_GET['ISO_ROD_index']) && !isset($_GET['idx'])) {
-						die('Die hacker!</body></html>');
+						die('You made a mistake!</body></html>');
 					}
 					else {
 						$query = '';
@@ -810,7 +810,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 							//$ISO_ROD_index = htmlspecialchars($ISO_ROD_index, ENT_QUOTES, 'UTF-8');
 							$ISO_ROD_index = strval(intval($ISO_ROD_index));			// returns a string as an integer  
 							if ($ISO_ROD_index == '0') {								// if $ISO_ROD_index has a letter at the beginning then intval returns 0
-								die('Die hacker!</div></div></body></html>');
+								die('You made a mistake!</body></html>');
 							}
 							// asset
 							if ($asset == 1) {
@@ -831,7 +831,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 							if (preg_match('/^([a-z]{3})/', $ISO, $matches)) {
 								$ISO = $matches[1];
 							} else {
-								die('Die hacker!</body></html>');
+								die('You made a mistake!</body></html>');
 							}
 							if (isset($_GET['ROD_Code']) || isset($_GET['rod'])) {
 								//$ROD_Code = $_GET['ROD_Code'];
@@ -851,7 +851,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 									if (preg_match('/^([a-z])/', $Variant_Code, $matches)) {
 										$Variant_Code = $matches[1];
 									} else {
-										die('Hack!</body></html>');
+										die('You made a mistake!</body></html>');
 									}
 								}
 							}

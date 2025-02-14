@@ -148,9 +148,12 @@
 			$inputs["txtLinkBibleIs-".(string)$i] = check_input($_POST["txtLinkBibleIs-".(string)$i]);
 			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsDefault-'.$i) $inputs["BibleIsDefault-".(string)$BibleIsIndex] = 1; else $inputs["BibleIsDefault-".(string)$BibleIsIndex] = 0;
 			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsText-'.$i) $inputs["BibleIsText-".(string)$BibleIsIndex] = 2; else $inputs["BibleIsText-".(string)$BibleIsIndex] = 0;
-			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsListenOnly-'.$i) $inputs["BibleIsListenOnly-".(string)$BibleIsIndex] = 5; else $inputs["BibleIsListenOnly-".(string)$BibleIsIndex] = 0;
-			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsAudio-'.$i) $inputs["BibleIsAudio-".(string)$BibleIsIndex] = 3; else $inputs["BibleIsAudio-".(string)$BibleIsIndex] = 0;
-			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsVideo-'.$i) $inputs["BibleIsVideo-".(string)$BibleIsIndex] = 4; else $inputs["BibleIsVideo-".(string)$BibleIsIndex] = 0;
+			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsAudio-'.$i) $inputs["BibleIsAudio-".(string)$BibleIsIndex] = 5; else $inputs["BibleIsAudio-".(string)$BibleIsIndex] = 0;
+			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsVideo-'.$i) $inputs["BibleIsVideo-".(string)$BibleIsIndex] = 7; else $inputs["BibleIsVideo-".(string)$BibleIsIndex] = 0;
+			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsTextAudio-'.$i) $inputs["BibleIsTextAudio-".(string)$BibleIsIndex] = 3; else $inputs["BibleIsTextAudio-".(string)$BibleIsIndex] = 0;
+			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsTextVideo-'.$i) $inputs["BibleIsTextVideo-".(string)$BibleIsIndex] = 8; else $inputs["BibleIsTextVideo-".(string)$BibleIsIndex] = 0;
+			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsAudioVideo-'.$i) $inputs["BibleIsAudioVideo-".(string)$BibleIsIndex] = 6; else $inputs["BibleIsAudioVideo-".(string)$BibleIsIndex] = 0;
+			if ($_POST["txtLinkBibleIs-".(string)$i] == 'BibleIsTextAudioVideo-'.$i) $inputs["BibleIsTextAudioVideo-".(string)$BibleIsIndex] = 4; else $inputs["BibleIsTextAudioVideo-".(string)$BibleIsIndex] = 0;
 			$BibleIsIndex++;
 		}
 		$i++;
