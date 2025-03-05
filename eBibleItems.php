@@ -75,7 +75,7 @@ if (isset($_GET["URL"])) {
 	include ('./translate/functions.php');								// translation function
 	
 	// Remote file url
-	$remoteFile = "https://$URL";
+	$remoteFile = "https://$URL/";
 	// Initialize cURL
 	$ch = curl_init($remoteFile);
 	curl_setopt($ch, CURLOPT_NOBODY, true);
@@ -91,7 +91,7 @@ if (isset($_GET["URL"])) {
 	require_once './include/conn.inc.php';														// connect to the database named 'scripture'
 	$db = get_my_db();
 
-	$query="SELECT description FROM eBible_list WHERE translationId = ?";
+	$query="SELECT `description` FROM eBible_list WHERE translationId = ?";
 	$stmt=$db->prepare($query);
 	
 	$homepage = @file_get_contents("https://$URL");						// get the HTML from the eBible.org

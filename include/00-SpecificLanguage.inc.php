@@ -3514,7 +3514,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				/***************************************************************************
 					using curl to test if the URL file exists
 				***************************************************************************/
-				$curl = curl_init("https://$publicationURL");															// get the curl status
+				$curl = curl_init("https://$publicationURL/");															// get the curl status
 				// don't fetch the actual page, you only want to check the connection is ok
 				curl_setopt($curl, CURLOPT_NOBODY, true);
 				// do request
@@ -3925,9 +3925,9 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					echo '<iframe name="iframe_a" title="Iframe" class="mapIframe" src="../maps/'.$ISO_Country.'/'.$ISO.'.htm"></iframe>';
 				}
 				echo '<div class="mapKey">';
-					echo '<p><span style="color: red; font-weight: bold; ">'.translate('red: language you have selected', $st, 'sys').'</span></p>';
-					echo '<p><span style="color: purple; font-weight: bold; ">'.translate('purple: dialects of this language', $st, 'sys').'</span></p>';
-					echo '<p><span style="color: blue; font-weight: bold; ">'.translate('blue: all of the other languages for this country', $st, 'sys').'</span></p>';
+					echo '<p><span style="color: #a8226d; font-weight: bold; ">'.translate('red: language you have selected', $st, 'sys').'</span></p>';
+					echo '<p><span style="color: #4d25c5; font-weight: bold; ">'.translate('purple: dialects of this language', $st, 'sys').'</span></p>';
+					echo '<p><span style="color: #2a83cb; font-weight: bold; ">'.translate('blue: all of the other languages for this country', $st, 'sys').'</span></p>';
 				echo '</div>';
 				?>
 			</td>
