@@ -135,7 +135,6 @@ $data = $_SERVER['REMOTE_ADDR'] . ' - - [' . date("d/M/Y:h:i:s") . ' -0500] User
 file_put_contents($SE_LogPath . "zip-access.log", $data, FILE_USE_INCLUDE_PATH | FILE_APPEND | LOCK_EX); 
 
 $files = [];
-$j = 0;
 $stingBooks = str_replace(",", "','", $Books);			// gives zzzz','zzzz','zzzz
 $stingBooks = "'" . $stingBooks . "'";					// gives 'zzzz','zzzz','zzzz'
 if ($Testament == 'OT') {
@@ -149,7 +148,7 @@ if ($Testament == 'OT') {
 		if (!file_exists($dirname.$temp)) {
 			continue;
 		}
-		$files[$j++] = $temp;
+		$files[] = $temp;
 	file_put_contents('AudioSaveZip.txt', 'line 153: iso: '.$iso.'; OT (0-38): OT_Audio_Filename: #'.$temp."#\n", FILE_APPEND | LOCK_EX);
 	}
 }
@@ -164,14 +163,16 @@ else {
 		if (!file_exists($dirname.$temp)) {
 			continue;
 		}
-		$files[$j++] = $temp;
+		$files[] = $temp;
 	file_put_contents('AudioSaveZip.txt', 'line 168: iso: '.$iso.'; NT (0-26): NT_Audio_Filename: #'.$temp."#\n", FILE_APPEND | LOCK_EX);
 	}
 }
-if ($j == 0) {
+if (!$files) {											// if no array files were found
 	die(translate('Error! files[0] is null!', $st, 'sys').'</body></html>');
-	//die();
 }
+
+//print_r($files);
+//echo "<br />";
 
 /*********************************************************************************************************
     delete all files more than 24 hours from now
@@ -254,13 +255,15 @@ if ($zip->open($archive_file_name, ZIPARCHIVE::CREATE) !== TRUE) {
 //		If interuupted by user with the "blue" box the script won't get to "unlink('./zipfiles/'.$file)" (see below)!
 //		And this zip will stay in the "zipfiles" sub-directory without beging delete.
 // ********************************************************************************************************
+//$yearDate = (int)date('Y');		// get the date of the file
 foreach ($filenames as $file) {
 	//$temp = $dirname . $file;
+	//echo "temp= $temp<br />";
 	//if copy is successful
 	if (@copy($dirname . $file, './zipfiles/'.$file)) {		// copy from './data/'.$iso.'/audio/'.$file to './zipfiles/'.$file
 		// File copied from remote!
 		$zip->addFile('./zipfiles/'.$file, $file);			// add './zipfiles/'.$file to the zip archive file (addFile remote server files will NOT work!)
-		$zip->setMtimeName($file, mktime(0,0,0,12,25,date("Y")+1));
+		//$zip->setMtimeName($file, mktime(0,0,0,12,25,$yearDate));	// set the date of the file
 	}
 	//if addFile fails
 	else {

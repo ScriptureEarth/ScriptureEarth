@@ -1,5 +1,21 @@
 <?php
 	// This page cannot be accessed directly
+
+//use PhpMyAdmin\Console;
+
+function console_log($data) {
+	$html = '';
+	$coll = '';
+	if (is_array($data) || is_object($data)) {
+		$coll = json_encode($data);
+	}
+	else {
+		$coll = $data;
+	}
+	$html = "<script id='console_log'>console.log('PHP: $coll');</script>";
+	echo($html);
+}
+
 	if ( ! (defined('RIGHT_ON') && RIGHT_ON === true)) {
 		@include_once '403.php';
 		exit;
@@ -189,49 +205,26 @@
 		$db->query("DELETE FROM SAB_scriptoria WHERE ISO_ROD_index = $inputs[idx]");
 	}
 	else {
-		if (substr($_SERVER['REMOTE_ADDR'], 0, 7) != '192.168') {														// Is the script local?
-			$query="UPDATE SAB_scriptoria SET `url` = ?, `subfolder` = ?, `description` = ? WHERE ISO_ROD_index = $inputs[idx] AND SAB_number = ?";
-			$stmt_SAB_scriptoria=$db->prepare($query);
+		if (substr($_SERVER['REMOTE_ADDR'], 0, 8) != '168.148.') {	//127.0.0.') {														// Is the script local?
+			$db->query("DELETE FROM SAB_scriptoria WHERE ISO_ROD_index = $inputs[idx]");
+			//$query="UPDATE SAB_scriptoria SET `url` = ?, `subfolder` = ?, `description` = ? WHERE ISO_ROD_index = $inputs[idx] AND SAB_number = ?";
+			//$stmt_SAB_scriptoria=$db->prepare($query);
 
 			$SABTemp = 1;
-			while (isset($inputs["txtSABdescription-".(string)$SABTemp])) {												// maximum value of $i
+			while (isset($inputs["txtSABurl-".(string)$SABTemp]) || isset($inputs["txtSABsubfolder-".(string)$SABTemp])) {												// maximum value of $i
+				//console_log('while: url: ' . $inputs["txtSABurl-".(string)$SABTemp] . ' subfolder: ' . $inputs["txtSABsubfolder-".(string)$SABTemp]);
 				$SABTemp++;
 			}
 
 			for ($i = 1; $i < $SABTemp; $i++) {		//strlen(trim($inputs["txtSABsubFirstPath-".(string)$i]) >= 4)) {	// $inputs["txtSABsubFirstPath-".(string)$i]) = "sab" by default
 				$SABurl = "txtSABurl-".(string)$i;
-				$SABdescription = "txtSABdescription-".(string)$i;
 				$SABsubfolder = "txtSABsubfolder-".(string)$i;
-				//echo $inputs["txtSABsubfolder-".(string)$i] . ' ' . $SABurl . ' ' . $SABdescription . ' ' . $SABsubfolder . '<br />';
-	
-				$query="SELECT ISO FROM SAB_scriptoria WHERE ISO_ROD_index = $inputs[idx] AND ((`url` = '$inputs[$SABurl]' AND `url` <> '') OR (subfolder = '$inputs[$SABsubfolder]' AND subfolder <> '')) AND SAB_number = $i";
-				$result_temp=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
-				//echo 'INSERT or UPDATE: ' . $inputs['iso'] . ' ' . $inputs['rod'] . ' ' . $inputs['var'] . ' ' . $inputs['idx'] . ' ' . $inputs[$SABurl] . ' ' . $inputs[$SABsubfolder] . ' ' . $inputs[$SABdescription] . ' ' .  $i . '<br />';
-				if ($result_temp->num_rows === 0) {
-					$query = "INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `url`, subfolder, `description`, pre_scriptoria, SAB_number) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$SABurl]', '$inputs[$SABsubfolder]', '$inputs[$SABdescription]', '', $i)";
-					$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
-					//echo 'INSERT: ' . $inputs['iso'] . ' ' . $inputs['rod'] . ' ' . $inputs['var'] . ' ' . $inputs['idx'] . ' ' . $inputs[$SABurl] . ' ' . $inputs[$SABsubfolder] . ' ' . $inputs[$SABdescription] . ' ' .  $i . '<br />';
-				}
-				else {
-					$stmt_SAB_scriptoria->bind_param("sssi", $inputs[$SABurl], $inputs[$SABsubfolder], $inputs[$SABdescription], $i);	// bind parameters for markers
-					$stmt_SAB_scriptoria->execute();																		// execute query. $resultSAB_scriptoria returns a boolean
-					//echo 'UPDATE: ' . $inputs['iso'] . ' ' . $inputs['rod'] . ' ' . $inputs['var'] . ' ' . $inputs['idx'] . ' ' . $inputs[$SABurl] . ' ' . $inputs[$SABsubfolder] . ' ' . $inputs[$SABdescription] . ' ' .  $i . '<br />';
-				}
-
-				if ($inputs[$SABsubfolder] == '') {
-					$db->query("DELETE FROM SAB WHERE ISO_ROD_index = $inputs[idx] AND '$inputs[$SABurl]' AND SAB_number = $i");
-					// gui 	00000 		301 		sab/gui/ 	- Nuevo Testamento (1984) con audio y videos 		1
-					$query="SELECT ISO FROM SAB_scriptoria WHERE ISO_ROD_index = $inputs[idx] AND `description` = '$inputs[$SABdescription]' AND SAB_number = $i";
-					$result_SELECT_SAB_scriptoria=$db->query($query);
-					if ($result_SELECT_SAB_scriptoria->num_rows === 0) {
-						//  ISO 	ROD_Code 	Variant_Code 	ISO_ROD_index 	url Descending 1 	subfolder 	description 	pre_scriptoria 	SAB_number
-						$db->query("INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `url`, Descending, subfolder, `description`, pre_scriptoria, SAB_number) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$SABurl]', '', '$inputs[$SABdescription]', '', $i)");
-					}
-					else {
-						$db->query("UPDATE SAB_scriptoria SET subfolder = '', `url` = '$inputs[$SABurl]' WHERE ISO_ROD_index = $inputs[idx] AND `description` = '$inputs[$SABdescription]' AND SAB_number = $i");
-					}
-				}
-				else {
+				$SABdescription = "txtSABdescription-".(string)$i;
+				// console_log('url: ' . $inputs["txtSABurl-".(string)$i] . ' ! ' . $SABurl . ' ' . $SABdescription . ' ' . $SABsubfolder);
+				//console_log("idx: $inputs[idx] url: " . $inputs[$SABurl] . ' description: ' . $inputs[$SABdescription] . ' subfolder: ' . $inputs[$SABsubfolder]);
+				$query = "INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `url`, subfolder, `description`, pre_scriptoria, SAB_number) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], '$inputs[$SABurl]', '$inputs[$SABsubfolder]', '$inputs[$SABdescription]', '', $i)";
+				$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
+				if ($inputs[$SABsubfolder] != '') {
 					$SAB_Path = './data/'.$inputs['iso'].'/'.$inputs[$SABsubfolder];
 					if (!is_dir($SAB_Path)) {
 						echo 'No path to '.$SAB_Path.' in SAB. Skipped the INSERTs/UPDATEs.<br />';
@@ -254,7 +247,7 @@
 						$ROD_Code = $inputs['rod'];
 						$Variant_Code = $inputs['var'];
 						$ISO_ROD_index = $inputs['idx'];
-
+						//echo $ISO . ' ' . $ROD_Code . ' ' .$Variant_Code . ' ' . $ISO_ROD_index . ' %<br />';
 						// in SAB table
 						// Already have SAB_Book ($book_number), SAB_Chapter ($chapter), Book_Chapter_HTML ("$SAB_record"), ISO ("$inputs[iso]"), ROD_Code ("$inputs[rod]"), Variant_Code ("$inputs[var]"), ISO_ROD_index ($ISO_ROD_index)
 						$query="SELECT SAB_Audio, SAB_number, SABDate, SABSize FROM SAB WHERE ISO_ROD_index = $ISO_ROD_index AND Book_Chapter_HTML = ? AND SAB_Book = ? AND SAB_Chapter = ? AND SAB_number = $i LIMIT 1";		// 1 chapter
@@ -369,6 +362,7 @@
 			echo 'in oder to INSERT/UPDATE the SAB table.</h3>';
 		}
 	}
+console_log('SAB done');
 
 // whole Bible PDF
 	$query="DELETE FROM Scripture_and_or_Bible WHERE ISO_ROD_index = $inputs[idx]";

@@ -1216,16 +1216,15 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 
 				<div class="threeMenus">
 					<?php
-					/* -----------------------------------------------------------------------------------------
+					/* <!-- -----------------------------------------------------------------------------------------
 						display 'English', 'Spanish', ... drop-down menu AND help button
-       				-------------------------------------------------------------------------------------------- */
+       				------------------------------------------------------------------------------------------  --> */
 					?>
-
 					<form id="myForm" class="formNavAndHelp" action="#">
-						<?php
-						// Changed to work with the master array -- Lærke
-						// Modified to (condition) ? value1 : value2 -- Scott
-						?>
+						<!--
+							Changed to work with the master array -- Lærke
+							Modified to (condition) ? value1 : value2 -- Scott
+						-->
 						<select id='navLang' onchange="menuChange()" title="<?php echo translate('Click here to choose the interface language.', $st, 'sys'); ?>">
 							<?php
 							foreach ($_SESSION['nav_ln_array'] as $tempArray) {
@@ -1340,9 +1339,9 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 	<script>
 		menuSet = 0;
 
-		function menuChange(idx) {			// idx = number or 2 charcter uppercase of country
+		function menuChange(idx = null) {			// idx = number or 2 charcter uppercase of country
 			let Scriptname = document.getElementById("navLang").value;
-			if (idx === undefined) {
+			if (idx === null) {
 				window.open(Scriptname, "_self");
 			}
 			else {
