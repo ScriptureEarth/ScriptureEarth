@@ -1,4 +1,9 @@
 <?php
+if (empty($_SERVER['QUERY_STRING'])) {
+    // No query string, redirect to the default page
+    header('location:00deu.php');       // the PHP query string from the URL
+    exit;
+}
 header('location:00deu.php?' . $_SERVER['QUERY_STRING']);       // the PHP query string from the URL
 exit;
 ?>
