@@ -17,7 +17,7 @@ else {
 }
 if (isset($_GET['v'])) {																		// version
 	$v = (float)$_GET['v'];
-	if ($v != .5 && $v != 1 && $v != 2) {																	// version = 1
+	if ($v != .5 && $v != 1 && $v != 2) {														// version = 1 or 2
 		header('HTTP/1.0 403 Forbidden');
 		die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-left: 200px; margin-top: 200px; ">The version is in error.</div></body></html>');
 	}

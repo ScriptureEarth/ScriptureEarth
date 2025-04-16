@@ -623,14 +623,18 @@ console_log('SAB done');
 	$result=$db->query($query);
 	if ($inputs['watch']) {
 		$i = 1;
-		$query="INSERT INTO watch (ISO, ROD_Code, Variant_Code, ISO_ROD_index, organization, watch_what, URL, JesusFilm, YouTube) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, ?, ?)";
+		$query="INSERT INTO watch (ISO, ROD_Code, Variant_Code, ISO_ROD_index, organization, watch_what, `URL`, JesusFilm, YouTube) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, ?, ?)";
 		$stmt_watch=$db->prepare($query);
 		while (isset($inputs["txtWatchWebSource-$i"])) {
 			$temp1 = "txtWatchWebSource-$i";
 			$temp2 = "txtWatchResource-$i";
 			$temp3 = "txtWatchURL-$i";
 			$temp4 = "txtWatchJesusFilm-$i";
+			//echo $i . ') '.$temp4 . '# ';
+			//echo $inputs[$temp4] . '#<br />';
 			$temp5 = "txtWatchYouTube-$i";
+			//echo $i . ') '.$temp5 . '# ';
+			//echo $inputs[$temp5] . '#<br />';
 			$stmt_watch->bind_param('sssii', $inputs[$temp1], $inputs[$temp2], $inputs[$temp3], $inputs[$temp4], $inputs[$temp5]);		// bind parameters for markers
 			$result=$stmt_watch->execute();															// execute query
 			if (!$result) {
@@ -640,7 +644,7 @@ console_log('SAB done');
 		}
 		$stmt_watch->close();
 	}
-	
+
 // study
 	$query="DELETE FROM study WHERE ISO_ROD_index = $inputs[idx]";
 	$result=$db->query($query);

@@ -159,7 +159,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
                 ?>
                     <script>
-                        text = "SAB_Scriptoria table already has the index number <?php echo $idx . '. (sab/' . $subfolder . '/)' ?>";
+                        text = "SAB_Scriptoria table already has the index number <?php echo $idx . '. (sab/' . $subfolder . '/)' ?>. UPDATEd anyway.";
                         message = 1;
                     </script>
                 <?php
@@ -183,7 +183,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
                 ?>
                     <script>
-                        text = "SAB_Scriptoria table already has the index number <?php echo $idx . '. (URL: ' . $url . ')' ?>";
+                        text = "SAB_Scriptoria table already has the index number <?php echo $idx . '. (URL: ' . $url . ')' ?>. UPDATEd anyway.";
                         message = 1;
                     </script>
                 <?php
@@ -194,7 +194,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
         $query = "SELECT * FROM CellPhone WHERE ISO_ROD_index = $idx AND Cell_Phone_Title = 'Android App'";
         $result = $db->query($query);
         if ($result->num_rows == 0) {
-            $db->query("INSERT INTO CellPhone (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Cell_Phone_Title, Cell_Phone_File, optional) VALUES ('$iso', '$rod', '$var', $idx, 'Android App', '$url', '')");
+            $db->query("INSERT INTO CellPhone (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Cell_Phone_Title, Cell_Phone_File, optional) VALUES ('$iso', '$rod', '$var', $idx, 'Android App', '$url', '$projectName')");
             $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
             $db->query("UPDATE scripture_main SET CellPhone = 1 WHERE ISO_ROD_index = $idx");
         }
@@ -202,7 +202,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
             $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
             ?>
                 <script>
-                    text = "CellPhone table already has index number <?php echo $idx ?> and 'Android App'.";
+                    text = "CellPhone table already has index number <?php echo $idx ?> and 'Android App'. UPDATEd anyway.";
                     message = 1;
                 </script>
             <?php
@@ -212,7 +212,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
         $query = "SELECT * FROM CellPhone WHERE ISO_ROD_index = $idx AND Cell_Phone_Title = 'iOS Asset Package'";
         $result = $db->query($query);
         if ($result->num_rows == 0) {
-            $db->query("INSERT INTO CellPhone (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Cell_Phone_Title, Cell_Phone_File, optional) VALUES ('$iso', '$rod', '$var', $idx, 'iOS Asset Package', '$url', '')");
+            $db->query("INSERT INTO CellPhone (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Cell_Phone_Title, Cell_Phone_File, optional) VALUES ('$iso', '$rod', '$var', $idx, 'iOS Asset Package', '$url', '$projectName')");
             $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
             $db->query("UPDATE scripture_main SET CellPhone = 1 WHERE ISO_ROD_index = $idx");
         }
@@ -220,7 +220,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
             $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
             ?>
                 <script>
-                    text = "UPDATED. CellPhone table already has index number <?php echo $idx ?> and 'iOS Asset Package'.";
+                    text = "UPDATED. CellPhone table already has index number <?php echo $idx ?> and 'iOS Asset Package'. UPDATEd anyway.";
                     message = 1;
                 </script>
             <?php
@@ -230,7 +230,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
         $query = "SELECT * FROM links WHERE ISO_ROD_index = $idx AND `URL` = '$url' AND GooglePlay = 1";
         $result = $db->query($query);
         if ($result->num_rows == 0) {
-            $db->query("INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, buy, map, BibleIs, YouVersion, Bibles_org, GooglePlay, GRN) VALUES ('$iso', '$rod', '$var', $idx, 'Google Play Store', '$projectDescription', '$url', 0, 0, 0, 0, 0, 1, 0)");
+            $db->query("INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, buy, map, BibleIs, YouVersion, Bibles_org, GooglePlay, GRN) VALUES ('$iso', '$rod', '$var', $idx, 'Google Play Store', '$projectName', '$url', 0, 0, 0, 0, 0, 1, 0)");
             $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
             $db->query("UPDATE scripture_main SET links = 1 WHERE ISO_ROD_index = $idx");
         }
@@ -238,7 +238,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
             $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE idx = $idx AND `type` = '$type'");
             ?>
                 <script>
-                    text = "The links table index number <?php echo $idx . ', ' . $url ?>, and GooglePlay = 1 is already here.";
+                    text = "The links table index number <?php echo $idx . ', ' . $url ?>, and GooglePlay = 1 is already here. UPDATEd anyway.";
                     message = 1;
                 </script>
             <?php

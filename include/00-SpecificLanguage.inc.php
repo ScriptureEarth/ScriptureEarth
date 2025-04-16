@@ -3415,7 +3415,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 						// JESUS Film
 						?>
 						<div class='linePointer' onclick="window.open('<?php echo $URL ?>')">
-							<?php echo translate('View the JESUS Film', $st, 'sys') ?>
+							<?php echo translate('View the JESUS Film', $st, 'sys') . ': ' . $watch_what ?>
 						</div>
 						<?php
 						/*if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {

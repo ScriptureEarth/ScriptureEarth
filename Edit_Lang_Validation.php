@@ -472,29 +472,32 @@
 				$messages[] = "Watch #" . $i . " is empty.";
 			}
 		}
-		$inputs["txtWatchWebSource-$i"] = check_input($_POST["txtWatchWebSource-$i"]);
-		$inputs["txtWatchResource-$i"] = check_input($_POST["txtWatchResource-$i"]);
-		$inputs["txtWatchURL-$i"] = check_input($_POST["txtWatchURL-$i"]);
+		$inputs["txtWatchWebSource-$i"] = check_input($_POST["txtWatchWebSource-".(string)$i]);
+		$inputs["txtWatchResource-$i"] = check_input($_POST["txtWatchResource-".(string)$i]);
+		$inputs["txtWatchURL-$i"] = check_input($_POST["txtWatchURL-".(string)$i]);
 		$inputs["txtWatchJesusFilm-$i"] = 0;
-		if (isset($_POST["txtWatchJesusFilm-$i"])) {
-			if ($_POST["txtWatchJesusFilm-$i"] == 'on') $inputs["txtWatchJesusFilm-$i"] = 1; else $inputs["txtWatchJesusFilm-$i"] = 0;		// checkbox = checked
-			$_POST["txtWatchYouTube-$i"] = 'off';
-			$inputs["txtWatchYouTube-$i"] = 0;
-		}
 		$inputs["txtWatchYouTube-$i"] = 0;
-		if (isset($_POST["txtWatchYouTube-$i"])) {
-			if ($_POST["txtWatchYouTube-$i"] == 'on') $inputs["txtWatchYouTube-$i"] = 1; else $inputs["txtWatchYouTube-$i"] = 0;			// checkbox = checked
-			$_POST["txtWatchJesusFilm-$i"] = 'off';
-			$inputs["txtWatchJesusFilm-$i"] = 0;
+		if (isset($_POST["txtWatchJesusFilm-$i"])) { } else { $_POST["txtWatchJesusFilm-$i"] = 'off'; }
+		if ($_POST["txtWatchJesusFilm-$i"] == 'on' || $_POST["txtWatchJesusFilm-$i"] == 1) {
+			if ($_POST["txtWatchJesusFilm-$i"] == 'on') $inputs["txtWatchJesusFilm-$i"] = 1;
+			$_POST["txtWatchYouTube-$i"] = 'off';
+			//echo $i . ') WatchJesusFilm: ' . $inputs["txtWatchJesusFilm-$i"] . '; WatchYouTube: ' . $inputs["txtWatchYouTube-".(string)$i] . '<br />';
 		}
-		if ($inputs["txtWatchJesusFilm-$i"] == 1 && $inputs["txtWatchYouTube-$i"] == 1) {
+		if (isset($_POST["txtWatchYouTube-$i"])) { } else { $_POST["txtWatchYouTube-$i"] = 'off'; }
+		if ($_POST["txtWatchYouTube-$i"] == 'on') {
+			if ($_POST["txtWatchYouTube-$i"] == 'on') $inputs["txtWatchYouTube-$i"] = 1;
+			$_POST["txtWatchJesusFilm-".(string)$i] = 'off';
+			//echo $i . ') WatchJesusFilm: ' . $inputs["txtWatchJesusFilm-$i"] . '; WatchYouTube: ' . $inputs["txtWatchYouTube-$i"] . '<br />';
+		}
+		/*if ($inputs["txtWatchJesusFilm-$i"] != 1 && $inputs["txtWatchYouTube-$i"] != 1) {
 			$count_failed++;
 			$messages[] = "Watch: Use 'Jesus Film' or 'YouTube' ONLY on line # " . $i;
-		}
+		}*/
 		//$count_failed++;
 		//$messages[] = $i . ') post WatchJesusFilm: "' . $_POST["txtWatchJesusFilm-$i"] . '"; inputs: ' . $inputs["txtWatchJesusFilm-$i"] . '; post WatchYouTube: "' . $_POST["txtWatchYouTube-$i"] . '"; inputs: ' . $inputs["txtWatchYouTube-$i"] . '<br />';
 		$i++;
 	}
+//exit;
 
 // viewer
 	$inputs["viewerer"] = "off";
