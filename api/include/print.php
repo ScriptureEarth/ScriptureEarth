@@ -14,7 +14,8 @@
 		$first .= '"German":			"00deu.php",';
 		$first .= '"Chinese":			"00cmn.php",';
 		$first .= '"Korean":			"00kor.php",';
-		$first .= '"Russian":			"00rus.php"';
+		$first .= '"Russian":			"00rus.php",';
+		$first .= '"Arabic":			"00arb.php"';
 		$first .= '}';
 		$first .= '},';
 		$first .= '"relationships":';
@@ -42,6 +43,7 @@
 		$first .= '"Chinese":			"'.$LN_Chinese.'",';
 		$first .= '"Korean":			"'.$LN_Korean.'",';
 		$first .= '"Russian":			"'.$LN_Russian.'",';
+		$first .= '"Arabic":			"'.$LN_Arabic.'",';
 		$first .= '"minority":			""';
 		$first .= '},';
 		$first .= '"alternate_language_count":		'.$alt_ln.',';                              // how many
