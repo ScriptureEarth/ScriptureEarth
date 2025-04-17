@@ -1,4 +1,7 @@
 <?php
+// get the language name for idx or iso/rod/var
+//		or
+// get the language names for cc either 'iso', 'android', or both
 
 $index = 0;
 $first = '';
@@ -14,16 +17,10 @@ include 'include/idx.iso.php';																	// get idx or iso
 $cc = '';
 $rel = '';
 if ($index == 0) {																				// or language language and alternate language names
-	// retrieve all of the language names
-	if (isset($_GET['pln'])) {
-		$languageName = $_GET['pln'];
-		$index = 3;																				// $index = 3;
-	}
-	elseif (isset($_GET['cc'])) {
+	if (isset($_GET['cc'])) {																	// Country code
 		$cc = $_GET['cc'];
 		$index = 4;
-		if (isset($_GET['rel'])) {
-			// Country code
+		if (isset($_GET['rel'])) {																// rel = 'ios' or 'android'
 			$rel = strtolower(trim($_GET['rel']));
 			if ($rel != 'ios' && $rel != 'android') {
 				die ('You made a mistake.');
@@ -31,7 +28,7 @@ if ($index == 0) {																				// or language language and alternate lang
 		}
 	}
 	else {
-		die ('HACK!');
+		die ('Suspicious activity!');
 	}
 }
 
@@ -109,7 +106,7 @@ if ($index == 1) {																			// idx
 	$first .= '}';
 
 	$marks = [];
-	$marks = json_decode($first);
+	$marks = json_decode($first);															// convert a JSON encoded string into a PHP array
 }
 elseif ($index == 2) {																		// iso/rod/var
 	$query = "SELECT * FROM scripture_main, nav_ln WHERE scripture_main.ISO = '$iso' " . ($rod == 'ALL' ? '' : "AND scripture_main.ROD_Code = '$rod' ") . ($var == 'ALL' ? '' : "AND scripture_main.Variant_Code = '$var'") . " AND `scripture_main`.`ISO_ROD_index` = `nav_ln`.`ISO_ROD_index`";
@@ -174,7 +171,7 @@ elseif ($index == 2) {																		// iso/rod/var
 	$first .= '}';
 
 	$marks = [];
-	$marks = json_decode($first);
+	$marks = json_decode($first);															// convert a JSON encoded string into a PHP array
 }
 elseif ($index == 4) {																		// $cc = country code
 	$stmt_CellPhone->execute();																// execute query
@@ -226,7 +223,7 @@ elseif ($index == 4) {																		// $cc = country code
 					$first .= '}';
 				}
 				$first .= '}}}},';
-				continue;
+				continue;																	// continue
 			}
 			
 			$iso = $row['ISO'];
@@ -336,7 +333,7 @@ elseif ($index == 4) {																		// $cc = country code
 		$first .= '}';
 
 		$marks = [];
-		$marks = json_decode($first);
+		$marks = json_decode($first);														// convert a JSON encoded string into a PHP array
 	}
 	else {
 		echo 'There were no records in the database!';
@@ -348,7 +345,7 @@ else {
 
 header('Content-Type: application/json');													// instead of <pre></pre>
 // An associative array
-$json_string = json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+$json_string = json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);				// encode an associative array into a JSON object
 
 echo $json_string;
 
