@@ -45,6 +45,7 @@ $stmt_German = $db->prepare("SELECT LN_German FROM LN_German WHERE ISO_ROD_index
 $stmt_Chinese = $db->prepare("SELECT LN_Chinese FROM LN_Chinese WHERE ISO_ROD_index = ?");
 $stmt_Korean = $db->prepare("SELECT LN_Korean FROM LN_Korean WHERE ISO_ROD_index = ?");
 $stmt_Russian = $db->prepare("SELECT LN_Russian FROM LN_Russian WHERE ISO_ROD_index = ?");
+$stmt_Arabic = $db->prepare("SELECT LN_Arabic FROM LN_Arabic WHERE ISO_ROD_index = ?");
 //$stmt_iso_languages = $db->prepare("SELECT * FROM scripture_main ORDER BY ISO");
 
 if ($index == 1) {					// idx
@@ -277,11 +278,11 @@ function removeDiacritics($txt) {
 	'ç' => 'c', 'Ç' => 'C',
 	'�' => 'D', '�' => 'dh', '�' => 'Dh',
 	'é' => 'e', 'É' => 'E', 'è' => 'e', 'È' => 'E', 'ë' => 'e', 'Ë' => 'E', 'ē' => 'e', 'Ê' => 'E',
-	'ī' => 'i', '�' => 'I', 'í' => 'i', '�' => 'I', 'ì' => 'i', '�' => 'I', 'ï' => 'i', '�' => 'I',
+	'ī' => 'i', 'Ī' => 'I', 'í' => 'i', 'Í' => 'I', 'ì' => 'i', 'Ì' => 'I', 'ï' => 'i', 'Ï' => 'I',
 	'ñ' => 'n', 'Ñ' => 'N',
-	'ō' => 'o', '�' => 'O', 'ó' => 'o', '�' => 'O', 'ò' => 'o', '�' => 'O', 'ö' => 'o', '�' => 'O', '�' => 'oe', '�' => 'OE', 'œ' => 'oe', 'Œ' => 'OE',
+	'ō' => 'o', 'Ō' => 'O', 'ó' => 'o', 'Ó' => 'O', 'ò' => 'o', 'Ò' => 'O', 'ö' => 'o', 'Ö' => 'O', '�' => 'oe', '�' => 'OE', 'œ' => 'oe', 'Œ' => 'OE',
 	'ś' => 's', 'Ś' => 'S', '�' => 'SS',
-	'ū' => 'u', '�' => 'U', 'ú' => 'u', '�' => 'U', 'ù' => 'u', '�' => 'U', '�' => 'ue', '�' => 'UE',
+	'ū' => 'u', 'Ū' => 'U', 'ú' => 'u', 'Ú' => 'U', 'ù' => 'u', 'Ù' => 'U', '�' => 'ue', '�' => 'UE',
 	'ŷ' => 'y', 'Ŷ' => 'Y', 'ÿ' => 'y', 'Ÿ' => 'Y',
 	'ź' => 'z', 'Ź' => 'Z'];
 	return strtr($txt, $transliterationTable);

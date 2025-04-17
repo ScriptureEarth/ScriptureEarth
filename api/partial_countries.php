@@ -23,7 +23,7 @@ $SpecificCountry = 'English';
 if (isset($_GET['ml'])) {
 	$SpecificCountry = $_GET['ml'];
     // ISO_Country
-	if ($SpecificCountry == 'English' || $SpecificCountry == 'Spanish' || $SpecificCountry == 'Portuguese' || $SpecificCountry == 'French' || $SpecificCountry == 'Dutch' || $SpecificCountry == 'German' || $SpecificCountry == 'Chinese' || $SpecificCountry == 'Korean' || $SpecificCountry == 'Russian') {
+	if ($SpecificCountry == 'English' || $SpecificCountry == 'Spanish' || $SpecificCountry == 'Portuguese' || $SpecificCountry == 'French' || $SpecificCountry == 'Dutch' || $SpecificCountry == 'German' || $SpecificCountry == 'Chinese' || $SpecificCountry == 'Korean' || $SpecificCountry == 'Russian' || $SpecificCountry == 'Arabic') {
 	}
     else {
 		die ('HACK!');

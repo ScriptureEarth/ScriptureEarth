@@ -37,7 +37,7 @@ if ($iso == '' && isset($_GET['cc'])) {
 	$cc = strtoupper(trim($_GET['cc']));			
 	$v = 2;																						// if there is one. just pull only one.
 	if (preg_match('/^[A-Z][A-Z]/', $cc, $matches)) {
-		$cc = $matches[0];
+		$cc = $matches[1];
 	}
 	else {
 		$cc = '';
@@ -558,14 +558,14 @@ else {																								// $v = 2
 //exit;
 
 $marks = [];
-$marks = json_decode($first);
+$marks = json_decode($first);																	// convert a JSON encoded string into a PHP array
 //echo '<br /><br /><br /><br /><br />';
 //print_r($marks);
 //exit;
 
 header('Content-Type: application/json');														// instead of <pre></pre>
 // An associative array
-$json_string = json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+$json_string = json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);					// encode an associative array into a JSON object
 //echo '<pre>'.$json_string.'</pre>';
 echo $json_string;
 
