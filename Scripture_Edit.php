@@ -294,8 +294,12 @@ if (isset($_POST['btnSubmit'])) {
 			$result_ISO_countries = $stmt_ISO_countries->get_result();							// instead of bind_result (used for only 1 record):
 			$temp_ISO_countries = $result_ISO_countries->fetch_assoc();
 			$Eng_country = str_replace("'", "&#x27;", $temp_ISO_countries['English']);			// name of the country in the language version
+			$Eng_country = '';																	// name of the country in the language version
 			while ($temp_ISO_countries = $result_ISO_countries->fetch_assoc()) {
-				$Eng_country = $Eng_country.', '.str_replace("'", "&#x27;", $temp_ISO_countries['English']);		// name of the country in the language version
+				if ($Eng_country != '') {
+					$Eng_country .= ', ';
+				}
+				$Eng_country .= str_replace("'", "&#x27;", $temp_ISO_countries['English']);		// name of the country in the language version
 			}
 			$result_ISO_countries->free();
 			echo "<td width='20%'style='margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>$Eng_country</td>";

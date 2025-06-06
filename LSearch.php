@@ -19,12 +19,12 @@ You must ensure that all parties (your app, mysql connection, your table or colu
 
 /**
  * @param {string} language - 'try language'
- * @param {string} st - eng, spa, por, fre, ndl, deu, or cmn
- * @param {string} nav_ln_line - navigational languages separated by ', '
- * @param {string} MajorLanguage - LN_English, etc.
+ * @param {string} st = eng, spa, por, fre, ndl, deu, cmn, kor, rus, or arb
+ //* @param {string} nav_ln_line - navigational languages separated by ', '
  * @param {string} Variant_major - Variant_Eng, etc.
  * @param {string} SpecificCountry - English, etc.
-		e.g. LSearch.php?language=kerala&st=eng&Variant_major=Variant_Eng&SpecificCountry=English&MajorLanguage=LN_English&nav_ln_line=LN_English,%20LN_Spanish,%20LN_Portuguese,%20LN_French,%20LN_Dutch,%20LN_German,%20LN_Chinese,
+ * @param {string} MajorLanguage - LN_English, etc.
+		e.g. LSearch.php?language=kerala&st=eng&Variant_major=Variant_Eng&SpecificCountry=English&MajorLanguage=LN_English
  * @returns {datatype} Description of the returns value
  */
 
@@ -37,7 +37,7 @@ You must ensure that all parties (your app, mysql connection, your table or colu
 		colCountry = "Country";
 */
 
-// display all of the language names, ROD codes and variant codes from a major and alternate languages names
+// display all of the language names, ROD codes, and variant codes from a major and alternate languages names
 if (isset($_GET['language'])) $TryLanguage = $_GET['language']; else { die('Hack!'); }
 /////if (preg_match("/^[-. ,'\?()a-záéíóúàèìòùÑñçãõâêîôûäëöüï&ǃǂǁǀ!|]+/ui", $TryLanguage)) {
 /////}
@@ -85,7 +85,7 @@ if (strlen($TryLanguage) > 2) {
 	$ISO_only = '';
 	$Country_Total = [];
 
-	$stmt_SC = $db->prepare("SELECT DISTINCT $SpecificCountry, ISO_Country FROM nav_ln, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO_ROD_index = ?");
+	$stmt_SC = $db->prepare("SELECT DISTINCT $SpecificCountry, `ISO_Country` FROM `nav_ln`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `nav_ln`.`ISO` AND `nav_ln`.`ISO_ROD_index` = ?");
 	$stmt_ROD = $db->prepare("SELECT DISTINCT $SpecificCountry, ISO_Country FROM nav_ln, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND `ISO_countries`.`ROD_Code` = `nav_ln`.`ROD_Code` AND nav_ln.ISO_ROD_index = ?");
 	$stmt_c = $db->prepare("SELECT ISO_Country FROM countries WHERE $SpecificCountry = ?");
 	$stmt_Var = $db->prepare("SELECT $Variant_major FROM Variants WHERE Variant_Code = ?");
@@ -93,7 +93,9 @@ if (strlen($TryLanguage) > 2) {
 	$stmt_nav_ln_idx = $db->prepare("SELECT ISO, ROD_Code, Variant_Code, ".$ln_result.", Def_LN FROM nav_ln WHERE ISO_ROD_index = ?");
 	$stmt_nav_ln_iso = $db->prepare("SELECT ISO_ROD_index, ISO, ROD_Code, Variant_Code, ".$ln_result.", Def_LN FROM nav_ln WHERE ISO = ?");
 
-	// ISO
+	/******************************************************************************
+		Try the ISO code
+	*******************************************************************************/
 	if (strlen($TryLanguage) == 3) {
 		$stmt_nav_ln_iso->bind_param('s', $TryLanguage);										// bind parameters for markers
 		$stmt_nav_ln_iso->execute();															// execute query
@@ -216,7 +218,9 @@ if (strlen($TryLanguage) > 2) {
 	
 	$TryLanguage = str_replace("'", "\'", $TryLanguage);
 
-	// Try languages names:
+	/******************************************************************************
+		Try languages names
+	*******************************************************************************/
 	$query="SELECT * FROM nav_ln ORDER BY ISO";
 	if ($result = $db->query($query)) {
 		$LN = '';
@@ -233,6 +237,7 @@ if (strlen($TryLanguage) > 2) {
 			$temp_TL = str_replace('.', '\.', $temp_TL);
 			if (preg_match("/\b".$temp_TL.'/ui', $temp_LN, $match)) {							// match the beginning of the word(s) with TryLanguage from the user
 				$ISO = $row['ISO'];
+				//echo 'ISO_ROD_index: ' . $ISO_ROD_index . '; ' . 'ISO: ' . $ISO . '; ISO_only: ' . $ISO_only. '; TryLanguage: ' . $TryLanguage . '; temp_TL: ' . $temp_TL. '; temp_TL: ' . $temp_TL.'<br />';
 				if (strlen($TryLanguage) == 3 && $ISO == $ISO_only) {							// if the length of $TryLanguage is 3 and the top section is there
 					continue;
 				}
@@ -243,8 +248,8 @@ if (strlen($TryLanguage) > 2) {
 				$stmt_SC->bind_param('i', $ISO_ROD_index);										// bind parameters for markers (returns $SpecificCountry and country code)
 				$stmt_SC->execute();															// execute query
 				$result_con=$stmt_SC->get_result() or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
-				if ($result_con->num_rows == 0) {
-					echo translate('The ISO language code is not found.', $st, 'sys');
+				if ($result_con->num_rows === 0) {
+					echo translate('The country code is not found.', $st, 'sys');
 					return;
 				}
 				if ($ISO == 'qqq') {																// Deaf is in one country
@@ -338,7 +343,10 @@ if (strlen($TryLanguage) > 2) {
 			}
 		}
 	}
-	// Try alt_lang_names:
+
+	/******************************************************************************
+		Try alternate language names
+	*******************************************************************************/
 	// REGEXP '[[:<:]]... = in PHP '\b... (word boundries)
 	if (empty($langISOrod)) {
 		//$query="SELECT DISTINCT `ISO_ROD_index` FROM `alt_lang_names` WHERE `alt_lang_name` REGEXP '[[:<:]]$TryLanguage'";

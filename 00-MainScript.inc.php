@@ -417,8 +417,8 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 	}
 
 	.mapIframe {
-		width: 700px;
-		height: 520px;
+		width: 835px;
+		height: 620px;
 		margin: 0;
 		padding: 0;
 		background-color: white;

@@ -33,9 +33,10 @@ $stmt_NT_PDF = $db->prepare("SELECT COUNT(*) AS NT_PDF_temp FROM NT_PDF_Media WH
 $stmt_OT_Audio = $db->prepare("SELECT COUNT(*) AS OT_Audio_temp FROM OT_Audio_Media WHERE ISO_ROD_index = ?");
 $stmt_NT_Audio = $db->prepare("SELECT COUNT(*) AS NT_Audio_temp FROM NT_Audio_Media WHERE ISO_ROD_index = ?");
 $stmt_SAB = $db->prepare("SELECT COUNT(*) AS SAB_temp FROM SAB WHERE ISO_ROD_index = ? AND SAB_Audio = ?");
-$stmt_links = $db->prepare("SELECT LOWER(company) as company_temp, map, BibleIs, BibleIsGospelFilm, YouVersion, GooglePlay, GRN FROM links WHERE ISO_ROD_index = ? AND (map >= 1 OR BibleIs >= 1 OR BibleIsGospelFilm >= 1 OR YouVersion >= 1 OR GooglePlay >= 1 OR GRN >= 1 OR company = 'website' OR company = 'webpage')");
+$stmt_links = $db->prepare("SELECT LOWER(company) AS company_temp, map, BibleIs, BibleIsGospelFilm, YouVersion, GooglePlay, GRN, email, Kalaam FROM links WHERE ISO_ROD_index = ? AND (map >= 1 OR BibleIs >= 1 OR BibleIsGospelFilm >= 1 OR GRN >= 1 OR email >= 1 OR Kalaam >= 1 OR YouVersion >= 1 OR GooglePlay >= 1 OR company = 'website' OR company = 'webpage')");
 $stmt_CellPhone = $db->prepare("SELECT Cell_Phone_Title FROM CellPhone WHERE ISO_ROD_index = ?");
 $stmt_PlaylistVideo = $db->prepare("SELECT PlaylistVideoDownload FROM PlaylistVideo WHERE ISO_ROD_index = ?");
+$stmt_other_titles = $db->prepare("SELECT COUNT(*) AS ePub FROM other_titles WHERE ISO_ROD_index = ? AND other_PDF LIKE '%.epub'");
 $stmt_English = $db->prepare("SELECT LN_English FROM LN_English WHERE ISO_ROD_index = ?");
 $stmt_Spanish = $db->prepare("SELECT LN_Spanish FROM LN_Spanish WHERE ISO_ROD_index = ?");
 $stmt_Portuguese = $db->prepare("SELECT LN_Portuguese FROM LN_Portuguese WHERE ISO_ROD_index = ?");
@@ -276,13 +277,13 @@ echo $json_string;
 function removeDiacritics($txt) {
     $transliterationTable = ['à' => 'a', 'À' => 'A', 'á' => 'a', 'Á' => 'A', 'â' => 'a', 'Â' => 'A', 'ä' => 'a', 'Ä' => 'A', 'ā' => 'a', 'Ã' => 'A', 'å' => 'a', 'Å' => 'A', 'æ' => 'ae', 'Æ' => 'AE', 'ǣ' => 'ae', 'Ǣ' => 'AE',
 	'ç' => 'c', 'Ç' => 'C',
-	'�' => 'D', '�' => 'dh', '�' => 'Dh',
+	'�' => 'D', 'ð' => 'dh', 'Ð' => 'Dh',
 	'é' => 'e', 'É' => 'E', 'è' => 'e', 'È' => 'E', 'ë' => 'e', 'Ë' => 'E', 'ē' => 'e', 'Ê' => 'E',
 	'ī' => 'i', 'Ī' => 'I', 'í' => 'i', 'Í' => 'I', 'ì' => 'i', 'Ì' => 'I', 'ï' => 'i', 'Ï' => 'I',
 	'ñ' => 'n', 'Ñ' => 'N',
-	'ō' => 'o', 'Ō' => 'O', 'ó' => 'o', 'Ó' => 'O', 'ò' => 'o', 'Ò' => 'O', 'ö' => 'o', 'Ö' => 'O', '�' => 'oe', '�' => 'OE', 'œ' => 'oe', 'Œ' => 'OE',
-	'ś' => 's', 'Ś' => 'S', '�' => 'SS',
-	'ū' => 'u', 'Ū' => 'U', 'ú' => 'u', 'Ú' => 'U', 'ù' => 'u', 'Ù' => 'U', '�' => 'ue', '�' => 'UE',
+	'ō' => 'o', 'Ō' => 'O', 'ó' => 'o', 'Ó' => 'O', 'ò' => 'o', 'Ò' => 'O', 'ö' => 'o', 'Ö' => 'O', 'œ' => 'oe', 'Œ' => 'OE', 'œ' => 'oe', 'Œ' => 'OE',
+	'ś' => 's', 'Ś' => 'S', 'ß' => 'SS',
+	'ū' => 'u', 'Ū' => 'U', 'ú' => 'u', 'Ú' => 'U', 'ù' => 'u', 'Ù' => 'U', 'ü' => 'ue', 'Ü' => 'UE',
 	'ŷ' => 'y', 'Ŷ' => 'Y', 'ÿ' => 'y', 'Ÿ' => 'Y',
 	'ź' => 'z', 'Ź' => 'Z'];
 	return strtr($txt, $transliterationTable);

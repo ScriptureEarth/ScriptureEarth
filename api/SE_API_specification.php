@@ -31,6 +31,7 @@ div + p {                       /* div followed immediately by p  */
 <p>Welcome to the ScriptureEarth.org (SE) Application Programming Interface (API) specification. This API will retrieve an SE JSON that serves as a bridge, enabling SE to communicate with another application. The SE API exposes the application's data to anyone who has a key.</p>
 <p>You will need a version number and your SE key. The available version numbers are now 1 or 2. You will need to email Scott Starker to obtain your key. This email only   needs to be sent once, but you will need to enter the key each time you   make an SE API request. His email address is <a href="mailto:scott_starker@sil.org">scott_starker@sil.org</a>.</p>
 <p>A request is called by &quot;https://www.ScriptureEarth.org/api/[the request]?v=[version]&amp;key=[your key]&quot;. You will need to type the request. The requests are display in green below. Depending on the request you will need to type &quot;&amp;[iso=[ISO 639-3 code[&amp;rod=[ROD code][&amp;var=[variant code]]&quot;, <b>or</b> &quot;&amp;idx=[index number]&quot;, <b>or</b> &quot;&amp;pln=[language name and alternate language name]&quot;, <b>or</b> &quot;&amp;cc=[country code]&quot;, <b>or</b> &quot;&amp;country=[country name]]”.</p>
+<p style='background-color: #FF0; '>New SE API requests are displayed with this background color. (5/13/2025)</p>
 <h2 style="color: #900 ">Summary</h2>
 <p>SE API has these requests now:</p>
 <ul>
@@ -53,7 +54,10 @@ div + p {                       /* div followed immediately by p  */
     <p><a href="#all_countries">all_countries.php</a> the SE API will pull out <strong>all</strong> of the countries and country codes</p>
   </li>
   <li>
-  	<p><a href="#media_se">media_se.php</a> with the ISO 639-3 code or index number, the SE API will pull out  all of the SE URLs for texts, audio, videos, audio playlists, video playlists, theWord (Windows OS), and the online viewer</p>
+  	<p style='background-color: #FF0; '><a href="#dialects">dialects.php</a> the SE API will pull out the dialect(s).</p>
+  </li>
+  <li>
+    <p><a href="#media_se">media_se.php</a> with the ISO 639-3 code or index number, the SE API will pull out  all of the SE URLs for texts, audio, videos, audio playlists, video playlists, theWord (Windows OS), and the online viewer</p>
   </li>
   <li>
     <p><a href="#general_links">general_links.php</a> with the ISO 639-3 code or index number, the SE API will pull out  the  general  URLs for texts, audio, and videos (Bible.is, YouVersion, and watch full Scripture videos) also the websites for GRN and eBible</p>
@@ -62,7 +66,7 @@ div + p {                       /* div followed immediately by p  */
     <p><a href="#apps">apps.php</a> with the ISO 639-3 code or index number, the SE API will pull out the Android app (apk) and iOS Assent Package for that ISO 639-3 code or index</p>
   </li>
   <li>
-    <p><a href="#languageNames">languageNames.php</a> with the ISO 639-3 code, index number, or the country code with either the Android app (apk) and iOS Assent Package, or both, the SE API will pull out the language name(s)</p>
+    <p style='background-color: #FF0; '><a href="#languageNames">languageNames.php</a> with the ISO 639-3 code, index number, or the country code with either the Android app (apk) and iOS Assent Package, or both, the SE API will pull out the language name(s)</p>
   </li>
   <li>
     <p><a href="#sab">sab.php</a> with the ISO 639-3 code or index number, the SE API will pull out path all of the SAB HTML files</p>
@@ -422,6 +426,35 @@ div + p {                       /* div followed immediately by p  */
   <li>country codes</li>
 </ul>
 </div>
+<p id='dialects'>dialects.php</p>
+<div style='background-color: #FF0; '>
+<p>To get the dialect(s)</p>
+<ul>
+  <li>With the ?v=1&amp;key=[your key], you will also need </li>
+  <ul>
+  <li>just the dialect names only (type ‘&amp;all=justdialects’)</li>
+    <li>&nbsp;&nbsp;&nbsp;&nbsp;OR</li>
+  	<li>all of the dialects (type ‘&amp;all=dialects’)</li>
+    <li>&nbsp;&nbsp;&nbsp;&nbsp;OR</li>
+  	<li>a dialect (type ‘&amp;dialect=[the particular name of the dialect]’)</li>
+  </ul>
+</ul>
+<p>will pull out</p>
+<ul>
+  <li>total countries for the dialect</li>
+  <li>
+    ISO 639-3 codes</li>
+  <li>
+    ROD codes</li>
+  <li>
+    variant codes</li>
+  <li>variant names</li>
+  <li>
+    index numbers</li>
+  <li>language names</li>
+  <li>individual countries based on the language name</li>
+</ul>
+</div>
 <p id='media_se'>media_se.php</p>
 <div>
 <p>To get the ScriptureEarth media:</p>
@@ -575,7 +608,7 @@ div + p {                       /* div followed immediately by p  */
 </div>
 
 <p id='languageNames'>languageNames.php</p>
-<div>
+<div style='background-color: #FF0; '>
 <p>To get the language name(s):</p>
 <ul>
   <li>  

@@ -362,7 +362,7 @@ function console_log($data) {
 			echo 'in oder to INSERT/UPDATE the SAB table.</h3>';
 		}
 	}
-console_log('SAB done');
+//console_log('SAB done');
 
 // whole Bible PDF
 	$query="DELETE FROM Scripture_and_or_Bible WHERE ISO_ROD_index = $inputs[idx]";
@@ -372,10 +372,11 @@ console_log('SAB done');
 	}
 	if ($inputs['Bible_PDF']) {
 		if ($inputs['whole_Bible'] != "") {
-			$query="INSERT INTO Scripture_and_or_Bible SET ISO = '$inputs[iso]', ROD_Code = '$inputs[rod]', Variant_Code = '$inputs[var]', ISO_ROD_index = $inputs[idx], Item = 'B', Scripture_Bible_Filename = '$inputs[whole_Bible]'";
+			//$query="UPDATE Scripture_and_or_Bible SET ISO = '$inputs[iso]', ROD_Code = '$inputs[rod]', Variant_Code = '$inputs[var]', ISO_ROD_index = $inputs[idx], Item = 'B', Scripture_Bible_Filename = '$inputs[whole_Bible]'";
+			$query="INSERT INTO Scripture_and_or_Bible (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Item, Scripture_Bible_Filename, `description`) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], 'B', '$inputs[whole_Bible]', '')";
 			$result=$db->query($query);
 			if (!$result) {
-				echo 'Could not update the data "Scripture_and_or_Bible": ' . $db->error;
+				echo 'Could not update the whole Bible in "Scripture_and_or_Bible" table: ' . $db->error;
 			}
 		}
 	}
@@ -383,10 +384,10 @@ console_log('SAB done');
 // complete Scripture PDF
 	if ($inputs['complete_Scripture_PDF']) {
 		if ($inputs['complete_Scripture'] != "") {
-			$query="INSERT INTO Scripture_and_or_Bible SET ISO = '$inputs[iso]', ROD_Code = '$inputs[rod]', Variant_Code = '$inputs[var]', ISO_ROD_index = $inputs[idx], Item = 'S', Scripture_Bible_Filename = '$inputs[complete_Scripture]', `description` = '$inputs[ScriptureDescription]'";
+			$query="INSERT INTO Scripture_and_or_Bible (ISO, ROD_Code, Variant_Code, ISO_ROD_index, Item, Scripture_Bible_Filename, `description`) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], 'S', '$inputs[complete_Scripture]', '$inputs[ScriptureDescription]')";
 			$result=$db->query($query);
 			if (!$result) {
-				echo 'Could not update the data "Scripture_and_or_Bible": ' . $db->error;
+				echo 'Could not update the complete Bible in "Scripture_and_or_Bible" table: ' . $db->error;
 			}
 		}
 	}

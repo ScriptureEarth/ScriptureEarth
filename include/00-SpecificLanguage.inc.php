@@ -82,7 +82,7 @@
 	}
 	
 	 /* style the tab */
-	.tab {
+	.tab, .CCtab {
 		overflow: hidden;
 		border: 1px solid #ccc;
 		background-color: #f1f1f1;
@@ -98,17 +98,34 @@
 		padding-bottom: 12px;
 		transition: 0.4s;
 	}
+	.CCtab button {
+		background-color: inherit;
+		/*float: left;
+		border: none;
+		outline: none;*/
+		font-size: .9em;
+		cursor: pointer;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		padding-left: 10px;
+		padding-right: 10px;
+		margin-left: 10px;
+		margin-right: 10px;
+		/*transition: 0.4s;*/
+	}
 	/* change background color of buttons on hover */
-	.tab button:hover {
+	.tab button:hover, .CCtab button:hover {
 		background-color: #ddd;
 	}
 	/* create an active/current tablink class */
-	.tab button.active {
+	.tab button.active, .CCtab button.active {
 		background-color: #ccc;
 	}
 	/* tab icon width */
 	.tablinks {
 		width: 14.28%;
+	}
+	.CCtablinks {
 	}
 	/* individual width and height of the icons */
 	#tabText {
@@ -729,16 +746,20 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		Get the name(s) of the country(ies).
 	*************************************************************************************************************
 */
+	$CC_countries = [];
 	$query="SELECT $SpecificCountry, ISO_countries FROM ISO_countries, countries WHERE ISO_countries.ISO_ROD_index = '$ISO_ROD_index' AND ISO_countries.ISO_countries = countries.ISO_Country";
 	$result_ISO_countries=$db->query($query);
 	$r_ISO_countries = $result_ISO_countries->fetch_array(MYSQLI_ASSOC);
 	$countryTemp = $SpecificCountry;
 	if (strpos("$SpecificCountry", '.')) $countryTemp = substr("$SpecificCountry", strpos("$SpecificCountry", '.')+1);					// In case there's a "." in the "country"
 	$country = trim($r_ISO_countries["$countryTemp"]);											// name of the country in the language version
-	$ISO_countries = trim($r_ISO_countries["ISO_countries"]);									// 2 upper case letters
+	$ISO_countries = trim($r_ISO_countries['ISO_countries']);									// 2 upper case letters
+	$CC_countries[$ISO_countries] = $country;
 	$country = '<a href="'.$Scriptname.'?sortby=country&name=' . $ISO_countries . '">' . $country . '</a>';
 	while ($r_ISO_countries = $result_ISO_countries->fetch_array(MYSQLI_ASSOC)) {
-		$country = $country.',&nbsp;<a href="'.$Scriptname.'?sortby=country&name=' . trim($r_ISO_countries["ISO_countries"]) . '">'.trim($r_ISO_countries["$countryTemp"]).'</a>';			// name of the country in the language version
+		$cTemp = str_replace(' ', '&nbsp;', trim($r_ISO_countries["$countryTemp"]));
+		$country = $country.', <a href="'.$Scriptname.'?sortby=country&name=' . trim($r_ISO_countries['ISO_countries']) . '">'.$cTemp.'</a>';			// name of the country in the language version
+		$CC_countries[trim($r_ISO_countries['ISO_countries'])] = $cTemp;
 	}
 
 /*
@@ -3913,16 +3934,28 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	*************************************************************************************************************
 */
 	if ($Internet && $SE_Map) {
-		echo '<table id="Dis_Map" style="width: 100%; margin-top: 20px; ">';
+		$temp_CC = $ISO_Country;
+		echo '<table id="Dis_Map" style="width: 100%; margin-top: 0px; ">';
 		?>
 		<tr>
 			<td style='width: 100%; text-align: center; '>
+				<h2 style='text-align: center; margin-top: 10px; '><?php echo translate('Countries', $st, 'sys'); ?>:</h2>
+				<div style='width: 92%; margin-left: auto; margin-right: auto; '>
+					<div class="CCtab" style="text-align: center; ">
+						<?php
+						foreach ($CC_countries as $countryKey => $countryValue) {
+							echo '<button class="CCtablinks" onclick="CCCountry(\''.$countryKey.'\',\''.$ISO.'\',\''.$countryValue.'\')" value="'.$countryKey.'">'.$countryValue.'</button>';
+						}
+						?>
+					</div>
+				<h3 id='countryLabel' style='font-size: 1.3em; margin-top: 40px; text-align: center; '></h3>
+				</div>
 				<?php
 				if ($ISO == 'azb' && $ROD_Code == '07458') {
-					echo '<iframe name="iframe_a" title="Iframe" class="mapIframe" src="../maps/'.$ISO_Country.'/'.$ISO.'_'.$ROD_Code.'.htm"></iframe>';
+					echo '<iframe id="CC_c" name="iframe_a" title="Iframe" class="mapIframe" src="../maps/'.$temp_CC.'/'.$ISO.'_'.$ROD_Code.'.htm"></iframe>';
 				}
 				else {
-					echo '<iframe name="iframe_a" title="Iframe" class="mapIframe" src="../maps/'.$ISO_Country.'/'.$ISO.'.htm"></iframe>';
+					echo '<iframe id="CC_c" name="iframe_a" title="Iframe" class="mapIframe" src=""></iframe>';
 				}
 				echo '<div class="mapKey">';
 					echo '<p><span style="color: #a8226d; font-weight: bold; ">'.translate('red: language you have selected', $st, 'sys').'</span></p>';
@@ -4118,10 +4151,23 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	else { // (allCount == 1)
 		document.getElementById("tabAll").click();
 	}
-// end
 
-	/*(function () {																// These "for"s have to be at the end of 00-SpecificLanguage.inc.php!
-	}());*/
+/*
+	*************************************************************************************************************
+		country map
+	*************************************************************************************************************
+*/
+	function CCCountry(countryKey, ISO, countryValue) {
+		var x = document.getElementById("CC_c");
+		x.src = "./maps/" + countryKey + "/" + ISO + ".htm";
+		var y = document.getElementById("countryLabel");
+		y.innerHTML = countryValue;
+	}
+
+	$(function() {
+		CCCountry("<?php echo array_keys($CC_countries)[0]; ?>", "<?php echo $ISO; ?>", "<?php echo array_values($CC_countries)[0]; ?>");
+	});
+// end
 
 </script>
 
