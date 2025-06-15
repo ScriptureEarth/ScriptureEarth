@@ -292,9 +292,14 @@ if (isset($_POST['btnSubmit'])) {
 			$stmt_ISO_countries->bind_param("i", $idx);											// bind parameters for markers
 			$stmt_ISO_countries->execute();														// execute query
 			$result_ISO_countries = $stmt_ISO_countries->get_result();							// instead of bind_result (used for only 1 record):
+			if ($result_ISO_countries && $result_ISO_countries->num_rows == 0) {
+				echo "<td width='20%' style='color: red; font-weight: bold; margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>There is no idx $idx. Is ISO_countries up to date?</td>";
+				echo '</tr>';
+				$i++;
+				continue;
+			}
 			$temp_ISO_countries = $result_ISO_countries->fetch_assoc();
 			$Eng_country = str_replace("'", "&#x27;", $temp_ISO_countries['English']);			// name of the country in the language version
-			$Eng_country = '';																	// name of the country in the language version
 			while ($temp_ISO_countries = $result_ISO_countries->fetch_assoc()) {
 				if ($Eng_country != '') {
 					$Eng_country .= ', ';
@@ -3631,11 +3636,11 @@ if (isset($_POST['btnSubmit'])) {
 			else {
 				if ($num > 1) {
 					while ($r = $result1->fetch_assoc()) {
-						${'txtOther-$i'}=$r['other'];
-						${'txtOtherTitle-$i'}=$r['other_title'];
-						${'txtOtherPDF-$i'}=$r['other_PDF'];
-						${'txtOtherAudio-$i'}=$r['other_audio'];
-						${'txtDownload_video-$i'}=$r['download_video'];
+						${"txtOther-$i"}=$r['other'];
+						${"txtOtherTitle-$i"}=$r['other_title'];
+						${"txtOtherPDF-$i"}=$r['other_PDF'];
+						${"txtOtherAudio-$i"}=$r['other_audio'];
+						${"txtDownload_video-$i"}=$r['download_video'];
 						echo "<tr valign='bottom' style='line-height: 10pt; '>";
 							echo "<td width='15%'>";
 								echo "&nbsp;";
@@ -3644,7 +3649,7 @@ if (isset($_POST['btnSubmit'])) {
 								echo "<input type='text' name='txtOther-$i' id='txtOther-$i' style='color: navy; ' size='17' onclick='Otheridx($i)' value='" . ${"txtOther-$i"}. "' />";
 							echo "</td>";
 							echo "<td width='13%'>";
-								echo "<input type='text' name='txtOtherTitle-$i' id='txtOtherTitle-$i' style='color: navy; ' size='18' onclick='Otheridx($i)' value='" . ${"xtOtherTitle-$i"} . "' />";
+								echo "<input type='text' name='txtOtherTitle-$i' id='txtOtherTitle-$i' style='color: navy; ' size='18' onclick='Otheridx($i)' value='" . ${"txtOtherTitle-$i"} . "' />";
 							echo "</td>";
 							echo "<td width='13%'>";
 								echo "<input type='text' name='txtOtherPDF-$i' id='txtOtherPDF-$i' style='color: navy; ' size='18' onclick='Otheridx($i)' value='" . ${"txtOtherPDF-$i"} . "' />";
