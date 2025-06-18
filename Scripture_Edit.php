@@ -2524,7 +2524,7 @@ if (isset($_POST['btnSubmit'])) {
                     </td>
                     <td width="44%">
                         <input type='text' style='color: navy; ' size='60' name='txtLinkYouVersionURL-1' id='txtLinkYouVersionURL-1' value="<?php if (isset($_POST['txtLinkYouVersionURL-1'])) echo $_POST['txtLinkYouVersionURL-1']; else echo ${'txtLinkYouVersionURL-1'}; ?>" />
-                        <br /><span style="font-size: 10pt; margin-left: 3px; ">http://www.bible.com/bible/[YouVersion code]/[book].[chp]</span>
+                        <br /><span style="font-size: 10pt; margin-left: 3px; ">https://www.bible.com/bible/[YouVersion code]/[book].[chp]</span>
                     </td>
 					<td width="19%" style="text-align: right; vertical-align: top; ">
                         <input style="font-size: 9pt; " type="button" id="addYouVer" value="Add" />
@@ -2647,7 +2647,7 @@ if (isset($_POST['btnSubmit'])) {
                     </td>
                     <td width="44%">
                         <input type='text' style='color: navy; ' size='60' name='txtLinkBiblesorgURL-1' id='txtLinkBiblesorgURL-1' value="<?php if (isset($_POST['txtLinkBiblesorgURL-1'])) echo $_POST['txtLinkBiblesorgURL-1']; else echo ${'txtLinkBiblesorgURL-1'}; ?>" />
-                        <br /><span style="font-size: 10pt; margin-left: 3px; ">http://www.Bibles.org/[Bibles.org code]/[book]/[chp]</span>
+                        <br /><span style="font-size: 10pt; margin-left: 3px; ">https://www.Bibles.org/[Bibles.org code]/[book]/[chp]</span>
                     </td>
                     <td width="19%" style="text-align: right; vertical-align: top; ">
                         <input style="font-size: 9pt; " type="button" id="addBiblesorg" value="Add" />
@@ -3153,7 +3153,7 @@ if (isset($_POST['btnSubmit'])) {
 				</td>
 				<td width="19%">
 					<input type='text' style='color: navy; ' size='29' name='txtWatchURL-1' id='txtWatchURL-1' value="<?php if (isset($_POST['txtWatchURL-1'])) echo $_POST['txtWatchURL-1']; else echo ${'txtWatchURL-1'}; ?>" />
-                    <br /><span style="font-size: 9pt; ">http://media.inspirationalfilms.com?id=...</span>
+                    <br /><span style="font-size: 9pt; ">https://media.inspirationalfilms.com?id=...</span>
 				</td>
 				<td width="6%" style='text-align: center; '>
 					<input type='checkbox' style='color: navy; ' name='txtWatchJesusFilm-1' id='txtWatchJesusFilm-1' <?php echo ((isset($_POST['txtWatchJesusFilm-1']) && $_POST['txtWatchJesusFilm-1'] == 'on') ? " checked='checked'" : (isset(${'txtWatchJesusFilm-1'}) && ${'txtWatchJesusFilm-1'}==1 ? " checked='checked'" : '')); ?> />
@@ -3385,7 +3385,7 @@ if (isset($_POST['btnSubmit'])) {
 				</td>
 				<td width="116px">
 					<input type='text' style='color: navy; ' size='14' name='txtOthersiteURL-1' id='txtOthersiteURL-1' value="<?php if (isset($_POST['txtOthersiteURL-1'])) echo $_POST['txtOthersiteURL-1']; else echo ${'txtOthersiteURL-$i'}; ?>" />
-                    <br /><span style="font-size: 8pt; ">http://www.theword.gr/...</span>
+                    <br /><span style="font-size: 8pt; ">https://www.theword.gr/...</span>
 				</td>
 				<td width="145px" style="text-align: right; ">
 					<input style="font-size: 9pt; " type="button" id="addStudy" value="Add" />
@@ -3531,7 +3531,7 @@ if (isset($_POST['btnSubmit'])) {
                         Book Title
                     </td>
                     <td width="13%" style="padding-left: 3px; ">
-                        Brief Summary
+                        <i>Brief Summary (optional)</i>
                     </td>
                     <td width="13%" style="padding-left: 3px; ">
                         PDF Filename
@@ -3555,8 +3555,8 @@ if (isset($_POST['btnSubmit'])) {
 			$result1=$db->query($query);
 			$num=$result1->num_rows;
 			$r = $result1->fetch_assoc();
-			${'txtOther-$i'}=$r['other'];
-			${'txtOtherTitle-$i'}=$r['other_title'];										// this is a "Summary" and not an actual "Title"!
+			${'txtOther-$i'}=$r['other'];													// Book title, e.g., "The Gospel of John" or "John 1-21"
+			${'txtOtherTitle-$i'}=$r['other_title'];										// This is a "Summary" and not an actual "Title"!
 			${'txtOtherPDF-$i'}=$r['other_PDF'];
 			${'txtOtherAudio-$i'}=$r['other_audio'];
 			${'txtDownload_video-$i'} = $r['download_video'];
@@ -3636,8 +3636,8 @@ if (isset($_POST['btnSubmit'])) {
 			else {
 				if ($num > 1) {
 					while ($r = $result1->fetch_assoc()) {
-						${"txtOther-$i"}=$r['other'];
-						${"txtOtherTitle-$i"}=$r['other_title'];
+						${"txtOther-$i"}=$r['other'];										// Book title, e.g., "The Gospel of John" or "John 1-21"
+						${"txtOtherTitle-$i"}=$r['other_title'];							// This is a "Summary" and not an actual "Title"!
 						${"txtOtherPDF-$i"}=$r['other_PDF'];
 						${"txtOtherAudio-$i"}=$r['other_audio'];
 						${"txtDownload_video-$i"}=$r['download_video'];
@@ -3731,7 +3731,7 @@ if (isset($_POST['btnSubmit'])) {
 				</td>
 				<td width="27%">
 					<input type='text' style='color: navy; ' size='34' name='txtBuyURL-1' id='txtBuyURL-1' value="<?php if (isset($_POST['txtBuyURL-1'])) echo $_POST['txtBuyURL-1']; else echo ${'txtBuyURL-$i'}; ?>" />
-                    <br /><span style="font-size: 9pt; ">http://www.virtualstorehouse.org/...</span>
+                    <br /><span style="font-size: 9pt; ">https://www.virtualstorehouse.org/...</span>
 				</td>
 				<td width="16%" style="text-align: right; ">
 					<input style="font-size: 9pt; " type="button" id="addBuy" value="Add" />

@@ -546,8 +546,8 @@
 		$query="INSERT INTO other_titles (ISO, ROD_Code, Variant_Code, ISO_ROD_index, other, other_title, other_PDF, other_audio, download_video) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, ?, ?)";
 		$stmt_other=$db->prepare($query);
 		while (isset($inputs["txtOther-".(string)$i])) {
-			$temp1 = "txtOther-".(string)$i;
-			$temp2 = "txtOtherTitle-".(string)$i;
+			$temp1 = "txtOther-".(string)$i;												// Book title, e.g., "The Gospel of John" or "John 1-21"
+			$temp2 = "txtOtherTitle-".(string)$i;											// This is a "Summary" and not an actual "Title"!
 			$temp3 = "txtOtherPDF-".(string)$i;
 			$temp4 = "txtOtherAudio-".(string)$i;
 			$temp5 = "txtDownload_video-".(string)$i;

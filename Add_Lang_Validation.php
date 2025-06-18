@@ -542,10 +542,10 @@
 			while (isset($_POST["txtOther-".(string)$i]) && !empty($_POST['txtOther-'.(string)$i])) {
 				if (!empty($_POST["txtOther-".(string)$i])) $inputs["other_titles"] = 1;
 				if (!empty($_POST['txtOther-'.(string)$i])) {
-					if (empty($_POST['txtOtherTitle-'.(string)$i])) {										// this is a "Summary" and not an actual "Title"!
+					/*if (empty($_POST['txtOtherTitle-'.(string)$i])) {										// this is a "Summary" and not an actual "Title"!
 						$count_failed++;
 						$messages[] = 'Other Summary #' . $i . ' is blank.';
-					}
+					}*/
 					if (empty($_POST['txtOtherPDF-'.(string)$i]) && empty($_POST['txtOtherAudio-'.(string)$i]) && empty($_POST['txtDownload_video-'.(string)$i])) {
 						$count_failed++;
 						$messages[] = 'One of the Filenames is not chosen on #' . $i . ' on the Other.';
@@ -563,8 +563,8 @@
 						$messages[] = 'Other Audio and Other Download Video have Filenames in #'.$i.'. Only one Filename has to be here.';
 					}
 				}
-				$inputs["txtOther-".(string)$i] = check_input($_POST["txtOther-".(string)$i]);
-				$inputs["txtOtherTitle-".(string)$i] = check_input($_POST["txtOtherTitle-".(string)$i]);
+				$inputs["txtOther-".(string)$i] = check_input($_POST["txtOther-".(string)$i]);						// Book title, e.g., "The Gospel of John" or "John 1-21"
+				$inputs["txtOtherTitle-".(string)$i] = check_input($_POST["txtOtherTitle-".(string)$i]);			// This is a "Summary" and not an actual "Title"!
 				$inputs["txtOtherPDF-".(string)$i] = check_input($_POST["txtOtherPDF-".(string)$i]);
 				$inputs["txtOtherAudio-".(string)$i] = check_input($_POST["txtOtherAudio-".(string)$i]);
 				$inputs["txtDownload_video-".(string)$i] = check_input($_POST["txtDownload_video-".(string)$i]);

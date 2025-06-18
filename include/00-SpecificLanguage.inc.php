@@ -1331,8 +1331,8 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	if ($otherTitles) {
 		echo '<table id="Dis_otherTitles">';
 		while ($r2 = $result_otherTitles->fetch_array(MYSQLI_ASSOC)) {
-			$other=trim($r2['other']);
-			$other_title=trim($r2['other_title']);
+			$other=trim($r2['other']);													// Book title, e.g., "The Gospel of John" or "John 1-21"
+			$other_title=trim($r2['other_title']);										// This is a "Summary" and not an actual "Title"!
 			$other_PDF=trim($r2['other_PDF']);
 			$other_audio=trim($r2['other_audio']);
 			?>
@@ -1351,7 +1351,12 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 						echo "<td>";
 						echo "<div class='linePointer' onclick=\"window.open('./data/$ISO/audio/$other_audio')\" title='".translate('Listen this title.', $st, 'sys')."'>".translate('Listen', $st, 'sys');
 					}
-					echo "&nbsp;$other:&nbsp;$other_title</div>";
+					if ($other_title == '') {
+						echo "&nbsp;$other</div>";
+					}
+					else {
+						echo "&nbsp;$other:&nbsp;$other_title</div>";
+					}
 					?>
 				</td>
 			</tr>

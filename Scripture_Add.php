@@ -1375,7 +1375,7 @@ include ('./NT_Books.php');			// include the books of the NT
                     Book Title
                 </td>
                 <td width="13%" style="padding-left: 3px; ">
-                    Brief Summary
+                    <i>Brief Summary (optional)</i>
                 </td>
                 <td width="13%" style="padding-left: 3px; ">
                     PDF Filename
@@ -1491,7 +1491,7 @@ include ('./NT_Books.php');			// include the books of the NT
 				</td>
 				<td width="27%">
 					<input type='text' style='color: navy; ' size='34' name='txtBuyURL-1' id='txtBuyURL-1' value="<?php if (isset($_POST['txtBuyURL-1'])) echo $_POST['txtBuyURL-1'] ?>" />
-                    <br /><span style="font-size: 9pt; ">http://www.virtualstorehouse.org/...</span>
+                    <br /><span style="font-size: 9pt; ">https://www.virtualstorehouse.org/...</span>
 				</td>
 				<td width="16%" style="text-align: right; ">
 					<input style="font-size: 9pt; " type="button" id="addBuy" value="Add" />

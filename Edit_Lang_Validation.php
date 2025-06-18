@@ -497,7 +497,6 @@
 		//$messages[] = $i . ') post WatchJesusFilm: "' . $_POST["txtWatchJesusFilm-$i"] . '"; inputs: ' . $inputs["txtWatchJesusFilm-$i"] . '; post WatchYouTube: "' . $_POST["txtWatchYouTube-$i"] . '"; inputs: ' . $inputs["txtWatchYouTube-$i"] . '<br />';
 		$i++;
 	}
-//exit;
 
 // viewer
 	$inputs["viewerer"] = "off";
@@ -549,10 +548,10 @@
 	while (isset($_POST['txtOther-'.(string)$i]) && !empty($_POST['txtOther-'.(string)$i])) {
 		if (!empty($_POST['txtOther-'.(string)$i])) $inputs["other_titles"] = 1;
 		if (!empty($_POST['txtOther-'.(string)$i])) {
-			if (empty($_POST['txtOtherTitle-'.(string)$i])) {										// this is a "Summary" and not an actual "Title"!
+			/*if (empty($_POST['txtOtherTitle-'.(string)$i])) {										// This is a "Summary" and not an actual "Title"!
 				$count_failed++;
 				$messages[] = 'Brief Summary #' . $i . ' is blank.';
-			}
+			}*/
 			if (empty($_POST['txtOtherPDF-'.(string)$i]) && empty($_POST['txtOtherAudio-'.(string)$i]) && empty($_POST['txtDownload_video-'.(string)$i])) {
 				$count_failed++;
 				$messages[] = 'One of the Filenames is not chosen on #' . $i . ' on the Other.';
@@ -570,8 +569,8 @@
 				$messages[] = 'Other Audio and Other Download Video have Filenames in #'.$i.'. Only one Filename has to be here.';
 			}
 		}
-		$inputs["txtOther-$i"] = check_input($_POST["txtOther-$i"]);
-		$inputs["txtOtherTitle-$i"] = check_input($_POST["txtOtherTitle-$i"]);
+		$inputs["txtOther-$i"] = check_input($_POST["txtOther-$i"]);								// Book title, e.g., "The Gospel of John" or "John 1-21"
+		$inputs["txtOtherTitle-$i"] = check_input($_POST["txtOtherTitle-$i"]);						// This is a "Summary" and not an actual "Title"!
 		$inputs["txtOtherPDF-$i"] = check_input($_POST["txtOtherPDF-$i"]);
 		$inputs["txtOtherAudio-$i"] = check_input($_POST["txtOtherAudio-$i"]);
 		$inputs["txtDownload_video-$i"] = check_input($_POST["txtDownload_video-$i"]);
