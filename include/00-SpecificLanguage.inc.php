@@ -710,15 +710,15 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					if ($st == $tempArray[0]) {											// 'translation_code' e.g., 'eng' [3 lower case letters]
 						continue;
 					}
-					if ($preth === 0) {
-						echo ' (';
-						$preth = 1;
-					}
 					$t_temp = 'LN_'. $tempArray[1];										// e.g., 'English' [name of the navigational language]
 					$query_temp="SELECT $t_temp FROM $t_temp WHERE ISO_ROD_index = '$ISO_ROD_index'";
 					$result_temp=$db->query($query_temp);
 					if ($result_temp->num_rows === 0) {
 						continue;
+					}
+					if ($preth === 0) {
+						echo ' (';
+						$preth = 1;
 					}
 					$r_temp = $result_temp->fetch_array(MYSQLI_ASSOC);
 					$temp_lang = trim($r_temp["$t_temp"]);
@@ -985,7 +985,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 						$BibleIsActText = translate('View', $st, 'sys');
 						break;			
 					case 8:
-						echo '<table id="Dis_BibleIReadVideo">';
+						echo '<table id="Dis_BibleIsReadVideo">';
 						$BibleIsIcon = 'BibleIsVideo.jpg';
 						$BibleIsActText = translate('Read and View', $st, 'sys');
 						break;			
