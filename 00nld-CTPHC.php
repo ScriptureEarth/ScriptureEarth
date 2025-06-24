@@ -97,8 +97,8 @@
 				document.title = "Copyright pagina";
 			</script>
 			<h2>Copyright pagina</h2>
-			<p>© <?php echo date('Y'); ?> SIL International</p>
-			<p>De <em>ScriptureEarth.org</em> website wordt door SIL International beheerd. Individuele copyright- en licentie-informatie wordt op elk mediaproduct aangegeven door de organisatie die aan het product verbonden is.</p>
+			<p>© <?php echo date('Y'); ?> SIL Global</p>
+			<p>De <em>ScriptureEarth.org</em> website wordt door SIL Global beheerd. Individuele copyright- en licentie-informatie wordt op elk mediaproduct aangegeven door de organisatie die aan het product verbonden is.</p>
 			<p>Het doel van deze site is om Bijbelse mediaproducten in zoveel mogelijk talen beschikbaar en toegankelijk te maken. Individuele copyright- en licentie-informatie wordt op elk mediaproduct aangegeven door de organisatie die aan het product verbonden is.</p>
 			<p>De volgende mediavormen zijn op de website te vinden:
 			<ul>
@@ -118,9 +118,9 @@
 				document.title = "Algemene voorwaarden";
 			</script>
 			<h2>Algemene voorwaarden</h2>
-			<p>Welkom op onze website. Als u doorgaat met browsen en deze website gebruikt, stemt u ermee in zich te houden aan en gebonden te zijn aan de volgende Algemene Voorwaarden die, samen met onze privacyverklaring SIL International’s relatie met u beheren met betrekking tot deze website.</p>
+			<p>Welkom op onze website. Als u doorgaat met browsen en deze website gebruikt, stemt u ermee in zich te houden aan en gebonden te zijn aan de volgende Algemene Voorwaarden die, samen met onze privacyverklaring SIL Global’s relatie met u beheren met betrekking tot deze website.</p>
 			<p>Gebruik onze website niet als u het niet eens bent met enig deel van deze algemene voorwaarden.</p>
-			<p>De term 'SIL International' of 'ons' of 'wij' verwijst naar de eigenaar van de website waarvan de statutaire zetel is 7500 West Camp Wisdom Road, Dallas TX, USA</p>
+			<p>De term 'SIL Global' of 'ons' of 'wij' verwijst naar de eigenaar van de website waarvan de statutaire zetel is 7500 West Camp Wisdom Road, Dallas TX, USA</p>
 			<p>De termen 'u' en 'uw' verwijzen naar de gebruiker of bezoeker van onze website.</p>
 			<p>Wanneer u deze website bezoekt, gaat u akkoord met de volgende gebruiksvoorwaarden:</p>
 			<ul>
@@ -142,19 +142,19 @@
 			<h2>Privacy</h2>
 			<p>ScriptureEarth maakt geen gebruik van "cookie-technologie”. De site verzamelt dus geen gebruikers- of gebruikspatronen.</p>
 			<h3>Verzamelen en gebruiken van persoonlijke informatie</h3>
-			<p>Wanneer u op deze website surft of contact opneemt met SIL International via deze site, zullen we geen persoonlijke informatie over u verzamelen, tenzij u die informatie vrijwillig verstrekt. Als u uw post- of e-mailadres opgeeft waar die optie via onze website geboden wordt, ontvangt u alleen de informatie waarvoor u het adres hebt opgegeven.</p>
-			<p>Indien nodig kan persoonlijke informatie worden doorgestuurd naar de partnerorganisaties van SIL International om een antwoord te geven op uw verzoek of opmerkingen.</p>
-			<p>Als u niet-openbare persoonlijke informatie (zoals een naam, adres, e-mailadres of telefoonnummer) via deze site verstrekt, zal SIL International deze informatie alleen gebruiken voor het doel vermeld op de pagina waar deze wordt verzameld.</p>
-			<p>SIL International verstuurt geen ongevraagde e-mail of "spam" e-mail en verkoopt, verhuurt of verhandelt zijn e-maillijsten niet aan derden.</p>
+			<p>Wanneer u op deze website surft of contact opneemt met SIL Global via deze site, zullen we geen persoonlijke informatie over u verzamelen, tenzij u die informatie vrijwillig verstrekt. Als u uw post- of e-mailadres opgeeft waar die optie via onze website geboden wordt, ontvangt u alleen de informatie waarvoor u het adres hebt opgegeven.</p>
+			<p>Indien nodig kan persoonlijke informatie worden doorgestuurd naar de partnerorganisaties van SIL Global om een antwoord te geven op uw verzoek of opmerkingen.</p>
+			<p>Als u niet-openbare persoonlijke informatie (zoals een naam, adres, e-mailadres of telefoonnummer) via deze site verstrekt, zal SIL Global deze informatie alleen gebruiken voor het doel vermeld op de pagina waar deze wordt verzameld.</p>
+			<p>SIL Global verstuurt geen ongevraagde e-mail of "spam" e-mail en verkoopt, verhuurt of verhandelt zijn e-maillijsten niet aan derden.</p>
 			<p>In alle gevallen zullen we indien nodig informatie vrijgeven in overeenstemming met de toepasselijke wet- en regelgeving.</p>
 			<h3>Links</h3>
-			<p>ScriptureEarth bevat links naar andere websites. Deze links bieden u relevante bronnen. Een link naar een document of site impliceert niet noodzakelijk dat SIL International:</p>
+			<p>ScriptureEarth bevat links naar andere websites. Deze links bieden u relevante bronnen. Een link naar een document of site impliceert niet noodzakelijk dat SIL Global:</p>
 			<ul>
 				<li>de organisatie(s) of persoon (personen) onderschrijft</li>
 				<li>de geuite ideeën ondersteunt, of</li>
 				<li>instemt met de juistheid, feitelijkheid, geschiktheid of wettigheid van de inhoud</li>
 			</ul>
-			<p>SIL International is ook niet verantwoordelijk voor het privacybeleid of de praktijken van deze websites.</p>
+			<p>SIL Global is ook niet verantwoordelijk voor het privacybeleid of de praktijken van deze websites.</p>
 		<?php
 			break;
 		case "H":
@@ -186,7 +186,7 @@
 					<strong>Voor vragen of commentaar kunt u contact opnemen met:</strong><br />
 					<img src='./images/app-icon.jpg' alt="feedback" style='margin-bottom: -6px; ' width="32" height="32" />
 					<a href="mailto:info&#64;ScriptureEarth.org">info&#64;ScriptureEarth.org</a><br /><br />
-					<img src="./images/sil-icon.jpg" alt="SIL International" width="32" height="32" /><strong> SIL International</strong><br />
+					<img src="./images/sil-icon.jpg" alt="SIL Global" width="32" height="32" /><strong> SIL Global</strong><br />
 					<a href="https://www.sil.org/">www.sil.org</a>
 				</div>
 			</div>

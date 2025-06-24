@@ -3,7 +3,7 @@
                         "<div style='color: #A82120; font-weight: bold; font-size: 1.2em; margin-bottom: 20px; '>"+
                        		"Acerca de este sitio"+
                         "</div>"+
-                        "La página web ScriptureEarth.org es administrada por SIL International <div style='cursor: pointer; color: darkred; text-decoration: underline; display: inline; ' onClick='window.open(\"https://www.sil.org\")'>(www.sil.org)</div>."+
+                        "La página web ScriptureEarth.org es administrada por SIL Global <div style='cursor: pointer; color: darkred; text-decoration: underline; display: inline; ' onClick='window.open(\"https://www.sil.org\")'>(www.sil.org)</div>."+
                         "<br /><br />"+
                         "El servicio que SIL brinda a las comunidades minoritarias etnolingüísticas está motivado por la creencia de que todas las personas fueron creadas a imagen de Dios; que los idiomas y las culturas son parte de la riqueza de la creación de Dios."+
                         "<br /><br />"+

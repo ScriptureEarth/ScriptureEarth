@@ -3,9 +3,9 @@
                         "<div style='color: #A82120; font-weight: bold; font-size: 1.2em; margin-bottom: 20px; '>"+
 							"Over deze website"+
                         "</div>"+
-						"De ScriptureEarth.org website wordt beheerd door SIL International <div style='cursor: pointer; color: darkred; text-decoration: underline; display: inline; ' onClick='window.open(\"https://www.sil.org\")'>(www.sil.org)</div>."+
+						"De ScriptureEarth.org website wordt beheerd door SIL Global <div style='cursor: pointer; color: darkred; text-decoration: underline; display: inline; ' onClick='window.open(\"https://www.sil.org\")'>(www.sil.org)</div>."+
                         "<br /><br />"+
-						"Het verlangen van SIL International om etno-linguïstische minderheden te ondersteunen is gemotiveerd door het geloof dat alle mensen naar het beeld van God zijn geschapen en dat talen en culturen deel uitmaken van de rijkdom van Gods schepping."+
+						"Het verlangen van SIL Global om etno-linguïstische minderheden te ondersteunen is gemotiveerd door het geloof dat alle mensen naar het beeld van God zijn geschapen en dat talen en culturen deel uitmaken van de rijkdom van Gods schepping."+
                         "<br /><br />"+
 						"Het doel van deze site is om Bijbelse mediaproducten in zoveel mogelijk talen beschikbaar en toegankelijk te maken. Individuele copyright- en licentie-informatie wordt op elk mediaproduct aangegeven door de organisatie die aan het product verbonden is."+
 						"<br /><br />"+

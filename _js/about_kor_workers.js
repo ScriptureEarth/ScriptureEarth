@@ -4,7 +4,7 @@
                         "<div style='color: #A82120; font-weight: bold; font-size: 1.2em; margin-bottom: 20px; '>"+
                             "이 사이트 정보"+
                         "</div>"+
-                        "ScriptureEarth.org 웹사이트는 SIL International이 관리합니다 <div style='cursor: pointer; color: darkred; text-decoration: underline; display: inline; ' onClick='window.open(\"https://www.sil.org\")'>(www.sil.org)</div>."+
+                        "ScriptureEarth.org 웹사이트는 SIL Global이 관리합니다 <div style='cursor: pointer; color: darkred; text-decoration: underline; display: inline; ' onClick='window.open(\"https://www.sil.org\")'>(www.sil.org)</div>."+
                         "<br /><br />"+
                         "소수 민족 언어 공동체와 함께하는 SIL의 섬김은 모든 사람이 하나님의 형상대로 창조되었으며, 언어와 문화는 하나님의 창조에 담긴 풍성함의 일부라는 믿음에서 출발합니다."+
                         "<br /><br />"+

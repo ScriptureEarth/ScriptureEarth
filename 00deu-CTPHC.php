@@ -98,8 +98,8 @@
 				document.title = "Copyright";
 			</script>
 			<h2>Copyright</h2>
-			<p>© <?php echo date('Y'); ?> SIL International</p>
-			<p>Die <em>ScriptureEarth.org</em> Website wird von SIL International betrieben. Produktspezifische Copyright- und Lizenzinformationen werden von jeder beitragenden Organisation auf dem betreffenden Produkt angegeben.</p>
+			<p>© <?php echo date('Y'); ?> SIL Global</p>
+			<p>Die <em>ScriptureEarth.org</em> Website wird von SIL Global betrieben. Produktspezifische Copyright- und Lizenzinformationen werden von jeder beitragenden Organisation auf dem betreffenden Produkt angegeben.</p>
 			<p>Der Zweck dieser Website ist es, den Zugang zu Schrift Produkten zu verschaffen Sprachen der Welt. Individuelle Copyright- und Lizenzinformationen werden auf jedem Produkt von der beitragenden Organisation angegeben.</p>
 			<p>Einige der Medienformate auf der Website umfassen:
 			<ul>
@@ -119,8 +119,8 @@
 				document.title = "Geschäftsbedingungen";
 			</script>
 			<h2>Geschäftsbedingungen</h2>
-			<p>Willkommen auf unserer Webseite! Wenn Sie diese Internetseite besuchen und nutzen, erklären Sie sich damit einverstanden, die folgenden Nutzungsbedingungen einzuhalten und an diese gebunden zu sein. Die Nutzungsbedingungen regeln, zusammen mit unserer Datenschutzrichtlinie, die Beziehung zwischen SIL International und Ihnen in Bezug auf diese Webseite. Wenn Sie mit einem Teil dieser Allgemeinen Geschäftsbedingungen nicht einverstanden sind, verwenden Sie unsere Webseite bitte nicht.</p>
-			<p>Der Begriff "SIL International" oder "wir" oder "uns" bezieht sich auf den Inhaber der Webseite mit Sitz in 7500 West Camp Wisdom Road, Dallas, TX.</p>
+			<p>Willkommen auf unserer Webseite! Wenn Sie diese Internetseite besuchen und nutzen, erklären Sie sich damit einverstanden, die folgenden Nutzungsbedingungen einzuhalten und an diese gebunden zu sein. Die Nutzungsbedingungen regeln, zusammen mit unserer Datenschutzrichtlinie, die Beziehung zwischen SIL Global und Ihnen in Bezug auf diese Webseite. Wenn Sie mit einem Teil dieser Allgemeinen Geschäftsbedingungen nicht einverstanden sind, verwenden Sie unsere Webseite bitte nicht.</p>
+			<p>Der Begriff "SIL Global" oder "wir" oder "uns" bezieht sich auf den Inhaber der Webseite mit Sitz in 7500 West Camp Wisdom Road, Dallas, TX.</p>
 			<p>Die Begriffe "Sie" und "Ihr" beziehen sich auf den Benutzer oder Betrachter unserer Webseite.</p>
 			<p>Wenn Sie diese Internetseite nutzen, stimmen Sie den folgenden Nutzungsbedingungen zu:</p>
 			<ul>
@@ -142,19 +142,19 @@
 			<h2>Datenschutz</h2>
 			<p>ScriptureEarth verwendet keine "cookie" -Technologie. Die Website verfolgt daher keine Benutzerdaten oder Nutzungsmuster.</p>
 			<h3>Sammeln und Verwenden persönlicher Informationen</h3>
-			<p>Wenn Sie diese Website besuchen oder SIL International über diese Website kontaktieren, werden wir keine persönlichen Informationen über Sie sammeln, es sei denn, Sie geben diese Informationen freiwillig an. Wenn Sie Ihre Post- oder E-Mail-Adresse über unsere Feedback-Mechanismen angeben, erhalten Sie nur die Informationen, für die Sie die Adresse angegeben haben.</p>
-			<p>Bei Bedarf können personenbezogene Daten an die Partnerorganisationen von SIL International weitergeleitet werden, um auf Ihre Anfrage oder Kommentare zu antworten.</p>
-			<p>Wenn Sie über diese Website nicht öffentliche, personenbezogene Daten (wie Name, Adresse, E-Mail-Adresse oder Telefonnummer) angeben, verwendet SIL International diese Daten nur für den auf der Seite, auf der sie erfasst werden, angegebenen Zweck.</p>
-			<p>SIL International sendet keine unerwünschten oder "Spam" -E-Mails und verkauft, vermietet oder vertreibt seine E-Mail-Listen nicht an Dritte.</p>
+			<p>Wenn Sie diese Website besuchen oder SIL Global über diese Website kontaktieren, werden wir keine persönlichen Informationen über Sie sammeln, es sei denn, Sie geben diese Informationen freiwillig an. Wenn Sie Ihre Post- oder E-Mail-Adresse über unsere Feedback-Mechanismen angeben, erhalten Sie nur die Informationen, für die Sie die Adresse angegeben haben.</p>
+			<p>Bei Bedarf können personenbezogene Daten an die Partnerorganisationen von SIL Global weitergeleitet werden, um auf Ihre Anfrage oder Kommentare zu antworten.</p>
+			<p>Wenn Sie über diese Website nicht öffentliche, personenbezogene Daten (wie Name, Adresse, E-Mail-Adresse oder Telefonnummer) angeben, verwendet SIL Global diese Daten nur für den auf der Seite, auf der sie erfasst werden, angegebenen Zweck.</p>
+			<p>SIL Global sendet keine unerwünschten oder "Spam" -E-Mails und verkauft, vermietet oder vertreibt seine E-Mail-Listen nicht an Dritte.</p>
 			<p>In jedem Fall werden wir Informationen offenlegen, die den geltenden Gesetzen und Vorschriften entsprechen.</p>
 			<h3>Links</h3>
-			<p>ScriptureEarth enthält Links zu anderen Websites. Diese Websites stellen Ihnen relevante Ressourcen zur Verfügung. Ein Link zu einem Dokument oder einer Website bedeutet nicht unbedingt, dass SIL International:</p>
+			<p>ScriptureEarth enthält Links zu anderen Websites. Diese Websites stellen Ihnen relevante Ressourcen zur Verfügung. Ein Link zu einem Dokument oder einer Website bedeutet nicht unbedingt, dass SIL Global:</p>
 			<ul>
 				<li>die Organisation (en) oder Person (en) unterstützt, die sie bereitstellt</li>
 				<li>den geäußerten Ideen zustimmt oder</li>
 				<li>die Korrektheit, Wahrheit, Angemessenheit oder Legalität dieser Inhalte bestätigt</li>
 			</ul>
-			<p>SIL International ist auch nicht verantwortlich für die Datenschutzrichtlinien oder -praktiken dieser Websites.</p>
+			<p>SIL Global ist auch nicht verantwortlich für die Datenschutzrichtlinien oder -praktiken dieser Websites.</p>
 		<?php
 			break;
 		case "H":
@@ -186,7 +186,7 @@
 					<strong>Kontakt für Fragen und Feedback:</strong><br />
 					<img src='images/app-icon.jpg' alt="feedback" style='margin-bottom: -6px; ' width="32" height="32" />
 					<a href="mailto:info&#64;ScriptureEarth.org">info&#64;ScriptureEarth.org</a><br /><br />
-					<img src="./images/sil-icon.jpg" alt="SIL International" width="32" height="32" /><strong> SIL International</strong><br />
+					<img src="./images/sil-icon.jpg" alt="SIL Global" width="32" height="32" /><strong> SIL Global</strong><br />
 					<a href="https://www.sil.org/">www.sil.org</a>
 				</div>
 			</div>

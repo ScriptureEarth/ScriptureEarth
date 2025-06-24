@@ -4,7 +4,7 @@
                         "<div style='color: #A82120; font-weight: bold; font-size: 1.2em; margin-bottom: 20px; '>"+
                             "About this site"+
                         "</div>"+
-                        "The ScriptureEarth.org website is managed by SIL International <div style='cursor: pointer; color: darkred; text-decoration: underline; display: inline; ' onClick='window.open(\"https://www.sil.org\")'>(www.sil.org)</div>."+
+                        "The ScriptureEarth.org website is managed by SIL Global <div style='cursor: pointer; color: darkred; text-decoration: underline; display: inline; ' onClick='window.open(\"https://www.sil.org\")'>(www.sil.org)</div>."+
                         "<br /><br />"+
                         "SIL’s service with ethnolinguistic minority communities is motivated by the belief that all people are created in the image of God, and that languages and cultures are part of the richness of God's creation."+
                         "<br /><br />"+

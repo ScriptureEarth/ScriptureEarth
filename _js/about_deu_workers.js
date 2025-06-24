@@ -3,7 +3,7 @@
                         "<div style='color: #A82120; font-weight: bold; font-size: 1.2em; margin-bottom: 20px; '>"+
 							"Über diese Website"+
                         "</div>"+
-						"Die ScriptureEarth.org Website is  von SIL International <div style='cursor: pointer; color: darkred; text-decoration: underline; display: inline; ' onClick='window.open(\"https://www.sil.org\")'>(www.sil.org)</div> verwaltet."+
+						"Die ScriptureEarth.org Website is  von SIL Global <div style='cursor: pointer; color: darkred; text-decoration: underline; display: inline; ' onClick='window.open(\"https://www.sil.org\")'>(www.sil.org)</div> verwaltet."+
                         "<br /><br />"+
 						"Der Dienst von SIL an ethno linguistischen Minderheiten Gemeinschaften basiert auf der Überzeugung, dass alle Menschen nach dem Bilde Gottes geschaffen sind und dass Sprachen und Kulturen Teil des Reichtums der Schöpfung Gottes sind."+
                         "<br /><br />"+

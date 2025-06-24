@@ -3,7 +3,7 @@
                         "<div style='color: #A82120; font-weight: bold; font-size: 1.2em; margin-bottom: 20px; '>"+
 							"Sobre este site"+
                         "</div>"+
-						"A página ScriptureEarth.org é mantida pela SIL International. <div style='cursor: pointer; color: darkred; text-decoration: underline; display: inline; ' onClick='window.open(\"https://www.sil.org\")'>(www.sil.org)</div>"+
+						"A página ScriptureEarth.org é mantida pela SIL Global. <div style='cursor: pointer; color: darkred; text-decoration: underline; display: inline; ' onClick='window.open(\"https://www.sil.org\")'>(www.sil.org)</div>"+
                         "<br /><br />"+
 						"O trabalho da SIL entre as comunidades etnolinguísticas minoritárias é motivado pela fé de que todas as pessoas são criadas à imagem de Deus, e que as respectivas línguas e suas culturas são parte da riqueza da criação de Deus."+
                         "<br /><br />"+
