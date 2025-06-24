@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>English Language Setup</title>
+<title>Russian Language Setup</title>
 <meta http-equiv="Content-Type"  content="text/html; charset=utf-8" />
 <meta http-equiv="Window-target" content="_top" />
 <meta name="ObjectType"          content="Document" />
@@ -65,26 +65,24 @@ include '../../include/conn.inc.php';
 $db = get_my_db();
 
 $fileFirstPart = 
-'<!DOCTYPE html>
-<html>
+'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Scripture Earth English Language Setup</title>
 <meta http-equiv="Content-Type" 			content="text/html; charset=utf-8" />
 <meta name="ObjectType" 					content="Document" />
 <meta http-equiv="Window-target" 			content="_top" />
 <meta name="Description" lang="en-US" 		content="
-	  This site provides access to the Bible/NT in text (PDF), audio (MP3 from Faith Comes By Hearing),
-	  video (the Jesus Film, etc.), buy (print-on-demand from Virtual Storehouse), Bible study modules (the Word),
-	  and other books and links in the indigenous languages of the Americas.
-  " />
+		Этот сайт предоставляет доступ к Библии (Писаниям Ветхого Завета и Нового Завета) на языках коренных народов:
+		текстовые, аудио- и видеоформаты для загрузки на свое устройство или чтения онлайн. Ознакомьтесь с загрузками,
+		программным обеспечением для изучения Библии, мобильными приложениями или закажите печатную версию.
+	" />
 <meta name="Keywords" lang="en-US" 			content="
-	  SCRIPTURE RESOURCES, complete Bible, language,
-	  modern indigenous languages, Americas, heart language, play list,
-	  native languages, text, PDF, audio, MP3, Faith Comes By Hearing, Bible.is, YouVersion, YouTube,
-	  watch, JESUS Film, video, buy, book, print-on-demand, online purchase, bookstore, Virtual Storehouse,
-	  Bible study modules, the Word,
-	  Bible, New Testament, NT, Old Testament, OT,
-	  ';
+		современные коренные языки, мир, язык сердца, родной язык, Bible.is, онлайн-просмотрщик, загрузка, родные языки,
+		текст, PDF, аудио, MP3, mp3, MP4, mp4, iPod, iPhone, мобильный телефон, смартфон, iPad, планшет, android, смотреть,
+		просматривать, фильм «Иисус», видео Евангелия от Луки, купить, распечатать по запросу, онлайн-покупка, книжный магазин,
+		изучение, Слово, Библия, Новый Завет, NT, Ветхий Завет, OT, Писание, карта, приложение, мобильное приложение
+	';
 $fileSecondPart = '';
 $fileThirdPart = '" />
 <meta name="Created-by" 					content="Scott Starker" />
@@ -117,7 +115,7 @@ $fileFifthPart = '</div>
 
 	if ($Display) {
 		echo "<div style='background-color: white; padding: 20px; width: 800px; margin-left: auto; margin-right: auto; '>";
-		echo "<h2 style='text-align: center; margin: 0px; color: navy; '>Scripture Earth English Language Setup</h2><br /><br />";
+		echo "<h2 style='text-align: center; margin: 0px; color: navy; '>Scripture Earth Chinese Language Setup</h2><br /><br />";
 	}
 	
 	$query = 'SELECT * FROM nav_ln ORDER BY ISO, ROD_Code';
@@ -167,7 +165,8 @@ $fileFifthPart = '</div>
 		$LN_Russian=$row['LN_Russian'];					// boolean
 		$LN_Arabic=$row['LN_Arabic'];					// boolean
 		$def_LN=$row['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
-		if (!$LN_English) {								// if the English then the default langauge
+
+		if (!$LN_Russian) {								// if the English then the default langauge
 			switch ($def_LN){
 				case 1:
 					//$query="SELECT LN_English FROM LN_English WHERE LN_English.ISO = '$ISO' AND LN_English.ROD_Code = '$ROD_Code'";
@@ -257,18 +256,18 @@ $fileFifthPart = '</div>
 			}
 		}
 		else {
-			//$query="SELECT LN_English FROM LN_English WHERE LN_English.ISO = '$ISO' AND LN_English.ROD_Code = '$ROD_Code'";
+			//$query="SELECT LN_Russian FROM LN_Russian WHERE LN_Russian.ISO = '$ISO' AND LN_Russian.ROD_Code = '$ROD_Code'";
 			//$result_LN=$db->query($query);
-			$stmt_LN_English->bind_param('ss', $ISO, $ROD_Code);										// bind parameters for markers								// 
-			$stmt_LN_English->execute();																// execute query
-			$result_LN_English = $stmt_LN_English->get_result();										// instead of bind_result (used for only 1 record):
-			$r = $result_LN_English->fetch_array();
-			if ($result_LN_English->num_rows == 0) {
-				echo 'LN is not English. ' . $ISO . ' ' . $ROD_Code . '<br />';
-				$LN = 'LN is not English';
+			$stmt_LN_Russian->bind_param('ss', $ISO, $ROD_Code);										// bind parameters for markers								// 
+			$stmt_LN_Russian->execute();																// execute query
+			$result_LN_Russian = $stmt_LN_Russian->get_result();										// instead of bind_result (used for only 1 record):
+			$r = $result_LN_Russian->fetch_array();
+			if ($result_LN_Russian->num_rows == 0) {
+				echo 'LN is not Russian. ' . $ISO . ' ' . $ROD_Code . '<br />';
+				$LN = 'LN is not Russian';
 				continue;
 			}
-			$LN=$r['LN_English'];
+			$LN=$r['LN_Russian'];
 		}
 		$LN = check_input($LN);							// check_input: in order to make the INSERT work right
 		//$result_Temp = $db->query("INSERT INTO LN_Temp (ISO, ROD_Code, Variant_Code, LN) VALUES ('$ISO', '$ROD_Code', '$Variant_Code', '$LN')");
@@ -288,8 +287,8 @@ $fileFifthPart = '</div>
 	$stmt_LN_Arabic->close();
 	$stmt_LN_Temp->close();
 
-	// Create 'English.htm'
-	$filename = 'English.htm';
+	// Create 'Russian.htm'
+	$filename = 'Russian.htm';
 	$handle = fopen($filename,'w');		// Open for writing only; place the file pointer at the beginning of the file and truncate the file to zero length. If the file does not exist, attempt to create it. 
 	fwrite($handle, $fileFirstPart);
 	$j=0;
@@ -412,7 +411,7 @@ $fileFifthPart = '</div>
 		$r_ISO_C = $result_ISO_countries->fetch_array();
 		$Eng_country = '';
 		if ($num_ISO_countries >= 1) {
-			$Eng_country = $r_ISO_C['English'];							// first name of the country in the language version
+			$Eng_country = $r_ISO_C['Russian'];							// first name of the country in the language version
 			while ($r_ISO_C = $result_ISO_countries->fetch_array()) {
 				$Eng_country = $Eng_country.', '.$r_ISO_C['English'];	// name of the country in the language version
 			}

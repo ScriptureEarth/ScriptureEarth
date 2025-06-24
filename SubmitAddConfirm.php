@@ -695,7 +695,7 @@
 		for($x=0; $x<$arrlength; $x++) {
 			if (strpos($file_array[$x], '(query)')) {														// switch (query) only occurs once in 404.shtml
 				$temp1 = "		case '".$inputs["isopText"]."':";
-				$temp2 = '			window.location.replace("https://www.ScriptureEarth.org/"+navLang+"?sortby=lang&idx='.$idx.'");		// '.$inputs["iso"].' '.$inputs["rod"].' '.$idx.' '.$inputs["isopText"];
+				$temp2 = '			window.location.replace("https://www.ScriptureEarth.org/"+navLang+"?idx='.$idx.'");		// '.$inputs["iso"].' '.$inputs["rod"].' '.$idx.' '.$inputs["isopText"];
 				$temp3 = '			break;';
 				array_splice($file_array, $x+1, 0, [$temp1, $temp2, $temp3]);
 				break;
@@ -747,7 +747,7 @@
 		else {
 			$transfer=$iso;
 		}
-		$tempStr = "Redirect 301 /$transfer /index.php?sortby=lang&iso=$iso";
+		$tempStr = "Redirect 301 /$transfer /index.php?iso=$iso";
 		if ($rod != '00000') $tempStr .= "&rod=$rod";
 		if ($var != '') $tempStr .= "&var=$var";
 		fwrite($handle, $tempStr . PHP_EOL);
@@ -757,36 +757,48 @@
 		
 <script type="text/javascript"> 
 /*
-	Has to have a "var" before each "window.open" (because the next window would open up before the "w.close() would get executed)
+	Has to have a "var" before each "window.open" (because the next window would open up before the "a.close() would get executed)
 	and must have "setTimeout" (because the script needs 1 second to run).
 */
 	var url = "metadata/English/EnglishLanguageSetup.php?noDisplay=1";
-	var u = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
-	setTimeout(function() { u.close(); }, 1000);
+	var a = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
+	setTimeout(function() { a.close(); }, 1000);
 	//w.close();
 	url = "metadata/Espanol/EspanolLanguageSetup.php?noDisplay=1";
-	var w = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
-	setTimeout(function() { w.close(); }, 1000);
+	var b = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
+	setTimeout(function() { b.close(); }, 1000);
 	//w.close();
 	url = "metadata/Portuguesa/PortuguesaLanguageSetup.php?noDisplay=1";
-	var z = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
-	setTimeout(function() { z.close(); }, 1000);
+	var c = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
+	setTimeout(function() { c.close(); }, 1000);
 	//w.close();
 	url = "metadata/Francais/FrancaisLanguageSetup.php?noDisplay=1";
-	var x = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
-	setTimeout(function() { x.close(); }, 1000);
+	var d = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
+	setTimeout(function() { d.close(); }, 1000);
 	//w.close();
 	url = "metadata/Nederlands/NederlandsLanguageSetup.php?noDisplay=1";
-	var y = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
-	setTimeout(function() { y.close(); }, 1000);
+	var e = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
+	setTimeout(function() { e.close(); }, 1000);
 	//w.close();
 	url = "metadata/Deutsch/DeutschLanguageSetup.php?noDisplay=1";
-	var v = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
-	setTimeout(function() { v.close(); }, 1000);
+	var f = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
+	setTimeout(function() { f.close(); }, 1000);
 	//w.close();
 	url = "metadata/Chinese/ChineseLanguageSetup.php?noDisplay=1";
-	var v = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
-	setTimeout(function() { v.close(); }, 1000);
+	var g = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
+	setTimeout(function() { g.close(); }, 1000);
+	//w.close();
+	url = "metadata/Korean/KoreanLanguageSetup.php?noDisplay=1";
+	var h = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
+	setTimeout(function() { h.close(); }, 1000);
+	//w.close();
+	url = "metadata/Russian/RussianLanguageSetup.php?noDisplay=1";
+	var i = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
+	setTimeout(function() { i.close(); }, 1000);
+	//w.close();
+	url = "metadata/Arabic/ArabicLanguageSetup.php?noDisplay=1";
+	var j = window.open(url, "_blank", "titlebar=no, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=100, height=100");
+	setTimeout(function() { j.close(); }, 1000);
 	//w.close();
 </script>
 </body>

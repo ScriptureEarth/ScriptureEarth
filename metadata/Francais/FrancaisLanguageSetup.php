@@ -36,8 +36,8 @@ include '../../include/conn.inc.php';
 $db = get_my_db();
 
 $fileFirstPart = 
-'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+'<!DOCTYPE html>
+<html>
 <head>
 <title>Scripture Earth Francais Language Setup</title>
 <meta http-equiv="Content-Type" 			content="text/html; charset=utf-8" />
@@ -111,6 +111,12 @@ $fileFifthPart = '</div>
 	$stmt_LN_German=$db->prepare($query);																// create a prepared statement
 	$query='SELECT LN_Chinese FROM LN_Chinese WHERE LN_Chinese.ISO = ? AND LN_Chinese.ROD_Code = ?';
 	$stmt_LN_Chinese=$db->prepare($query);																// create a prepared statement
+	$query='SELECT LN_Korean FROM LN_Korean WHERE LN_Korean.ISO = ? AND LN_Korean.ROD_Code = ?';
+	$stmt_LN_Korean=$db->prepare($query);																// create a prepared statement
+	$query='SELECT LN_Russian FROM LN_Russian WHERE LN_Russian.ISO = ? AND LN_Russian.ROD_Code = ?';
+	$stmt_LN_Russian=$db->prepare($query);																// create a prepared statement
+	$query='SELECT LN_Arabic FROM LN_Arabic WHERE LN_Arabic.ISO = ? AND LN_Arabic.ROD_Code = ?';
+	$stmt_LN_Arabic=$db->prepare($query);																// create a prepared statement
 	$query='INSERT INTO LN_Temp (ISO, ROD_Code, Variant_Code, LN) VALUES (?, ?, ?, ?)';
 	$stmt_LN_Temp=$db->prepare($query);																	// create a prepared statement
 	
@@ -125,6 +131,9 @@ $fileFifthPart = '</div>
 		$LN_Dutch=$row['LN_Dutch'];						// boolean
 		$LN_German=$row['LN_German'];					// boolean
 		$LN_Chinese=$row['LN_Chinese'];					// boolean
+		$LN_Korean=$row['LN_Korean'];					// boolean
+		$LN_Russian=$row['LN_Russian'];					// boolean
+		$LN_Arabic=$row['LN_Arabic'];					// boolean
 		$def_LN=$row['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
 		if (!$LN_French) {								// if the French then the default langauge
 			switch ($def_LN){
@@ -189,6 +198,27 @@ $fileFifthPart = '</div>
 					$r = $result_LN_Chinese->fetch_array();
 					$LN=$r['LN_Chinese'];
 					break; 	
+				case 8:
+					$stmt_LN_Korean->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
+					$stmt_LN_Korean->execute();															// execute query
+					$result_LN_Korean = $stmt_LN_Korean->get_result();									// instead of bind_result (used for only 1 record):
+					$r = $result_LN_Korean->fetch_array();
+					$LN=$r['LN_Korean'];
+					break; 	
+				case 9:
+					$stmt_LN_Russian->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
+					$stmt_LN_Russian->execute();															// execute query
+					$result_LN_Russian = $stmt_LN_Russian->get_result();									// instead of bind_result (used for only 1 record):
+					$r = $result_LN_Russian->fetch_array();
+					$LN=$r['LN_Russian'];
+					break; 	
+				case 10:
+					$stmt_LN_Arabic->bind_param('ss', $ISO, $ROD_Code);									// bind parameters for markers								// 
+					$stmt_LN_Arabic->execute();															// execute query
+					$result_LN_Arabic = $stmt_LN_Arabic->get_result();									// instead of bind_result (used for only 1 record):
+					$r = $result_LN_Arabic->fetch_array();
+					$LN=$r['LN_Arabic'];
+					break; 	
 				default:
 					echo "Isn't supposed to happen! The default language isn't here.";
 					break;
@@ -209,6 +239,17 @@ $fileFifthPart = '</div>
 		$stmt_LN_Temp->execute();																		// execute query
 		//$i++;
 	}
+	$stmt_LN_English->close();
+	$stmt_LN_Spanish->close();
+	$stmt_LN_Dutch->close();
+	$stmt_LN_French->close();
+	$stmt_LN_Portuguese->close();
+	$stmt_LN_German->close();
+	$stmt_LN_Chinese->close();
+	$stmt_LN_Korean->close();
+	$stmt_LN_Russian->close();
+	$stmt_LN_Arabic->close();
+	$stmt_LN_Temp->close();
 
 	// Create 'Francais.htm'
 	$filename = 'Francais.htm';

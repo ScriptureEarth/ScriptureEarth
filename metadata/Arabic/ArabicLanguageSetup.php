@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>English Language Setup</title>
+<title>Arabic Language Setup</title>
 <meta http-equiv="Content-Type"  content="text/html; charset=utf-8" />
 <meta http-equiv="Window-target" content="_top" />
 <meta name="ObjectType"          content="Document" />
@@ -73,18 +73,11 @@ $fileFirstPart =
 <meta name="ObjectType" 					content="Document" />
 <meta http-equiv="Window-target" 			content="_top" />
 <meta name="Description" lang="en-US" 		content="
-	  This site provides access to the Bible/NT in text (PDF), audio (MP3 from Faith Comes By Hearing),
-	  video (the Jesus Film, etc.), buy (print-on-demand from Virtual Storehouse), Bible study modules (the Word),
-	  and other books and links in the indigenous languages of the Americas.
-  " />
+		يتيح هذا الموقع الكتاب المقدس (بعهديه القديم والجديد أو أجزاء منهما) بلغات محلية مختلفة في صيغ نص، وتسجيل، وفيديو. يمكنك تنزيلها على جهازك أو القراءة على الإنترنت. قم بزيارة القسم المختص بالتنزيلات، وبرنامج دراسة الكتاب المقدس، وتطبيقات الأجهزة المحمولة، أو اطلب شراء نسخة مطبوعة من الكتاب المقدس بلغتك المختارة.
+	" />
 <meta name="Keywords" lang="en-US" 			content="
-	  SCRIPTURE RESOURCES, complete Bible, language,
-	  modern indigenous languages, Americas, heart language, play list,
-	  native languages, text, PDF, audio, MP3, Faith Comes By Hearing, Bible.is, YouVersion, YouTube,
-	  watch, JESUS Film, video, buy, book, print-on-demand, online purchase, bookstore, Virtual Storehouse,
-	  Bible study modules, the Word,
-	  Bible, New Testament, NT, Old Testament, OT,
-	  ';
+		لغات محلية معاصرة، العالم، اللغة الأقرب، اللغة الأم، الكتاب المقدس.is، عارض الإنترنت، تنزيل، لغات أصلية، نص، ملف PDF، تسجيل صوتي MP3، تسجيل صوتي mp3، تسجيل صوتي MP4، تسجيل صوتي mp4، جهاز iPod، جهاز آيفون، هاتف خلوي، هاتف ذكي، آيباد، تابليت، أندرويد، شاهد، عرض، فيلم يسوع، فيديو لوقا، شراء، طباعة حسب الطلب، شراء على الإنترنت، مكتبة، دراسة، الكلمة المقدسة، الكتاب المقدس، العهد الجديد، العهد الجديد، العهد القديم، العهد القديم، أجزاء الكتاب المقدس، خريطة، تطبيق، تطبيق المحمول
+	';
 $fileSecondPart = '';
 $fileThirdPart = '" />
 <meta name="Created-by" 					content="Scott Starker" />
@@ -117,7 +110,7 @@ $fileFifthPart = '</div>
 
 	if ($Display) {
 		echo "<div style='background-color: white; padding: 20px; width: 800px; margin-left: auto; margin-right: auto; '>";
-		echo "<h2 style='text-align: center; margin: 0px; color: navy; '>Scripture Earth English Language Setup</h2><br /><br />";
+		echo "<h2 style='text-align: center; margin: 0px; color: navy; '>Scripture Earth Arabic Language Setup</h2><br /><br />";
 	}
 	
 	$query = 'SELECT * FROM nav_ln ORDER BY ISO, ROD_Code';
@@ -163,9 +156,6 @@ $fileFifthPart = '</div>
 		$LN_Dutch=$row['LN_Dutch'];						// boolean
 		$LN_German=$row['LN_German'];					// boolean
 		$LN_Chinese=$row['LN_Chinese'];					// boolean
-		$LN_Korean=$row['LN_Korean'];					// boolean
-		$LN_Russian=$row['LN_Russian'];					// boolean
-		$LN_Arabic=$row['LN_Arabic'];					// boolean
 		$def_LN=$row['Def_LN'];							// default langauge (a 2 digit number for the national langauge)
 		if (!$LN_English) {								// if the English then the default langauge
 			switch ($def_LN){
@@ -257,18 +247,18 @@ $fileFifthPart = '</div>
 			}
 		}
 		else {
-			//$query="SELECT LN_English FROM LN_English WHERE LN_English.ISO = '$ISO' AND LN_English.ROD_Code = '$ROD_Code'";
+			//$query="SELECT LN_Arabic FROM LN_Arabic WHERE LN_Arabic.ISO = '$ISO' AND LN_Arabic.ROD_Code = '$ROD_Code'";
 			//$result_LN=$db->query($query);
-			$stmt_LN_English->bind_param('ss', $ISO, $ROD_Code);										// bind parameters for markers								// 
-			$stmt_LN_English->execute();																// execute query
-			$result_LN_English = $stmt_LN_English->get_result();										// instead of bind_result (used for only 1 record):
-			$r = $result_LN_English->fetch_array();
-			if ($result_LN_English->num_rows == 0) {
-				echo 'LN is not English. ' . $ISO . ' ' . $ROD_Code . '<br />';
-				$LN = 'LN is not English';
+			$stmt_LN_Arabic->bind_param('ss', $ISO, $ROD_Code);										// bind parameters for markers								// 
+			$stmt_LN_Arabic->execute();																// execute query
+			$result_LN_Arabic = $stmt_LN_Arabic->get_result();										// instead of bind_result (used for only 1 record):
+			$r = $result_LN_Arabic->fetch_array();
+			if ($result_LN_Arabic->num_rows == 0) {
+				echo 'LN is not Arabic. ' . $ISO . ' ' . $ROD_Code . '<br />';
+				$LN = 'LN is not Arabic';
 				continue;
 			}
-			$LN=$r['LN_English'];
+			$LN=$r['LN_Arabic'];
 		}
 		$LN = check_input($LN);							// check_input: in order to make the INSERT work right
 		//$result_Temp = $db->query("INSERT INTO LN_Temp (ISO, ROD_Code, Variant_Code, LN) VALUES ('$ISO', '$ROD_Code', '$Variant_Code', '$LN')");
@@ -288,8 +278,8 @@ $fileFifthPart = '</div>
 	$stmt_LN_Arabic->close();
 	$stmt_LN_Temp->close();
 
-	// Create 'English.htm'
-	$filename = 'English.htm';
+	// Create 'Arabic.htm'
+	$filename = 'Arabic.htm';
 	$handle = fopen($filename,'w');		// Open for writing only; place the file pointer at the beginning of the file and truncate the file to zero length. If the file does not exist, attempt to create it. 
 	fwrite($handle, $fileFirstPart);
 	$j=0;
@@ -412,13 +402,13 @@ $fileFifthPart = '</div>
 		$r_ISO_C = $result_ISO_countries->fetch_array();
 		$Eng_country = '';
 		if ($num_ISO_countries >= 1) {
-			$Eng_country = $r_ISO_C['English'];							// first name of the country in the language version
+			$Eng_country = $r_ISO_C['Arabic'];							// first name of the country in the language version
 			while ($r_ISO_C = $result_ISO_countries->fetch_array()) {
-				$Eng_country = $Eng_country.', '.$r_ISO_C['English'];	// name of the country in the language version
+				$Eng_country = $Eng_country.', '.$r_ISO_C['Arabic'];	// name of the country in the language version
 			}
 		}
 		else {
-			echo 'No English country for ' . $ISO . ' ' . $ROD_Code . ' ' . $Variant_Code . '<br />';
+			echo 'No Arabic country for ' . $ISO . ' ' . $ROD_Code . ' ' . $Variant_Code . '<br />';
 		}
 		if ($Display) {
 			//echo "<td width='20%' style='background-color: #$color; margin: 0px; padding: 3px 5px 3px 5px; border-width: thin; border-style: none; border-color: #$color; '>$Eng_country</td>";
