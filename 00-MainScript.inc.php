@@ -1,4 +1,12 @@
 <?php
+if ($_SERVER['REQUEST_URI'][-1] == '?') {													// last charcter is a question mark
+	// if the last character is a question mark then remove it.
+	// This happens when the user clicks on the "Search" button
+	// and the URL has a question mark at the end.
+	echo "<script>window.open('".substr($_SERVER['REQUEST_URI'], 0, -1)."', '_self');</script>";
+	exit;
+}
+
 if (session_status() === PHP_SESSION_NONE) @session_start();
 
 /*
