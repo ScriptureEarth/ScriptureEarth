@@ -1,6 +1,6 @@
 # Scripture Earth
 
-[ScriptureEarth.org](https://scriptureearth.org) (SE.org) is a website that provides a source for accessing Scripture resources in thousands of languages (3215 Scripture resources as of 7/2024) through text, audio, and video for speakers of minority languages. SE.org does not publish extra Biblical materials (like Bible studies) in the minority languages (but there are limited exceptions).
+[ScriptureEarth.org](https://scriptureearth.org) (SE.org) is a website that provides a source for accessing Scripture resources in thousands of languages (4050 Scripture resources as of 9/2025) through text, audio, and video for speakers of minority languages. SE.org does not publish extra Biblical materials (like Bible studies) in the minority languages (but there are limited exceptions).
 
 ## Description
 
