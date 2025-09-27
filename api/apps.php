@@ -36,7 +36,7 @@ $cc = '';
 if ($iso == '' && isset($_GET['cc'])) {
 	$cc = strtoupper(trim($_GET['cc']));			
 	$v = 2;																						// if there is one. just pull only one.
-	if (preg_match('/^[A-Z][A-Z]/', $cc, $matches)) {
+	if (preg_match('/^([A-Z][A-Z])/', $cc, $matches)) {
 		$cc = $matches[1];
 	}
 	else {

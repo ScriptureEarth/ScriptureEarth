@@ -45,6 +45,19 @@ $m=0;
 $first = '{';
 
 while ($row = $result_iso->fetch_assoc()) {
+    /*
+bdg	00000		4
+mvn	00000		16
+tuk	Iran		16
+zaw	matat		16
+aaz	00000		48
+mkn	00000		48
+plu	00000		48
+
+$iso = $row['ISO'];
+if ($iso == 'bdg' || $iso == 'mvn' || $iso == 'tuk' || $iso == 'zaw' || $iso == 'aaz' || $iso == 'mkn' || $iso == 'plu') {
+    continue;																	// skip these languages
+}*/
     $m++;
 
     include('include/ISO_details.php');

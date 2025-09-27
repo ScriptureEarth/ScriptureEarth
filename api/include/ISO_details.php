@@ -91,7 +91,7 @@ if ($NT_Audio >= 1) {
 	$NT_Audio = $row_temp['NT_Audio_temp'];
 }
 
-$SAB_temp = (int)$row['SAB'];
+$SAB_temp = (int)$row['SAB'];				// 0 - 128
 $SAB_Audio = 0;
 $SAB_Text = 0;
 $SAB_Video = 0;

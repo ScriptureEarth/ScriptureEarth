@@ -98,7 +98,7 @@ while ($row = $result->fetch_assoc()) {
     $first .= '"rod":				        "'.$rod.'",';
     $first .= '"var_code":		    	    "'.$var.'",';
     $first .= '"var_name":			        "'.$Variant_name.'",';
-    $first .= '"iso_query_string":	        "sortby=lang&iso='.$iso;
+    $first .= '"iso_query_string":	        "&iso='.$iso;
     if ($rod != '00000') {
         $first .= '&rod='.$rod;
     }
@@ -107,7 +107,7 @@ while ($row = $result->fetch_assoc()) {
     }
     $first .= '",';
     $first .= '"idx":		                '.$idx.',';
-    $first .= '"idx_query_string":          "sortby=lang&idx='.$idx.'",';
+    $first .= '"idx_query_string":          "&idx='.$idx.'",';
     $first .= '"english_language_name":     "'.$LN_English.'",';
     $first .= '"alternate_language_number":		'.$alt_ln.',';                                  // how many
     $first .= '"alternate_language_names":		"'.$alt.'"';

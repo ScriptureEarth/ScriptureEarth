@@ -15,6 +15,9 @@
 *
 **************************************************************************************************************************************/
 
+// security check:
+// echo("<script>alert('PHP: $BibleIs');</script>");
+
 	if (!isset($LN)) die('Hacked!');
 	if (!isset($ISO_ROD_index)) {
 		die('Hacked!');
@@ -211,7 +214,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	$AddTheBibleIn=$rowSM['AddTheBibleIn'];					// boolean
 	$AddTheScriptureIn=$rowSM['AddTheScriptureIn'];			// boolean
 
-	$SAB=$rowSM['SAB'];										// boolean (1-32)
+	$SAB=$rowSM['SAB'];										// boolean (1 - 128)
 	$BibleIs=$rowSM['BibleIs'];								// boolean (1 - 8)
 	$BibleIsGospelFilm=$rowSM['BibleIsGospelFilm'];			// boolean
 	$viewer=$rowSM['viewer'];								// boolean
@@ -235,9 +238,10 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 
 	if ($SAB) {
 		/*
+			old:
 			$SAB (bitwise):
 				decimal		binary		meaning
-				1		  00000001		NT Text with audio
+				1		  00000001		NT Text with audio (default)
 				2		  00000010		OT Text with audio
 				4		  00000100		NT Text (with audio where available)
 				8		  00001000		OT Text (with audio where available)
@@ -246,7 +250,50 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				64		  01000000		NT Video
 				128		  10000000		OT Video
 		*/
-		// If the CMA person is SURE about whether is has video!
+		/*
+			new: have to add two fields to SAB_scriptoria table: whichTestament (NT, OT, or Bible) and partialTextAudioVideo (1111)
+			$SAB = 0: No text or audio or video
+			$SAB = 1: NT Text with audio (default)
+			$SAB = 2: OT Text with audio
+			$SAB = 3: Bible Text with audio
+
+			$SAB = 4: NT Text (with audio where available)
+			$SAB = 5: OT Text (with audio where available)
+			$SAB = 6: Bible Text (with audio where available)
+
+			$SAB = 7: NT Text
+			$SAB = 8: OT Text
+			$SAB = 9: Bible Text
+
+			$SAB = 10: NT Audio
+			$SAB = 11: OT Audio
+			$SAB = 12: Bible Audio
+			
+			$SAB = 13: NT Video
+			$SAB = 14: OT Video
+			$SAB = 15: Bible Video
+
+			$SAB = 16: NT Video with Text
+			$SAB = 17: OT Video with Text
+			$SAB = 18: Bible Video with Text
+
+			$SAB = 19: NT Video with Audio
+			$SAB = 20: OT Video with Audio
+			$SAB = 21: Bible Video with Audio
+
+			$SAB = 22: NT Video with Audio and Text
+			$SAB = 23: OT Video with Audio and Text
+			$SAB = 24: Bible Video with Audio and Text
+
+			$SAB = 25: NT Video (with audio where available)?
+			$SAB = 26: OT Video (with audio where available)?
+			$SAB = 27: Bible Video (with audio where available)?
+
+			$SAB = 28: NT Text and Video (with audio where available)?
+			$SAB = 29: OT Text and Video (with audio where available)?
+			$SAB = 30: Bible Text and Video (with audio where available)?
+			*/
+		// If the CMS person is SURE about whether is has video!
 	}
 
 	$BibleIsSAB = 0;
@@ -865,7 +912,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	if ($SAB) {
 		/*
 			column SAB_Audio is booleon
-			column SAB_number: The same ISO/ROD_Code/Variant_Code/ISO_ROD_index but diffenent "subfolder."
+			column SAB_number: The same ISO/ROD_Code/Variant_Code/ISO_ROD_index but different "subfolder."
 		*/
 		/*
 			How about creating a new table called SAB_folder table and a new field called sab_folder. ("tzoCHA") Then grab the data and create new records for SAB_folder using the code below.
@@ -997,7 +1044,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				<tr>
 					<td style='width: 45px; '>
 						<?php
-						echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'><img class='iconActions' src='../images/".$BibleIsIcon."' alt='".$BibleIsActText."' title='".$BibleIsActText."' /></div>";
+						echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'><img class='iconActions' src='../images/$BibleIsIcon' alt='$BibleIsActText' title='$BibleIsActText' /></div>";
 					echo "</td>";
 					echo "<td>";
 						echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'>" . $BibleIsActText . " ";
@@ -1936,7 +1983,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 						echo "<div class='linePointer' onclick='OTTableClick()'><img class='iconActions' src='../images/download-icon.jpg' alt='".translate('Download', $st, 'sys')."' title='".translate('Download', $st, 'sys')."' /></div>";
 					echo "</td>";
 					echo "<td>";
-						echo "<div class='linePointer' title='".translate('Download the audio Old Testament files.', $st, 'sys')."' onclick='OTTableClick()'>".translate('Download', $st, 'sys')." ".translate('the Old Testament audio files (MP3)', $st, 'sys')."</div>";
+						echo "<div class='linePointer' title='".translate('Download the audio Old Testament files.', $st, 'sys')."' onclick='OTTableClick()'>".translate('Download', $st, 'sys')." ".translate('the Old Testament audio files', $st, 'sys')."</div>";
 						?>
 					</td>
 				</tr>
@@ -2026,7 +2073,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 						echo "<div class='linePointer' onclick='NTTableClick()'><img class='iconActions' src='../images/download-icon.jpg' alt='".translate('Download', $st, 'sys')."' title='".translate('Download', $st, 'sys')."' /></div>";
 					echo "</td>";
 					echo "<td>";
-						echo "<div class='linePointer' title='".translate('Download the audio New Testament files.', $st, 'sys')."' onclick='NTTableClick()'>".translate('Download', $st, 'sys')." ".translate('the New Testament audio files (MP3)', $st, 'sys')."</div>";
+						echo "<div class='linePointer' title='".translate('Download the audio New Testament files.', $st, 'sys')."' onclick='NTTableClick()'>".translate('Download', $st, 'sys')." ".translate('the New Testament audio files', $st, 'sys')."</div>";
 						?>
 					</td>
 				</tr>
@@ -3041,6 +3088,16 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	*************************************************************************************************************
 */
 	if ($Internet && $BibleIs && $SAB) {
+		/*
+			$BibleIsLink = 1: Read and Listen			$BibleIsReadAudio
+			$BibleIsLink = 2: Read						$BibleIsRead
+			$BibleIsLink = 3: Read and Listen			$BibleIsReadAudio
+			$BibleIsLink = 4: Read, Listen, and View	$BibleIsReadAudioVideo
+			$BibleIsLink = 5: Listen					$BibleIsAudio
+			$BibleIsLink = 6: Listen and View			$BibleIsAudioVideo
+			$BibleIsLink = 7: View						$BibleIsVideo
+			$BibleIsLink = 8: Read and View				$BibleIsReadVideo
+		*/
 		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND NOT BibleIs = 0";
 		$result2=$db->query($query);
 		if ($result2->num_rows > 0) {
@@ -3056,20 +3113,44 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				$BibleIsActText = '';
 				switch ($BibleIsLink) {
 					case 1:
-						$BibleIsIcon = 'BibleIs-icon.jpg';
+						echo '<table id="Dis_BibleIsReadAudio">';
+						$BibleIsIcon = 'BibleIsAudio.jpg';
 						$BibleIsActText = translate('Read and Listen', $st, 'sys');
 						break;
 					case 2:
+						echo '<table id="Dis_BibleIsRead">';
 						$BibleIsIcon = 'BibleIs-icon.jpg';
 						$BibleIsActText = translate('Read', $st, 'sys');
 						break;			
 					case 3:
+						echo '<table id="Dis_BibleIsReadAudio">';
 						$BibleIsIcon = 'BibleIsAudio.jpg';
 						$BibleIsActText = translate('Read and Listen', $st, 'sys');
 						break;			
 					case 4:
+						echo '<table id="Dis_BibleIsReadAudioVideo">';
 						$BibleIsIcon = 'BibleIsVideo.jpg';
 						$BibleIsActText = translate('Read, Listen, and View', $st, 'sys');
+						break;			
+					case 5:
+						echo '<table id="Dis_BibleIsAudio">';
+						$BibleIsIcon = 'BibleIsAudio.jpg';
+						$BibleIsActText = translate('Listen', $st, 'sys');
+						break;			
+					case 6:
+						echo '<table id="Dis_BibleIsAudioVideo">';
+						$BibleIsIcon = 'BibleIsVideo.jpg';
+						$BibleIsActText = translate('Listen and View', $st, 'sys');
+						break;			
+					case 7:
+						echo '<table id="Dis_BibleIsVideo">';
+						$BibleIsIcon = 'BibleIsVideo.jpg';
+						$BibleIsActText = translate('View', $st, 'sys');
+						break;			
+					case 8:
+						echo '<table id="Dis_BibleIsReadVideo">';
+						$BibleIsIcon = 'BibleIsVideo.jpg';
+						$BibleIsActText = translate('Read and View', $st, 'sys');
 						break;			
 					default:
 						break;
@@ -3078,7 +3159,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				<tr>
 					<td style='width: 45px; '>
 						<?php
-						echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'><img class='iconActions' src='../images/".$BibleIsIcon."' alt='".$BibleIsActText."' title='".$BibleIsActText."' /></div>";
+						echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")'><img class='iconActions' src='../images/$BibleIsIcon' alt='$BibleIsActText' title='$BibleIsActText' /></div>";
 					echo "</td>";
 					echo "<td>";
 						echo "<div class='linePointer' onclick='LinkedCounter(\"BibleIs_".$counterName."_".$GetName."_".$ISO."\", \"".$URL."\")' title='".translate('Read/Listen/View from Bible.is', $st, 'sys')."'>" . $BibleIsActText . " ";
@@ -3964,7 +4045,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				}
 				echo '<div class="mapKey">';
 					echo '<p><span style="color: #a8226d; font-weight: bold; ">'.translate('red: language you have selected', $st, 'sys').'</span></p>';
-					echo '<p><span style="color: #4d25c5; font-weight: bold; ">'.translate('purple: dialects of this language', $st, 'sys').'</span></p>';
+					echo '<p><span style="color: #4d25c5; font-weight: bold; ">'.translate('purple: subfamily for this language', $st, 'sys').'</span></p>';
 					echo '<p><span style="color: #2a83cb; font-weight: bold; ">'.translate('blue: all of the other languages for this country', $st, 'sys').'</span></p>';
 				echo '</div>';
 				?>

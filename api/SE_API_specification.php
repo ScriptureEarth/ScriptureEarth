@@ -374,11 +374,11 @@ div + p {                       /* div followed immediately by p  */
   </li>
   <ul>
     <li>
-    partial country name (type ‘&amp;pc=[partial country name]’)
+      partial country name in English (type ‘&amp;pc=[partial country name]’)
     </li>
     <li>&nbsp;&nbsp;&nbsp;&nbsp;OR</li>
     <li>
-      major language (type '&amp;ml=[English, Spanish, Portuguese, French, Dutch, German, Chinese, Russian, Korean, or Arabic]’)
+      partial country name and major language (type '&amp;pc=[partial country name]&amp;ml=[English, Spanish, Portuguese, French, Dutch, German, Chinese, Russian, Korean, or Arabic]’)
   </li>
   </ul>
 </ul>
@@ -418,7 +418,10 @@ div + p {                       /* div followed immediately by p  */
 <div>
 <p>To get all the countries</p>
 <ul>
+  <li>v=1&key=[your key]</li>
+  <ul>
   <li><em>optional</em>: major language (type '&amp;ml=[English, Spanish, Portuguese, French, Dutch, German, Chinese, Russian, Korean, or Arabic]’)</li>
+  </ul>
 </ul>
 <p>will pull out</p>
 <ul>
@@ -609,7 +612,7 @@ div + p {                       /* div followed immediately by p  */
 
 <p id='languageNames'>languageNames.php</p>
 <div style='background-color: #FF0; '>
-<p>To get the language name(s):</p>
+<p>To get the language name(s) and mobile devices:</p>
 <ul>
   <li>  
     With the ?v=1&amp;key=[your key], you will also need

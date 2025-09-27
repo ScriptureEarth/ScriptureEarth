@@ -775,35 +775,3 @@ function AlliOSCountries(Scriptname, st, SpecificCountry, Internet) {
     $("#listCountriesID").show();
     $(".homeAllCountries").show();
 }
-
-// here function - check
-function iOSLanguage(st, idx, LN, URL) {
-    if (URL.startsWith("http://") || URL.startsWith("https://")) {
-        if (URL.endsWith(".zip")) {
-            const link = document.createElement("a");
-            //			link.href = 'data:application/zip,'+URL;
-            link.href = URL;
-            link.download = URL.substr(URL.lastIndexOf('/') + 1);
-            link.click();
-        } else {
-            window.open(URL, '_blank');
-        }
-    } else if (URL.startsWith("asset://")) {
-		// "procolor not defined" - it seems that "asset:" isn't a procolor!
-  		//location.protocol = 'file:';							'file:' will not work nor 'https'
-		//        URL = URL.replace("asset://", "https://");
-        const link = document.createElement("a");
-        //		link.href = 'data:application/zip,'+URL;
-        link.href = URL;
-        link.download = URL.substr(URL.lastIndexOf('/') + 1);
-        link.click();
-   } else {
-        alert('This isnt suppose to happen! (LangSearch.js function iOSLanguage)');
-    }
-
-    Scriptname = window.location.pathname;
-
-    //window.open(Scriptname + '?asset=1', '_self');
-
-    return;
-}

@@ -13,11 +13,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 	<title></title>
 	<style type="text/css">
-		div.contacts {
-			float: left;
-			width: 46%;
-		}
-
 		* {
 			box-sizing: border-box;
 		}
@@ -31,6 +26,7 @@
 			padding: 0;
 		}
 
+		h2,
 		h3,
 		p,
 		ul,
@@ -38,15 +34,9 @@
 			margin: 20px 40px;
 		}
 
-		li {
-			margin-top: 6px;
-			margin-bottom: 6px;
-		}
-
 		h2 {
 			color: #980000;
 			font-size: 17pt;
-			margin: 20px 40px;
 		}
 
 		h3 {
@@ -55,15 +45,22 @@
 			font-size: 110%;
 		}
 
-		td p {
-			margin: 20px 0 0 0;
+		li {
+			margin-top: 6px;
+			margin-bottom: 6px;
 		}
 
 		tr {
 			vertical-align: top;
 		}
 
+		td p {
+			margin: 20px 0 0 0;
+		}
+
 		div.contacts {
+			float: left;
+			width: 46%;
 			margin-left: 40px;
 			margin-right: 5px;
 			margin-top: 10px;

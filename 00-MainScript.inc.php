@@ -66,7 +66,7 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 <script type="text/javascript" language="javascript" src="_js/jquery.jplayer-2.9.2.min.js"></script>
 <script type="text/javascript" language="javascript" src="_js/jplayer.playlist.min.js"></script>
 <script type="text/javascript" language="javascript" src="_js/user_events.js?v=1.0.3"></script>
-<script type="text/javascript" language="javascript" src="_js/SpecificLanguage.js?v=1.0.6"></script>
+<script type="text/javascript" language="javascript" src="_js/SpecificLanguage.js?v=1.0.7"></script>
 <script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.9"></script>
 <!--script type='text/javascript' language='javascript'	src="_js/LangSearch.js?v=1.0.3"></script-->
 <!--link rel='stylesheet' type='text/css' 	href='_css/boilerplate.css' /-->
@@ -96,7 +96,7 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 		/* ALWAYS KEEPING THE TOGGLER OR THE CHECKBOX ON TOP OF EVERYTHING :  */
 		position: absolute;
 		z-index: 10;
-		/* Can see it though. So, use the "Tools" from the menu of the browse, click on "Browser Tools", click on "Web Developer Tools". */
+		/* Can't see it though. So, use the "Tools" from the menu of the browse, click on "Browser Tools", click on "Web Developer Tools". */
 		/* On the bottom menu click on "Inspector". Find <input id"togglerID" class="toggler" type="checkbox">. */
 		top: 2px;									/* top position */
 		width: 30px;								/* width of position */
@@ -290,12 +290,12 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 			end hamburger css
 	************************************************************************* */
 
-	.threeMenus {
+	/*.threeMenus {										/* minimum width of the three menus * /
 		position: absolute;
 		top: -20px;
-		left: 78%;
 		right: 80px;
-	}
+		min-width: 300px;
+	}*/
 
 	/* 3 menu "select"s */
 	#sL, #sC, #navLang {
@@ -373,24 +373,15 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 	}
 
 	#background_header {
-		/* position of icon and text for "country" and "nothing" section; from 00-Scripture.css */
+		/* position of icon and text for "country" and "nothing" search sections; from 00-Scripture.css */
 		position: absolute;
 		z-index: 5;
 		top: 0;
-		background-position: top left 100px;		/* top of page */
-		background-repeat: no-repeat;				/* Do not repeat the image */
+		/*background-position: top left 100px;			/* top of page */
+		background-repeat: no-repeat;					/* Do not repeat the image */
 		background-size: 460px;
-		/*width: 100%;*/
-		width: 450px;								/* this works along side of #empty width */
-		/*height: auto;*/
-		/*height: 840px;*/
 		height: 190px;
-		/*max-width: 800px;*/
-		/*min-width: 1170px;*/
 		margin-top: -4px;
-		padding: 0;
-		padding-left: 100px;
-		/*overflow: auto;*/
 	}
 	#empty {
 		margin-left: 5px;
@@ -437,9 +428,9 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 		margin-top: 8px;
 	}
 	.formNavAndHelp {
-		position: absolute;
-		top: 100px;
-		right: 115px;
+		position: absolute;							/* position of the "select navigational language" and "Help" */
+		top: 80px;
+		right: 0px;
 		width: 170px;
 		display: block;
 	}
@@ -460,6 +451,9 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 	}
 
 	@media only screen and (min-width: 841px) and (max-width: 1100px) {
+		/*.threeMenus {
+			min-width: 320px;						/* minimum width of the three menus * /
+		}*/
 		#background {
 			/* position of earth; from 00-Scripture.css */
 			/*background-position: top left 90px;*/
@@ -473,35 +467,50 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 	}
 
 	@media only screen and (min-width: 721px) and (max-width: 840px) {
+		/*.threeMenus {
+			min-width: 290px;						/* minimum width of the three menus * /
+		}*/
 		#background {
 			/* position of earth; from 00-Scripture.css */
 			background-size: 680px;					/* size of earth */
 			height: 820px;							/* height of 3 input lines */
 			margin-top: 40px;						/* top margin of both earth and 3 input lines */
 		}
+		#background_header {
+			background-size: 440px;					/* size of icon Scipture Earth text */
+		}
 	}
 
 	@media only screen and (min-width: 601px) and (max-width: 720px) {
+		/*.threeMenus {
+			top: -20px;
+			left: 280px;
+		}*/
 		#background {
 			/* position of earth; from 00-Scripture.css */
 			background-size: 600px;					/* size of earth */
 			height: 800px;							/* height of 3 input lines */
 			margin-top: 60px;						/* top margin of both earth and 3 input lines */
 		}
+		#background_header {
+			background-size: 440px;					/* size of icon Scipture Earth text */
+		}
 	}
 
 	@media only screen and (min-width: 481px) and (max-width: 600px) {
+		/*.threeMenus {
+			min-width: 240px;						/* minimum width of the three menus * /
+		}*/
 		#background_header {
 			/* position of icon and text; from 00-Scripture.css */
-			background-position: top left 20px;
-			margin-top: -6px;						/* top margin of icon Scipture Earth text */
+			/*background-position: top left 20px;*/
+			/*margin-top: -6px;						/* top margin of icon Scipture Earth text */
 			background-size: 420px;					/* size of icon Scipture Earth text */
-			width: 330px;							/* this works along side of #empty width */
+			margin-left: -6px;
 		}
 		#empty {
-			margin-left: -90px;
 			width: 200px;							/* this works along side of #background_header width */
-			height: 80px;
+			height: 82px;
 		}
 		#background {
 			/* position of earth; from 00-Scripture.css */
@@ -510,23 +519,43 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 			height: 757px;							/* height of 3 input lines */								/* move to 00-Scripture.css */
 			margin-top: 90px;						/* top margin of both earth and 3 input lines */
 		}
+		#background_header {
+			background-size: 440px;					/* size of icon Scipture Earth text */
+		}
 	}
 
 	@media only screen and (max-width: 480px) {
+		/*.threeMenus {
+			min-width: 230px;						/* minimum width of the three menus * /
+			top: -20px;
+			left: 100px;							/* left position of the three menus * /
+			right: 0;
+			margin-right: -100px;
+			padding-right: -100px;
+			float: right;
+			width: 100%;							/* width of the three menus * /
+			text-align: right;						/* right align the three menus
+		} */
+		.toggler {
+			/* Can't see it though. So, use the "Tools" from the menu of the browse, click on "Browser Tools", click on "Web Developer Tools". */
+			/* On the bottom menu click on "Inspector". Find <input id"togglerID" class="toggler" type="checkbox">. */
+			right: 2px;								/* right position */
+		}
 		.hamburger {
 			right: -86px;							/* right of hamburger */
-			/*height: 40px;
-			width: 40px;*/
+		}
+		.formNavAndHelp {							/* position of the "select navigational language" and "Help" */
+			right: 10px;
 		}
 
 		#background_header {
 			/* position of icon and text; from 00-Scripture.css */
 			background-position: top -7px left;
-			background-size: 410px;					/* size of icon Scipture Earth text */
-			width: 300px;							/* this works along side of #empty width */
+			background-size: 400px;					/* size of icon Scipture Earth text */
+			margin-left: -6px;
 		}
 		#empty {
-			margin-left: -150px;
+			margin-left: -50px;
 			width: 100px;							/* this works along side of #background_header width */
 		}
 		#background {								/* move to 00-SEmobile.css */
@@ -543,10 +572,6 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 			font-size: 80%;
 		}
 
-		.threeMenus {
-			top: -20px;
-			left: 280px;
-		}
 		/* 3 menu "select"s */
 		#sL {										/* select specific Language */								/* move to 00-SEmobile.css */
 			left: 0;								/* navigational language selector */
@@ -822,7 +847,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 							}
 							// asset
 							if ($asset == 1) {
-								$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO_ROD_index = '$ISO_ROD_index' AND `nav_ln`.`ISO_ROD_index` = `CellPhone`.`ISO_ROD_index` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
+								$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country, `CellPhone`.`Cell_Phone_File`, `CellPhone`.`optional` FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO_ROD_index = '$ISO_ROD_index' AND `nav_ln`.`ISO_ROD_index` = `CellPhone`.`ISO_ROD_index` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 							} else {
 								$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO_ROD_index = '$ISO_ROD_index'";
 							}
@@ -865,22 +890,28 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 							}
 							// asset
 							if ($asset == 1) {
-								if (!isset($ROD_Code) && !isset($Variant_Code)) {
-									$resultTest = $db->query("SELECT nav_ln.ISO FROM nav_ln, CellPhone WHERE nav_ln.ISO = '$ISO' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'");
-									$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO = '$ISO' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
+								if (isset($ISO_ROD_index)) {
+									$resultTest = $db->query("SELECT nav_ln.ISO FROM nav_ln, `CellPhone` WHERE `nav_ln`.`ISO_ROD_index` = '$ISO_ROD_index' AND `nav_ln`.`ISO_ROD_index` = `CellPhone`.`ISO_ROD_index` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'");
+									$query = "SELECT `nav_ln`.*, $SpecificCountry, `countries`.`ISO_Country`, `CellPhone`.`Cell_Phone_File`, `CellPhone`.`optional` FROM `nav_ln`, `countries`, `ISO_countries`, `CellPhone` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO_ROD_index` = `nav_ln`.`ISO_ROD_index` AND `nav_ln`.`ISO_ROD_index` = '$ISO_ROD_index' AND `nav_ln`.`ISO_ROD_index` = `CellPhone`.`ISO_ROD_index` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
+								} elseif (!isset($ROD_Code) && !isset($Variant_Code)) {
+									$resultTest = $db->query("SELECT nav_ln.ISO FROM nav_ln, `CellPhone` WHERE nav_ln.ISO = '$ISO' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'");
+									$query = "SELECT DISTINCT `nav_ln`.*, $SpecificCountry, `countries`.`ISO_Country`, `CellPhone`.`Cell_Phone_File`, `CellPhone`.`optional` FROM `nav_ln`, `countries`, `ISO_countries`, `CellPhone` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `nav_ln`.`ISO` AND `nav_ln`.`ISO` = '$ISO' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 								} elseif (isset($ROD_Code) && !isset($Variant_Code)) {
 									$resultTest = $db->query("SELECT nav_ln.ISO FROM nav_ln, CellPhone WHERE nav_ln.ISO = '$ISO' AND nav_ln.ROD_Code = '$ROD_Code' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' AND nav_ln.ROD_Code = `CellPhone`.`ROD_Code`");
-									$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO = '$ISO' AND nav_ln.ROD_Code = '$ROD_Code' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
+									$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country, `CellPhone`.Cell_Phone_File, `CellPhone`.optional FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO = '$ISO' AND nav_ln.ROD_Code = '$ROD_Code' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 								} elseif (!isset($ROD_Code) && isset($Variant_Code)) {
 									$resultTest = $db->query("SELECT nav_ln.ISO FROM nav_ln, CellPhone WHERE nav_ln.ISO = '$ISO' AND nav_ln.Variant_Code = '$Variant_Code' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' AND nav_ln.Variant_Code = `CellPhone`.`Variant_Code`");
-									$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO = '$ISO' AND (nav_ln.Variant_Code = '$Variant_Code' OR isnull(nav_ln.Variant_Code)) AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
+									$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country, `CellPhone`.Cell_Phone_File, `CellPhone`.optional FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO = '$ISO' AND (nav_ln.Variant_Code = '$Variant_Code' OR isnull(nav_ln.Variant_Code)) AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 								} else {
 									$resultTest = $db->query("SELECT nav_ln.ISO FROM nav_ln, CellPhone WHERE nav_ln.ISO = '$ISO' AND nav_ln.ROD_Code = '$ROD_Code' AND nav_ln.Variant_Code = '$Variant_Code' AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package' AND nav_ln.ROD_Code = `CellPhone`.`ROD_Code` AND nav_ln.Variant_Code = `CellPhone`.`Variant_Code`");
-									$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO = '$ISO' AND nav_ln.ROD_Code = '$ROD_Code' AND (nav_ln.Variant_Code = '$Variant_Code' OR isnull(nav_ln.Variant_Code)) AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
+									$query = "SELECT DISTINCT nav_ln.*, $SpecificCountry, countries.ISO_Country, `CellPhone`.Cell_Phone_File, `CellPhone`.optional FROM nav_ln, countries, ISO_countries, CellPhone WHERE countries.ISO_Country = ISO_countries.ISO_countries AND ISO_countries.ISO = nav_ln.ISO AND nav_ln.ISO = '$ISO' AND nav_ln.ROD_Code = '$ROD_Code' AND (nav_ln.Variant_Code = '$Variant_Code' OR isnull(nav_ln.Variant_Code)) AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'";
 								}
 							}
 							else {
-								if (!isset($ROD_Code) && !isset($Variant_Code)) {
+								if (isset($ISO_ROD_index)) {
+									$resultTest = $db->query("SELECT ISO FROM nav_ln WHERE `ISO_ROD_index` = '$ISO_ROD_index'");
+									$query = "SELECT `nav_ln`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `nav_ln`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO_ROD_index` = `nav_ln`.`ISO_ROD_index` AND `nav_ln`.`ISO_ROD_index` = '$ISO_ROD_index'";
+								} elseif (!isset($ROD_Code) && !isset($Variant_Code)) {
 									$resultTest = $db->query("SELECT ISO FROM nav_ln WHERE ISO = '$ISO'");
 									$query = "SELECT DISTINCT `nav_ln`.*, $SpecificCountry, `countries`.`ISO_Country` FROM `nav_ln`, `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` AND `ISO_countries`.`ISO` = `nav_ln`.`ISO` AND `nav_ln`.`ISO` = '$ISO'";
 								} elseif (isset($ROD_Code) && !isset($Variant_Code)) {
@@ -903,7 +934,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 								// here:  AND `nav_ln`.`ISO` = `CellPhone`.`ISO` AND `CellPhone`.`Cell_Phone_Title` = 'iOS Asset Package'
 								include './00-moreThanOneRODCode.php';
 								return;
-							} elseif ($resultTest->num_rows == 0) {
+							} elseif ($resultTest->num_rows === 0) {
 								die('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The ISO language code is not found.', $st, 'sys') . '</div></body></html>');
 							} else {
 							}				// ($resultTest->num_rows == 1)
@@ -926,7 +957,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 							select the default primary language name to be used by displaying the Countries and indigenous langauge names
 						******************************************************************************************************************/
 						$result = $db->query($query) or die(translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
-						if ($result->num_rows <= 0) {
+						if ($result->num_rows === 0) {
 							die('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The ISO language code is not found.', $st, 'sys') . '</div></body></html>');
 						}
 						$row = $result->fetch_array();
@@ -938,14 +969,24 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 						$countryTemp = $SpecificCountry;
 						if (strpos("$SpecificCountry", '.')) $countryTemp = substr("$SpecificCountry", strpos("$SpecificCountry", '.') + 1);	// In case there's a "." in the "country"
 						$country = trim($row["$countryTemp"]);																				// name of the country in the language version
+						$URL = '';
+						$optional = '';
+						if ($asset == 1) {
+							$URL = $row['Cell_Phone_File'];
+							$optional = $row['optional'];
+						}
 						//$i=0;			// used in 00-DBLanguageCountryName.inc.php include
 						include('./include/00-DBLanguageCountryName.inc.php');																// Get the variant language name. $row must be set! The 'return' value is $LN.
 
 						echo '<div class="countryBlackTopImage"></div>';		// black image at the very top window
 						/* <div id="background_header" style="background-image: url('../images/00<?php echo $st; ?>-ScriptureEarth_header.jpg'); "><div style="cursor: pointer; " onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><img id="empty" src="./images/empty.png" /></div></div> <!-- ScriptureEarth and the Earth image -->
 						<div id="background" style="background-image: url('../images/background_earth.jpg'); "></div> <!-- ScriptureEarth and the Earth image --> */
+
+						/* *************************************************************************************
+							display ScriptureEarth.org image
+						************************************************************************************* */
 						echo '<div id="langBackground" style="margin-top: -12px; ">';
-						echo "<span style='cursor: pointer; ' onclick='window.open(\"".$Scriptname."\", \"_self\")'><img style='min-width: 400px; max-width: 500px; ' src='images/00" . $st . "-ScriptureEarth_header.jpg' class='langHeader' alt='" . translate('Scripture Resources in Thousands of Languages', $st, 'sys') . "' /></span>";									// just the ScriptureEarth.org icon
+						echo "<span style='cursor: pointer; ' onclick='window.open(\"$Scriptname\", \"_self\")'><img style='min-width: 400px; max-width: 500px; ' src='images/00" . $st . "-ScriptureEarth_header.jpg' class='langHeader' alt='" . translate('Scripture Resources in Thousands of Languages', $st, 'sys') . "' /></span>";									// just the ScriptureEarth.org icon
 						echo '</div>';
 						
 						/* *************************************************************************************
@@ -957,14 +998,17 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 
 						<div class="threeMenus">
 							<?php
-							/* -----------------------------------------------------------------------------------------
-								display 'English', 'Spanish', ... drop-down menu AND help button
+							/* ------------------------------------------------------------------------------------------
+								display 'English', 'Spanish', ... drop-down menu, help button, and hamburger menu
 							------------------------------------------------------------------------------------------ */
 							?>
 							<form id="myForm" class="formNavAndHelp" action="#">
 								<?php
-								// Changed to work with the master array -- Lærke
-								// Modified to (condition) ? value1 : value2 -- Scott
+								/* -----------------------------------------------------------------------------------------
+									display select a language menu
+								-------------------------------------------------------------------------------------------- */
+								//	Changed to work with the master array -- Lærke
+								//	Modified to (condition) ? value1 : value2 -- Scott
 								?>
 								<select id="sL" onchange="langChange('<?php echo $ISO_ROD_index; ?>', '<?php echo $LN; ?>', '<?php echo $ISO; ?>')">
 									<?php
@@ -973,41 +1017,50 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 									}
 									?>
 								</select>
-								<a href='#' id='helpMenu' class='helpSelection' onclick="helpClick();"><img src='./images/iconHelp.png' alt="<?php echo translate('help', $st, 'sys'); ?>" style='margin-left: 0; margin-right: -8px; margin-bottom: -10px; ' width="32" height="32" /></a>
 
 								<?php
-								/* -----------------------------------------------------------------------------------------
-									display ☰ hamburger menu
-								----------------------------------------------------------------------------------------- */
-								?>
-								<input type="checkbox" id="togglerID" class="toggler toogleLanguage">
-								<div class="hamburger">
-									<div></div>
-								</div>
+								if ($asset === 0) {
+									/* -----------------------------------------------------------------------------------------
+										display help button
+									-------------------------------------------------------------------------------------------- */
+									?>
+									<a href='#' id='helpMenu' class='helpSelection' onclick="helpClick();"><img src='./images/iconHelp.png' alt="<?php echo translate('help', $st, 'sys'); ?>" style='margin-left: 0; margin-right: -8px; margin-bottom: -10px; ' width="32" height="32" /></a>
 
-								<!--  document.querySelectorAll('div.hamburger')[0] => get div.hamburger -->
-								<div class="menu">
-									<div>
-										<ul id="submenu" class="menuDivUlLanguage">
-											<li><a href='#' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></a></li>
-											<li><a href='#' onclick="aboutSection('H');"><?php echo translate('Help', $st, 'sys'); ?></a></li>
-											<li><a id='aboutArrow' style="cursor: pointer; margin-left: -16px; " onclick="AboutOO()">▸<?php echo translate('About', $st, 'sys'); ?></a></li>
-											<div id="AboutOffOn" style="display: none; ">
-												<li><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
-												<li><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partners', $st, 'sys'); ?></a></li>
-												<li><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
-												<li><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
-											</div>
-											<li><a href='#' onclick="menuSet = 0; window.open('./Feedback/Feedback.php?st=<?php echo $st; ?>')"><?php echo translate('Contact Us', $st, 'sys'); ?></a></li>
-											<?php if ($st == 'eng') { ?>
-												<li><a href='#' onclick="menuSet = 0; window.open('https://give.sil.org/give/531194/#!/donation/checkout')"><?php echo translate('Donate', $st, 'sys'); ?></a></li>
-											<?php }
-											if ($st == 'eng' || $st == 'spa') { ?>
-												<li><a href='#' onclick="menuSet = 0; window.open('./promotionMaterials/promotion.php?st=<?php echo $st; ?>')"><?php echo translate('Promotion Materials', $st, 'sys'); ?></a></li>
-											<?php } ?>
-										</ul>
+									<?php
+									/* -----------------------------------------------------------------------------------------
+										display ☰ hamburger menu
+									----------------------------------------------------------------------------------------- */
+									?>
+									<input type="checkbox" id="togglerID" class="toggler toogleLanguage">
+									<div class="hamburger">
+										<div></div>
 									</div>
-								</div>
+									<!--  document.querySelectorAll('div.hamburger')[0] => get div.hamburger -->
+									<div class="menu">
+										<div>
+											<ul id="submenu" class="menuDivUlLanguage">
+												<li><a href='#' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></a></li>
+												<li><a href='#' onclick="aboutSection('H');"><?php echo translate('Help', $st, 'sys'); ?></a></li>
+												<li><a id='aboutArrow' style="cursor: pointer; margin-left: -16px; " onclick="AboutOO()">▸<?php echo translate('About', $st, 'sys'); ?></a></li>
+												<div id="AboutOffOn" style="display: none; ">
+													<li><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
+													<li><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partners', $st, 'sys'); ?></a></li>
+													<li><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
+													<li><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
+												</div>
+												<li><a href='#' onclick="menuSet = 0; window.open('./Feedback/Feedback.php?st=<?php echo $st; ?>')"><?php echo translate('Contact Us', $st, 'sys'); ?></a></li>
+												<?php if ($st == 'eng') { ?>
+													<li><a href='#' onclick="menuSet = 0; window.open('https://give.sil.org/give/531194/#!/donation/checkout')"><?php echo translate('Donate', $st, 'sys'); ?></a></li>
+												<?php }
+												if ($st == 'eng' || $st == 'spa') { ?>
+													<li><a href='#' onclick="menuSet = 0; window.open('./promotionMaterials/promotion.php?st=<?php echo $st; ?>')"><?php echo translate('Promotion Materials', $st, 'sys'); ?></a></li>
+												<?php } ?>
+											</ul>
+										</div>
+									</div>
+								<?php
+								}
+								?>
 							</form>
 						</div>
 
@@ -1016,7 +1069,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 						<?php
 							// asset
 							if ($asset == 1) {
-								echo "<div style='background-color: white; color: navy; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; cursor: pointer; ' onclick='iOSLanguage(\"" . $st . "\", $ISO_ROD_index, \"" . $LN . "\, \"" . $URL . "\")'>$LN ($optional != '' ? $optional : '') | $ISO | $country</div>";
+								echo "<div style='background-color: white; color: navy; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; cursor: pointer; ' onclick='iOSLanguage(\"$st\", $ISO_ROD_index, \"$LN\", \"$URL\")'>Tap $LN ".($optional != '' ? $optional : '')." [$ISO] $country</div>";
 								return;
 							}
 
@@ -1080,7 +1133,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 					<?php
 					$GetName = trim($_GET['name']);											// 2 uppercase letters for the country code (table countries.ISO_Country) or 'all':
 					if (preg_match('/^(all)/i', $GetName)) {
-						//header("Location: https://www.ScriptureEarth.org/$Scriptname");		// Redirect browser
+						//header("Location: https://www.ScriptureEarth.org/$Scriptname");	// Redirect browser
 						echo '<script type="text/javascript">';
 						echo 'window.location.href="https://www.ScriptureEarth.org/' . $Scriptname . '";';
 						echo '</script>';
@@ -1120,20 +1173,23 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 
 					<!-- The id="background_header" in the next line is the error! -->
 					<!-- div id="background_header" style="background-image: url('../images/00< ?php echo $st; ?>-ScriptureEarth_header.jpg'); cursor: pointer; " onclick="window.open('< ?php echo $Scriptname; ?>', '_self')"><img id="empty" src="./images/empty.png" /></div> < !-- ScriptureEarth and the Earth image -->
-					<div id="background_header" style="background-image: url('../images/00<?php echo $st; ?>-ScriptureEarth_header.jpg'); "><div style="cursor: pointer; " onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><img id="empty" style="min-width: 300px; max-width: 550px; " src="./images/empty.png" /></div></div> <!-- ScriptureEarth and the Earth image -->
+					<div id="background_header" style="background-image: url('../images/00<?php echo $st; ?>-ScriptureEarth_header.jpg'); "><div style="cursor: pointer; " onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><img id="empty" style="min-width: 450px; max-width: 550px; " src="./images/empty.png" /></div></div> <!-- ScriptureEarth and the Earth image -->
 					<div id="background" style="background-image: url('../images/background_earth.jpg'); "></div> <!-- ScriptureEarth and the Earth image -->
 
 					<div class="threeMenus">
 						<?php
-						/* -----------------------------------------------------------------------------------------
-							display 'English', 'Spanish', ... drop-down menu AND help button
-       					----------------------------------------------------------------------------------------- */
+						/* ----------------------------------------------------------------------------------------------
+							display 'English', 'Spanish', ... drop-down select menu, help button, and hamburger menu
+       					---------------------------------------------------------------------------------------------- */
 						?>
 						
 						<form id="myForm" class="formNavAndHelp" action="#">
 							<?php
-							// Changed to work with the master array -- Lærke
-							// Modified to (condition) ? value1 : value2 -- Scott
+							/* -----------------------------------------------------------------------------------------
+								display select a language menu
+							-------------------------------------------------------------------------------------------- */
+							//	Changed to work with the master array -- Lærke
+							//	Modified to (condition) ? value1 : value2 -- Scott
 							?>
 							<select id='sC' onchange="countryChange('<?php echo $GetName; ?>', <?php echo $asset; ?>)">
 								<?php
@@ -1142,41 +1198,50 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 								}
 								?>
 							</select>
-							<a href='#' id='helpMenu' class='helpSelection' onclick="helpClick()"><img src='./images/iconHelp.png' alt="help" style='margin-left: 0; margin-right: -8px; margin-bottom: -10px; ' width="32" height="32" /></a>
 
 							<?php
-							/* -----------------------------------------------------------------------------------------
-								display ☰ hamburger menu
-							----------------------------------------------------------------------------------------- */
-							?>
-							<input type="checkbox" id="togglerID" class="toggler">
-							<div class="hamburger">
-								<div></div>
-							</div>
+							if ($asset === 0) {
+								/* -----------------------------------------------------------------------------------------
+									display help button
+								-------------------------------------------------------------------------------------------- */
+								?>
+								<a href='#' id='helpMenu' class='helpSelection' onclick="helpClick()"><img src='./images/iconHelp.png' alt="help" style='margin-left: 0; margin-right: -8px; margin-bottom: -10px; ' width="32" height="32" /></a>
 
-							<!--  document.querySelectorAll('div.hamburger')[0]  get div.hamburger -->
-							<div class="menu">
-								<div>
-									<ul id="submenu">
-										<li><a href='#' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></a></li>
-										<li><a href='#' onclick="aboutSection('H');"><?php echo translate('Help', $st, 'sys'); ?></a></li>
-										<li><a id='aboutArrow' style="cursor: pointer; margin-left: -16px; " onclick="AboutOO()">▸<?php echo translate('About', $st, 'sys'); ?></a></li>
-										<div id="AboutOffOn" style="display: none; ">
-											<li><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
-											<li><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partners', $st, 'sys'); ?></a></li>
-											<li><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
-											<li><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
-										</div>
-										<li><a href='#' onclick="menuSet = 0; window.open('./Feedback/Feedback.php?st=<?php echo $st; ?>')"><?php echo translate('Contact Us', $st, 'sys'); ?></a></li>
-										<?php if ($st == 'eng') { ?>
-											<li><a href='#' onclick="menuSet = 0; window.open('https://give.sil.org/give/531194/#!/donation/checkout')"><?php echo translate('Donate', $st, 'sys'); ?></a></li>
-										<?php }
-										if ($st == 'eng' || $st == 'spa') { ?>
-											<li><a href='#' onclick="menuSet = 0; window.open('./promotionMaterials/promotion.php?st=<?php echo $st; ?>')"><?php echo translate('Promotion Materials', $st, 'sys'); ?></a></li>
-										<?php } ?>
-									</ul>
+								<?php
+								/* -----------------------------------------------------------------------------------------
+									display ☰ hamburger menu
+								----------------------------------------------------------------------------------------- */
+								?>
+								<input type="checkbox" id="togglerID" class="toggler">
+								<div class="hamburger">
+									<div></div>
 								</div>
-							</div>
+								<!--  document.querySelectorAll('div.hamburger')[0]  get div.hamburger -->
+								<div class="menu">
+									<div>
+										<ul id="submenu">
+											<li><a href='#' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></a></li>
+											<li><a href='#' onclick="aboutSection('H');"><?php echo translate('Help', $st, 'sys'); ?></a></li>
+											<li><a id='aboutArrow' style="cursor: pointer; margin-left: -16px; " onclick="AboutOO()">▸<?php echo translate('About', $st, 'sys'); ?></a></li>
+											<div id="AboutOffOn" style="display: none; ">
+												<li><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
+												<li><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partners', $st, 'sys'); ?></a></li>
+												<li><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
+												<li><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
+											</div>
+											<li><a href='#' onclick="menuSet = 0; window.open('./Feedback/Feedback.php?st=<?php echo $st; ?>')"><?php echo translate('Contact Us', $st, 'sys'); ?></a></li>
+											<?php if ($st == 'eng') { ?>
+												<li><a href='#' onclick="menuSet = 0; window.open('https://give.sil.org/give/531194/#!/donation/checkout')"><?php echo translate('Donate', $st, 'sys'); ?></a></li>
+											<?php }
+											if ($st == 'eng' || $st == 'spa') { ?>
+												<li><a href='#' onclick="menuSet = 0; window.open('./promotionMaterials/promotion.php?st=<?php echo $st; ?>')"><?php echo translate('Promotion Materials', $st, 'sys'); ?></a></li>
+											<?php } ?>
+										</ul>
+									</div>
+								</div>
+							<?php
+							}
+							?>
 						</form>
 					</div>
 
@@ -1187,9 +1252,9 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 					<?php
 					// top: -700 problem here 4/3/19
 					$which = 'Name';
-					/**************************************************************************************
+					/* *************************************************************************************
 							Country Table
-					**************************************************************************************/
+					************************************************************************************* */
 					// ***********************************************************************************
 					// asset
 					include('./include/00-CountryTable.inc.php');
@@ -1212,7 +1277,7 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 			/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 					"nothing" so start over
 			/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
-			********************************************************************************************************  */
+			******************************************************************************************************** */
 			else {
 				?>
 				<div id="background_header" style="background-image: url('../images/00<?php echo $st; ?>-ScriptureEarth_header.jpg'); "><div style="cursor: pointer; " onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><img id="empty" src="./images/empty.png" /></div></div> <!-- ScriptureEarth and the Earth image -->
@@ -1224,15 +1289,18 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 
 				<div class="threeMenus">
 					<?php
-					/* <!-- -----------------------------------------------------------------------------------------
-						display 'English', 'Spanish', ... drop-down menu AND help button
-       				------------------------------------------------------------------------------------------  --> */
+					/* -----------------------------------------------------------------------------------------------
+						display 'English', 'Spanish', ... drop-down select menu, help button, and hamburger menu
+       				----------------------------------------------------------------------------------------------- */
 					?>
 					<form id="myForm" class="formNavAndHelp" action="#">
-						<!--
-							Changed to work with the master array -- Lærke
-							Modified to (condition) ? value1 : value2 -- Scott
-						-->
+						<?php
+						/* -----------------------------------------------------------------------------------------
+							display select a language menu
+						-------------------------------------------------------------------------------------------- */
+						//	Changed to work with the master array -- Lærke
+						//	Modified to (condition) ? value1 : value2 -- Scott
+						?>
 						<select id='navLang' onchange="menuChange()" title="<?php echo translate('Click here to choose the interface language.', $st, 'sys'); ?>">
 							<?php
 							foreach ($_SESSION['nav_ln_array'] as $tempArray) {
@@ -1240,45 +1308,54 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 							}
 							?>
 						</select>
-						<a href='#' id='helpMenu' class='helpSelection' onclick="helpClick()"><img src='./images/iconHelp.png' alt="help" width="32" height="32" /></a>
 
 						<?php
-						/* -----------------------------------------------------------------------------------------
-							display ☰ hamburger menu
-						-------------------------------------------------------------------------------------------- */
-						?>
-						<input type="checkbox" id="togglerID" class="toggler">
-						<div class="hamburger">
-							<div></div>
-						</div>
+						if ($asset === 0) {
+							/* -----------------------------------------------------------------------------------------
+								display help button
+							-------------------------------------------------------------------------------------------- */
+							?>
+							<a href='#' id='helpMenu' class='helpSelection' onclick="helpClick()"><img src='./images/iconHelp.png' alt="help" width="32" height="32" /></a>
 
-						<?php // document.querySelectorAll('div.hamburger')[0] => get div.hamburger ?>
-						<div class="menu">
-							<div>
-								<ul id="submenu">
-									<li><a href='#' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></a></li>
-									<li><a href='#' onclick="aboutSection('H');"><?php echo translate('Help', $st, 'sys'); ?></a></li>
-									<li><a id='aboutArrow' style="cursor: pointer; margin-left: -16px; " onclick="AboutOO()">▸<?php echo translate('About', $st, 'sys'); ?></a></li>
-									<div id="AboutOffOn" style="display: none; ">
-										<li><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
-										<li><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partners', $st, 'sys'); ?></a></li>
-										<li><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
-										<li><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
-									</div>
-									<li><a href='#' onclick="menuSet = 0; window.open('./Feedback/Feedback.php?st=<?php echo $st; ?>')"><?php echo translate('Contact Us', $st, 'sys'); ?></a></li>
-									<?php if ($st == 'eng') { ?>
-										<li><a href='#' onclick="menuSet = 0; window.open('https://give.sil.org/give/531194/#!/donation/checkout')"><?php echo translate('Donate', $st, 'sys'); ?></a></li>
-									<?php }
-									if ($st == 'eng' || $st == 'spa') { ?>
-										<li><a href='#' onclick="menuSet = 0; window.open('./promotionMaterials/promotion.php?st=<?php echo $st; ?>')"><?php echo translate('Promotion Materials', $st, 'sys'); ?></a></li>
-									<?php } ?>
-								</ul>
+							<?php
+							/* -----------------------------------------------------------------------------------------
+								display ☰ hamburger menu
+							-------------------------------------------------------------------------------------------- */
+							?>
+							<input type="checkbox" id="togglerID" class="toggler">
+							<div class="hamburger">
+								<div></div>
 							</div>
-						</div>
+							<?php // document.querySelectorAll('div.hamburger')[0] => get div.hamburger ?>
+							<div class="menu">
+								<div>
+									<ul id="submenu">
+										<li><a href='#' onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><?php echo translate('Home', $st, 'sys'); ?></a></li>
+										<li><a href='#' onclick="aboutSection('H');"><?php echo translate('Help', $st, 'sys'); ?></a></li>
+										<li><a id='aboutArrow' style="cursor: pointer; margin-left: -16px; " onclick="AboutOO()">▸<?php echo translate('About', $st, 'sys'); ?></a></li>
+										<div id="AboutOffOn" style="display: none; ">
+											<li><a href='#' onclick="aboutSection('CR');"><?php echo translate('Copyright', $st, 'sys'); ?></a></li>
+											<li><a href='#' onclick="aboutSection('CU');"><?php echo translate('Content providers and partners', $st, 'sys'); ?></a></li>
+											<li><a href='#' onclick="aboutSection('TC');"><?php echo translate('Terms and Conditions', $st, 'sys'); ?></a></li>
+											<li><a href='#' onclick="aboutSection('P');"><?php echo translate('Privacy Policy', $st, 'sys'); ?></a></li>
+										</div>
+										<li><a href='#' onclick="menuSet = 0; window.open('./Feedback/Feedback.php?st=<?php echo $st; ?>')"><?php echo translate('Contact Us', $st, 'sys'); ?></a></li>
+										<?php if ($st == 'eng') { ?>
+											<li><a href='#' onclick="menuSet = 0; window.open('https://give.sil.org/give/531194/#!/donation/checkout')"><?php echo translate('Donate', $st, 'sys'); ?></a></li>
+										<?php }
+										if ($st == 'eng' || $st == 'spa') { ?>
+											<li><a href='#' onclick="menuSet = 0; window.open('./promotionMaterials/promotion.php?st=<?php echo $st; ?>')"><?php echo translate('Promotion Materials', $st, 'sys'); ?></a></li>
+										<?php } ?>
+									</ul>
+								</div>
+							</div>
+						<?php
+						}
+						?>
 					</form>
 				</div>
 
-				<iframe id="myFrame" allowfullscreen="true" frameborder="0" marginheight="0" marginwidth="0" style="display: block; height: 100%; width: 80%; overflow:hidden; border: none; display: none; margin:0; padding:0; position: absolute; top: 200px; bottom: 0; right: 10%; left: 10%; z-index: 10; background-color: white; " src=""></iframe>
+				<iframe id="myFrame" allowfullscreen="true" frameborder="0" marginheight="0" marginwidth="0" style="display:none; height:100%; width:80%; overflow:hidden; border:none; margin:0; padding:0; position:absolute; top:200px; bottom:0; right:10%; left:10%; z-index:10; background-color:white; " src=""></iframe>
 
 				<div class='topEnter'>
 					<div class='enter'>
@@ -1405,4 +1482,4 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 	</script>
 
 	<?php // This script HAS to be down here for the major language dropdown box to work! ?>
-	<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.3.4"></script>
+	<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.3.6"></script>

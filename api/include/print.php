@@ -4,7 +4,7 @@
 		$first .= '"id": "'.$m.'",';
 		$first .= '"attributes": {';
 		$first .= '"iso": "'.$iso.'",';
-		$first .= '"num_nav":			9,';
+		$first .= '"num_nav":			10,';
 		$first .= '"navigation": {';
 		$first .= '"English":			"00eng.php",';
 		$first .= '"Spanish":			"00spa.php",';
