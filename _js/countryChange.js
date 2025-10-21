@@ -1,5 +1,9 @@
+// Created by Scott Starker - 8/2024
+// Updated by Scott Starker - 9/2025
+
 /*****************************************************************************************************************
-	countryChange.js: fetch - allCountry.php (ChartTwo - pie), fetch - countryChange.php (<select> <option>)
+	countryChange.js => fetch - allCountry.php (ChartTwo - pie)
+					 => fetch - countryChange.php (<select> <option>)
 *****************************************************************************************************************/
 
 function countryChange(cChange, month, year) {								// change the country
@@ -25,7 +29,7 @@ function countryChange(cChange, month, year) {								// change the country
 		try {
 			const responseAllCountry = await fetch("allCountry.php?cc="+CCode+"&m="+month+"&y="+year);
 			const textAllCountry = await responseAllCountry.text();
-console.log(textAllCountry);
+//console.log(textAllCountry);
 			if (textAllCountry == "@none" || textAllCountry == "none") {
 				const elem = document.getElementById("idCountry");
 				elem.innerHTML = "No country was found."; 
@@ -85,32 +89,39 @@ console.log(textAllCountry);
 					//numOfBandwidth = results[i]['numOfBandwidth'];
 					switch(extension) {
 						case 'htm':
-							description = 'SE.org map file';
+							description = 'SE.org map files';
 							break;
 						case 'pdf':
-							description = 'PDF file';
+							description = 'PDF files';
 							break;
 						case 'txt':
-							description = 'Playlist (audio/video) file';
+							description = 'Playlist (audio/video) files';
+							break;
+						case 'txt|':
+							extension = 'txt';
+							description = 'SAB HTML (PWA) Read/Listen/View';
 							break;
 						case 'apk':
-							description = 'Android app';
+							description = 'Android apps';
 							break;
 						case 'srt':
-							description = 'Subtitles for video file';
+							description = 'Subtitles for video files';
 							break;
 						case 'mp3':
 						case 'pkf':
-							description = 'Audio file';
+							description = 'Audio files';
 							break;
 						case 'mp4':
-							description = 'Video file';
+							description = 'Video files';
 							break;
 						case 'sfm':
-							description = 'Standard Format Marker (viewer)';
+							description = 'Standard Format Marker (Viewer)';
+							break;
+						case 'usfm':
+							description = 'Unified Standard Format Marker (Viewer)';
 							break;
 						case 'exe':
-							description = 'theWord app download';
+							description = 'theWord app downloads';
 							break;
 						case 'twm':
 						case 'ont':
@@ -120,19 +131,22 @@ console.log(textAllCountry);
 						case 'otx':
 						case 'ntx':
 						case 'twzip':
-							description = 'theWord app download';
+							description = 'theWord app downloads';
 							break;
 						case 'jad':
-							description = 'MySword (Android) app download';
+							description = 'MySword (Android) app downloads';
 							break;
 						case 'jar':
-							description = 'GoBible (Java) app download';
+							description = 'GoBible (Java) app downloads';
 							break;
 						case 'map':
-							description = 'Progressive web apps (PWAs) file';
+							description = 'Progressive web app (PWAs) files';
 							break;
 						case '3gp':
-							description = 'Audio file';
+							description = 'Audio files';
+							break;
+						case 'wasm':
+							description = 'WebAssembly codes';
 							break;
 						default:
 					}
@@ -144,7 +158,7 @@ console.log(textAllCountry);
 					for (let i in resultsTwo) {
 						extensionTwo = resultsTwo[i]['extension'];
 						sumView = resultsTwo[i]['sumView'];
-						extensionTwo = 'Only Read/Listen/View' + ' (' + extensionTwo + ')';
+						extensionTwo = 'SAB HTML (PWA) Read/Listen/View' + ' (' + extensionTwo + ')';
 						xValues.push(extensionTwo);
 						yValues.push(sumView);
 					}
@@ -207,10 +221,9 @@ console.log(textAllCountry);
 			else {
 				//let resultsLength = Object.keys(results).length;
 				// country = full country
-				// CCode = country code
+				// CCode = country code [CC]
 				// m = month
 				// y = year
-				
 				let iso = "";
 				let rod = "";
 				let variant = "";

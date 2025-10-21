@@ -78,12 +78,10 @@
 					$hasError = true;
 				}
 			}
-		/*
 			if ($contactName == '') { 
 				$nameError = 'Please enter a valid name.';  
 				$hasError = true;	
 			}
-			*/
 
 		// Validate Email From
 			$email = filter_input( INPUT_POST, 'email', FILTER_SANITIZE_EMAIL ); 
