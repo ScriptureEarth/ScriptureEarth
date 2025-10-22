@@ -4,16 +4,18 @@ function get_my_AWStatsDB() {
 	static $AWStatsDB;
 	
 	if (!$AWStatsDB) {
-		// localhost needs to be 127.0.0.1
-		// the next 2 lines are for the local computers
-		$dbHost = '127.0.0.1';
-		$dbUser = 'root';
-		//$dbPass = 'mmljrev22';					// password here
-		$dbPass = '';								// password here
-		//$dbPass = 'root';							// password here
-		$dbDatabase = 'awstats_gui_log';
+		$dbHost = getenv('DB_HOST');
+		$dbUser = getenv('DB_USER');
+        $dbPort = getenv('DB_PORT');
+        if (empty($dbPort)) {
+            $dbPort = 3306;
+        }
+
+        $dbPassFile = getenv('PASSWORD_FILE_PATH');
+		$dbPass = trim(file_get_contents($dbPassFile));
+		$dbDatabase = getenv('DB_AWSTATS_DATABASE');
 		//connect to the database 
-		$AWStatsDB = new mysqli($dbHost, $dbUser, $dbPass, $dbDatabase, 3306);
+		$AWStatsDB = new mysqli($dbHost, $dbUser, $dbPass, $dbDatabase, $dbPort);
 		if ($AWStatsDB->connect_errno) {
 			die('Connection could not be established.');
 		}
