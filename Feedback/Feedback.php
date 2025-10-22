@@ -22,13 +22,7 @@
  * 
  */
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Feedback</title>
-</head>
-<body>
+
 <?php
 	include("../include/conn.inc.php");								// connect to the database named 'scripture'
 	include("../translate/functions.php");
