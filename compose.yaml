@@ -23,7 +23,7 @@ services:
       - DB_HOST=db
       - DB_USER=root
       - DB_PORT=3306
-      - DB_SE_DATABASE=scriptureEarth
+      - DB_SE_DATABASE=scripture
       - DB_AWSTATS_DATABASE=awstats_gui_log
 
   db:
@@ -34,6 +34,7 @@ services:
       - db-password
     volumes:
       - db-data:/var/lib/mysql
+      - ./MariaDB:/docker-entrypoint-initdb.d:ro
     environment:
       - MARIADB_ROOT_PASSWORD_FILE=/run/secrets/db-password
     expose:

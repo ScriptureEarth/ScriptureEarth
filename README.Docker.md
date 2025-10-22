@@ -3,10 +3,15 @@
 When you're ready, start your application by running:
 `docker compose up --build`.
 
-Your application will be available at http://localhost:9000.
+Your application will be available at http://localhost:9001.
 
-### PHP extensions
-If your application requires specific PHP extensions to run, they will need to be added to the Dockerfile. Follow the instructions and example in the Dockerfile to add them.
+#### DB setup
+
+- On first startup, the MariaDB container automatically runs any .sql, .sql.gz, or .sh files found in the MariaDB folder, because it is mounted to /docker-entrypoint-initdb.d.
+- Place your initialization script(s) in MariaDB/. For this project, MariaDB/scripture_structure.sql will be executed to create and seed the schema when the data directory is empty.
+- To force re-initialization (and re-run the scripts), remove the volume and start again: `docker compose down -v && docker compose up --build`.
+
+
 
 ### Deploying your application to the cloud
 
