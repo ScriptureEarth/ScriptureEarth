@@ -25,6 +25,11 @@ services:
       - DB_PORT=3306
       - DB_SE_DATABASE=scripture
       - DB_AWSTATS_DATABASE=awstats_gui_log
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /var/www/html
 
   db:
     image: mariadb
