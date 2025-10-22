@@ -40,6 +40,13 @@ FROM php:8.2-apache
 #    && pecl install xdebug-3.2.1 \
 #    && docker-php-ext-enable redis xdebug
 
+#install required extensions
+RUN apt-get update && apt-get install --no-install-recommends -y  \
+      libzip-dev \
+      libcurl4-openssl-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && docker-php-ext-install zip mysqli curl
+
 # Use the default production configuration for PHP runtime arguments, see
 # https://github.com/docker-library/docs/tree/master/php#configuration
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
