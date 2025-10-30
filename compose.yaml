@@ -1,0 +1,72 @@
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Docker Compose reference guide at
+# https://docs.docker.com/go/compose-spec-reference/
+
+# Here the instructions define your application as a service called "server".
+# This service is built from the Dockerfile in the current directory.
+# You can add other services your application may depend on here, such as a
+# database or a cache. For examples, see the Awesome Compose repository:
+# https://github.com/docker/awesome-compose
+services:
+  server:
+    build:
+      context: .
+    ports:
+      - 9001:80
+    depends_on:
+      db:
+        condition: service_healthy
+    secrets:
+      - db-password
+    environment:
+      - PASSWORD_FILE_PATH=/run/secrets/db-password
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PORT=3306
+      - DB_SE_DATABASE=scripture
+      - DB_AWSTATS_DATABASE=awstats_gui_log
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /var/www/html
+
+  db:
+    image: mariadb
+    restart: always
+    user: root
+    secrets:
+      - db-password
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./MariaDB:/docker-entrypoint-initdb.d:ro
+    environment:
+      - MARIADB_ROOT_PASSWORD_FILE=/run/secrets/db-password
+    ports:
+      - 3307:3306
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "/usr/local/bin/healthcheck.sh",
+          "--su-mysql",
+          "--connect",
+          "--innodb_initialized",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+    environment:
+      - PMA_HOST=db
+volumes:
+  db-data:
+secrets:
+  db-password:
+    file: MariaDB/password.txt
+
