@@ -834,17 +834,15 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	?>
 	<div style='width: 92%; margin-left: auto; margin-right: auto; '>
 		<div class="tab">
-			<button class="tablinks" onclick="openMenuTab(event, 'Text')"><img id="tabText" class='iconActions' src='../images/DisText.jpg' alt='<?php echo translate('Text', $st, 'sys'); ?>' title='<?php echo translate('Text', $st, 'sys'); ?>' /><figcaption><?php echo translate('Text', $st, 'sys'); ?></figcaption></button>
-			<button class="tablinks" onclick="openMenuTab(event, 'Audio')"><img id="tabAudio" class='iconActions' src='../images/DisAudio.jpg' alt='<?php echo translate('Audio', $st, 'sys'); ?>' title='<?php echo translate('Audio', $st, 'sys'); ?>' /><figcaption><?php echo translate('Audio', $st, 'sys'); ?></figcaption></button>
-			<button class="tablinks" onclick="openMenuTab(event, 'Video')"><img id="tabVideo" class='iconActions' src='../images/DisVideo.jpg' alt='<?php echo translate('Video', $st, 'sys'); ?>' title='<?php echo translate('Video', $st, 'sys'); ?>' /><figcaption><?php echo translate('Video', $st, 'sys'); ?></figcaption></button>
-			<button class="tablinks" onclick="openMenuTab(event, 'App')"><img id="tabApp" class='iconActions' src='../images/DisApp.jpg' alt='<?php echo translate('App', $st, 'sys'); ?>' title='<?php echo translate('App', $st, 'sys'); ?>' /><figcaption><?php echo translate('App', $st, 'sys'); ?></figcaption></button>
-			<button class="tablinks" onclick="openMenuTab(event, 'Other')"><img id="tabOther" class='iconActions' src='../images/DisOther.jpg' alt='<?php echo translate('Other', $st, 'sys'); ?>' title='<?php echo translate('Other', $st, 'sys'); ?>' /><figcaption><?php echo translate('Other', $st, 'sys'); ?></figcaption></button>
-			<button class="tablinks" onclick="openMenuTab(event, 'Map')"><img id="tabMap" class='iconActions' src='../images/DisMap.jpg' alt='<?php echo translate('Map', $st, 'sys'); ?>' title='<?php echo translate('Map', $st, 'sys'); ?>' /><figcaption><?php echo translate('Map', $st, 'sys'); ?></figcaption></button>
-			<button class="tablinks" onclick="openMenuTab(event, 'All')"><img id="tabAll" class='iconActions' src='../images/DisAll.jpg' alt='<?php echo translate('All', $st, 'sys'); ?>' title='<?php echo translate('All', $st, 'sys'); ?>' /><figcaption><?php echo translate('All', $st, 'sys'); ?></figcaption></button>
+			<button class="tablinks" onclick="openMenuTab(event, 'Text')"><img id="tabText" class='iconActions' src='../images/text_round_icon.png' alt='<?php echo translate('Text', $st, 'sys'); ?>' title='<?php echo translate('Text', $st, 'sys'); ?>' /><figcaption><?php echo translate('Text', $st, 'sys'); ?></figcaption></button>
+			<button class="tablinks" onclick="openMenuTab(event, 'Audio')"><img id="tabAudio" class='iconActions' src='../images/audio_round_icon.png' alt='<?php echo translate('Audio', $st, 'sys'); ?>' title='<?php echo translate('Audio', $st, 'sys'); ?>' /><figcaption><?php echo translate('Audio', $st, 'sys'); ?></figcaption></button>
+			<button class="tablinks" onclick="openMenuTab(event, 'Video')"><img id="tabVideo" class='iconActions' src='../images/video_round_icon.png' alt='<?php echo translate('Video', $st, 'sys'); ?>' title='<?php echo translate('Video', $st, 'sys'); ?>' /><figcaption><?php echo translate('Video', $st, 'sys'); ?></figcaption></button>
+			<button class="tablinks" onclick="openMenuTab(event, 'App')"><img id="tabApp" class='iconActions' src='../images/app_round_icon.png' alt='<?php echo translate('App', $st, 'sys'); ?>' title='<?php echo translate('App', $st, 'sys'); ?>' /><figcaption><?php echo translate('App', $st, 'sys'); ?></figcaption></button>
+			<button class="tablinks" onclick="openMenuTab(event, 'Other')"><img id="tabOther" class='iconActions' src='../images/other_round_icon.png' alt='<?php echo translate('Other', $st, 'sys'); ?>' title='<?php echo translate('Other', $st, 'sys'); ?>' /><figcaption><?php echo translate('Other', $st, 'sys'); ?></figcaption></button>
+			<button class="tablinks" onclick="openMenuTab(event, 'Map')"><img id="tabMap" class='iconActions' src='../images/map_round_icon.png' alt='<?php echo translate('Map', $st, 'sys'); ?>' title='<?php echo translate('Map', $st, 'sys'); ?>' /><figcaption><?php echo translate('Map', $st, 'sys'); ?></figcaption></button>
+			<button class="tablinks" onclick="openMenuTab(event, 'All')"><img id="tabAll" class='iconActions' src='../images/all_round_icon.png' alt='<?php echo translate('All', $st, 'sys'); ?>' title='<?php echo translate('All', $st, 'sys'); ?>' /><figcaption><?php echo translate('All', $st, 'sys'); ?></figcaption></button>
 		</div>
 	</div>
-	<?php
-?>
 	<div id='individualLanguage'>
 <?php
 /*
@@ -2168,11 +2166,24 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		$result_Playlist=$db->query($query);
 		$num3=$result_Playlist->num_rows;
 		if ($num3 > 0) {
+			?>
+			<style>
+				/* font-family: 'CharisSIL-R'; doesn't work */
+				@font-face {
+					font-family: 'CharisSIL-R';
+					src: url('fonts/CharisSILCompact-R.woff') format('woff');
+					src: url('fonts/CharisSILCompact-R.woff2') format('woff2');
+				}
+			</style>
+			<?php
 			echo '<table id="Dis_PlaylistAudio">';
 			while ($r_Playlist = $result_Playlist->fetch_array(MYSQLI_ASSOC)) {
 				$PlaylistAudioTitle = $r_Playlist['PlaylistAudioTitle'];
 				$PlaylistAudioFilename = $r_Playlist['PlaylistAudioFilename'];
 				$ArrayPlaylistAudio = [];
+				/********************************************************************
+					Display Playlist Audio
+				*********************************************************************/
 				?>
 				<tr>
 					<td style='width: 45px; '>
@@ -2185,7 +2196,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 						echo "<div class='linePointer' title='".translate('Listen', $st, 'sys')." $PlaylistAudioTitle' onclick='PlaylistAudio_$z($z, $num3)'>".translate('Listen', $st, 'sys').": $PlaylistAudioTitle</div>";
 						// Get and display Playlist
 						?>
-						<div id="PlaylistAudioListenNow_<?php echo $z; ?>" class='ourPlaylistAudioNow' style='margin-top: 0px; '>
+						<div id="PlaylistAudioListenNow_<?php echo $z; ?>" class='ourPlaylistAudioNow' style='margin-top: 0px; font-family: "CharisSIL-R"; '>
 							<script>
 								$(document).ready(function(){
 									new jPlayerPlaylist({
@@ -2198,11 +2209,11 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 											// the data on a remote server
 											$lines1 = @file($filename);
 											foreach ($lines1 as $line1) {
-												$ArrayPlaylistAudio[] = $line1;
+												$ArrayPlaylistAudio[] = $line1;								// this is required because it is accessed later on in the audio download
 											}
 											// the data on the same server as the PHP script
 											$homepage = file_get_contents($filename);						// returns a string
-											echo $homepage;												// this is required because it is accessed later on in the audio download
+											echo $homepage;													// ** displays the playlist audio
 										} else {
 											echo "The text file $filename does not exist.";
 										}
@@ -2259,7 +2270,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 										<div class="jp-current-time" style="margin-top: -4px; "></div>
 										<div class="jp-duration" style="margin-top: -4px; "></div>
 									</div>
-									<div class="jp-playlist" style="background-color: #999; ">
+									<div class="jp-playlist" style="background-color: #999; font-family: 'CharisSIL-R'; ">
 										<ul>
 											<li></li>
 										</ul>
@@ -2269,6 +2280,11 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 						</div>
 					</td>
 				</tr>
+				<?php
+				/*********************************************************************
+					Download Playlist Audio
+				*********************************************************************/
+				?>
 				<tr>
 					<td style='width: 45px; '>
 						<?php
@@ -2366,7 +2382,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 								else {
 									ZipFilesPlaylist_<?php echo $z; ?> -= ZipFileSize;
 								}
-								ZipFilesPlaylist_<?php echo $z; ?> = Math.round(ZipFilesPlaylist_<?php echo $z; ?>*100)/100;		// rounded just does integers!
+								ZipFilesPlaylist_<?php echo $z; ?> = Math.round(ZipFilesPlaylist_<?php echo $z; ?>*100)/100;	// rounded just does integers!
 								if (ZipFilesPlaylist_<?php echo $z; ?> <= 0.049) {
 									document.getElementById("Playlist_Download_MB_<?php echo $z; ?>").style.display = 'none';
 								}
@@ -2434,7 +2450,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				// bzj-ScriptureAnim.txt, etc.
 				elseif (preg_match('/^('.$ISO.'[a-zA-Z0-9]*)-/', $PlaylistVideoFilename, $matches)) {	// get the ISO code and if there is anything attached before the '-'
 					$ISO_dialect = $matches[1];
-					if (preg_match('/-([a-zA-Z]+)(-|\.)/i', $PlaylistVideoFilename, $matches)) {	// get the left most letters before the '-'
+					if (preg_match('/-([a-zA-Z]+)(-|\.)/i', $PlaylistVideoFilename, $matches)) {		// get the left most letters before the '-'
 						if (empty($matches[1])) {
 							//die('ERROR. Non-alphabetic characters in '.$matches[0]);					// produces "PHP Warning:  Undefined array key 1 in /home/se/public_html/include/00-SpecificLanguage.inc.php"
 						}

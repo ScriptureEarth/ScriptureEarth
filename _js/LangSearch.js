@@ -209,7 +209,9 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
                 table += "</div>";
             }
             table += "<br /><br />";
-            table += "<div style='color: #777; font-size: .8em; '>ScriptureEarth.org</div><br />";
+            if (asset == 0) {
+                table += "<div style='color: #777; font-size: .8em; '>ScriptureEarth.org</div><br />";
+            }
             table += "</div>";
             document.getElementById("LangSearch").innerHTML = table;
         }
@@ -665,7 +667,9 @@ function showiOSLanguage(str, st, Internet, MajorLanguage, Variant_major, Specif
                 table += "</div>";
             }
             table += "<br /><br />";
-            table += "<div style='color: #777; font-size: .8em; '>ScriptureEarth.org</div><br />";
+            if (asset == 0) {
+                table += "<div style='color: #777; font-size: .8em; '>ScriptureEarth.org</div><br />";
+            }
             table += "</div>";
             document.getElementById("LangSearch").innerHTML = table;
         }

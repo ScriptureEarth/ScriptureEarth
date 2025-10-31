@@ -787,7 +787,12 @@ $Internet = 0;		// localhost is 127.0.0.1 but '192.168.x.x' should be not-on-the
 $Internet = (substr($_SERVER['REMOTE_ADDR'], 0, 7) != '192.168' ? 1 : 0);
 
 $asset = 0;
-if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
+if (isset($_GET['asset'])) {
+	$asset = (int)$_GET['asset'];
+	if ($asset != 0 && $asset != 1) {
+		die('asset is not valid.</body></html>');
+	}
+}
 ?>
 
 <style>
@@ -1169,12 +1174,19 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 					$countryTemp = $SpecificCountry;
 					if (strpos("$SpecificCountry", '.')) $countryTemp = substr("$SpecificCountry", strpos("$SpecificCountry", '.') + 1);			// In case there's a "." in the "country"
 					$country = trim($r["$countryTemp"]);								// name of the full country if there is one
-					?>
 
+					if ($asset === 0) {
+					?>
+						<div id="background_header" style="background-image: url('../images/00<?php echo $st; ?>-ScriptureEarth_header.jpg'); "><div style="cursor: pointer; " onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><img id="empty" style="min-width: 450px; max-width: 550px; " src="./images/empty.png" /></div></div> <!-- ScriptureEarth and the Earth image -->
+						<div id="background" style="background-image: url('../images/background_earth.jpg'); "></div> <!-- ScriptureEarth and the Earth image -->
+					<?php
+					}
+					else {
+						echo '<div id="background" style="background-image: url(\'../images/background_earth.jpg\'); opacity: 0; "></div>';	// ScriptureEarth and the Earth image
+					}
+					?>
 					<!-- The id="background_header" in the next line is the error! -->
 					<!-- div id="background_header" style="background-image: url('../images/00< ?php echo $st; ?>-ScriptureEarth_header.jpg'); cursor: pointer; " onclick="window.open('< ?php echo $Scriptname; ?>', '_self')"><img id="empty" src="./images/empty.png" /></div> < !-- ScriptureEarth and the Earth image -->
-					<div id="background_header" style="background-image: url('../images/00<?php echo $st; ?>-ScriptureEarth_header.jpg'); "><div style="cursor: pointer; " onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><img id="empty" style="min-width: 450px; max-width: 550px; " src="./images/empty.png" /></div></div> <!-- ScriptureEarth and the Earth image -->
-					<div id="background" style="background-image: url('../images/background_earth.jpg'); "></div> <!-- ScriptureEarth and the Earth image -->
 
 					<div class="threeMenus">
 						<?php
@@ -1279,10 +1291,16 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 			/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 			******************************************************************************************************** */
 			else {
+				if ($asset === 0) {
 				?>
-				<div id="background_header" style="background-image: url('../images/00<?php echo $st; ?>-ScriptureEarth_header.jpg'); "><div style="cursor: pointer; " onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><img id="empty" src="./images/empty.png" /></div></div> <!-- ScriptureEarth and the Earth image -->
-				<div id="background" style="background-image: url('../images/background_earth.jpg'); "></div> <!-- ScriptureEarth and the Earth image -->
-
+					<div id="background_header" style="background-image: url('../images/00<?php echo $st; ?>-ScriptureEarth_header.jpg'); "><div style="cursor: pointer; " onclick="window.open('<?php echo $Scriptname; ?>', '_self')"><img id="empty" src="./images/empty.png" /></div></div> <!-- ScriptureEarth and the Earth image -->
+					<div id="background" style="background-image: url('../images/background_earth.jpg'); "></div> <!-- ScriptureEarth and the Earth image -->
+				<?php
+				}
+				else {
+					echo '<div id="background" style="background-image: url(\'../images/background_earth.jpg\'); opacity: 0; "></div>';	// ScriptureEarth and the Earth image
+				}
+				?>
 				<!-- div style="position: absolute; top: 0; left: 20%; width: 35%; "> < !-- "empty" "window" over "Scripture Earth" if you click on it the script links to "00i-Scripture_Index.org" -- >
 					<div style="position: relative; top: 0; left: 0; z-index: 10; cursor: pointer; " onclick="window.open('< ?php echo $Scriptname; ?>', '_self')"><img id="empty" src="./images/empty.png" /></div>
 				</div -->
@@ -1410,12 +1428,10 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 					<div id="CountrySearch"></div>
 				</div>
 
-				<?php // display copyright ?>
-				<div id='copyright'>
-					<div>ScriptureEarth.org</div>
-				</div>
-
-			<?php
+				<?php // display copyright
+				if ($asset === 0) {
+					echo '<div id="copyright"><div>ScriptureEarth.org</div></div>';
+				}
 			}
 			?>
 		</div>
@@ -1482,4 +1498,4 @@ if (isset($_GET['asset']) && (int)$_GET['asset'] == 1) $asset = 1;
 	</script>
 
 	<?php // This script HAS to be down here for the major language dropdown box to work! ?>
-	<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.3.6"></script>
+	<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.3.7"></script>

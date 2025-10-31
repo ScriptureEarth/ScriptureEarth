@@ -261,7 +261,9 @@ $stmt->close();																					// close statement
         }
 	echo '</div>';
 	echo "<br /><br />";
-	echo "<div style='color: #777; font-size: .8em; '>ScriptureEarth.org</div><br />";
+    if ($asset == 0) {
+		echo "<div style='color: #777; font-size: .8em; '>ScriptureEarth.org</div><br />";
+	}
 	?>
 </div>
 <p style="clear: both; ">&nbsp;</p>
