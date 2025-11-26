@@ -1018,10 +1018,10 @@ include ('./NT_Books.php');			// include the books of the NT
 				<td width="16%">
 					<span style="padding-left: 3px; ">Cell Phone Title</span>
 				</td>
-				<td width="23%"style="padding-left: 3px; ">
+				<td width="23%" style="padding-left: 3px; ">
 					Cell Phone Filename
 				</td>
-				<td width="23%"style="padding-left: 3px; ">
+				<td width="23%" style="padding-left: 3px; ">
 					<i>Optional info if needed</i>
 				</td>
 				<td width="19%">&nbsp;
@@ -1551,17 +1551,17 @@ include ('./NT_Books.php');			// include the books of the NT
         <?php
 		if (isset($_POST['txtLinkCompany-1'])) {
 			if ($_POST['linksIcon-1'] == 'linksOther-1') $_POST['linksOther-1']=1; else $_POST['linksOther-1']=0;
-			//if ($_POST['linksIcon-1'] == 'linksBuy-1') $_POST['linksBuy-1']=1; else  $_POST['linksBuy-1']=0;
+			//if ($_POST['linksIcon-1'] == 'linksBuy-1') $_POST['linksBuy-1']=1; else $_POST['linksBuy-1']=0;
 			if ($_POST['linksIcon-1'] == 'linksMap-1') $_POST['linksMap-1']=1; else $_POST['linksMap-1']=0;
 			if ($_POST['linksIcon-1'] == 'linksGooglePlay-1') $_POST['linksGooglePlay-1']=1; else $_POST['linksGooglePlay-1']=0;
 			if ($_POST['linksIcon-1'] == 'linksKalaam-1') $_POST['linksKalaam-1']=1; else $_POST['linksKalaam-1']=0;
 		}
 		else {
 			${'linksOther-1'}=0;
-			//${'linksBuy'}=0;
-			${'linksMap-1'}=1;
+			//${'linksBuy-1'}=0;
+			${'linksMap-1'}=0;
 			${'linksGooglePlay-1'}=0;
-			${'linksKalaam-1'}=1;
+			${'linksKalaam-1'}=0;
 		}
 		$i=1;
 		// 12/3/19 - Joshua Project
@@ -1574,18 +1574,18 @@ include ('./NT_Books.php');			// include the books of the NT
                     <br /><span style="font-size: 10pt; ">For example:</span>
 				</td>
 				<td width="21%">
-					<!--input type='text' style='color: navy; ' size='25' name='txtLinkCompany-1' id='txtLinkCompany-1' value="< ?php if (isset($_POST['txtLinkCompany-1'])) echo $_POST['txtLinkCompany-1'] ?>" /-->
-					<input type='text' style='color: navy; ' size='25' name='txtLinkCompany-1' id='txtLinkCompany-1' value="Joshua Project" />
+					<input type='text' style='color: navy; ' size='25' name='txtLinkCompany-1' id='txtLinkCompany-1' value="<?php if (isset($_POST['txtLinkCompany-1'])) echo $_POST['txtLinkCompany-1'] ?>" />
+					<!--input type='text' style='color: navy; ' size='25' name='txtLinkCompany-1' id='txtLinkCompany-1' value="Joshua Project" /-->
                     <br /><span style="font-size: 10pt; ">Google Play Store</span>
 				</td>
 				<td width="21%">
-					<!--input type='text' style='color: navy; ' size='25' name='txtLinkCompanyTitle-1' id='txtLinkCompanyTitle-1' value="< ?php if (isset($_POST['txtLinkCompanyTitle-1'])) echo $_POST['txtLinkCompanyTitle-1'] ?>" /-->
-					<input type='text' style='color: navy; ' size='25' name='txtLinkCompanyTitle-1' id='txtLinkCompanyTitle-1' value="language map" />
+					<input type='text' style='color: navy; ' size='25' name='txtLinkCompanyTitle-1' id='txtLinkCompanyTitle-1' value="<?php if (isset($_POST['txtLinkCompanyTitle-1'])) echo $_POST['txtLinkCompanyTitle-1'] ?>" />
+					<!--input type='text' style='color: navy; ' size='25' name='txtLinkCompanyTitle-1' id='txtLinkCompanyTitle-1' value="language map" /-->
                     <br /><span style="font-size: 10pt; "> - with links to audio online</span>
 				</td>
 				<td width="22%">
-					<!--input type='text' style='color: navy; ' size='27' name='txtLinkURL-1' id='txtLinkURL-1' value="< ?php if (isset($_POST['txtLinkURL-1'])) echo $_POST['txtLinkURL-1'] ?>" /-->
-					<input type='text' style='color: navy; ' size='27' name='txtLinkURL-1' id='txtLinkURL-1' value="https://joshuaproject.net/languages/" />
+					<input type='text' style='color: navy; ' size='27' name='txtLinkURL-1' id='txtLinkURL-1' value="<?php if (isset($_POST['txtLinkURL-1'])) echo $_POST['txtLinkURL-1'] ?>" />
+					<!--input type='text' style='color: navy; ' size='27' name='txtLinkURL-1' id='txtLinkURL-1' value="https://joshuaproject.net/languages/" /-->
                     <br /><span style="font-size: 9pt; ">https://play.google.com/store/apps/...</span>
 				</td>
 				<td width="8%">
@@ -1604,17 +1604,17 @@ include ('./NT_Books.php');			// include the books of the NT
 								if ($_POST['linksIcon-1'] == 'linksKalaam-1') ${'linksKalaam-1'}=1; else ${'linksKalaam-1'}=0;
 							}
 							else {
-								${'linksIcon-1'} = 'linksMap-1';
+								${'linksIcon-1'} = 0;
 								${'linksOther-1'} = 0;
-								${'linksMap-1'} = 1;
+								${'linksMap-1'} = 0;
 								${'linksGooglePlay-1'} = 0;
 								${'linksKalaam-1'} = 0;
 							}
 							?>	
 							<option value="linksOther-1" <?php echo ( isset($_POST['linksIcon-1']) ? ($_POST['linksOther-1'] == 1 ? " selected='selected'" : '') : '') ?>>Other</option>
-							<option value="linksMap-1" <?php echo ( isset($_POST['linksIcon-1']) ? ($_POST['linksMap-1'] == 1 ? " selected='selected'" : '') : " selected='selected'" ) ?>>Map</option>
-							<option value="linksGooglePlay-1" <?php echo ( isset($_POST['linksIcon-1']) ? ($_POST['linksGooglePlay-1'] == 1 ? " selected='selected'" : '') : '' ) ?>>Google Play</option>
-							<option value="linksKalaam-1" <?php echo ( isset($_POST['linksIcon-1']) ? ($_POST['linksKalaam-1'] == 1 ? " selected='selected'" : '') : '' ) ?>>Kalaam Media</option>
+							<option value="linksMap-1" <?php echo ( isset($_POST['linksIcon-1']) ? ($_POST['linksMap-1'] == 1 ? " selected='selected'" : '') : '') ?>>Map</option>
+							<option value="linksGooglePlay-1" <?php echo ( isset($_POST['linksIcon-1']) ? ($_POST['linksGooglePlay-1'] == 1 ? " selected='selected'" : '') : " selected='selected'") ?>>Google Play</option>
+							<option value="linksKalaam-1" <?php echo ( isset($_POST['linksIcon-1']) ? ($_POST['linksKalaam-1'] == 1 ? " selected='selected'" : '') : '') ?>>Kalaam Media</option>
                        </select>
                     </div>
                     <span style="font-size: 10pt; ">&nbsp;Google Play</span>

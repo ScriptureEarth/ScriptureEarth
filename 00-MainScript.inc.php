@@ -763,7 +763,7 @@ if (!isset($_SESSION['nav_ln_array'])) {
 	$ln_query = 'SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `name`';
 	$ln_result_temp = $db->query($ln_query) or die('Query failed:  ' . $db->error . '</body></html>');
 	if ($ln_result_temp->num_rows == 0) {
-		die('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div></body></html>');
+		die('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">' . translate('The translation_code is not found.', $st, 'sys') . '</div>');
 	}
 	while ($ln_row = $ln_result_temp->fetch_array()) {
 		$ln_temp[0] = $ln_row['translation_code'];				// e.g., 'eng' [3 lower case letters]

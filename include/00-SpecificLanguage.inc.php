@@ -86,7 +86,7 @@
 	
 	 /* style the tab */
 	.tab, .CCtab {
-		overflow: hidden;
+		/*overflow: hidden;*/
 		border: 1px solid #ccc;
 		background-color: #f1f1f1;
 	}
@@ -131,37 +131,7 @@
 	.CCtablinks {
 	}
 	/* individual width and height of the icons */
-	#tabText {
-		width: 60px;
-		height: 60px;
-		margin-top: 21px;
-	}
-	#tabAudio {
-		width: 60px;
-		height: 60px;
-		margin-top: 21px;
-	}
-	#tabVideo {
-		width: 60px;
-		height: 60px;
-		margin-top: 21px;
-	}
-	#tabApp {
-		width: 60px;
-		height: 60px;
-		margin-top: 21px;
-	}
-	#tabOther {
-		width: 60px;
-		height: 60px;
-		margin-top: 21px;
-	}
-	#tabMap {
-		width: 60px;
-		height: 60px;
-		margin-top: 21px;
-	}
-	#tabAll {
+	#tabText, #tabAudio, #tabVideo, #tabApp, #tabOther, #tabMap, #tabAll {
 		width: 60px;
 		height: 60px;
 		margin-top: 21px;
@@ -175,19 +145,28 @@
 	@media only screen and (max-width: 480px) {
 		/* reddraw the mobile icons */
 		.tab button {
-			padding-top: 4px;
-			height: 95px;
+			padding-top: 2px;
+			margin-bottom: 20px;
+			height: 86px;
+		}
+		/* text to the icons */
+		figcaption {
+			font-size: 90%;
 		}
 	}
 </style>
 
 <?php
 $check_iOS = 0;
+$smartPhone = 0;
 if (isset($_SERVER['HTTP_USER_AGENT'])) {
 	//if (preg_match('/Macintosh|iPhone|iPod|iPad/', $_SERVER['HTTP_USER_AGENT'])) {
 	if (preg_match('/iPhone|iPod|iPad/', $_SERVER['HTTP_USER_AGENT'])) {
 		/* This is iOS */
 		$check_iOS = 1;
+	}
+	if (preg_match('/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i', $_SERVER['HTTP_USER_AGENT'])) {
+		$smartPhone = 1;
 	}
 }
 
@@ -484,7 +463,17 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 <script>
 	setTitle("<?php echo ($whichBible == '' ? '' : $whichBible . ' ') . $LN . ($ISO == 'qqq' ? '' : '['.$ISO.']'); ?>");		// qqq equals Deaf
 
-		/*
+	// Is it a mobile device?
+	var isMobile = {
+		Android: function() {return navigator.userAgent.match(/Android/i);},
+		iOS: function() {return navigator.userAgent.match(/iPhone|iPad|iPod/i);},
+		//any: function() {return (isMobile.Android() || isMobile.iOS()}
+		smartPhone: function() {return navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i);}
+	};
+	// if (isMobile.smartPhone()) {}  		// mobile device
+	// if (!isMobile.smartPhone()) {} 		// desktop computer
+
+	/*
 			$BibleIsLink = 1: Read and Listen			$BibleIsReadAudio
 			$BibleIsLink = 2: Read						$BibleIsRead
 			$BibleIsLink = 3: Read and Listen			$BibleIsReadAudio
@@ -579,68 +568,70 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	}
 
 	// set the icons for the largest size
+
 	function iconEnableText() {
-		document.getElementById('tabText').style.width = "85px";
-		document.getElementById('tabText').style.height = "85px";
-		document.getElementById('tabText').style.marginTop = "1px";
+		document.getElementById('tabText').style.width = '<?php echo $smartPhone == 0 ? "85px" : "45px"; ?>';
+		document.getElementById('tabText').style.height = '<?php echo $smartPhone == 0 ? "85px" : "45px"; ?>';
+		document.getElementById('tabText').style.marginTop = '<?php echo $smartPhone == 0 ? "1px" : "11px"; ?>';
 	}
 	function iconEnableAudio() {
-		document.getElementById('tabAudio').style.width = "85px";
-		document.getElementById('tabAudio').style.height = "85px";
-		document.getElementById('tabAudio').style.marginTop = "1px";
+		document.getElementById('tabAudio').style.width = '<?php echo $smartPhone == 0 ? "85px" : "45px"; ?>';
+		document.getElementById('tabAudio').style.height = '<?php echo $smartPhone == 0 ? "85px" : "45px"; ?>';
+		document.getElementById('tabAudio').style.marginTop = '<?php echo $smartPhone == 0 ? "1px" : "11px"; ?>';
 	}
 	function iconEnableVideo() {
-		document.getElementById('tabVideo').style.width = "85px";
-		document.getElementById('tabVideo').style.height = "85px";
-		document.getElementById('tabVideo').style.marginTop = "1px";
+		document.getElementById('tabVideo').style.width = '<?php echo $smartPhone == 0 ? "85px" : "45px"; ?>';
+		document.getElementById('tabVideo').style.height = '<?php echo $smartPhone == 0 ? "85px" : "45px"; ?>';
+		document.getElementById('tabVideo').style.marginTop = '<?php echo $smartPhone == 0 ? "1px" : "11px"; ?>';
 	}
 	function iconEnableAppt() {
-		document.getElementById('tabApp').style.width = "85px";
-		document.getElementById('tabApp').style.height = "85px";
-		document.getElementById('tabApp').style.marginTop = "1px";
+		document.getElementById('tabApp').style.width = '<?php echo $smartPhone == 0 ? "85px" : "45px"; ?>';
+		document.getElementById('tabApp').style.height = '<?php echo $smartPhone == 0 ? "85px" : "45px"; ?>';
+		document.getElementById('tabApp').style.marginTop = '<?php echo $smartPhone == 0 ? "1px" : "11px"; ?>';
 	}
 	function iconEnableOther() {
-		document.getElementById('tabOther').style.width = "85px";
-		document.getElementById('tabOther').style.height = "85px";
-		document.getElementById('tabOther').style.marginTop = "1px";
+		document.getElementById('tabOther').style.width = '<?php echo $smartPhone == 0 ? "85px" : "45px"; ?>';
+		document.getElementById('tabOther').style.height = '<?php echo $smartPhone == 0 ? "85px" : "45px"; ?>';
+		document.getElementById('tabOther').style.marginTop = '<?php echo $smartPhone == 0 ? "1px" : "11px"; ?>';
 	}
 	function iconEnableMap() {
-		document.getElementById('tabMap').style.width = "85px";
-		document.getElementById('tabMap').style.height = "85px";
-		document.getElementById('tabMap').style.marginTop = "1px";
+		document.getElementById('tabMap').style.width = '<?php echo $smartPhone == 0 ? "85px" : "45px"; ?>';
+		document.getElementById('tabMap').style.height = '<?php echo $smartPhone == 0 ? "85px" : "45px"; ?>';
+		document.getElementById('tabMap').style.marginTop = '<?php echo $smartPhone == 0 ? "1px" : "11px"; ?>';
 	}
 	function iconEnableAll() {
-		document.getElementById('tabAll').style.width = "85px";
-		document.getElementById('tabAll').style.height = "85px";
-		document.getElementById('tabAll').style.marginTop = "1px";
+		document.getElementById('tabAll').style.width = '<?php echo $smartPhone == 0 ? "85px" : "45px"; ?>';
+		document.getElementById('tabAll').style.height = '<?php echo $smartPhone == 0 ? "85px" : "45px"; ?>';
+		document.getElementById('tabAll').style.marginTop = '<?php echo $smartPhone == 0 ? "1px" : "11px"; ?>';
 	}
+
 	function iconDisableAll() {
-		document.getElementById('tabText').style.width = "65px";
-		document.getElementById('tabText').style.height = "65px";
+		document.getElementById('tabText').style.width = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
+		document.getElementById('tabText').style.height = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
 		document.getElementById('tabText').style.marginTop = "21px";
 
-		document.getElementById('tabAudio').style.width = "65px";
-		document.getElementById('tabAudio').style.height = "65px";
+		document.getElementById('tabAudio').style.width = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
+		document.getElementById('tabAudio').style.height = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
 		document.getElementById('tabAudio').style.marginTop = "21px";
 
-		document.getElementById('tabVideo').style.width = "65px";
-		document.getElementById('tabVideo').style.height = "65px";
+		document.getElementById('tabVideo').style.width = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
+		document.getElementById('tabVideo').style.height = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
 		document.getElementById('tabVideo').style.marginTop = "21px";
 
-		document.getElementById('tabApp').style.width = "65px";
-		document.getElementById('tabApp').style.height = "65px";
+		document.getElementById('tabApp').style.width = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
+		document.getElementById('tabApp').style.height = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
 		document.getElementById('tabApp').style.marginTop = "21px";
 
-		document.getElementById('tabOther').style.width = "65px";
-		document.getElementById('tabOther').style.height = "65px";
+		document.getElementById('tabOther').style.width = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
+		document.getElementById('tabOther').style.height = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
 		document.getElementById('tabOther').style.marginTop = "21px";
 
-		document.getElementById('tabMap').style.width = "65px";
-		document.getElementById('tabMap').style.height = "65px";
+		document.getElementById('tabMap').style.width = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
+		document.getElementById('tabMap').style.height = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
 		document.getElementById('tabMap').style.marginTop = "21px";
 
-		document.getElementById('tabAll').style.width = "65px";
-		document.getElementById('tabAll').style.height = "65px";
+		document.getElementById('tabAll').style.width = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
+		document.getElementById('tabAll').style.height = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
 		document.getElementById('tabAll').style.marginTop = "21px";
 	}
 			
@@ -819,11 +810,11 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		<div style='width: 100%; '>
 			<div class='Country' style='margin-bottom: 8px; '><?php echo translate('Country', $st, 'sys'); ?>:&nbsp;<span class='Country'><?php echo $country; ?></span></div>
 			<?php if ($ISO != 'qqq') { ?>
-				<div class='languageCode'><?php echo translate('Language Code', $st, 'sys'); ?>:&nbsp;<a href='https://www.ethnologue.com/language/<?php echo $ISO; ?>/' target='_blank'><?php echo $ISO; ?></a>&nbsp;&nbsp;&nbsp;&nbsp;<span style='font-size: 90%; font-weight: normal; '>(<?php echo translate('Index', $st, 'sys'); ?>:&nbsp;<?php echo $ISO_ROD_index; ?>)</span></div>
+				<div class='languageCode'><?php echo translate('Language Code', $st, 'sys'); ?>:&nbsp;<a href='https://www.ethnologue.com/language/<?php echo $ISO; ?>/' target='_blank'><?php echo $ISO; ?></a><br />
+				&nbsp;&nbsp;&nbsp;&nbsp;<span style='font-size: 90%; font-weight: normal; color: white; '>(<?php echo translate('Index', $st, 'sys'); ?>:&nbsp;<?php echo $ISO_ROD_index; ?>)</span></div>
 			<?php } ?>
 		</div>
 	</h2>
-	&nbsp;<br />
 	<?php
 
 /*

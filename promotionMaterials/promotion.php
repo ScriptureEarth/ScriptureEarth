@@ -99,7 +99,9 @@
 <body>
 	<h1 style='text-align: center; '>Promotion Materials for ScriptureEarth.org</h1>
 
-	<h3 style='text-align: center; '>Note: Position the curson over the image and right-click to see the actions including "Save Video (or Image) As..."</h3>
+	<h3 style='text-align: center; '>Note: Position the cursor over the image and right-click to see the actions including "Save Video (or Image) As..."</h3>
+
+	<hr style='width: 80%; margin-top: 50px; margin-bottom: 50px; '>
 
 	<h2 style='text-align: center; margin-top: 40px; margin-bottom: 40px; '>English Items</h2>
 
