@@ -16,21 +16,20 @@ if (!$retval) {
 	exit;
 }
 
-if (isset($_GET['number'])) $number = $_GET['number']; else { die('none'); }                    // 1a - 5b
-if (preg_match('/^[1-5][ab]$/', $number) == 0) { die('none'); }			                        // only one number and lower case letter allowed
-
 /****************************************************************************************************************
-    Global variables
+    GET variables
 ****************************************************************************************************************/
+    if (isset($_GET['number'])) $number = $_GET['number']; else { die('none'); }                    // 1a - 5b
+    if (preg_match('/^[1-5][ab]$/', $number) == 0) { die('none'); }			                        // only one number and lower case letter allowed
     if (isset($_GET['name'])) $name = $_GET['name']; else { die('none'); }                          // projectName from add_resource table
     if (isset($_GET['description'])) $description = $_GET['description']; else { die('none'); }     // projectDescription from add_resource table
+    if (isset($_GET['iso'])) $iso = $_GET['iso']; else { die('none'); }                         // iso from add_resource table
+    $name = preg_replace("/^(\s?-?\s?$iso\s?-?\s?)/", '', $name);                               // remove the $iso- part at the beginning of the name
+    $name = ' - ' . $name;                                                                      // add ' - ' at the beginning of the name
+    $name = $description != '' ? $name . ' - ' . $description : $name;
     if (substr($number, 1, 1) == 'b') {                                                             // for INSERTs only
-        if (isset($_GET['iso'])) $iso = $_GET['iso']; else { die('none'); }                         // iso from add_resource table
         if (isset($_GET['rod'])) $rod = $_GET['rod']; else { die('none'); }                         // rod from add_resource table
         if (isset($_GET['var'])) $var = $_GET['var']; else { die('none'); }                         // var from add_resource table
-        $name = preg_replace("/^(\s?-?\s?$iso\s?-?\s?)/", '', $name);                               // remove the $iso- part at the beginning of the name
-        $name = ' - ' . $name;                                                                      // add ' - ' at the beginning of the name
-        $name = $description != '' ? $name . ' - ' . $description : $name;
     }
     if ($number == '1a' || $number == '1b') {
         if (isset($_GET['subfolder'])) $subfolder = $_GET['subfolder']; else { die('none'); }       // subfolder from add_resource table
@@ -41,7 +40,7 @@ if (preg_match('/^[1-5][ab]$/', $number) == 0) { die('none'); }			              
     if (isset($_GET['idx'])) $idx = (int)$_GET['idx']; else { die('none'); }                        // idx from add_resource table
     if (isset($_GET['add_index'])) $add_index = (int)$_GET['add_index']; else { die('none'); }      // add_index from add_resource table
 
-require_once './include/conn.inc.php';													        // connect to the database named 'scripture'
+require_once './include/conn.inc.php';													            // connect to the database named 'scripture'
 $db = get_my_db();
 
 $result = $db->query("UPDATE add_resource SET accept = 1, reject = 0, wait = 0, toAdd = 0 WHERE add_index = $add_index");
@@ -53,7 +52,7 @@ if (!$result) {
     sab_html with subfolder (1a and 1b)
 ****************************************************************************************************************/
 if ($number == '1a') {                            // type = sab_html      UPDATE
-    if (isset($_GET['SABIndex'])) $SABIndex = (int) $_GET['SABIndex']; else { die('none'); }    // SAB_index from SAB_scriptoria table
+    if (isset($_GET['SABIndex'])) $SABIndex = (int) $_GET['SABIndex']; else { die('none'); }        // SAB_index from SAB_scriptoria table
 
     $db->query("UPDATE `SAB_scriptoria` SET `url` = '', `subfolder` = 'sab/$subfolder/', `description` = '$name' WHERE `SAB_index` = $SABIndex");
 
@@ -62,7 +61,7 @@ if ($number == '1a') {                            // type = sab_html      UPDATE
     echo 'done';
 }
 elseif ($number == '1b') {                        // type = sab_html     INSERT
-    if (isset($_GET['SAB_number'])) $SAB_number = (int) $_GET['SAB_number']; else { die('none'); } // SAB_number from add_resource table
+    if (isset($_GET['SAB_number'])) $SAB_number = (int) $_GET['SAB_number']; else { die('none'); }  // SAB_number from add_resource table
 
     $db->query("INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `url`, subfolder, `description`, pre_scriptoria, SAB_number) VALUES ('$iso', '$rod', '$var', $idx, '', 'sab/$subfolder/', '$name', '', $SAB_number)");
 
@@ -75,14 +74,14 @@ elseif ($number == '1b') {                        // type = sab_html     INSERT
 ****************************************************************************************************************/
 elseif ($number == '2a') {                        // type = sab_html     UPDATE
     // SABUPDATE2(url, projectName, projectDescription, idx, SABIndex, add_index)
-    if (isset($_GET['SABIndex'])) $SABIndex = (int) $_GET['SABIndex']; else { die('none'); }    // SAB_index from SAB_scriptoria table
+    if (isset($_GET['SABIndex'])) $SABIndex = (int) $_GET['SABIndex']; else { die('none'); }        // SAB_index from SAB_scriptoria table
 
     $db->query("UPDATE SAB_scriptoria SET `url` = '$url', `subfolder` = '', `description` = '$name' WHERE `SAB_index` = $SABIndex");
     echo 'done';
 }  
 elseif ($number == '2b') {                       // type = sab_html      INSERT
     // SABINSERT2(url, projectName, projectDescription, idx, iso, rod, variant, SAB_number, add_index)
-    if (isset($_GET['SAB_number'])) $SAB_number = (int) $_GET['SAB_number']; else { die('none'); } // SAB_number from add_resource table
+    if (isset($_GET['SAB_number'])) $SAB_number = (int) $_GET['SAB_number']; else { die('none'); }  // SAB_number from add_resource table
 
     $db->query("INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `url`, subfolder, `description`, pre_scriptoria, SAB_number) VALUES ('$iso', '$rod', '$var', $idx, '$url', '', '$name', '', $SAB_number)");
     echo 'done';
@@ -92,7 +91,7 @@ elseif ($number == '2b') {                       // type = sab_html      INSERT
 ****************************************************************************************************************/
 elseif ($number == '3a') {                       // type = apk           UPDATE
     // APKUPDATE(url, projectName, projectDescription, idx, APKIndex, add_index)
-    if (isset($_GET['APKIndex'])) $APKIndex = (int)$_GET['APKIndex']; else { die('none'); }     // APKIndex from CellPhone table
+    if (isset($_GET['APKIndex'])) $APKIndex = (int)$_GET['APKIndex']; else { die('none'); }         // APKIndex from CellPhone table
 
     $db->query("UPDATE CellPhone SET Cell_Phone_File = '$url', optional = '$name' WHERE `CellPhone_index` = $APKIndex");
     echo 'done';
@@ -108,7 +107,7 @@ elseif ($number == '3b') {                      // type = apk            INSERT
 ****************************************************************************************************************/
 elseif ($number == '4a') {                      // type = ios           UPDATE
     // iosUPDATE(url, projectName, projectDescription, idx, iosIndex, add_index)
-    if (isset($_GET['iosIndex'])) $iosIndex = (int)$_GET['iosIndex']; else { die('none'); }     // iosIndex from CellPhone table
+    if (isset($_GET['iosIndex'])) $iosIndex = (int)$_GET['iosIndex']; else { die('none'); }         // iosIndex from CellPhone table
 
     $db->query("UPDATE CellPhone SET Cell_Phone_File = '$url', optional = '$name' WHERE `CellPhone_index` = $iosIndex");
     echo 'done';
@@ -124,7 +123,7 @@ elseif ($number == '4b') {                      // type = ios            INSERT
 ****************************************************************************************************************/
 elseif ($number == '5a') {                      // type = google play store  UPDATE
     // GPSUPDATE(url, projectName, projectDescription, idx, GPSIndex, add_index)
-    if (isset($_GET['GPSIndex'])) $GPSIndex = (int)$_GET['GPSIndex']; else { die('none'); }     // iosIndex from CellPhone table
+    if (isset($_GET['GPSIndex'])) $GPSIndex = (int)$_GET['GPSIndex']; else { die('none'); }         // iosIndex from CellPhone table
 
     $db->query("UPDATE links SET `URL` = '$url', company_title = '$name' WHERE `links_index` = $GPSIndex");
     echo 'done';

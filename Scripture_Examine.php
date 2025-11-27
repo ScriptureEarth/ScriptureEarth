@@ -148,15 +148,6 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     **********************************************************************************/
     if ($type == 'sab_html') {
-        /*******************************************************************************************************************
-                There is a potential problem here. What if the user wants to update from $subfolder to sab/$subfolder/?
-        *******************************************************************************************************************/
-        if ($url != '' && preg_match('/^\/?data\//', $url)) {
-            echo 'There is a problem. The URL begins with "data/..." not "https://..." so deleted URL and inserted subfolder.<br />';
-            if ($url[-1] == '/') $url = substr($url, 0, strlen($url) - 1);
-            $subfolder = substr($url, strrpos($url, '/') + 1);
-            $url = '';
-        }
         /**********************************************************************************
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                 SAB HTML and no URL but subfolder
@@ -182,16 +173,18 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
             else {
                 echo 'Two or more SAB (Read/Listen/View) are found!<br />Which one do you want to UPDATE with this new one?<br />';
                 echo '<span style="color: darkgreen; font-weight: bold; ">This new one is:<br />';
-                echo "&nbsp;&nbsp;&nbsp;&nbsp;username: $username; projectName: $projectName; Description: $projectDescription";
-                echo "&nbsp;&nbsp;&nbsp;&nbsp;email: $email; organization: $organization<br />";
-                echo "&nbsp;&nbsp;&nbsp;&nbsp;subfolder: $subfolder<br /></span>";
+                echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$projectDescription</span><br />";
+                echo "&nbsp;&nbsp;&nbsp;&nbsp;email: <span style='color: darkblue' >$email</span>; organization: <span style='color: darkblue' >$organization</span><br />";
+                echo "&nbsp;&nbsp;&nbsp;&nbsp;subfolder: <span style='color: darkblue' >$subfolder</span><br /></span>";
+                $url = '';                                                                      // no URL
                 $SABIndexArray = [];								                            // SAB_index
-                $SABurlArray = [];							                                    // url
+                //$SABurlArray = [];							                                    // URL
                 $SABSubfolderArray = [];							                            // subfolder
                 $SABDescriptionArray = [];						                                // description
                 while ($row = $result->fetch_assoc()) {                                         // SAB_scriptoria table
                     $SABIndexArray[] = $row['SAB_index'];								        // SAB_index
-                    $SABSubfolderArray[] = $row['subfolder'];							        // subfolder
+                    //$SABurlArray[] = $row['url'];							                    // url
+                    $SABSubfolderArray[] = substr($row['subfolder'], 4, -1);                    // subfolder without 'sab/' and trailing '/'
                     $SABDescriptionArray[] = $row['description'];						        // description
                 }
                 // UPDATE, INSERT, or Cancel
@@ -200,10 +193,10 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 $k=0;
                 for ($k=0; $k < count($SABIndexArray); $k++) {
                     $num = $k + 1;
-                    echo "<option value='$SABIndexArray[$k]'>$num => Description: $SABDescriptionArray[$k]; SABSubfolderArray: $SABSubfolderArra[$k]</option>";
+                    echo "<option value='$SABIndexArray[$k]'>$num => Description: $SABDescriptionArray[$k]; subfolder: $SABSubfolderArray[$k]</option>";
                 }
                 echo "</select><br /><br />&nbsp;&nbsp;&nbsp;";
-                echo "<input type='button' name='accept' value='UPDATE' onclick='SABUPDATE(\"$projectName\", \"$projectDescription\", $idx, \"$subfolder\", document.getElementById(\"SABSelect\").value), $add_index)' />&nbsp;&nbsp;&nbsp;";      // document.getElementById(\"SABSelect\").value) = $SABIndexArray[$k] of the selected SABIndexArray = SAB_index
+                echo "<input type='button' name='accept' value='UPDATE' onclick='SABUPDATE(\"$projectName\", \"$projectDescription\", $idx, \"$subfolder\", document.getElementById(\"SABSelect\").value, $add_index, \"$iso\")' />&nbsp;&nbsp;&nbsp;";      // document.getElementById(\"SABSelect\").value) = $SABIndexArray[$k] of the selected SABIndexArray = SAB_index
                 echo "<input type='button' name='result' value='INSERT as new SAB' onclick='SABINSERT(\"$projectName\", \"$projectDescription\", $idx, \"$iso\", \"$rod\", \"$var\", \"$subfolder\", $k, $add_index)' />&nbsp;&nbsp;&nbsp;";
                 echo "<input id='cancel' type='button' value='Cancel' onclick='window.location.href = window.location.href' />";    // No changes made to CellPhone table WHILE $idx AND 'Android App'. So, return to Scripture_Examine.php.
                 echo "</div>";
@@ -212,9 +205,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                     /****************************************************************************************************************
                         fetch - ExamineSubmit.php - UPDATE SAB
                     ****************************************************************************************************************/
-                    async function SABUPDATE(projectName, projectDescription, idx, subfolder, SABIndex, add_index) {
+                    async function SABUPDATE(projectName, projectDescription, idx, subfolder, SABIndex, add_index, iso) {
                         try {
-                            const responseSAB = await fetch("ExamineSubmit.php?number=1a&name="+projectName+"&description="+projectDescription+"&idx="+idx+"&subfolder="+subfolder+"&SABIndex="+SABIndex+"&add_index="+add_index);
+                            const responseSAB = await fetch("ExamineSubmit.php?number=1a&name="+projectName+"&description="+projectDescription+"&idx="+idx+"&subfolder="+subfolder+"&SABIndex="+SABIndex+"&add_index="+add_index+"&iso="+iso);
                             const textSAB = await responseSAB.text();
                             if (textSAB == "none") {
                                 console.log("1a. Did you make a mistake?");
@@ -263,7 +256,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
             $result = $db->query($query) or die('Query failed: ' . $db->error);
             if ($result->num_rows == 0) {
                 $name = preg_replace("/^\s?-\s?$iso\s?-\s?/", '', $projectName);         // remove the $iso- part at the beginning of the $projectName
-                $name = ' - ' . $name;                                            // add ' - ' at the beginning of the $name
+                $name = ' - ' . $name;                                                   // add ' - ' at the beginning of the $name
                 $db->query("INSERT INTO SAB_scriptoria (ISO, ROD_Code, Variant_Code, ISO_ROD_index, `url`, subfolder, `description`, pre_scriptoria, SAB_number) VALUES ('$iso', '$rod', '$var', $idx, '$url', '', '$name', '', 1)");
                 $db->query("UPDATE add_resource SET accept = 1, wait = 0, toAdd = 0, reject = 0 WHERE add_index = $add_index");
                 $db->query("UPDATE scripture_main SET SAB = 1 WHERE ISO_ROD_index = $idx");
@@ -276,11 +269,11 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
             else {
             echo 'Two or more SAB (Read/Listen/View) are found!<br />Which one do you want to UPDATE with this new one?<br />';
             echo '<span style="color: darkgreen; font-weight: bold; ">This new one is:<br />';
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;username: $username; projectName: $projectName; Description: $projectDescription";
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;email: $email; organization: $organization<br />";
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;url: $url<br /></span>";
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$projectDescription</span><br />";
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;email: <span style='color: darkblue' >$email</span>; organization: <span style='color: darkblue' >$organization</span><br />";
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;URL: <span style='color: darkblue' >$url</span><br /></span>";
             $SABIndexArray = [];								                            // SAB_index
-            $SABurlArray = [];							                                    // url
+            $SABurlArray = [];							                                    // URL
             $SABDescriptionArray = [];						                                // description
             while ($row = $result->fetch_assoc()) {                                         // SAB_scriptoria table
                 $SABIndexArray[] = $row['SAB_index'];								        // SAB_index
@@ -315,11 +308,11 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                         else {
                             console.log("2a. SAB_scriptoria table already has index number <?php echo $idx ?>. UPDATEd anyway.");
                         }
-                        window.location.href = 'Scripture_Examine.php';
                     }
                     catch (error) {
                         console.log(error);
                     }
+                    window.location.href = 'Scripture_Examine.php';
                 }
                 /****************************************************************************************************************
                     fetch - ExamineSubmit.php - INSERT SAB with URL
@@ -334,11 +327,11 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                         else {
                             console.log("2b. SAB_scriptoria table already has index number <?php echo $idx ?>. INSERTed anyway.");
                         }
-                        window.location.href = 'Scripture_Examine.php';
                     }
                     catch (error) {
                         console.log(error);
                     }
+                    window.location.href = 'Scripture_Examine.php';
                 }
             </script>
             <?php
@@ -368,9 +361,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
         else {
             echo 'Two or more APKs found!<br />Which one do you want to UPDATE with this new one?<br />';
             echo '<span style="color: darkgreen; font-weight: bold; ">This new one is:<br />';
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;username: $username;  projectName: $projectName; Description: $projectDescription<br />";
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;email: $email; organization: $organization<br />";
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;url: $url<br /></span>";
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$projectDescription</span><br />";
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;email: <span style='color: darkblue' >$email</span>; organization: <span style='color: darkblue' >$organization</span><br />";
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;URL: <span style='color: darkblue' >$url</span><br /></span>";
             $APKIndexArray = [];                                                            // CellPhone_index
             $APKFilenameArray = [];							                                // Cell_Phone_File
             $DescriptionArray = [];						                                    // optional
@@ -459,9 +452,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
         else {
             echo 'Two or more iOS Asset Package are found!<br />Which one do you want to UPDATE with this new one?<br />';
             echo '<span style="color: darkgreen; font-weight: bold; ">This  new one is:<br />';
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;username: $username; projectName: $projectName; Description: $projectDescription<br />";
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;email: $email; organization: $organization<br />";
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;url: $url<br /></span>";
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$projectDescription</span><br />";
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;email: <span style='color: darkblue' >$email</span>; organization: <span style='color: darkblue' >$organization</span><br />";
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;URL: <span style='color: darkblue' >$url</span><br /></span>";
             $iosIndexArray = [];                                                            // CellPhone_index
             $iosFilenameArray = [];							                                // Cell_Phone_File
             $iosDescriptionArray = [];						                                // optional
@@ -552,9 +545,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
         else {
             echo 'Two or more Google Play Store are found!<br />Which one do you want to UPDATE with this new one?<br />';
             echo '<span style="color: darkgreen; font-weight: bold; ">This new one is:<br />';
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;username: $username;  projectName: $projectName; Description: $projectDescription<br />";
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;email: $email; organization: $organization<br />";
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;url: $url<br /></span>";
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$projectDescription</span><br />";
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;email: <span style='color: darkblue' >$email</span>; organization: <span style='color: darkblue' >$organization</span><br />";
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;URL: <span style='color: darkblue' >$url</span><br /></span>";
             $LinksIndexArray = [];                                                          // Links_index
             $LinksTitleArray = [];							                                // company_title
             $LinksURLArray = [];						                                    // URL
