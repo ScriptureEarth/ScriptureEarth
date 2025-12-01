@@ -64,9 +64,9 @@ All of the specific minority language is displayed on this page. There are 7 tab
 * **countries** – English, Spanish, Portuguese, French, Dutch, German, Chinese, Korean, Russian, and Arabic country names and ISO_Country (two uppercase letters)
 * **ISO_countries** – ISO_countries (two uppercase letters) field
 * **ISO_Lang_Countries** – ISO and ISO_Country (two uppercase letters)
-* **dialects** – dialects
+* **subfamilies** – subfamilies
 * **eBible_list** – eBible matching list
-* **GotoInterest** – 12 rows, interests to go to another dialects
+* **GotoInterest** – 12 rows, interests to go to another subfamilies
 * **isop** – 58 rows, ISO Plus (ISO + 1 up to 4 uppercase letters)
 * **leafletjs_maps** – ISO (the field name is "hid"), latitude, and longitude for each language
 * **links** – company, company_title, and URL for buy, map, BibleIs, BibleIsGospelFilm, YouVersion, Bibles_org, GooglePlay, GRN, email, and other
@@ -88,7 +88,7 @@ All of the specific minority language is displayed on this page. There are 7 tab
 * **OT_PDF_Media** – PDF files for every book and OT
 * **PlaylistAudio** – 1 up to 10 navigational language txt files and containing MP3 files
 * **PlaylistVideo** – 1 up to 10 navigational language txt files and containing MP4 files
-* **ROD_Dialect** – ISO_country (two uppercase letters), language_name, (langauge name that is larger that the dialect name), dialect_name, location (can be smaller than the country. E.g., India, Arunachal Pradesh)
+* **ROD_subfamily** – ISO_country (two uppercase letters), language_name, (langauge name that is larger that the subfamily name), subfamily_name, location (can be smaller than the country. E.g., India, Arunachal Pradesh)
 * **SAB** – contains the html (read, listen, and/or view) files for each book and chapter for each language
 * **SAB_scriptoria** – url (remote) or subfolder (local), description, and SAB_number (0 up to 3)
 * **Scripture_and_or_Bible** – PDF of the Bible or some portions and NT
@@ -137,7 +137,7 @@ SE.org API has these requests:
 * **country.php** with the country name or country code the SE API will pull out the English language names as well as the ISO 639-3 codes, indexes, alternate language numbers, and alternate language names
 * **partial_countries.php** with the partial (2 or more letters) country names starting at the beginning of the words and will pull out the English language names as well as the ISO 639-3 codes, indexes, alternate language numbers, and alternate language names
 * **all_countries.php** the SE API will pull out **all** of the countries and country codes
-* **dialects.php** the SE API will pull out the dialect(s)
+* **subfamilies.php** the SE API will pull out the subfamily(s)
 * **media_se.php** with the ISO 639-3 code or index the SE API will pull out all of the SE URLs for texts, audio, videos, audio playlists, video playlists, theWord (Windows OS), and the online viewer
 * **general_links.php** with the ISO 639-3 code or index the SE API will pull out the general URLs for texts, audio, and videos (Bible.is, YouVersion, and watch full Scripture videos) also the websites for GRN and eBible
 * **apps.php** with the ISO 639-3 code or index the SE API will pull out the Android app (apk) and iOS Assent Package for that ISO 639-3 code or index

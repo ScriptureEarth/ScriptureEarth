@@ -47,7 +47,7 @@
 	if ($count_failed == 0) {
 		// Confirmation
         $Location = $db->real_escape_string($Location);
-		$query="INSERT INTO ROD_Dialect (ISO, ROD_Code, Variant_Code, ISO_country, language_name, dialect_name, location) VALUES ('$iso', '$rod', '', '$CountryCode', '$Language', '$Dialect', '$Location')";
+		$query="INSERT INTO ROD_Dialect (ISO, ROD_Code, Variant_Code, ISO_country, language_name, dialect_name, `location`) VALUES ('$iso', '$rod', '', '$CountryCode', '$Language', '$Dialect', '$Location')";
 		$result=$db->query($query);
 		if ($db->affected_rows > 0) {
 			?>

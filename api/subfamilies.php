@@ -5,18 +5,18 @@
 	key=[your key]
 		and
 	(
-		all=justdialects -> just the dialect names only
+		all=justsubfamilies -> only the ISOs of the subfamilies
 			or
-		all=dialects -> all of the dialects
+		all=subfamilies -> all of the elements of the ISOs of the subfamilies
 			or
-		dialect=[the particular name of the dialect]
+		subfamily=[the particular ISOs/names of the subfamily] e.g. Náhuatl (the ISOs within that subfamily)
 	)
 */
 
 $m = $i = $j = 0;
 $index = 0;
 $all = '';
-$dialect = '';
+$subfamily = '';
 $first = '';
 $marks = [];
 
@@ -36,22 +36,22 @@ $db = get_my_db();
 include 'include/v.key.php';																// get v and key
 
 if (isset($_GET['all'])) {
-	$all = $_GET['all'];																	// just the name of the dialects
-	if ($all == 'justdialects') {
+	$all = $_GET['all'];																	// only the ISOs of the subfamilies
+	if ($all == 'justsubfamilies') {
 		$index = 1;
-		$stmt_dialects = $db->prepare("SELECT `dialect`, `multipleCountries`, `countryCodes` FROM `dialects` WHERE `ISO` = '' ORDER BY `dialect`");
-		$stmt_dialects->execute();															// execute query
-		$result_dialects = $stmt_dialects->get_result();
+		$stmt_subfamilies = $db->prepare("SELECT `subfamily`, `multipleCountries`, `countryCodes` FROM `subfamilies` WHERE `ISO` = '' ORDER BY `subfamily`");
+		$stmt_subfamilies->execute();															// execute query
+		$result_subfamilies = $stmt_subfamilies->get_result();
 	}
-	elseif ($all == 'dialects') {															// all dialects
+	elseif ($all == 'subfamilies') {															// all subfamilies
 		$index = 3;
-		$stmt_dialects = $db->prepare("SELECT `dialect`, `multipleCountries`, `countryCodes` FROM `dialects` WHERE `ISO` = '' ORDER BY `dialect`");
-		$stmt_dialects->execute();															// execute query
-		$result_dialects = $stmt_dialects->get_result();
-		if ($result_dialects->num_rows === 0) {
-			die('dialects table does not have empty ISO\'s.');
+		$stmt_subfamilies = $db->prepare("SELECT `subfamily`, `multipleCountries`, `countryCodes` FROM `subfamilies` WHERE `ISO` = '' ORDER BY `subfamily`");
+		$stmt_subfamilies->execute();															// execute query
+		$result_subfamilies = $stmt_subfamilies->get_result();
+		if ($result_subfamilies->num_rows === 0) {
+			die('subfamilies table does not have empty ISO\'s.');
 		}
-		$stmt_dialect = $db->prepare("SELECT ISO, ROD_Code, Variant_Code, ISO_ROD_index, `dialect`, LN_English, multipleCountries, countryCodes FROM `dialects` WHERE  `dialect` = ? AND LN_English <> '' ORDER BY `dialect`, `ISO`, `ROD_Code`");
+		$stmt_subfamily = $db->prepare("SELECT ISO, ROD_Code, Variant_Code, ISO_ROD_index, `subfamily`, LN_English, multipleCountries, countryCodes FROM `subfamilies` WHERE  `subfamily` = ? AND LN_English <> '' ORDER BY `subfamily`, `ISO`, `ROD_Code`");
 		//$stmt_countries = $db->prepare("SELECT countries.English FROM countries, ISO_Lang_Countries WHERE countries.ISO_Country = ISO_Lang_Countries.ISO_Country AND ISO_Lang_Countries.ISO = ?");
 		$stmt_english_country = $db->prepare("SELECT English FROM countries WHERE ISO_Country = ?");
 		$stmt_var = $db->prepare("SELECT Variant_Eng FROM Variants WHERE Variant_Code = ?");
@@ -60,18 +60,18 @@ if (isset($_GET['all'])) {
 		die('Suspicious activity!');
 	}
 }
-elseif (isset($_GET['dialect'])) {															// a dialect
-	$dialect = $_GET['dialect'];
+elseif (isset($_GET['subfamily'])) {															// a subfamily
+	$subfamily = $_GET['subfamily'];
 	$index = 2;
-	$stmt_dialects = $db->prepare("SELECT `multipleCountries`, `countryCodes` FROM `dialects` WHERE `dialect` = '$dialect' AND `ISO` = '' ORDER BY `dialect`");
-	$stmt_dialects->execute();																// execute query
-	$result_dialects = $stmt_dialects->get_result();
-	if ($result_dialects->num_rows === 0) {
-		die('dialects table does not have empty ISO\'s within the '.$dialect.' dialect.');
+	$stmt_subfamilies = $db->prepare("SELECT `multipleCountries`, `countryCodes` FROM `subfamilies` WHERE `subfamily` = '$subfamily' AND `ISO` = '' ORDER BY `subfamily`");
+	$stmt_subfamilies->execute();																// execute query
+	$result_subfamilies = $stmt_subfamilies->get_result();
+	if ($result_subfamilies->num_rows === 0) {
+		die('subfamilies table does not have empty ISO\'s within the '.$subfamily.' subfamily.');
 	}
-	$stmt_dialect = $db->prepare("SELECT ISO, ROD_Code, Variant_Code, ISO_ROD_index, LN_English, multipleCountries, countryCodes FROM `dialects` WHERE `dialect` = '$dialect' AND LN_English <> '' ORDER BY `ISO`, `ROD_Code`");
-	$stmt_dialect->execute();																// execute query
-	$result_dialect = $stmt_dialect->get_result();
+	$stmt_subfamily = $db->prepare("SELECT ISO, ROD_Code, Variant_Code, ISO_ROD_index, LN_English, multipleCountries, countryCodes FROM `subfamilies` WHERE `subfamily` = '$subfamily' AND LN_English <> '' ORDER BY `ISO`, `ROD_Code`");
+	$stmt_subfamily->execute();																// execute query
+	$result_subfamily = $stmt_subfamily->get_result();
 	//$stmt_countries = $db->prepare("SELECT countries.English FROM countries, ISO_Lang_Countries WHERE countries.ISO_Country = ISO_Lang_Countries.ISO_Country AND ISO_Lang_Countries.ISO = ?");
 	$stmt_english_country = $db->prepare("SELECT English FROM countries WHERE ISO_Country = ?");
 	$stmt_var = $db->prepare("SELECT Variant_Eng FROM Variants WHERE Variant_Code = ?");
@@ -80,24 +80,24 @@ else {
 	die('Suspicious activity!');
 }
 
-if ($index == 1) {																			// just dialects
+if ($index == 1) {																			// just subfamilies
 	$m = 1;
-	$first = '{ "just_dialects": {';
-	while ($row_dialects=$result_dialects->fetch_assoc()) {
-		$dialect=trim($row_dialects['dialect']);
+	$first = '{ "just_subfamilies": {';
+	while ($row_subfamilies=$result_subfamilies->fetch_assoc()) {
+		$subfamily=trim($row_subfamilies['subfamily']);
 		$first .= '"'.($m-1).'": ';
-		$first .= '{"dialect": "'.$dialect.'"},';
+		$first .= '{"subfamily": "'.$subfamily.'"},';
 		$m++;
 	}
 	$first = rtrim($first, ',');
 	$first .= '}}';
 }
-elseif ($index == 2) {																		// one dialect
+elseif ($index == 2) {																		// one subfamily
 	$first = '{';
-	$first .= '"'.$dialect.'": {';
-	$row_dialects = $result_dialects->fetch_assoc();
-	$dialectCountryCodes = $row_dialects['countryCodes'];
-	$countryCodesArray = explode(' ', $dialectCountryCodes);								// convert string to array using ' '
+	$first .= '"'.$subfamily.'": {';
+	$row_subfamilies = $result_subfamilies->fetch_assoc();
+	$subfamilyCountryCodes = $row_subfamilies['countryCodes'];
+	$countryCodesArray = explode(' ', $subfamilyCountryCodes);								// convert string to array using ' '
 	$first .= '"total_countries": {';
 	$j = 1;
 	$englishCountry = '';
@@ -121,7 +121,7 @@ elseif ($index == 2) {																		// one dialect
 	$first .= '},';
 	$first .= '"languages": {';
 	$m = 0;
-	while ($row = $result_dialect->fetch_assoc()) {
+	while ($row = $result_subfamily->fetch_assoc()) {
 		$m++;
 		$iso = $row['ISO'];
 		$rod = $row['ROD_Code']; 
@@ -159,8 +159,8 @@ elseif ($index == 2) {																		// one dialect
 		$first .= '"language_name": {';
 		$first .= '"English":			"'.$LN_English.'"},';
 		$first .= '"countries":	{';
-		$dialectCountryCodes = $row_dialects['countryCodes'];
-		$countryCodesArray = explode(' ', $dialectCountryCodes);							// convert string to array using ' '
+		$subfamilyCountryCodes = $row_subfamilies['countryCodes'];
+		$countryCodesArray = explode(' ', $subfamilyCountryCodes);							// convert string to array using ' '
 		$j = 1;
 		$englishCountry = '';
 		foreach ($countryCodesArray as $countryCodes) {										// iterate through array
@@ -185,15 +185,15 @@ elseif ($index == 2) {																		// one dialect
 	$first = rtrim($first, ',');
 	$first .= '}}}';
 }
-elseif ($index == 3) {																		// all dialects
+elseif ($index == 3) {																		// all subfamilies
 	$i = 1;
-	$first = '{ "all_dialects": {';
-	while ($row_dialects = $result_dialects->fetch_assoc()) {
-		$dialect = $row_dialects['dialect'];
+	$first = '{ "all_subfamilies": {';
+	while ($row_subfamilies = $result_subfamilies->fetch_assoc()) {
+		$subfamily = $row_subfamilies['subfamily'];
 		$first .= '"'.($i-1).'": {';
-		$first .= '"'.$dialect.'": {';
-		$dialectCountryCodes = $row_dialects['countryCodes'];
-		$countryCodesArray = explode(' ', $dialectCountryCodes);							// convert string to array using ' '
+		$first .= '"'.$subfamily.'": {';
+		$subfamilyCountryCodes = $row_subfamilies['countryCodes'];
+		$countryCodesArray = explode(' ', $subfamilyCountryCodes);							// convert string to array using ' '
 		$first .= '"total_countries": {';
 		$j = 1;
 		$englishCountry = '';
@@ -217,10 +217,10 @@ elseif ($index == 3) {																		// all dialects
 		$first .= '},';
 		$first .= '"languages": {';
 		$m = 0;
-		$stmt_dialect->bind_param('s', $dialect);											// bind parameters for markers
-		$stmt_dialect->execute();															// execute query
-		$result_dialect = $stmt_dialect->get_result();
-		while ($row = $result_dialect->fetch_assoc()) {
+		$stmt_subfamily->bind_param('s', $subfamily);											// bind parameters for markers
+		$stmt_subfamily->execute();															// execute query
+		$result_subfamily = $stmt_subfamily->get_result();
+		while ($row = $result_subfamily->fetch_assoc()) {
 			$m++;
 			$iso = $row['ISO'];
 			$rod = $row['ROD_Code']; 
@@ -258,8 +258,8 @@ elseif ($index == 3) {																		// all dialects
 			$first .= '"language_name": {';
 			$first .= '"English":			"'.$LN_English.'"},';
 			$first .= '"countries":	{';
-			$dialectCountryCodes = $row_dialects['countryCodes'];
-			$countryCodesArray = explode(' ', $dialectCountryCodes);						// convert string to array using ' '
+			$subfamilyCountryCodes = $row_subfamilies['countryCodes'];
+			$countryCodesArray = explode(' ', $subfamilyCountryCodes);						// convert string to array using ' '
 			$j = 1;
 			$englishCountry = '';
 			foreach ($countryCodesArray as $countryCodes) {									// iterate through array

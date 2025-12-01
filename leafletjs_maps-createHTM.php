@@ -97,35 +97,35 @@ $end =
 </html>
 END;
 
-$stmt_dialect=$db->prepare("SELECT ISO, ROD_Code, Variant_Code, ISO_ROD_index, dialect, LN_English, countryCodes FROM `dialects` WHERE `multipleCountries` = 1 ORDER BY `ISO`");
-//$stmt_dialect->bind_param('s', $ISO);											// bind parameters for markers from the `dialects` table for the ISO WHERE multipleCountries = 1 AND `ISO` = ? (only 1 ISO)
-$stmt_dialect->execute();													// execute query
-$result_dialect = $stmt_dialect->get_result();
-//if ($result_dialect->num_rows > 0) {										// if ISO is found in the `dialects` table
-while ($row_dialect = $result_dialect->fetch_array()) {
-	$temp = $row_dialect['ISO'];
-	$ISOArray[] = $row_dialect['ISO'];
-	$ROD_CodeArray[$temp] = $row_dialect['ROD_Code'];
-	$Variant_CodeArray[$temp] = $row_dialect['Variant_Code'];
-	$ISO_ROD_indexArray[$temp] = $row_dialect['ISO_ROD_index'];
-	$dialectArray[$temp] = $row_dialect['dialect'];							// get the dialect from the `dialects` table
-	$LN_EnglishArray[$temp] = $row_dialect['LN_English'];
-	$countryCodesArray[$temp] = $row_dialect['countryCodes'];				// get the countryCodes from the `dialects` table
+$stmt_subfamily=$db->prepare("SELECT ISO, ROD_Code, Variant_Code, ISO_ROD_index, subfamily, LN_English, countryCodes FROM `subfamilies` WHERE `multipleCountries` = 1 ORDER BY `ISO`");
+//$stmt_subfamily->bind_param('s', $ISO);											// bind parameters for markers from the `subfamilies` table for the ISO WHERE multipleCountries = 1 AND `ISO` = ? (only 1 ISO)
+$stmt_subfamily->execute();													// execute query
+$result_subfamily = $stmt_subfamily->get_result();
+//if ($result_subfamily->num_rows > 0) {										// if ISO is found in the `subfamilies` table
+while ($row_subfamily = $result_subfamily->fetch_array()) {
+	$temp = $row_subfamily['ISO'];
+	$ISOArray[] = $row_subfamily['ISO'];
+	$ROD_CodeArray[$temp] = $row_subfamily['ROD_Code'];
+	$Variant_CodeArray[$temp] = $row_subfamily['Variant_Code'];
+	$ISO_ROD_indexArray[$temp] = $row_subfamily['ISO_ROD_index'];
+	$subfamilyArray[$temp] = $row_subfamily['subfamily'];							// get the subfamily from the `subfamilies` table
+	$LN_EnglishArray[$temp] = $row_subfamily['LN_English'];
+	$countryCodesArray[$temp] = $row_subfamily['countryCodes'];				// get the countryCodes from the `subfamilies` table
 }
 $stmt_ISO=$db->prepare("SELECT `ISO` FROM `LN_English` WHERE `ISO_ROD_index` IS NOT NULL AND `ISO` = ?");	// select the ISO from LN_English to $maps_array
 $stmt_LN=$db->prepare("SELECT `LN_English` FROM `LN_English` WHERE `ISO` = ?");		// select the language name from LN_English to $maps_array
 $stmt_lat_long=$db->prepare("SELECT `latitude`, `longitude`, `name`, `hid` FROM `leafletjs_maps` WHERE `hid` = ? AND `latitude` IS NOT NULL AND `longitude` IS NOT NULL");	// select the latitude, longitude, name, hid from leafletjs_maps to $lat_long_array and $save_lat_long
-$stmt_dialectSelect=$db->prepare("SELECT ISO, ROD_Code, Variant_Code, ISO_ROD_index, dialect, LN_English, countryCodes FROM `dialects` WHERE `dialect` = ? AND `multipleCountries` = 1 AND `ISO` <> ''");	// select the dialect from the `dialect` table for the ISO
+$stmt_subfamilieselect=$db->prepare("SELECT ISO, ROD_Code, Variant_Code, ISO_ROD_index, subfamily, LN_English, countryCodes FROM `subfamilies` WHERE `subfamily` = ? AND `multipleCountries` = 1 AND `ISO` <> ''");	// select the subfamily from the `subfamily` table for the ISO
 
 $enter = '';																// output
-$dialect_files = '';														// output
+$subfamily_files = '';														// output
 $maps_array = [];															// key->ISO; value->LN from countries table
 $lat_long_array = [];														// key->ISO; value->latitude & longitude `leafletjs_maps` table
 $save_lat_long = [];														// key->ISO; value->latitude & longitude `leafletjs_maps` table
 $s_lat_long = '';															// myRedIcon string = latitude & longitude
 $previous_CC = '';															// previous ISO Country [CC]
 $previous_CName = '';														// previous English country name
-$dialect_array = [];														// dialect array
+$subfamily_array = [];														// subfamily array
 $match = [];																// preg_match
 $i = 0;																		// boolean
 $y = 0;																		// index
@@ -141,7 +141,7 @@ while ($row = $result->fetch_array()) {										// all 1 ISO and its country
 		$i = 1;																// boolean
 		$previous_CC = $ISO_Country;										// previous ISO Country [CC]
 		$previous_CName = $English_Country;									// previous English country name
-		$dialect_array = [];												// dialect array
+		$subfamily_array = [];												// subfamily array
 	}
 
 	/**************************************************************************************************
@@ -163,11 +163,11 @@ while ($row = $result->fetch_array()) {										// all 1 ISO and its country
 		*
 		*********************************************************************************************/
 		//$temp = count($maps_array[0])-1;									// the previous column of the $maps_array
-		$dialect_array = [];
-		$dialect_files = '';
+		$subfamily_array = [];
+		$subfamily_files = '';
 		$key_maps_array = array_keys($maps_array);							// create $key_maps_array from $maps_array only in (0 => ISO, 1 => ISO, etc.)
 						//echo '<h3 style="color: navy; ">Country Code: '.$previous_CC.'; new count: '.count($maps_array).'</h3>';
-		$value_maps_array = array_values($maps_array);						// create $value_maps_array from $maps_array only in (0 => LN, 1 => LN, etc.) from ISO and (LN_English or dialects) form countries table
+		$value_maps_array = array_values($maps_array);						// create $value_maps_array from $maps_array only in (0 => LN, 1 => LN, etc.) from ISO and (LN_English or subfamilies) form countries table
 		for ($z=0; $z < count($lat_long_array); $z++) {						// add all of the lat.'s and long.'s to all of the ISOs of this country
 			$key_lat_long = array_keys($lat_long_array);					// create $key_lat_long from $lat_long_array only in (0 => ISO, 1 => ISO, etc.)
 			$value_lat_long = array_values($lat_long_array);				// create $value_lat_long from $lat_long_array only in (0 => lat_long, 1 => lat_long, etc.)
@@ -240,7 +240,7 @@ echo '<br />';
 echo '<h2 style="color: darkblue; ">L_ISO (key_lat_long[$y]): '.$L_ISO.'; L_LN (value_maps_array[$y]): '.$L_LN.'</h2>';
 }*/
 				/*************************************************************************
-				*		just looks through the $lat_long_array to see if there are any dialects
+				*		just looks through the $lat_long_array to see if there are any subfamilies
 				*************************************************************************/
 				for ($latlong_index=0; $latlong_index < count($lat_long_array); $latlong_index++) {		// iterate all the way through latitude and longitude
 /*if ($L_ISO === 'acw') {
@@ -334,44 +334,44 @@ echo 'lat_long_array[$key_lat_long[$latlong_index]]: '.$lat_long_array[$key_lat_
 				//print_r($lat_long_array);
 				
 				/*************************************************************************
-							dialects table
+							subfamilies table
 				*************************************************************************/
 				// e.g.,:
-				//  	ISO 	ROD_Code 	Variant_Code 	ISO_ROD_index 	dialect 	LN_English 	multipleCountries 	countryCodes
+				//  	ISO 	ROD_Code 	Variant_Code 	ISO_ROD_index 	subfamily 	LN_English 	multipleCountries 	countryCodes
 				// 1 											0				Adi 				1 					CN IN
 				// 2 	adi 	00000 							2075 			Adi 	Adi 		1 					CN IN
 				// 3 	adl 	00000 							1714 			Adi 	Adi, Galo 	1 					IN
-				$dialect_files = '';
-				$dialect_array = [];
+				$subfamily_files = '';
+				$subfamily_array = [];
 /*if ($L_ISO === 'acw') {
 echo 'L_ISO: '.$L_ISO.'<br />';
 print_r($key_maps_array);
 echo '<br />';
 }*/
 				if (in_array($L_ISO, $key_maps_array)) {								// is ISO in $key_maps_array (ISO)?
-					$stmt_dialectSelect->bind_param('s', $dialectArray[$L_ISO]);		// bind parameters for markers from the `dialects` table for the dialect
-					$stmt_dialectSelect->execute();										// execute query
-					$result_dialectSelect = $stmt_dialectSelect->get_result();
-					if ($result_dialectSelect->num_rows > 0) {							// if dialect is found in the `dialect` table
-						//echo '<p style="color: green; ">in_array ISO: '.$L_ISO.'; dialect: '.$dialectArray[$L_ISO].'</p>';
-						while ($row_dialectSelect = $result_dialectSelect->fetch_array()) {	// get the dialect from the `dialects` table for the ISO
-								$dialectSelectISO = $row_dialectSelect['ISO'];
+					$stmt_subfamilieselect->bind_param('s', $subfamilyArray[$L_ISO]);		// bind parameters for markers from the `subfamilies` table for the subfamily
+					$stmt_subfamilieselect->execute();										// execute query
+					$result_subfamilieselect = $stmt_subfamilieselect->get_result();
+					if ($result_subfamilieselect->num_rows > 0) {							// if subfamily is found in the `subfamily` table
+						//echo '<p style="color: green; ">in_array ISO: '.$L_ISO.'; subfamily: '.$subfamilyArray[$L_ISO].'</p>';
+						while ($row_subfamilieselect = $result_subfamilieselect->fetch_array()) {	// get the subfamily from the `subfamilies` table for the ISO
+								$subfamilieselectISO = $row_subfamilieselect['ISO'];
 /*if ($L_ISO === 'acw') {
-echo 'dialectSelectISO: '.$dialectSelectISO.'<br />';
+echo 'subfamilieselectISO: '.$subfamilieselectISO.'<br />';
 }*/
-							if (!in_array($dialectSelectISO, $key_maps_array)) {		// is dialects table by dialect ISO NOT in the $key_maps_array
-								if (in_array($dialectSelectISO, $dialect_array)) {
+							if (!in_array($subfamilieselectISO, $key_maps_array)) {		// is subfamilies table by subfamily ISO NOT in the $key_maps_array
+								if (in_array($subfamilieselectISO, $subfamily_array)) {
 									continue;
 								}
-								$dialectSelectLN = $row_dialectSelect['LN_English'];
-								$dialect_array[] = $dialectSelectISO;					// save array ISO
-								$maps_array[$dialectSelectISO] = $dialectSelectLN;
-								//echo '<span style="color: red; ">ISO: '.$dialectSelectISO.'; Language Name: '.$dialectSelectLN.'</span><br />';
+								$subfamilieselectLN = $row_subfamilieselect['LN_English'];
+								$subfamily_array[] = $subfamilieselectISO;					// save array ISO
+								$maps_array[$subfamilieselectISO] = $subfamilieselectLN;
+								//echo '<span style="color: red; ">ISO: '.$subfamilieselectISO.'; Language Name: '.$subfamilieselectLN.'</span><br />';
 
 								// get the latitude and longitude from the `leafletjs_maps` table for the ISO
 								$latitude = '';
 								$longitude = '';
-								$stmt_lat_long->bind_param('s', $dialectSelectISO);		// bind parameters for markers from the `leafletjs_maps` table for the ISO
+								$stmt_lat_long->bind_param('s', $subfamilieselectISO);		// bind parameters for markers from the `leafletjs_maps` table for the ISO
 								$stmt_lat_long->execute();								// execute query
 								$result_map = $stmt_lat_long->get_result();				// get the latitude and longtude of the ISO
 								if ($result_map->num_rows == 0) {						// if latitude etc. is not in `leafletjs_map` table then continues
@@ -382,26 +382,26 @@ echo 'dialectSelectISO: '.$dialectSelectISO.'<br />';
 								$longitude=$r['longitude'];
 								//echo '<span style="color: purple; ">latitude: '.$latitude.'; longitude: '.$longitude.'</span><br />';
 								
-								$stmt_ISO->bind_param('s', $dialectSelectISO);			// bind parameters for markers from the `LN_English` table for the ISO WHERE ISO_ROD_index IS NOT NULL
+								$stmt_ISO->bind_param('s', $subfamilieselectISO);			// bind parameters for markers from the `LN_English` table for the ISO WHERE ISO_ROD_index IS NOT NULL
 								$stmt_ISO->execute();									// execute query
 								$result_ISO = $stmt_ISO->get_result();					// get the `LN_English` table for the ISO
 								if ($result_ISO->num_rows == 0) {
 									$lat_long = "	L.marker(["."$latitude, $longitude"."], {icon: myPurpleIcon}).addTo(mymap)\n";
-									$lat_long .= "	.bindPopup(\"<b>$dialectSelectLN - ISO 639-3: $dialectSelectISO</b>\");\n";
+									$lat_long .= "	.bindPopup(\"<b>$subfamilieselectLN - ISO 639-3: $subfamilieselectISO</b>\");\n";
 								} 
 								else {
 									$lat_long = "	L.marker(["."$latitude, $longitude"."], {icon: myPurpleIcon}).addTo(mymap)\n";
-									$lat_long .= "	.bindPopup(\"<b>$dialectSelectLN - ISO 639-3: $dialectSelectISO</b><br />ScriptureEarth (<a target='_top' href='https://www.scriptureearth.org/00eng.php?iso=$dialectSelectISO'>$dialectSelectLN</a>)\");\n";
+									$lat_long .= "	.bindPopup(\"<b>$subfamilieselectLN - ISO 639-3: $subfamilieselectISO</b><br />ScriptureEarth (<a target='_top' href='https://www.scriptureearth.org/00eng.php?iso=$subfamilieselectISO'>$subfamilieselectLN</a>)\");\n";
 								}
-								$dialect_files .= $lat_long;
-								//echo '<span style="color: brown; ">$dialectSelectISO: '.$dialectSelectISO.'; $lat_long_array[$dialectSelectISO]: '.$lat_long_array[$dialectSelectISO].'</span><br />';
+								$subfamily_files .= $lat_long;
+								//echo '<span style="color: brown; ">$subfamilieselectISO: '.$subfamilieselectISO.'; $lat_long_array[$subfamilieselectISO]: '.$lat_long_array[$subfamilieselectISO].'</span><br />';
 							}
 						}
 						//$save_lat_long = $lat_long_array;							// lat_long template
 					}
 				}
 				/*************************************************************************
-							end dialects table
+							end subfamilies table
 				*************************************************************************/
 				
 				/*************************************************************************
@@ -425,9 +425,9 @@ echo 'dialectSelectISO: '.$dialectSelectISO.'<br />';
 				//file_put_contents('maps/'.$previous_CName.'/'.$L_ISO.'.html', $end, FILE_APPEND | LOCK_EX);
 				// top of this htm file
 				file_put_contents('maps/'.$previous_CC.'/'.$L_ISO.'.htm', $first, LOCK_EX);
-				// dialect_files
-				if ($dialect_files != '') {
-					file_put_contents('maps/'.$previous_CC.'/'.$L_ISO.'.htm', $dialect_files, FILE_APPEND | LOCK_EX);
+				// subfamily_files
+				if ($subfamily_files != '') {
+					file_put_contents('maps/'.$previous_CC.'/'.$L_ISO.'.htm', $subfamily_files, FILE_APPEND | LOCK_EX);
 				}
 				// body of this htm file
 				file_put_contents('maps/'.$previous_CC.'/'.$L_ISO.'.htm', $enter, FILE_APPEND | LOCK_EX);

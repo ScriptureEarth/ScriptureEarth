@@ -54,7 +54,7 @@ div + p {                       /* div followed immediately by p  */
     <p><a href="#all_countries">all_countries.php</a> the SE API will pull out <strong>all</strong> of the countries and country codes</p>
   </li>
   <li>
-  	<p style='background-color: #FF0; '><a href="#dialects">dialects.php</a> the SE API will pull out the dialect(s).</p>
+  	<p style='background-color: #FF0; '><a href="#subfamilies">subfamilies.php</a> the SE API will pull out the subfamily(ies).</p>
   </li>
   <li>
     <p><a href="#media_se">media_se.php</a> with the ISO 639-3 code or index number, the SE API will pull out  all of the SE URLs for texts, audio, videos, audio playlists, video playlists, theWord (Windows OS), and the online viewer</p>
@@ -429,22 +429,22 @@ div + p {                       /* div followed immediately by p  */
   <li>country codes</li>
 </ul>
 </div>
-<p id='dialects'>dialects.php</p>
+<p id='subfamilies'>subfamilies.php</p>
 <div style='background-color: #FF0; '>
-<p>To get the dialect(s)</p>
+<p>To get the subfamily(ies)</p>
 <ul>
   <li>With the ?v=1&amp;key=[your key], you will also need </li>
   <ul>
-  <li>just the dialect names only (type ‘&amp;all=justdialects’)</li>
+  <li>just the subfamily names only (type ‘&amp;all=justsubfamilies’)</li>
     <li>&nbsp;&nbsp;&nbsp;&nbsp;OR</li>
-  	<li>all of the dialects (type ‘&amp;all=dialects’)</li>
+  	<li>all of the subfamilies (type ‘&amp;all=subfamilies’)</li>
     <li>&nbsp;&nbsp;&nbsp;&nbsp;OR</li>
-  	<li>a dialect (type ‘&amp;dialect=[the particular name of the dialect]’)</li>
+  	<li>a subfamily (type ‘&amp;subfamily=[the particular name of the subfamily]’)</li>
   </ul>
 </ul>
 <p>will pull out</p>
 <ul>
-  <li>total countries for the dialect</li>
+  <li>total countries for the subfamily</li>
   <li>
     ISO 639-3 codes</li>
   <li>

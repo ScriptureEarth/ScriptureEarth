@@ -2427,20 +2427,20 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				$SEVideoPlaylistArray = [];
 				
 				$PLVideo = $PlaylistVideoFilename;
-				$ISO_dialect = $ISO;
+				$ISO_temp = $ISO;
 
 				/*******************************************************************************************************************
 						set $PLVideo in order to set $PlaylistVideoTitle for the 'tool tip' (see about 100 lines below)
 				********************************************************************************************************************/
 				// JESUSFilm-bzs.txt, etc.
 				if (preg_match('/^[a-zA-Z]+-('.$ISO.'[a-zA-Z0-9]*)(-|\.)/', $PlaylistVideoFilename, $matches)) {	// get the ISO code and if there is anything attached before the '-'
-					$ISO_dialect = $matches[1];
+					$ISO_temp = $matches[1];
 					preg_match('/^([a-zA-Z]+)-/i', $PlaylistVideoFilename, $matches);		// get the left most letters before the '-'
 					$PLVideo = strtolower($matches[1]);										// to lower case ('jesusfilm', etc.)
 				}
 				// bzj-ScriptureAnim.txt, etc.
 				elseif (preg_match('/^('.$ISO.'[a-zA-Z0-9]*)-/', $PlaylistVideoFilename, $matches)) {	// get the ISO code and if there is anything attached before the '-'
-					$ISO_dialect = $matches[1];
+					$ISO_temp = $matches[1];
 					if (preg_match('/-([a-zA-Z]+)(-|\.)/i', $PlaylistVideoFilename, $matches)) {		// get the left most letters before the '-'
 						if (empty($matches[1])) {
 							//die('ERROR. Non-alphabetic characters in '.$matches[0]);					// produces "PHP Warning:  Undefined array key 1 in /home/se/public_html/include/00-SpecificLanguage.inc.php"
@@ -2857,18 +2857,18 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 			$SEVideoPlaylistArray = [];
 
 			$PLVideo = $PlaylistVideoFilename;
-			$ISO_dialect = $ISO;
+			$ISO_temp = $ISO;
 			// JESUSFilm-bzs.txt or
 			$found = preg_match('/^[a-zA-Z]+-('.$ISO.'[a-zA-Z0-9]*)(-|\.)/', $PlaylistVideoFilename, $matches);	// get the ISO code and if there is anything attached before the '-'
 			if ($found) {
-				$ISO_dialect = $matches[1];
+				$ISO_temp = $matches[1];
 				preg_match('/^([a-zA-Z]+)-/i', $PlaylistVideoFilename, $matches);		// get the left most letters before the '-'
 				$PLVideo = strtolower($matches[1]);										// to lower case
 			}
 			// bzj-ScriptureAnim.txt
 			$found = preg_match('/^('.$ISO.'[a-zA-Z0-9]*)-/', $PlaylistVideoFilename, $matches);	// get the ISO code and if there is anything attached before the '-'
 			if ($found) {
-				$ISO_dialect = $matches[1];
+				$ISO_temp = $matches[1];
 				if (preg_match('/-([a-zA-Z0-9ñáéíóú]+)(-|\.)/i', $PlaylistVideoFilename, $matches)) {	// get the left most letters before the '-'
 					$PLVideo = strtolower($matches[1]);									// to lower case
 				}

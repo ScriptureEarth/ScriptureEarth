@@ -144,21 +144,21 @@ CREATE TABLE IF NOT EXISTS `countries` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `dialects`
+-- Table structure for table `subfamilies`
 --
 
-DROP TABLE IF EXISTS `dialects`;
-CREATE TABLE IF NOT EXISTS `dialects` (
-  `dialects_index` int(11) NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `subfamilies`;
+CREATE TABLE IF NOT EXISTS `subfamilies` (
+  `subfamilies_index` int(11) NOT NULL AUTO_INCREMENT,
   `ISO` varchar(3) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `ROD_Code` varchar(5) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '00000',
   `Variant_Code` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `ISO_ROD_index` int(11) NOT NULL,
-  `dialect` varchar(50) NOT NULL,
+  `subfamilies` varchar(50) NOT NULL,
   `LN_English` varchar(50) NOT NULL,
   `multipleCountries` tinyint(1) NOT NULL,
   `countryCodes` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  PRIMARY KEY (`dialects_index`)
+  PRIMARY KEY (`subfamilies_index`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
