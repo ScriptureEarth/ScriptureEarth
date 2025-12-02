@@ -1120,7 +1120,7 @@ if (isset($_GET['asset'])) {
 
 						<?php // display copyright ?>
 							<div id='copyright' style='top: 140px; '>
-								<div id='aboutLang' title="<?php echo translate('Tap to find out more about the purpose and content of the site.', $st, 'sys'); ?>" onclick="aboutSection('CR'); ">© <?php echo date('Y') . ' ' .  translate('About this site', $st, 'sys'); ?></div>
+								<div id='aboutLang' onclick="aboutSection('CR'); ">© <?php echo date('Y') . ' ' .  translate('About this site', $st, 'sys'); ?></div>
 							</div>
 						<?php
 					}
@@ -1319,7 +1319,7 @@ if (isset($_GET['asset'])) {
 						//	Changed to work with the master array -- Lærke
 						//	Modified to (condition) ? value1 : value2 -- Scott
 						?>
-						<select id='navLang' onchange="menuChange()" title="<?php echo translate('Click here to choose the interface language.', $st, 'sys'); ?>">
+						<select id='navLang' onchange="menuChange()">
 							<?php
 							foreach ($_SESSION['nav_ln_array'] as $tempArray) {
 								echo "<option value='$tempArray[2]" . ($asset == 1 ? '?asset=1' : '') . '\'' . ($st == $tempArray[0] ? ' selected=\'selected\'' : '') . ">" . translate($tempArray[1], $tempArray[0], 'sys') . '</option>';
@@ -1387,17 +1387,17 @@ if (isset($_GET['asset'])) {
 								after 3 letter display the languages/alternate languages/ISO button
                     	-------------------------------------------------------------------------------------------- */ ?>
 						<div id="showLanguageID" name="showLanguageID">
-							<input type="text" id="ID" title="<?php echo translate('Find a language page: type at least 3 letters of the language name or code (ISO 639-3).', $st, 'sys'); ?>" placeholder="<?php echo translate('Language (or code)', $st, 'sys'); ?>" onfocus="submenuBlur()" onKeyUp="showLanguage(this.value, '<?php echo $st; ?>', <?php echo $Internet; ?>, '<?php echo $MajorLanguage; ?>', '<?php echo $Variant_major; ?>', '<?php echo $SpecificCountry; ?>', <?php echo $asset; ?>)" value="" />
+							<input type="text" id="ID" placeholder="<?php echo translate('Language (or code)', $st, 'sys'); ?>" onfocus="submenuBlur()" onKeyUp="showLanguage(this.value, '<?php echo $st; ?>', <?php echo $Internet; ?>, '<?php echo $MajorLanguage; ?>', '<?php echo $Variant_major; ?>', '<?php echo $SpecificCountry; ?>', <?php echo $asset; ?>)" value="" />
 						</div>
 
 						<?php // display the first letter(s) of the countries button ?>
 						<div id="showCountryID" name="showCountryID">
-							<input type="text" id="CID" autocomplete="off" title="<?php echo translate('Find a country list: type the country name.', $st, 'sys'); ?>" placeholder="<?php echo translate('Country', $st, 'sys'); ?>" onKeyUp="showCountry(this.value, '<?php echo $st; ?>', <?php echo $Internet; ?>, '<?php echo $SpecificCountry; ?>', <?php echo $asset; ?>)" value="" />
+							<input type="text" id="CID" autocomplete="off" placeholder="<?php echo translate('Country', $st, 'sys'); ?>" onKeyUp="showCountry(this.value, '<?php echo $st; ?>', <?php echo $Internet; ?>, '<?php echo $SpecificCountry; ?>', <?php echo $asset; ?>)" value="" />
 						</div>
 
 						<div id="listCountriesID" name="listCountriesID">
 							<?php // display all of the countries button ?>
-							<button id="AID" title="<?php echo translate('Tap to get a list of countries available.', $st, 'sys'); ?>" onclick="AllCountries('<?php echo $Scriptname; ?>', '<?php echo $st ?>', '<?php echo $SpecificCountry; ?>', <?php echo $Internet; ?>, <?php echo $asset; ?>)"><?php echo translate('List by Country', $st, 'sys'); ?></button>
+							<button id="AID" onclick="AllCountries('<?php echo $Scriptname; ?>', '<?php echo $st ?>', '<?php echo $SpecificCountry; ?>', <?php echo $Internet; ?>, <?php echo $asset; ?>)"><?php echo translate('List by Country', $st, 'sys'); ?></button>
 							
 							<?php // display all the countries list. 'hide' at first ?>
 							<div id="countryList" style="margin-top: 0; "></div>

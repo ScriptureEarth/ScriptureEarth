@@ -435,11 +435,11 @@ div + p {                       /* div followed immediately by p  */
 <ul>
   <li>With the ?v=1&amp;key=[your key], you will also need </li>
   <ul>
-  <li>just the subfamily names only (type ‘&amp;all=justsubfamilies’)</li>
+  	<li>all the elements of the ISOs of the subfamilies (type ‘&amp;all=subfamilies’)</li>
     <li>&nbsp;&nbsp;&nbsp;&nbsp;OR</li>
-  	<li>all of the subfamilies (type ‘&amp;all=subfamilies’)</li>
+    <li>only the ISOs of the subfamilies (type ‘&amp;all=justsubfamilies’)</li>
     <li>&nbsp;&nbsp;&nbsp;&nbsp;OR</li>
-  	<li>a subfamily (type ‘&amp;subfamily=[the particular name of the subfamily]’)</li>
+  	<li>e.g. Náhuatl (the ISOs within that subfamily) (type ‘&amp;subfamily=[the particular name of the subfamily]’)</li>
   </ul>
 </ul>
 <p>will pull out</p>
