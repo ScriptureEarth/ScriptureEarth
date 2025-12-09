@@ -38,7 +38,7 @@ All of the specific minority language is displayed on this page. There are 7 tab
 
 ## SE.org Database
 
-### `You have to have SE.org database operational before running the SE.org website!` See the [SE.org database structure sql.](./MariaDB/scripture_structure.sql)
+### `You have to have SE.org database operational before running the SE.org website!`  See the [SE.org database structure sql.](./MariaDB/scripture_structure.sql)
 
 ### Login Tables (4 tables)
 

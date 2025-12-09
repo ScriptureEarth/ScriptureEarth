@@ -205,7 +205,7 @@ function console_log($data) {
 		$db->query("DELETE FROM SAB_scriptoria WHERE ISO_ROD_index = $inputs[idx]");
 	}
 	else {
-		if (substr($_SERVER['REMOTE_ADDR'], 0, 8) != '168.148.') {	//127.0.0.') {														// Is the script local?
+		if (substr($_SERVER['REMOTE_ADDR'], 0, 8) != '168.148.') {	//127.0.0.') {										// Is the script local?
 			$db->query("DELETE FROM SAB_scriptoria WHERE ISO_ROD_index = $inputs[idx]");
 			//$query="UPDATE SAB_scriptoria SET `url` = ?, `subfolder` = ?, `description` = ? WHERE ISO_ROD_index = $inputs[idx] AND SAB_number = ?";
 			//$stmt_SAB_scriptoria=$db->prepare($query);
@@ -231,8 +231,8 @@ function console_log($data) {
 						$i++;
 						continue;
 					}
-					$SAB_array = glob($SAB_Path."*.html", GLOB_MARK | GLOB_NOCHECK | GLOB_NOESCAPE | GLOB_NOSORT);			// all HTML files
-					if (count($SAB_array) === 0) {																			// there are html files here
+					$SAB_array = glob($SAB_Path."*.html", GLOB_MARK | GLOB_NOCHECK | GLOB_NOESCAPE | GLOB_NOSORT);		// all HTML files
+					if (count($SAB_array) === 0) {																		// there are html files here
 						echo '<h3>No HTML files found in '.$SAB_Path.'. Be sure you uploaded the HTML files from you\'re comptuer to the SE server AND then re-run the Edit of CMS again.</h3>';
 					}
 					else {
