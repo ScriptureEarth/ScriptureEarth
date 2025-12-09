@@ -18,7 +18,7 @@ In our primary target audience we have noticed that in most of the Central and S
 
 ### The Scripts
 
-This repository contains most of the HTML, CSS, JavaScript, PHP, MySQL (MariaDB), and AJAX for the SE.org website. In addition, it contains the “add” and “edit” for the CMS.
+This repository contains most of the HTML, CSS, JavaScript, PHP, MySQL (MariaDB), and fetch/AJAX for the SE.org website. In addition, it contains the “add” and “edit” for the CMS.
 
 If you are the user of SE.org, scripts are divided up into two sections: 1) the searches for the minority languages page, and 2) the specific minority language page.
 
@@ -62,12 +62,12 @@ All of the specific minority language is displayed on this page. There are 7 tab
 * **buy** – buy print Bibles/NTs from links
 * **CellPhone** – MySword (Android), GoBible (Java), Android App, iOS Asset Package, ePub, and iPhone executable files
 * **countries** – English, Spanish, Portuguese, French, Dutch, German, Chinese, Korean, Russian, and Arabic country names and ISO_Country (two uppercase letters)
-* **ISO_countries** – ISO_countries (two uppercase letters) field
-* **ISO_Lang_Countries** – ISO and ISO_Country (two uppercase letters)
+* **ISO_countries** – ISO_countries (two UPPERCASE letters) field
+* **ISO_Lang_Countries** – ISO and ISO_Country (two UPPERCASE letters)
 * **subfamilies** – subfamilies
 * **eBible_list** – eBible matching list
 * **GotoInterest** – 12 rows, interests to go to another subfamilies
-* **isop** – 58 rows, ISO Plus (ISO + 1 up to 4 uppercase letters)
+* **isop** – 58 rows, ISO Plus (ISO + 1 up to 4 UPPERCASE letters)
 * **leafletjs_maps** – ISO (the field name is "hid"), latitude, and longitude for each language
 * **links** – company, company_title, and URL for buy, map, BibleIs, BibleIsGospelFilm, YouVersion, Bibles_org, GooglePlay, GRN, email, and other
 * **LN_Arabic** – Arabic language name
@@ -81,14 +81,14 @@ All of the specific minority language is displayed on this page. There are 7 tab
 * **LN_Russian** – Russian language name
 * **LN_Spanish** – Spanish language name
 * **nav_ln** – 0 or 1 for Def_LN (default language name), LN_English, LN_Spanish, LN_Portuguese, LN_French, LN_Dutch, LN_German, LN_Chinese, LN_Korean, LN_Russian, and LN_Arabic for each ISO+ROD+Variant codes (or index field)
-* **NT_Audio_Media** – MP3 files for every book and chapter for NT
+* **NT_Audio_Media** – ogg/mp3 files for every book and chapter for NT
 * **NT_PDF_Media** – PDF files for every book and NT
 * **other_titles** – other and other_title either other_PDF or other_audio or download_video
-* **OT_Audio_Media** – MP3 files for every book and chapter for OT
+* **OT_Audio_Media** – ogg/mp3 files for every book and chapter for OT
 * **OT_PDF_Media** – PDF files for every book and OT
-* **PlaylistAudio** – 1 up to 10 navigational language txt files and containing MP3 files
-* **PlaylistVideo** – 1 up to 10 navigational language txt files and containing MP4 files
-* **ROD_subfamily** – ISO_country (two uppercase letters), language_name, (langauge name that is larger that the subfamily name), subfamily_name, location (can be smaller than the country. E.g., India, Arunachal Pradesh)
+* **PlaylistAudio** – 1 up to 10 navigational language txt files and containing ogg/mp3 files
+* **PlaylistVideo** – 1 up to 10 navigational language txt files and containing webm/mp4 files
+* **ROD_subfamily** – ISO_country (two UPPERCASE letters), language_name, (langauge name that is larger that the subfamily name), subfamily_name, location (can be smaller than the country. E.g., India, Arunachal Pradesh, etc.)
 * **SAB** – contains the html (read, listen, and/or view) files for each book and chapter for each language
 * **SAB_scriptoria** – url (remote) or subfolder (local), description, and SAB_number (0 up to 3)
 * **Scripture_and_or_Bible** – PDF of the Bible or some portions and NT
@@ -105,7 +105,7 @@ All of the specific minority language is displayed on this page. There are 7 tab
 * **translations_por** – Portuguese translations
 * **translations_rus** – Russian translations
 * **translations_spa** – Spanish translations
-* **Variants** – list of variants for navigational languages (Variant_Description, Variant_Eng, Variant_Spa, Variant_Por, Variant_Fre, Variant_Dut, Variant_Ger, and Variant_Chi)
+* **Variants** – list of variants for navigational languages (Variant_Description, Variant_Eng, Variant_Spa, Variant_Por, Variant_Fre, Variant_Dut, Variant_Ger, Variant_Chi, Variant_Kor, Variant_Rus, and Variant_Ara)
 * **viewer** – 4 rows, viewer_ROD_Variant for viewer icon
 * **watch** – organization, watch_what, URL, JesusFilm (0 or 1), YouTube (0 or 1)
 

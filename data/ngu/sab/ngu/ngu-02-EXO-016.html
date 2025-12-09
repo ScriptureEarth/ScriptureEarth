@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000B63">
+<title>Éxodo 16</title>
+
+<script type='text/javascript' src='js/jquery-1.11.3.min.js'></script>
+<script type='text/javascript' src='js/popcorn-complete.min.js'></script>
+<script type='text/javascript' src='js/jquery.tooltipster.min.js'></script>
+<script type='text/javascript' src='js/app-builder-audio.js'></script>
+<script type='text/javascript' src='js/app-builder-footnotes.js'></script>
+<script type='text/javascript' src='js/app-builder-menus.js'></script>
+<script type='text/javascript' src='js/app-builder-video.js'></script>
+<script type='text/javascript' src='js/book-names.js'></script>
+
+<link rel="stylesheet" type="text/css" href="css/tooltipster.css" />
+
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+
+<link rel="stylesheet" type="text/css" href="css/sab-stylesheet.css" />
+
+<script type="text/javascript">
+
+// Audio
+$(window).load(function() {
+
+var pop = Popcorn("#audio");
+
+var timings = [
+    { label: "s1", start: 2.9, end: 9.11 },
+    { label: "1a", start: 9.36, end: 19.33 },
+    { label: "1b", start: 19.58, end: 26.77 },
+    { label: "2a", start: 27.02, end: 28.95 },
+    { label: "2b", start: 29.2, end: 32.87 },
+    { label: "3a", start: 33.12, end: 34.93 },
+    { label: "3b", start: 35.18, end: 39.67 },
+    { label: "3c", start: 39.92, end: 47.83 },
+    { label: "3d", start: 48.08, end: 54.83 },
+    { label: "4a", start: 55.08, end: 57.55 },
+    { label: "4b", start: 57.8, end: 62.71 },
+    { label: "4c", start: 62.96, end: 68.19 },
+    { label: "4d", start: 68.44, end: 72.65 },
+    { label: "5a", start: 72.9, end: 79.53 },
+    { label: "5b", start: 79.78, end: 82.67 },
+    { label: "6a", start: 82.92, end: 86.79 },
+    { label: "6b", start: 87.04, end: 92.67 },
+    { label: "7a", start: 92.92, end: 96.59 },
+    { label: "7b", start: 96.84, end: 100.83 },
+    { label: "7c", start: 101.08, end: 108.93 },
+    { label: "7d", start: 109.18, end: 111.73 },
+    { label: "7e", start: 111.98, end: 115.39 },
+    { label: "8a", start: 115.64, end: 117.95 },
+    { label: "8b", start: 118.2, end: 123.07 },
+    { label: "8c", start: 123.32, end: 127.01 },
+    { label: "8d", start: 127.26, end: 130.73 },
+    { label: "8e", start: 130.98, end: 134.19 },
+    { label: "8f", start: 134.44, end: 136.81 },
+    { label: "8g", start: 137.06, end: 138.59 },
+    { label: "8h", start: 138.84, end: 139.57 },
+    { label: "9a", start: 139.82, end: 142.57 },
+    { label: "9b", start: 142.82, end: 145.39 },
+    { label: "9c", start: 145.64, end: 147.81 },
+    { label: "9d", start: 148.06, end: 151.39 },
+    { label: "10a", start: 151.64, end: 155.47 },
+    { label: "10b", start: 155.72, end: 159.37 },
+    { label: "10c", start: 159.62, end: 163.81 },
+    { label: "11", start: 164.06, end: 167.39 },
+    { label: "12a", start: 167.64, end: 171.33 },
+    { label: "12b", start: 171.58, end: 174.43 },
+    { label: "12c", start: 174.68, end: 176.27 },
+    { label: "12d", start: 176.52, end: 180.57 },
+    { label: "12e", start: 180.82, end: 184.93 },
+    { label: "13a", start: 185.18, end: 191.95 },
+    { label: "13b", start: 192.2, end: 196.59 },
+    { label: "13c", start: 196.84, end: 202.97 },
+    { label: "14a", start: 203.22, end: 204.19 },
+    { label: "14b", start: 204.44, end: 206.75 },
+    { label: "14c", start: 207, end: 212.51 },
+    { label: "15a", start: 212.76, end: 216.11 },
+    { label: "15b", start: 216.36, end: 219.07 },
+    { label: "15c", start: 219.32, end: 220.79 },
+    { label: "15d", start: 221.04, end: 222.97 },
+    { label: "15e", start: 223.22, end: 227.19 },
+    { label: "16a", start: 227.44, end: 229.71 },
+    { label: "16b", start: 229.96, end: 234.39 },
+    { label: "16c", start: 234.64, end: 240.71 },
+    { label: "17a", start: 240.96, end: 244.49 },
+    { label: "17b", start: 244.74, end: 248.57 },
+    { label: "18a", start: 248.82, end: 250.99 },
+    { label: "18b", start: 251.24, end: 253.09 },
+    { label: "18c", start: 253.34, end: 257.31 },
+    { label: "18d", start: 257.56, end: 263.61 },
+    { label: "19a", start: 263.86, end: 265.91 },
+    { label: "19b", start: 266.16, end: 270.75 },
+    { label: "20a", start: 271, end: 274.61 },
+    { label: "20b", start: 274.86, end: 277.95 },
+    { label: "20c", start: 278.2, end: 282.71 },
+    { label: "20d", start: 282.96, end: 283.71 },
+    { label: "20e", start: 283.96, end: 285.77 },
+    { label: "21a", start: 286.02, end: 287.41 },
+    { label: "21b", start: 287.66, end: 291.71 },
+    { label: "21c", start: 291.96, end: 297.89 },
+    { label: "22a", start: 298.14, end: 301.05 },
+    { label: "22b", start: 301.3, end: 304.53 },
+    { label: "22c", start: 304.78, end: 309.37 },
+    { label: "22d", start: 309.62, end: 316.33 },
+    { label: "23a", start: 316.58, end: 318.81 },
+    { label: "23b", start: 319.06, end: 321.11 },
+    { label: "23c", start: 321.36, end: 324.91 },
+    { label: "23d", start: 325.16, end: 328.61 },
+    { label: "23e", start: 328.86, end: 333.79 },
+    { label: "23f", start: 334.04, end: 335.11 },
+    { label: "23g", start: 335.36, end: 338.81 },
+    { label: "23h", start: 339.06, end: 342.85 },
+    { label: "23i", start: 343.1, end: 347.45 },
+    { label: "24a", start: 347.7, end: 350.01 },
+    { label: "24b", start: 350.26, end: 353.85 },
+    { label: "24c", start: 354.1, end: 356.87 },
+    { label: "24d", start: 357.12, end: 360.11 },
+    { label: "25a", start: 360.36, end: 361.19 },
+    { label: "25b", start: 361.44, end: 362.83 },
+    { label: "25c", start: 363.08, end: 364.71 },
+    { label: "25d", start: 364.96, end: 368.71 },
+    { label: "25e", start: 368.96, end: 372.51 },
+    { label: "25f", start: 372.76, end: 379.33 },
+    { label: "26a", start: 379.58, end: 382.99 },
+    { label: "26b", start: 383.24, end: 387.07 },
+    { label: "26c", start: 387.32, end: 387.99 },
+    { label: "26d", start: 388.24, end: 391.79 },
+    { label: "27a", start: 392.04, end: 399.59 },
+    { label: "27b", start: 399.84, end: 401.93 },
+    { label: "28a", start: 402.18, end: 404.85 },
+    { label: "28b", start: 405.1, end: 411.77 },
+    { label: "29a", start: 412.02, end: 413.59 },
+    { label: "29b", start: 413.84, end: 414.51 },
+    { label: "29c", start: 414.76, end: 418.05 },
+    { label: "29d", start: 418.3, end: 419.35 },
+    { label: "29e", start: 419.6, end: 425.39 },
+    { label: "29f", start: 425.64, end: 431.91 },
+    { label: "30a", start: 432.16, end: 433.71 },
+    { label: "30b", start: 433.96, end: 437.75 },
+    { label: "31a", start: 438, end: 442.65 },
+    { label: "31b", start: 442.9, end: 445.71 },
+    { label: "31c", start: 445.96, end: 450.23 },
+    { label: "32a", start: 450.48, end: 452.23 },
+    { label: "32b", start: 452.48, end: 456.11 },
+    { label: "32c", start: 456.36, end: 462.01 },
+    { label: "32d", start: 462.26, end: 471.83 },
+    { label: "33a", start: 472.08, end: 474.43 },
+    { label: "33b", start: 474.68, end: 481.29 },
+    { label: "33c", start: 481.54, end: 487.89 },
+    { label: "34a", start: 488.14, end: 492.51 },
+    { label: "34b", start: 492.76, end: 493.67 },
+    { label: "34c", start: 493.92, end: 497.51 },
+    { label: "35", start: 497.76, end: 504.77 },
+    { label: "36a", start: 505.02, end: 506.71 },
+    { label: "36b", start: 506.96, end: 508.35 },
+    { label: "36c", start: 508.6, end: 514.07 }
+];
+
+initAudioTimings(pop, timings);
+});
+
+$(document).ready(function() {
+
+// Footnotes and Cross-references
+var footnotes = {
+    "F-0": "<div class=\"footnote-p\"><span class=\"fr\">16.31 </span><span class=\"ft\">Maná kijtosneki: “¿Tlinon in?”</span></div>",
+    "F-1": "<div class=\"footnote-p\"><span class=\"fr\">16.36 </span><span class=\"ft\">On efa nochiua ken 20 litros.</span></div>"
+};
+
+initFootnotes(footnotes);
+
+});
+
+// Chapters
+var chapters = [ { start: 1, end: 40 }];
+var hasIntro = false;
+var baseRef  = "ngu-02-EXO-";
+
+
+</script>
+</head>
+
+<body class="browser" dir="LTR">
+
+<div id="book-menu"></div>
+<div id="chapter-menu"></div>
+
+<div id="toolbar-top">
+<div class="navigation-top">
+  <span class="button"><a href='ngu-01-GEN-001.html' title='Previous Book'>&nbsp;&lt;&lt;&nbsp;</a></span>
+  <span class="button"><a href='ngu-02-EXO-015.html' title='Previous Chapter'>&nbsp;&nbsp;&lt;&nbsp;&nbsp;</a></span>
+  <span id="book-selector"><a href="#" onclick="toggleBookMenu(); return false;">&nbsp;&nbsp;Éxodo&nbsp;&nbsp;</a></span>
+<span id="chapter-selector"><a href="#" onclick="toggleChapterMenu(chapters, hasIntro, baseRef); return false;">&nbsp;&nbsp;16&nbsp;&nbsp;</a></span>
+  <span class="button"><a href='ngu-02-EXO-017.html' title='Next Chapter'>&nbsp;&nbsp;&gt;&nbsp;&nbsp;</a></span>
+  <span class="button"><a href='ngu-03-LEV-001.html' title='Next Book'>&nbsp;&gt;&gt;&nbsp;</a></span>
+</div>
+</div>
+
+<div id="content">
+
+
+<div class="s"><div id="Ts1" class="txs">ToTEKO okinmakak on israelitas on tlakuajli yejuan itoka maná niman tektotomej</div></div><a id="v1"></a>
+<div class="m">
+<div class="c-drop">16</div> <div id="T1a" class="txs">Nochimej on israelitas okiskej Elim niman oajsikej ipan on xalpatlajkan yejuan itoka Sin yejuan nokaua itsajlan Elim niman Sinaí.</div> <div id="T1b" class="txs">Niman oajsikej ompa ipan 15 tonajli ijkuak ika ome metstli kipiyaya ika okiskaj Egipto.</div><span id="bookmarks1"></span> <a id="v2"></a><div id="T2a" class="txs"><span class="v">2</span><span class="vsp">&nbsp;</span>Ompa ipan on xalpatlajkan,</div> <div id="T2b" class="txs">nochimej opejkej tlamach kijliaj Moisés niman Aarón.</div><span id="bookmarks2"></span> <a id="v3"></a><div id="T3a" class="txs"><span class="v">3</span><span class="vsp">&nbsp;</span>Ijkin kinmijliayaj:</div></div>
+<div class="p"><div id="T3b" class="txs">—Más kuajli yeskia tla toTEKO techkauiliskia ma timikikan Egipto.</div> <div id="T3c" class="txs">Ompa titotlaliayaj nisiu itech on kontli yejuan tentikatka ikan nakatl niman titlakuayaj hasta kampa tixuiyaj.</div> <div id="T3d" class="txs">Pero nemejuamej onentechajuikakej ipan in xalpatlajkan para ma timikikan ikan apistli.</div><span id="bookmarks3"></span></div><span id="bookmarks3"></span><a id="v4"></a>
+<div class="p"><div id="T4a" class="txs"><span class="v">4</span><span class="vsp">&nbsp;</span>Niman kemaj toTEKO okijlij Moisés:</div></div>
+<div class="p"><div id="T4b" class="txs">—Nikchiuas para ma uajxini tlakuajli de ipan cielo* ken ijkuak kiaui.</div> <div id="T4c" class="txs">Niman mojmostla on israelitas kisentlaliskej san yejuan kikuaskej ipan on tonajli.</div> <div id="T4d" class="txs">Nikneki nikitas akinon nechtlakamatis niman akinon ka.</div><span id="bookmarks4"></span> <a id="v5"></a><div id="T5a" class="txs"><span class="v">5</span><span class="vsp">&nbsp;</span>Pero ipan ika chikuasen tonajli ijkuak kisentlaliskej yejuan kiktiskej iminchan,</div> <div id="T5b" class="txs">ma kisentlalikan para ome tonajli.</div><span id="bookmarks5"></span></div><span id="bookmarks5"></span><a id="v6"></a>
+<div class="p"><div id="T6a" class="txs"><span class="v">6</span><span class="vsp">&nbsp;</span>Moisés niman Aarón okinmijlijkej on israelitas:</div></div>
+<div class="p"><div id="T6b" class="txs">—Ijkuak kalakis tonaltsintli nenkimatiskej ika toTEKO yejua omechkixtij Egipto.</div><span id="bookmarks6"></span> <a id="v7"></a><div id="T7a" class="txs"><span class="v">7</span><span class="vsp">&nbsp;</span>Niman ipan on kualkan nenkitaskej iueyilis toTEKO,</div> <div id="T7b" class="txs">pampa okak ika tlamach xkuajli onenkijtouilijkej.</div> <div id="T7c" class="txs">Xnejua niman Aarón tlamach onentechijtouilijkej pampa ¿Akin tejuamej para nentechijtouiliskej?</div> <div id="T7d" class="txs">Tejuamej san tiitekitkauan.</div> <div id="T7e" class="txs">Yej Nemejuamej tlamach onenkijtouilijkej toTEKO. </div><span id="bookmarks7"></span></div><span id="bookmarks7"></span><a id="v8"></a>
+<div class="p"><div id="T8a" class="txs"><span class="v">8</span><span class="vsp">&nbsp;</span>Oksejpa okijtoj Moisés:</div></div>
+<div class="p"><div id="T8b" class="txs">—Ijkuak kalakis tonaltsintli toTEKO mechmakas nakatl para nenkuaskej,</div> <div id="T8c" class="txs">niman mostla kualkan mechixuiltis ika miyek pan,</div> <div id="T8d" class="txs">pampa yokak ika nemejuamej tlamach nenkijtouiliaj.</div> <div id="T8e" class="txs">Ijkuak nemejuamej tlamach nentechijtouiliaj,</div> <div id="T8f" class="txs">xnentechijtouiliaj tejuamej,</div> <div id="T8g" class="txs">yej tlamach nenkijtouiliaj,</div> <div id="T8h" class="txs">toTEKO.</div><span id="bookmarks8"></span></div><span id="bookmarks8"></span><a id="v9"></a>
+<div class="p"><div id="T9a" class="txs"><span class="v">9</span><span class="vsp">&nbsp;</span>Niman kemaj Moisés okijlij Aarón: </div></div>
+<div class="p"><div id="T9b" class="txs">—Xkinmijli nochimej on israelitas:</div> <div id="T9c" class="txs">“Ma uajlakan ixpan toTEKO,</div> <div id="T9d" class="txs">pampa yejua yokak on tlen xkuajli kijtouiliaj.”</div><span id="bookmarks9"></span></div><span id="bookmarks9"></span><a id="v10"></a>
+<div class="p"><div id="T10a" class="txs"><span class="v">10</span><span class="vsp">&nbsp;</span>Niman chika Aarón kiminnotstikatka on israelitas,</div> <div id="T10b" class="txs">nochimej ontlachixkej neka xalpatlajkan,</div> <div id="T10c" class="txs">niman iueyilis toTEKO ouajnonextij ipan sen moxtli.</div><span id="bookmarks10"></span> <a id="v11"></a><div id="T11" class="txs"><span class="v">11</span><span class="vsp">&nbsp;</span>Niman toTEKO okinots Moisés niman okijlij:</div><span id="bookmarks11"></span></div><span id="bookmarks11"></span><a id="v12"></a>
+<div class="p"><div id="T12a" class="txs"><span class="v">12</span><span class="vsp">&nbsp;</span>—Yonikak ken nechijtouiliaj on israelitas.</div> <div id="T12b" class="txs">“Xkimijli ika ijkuak kalakis tonaltsintli,</div> <div id="T12c" class="txs">nenkuaskej nakatl,</div> <div id="T12d" class="txs">niman mostla kualkan nenkuaskej pan hasta kampa nemixuiskej.</div> <div id="T12e" class="txs">Ijkon nenkimatiskej ika nejua ninemoTEKO Dios.”</div><span id="bookmarks12"></span></div><span id="bookmarks12"></span><a id="v13"></a>
+<div class="p"><div id="T13a" class="txs"><span class="v">13</span><span class="vsp">&nbsp;</span>Niman ijkuak okalak tonaltsintli oualajkej miyekej totomej yejuan imintoka tektotomej,</div> <div id="T13b" class="txs">niman sanoyej miyek otemikoj kampa nemiyaj on israelitas.</div> <div id="T13c" class="txs">Niman ipan on kualkan oxin ajuichtli niman kiyeualojtoya on campamento.</div><span id="bookmarks13"></span> <a id="v14"></a><div id="T14a" class="txs"><span class="v">14</span><span class="vsp">&nbsp;</span>Niman sakin*,</div> <div id="T14b" class="txs">ijkuak on ajuichtli oajkotokok,</div> <div id="T14c" class="txs">onokau istak yejuan ken itlaj tejsiutli kuechtik ipan on xajli.</div><span id="bookmarks14"></span> <a id="v15"></a><div id="T15a" class="txs"><span class="v">15</span><span class="vsp">&nbsp;</span>Niman on israelitas xkimatiyaj tlinonon.</div> <div id="T15b" class="txs">Ijkuak okitakej notlajtoltiayaj:</div> <div id="T15c" class="txs">“¿Tlinon yejua in?”</div> <div id="T15d" class="txs">Niman Moisés okinmijlij:</div></div>
+<div class="p"><div id="T15e" class="txs">—In yejua on pan yejuan toTEKO mechmaka para nemotlakual.</div><span id="bookmarks15"></span> <a id="v16"></a><div id="T16a" class="txs"><span class="v">16</span><span class="vsp">&nbsp;</span>In yejua itlanauatil toTEKO:</div> <div id="T16b" class="txs">“Xsentlalikan cada se nemejuamej san on kech kikuas.</div>  <div id="T16c" class="txs">Xkixitilikan kanaj ome litro para cada se yejuan nemi ipan nemochan.”</div><span id="bookmarks16"></span></div><span id="bookmarks16"></span><a id="v17"></a>
+<div class="p"><div id="T17a" class="txs"><span class="v">17</span><span class="vsp">&nbsp;</span>On israelitas ijki okichijkej ken okinmijlijkej.</div> <div id="T17b" class="txs">Sekimej miyek okisentlalijkej niman sekimej achijtsin.</div><span id="bookmarks17"></span> <a id="v18"></a><div id="T18a" class="txs"><span class="v">18</span><span class="vsp">&nbsp;</span>On yejuan okiktik miyek,</div> <div id="T18b" class="txs">xitlaj* itech onokau.</div> <div id="T18c" class="txs">Niman yejuan okiktik achijtsin xokipoloto.</div> <div id="T18d" class="txs">Cada se okiktik san kech ika kaxilis para tlakuaskej ifamilias.</div><span id="bookmarks18"></span></div><span id="bookmarks18"></span><a id="v19"></a>
+<div class="p"><div id="T19a" class="txs"><span class="v">19</span><span class="vsp">&nbsp;</span>Kemaj Moisés okinmijlij:</div></div>
+<div class="p"><div id="T19b" class="txs">—Maka yakaj ma kikaua nion achijtsin in tlakuajli para uajmostla.</div><span id="bookmarks19"></span></div><span id="bookmarks19"></span><a id="v20"></a>
+<div class="p"><div id="T20a" class="txs"><span class="v">20</span><span class="vsp">&nbsp;</span>Pero sekimej xokinekkej okakkej Moisés.</div> <div id="T20b" class="txs">Yej seki okajkej para uajmostla.</div> <div id="T20c" class="txs">Niman uajmostla okitakej yookuijlouak niman yomoloniak.</div> <div id="T20d" class="txs">Yejua ika,</div> <div id="T20e" class="txs">Moisés okualan iminuan.</div><span id="bookmarks20"></span></div><span id="bookmarks20"></span><a id="v21"></a>
+<div class="p"><div id="T21a" class="txs"><span class="v">21</span><span class="vsp">&nbsp;</span>Cada kualkan,</div> <div id="T21b" class="txs">on israelitas kisentlaliayaj san kech nonekiya para kikuaskej,</div> <div id="T21c" class="txs">niman tlakualispan ijkuak tlaxotlaya patiya on yejuan nokauaya ipan xajli.</div><span id="bookmarks21"></span> <a id="v22"></a><div id="T22a" class="txs"><span class="v">22</span><span class="vsp">&nbsp;</span>Pero ipan on ika chikuasen tonajli,</div> <div id="T22b" class="txs">kisentlaliayaj para ome tonajli kikuaskej.</div> <div id="T22c" class="txs">In kijtosneki kisentlaliayaj naui litro para cada se.</div> <div id="T22d" class="txs">Niman on israel tlayekankej oyajkej okitlajtoltitoj Moisés tline ijkon kichiuayaj.</div><span id="bookmarks22"></span> <a id="v23"></a><div id="T23a" class="txs"><span class="v">23</span><span class="vsp">&nbsp;</span>Niman Moisés okinmijlij:</div></div>
+<div class="p"><div id="T23b" class="txs">—Ijkon tlanauatia toTEKO,</div> <div id="T23c" class="txs">pampa mostla on tonajli yes para titoseuiskej.</div> <div id="T23d" class="txs">Titoseuiskej pampa on sen tonajli yektli.</div> <div id="T23e" class="txs">On tonajli tlakauijli san para toTEKO niman xtitekitiskej.</div> <div id="T23f" class="txs">Yejua ika,</div> <div id="T23g" class="txs">aman xposonikan on tlen noneki nenkiposoniskej,</div> <div id="T23h" class="txs">niman xkikxitikan on tlen noneki nenkikxitiskej,</div> <div id="T23i" class="txs">pero xkeuakan yejuan nokauas para nenkikuaskej uajmostla.</div><span id="bookmarks23"></span></div><span id="bookmarks23"></span><a id="v24"></a>
+<div class="p"><div id="T24a" class="txs"><span class="v">24</span><span class="vsp">&nbsp;</span>Ijkon ken otlanauatij Moisés,</div> <div id="T24b" class="txs">okejkej tlakuajli para uajmostla on yejuan onokau.</div> <div id="T24c" class="txs">Niman uajmostla saken kuajli onkatka.</div> <div id="T24d" class="txs">Xomoloniak nion xookuijlouak.</div><span id="bookmarks24"></span> <a id="v25"></a><div id="T25a" class="txs"><span class="v">25</span><span class="vsp">&nbsp;</span>Yejua ika,</div> <div id="T25b" class="txs">ipan on tonajli sábado,</div> <div id="T25c" class="txs">Moisés okijtoj:</div></div>
+<div class="p"><div id="T25d" class="txs">—Xkuakan on tlakuajli aman pampa aman sábado,</div> <div id="T25e" class="txs">niman in tonajli titoseuiskej para toTEKO.</div> <div id="T25f" class="txs">Tla nenyaskej nenkontejtemoskej tlakuajli ipan campo xnenkinextiskej.</div><span id="bookmarks25"></span> <a id="v26"></a><div id="T26a" class="txs"><span class="v">26</span><span class="vsp">&nbsp;</span>Chikuasen tonajli uelis nenkisentlaliskej on tlakuajli,</div> <div id="T26b" class="txs">pero ipan on chikome tonajli yejua neseuiltonajli.</div> <div id="T26c" class="txs">Ijkuakon,</div> <div id="T26d" class="txs">titoseuiskej niman xitlaj* onyas para nenkisentlaliskej.</div><span id="bookmarks26"></span></div><span id="bookmarks26"></span><a id="v27"></a>
+<div class="p"><div id="T27a" class="txs"><span class="v">27</span><span class="vsp">&nbsp;</span>Sekimej israelitas okiskej ipan on ika chikome tonajli ijkuak sábado para kisentlaliskej on tlakuajli,</div> <div id="T27b" class="txs">pero xitlaj* okinextijkej.</div><span id="bookmarks27"></span> <a id="v28"></a><div id="T28a" class="txs"><span class="v">28</span><span class="vsp">&nbsp;</span>Niman kemaj toTEKO okijlij Moisés:</div></div>
+<div class="p"><div id="T28b" class="txs">—¿Hasta kamanon xnenkintlakamatiskej on tlen nemechnauatia niman on tlen nemechmachtia?</div><span id="bookmarks28"></span> <a id="v29"></a><div id="T29a" class="txs"><span class="v">29</span><span class="vsp">&nbsp;</span>Xkitakan ika nejua,</div> <div id="T29b" class="txs">nemoTEKO,</div> <div id="T29c" class="txs">nemechmaka in tonajli para xmoseuikan.</div> <div id="T29d" class="txs">Yejua ika,</div> <div id="T29e" class="txs">ipan on ika chikuasen tonajli nemechmakas tlakuajli para ome tonajli.</div> <div id="T29f" class="txs">Niman ipan on ika chikome tonajli cada se ma nokaua ichan niman maka ma kisa.</div><span id="bookmarks29"></span></div><span id="bookmarks29"></span><a id="v30"></a>
+<div class="p"><div id="T30a" class="txs"><span class="v">30</span><span class="vsp">&nbsp;</span>Yejua ika,</div> <div id="T30b" class="txs">on israelitas onoseuijkej ipan on ika chikome tonajli.</div><span id="bookmarks30"></span></div><span id="bookmarks30"></span><a id="v31"></a>
+<div class="p"><div id="T31a" class="txs"><span class="v">31</span><span class="vsp">&nbsp;</span>On israelitas okitokayotijkej “maná”<span class="footnote selectable" id="F-0"><sup>a</sup></span> on tlen kisentlaliayaj.</div> <div id="T31b" class="txs">Istak katka ken iteyo cilantro,</div> <div id="T31c" class="txs">niman uelik katka ken pan yejuan kichijchiuayaj ikan nekutli.</div><span id="bookmarks31"></span></div><span id="bookmarks31"></span><a id="v32"></a>
+<div class="p"><div id="T32a" class="txs"><span class="v">32</span><span class="vsp">&nbsp;</span>Kemaj Moisés okijtoj:</div></div>
+<div class="p"><div id="T32b" class="txs">—In yejua tlanauatijli yejuan mechmaka toTEKO:</div> <div id="T32c" class="txs">“Xtemiltikan ome litro ikan maná niman xkejeuakan para nemouejkakoneuan.</div> <div id="T32d" class="txs">Ijkon kitaskej on tlakuajli yejuan nejua onemechmakak nemejuamej ipan in xalpatlajkan ijkuak onemechkixtij Egipto.”</div><span id="bookmarks32"></span></div><span id="bookmarks32"></span><a id="v33"></a>
+<div class="p"><div id="T33a" class="txs"><span class="v">33</span><span class="vsp">&nbsp;</span>Niman Moisés okijlij Aarón: </div></div>
+<div class="p"><div id="T33b" class="txs">—Xtilana sen chikiutli niman ompa xtema on maná se gomer yejuan ome litro maná.</div> <div id="T33c" class="txs">Niman kemaj xtlali ixpan toTEKO niman xkeua para mouejkakoneuan kitaskej.</div><span id="bookmarks33"></span></div><span id="bookmarks33"></span><a id="v34"></a>
+<div class="p"><div id="T34a" class="txs"><span class="v">34</span><span class="vsp">&nbsp;</span>Ijki okichiu Aarón ken toTEKO okinauatij Moisés.</div> <div id="T34b" class="txs">Niman sakin*,</div> <div id="T34c" class="txs">okitlalij on chikiutli ixpan iyekcaja toTEKO.</div><span id="bookmarks34"></span></div><span id="bookmarks34"></span><a id="v35"></a>
+<div class="p"><div id="T35" class="txs"><span class="v">35</span><span class="vsp">&nbsp;</span>Niman on israelitas okikuajkej maná 40 xipan hasta oajsikej ipeuyan Canaán.</div><span id="bookmarks35"></span></div><span id="bookmarks35"></span><a id="v36"></a>
+<div class="p"><div id="T36a" class="txs"><span class="v">36</span><span class="vsp">&nbsp;</span>(Se tlatemachiuajlij gomer,</div> <div id="T36b" class="txs">nochiua ken ome litro.</div> <div id="T36c" class="txs">Niman noneki majtlaktli gomer para nochiuas se tlatemachiuajlij yejuan itoka efa<span class="footnote selectable" id="F-1"><sup>b</sup></span>.)</div><span id="bookmarks36"></span></div><div class="footer"><div class="footer-line"><span class="footer"><b>Texto:</b> © 1987, 2009, 2016, 2022, <a href="http://www.Wycliffe.org" class="web-link">Wycliffe Bible Translators, Inc.</a></span></div><div class="footer-line"><span class="footer"><b>Audio:</b> Antiguo Testamento, ℗ 2012, Wycliffe Bible Translators, Inc; Nuevo Testamento, ℗ 2013, <a href="https://live.bible.is/bible/NGUTBL/MAT/1" class="web-link">Hosanna</a></span></div><div class="footer-line"><span class="footer">— Sitio web de náhuatl de Guerrero: <a href="http://www.xtlajtonauatl.org" class="web-link">www.xtlajtonauatl.org</a></span></div><div class="footer-line"><span class="footer">— Visite <a href="http://www.scriptureearth.org/00e-Escrituras_Indice.php?sortby=lang&name=ngu" class="web-link">www.ScriptureEarth.org</a> para más materiales en náhuatl de Guerrero.</span></div></div>
+</div>
+
+<div id="toolbar-bottom">
+<div class="audio-player">
+  <audio id="audio" controls>
+    <source id="audio1" src="https://cloud.faithcomesbyhearing.com/mp3audiobibles2/NGUTBLN2DA/ngu-02-EXO-16.mp3" />
+  </audio>
+</div>
+</div>
+
+<script type='text/javascript' src='./pwa-main.js'></script>
+<script>
+var coll = document.getElementsByClassName("collapsible-button");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+        }
+    });
+}
+</script>
+</body>
+</html>

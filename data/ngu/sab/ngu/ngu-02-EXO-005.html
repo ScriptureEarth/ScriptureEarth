@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000B63">
+<title>Éxodo 5</title>
+
+<script type='text/javascript' src='js/jquery-1.11.3.min.js'></script>
+<script type='text/javascript' src='js/popcorn-complete.min.js'></script>
+<script type='text/javascript' src='js/jquery.tooltipster.min.js'></script>
+<script type='text/javascript' src='js/app-builder-audio.js'></script>
+<script type='text/javascript' src='js/app-builder-footnotes.js'></script>
+<script type='text/javascript' src='js/app-builder-menus.js'></script>
+<script type='text/javascript' src='js/app-builder-video.js'></script>
+<script type='text/javascript' src='js/book-names.js'></script>
+
+<link rel="stylesheet" type="text/css" href="css/tooltipster.css" />
+
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+
+<link rel="stylesheet" type="text/css" href="css/sab-stylesheet.css" />
+
+<script type="text/javascript">
+
+// Audio
+$(window).load(function() {
+
+var pop = Popcorn("#audio");
+
+var timings = [
+    { label: "s1", start: 2.56, end: 6.07 },
+    { label: "1a", start: 6.32, end: 6.95 },
+    { label: "1b", start: 7.2, end: 10.23 },
+    { label: "1c", start: 10.48, end: 11.83 },
+    { label: "1d", start: 12.08, end: 12.97 },
+    { label: "1e", start: 13.22, end: 15.95 },
+    { label: "1f", start: 16.2, end: 22.89 },
+    { label: "2a", start: 23.14, end: 25.61 },
+    { label: "2b", start: 25.86, end: 29.89 },
+    { label: "2c", start: 30.14, end: 33.47 },
+    { label: "2d", start: 33.72, end: 35.91 },
+    { label: "2e", start: 36.16, end: 40.83 },
+    { label: "3a", start: 41.08, end: 41.51 },
+    { label: "3b", start: 41.76, end: 44.03 },
+    { label: "3c", start: 44.28, end: 46.91 },
+    { label: "3d", start: 47.16, end: 49.49 },
+    { label: "3e", start: 49.74, end: 53.31 },
+    { label: "3f", start: 53.56, end: 53.83 },
+    { label: "3g", start: 54.08, end: 60.71 },
+    { label: "3h", start: 60.96, end: 66.13 },
+    { label: "4a", start: 66.38, end: 70.43 },
+    { label: "4b", start: 70.68, end: 73.69 },
+    { label: "4c", start: 73.94, end: 76.11 },
+    { label: "5a", start: 76.36, end: 78.99 },
+    { label: "5b", start: 79.24, end: 83.69 },
+    { label: "5c", start: 83.94, end: 89.33 },
+    { label: "6a", start: 89.58, end: 101.63 },
+    { label: "6b", start: 101.88, end: 103.23 },
+    { label: "7a", start: 103.48, end: 110.93 },
+    { label: "7b", start: 111.18, end: 115.85 },
+    { label: "8a", start: 116.1, end: 121.53 },
+    { label: "8b", start: 121.78, end: 127.39 },
+    { label: "8c", start: 127.64, end: 128.43 },
+    { label: "8d", start: 128.68, end: 133.83 },
+    { label: "9a", start: 134.08, end: 135.03 },
+    { label: "9b", start: 135.28, end: 139.19 },
+    { label: "9c", start: 139.44, end: 146.99 },
+    { label: "10a", start: 147.24, end: 147.99 },
+    { label: "10b", start: 148.24, end: 153.21 },
+    { label: "10c", start: 153.46, end: 156.29 },
+    { label: "10d", start: 156.54, end: 160.97 },
+    { label: "11a", start: 161.22, end: 165.99 },
+    { label: "11b", start: 166.24, end: 171.83 },
+    { label: "12a", start: 172.08, end: 172.99 },
+    { label: "12b", start: 173.24, end: 180.49 },
+    { label: "13-14a", start: 180.74, end: 185.79 },
+    { label: "13-14b", start: 186.04, end: 187.79 },
+    { label: "13-14c", start: 188.04, end: 195.37 },
+    { label: "13-14d", start: 195.62, end: 202.75 },
+    { label: "13-14e", start: 203, end: 204.55 },
+    { label: "13-14f", start: 204.8, end: 205.45 },
+    { label: "13-14g", start: 205.7, end: 206.35 },
+    { label: "13-14h", start: 206.6, end: 207.23 },
+    { label: "13-14i", start: 207.48, end: 211.51 },
+    { label: "15a", start: 211.76, end: 217.99 },
+    { label: "15b", start: 218.24, end: 219.73 },
+    { label: "15c", start: 219.98, end: 221.57 },
+    { label: "15d", start: 221.82, end: 225.17 },
+    { label: "16a", start: 225.42, end: 226.87 },
+    { label: "16b", start: 227.12, end: 231.71 },
+    { label: "16c", start: 231.96, end: 235.45 },
+    { label: "16d", start: 235.7, end: 237.67 },
+    { label: "16e", start: 237.92, end: 239.35 },
+    { label: "16f", start: 239.6, end: 242.33 },
+    { label: "17a", start: 242.58, end: 244.87 },
+    { label: "17b", start: 245.12, end: 247.33 },
+    { label: "17c", start: 247.58, end: 248.47 },
+    { label: "17d", start: 248.72, end: 249.71 },
+    { label: "17e", start: 249.96, end: 250.51 },
+    { label: "17f", start: 250.76, end: 254.43 },
+    { label: "18a", start: 254.68, end: 256.41 },
+    { label: "18b", start: 256.66, end: 258.59 },
+    { label: "18c", start: 258.84, end: 261.81 },
+    { label: "19", start: 262.06, end: 271.65 },
+    { label: "20a", start: 271.9, end: 274.65 },
+    { label: "20b", start: 274.9, end: 278.97 },
+    { label: "21a", start: 279.22, end: 282.63 },
+    { label: "21b", start: 282.88, end: 287.25 },
+    { label: "21c", start: 287.5, end: 289.45 },
+    { label: "21d", start: 289.7, end: 295.07 },
+    { label: "21e", start: 295.32, end: 301.01 },
+    { label: "s2", start: 301.26, end: 305.09 },
+    { label: "22a", start: 305.34, end: 309.57 },
+    { label: "22b", start: 309.82, end: 310.93 },
+    { label: "22c", start: 311.18, end: 314.35 },
+    { label: "22d", start: 314.6, end: 316.55 },
+    { label: "23a", start: 316.8, end: 320.81 },
+    { label: "23b", start: 321.06, end: 323.29 },
+    { label: "23c", start: 323.54, end: 326.53 }
+];
+
+initAudioTimings(pop, timings);
+});
+
+$(document).ready(function() {
+});
+
+// Chapters
+var chapters = [ { start: 1, end: 40 }];
+var hasIntro = false;
+var baseRef  = "ngu-02-EXO-";
+
+
+</script>
+</head>
+
+<body class="browser" dir="LTR">
+
+<div id="book-menu"></div>
+<div id="chapter-menu"></div>
+
+<div id="toolbar-top">
+<div class="navigation-top">
+  <span class="button"><a href='ngu-01-GEN-001.html' title='Previous Book'>&nbsp;&lt;&lt;&nbsp;</a></span>
+  <span class="button"><a href='ngu-02-EXO-004.html' title='Previous Chapter'>&nbsp;&nbsp;&lt;&nbsp;&nbsp;</a></span>
+  <span id="book-selector"><a href="#" onclick="toggleBookMenu(); return false;">&nbsp;&nbsp;Éxodo&nbsp;&nbsp;</a></span>
+<span id="chapter-selector"><a href="#" onclick="toggleChapterMenu(chapters, hasIntro, baseRef); return false;">&nbsp;&nbsp;5&nbsp;&nbsp;</a></span>
+  <span class="button"><a href='ngu-02-EXO-006.html' title='Next Chapter'>&nbsp;&nbsp;&gt;&nbsp;&nbsp;</a></span>
+  <span class="button"><a href='ngu-03-LEV-001.html' title='Next Book'>&nbsp;&gt;&gt;&nbsp;</a></span>
+</div>
+</div>
+
+<div id="content">
+
+
+<div class="s"><div id="Ts1" class="txs">Moisés niman Aarón okinotskej on rey</div></div><a id="v1"></a>
+<div class="m">
+<div class="c-drop">5</div> <div id="T1a" class="txs">Sakin,</div> <div id="T1b" class="txs">Moisés niman Aarón oyajkej okinotsatoj on rey,</div> <div id="T1c" class="txs">niman okilijkej:</div></div>
+<div class="p"><div id="T1d" class="txs">—ToTEKO,</div> <div id="T1e" class="txs">on Dios yejuan on israelitas tikmauistiliaj,</div> <div id="T1f" class="txs">mitsijlia para xkinkauili ikoneuan ma uiyan kampa xalpatlajkan para ma kichiuiliskej iluitl.</div><span id="bookmarks1"></span></div><span id="bookmarks1"></span><a id="v2"></a>
+<div class="p"><div id="T2a" class="txs"><span class="v">2</span><span class="vsp">&nbsp;</span>Pero on rey okinminnankilij:</div></div>
+<div class="p"><div id="T2b" class="txs">—¿Man akinon “on nemoTEKO” para nejua niktlakamatis,</div> <div id="T2c" class="txs">niman nikinkauilis ma uiyan on israelitas?</div> <div id="T2d" class="txs">Nion xnikixmati nemoTEKO,</div> <div id="T2e" class="txs">niman nion xnikinkauilis ma uiyan on israelitas.</div><span id="bookmarks2"></span></div><span id="bookmarks2"></span><a id="v3"></a>
+<div class="p"><div id="T3a" class="txs"><span class="v">3</span><span class="vsp">&nbsp;</span>Yejua ika,</div> <div id="T3b" class="txs">Moisés niman Aarón okijlijkej:</div></div>
+<div class="p"><div id="T3c" class="txs">—ToDios tejuamej yejuan tihebreos*,</div> <div id="T3d" class="txs">ouajlaj niman otechnotitij,</div> <div id="T3e" class="txs">niman otechijlij on tlen noneki ma tikchiuakan.</div> <div id="T3f" class="txs">Yejua ika,</div> <div id="T3g" class="txs">xtechkauili ma tiuiyan yeyi tonajli ipan on xalpatlajkan para ma tikmakatij uentli toTEKO Dios,</div> <div id="T3h" class="txs">pampa tlamo timikiskej ika sen ueyi kokolistli noso ika espada.</div><span id="bookmarks3"></span></div><span id="bookmarks3"></span><a id="v4"></a>
+<div class="p"><div id="T4a" class="txs"><span class="v">4</span><span class="vsp">&nbsp;</span>Pero on rey de Egipto okinmijlij Moisés niman Aarón:</div></div>
+<div class="p"><div id="T4b" class="txs">—¿Tline nenkintlanenkaualtiaj in tlakamej?</div> <div id="T4c" class="txs">Ma uiyan ipan imintekiu.</div><span id="bookmarks4"></span></div><span id="bookmarks4"></span><a id="v5"></a>
+<div class="p"><div id="T5a" class="txs"><span class="v">5</span><span class="vsp">&nbsp;</span>Niman no ijki on rey okinmijlij:</div></div>
+<div class="p"><div id="T5b" class="txs">—Aman nemij sanoyej miyekej in israelitas ipan in país,</div> <div id="T5c" class="txs">niman nemejuamej yej san nenkintlanenkaualtiaj ipan imintekiu.</div><span id="bookmarks5"></span></div><span id="bookmarks5"></span><a id="v6"></a>
+<div class="p"><div id="T6a" class="txs"><span class="v">6</span><span class="vsp">&nbsp;</span>Ipan san no yejua on tonajli on rey okinmakak sen yenkuik tlanauatijli on tlakamej egipcios yejuan tlatekitiltiaj chikauak niman intlayekankauan on israelitas.</div> <div id="T6b" class="txs">Niman okinmijlij:</div><span id="bookmarks6"></span></div><span id="bookmarks6"></span><a id="v7"></a>
+<div class="p"><div id="T7a" class="txs"><span class="v">7</span><span class="vsp">&nbsp;</span>—Maka sa xkinmakakan sakatl on israelitas para kinelosej iuan sokitl para on xantli ijkon ken kichiuayaj.</div> <div id="T7b" class="txs">Ma uiyan yejuamej para ma kisentlalitij on sakatl yejuan noneki.</div><span id="bookmarks7"></span> <a id="v8"></a><div id="T8a" class="txs"><span class="v">8</span><span class="vsp">&nbsp;</span>Pero xkinchiualtikan ma kitemakakan sa no ichkich miyek xantli ken achtoj.</div> <div id="T8b" class="txs">Nion sen xantli maka ma poliuiti pampa on israelitas tlatsiuij.</div> <div id="T8c" class="txs">Yejua ika,</div> <div id="T8d" class="txs">najkomanaj niman kijtouaj kinekij yaskej konmakaskej uentli iminDios.</div><span id="bookmarks8"></span> <a id="v9"></a><div id="T9a" class="txs"><span class="v">9</span><span class="vsp">&nbsp;</span>Yejua ika,</div> <div id="T9b" class="txs">xkinchiualtikan ma tekitikan más chikauak on tlakamej.</div> <div id="T9c" class="txs">Xkinnauatikan para maka ma kakikan on tlakajkayaualistli yejuan Moisés niman Aarón kinmijliaj.</div><span id="bookmarks9"></span></div><span id="bookmarks9"></span><a id="v10"></a>
+<div class="p"><div id="T10a" class="txs"><span class="v">10</span><span class="vsp">&nbsp;</span>Yejua ika,</div> <div id="T10b" class="txs">on israelitas tlayekankej niman on tlakamej yejuan tlatekitiltiaj chikauak,</div> <div id="T10c" class="txs">oyajkej okimijlitoj on israelitas:</div></div>
+<div class="p"><div id="T10d" class="txs">—On rey tlanauatia maka sa temechmakakan sakatl.</div><span id="bookmarks10"></span> <a id="v11"></a><div id="T11a" class="txs"><span class="v">11</span><span class="vsp">&nbsp;</span>Aman noneki nenyaskej nenkontejtemoskej on sakatl.</div> <div id="T11b" class="txs">Pero sa no ichkich nenkichijchiuaskej on xantli ken nenkichijchiuayaj achtoj.</div><span id="bookmarks11"></span></div><span id="bookmarks11"></span><a id="v12"></a>
+<div class="p"><div id="T12a" class="txs"><span class="v">12</span><span class="vsp">&nbsp;</span>Yejua ika,</div> <div id="T12b" class="txs">on israelitas onochajchayakej ipan on tlajli Egipto okitejtemotoj sakakuechtli.</div><span id="bookmarks12"></span> <a id="v13"></a><div id="T13-14a" class="txs"><span class="v">13-14</span><span class="vsp">&nbsp;</span>Niman mojmostla itlayekankauan on rey más kintlajsiuitiayaj,</div> <div id="T13-14b" class="txs">niman kinmijliayaj:</div></div>
+<div class="p"><div id="T13-14c" class="txs">—Xchijchiuakan sa no ichkich xantli ipan se tonajli ken ijkuak temechmakayaj sakatl.</div></div>
+<div class="p"><div id="T13-14d" class="txs">Niman no ijki on tlakamej tlatekitiltijkej chikauak kinmajmailiayaj on israel tlayekankej,</div> <div id="T13-14e" class="txs">niman kinmijliayaj:</div></div>
+<div class="p"><div id="T13-14f" class="txs">—¿Tline,</div> <div id="T13-14g" class="txs">nion yaloua,</div> <div id="T13-14h" class="txs">nion aman,</div> <div id="T13-14i" class="txs">xnenkichijchiuaj sa no ichkich xantli ken achtoj nenkichijchiuayaj?</div><span id="bookmarks13-14"></span></div><span id="bookmarks13-14"></span><a id="v15"></a>
+<div class="p"><div id="T15a" class="txs"><span class="v">15</span><span class="vsp">&nbsp;</span>Niman on israel tlayekankej oyajkej otlajtlanitoj tlapaleuijli itech on rey,</div> <div id="T15b" class="txs">niman okilijkej:</div></div>
+<div class="p"><div id="T15c" class="txs">—Ueyixtikaj rey,</div> <div id="T15d" class="txs">¿tline ijkin titechchiuilia tejuamej motekitkauan?</div><span id="bookmarks15"></span> <a id="v16"></a><div id="T16a" class="txs"><span class="v">16</span><span class="vsp">&nbsp;</span>Maski xok techmakaj sakatl,</div> <div id="T16b" class="txs">technauatiaj ma tikchijchiuakan sa no ichkich ika miyek on xantli.</div> <div id="T16c" class="txs">Niman hasta techmajmailiaj pampa xok tiuelij.</div> <div id="T16d" class="txs">Pero on tlajtlakojli kipiyaj,</div> <div id="T16e" class="txs">tejua ueyixtikaj rey,</div> <div id="T16f" class="txs">mochanejkauan* pampa xok techmakaj sakatl.</div><span id="bookmarks16"></span></div><span id="bookmarks16"></span><a id="v17"></a>
+<div class="p"><div id="T17a" class="txs"><span class="v">17</span><span class="vsp">&nbsp;</span>Pero on rey okinnankilij:</div></div>
+<div class="p"><div id="T17b" class="txs">—¡Nemejuamej san nentlatsiuij!</div> <div id="T17c" class="txs">¡Melauak,</div> <div id="T17d" class="txs">nentlatsiuij!</div> <div id="T17e" class="txs">Yejua ika,</div> <div id="T17f" class="txs">nenkijtouaj nenyaskej nenkomakaskej uentli nemoTEKO.</div><span id="bookmarks17"></span> <a id="v18"></a><div id="T18a" class="txs"><span class="v">18</span><span class="vsp">&nbsp;</span>Xuiyan xtekititij,</div> <div id="T18b" class="txs">niman maski xok mechmakaj sakatl,</div> <div id="T18c" class="txs">sa no ichkich nenkitemakaskej on xantli.</div><span id="bookmarks18"></span></div><span id="bookmarks18"></span><a id="v19"></a>
+<div class="p"><div id="T19" class="txs"><span class="v">19</span><span class="vsp">&nbsp;</span>On intlayekankauan on israelitas onajmankej ijkuak okinmijlijkej ika sanken* ichkich kichijchiuaskej on xantli ken achtoj kichijchiuayaj.</div><span id="bookmarks19"></span> <a id="v20"></a><div id="T20a" class="txs"><span class="v">20</span><span class="vsp">&nbsp;</span>Kemaj ijkuak okiskej ixpan on rey,</div> <div id="T20b" class="txs">okitakej Moisés niman Aarón yejuan kinchixtikatkaj.</div><span id="bookmarks20"></span> <a id="v21"></a><div id="T21a" class="txs"><span class="v">21</span><span class="vsp">&nbsp;</span>Niman on israel tlayekankej okinmijlijkej:</div></div>
+<div class="p"><div id="T21b" class="txs">—ToTEKO ma kita on tlen xkuajli nentechchiuaj toka tejuamej,</div> <div id="T21c" class="txs">niman ma mechcastigaro.</div> <div id="T21d" class="txs">Nemejuamej nemotlajtlakol ika itekitkauan on rey techtlauelitaj sanoyej.</div> <div id="T21e" class="txs">Nochiua ken nenkitlalijtokej espada ipan iminma para ma techmiktikan.</div><span id="bookmarks21"></span></div>
+
+<div class="s"><div id="Ts2" class="txs">Moisés onoteixpanuij itech toTEKO</div></div><span id="bookmarks21"></span><a id="v22"></a>
+<div class="p"><div id="T22a" class="txs"><span class="v">22</span><span class="vsp">&nbsp;</span>Kemaj Moisés onoueyikatsajtsilij niman okijlij toTEKO:</div></div>
+<div class="p"><div id="T22b" class="txs">—NoTEKO,</div> <div id="T22c" class="txs">¿tline tikinchiuilia on tlen xkuajli in tlakamej?</div> <div id="T22d" class="txs">¿Tline otinechajtitlan?</div><span id="bookmarks22"></span> <a id="v23"></a><div id="T23a" class="txs"><span class="v">23</span><span class="vsp">&nbsp;</span>Desde ijkuak oniuajlaj oniknotsako on rey ken otinechijlij,</div> <div id="T23b" class="txs">yejua más kintlajyouiltia mokoneuan,</div> <div id="T23c" class="txs">niman tejua xitlaj* tikchiua para tikinmakixtis.</div><span id="bookmarks23"></span></div><div class="footer"><div class="footer-line"><span class="footer"><b>Texto:</b> © 1987, 2009, 2016, 2022, <a href="http://www.Wycliffe.org" class="web-link">Wycliffe Bible Translators, Inc.</a></span></div><div class="footer-line"><span class="footer"><b>Audio:</b> Antiguo Testamento, ℗ 2012, Wycliffe Bible Translators, Inc; Nuevo Testamento, ℗ 2013, <a href="https://live.bible.is/bible/NGUTBL/MAT/1" class="web-link">Hosanna</a></span></div><div class="footer-line"><span class="footer">— Sitio web de náhuatl de Guerrero: <a href="http://www.xtlajtonauatl.org" class="web-link">www.xtlajtonauatl.org</a></span></div><div class="footer-line"><span class="footer">— Visite <a href="http://www.scriptureearth.org/00e-Escrituras_Indice.php?sortby=lang&name=ngu" class="web-link">www.ScriptureEarth.org</a> para más materiales en náhuatl de Guerrero.</span></div></div>
+</div>
+
+<div id="toolbar-bottom">
+<div class="audio-player">
+  <audio id="audio" controls>
+    <source id="audio1" src="https://cloud.faithcomesbyhearing.com/mp3audiobibles2/NGUTBLN2DA/ngu-02-EXO-05.mp3" />
+  </audio>
+</div>
+</div>
+
+<script type='text/javascript' src='./pwa-main.js'></script>
+<script>
+var coll = document.getElementsByClassName("collapsible-button");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+        }
+    });
+}
+</script>
+</body>
+</html>

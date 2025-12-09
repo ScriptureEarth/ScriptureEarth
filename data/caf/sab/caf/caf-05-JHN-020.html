@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#6C0000">
+<title>John 20</title>
+
+<script type='text/javascript' src='js/jquery-1.11.3.min.js'></script>
+<script type='text/javascript' src='js/popcorn-complete.min.js'></script>
+<script type='text/javascript' src='js/jquery.tooltipster.min.js'></script>
+<script type='text/javascript' src='js/app-builder-audio.js'></script>
+<script type='text/javascript' src='js/app-builder-footnotes.js'></script>
+<script type='text/javascript' src='js/app-builder-menus.js'></script>
+<script type='text/javascript' src='js/app-builder-video.js'></script>
+<script type='text/javascript' src='js/book-names.js'></script>
+
+<link rel="stylesheet" type="text/css" href="css/tooltipster.css" />
+
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+
+<link rel="stylesheet" type="text/css" href="css/sab-stylesheet.css" />
+
+<script type="text/javascript">
+
+// Audio
+$(window).load(function() {
+
+var pop = Popcorn("#audio");
+
+var timings = [
+    { label: "s1", start: 3.32, end: 8.85 },
+    { label: "1a", start: 9.1, end: 14.89 },
+    { label: "1b", start: 15.14, end: 16.67 },
+    { label: "1c", start: 16.92, end: 21.05 },
+    { label: "1d", start: 21.3, end: 24.33 },
+    { label: "2a", start: 24.58, end: 31.55 },
+    { label: "2b", start: 31.8, end: 32.59 },
+    { label: "2c", start: 32.84, end: 35.11 },
+    { label: "2d", start: 35.36, end: 38.65 },
+    { label: "2e", start: 38.9, end: 41.23 },
+    { label: "2f", start: 41.48, end: 45.15 },
+    { label: "3", start: 45.4, end: 52.11 },
+    { label: "4a", start: 52.36, end: 54.11 },
+    { label: "4b", start: 54.36, end: 63.69 },
+    { label: "5a", start: 63.94, end: 66.17 },
+    { label: "5b", start: 66.42, end: 69.99 },
+    { label: "5c", start: 70.24, end: 74.31 },
+    { label: "5d", start: 74.56, end: 77.41 },
+    { label: "6a", start: 77.66, end: 82.03 },
+    { label: "6b", start: 82.28, end: 88.71 },
+    { label: "7a", start: 88.96, end: 92.73 },
+    { label: "7b", start: 92.98, end: 96.67 },
+    { label: "7c", start: 96.92, end: 101.25 },
+    { label: "8a", start: 101.5, end: 107.67 },
+    { label: "8b", start: 107.92, end: 109.37 },
+    { label: "8c", start: 109.62, end: 113.83 },
+    { label: "9a", start: 114.08, end: 122.39 },
+    { label: "9b", start: 122.64, end: 127.85 },
+    { label: "10", start: 128.1, end: 132.57 },
+    { label: "s2", start: 132.82, end: 141.57 },
+    { label: "11a", start: 141.82, end: 146.77 },
+    { label: "11b", start: 147.02, end: 150.29 },
+    { label: "11c", start: 150.54, end: 157.15 },
+    { label: "12a", start: 157.4, end: 163.11 },
+    { label: "12b", start: 163.36, end: 165.57 },
+    { label: "12c", start: 165.82, end: 168.67 },
+    { label: "12d", start: 168.92, end: 173.31 },
+    { label: "12e", start: 173.56, end: 175.27 },
+    { label: "13a", start: 175.52, end: 176.97 },
+    { label: "13b", start: 177.22, end: 178.11 },
+    { label: "13c", start: 178.36, end: 179.83 },
+    { label: "13d", start: 180.08, end: 181.65 },
+    { label: "13e", start: 181.9, end: 190.53 },
+    { label: "14a", start: 190.78, end: 198.39 },
+    { label: "14b", start: 198.64, end: 202.11 },
+    { label: "15a", start: 202.36, end: 204.59 },
+    { label: "15b", start: 204.84, end: 205.67 },
+    { label: "15c", start: 205.92, end: 206.99 },
+    { label: "15d", start: 207.24, end: 209.63 },
+    { label: "15e", start: 209.88, end: 213.99 },
+    { label: "15f", start: 214.24, end: 216.05 },
+    { label: "15g", start: 216.3, end: 220.39 },
+    { label: "15h", start: 220.64, end: 223.67 },
+    { label: "15i", start: 223.92, end: 226.57 },
+    { label: "16a", start: 226.82, end: 228.47 },
+    { label: "16b", start: 228.72, end: 229.73 },
+    { label: "16c", start: 229.98, end: 231.51 },
+    { label: "16d", start: 231.76, end: 234.39 },
+    { label: "16e", start: 234.64, end: 235.99 },
+    { label: "16f", start: 236.24, end: 241.33 },
+    { label: "17a", start: 241.58, end: 243.61 },
+    { label: "17b", start: 243.86, end: 245.81 },
+    { label: "17c", start: 246.06, end: 250.05 },
+    { label: "17d", start: 250.3, end: 256.07 },
+    { label: "17e", start: 256.32, end: 258.87 },
+    { label: "17f", start: 259.12, end: 261.71 },
+    { label: "17g", start: 261.96, end: 267.59 },
+    { label: "18a", start: 267.84, end: 275.65 },
+    { label: "18b", start: 275.9, end: 279.21 },
+    { label: "18c", start: 279.46, end: 284.13 },
+    { label: "s3", start: 284.38, end: 291.95 },
+    { label: "19a", start: 292.2, end: 297.77 },
+    { label: "19b", start: 298.02, end: 300.23 },
+    { label: "19c", start: 300.48, end: 303.63 },
+    { label: "19d", start: 303.88, end: 310.23 },
+    { label: "19e", start: 310.48, end: 313.95 },
+    { label: "19f", start: 314.2, end: 315.91 },
+    { label: "19g", start: 316.16, end: 319.37 },
+    { label: "20a", start: 319.62, end: 322.49 },
+    { label: "20b", start: 322.74, end: 326.43 },
+    { label: "20c", start: 326.68, end: 333.39 },
+    { label: "21a", start: 333.64, end: 336.95 },
+    { label: "21b", start: 337.2, end: 339.37 },
+    { label: "21c", start: 339.62, end: 342.77 },
+    { label: "21d", start: 343.02, end: 346.73 },
+    { label: "22a", start: 346.98, end: 352.19 },
+    { label: "22b", start: 352.44, end: 354.89 },
+    { label: "23a", start: 355.14, end: 358.03 },
+    { label: "23b", start: 358.28, end: 361.71 },
+    { label: "23c", start: 361.96, end: 369.67 },
+    { label: "24a", start: 369.92, end: 374.77 },
+    { label: "24b", start: 375.02, end: 376.35 },
+    { label: "24c", start: 376.6, end: 377.95 },
+    { label: "24d", start: 378.2, end: 381.83 },
+    { label: "25a", start: 382.08, end: 383.35 },
+    { label: "25b", start: 383.6, end: 384.87 },
+    { label: "25c", start: 385.12, end: 387.25 },
+    { label: "25d", start: 387.5, end: 388.91 },
+    { label: "25e", start: 389.16, end: 394.23 },
+    { label: "25f", start: 394.48, end: 397.73 },
+    { label: "25g", start: 397.98, end: 401.91 },
+    { label: "25h", start: 402.16, end: 406.11 },
+    { label: "25i", start: 406.36, end: 407.33 },
+    { label: "26a", start: 407.58, end: 410.43 },
+    { label: "26b", start: 410.68, end: 419.81 },
+    { label: "26c", start: 420.06, end: 422.83 },
+    { label: "26d", start: 423.08, end: 427.01 },
+    { label: "26e", start: 427.26, end: 429.85 },
+    { label: "26f", start: 430.1, end: 432.21 },
+    { label: "27a", start: 432.46, end: 434.61 },
+    { label: "27b", start: 434.86, end: 443.23 },
+    { label: "27c", start: 443.48, end: 445.95 },
+    { label: "27d", start: 446.2, end: 447.85 },
+    { label: "27e", start: 448.1, end: 449.29 },
+    { label: "28a", start: 449.54, end: 451.35 },
+    { label: "28b", start: 451.6, end: 454.55 },
+    { label: "29a", start: 454.8, end: 457.03 },
+    { label: "29b", start: 457.28, end: 458.17 },
+    { label: "29c", start: 458.42, end: 459.67 },
+    { label: "29d", start: 459.92, end: 461.93 },
+    { label: "29e", start: 462.18, end: 465.15 },
+    { label: "29f", start: 465.4, end: 467.91 },
+    { label: "29g", start: 468.16, end: 470.91 },
+    { label: "30", start: 471.16, end: 480.81 },
+    { label: "31a", start: 481.06, end: 483.75 },
+    { label: "31b", start: 484, end: 489.73 },
+    { label: "31c", start: 489.98, end: 491.79 },
+    { label: "31d", start: 492.04, end: 492.87 },
+    { label: "31e", start: 493.12, end: 494.45 },
+    { label: "31f", start: 494.7, end: 499.93 },
+    { label: "31g", start: 500.18, end: 504.39 }
+];
+
+initAudioTimings(pop, timings);
+});
+
+$(document).ready(function() {
+});
+
+// Chapters
+var chapters = [ { start: 1, end: 21 }];
+var hasIntro = false;
+var baseRef  = "caf-05-JHN-";
+
+
+</script>
+</head>
+
+<body class="browser" dir="LTR" lang="crx">
+
+<div id="book-menu"></div>
+<div id="chapter-menu"></div>
+
+<div id="toolbar-top">
+<div class="navigation-top">
+  <span class="button"><a href='caf-04-LUK-001.html' title='Previous Book'>&nbsp;&lt;&lt;&nbsp;</a></span>
+  <span class="button"><a href='caf-05-JHN-019.html' title='Previous Chapter'>&nbsp;&nbsp;&lt;&nbsp;&nbsp;</a></span>
+  <span id="book-selector"><a href="#" onclick="toggleBookMenu(); return false;">&nbsp;&nbsp;John&nbsp;&nbsp;</a></span>
+<span id="chapter-selector"><a href="#" onclick="toggleChapterMenu(chapters, hasIntro, baseRef); return false;">&nbsp;&nbsp;20&nbsp;&nbsp;</a></span>
+  <span class="button"><a href='caf-05-JHN-021.html' title='Next Chapter'>&nbsp;&nbsp;&gt;&nbsp;&nbsp;</a></span>
+  <span class="button"><a href='caf-06-ACT-001.html' title='Next Book'>&nbsp;&gt;&gt;&nbsp;</a></span>
+</div>
+</div>
+
+<div id="content">
+
+
+<div class="s"><div id="Ts1" class="txs">Sizi ts'un k'ut dinadija.</div></div><a id="v1"></a>
+<div class="m">
+<div class="c-drop">20</div> <div id="T1a" class="txs">Dimos dzin whutanilhghel 'awhuz tsahólhgus hoh Mary Magdala whut'en,</div> <div id="T1b" class="txs">ts'un k'uz tezya.</div> <div id="T1c" class="txs">Whuz ninya hoh tse cho ts'un k'ut whudadune'ai,</div> <div id="T1d" class="txs">'i 'udun dunez'ai hoh yutelh'en.</div><span id="bookmarks1"></span> <a id="v2"></a><div id="T2a" class="txs"><span class="v">2</span><span class="vsp">&nbsp;</span>'Aw 'et Simon Peter 'ink'ez ndun 'ilhunuh Sizi yugha hoodul'eh k'us yúk'entsi',</div> <div id="T2b" class="txs">'en bulh,</div> <div id="T2c" class="txs">hubughulgai 'ink'ez ndo búlhni,</div> <div id="T2d" class="txs">“NeMoodihti buyust'e hiyílhchoot.</div> <div id="T2e" class="txs">'Uts'un whehíyalhti,</div> <div id="T2f" class="txs">'ink'ez 'aw t'éts'onízun nts'e símba whehíyalhti.”</div><span id="bookmarks2"></span> <a id="v3"></a><div id="T3" class="txs"><span class="v">3</span><span class="vsp">&nbsp;</span>'Et Peter 'ink'ez ndun 'ilhunuh bulh ts'un k'uz ts'ih hutelhgai.</div><span id="bookmarks3"></span> <a id="v4"></a><div id="T4a" class="txs"><span class="v">4</span><span class="vsp">&nbsp;</span>Whuz lhgha hudilgai.</div> <div id="T4b" class="txs">'Et ndun 'ilhunuh 'en Peter 'a bughanus lhgha dilgai 'et huwa 'udechoo ts'un k'uz lhgha dilgai.</div><span id="bookmarks4"></span> <a id="v5"></a><div id="T5a" class="txs"><span class="v">5</span><span class="vsp">&nbsp;</span>'Aw 'et whuz núlhgai hoh,</div> <div id="T5b" class="txs">nyuk 'uja 'ink'ez whiyah whunalh'en.</div> <div id="T5c" class="txs">'Et naih dezti 'i 'et sula yunalh'en,</div> <div id="T5d" class="txs">'et whunts'ih 'aw dachaíyal.</div><span id="bookmarks5"></span> <a id="v6"></a><div id="T6a" class="txs"><span class="v">6</span><span class="vsp">&nbsp;</span>'Et soo yúnelgih hoh Simon Peter whuz lhadílgai.</div> <div id="T6b" class="txs">'En ts'un k'ut danínya 'ink'ez naih dezti 'i 'et sula yutelh'en.</div><span id="bookmarks6"></span> <a id="v7"></a><div id="T7a" class="txs"><span class="v">7</span><span class="vsp">&nbsp;</span>'I ndi dzezoh butsigha waiwesdúduz inle,</div> <div id="T7b" class="txs">'i 'aw naih dezti 'i butuh cha hóolah.</div> <div id="T7c" class="txs">Soo cho lhénintan 'ink'ez 'udun 'et sulhchooz.</div><span id="bookmarks7"></span> <a id="v8"></a><div id="T8a" class="txs"><span class="v">8</span><span class="vsp">&nbsp;</span>'Et ndun 'ilhunuh yugha hoodul'eh 'udechoo ts'un k'uz lhadígai,</div> <div id="T8b" class="txs">'en chah danínya.</div> <div id="T8c" class="txs">Soo cho whunalh'en 'ink'ez buba 'alha 'uhooja.</div><span id="bookmarks8"></span> <a id="v9"></a><div id="T9a" class="txs"><span class="v">9</span><span class="vsp">&nbsp;</span>'Et 'awhuz soo cho hubeni be t'éhonízun daja ni ndi Yak'usda bughunek 'uk'une'úsduguz 'i k'ut,</div> <div id="T9b" class="txs">Sizi yaidla tah dinádutédalh 'et hubugha.</div><span id="bookmarks9"></span> <a id="v10"></a><div id="T10" class="txs"><span class="v">10</span><span class="vsp">&nbsp;</span>'Aw 'et Sizi yugha hoodul'eh bukoo ts'un whenáhet'az.</div><span id="bookmarks10"></span></div>
+
+<div class="s"><div id="Ts2" class="txs">Sizi, 'en Mary Magdala whut'en, 'en yunalh haínya.</div></div><span id="bookmarks10"></span><a id="v11"></a>
+<div class="p"><div id="T11a" class="txs"><span class="v">11</span><span class="vsp">&nbsp;</span>'Et whunts'ih Mary 'en ts'un k'ut 'aw 'et nétl'adinda.</div> <div id="T11b" class="txs">Yoo 'az ts'ih siyin 'ink'ez utso.</div> <div id="T11c" class="txs">'Ink'ez utso hoh yuk 'int'ah 'ink'ez ni tse tuz whunilh'en.</div><span id="bookmarks11"></span> <a id="v12"></a><div id="T12a" class="txs"><span class="v">12</span><span class="vsp">&nbsp;</span>Khunyaz nanah lizas soo lhuyul 'i be húzke,</div> <div id="T12b" class="txs">njan hoh hubutelh'en.</div> <div id="T12c" class="txs">'Ilhunuh 'en yutsi t'ah,</div> <div id="T12d" class="txs">'et 'ilhunuh chah yuketl'ah ndet Sizi buyust'e ilhte,</div> <div id="T12e" class="txs">'et huzke.</div><span id="bookmarks12"></span> <a id="v13"></a><div id="T13a" class="txs"><span class="v">13</span><span class="vsp">&nbsp;</span>'Et hiyoodulhkut,</div> <div id="T13b" class="txs">“Ts'eke,</div> <div id="T13c" class="txs">di ka intso?”</div> <div id="T13d" class="txs">'Et ndo búlhni,</div> <div id="T13e" class="txs">“SMoodihti 'uts'un whehíyalhti 'ink'ez nts'e simba 'ahíyalhti 'aw t'éwhunuzúszun.”</div><span id="bookmarks13"></span> <a id="v14"></a><div id="T14a" class="txs"><span class="v">14</span><span class="vsp">&nbsp;</span>'Et ndudéja hukw'elh'az n'un nalhu'a hoh khunyaz Sizi 'et siyin hoh yutelh'en,</div> <div id="T14b" class="txs">'et whunts'ih 'aw Sizi 'int'ah 'aw nachayóolts'ulh.</div><span id="bookmarks14"></span> <a id="v15"></a><div id="T15a" class="txs"><span class="v">15</span><span class="vsp">&nbsp;</span>'Et Sizi ndi yúlhni,</div> <div id="T15b" class="txs">“Ts'eke,</div> <div id="T15c" class="txs">di ghintso?</div> <div id="T15d" class="txs">Ndan kunínta hoh 'int'en?”</div> <div id="T15e" class="txs">'Et Mary 'uninzun haniyeh k'et huwunli tulih 'ut'en,</div> <div id="T15f" class="txs">'ink'ez ndi yúlhni,</div> <div id="T15g" class="txs">“Nyun ílhchoot 'ink'ez 'uts'un wheílhti t'eh,</div> <div id="T15h" class="txs">nts'e ninílhti ndusudóni,</div> <div id="T15i" class="txs">'et t'eh si naoolhúchoot.”</div><span id="bookmarks15"></span> <a id="v16"></a><div id="T16a" class="txs"><span class="v">16</span><span class="vsp">&nbsp;</span>'Et Sizi,</div> <div id="T16b" class="txs">“Mary,”</div> <div id="T16c" class="txs">'uyúlhni.</div> <div id="T16d" class="txs">'Et Mary 'awh nadelhú'a 'ink'ez,</div> <div id="T16e" class="txs">“Rabboni!”</div> <div id="T16f" class="txs">yúlhni ('i khunek nehodulh'eh ni hoh 'utni).</div><span id="bookmarks16"></span> <a id="v17"></a><div id="T17a" class="txs"><span class="v">17</span><span class="vsp">&nbsp;</span>'Et Sizi ndi yúlhni,</div> <div id="T17b" class="txs">“Aw njan soontun ilah.</div> <div id="T17c" class="txs">'Awhuz nduk se'aBá buts'un náchatuzusdak.</div> <div id="T17d" class="txs">'Et whunts'ih sulhutsinkah hubuts'un naíndalh 'ink'ez ndo budíni,</div> <div id="T17e" class="txs">nduk se'aBá buts'un nátesdalh.</div> <div id="T17f" class="txs">'En nuhwheni chah nuhwhe'aBá.</div> <div id="T17g" class="txs">Si suYak'usda 'ink'ez nuhwheni chah nuhYak'usda unli.”</div><span id="bookmarks17"></span> <a id="v18"></a><div id="T18a" class="txs"><span class="v">18</span><span class="vsp">&nbsp;</span>'Et Mary Magdala whut'en Sizi yugha hoodul'eh hubughu nanja 'ink'ez ndi khunek huba whusanaída'ai,</div> <div id="T18b" class="txs">'ink'ez neMoodihti chah ya'en húbulhni.</div> <div id="T18c" class="txs">'Et Sizi daja yudáni hukw'e hubulh náwhulnuk.</div><span id="bookmarks18"></span></div>
+
+<div class="s"><div id="Ts3" class="txs">Sizi yugha hoodul'eh hubunalh haínya.</div></div><span id="bookmarks18"></span><a id="v19"></a>
+<div class="p"><div id="T19a" class="txs"><span class="v">19</span><span class="vsp">&nbsp;</span>'Et dzin 'et Dimos dzin whutanilhghel whutah 'uhoont'ah,</div> <div id="T19b" class="txs">'et hulhgha zeh,</div> <div id="T19c" class="txs">'et yugha hoodul'eh 'ilhunahuwésdel.</div> <div id="T19d" class="txs">Dulh Lizwif hube hunuljut 'et ndati ts'iyawh dá'denla.</div> <div id="T19e" class="txs">Khunyaz Sizi hubutah siyin hitelh'en.</div> <div id="T19f" class="txs">'Et ndo búlhni,</div> <div id="T19g" class="txs">“Soo cho nuhdzi dooghel.”</div><span id="bookmarks19"></span></div>
+
+<div class="video-block">
+<div class="video-container video-mp4 video-16-9" id="VIDEO0" style="background-image:url('images/JnSlide20.19-31.jpg');">
+<a href="#" onClick="playVideoFile('VIDEO0', 'https://scriptureearth.org/data/caf/video/caf-Jn20.19-31-Jesus_appears_to_the_disciples.mp4'); return false;"><img src="images/video_play_01.png"/></a>
+</div>
+<div class="video-title"><span class="video-title">Jesus appears to the disciples (John 20:19-31)</span></div>
+</div>
+
+<div class="p"> <a id="v20"></a><div id="T20a" class="txs"><span class="v">20</span><span class="vsp">&nbsp;</span>'Et ndúbudani hoh bula chah,</div> <div id="T20b" class="txs">'ink'ez buyust'e k'ut chah hubunalh hahonla.</div> <div id="T20c" class="txs">'Et yugha hoodul'eh tube cho huhóost'et hubuMoodihti hiya'en 'et.</div><span id="bookmarks20"></span> <a id="v21"></a><div id="T21a" class="txs"><span class="v">21</span><span class="vsp">&nbsp;</span>'Et Sizi doo chah zeh ndo búlhni,</div> <div id="T21b" class="txs">“Soo cho nuhdzi dooghel.</div> <div id="T21c" class="txs">Nts'e na'a se'aBá whuz de sútelh'a,</div> <div id="T21d" class="txs">'et whuz na'a si chah nuhwhutélh'alh.”</div><span id="bookmarks21"></span> <a id="v22"></a><div id="T22a" class="txs"><span class="v">22</span><span class="vsp">&nbsp;</span>'Et ndudéja hukw'elh'az hubuk'uz tésjiz 'ink'ez ndo búlhni,</div> <div id="T22b" class="txs">“Ndoni nuhyudóolts'it.</div><span id="bookmarks22"></span> <a id="v23"></a><div id="T23a" class="txs"><span class="v">23</span><span class="vsp">&nbsp;</span>Ndunnah bulubeshi huba 'un telhdel,</div> <div id="T23b" class="txs">'en 'uda huba 'un tezkat ho' 'int'ah.</div> <div id="T23c" class="txs">'Ink'ez ndunnah hubulubeshi huba 'un chatuzulhdel 'aw huba 'un chatikulh ho' 'int'ah.”</div><span id="bookmarks23"></span> <a id="v24"></a><div id="T24a" class="txs"><span class="v">24</span><span class="vsp">&nbsp;</span>'Et ndunnah lanezi 'o 'at nanah (12) hubutah 'ilhunuh,</div> <div id="T24b" class="txs">'ut'udánda,</div> <div id="T24c" class="txs">Thomas hiyulhni,</div> <div id="T24d" class="txs">'aw hubutah hoolah hoh Sizi bughu ninya.</div><span id="bookmarks24"></span> <a id="v25"></a><div id="T25a" class="txs"><span class="v">25</span><span class="vsp">&nbsp;</span>'Et ndunnah yugha hoodul'eh,</div> <div id="T25b" class="txs">'en Thomas hiyulhni,</div> <div id="T25c" class="txs">“NeMoodihti 'en ts'á'en!”</div> <div id="T25d" class="txs">'Et ndo búlhni,</div> <div id="T25e" class="txs">“Soo sich'oh suna be bula lutgloo k'ah whunalh'en,</div> <div id="T25f" class="txs">'ink'ez sulasgek be whune'sílhge,</div> <div id="T25g" class="txs">'ink'ez buyust'e 'et sula be buka nudelhunik,</div> <div id="T25h" class="txs">'et k'an zeh sih suba 'alha 'uhot'e,”</div> <div id="T25i" class="txs">ni.</div><span id="bookmarks25"></span> <a id="v26"></a><div id="T26a" class="txs"><span class="v">26</span><span class="vsp">&nbsp;</span>'Et 'ilhu whutanilhghel inle hoh,</div> <div id="T26b" class="txs">doo chah Sizi yugha hoodul'eh koo tuz ts'ih hudelhts'i hoh Thomas 'en chah hubutah usda.</div> <div id="T26c" class="txs">Ndati duts'o da'de'ai,</div> <div id="T26d" class="txs">'et whunts'ih khunyaz Sizi hubutah siyin hítelh'en,</div> <div id="T26e" class="txs">'ink'ez ndo búlhni,</div> <div id="T26f" class="txs">“Soo cho nuhdzi dooghel.”</div><span id="bookmarks26"></span> <a id="v27"></a><div id="T27a" class="txs"><span class="v">27</span><span class="vsp">&nbsp;</span>'Et Thomas 'uyúlhni,</div> <div id="T27b" class="txs">“Sula nilh'en 'ink'ez nlasgek be suka k'et nudilnih 'ink'ez nla be suzih k'ut chah nudílnih.</div> <div id="T27c" class="txs">'Et 'o 'un 'aw suts'oodóntlai gunih.</div> <div id="T27d" class="txs">Mba 'alha 'uhot'e,”</div> <div id="T27e" class="txs">yúlhni.</div><span id="bookmarks27"></span> <a id="v28"></a><div id="T28a" class="txs"><span class="v">28</span><span class="vsp">&nbsp;</span>'Et Thomas ndi yúlhni,</div> <div id="T28b" class="txs">“SMoodihti 'ink'ez sYak'usda!”</div><span id="bookmarks28"></span> <a id="v29"></a><div id="T29a" class="txs"><span class="v">29</span><span class="vsp">&nbsp;</span>'Et Sizi ndi yúlhni,</div> <div id="T29b" class="txs">“Thomas,</div> <div id="T29c" class="txs">k'an sa'en,</div> <div id="T29d" class="txs">'et huwa mba 'alha 'uhoont'ah.</div> <div id="T29e" class="txs">'Et whunts'ih ndunnah 'aw chasuhí'il whunts'ih,</div> <div id="T29f" class="txs">'ink'ez huba 'alha 'uhoont'ah,</div> <div id="T29g" class="txs">'en degha nus hoonzoo hubugha whults'ut.”</div><span id="bookmarks29"></span> <a id="v30"></a><div id="T30" class="txs"><span class="v">30</span><span class="vsp">&nbsp;</span>'Et 'o nus lhat yugha hoodul'eh hubunalh Sizi hooncha túne' 'ust'en 'et whunts'ih 'aw ndi dustl'us k'ut 'aw buk'echa'íduguz.</div><span id="bookmarks30"></span> <a id="v31"></a><div id="T31a" class="txs"><span class="v">31</span><span class="vsp">&nbsp;</span>'Et ndi zeh kw'uné'usduguz,</div> <div id="T31b" class="txs">'i soo cho bugha t'éwhunohzin 'ink'ez nuhwhuba 'alha 'uhot'e,</div> <div id="T31c" class="txs">'alha Sizi 'en Christ,</div> <div id="T31d" class="txs">Yak'usda buYe',</div> <div id="T31e" class="txs">'en 'int'ah.</div> <div id="T31f" class="txs">'Et njan nuhwhuba 'alha 'uhoont'ah hoh 'ilhuz wule be ts'úkhuna,</div> <div id="T31g" class="txs">'i Sizi Gri boozi bugha' téht'ilh.</div><span id="bookmarks31"></span></div><div class="footer"><div class="footer-line"><span class="footer">© 2002-2015, Wycliffe Bible Translators, Inc., Orlando, FL 35862-8200 USA  (<a href="https://www.Wycliffe.org">www.Wycliffe.org</a>) — Visit <a href="https://www.scriptureearth.org/caf">www.ScriptureEarth.org/caf</a> for more Scripture resources in Southern Carrier.</span></div></div>
+</div>
+
+<div id="toolbar-bottom">
+<div class="audio-player">
+  <audio id="audio" controls>
+    <source id="audio1" src="https://www.scriptureearth.org/data/caf/audio/44-JHNcaf-20.mp3" />
+  </audio>
+</div>
+</div>
+
+<script type='text/javascript' src='./pwa-main.js'></script>
+<script>
+var coll = document.getElementsByClassName("collapsible-button");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+        }
+    });
+}
+</script>
+</body>
+</html>

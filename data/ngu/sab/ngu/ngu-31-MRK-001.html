@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000B63">
+<title>San Marcos 1</title>
+
+<script type='text/javascript' src='js/jquery-1.11.3.min.js'></script>
+<script type='text/javascript' src='js/popcorn-complete.min.js'></script>
+<script type='text/javascript' src='js/jquery.tooltipster.min.js'></script>
+<script type='text/javascript' src='js/app-builder-audio.js'></script>
+<script type='text/javascript' src='js/app-builder-footnotes.js'></script>
+<script type='text/javascript' src='js/app-builder-menus.js'></script>
+<script type='text/javascript' src='js/app-builder-video.js'></script>
+<script type='text/javascript' src='js/book-names.js'></script>
+
+<link rel="stylesheet" type="text/css" href="css/tooltipster.css" />
+
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+
+<link rel="stylesheet" type="text/css" href="css/sab-stylesheet.css" />
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script type="text/javascript">
+
+// Audio
+$(window).load(function() {
+
+var pop = Popcorn("#audio");
+
+var timings = [
+    { label: "1", start: 3.28, end: 18.27 },
+    { label: "2a", start: 18.52, end: 23.31 },
+    { label: "2b", start: 23.56, end: 27.21 },
+    { label: "2c", start: 27.46, end: 31.07 },
+    { label: "3a", start: 31.32, end: 35.39 },
+    { label: "3b", start: 35.64, end: 38.07 },
+    { label: "3c", start: 38.32, end: 42.43 },
+    { label: "3d", start: 42.68, end: 44.31 },
+    { label: "3e", start: 44.56, end: 48.99 },
+    { label: "3f", start: 49.24, end: 52.07 },
+    { label: "4a", start: 52.32, end: 53.63 },
+    { label: "4b", start: 53.88, end: 55.11 },
+    { label: "4c", start: 55.36, end: 58.47 },
+    { label: "4d", start: 58.72, end: 63.47 },
+    { label: "4e", start: 63.72, end: 66.95 },
+    { label: "5a", start: 67.2, end: 76.11 },
+    { label: "5b", start: 76.36, end: 78.99 },
+    { label: "5c", start: 79.24, end: 83.75 },
+    { label: "6a", start: 84, end: 88.03 },
+    { label: "6b", start: 88.28, end: 94.11 },
+    { label: "6c", start: 94.36, end: 96.35 },
+    { label: "6d", start: 96.6, end: 99.07 },
+    { label: "7a", start: 99.32, end: 101.41 },
+    { label: "7b", start: 101.66, end: 103.11 },
+    { label: "7c", start: 103.36, end: 106.95 },
+    { label: "7d", start: 107.2, end: 111.51 },
+    { label: "8a", start: 111.76, end: 116.15 },
+    { label: "8b", start: 116.4, end: 120.35 },
+    { label: "9a", start: 120.6, end: 128.19 },
+    { label: "9b", start: 128.44, end: 132.35 },
+    { label: "10a", start: 132.6, end: 135.79 },
+    { label: "10b", start: 136.04, end: 138.07 },
+    { label: "10c", start: 138.32, end: 144.31 },
+    { label: "11a", start: 144.56, end: 149.27 },
+    { label: "11b", start: 149.52, end: 150.71 },
+    { label: "11c", start: 150.96, end: 153.87 },
+    { label: "11d", start: 154.12, end: 156.59 },
+    { label: "12", start: 156.84, end: 162.63 },
+    { label: "13a", start: 162.88, end: 169.11 },
+    { label: "13b", start: 169.36, end: 172.53 },
+    { label: "13c", start: 172.78, end: 175.43 },
+    { label: "13d", start: 175.68, end: 178.35 },
+    { label: "14a", start: 178.6, end: 182.05 },
+    { label: "14b", start: 182.3, end: 189.43 },
+    { label: "15a", start: 189.68, end: 190.99 },
+    { label: "15b", start: 191.24, end: 194.99 },
+    { label: "15c", start: 195.24, end: 198.31 },
+    { label: "15d", start: 198.56, end: 203.47 },
+    { label: "16a", start: 203.72, end: 209.11 },
+    { label: "16b", start: 209.36, end: 213.31 },
+    { label: "16c", start: 213.56, end: 215.15 },
+    { label: "16d", start: 215.4, end: 219.19 },
+    { label: "17a", start: 219.44, end: 220.15 },
+    { label: "17b", start: 220.4, end: 223.19 },
+    { label: "17c", start: 223.44, end: 226.39 },
+    { label: "17d", start: 226.64, end: 230.75 },
+    { label: "18a", start: 231, end: 233.75 },
+    { label: "18b", start: 234, end: 236.47 },
+    { label: "19a", start: 236.72, end: 239.43 },
+    { label: "19b", start: 239.68, end: 244.29 },
+    { label: "19c", start: 244.54, end: 247.35 },
+    { label: "19d", start: 247.6, end: 249.59 },
+    { label: "19e", start: 249.84, end: 253.07 },
+    { label: "20a", start: 253.32, end: 257.35 },
+    { label: "20b", start: 257.6, end: 263.75 },
+    { label: "20c", start: 264, end: 267.23 },
+    { label: "21a", start: 267.48, end: 272.59 },
+    { label: "21b", start: 272.84, end: 275.31 },
+    { label: "21c", start: 275.56, end: 278.79 },
+    { label: "21d", start: 279.04, end: 281.43 },
+    { label: "22a", start: 281.68, end: 286.17 },
+    { label: "22b", start: 286.42, end: 291.17 },
+    { label: "22c", start: 291.42, end: 295.27 },
+    { label: "23a", start: 295.52, end: 302.15 },
+    { label: "23b", start: 302.4, end: 304.95 },
+    { label: "24a", start: 305.2, end: 306.91 },
+    { label: "24b", start: 307.16, end: 308.79 },
+    { label: "24c", start: 309.04, end: 311.87 },
+    { label: "24d", start: 312.12, end: 313.83 },
+    { label: "24e", start: 314.08, end: 317.87 },
+    { label: "25a", start: 318.12, end: 320.91 },
+    { label: "25b", start: 321.16, end: 322.87 },
+    { label: "25c", start: 323.12, end: 324.07 },
+    { label: "25d", start: 324.32, end: 325.99 },
+    { label: "26a", start: 326.24, end: 332.35 },
+    { label: "26b", start: 332.6, end: 334.59 },
+    { label: "26c", start: 334.84, end: 335.67 },
+    { label: "27a", start: 335.92, end: 337.31 },
+    { label: "27b", start: 337.56, end: 340.51 },
+    { label: "27c", start: 340.76, end: 342.55 },
+    { label: "27d", start: 342.8, end: 345.03 },
+    { label: "27e", start: 345.28, end: 348.43 },
+    { label: "27f", start: 348.68, end: 352.31 },
+    { label: "28", start: 352.56, end: 358.21 },
+    { label: "29a", start: 358.46, end: 363.31 },
+    { label: "29b", start: 363.56, end: 368.91 },
+    { label: "30a", start: 369.16, end: 373.71 },
+    { label: "30b", start: 373.96, end: 375.83 },
+    { label: "30c", start: 376.08, end: 380.03 },
+    { label: "31a", start: 380.28, end: 382.63 },
+    { label: "31b", start: 382.88, end: 384.43 },
+    { label: "31c", start: 384.68, end: 386.45 },
+    { label: "31d", start: 386.7, end: 389.21 },
+    { label: "31e", start: 389.46, end: 391.57 },
+    { label: "32a", start: 391.82, end: 393.91 },
+    { label: "32b", start: 394.16, end: 398.35 },
+    { label: "32c", start: 398.6, end: 402.11 },
+    { label: "33", start: 402.36, end: 409.55 },
+    { label: "34a", start: 409.8, end: 412.95 },
+    { label: "34b", start: 413.2, end: 416.55 },
+    { label: "34c", start: 416.8, end: 420.83 },
+    { label: "34d", start: 421.08, end: 425.79 },
+    { label: "34e", start: 426.04, end: 429.97 },
+    { label: "35a", start: 430.22, end: 432.71 },
+    { label: "35b", start: 432.96, end: 435.19 },
+    { label: "35c", start: 435.44, end: 437.11 },
+    { label: "35d", start: 437.36, end: 438.91 },
+    { label: "35e", start: 439.16, end: 441.99 },
+    { label: "35f", start: 442.24, end: 444.87 },
+    { label: "36a", start: 445.12, end: 446.19 },
+    { label: "36b", start: 446.44, end: 452.47 },
+    { label: "37a", start: 452.72, end: 454.27 },
+    { label: "37b", start: 454.52, end: 455.75 },
+    { label: "37c", start: 456, end: 458.55 },
+    { label: "38a", start: 458.8, end: 460.15 },
+    { label: "38b", start: 460.4, end: 465.55 },
+    { label: "38c", start: 465.8, end: 468.11 },
+    { label: "39a", start: 468.36, end: 474.89 },
+    { label: "39b", start: 475.14, end: 479.43 },
+    { label: "40a", start: 479.68, end: 487.35 },
+    { label: "40b", start: 487.6, end: 491.95 },
+    { label: "40c", start: 492.2, end: 493.43 },
+    { label: "40d", start: 493.68, end: 496.15 },
+    { label: "41a", start: 496.4, end: 498.79 },
+    { label: "41b", start: 499.04, end: 500.21 },
+    { label: "41c", start: 500.46, end: 501.47 },
+    { label: "41d", start: 501.72, end: 502.95 },
+    { label: "41e", start: 503.2, end: 504.77 },
+    { label: "42a", start: 505.02, end: 507.45 },
+    { label: "42b", start: 507.7, end: 511.79 },
+    { label: "42c", start: 512.04, end: 514.07 },
+    { label: "43-44a", start: 514.32, end: 517.83 },
+    { label: "43-44b", start: 518.08, end: 518.23 },
+    { label: "43-44c", start: 518.48, end: 519.99 },
+    { label: "43-44d", start: 520.24, end: 521.47 },
+    { label: "43-44e", start: 521.72, end: 526.95 },
+    { label: "43-44f", start: 527.2, end: 528.79 },
+    { label: "43-44g", start: 529.04, end: 532.19 },
+    { label: "43-44h", start: 532.44, end: 533.07 },
+    { label: "43-44i", start: 533.32, end: 536.39 },
+    { label: "45a", start: 536.64, end: 543.13 },
+    { label: "45b", start: 543.38, end: 547.67 },
+    { label: "45c", start: 547.92, end: 550.93 },
+    { label: "45d", start: 551.18, end: 557.83 }
+];
+
+initAudioTimings(pop, timings);
+});
+
+$(document).ready(function() {
+});
+
+// Chapters
+var chapters = [ { start: 1, end: 16 }];
+var hasIntro = false;
+var baseRef  = "ngu-31-MRK-";
+
+
+</script>
+</head>
+
+<body class="browser" dir="LTR">
+
+<div id="book-menu"></div>
+<div id="chapter-menu"></div>
+
+<div id="toolbar-top">
+<div class="navigation-top">
+  <span class="button"><a href='ngu-30-MAT-001.html' title='Previous Book'>&nbsp;&lt;&lt;&nbsp;</a></span>
+  <span class="button"><a href='ngu-30-MAT-028.html' title='Previous Chapter'>&nbsp;&nbsp;&lt;&nbsp;&nbsp;</a></span>
+  <span id="book-selector"><a href="#" onclick="toggleBookMenu(); return false;">&nbsp;&nbsp;San Marcos&nbsp;&nbsp;</a></span>
+<span id="chapter-selector"><a href="#" onclick="toggleChapterMenu(chapters, hasIntro, baseRef); return false;">&nbsp;&nbsp;1&nbsp;&nbsp;</a></span>
+  <span class="button"><a href='ngu-31-MRK-002.html' title='Next Chapter'>&nbsp;&nbsp;&gt;&nbsp;&nbsp;</a></span>
+  <span class="button"><a href='ngu-32-LUK-001.html' title='Next Book'>&nbsp;&gt;&gt;&nbsp;</a></span>
+</div>
+</div>
+
+<div id="content">
+
+<div class="mt"><span class="mt">SAN MARCOS</span></div>
+<div class="mt2"><span class="mt2">ON KUAJLI TLAJTOJLI YEJUAN SAN MARCOS OKIJKUILOJ ITECHKOPA INEMILIS JESUCRISTO</span></div>
+<div class="b"></div>
+<div class="b"></div>
+
+<div class="s"><div id="s1">On tiotlajtojketl Isaías okijtoj ika uajlas Juan</div></div>
+<div class="r"><div id="r1">(<span class="reflink"><a href="ngu-30-MAT-003.html#v1">Mt 3.1-12</a></span>; <span class="reflink"><a href="ngu-32-LUK-003.html#v1">Lc 3.1-9</a></span>, <span class="reflink"><a href="ngu-32-LUK-003.html#v15">15-17</a></span>; <span class="reflink"><a href="ngu-33-JHN-001.html#v19">Jn 1.19-28</a></span>) </div></div><a id="v1"></a>
+<div class="m">
+<div class="c-drop">1</div> <div id="T1" class="txs">Ijkin opeu in kuajli tlajtojli yejuan kiteijlia ken Dios temakixtia itechkopa JesuCristo iKonetsin.</div><span id="bookmarks1"></span></div>
+
+<div class="video-block">
+<div class="video-container video-gospel video-16-9" id="VIDEO0" style="background-image:url('images/VGF_NGUTBLP2DV_057.videoStill.jpg');">
+<a href="#" onClick="playOnlineVideo('VIDEO0', 'https://4.dbt.io/api/bible/filesets/NGUTBLP2DV/MRK-1-1-13/playlist.m3u8?v=4&key=9525bb6e-bf28-4465-baee-ac04a77a71d2'); return false;"><img src="images/video_play_01.png"/></a>
+</div>
+<div class="video-title"><span class="video-title">San Marcos 1.1-13</span></div>
+</div>
+
+<div class="p"> <a id="v2"></a><div id="T2a" class="txs"><span class="v">2</span><span class="vsp">&nbsp;</span>On tiotlajtojketl Isaías okijkuilojka on tlinon Dios okijlij:</div></div>
+<div class="b">&nbsp;</div>
+<div class="q"><div id="T2b" class="txs">Niktitlanis sen notenojnotskau moyakapan.</div></div>
+<div class="q"><div id="T2c" class="txs">Yejua kitlalis melajki inyojlo para mitsseliskej.</div><span id="bookmarks2"></span></div><span id="bookmarks2"></span><a id="v3"></a>
+<div class="q-v"><div id="T3a" class="txs"><span class="v">3</span><span class="vsp">&nbsp;</span>On notlakeual tsajtsi ipan on xalpatlajkan.</div></div>
+<div class="q"><div id="T3b" class="txs">Kinmijlia on tojlamej tlakamej:</div></div>
+<div class="q"><div id="T3c" class="txs">“Xyektlalikan nemoyojlo pampa ye uajlau toTEKO.</div></div>
+<div class="q"><div id="T3d" class="txs">Xmejmelauakan nemonemilis</div></div>
+<div class="q"><div id="T3e" class="txs">ijkon ken on tlakamej kueltlaliaj niman kimejmelauaj sen ojtli</div></div>
+<div class="q"><div id="T3f" class="txs">ijkuak uajlau sen tlakatl yejuan ueyixtikaj.”</div><span id="bookmarks3"></span></div>
+
+<div class="s"><div id="s2">Juan otemachtij ika uajlas Jesús</div></div><span id="bookmarks3"></span><a id="v4"></a>
+<div class="p"><div id="T4a" class="txs"><span class="v">4</span><span class="vsp">&nbsp;</span>Juan,</div> <div id="T4b" class="txs">on tlakuatekijketl,</div> <div id="T4c" class="txs">onoteititij ipan on xalpatlajkan,</div> <div id="T4d" class="txs">niman kinmachtiayaj on tlakamej ma noyolpatlakan niman ma nokuatekikan,</div> <div id="T4e" class="txs">niman Dios kintlapojpoluilis intlajtlakol.</div><span id="bookmarks4"></span> <a id="v5"></a><div id="T5a" class="txs"><span class="v">5</span><span class="vsp">&nbsp;</span>Uajlayaj nochimej on chanejkej de on ueyikalpan Jerusalén niman on yejuan nochiuiyan chantiyaj ipan iregión Judea.</div> <div id="T5b" class="txs">Niman ijkuak yejuamej yonoyolkuitijkej,</div> <div id="T5c" class="txs">Juan kinkuatekiyaya ipan on río itoka Jordán.</div><span id="bookmarks5"></span></div><span id="bookmarks5"></span><a id="v6"></a>
+<div class="p"><div id="T6a" class="txs"><span class="v">6</span><span class="vsp">&nbsp;</span>Juan notlakentiaya ikan itsojmiyo on yolki itoka camello,</div> <div id="T6b" class="txs">niman notlajkosalouaya ikan sen ilpikatl tlachijchijtli ikan kuetlaxtli.</div> <div id="T6c" class="txs">Itlakual katka on chapolimej,</div> <div id="T6d" class="txs">niman no koniya on kojnekutli.</div><span id="bookmarks6"></span> <a id="v7"></a><div id="T7a" class="txs"><span class="v">7</span><span class="vsp">&nbsp;</span>Niman ijkin kinmachtiaya:</div></div>
+<div class="p"><div id="T7b" class="txs">—Uajlau okse,</div> <div id="T7c" class="txs">yejuan kipiya más poder xken nejua.</div> <div id="T7d" class="txs">Nejua nion achijtsin xnechmelaua* niktojtomas ikakmekayo.</div><span id="bookmarks7"></span> <a id="v8"></a><div id="T8a" class="txs"><span class="v">8</span><span class="vsp">&nbsp;</span>Nejua melauak yonemechkuatekij ikan atl,</div> <div id="T8b" class="txs">pero yejua mechkuatekis ikan Espíritu Santo.</div><span id="bookmarks8"></span></div>
+
+<div class="s"><div id="s3">Juan okuatekij Jesús</div></div>
+<div class="r"><div id="r2">(<span class="reflink"><a href="ngu-30-MAT-003.html#v13">Mt 3.13-17</a></span>; <span class="reflink"><a href="ngu-32-LUK-003.html#v21">Lc 3.21-22</a></span>) </div></div><span id="bookmarks8"></span><a id="v9"></a>
+<div class="p"><div id="T9a" class="txs"><span class="v">9</span><span class="vsp">&nbsp;</span>Ipan on tonaltin Jesús okis Nazaret yejuan onkaj ipan iregión Galilea,</div> <div id="T9b" class="txs">niman Juan okuatekij ipan on río itoka Jordán.</div><span id="bookmarks9"></span> <a id="v10"></a><div id="T10a" class="txs"><span class="v">10</span><span class="vsp">&nbsp;</span>Niman ijkuak Jesús ouajkis ne ijtik on atl,</div> <div id="T10b" class="txs">okitak on iluikak otlapou,</div> <div id="T10c" class="txs">niman on Espíritu Santo uajtemouaya ken itlaj paloma niman ipan onotlalij.</div><span id="bookmarks10"></span> <a id="v11"></a><div id="T11a" class="txs"><span class="v">11</span><span class="vsp">&nbsp;</span>Niman okakistik itlajtol toTajtsin de ne iluikak.</div> <div id="T11b" class="txs">Ijkin kijtouaya:</div></div>
+<div class="p"><div id="T11c" class="txs">—Tejua tinotlajsojkaKonetsin,</div> <div id="T11d" class="txs">niman sanoyej moka nipaki.</div><span id="bookmarks11"></span></div>
+
+<div class="s"><div id="s4">On diablo* okitlatlatak Jesús</div></div>
+<div class="r"><div id="r3">(<span class="reflink"><a href="ngu-30-MAT-004.html#v1">Mt 4.1-11</a></span>; <span class="reflink"><a href="ngu-32-LUK-004.html#v1">Lc 4.1-13</a></span>) </div></div><span id="bookmarks11"></span><a id="v12"></a>
+<div class="p"><div id="T12" class="txs"><span class="v">12</span><span class="vsp">&nbsp;</span>Kemaj nimantsin on Espíritu Santo okuikak Jesús ne ipan on xalpatlajkan.</div><span id="bookmarks12"></span> <a id="v13"></a><div id="T13a" class="txs"><span class="v">13</span><span class="vsp">&nbsp;</span>Niman Jesús ompa onen 40 tonaltin kampa nemij on uejueyi yolkej yejuan tekuanimej.</div> <div id="T13b" class="txs">Niman on diablo* ompa okitlatlatak Jesús.</div> <div id="T13c" class="txs">Kemaj oualajkej on ángeles,</div> <div id="T13d" class="txs">niman ompa kipaleuiyayaj.</div><span id="bookmarks13"></span></div>
+
+<div class="s"><div id="s5">Jesús opeu temachtia neka Galilea</div></div>
+<div class="r"><div id="r4">(<span class="reflink"><a href="ngu-30-MAT-004.html#v12">Mt 4.12-17</a></span>; <span class="reflink"><a href="ngu-32-LUK-004.html#v14">Lc 4.14-15</a></span>) </div></div><span id="bookmarks13"></span><a id="v14"></a>
+<div class="p"><div id="T14a" class="txs"><span class="v">14</span><span class="vsp">&nbsp;</span>Kemaj ijkuak Juan yokitsakukej,</div> <div id="T14b" class="txs">Jesús oajsik Galilea kampa kitemachtiaya on kuajli tlajtojli yejuan kiteijlia ken Dios temakixtia.</div><span id="bookmarks14"></span></div>
+
+<div class="video-block">
+<div class="video-container video-gospel video-16-9" id="VIDEO1" style="background-image:url('images/VGF_NGUTBLP2DV_058.videoStill.jpg');">
+<a href="#" onClick="playOnlineVideo('VIDEO1', 'https://4.dbt.io/api/bible/filesets/NGUTBLP2DV/MRK-1-14-45/playlist.m3u8?v=4&key=9525bb6e-bf28-4465-baee-ac04a77a71d2'); return false;"><img src="images/video_play_01.png"/></a>
+</div>
+<div class="video-title"><span class="video-title">San Marcos 1.14-45</span></div>
+</div>
+
+<div class="p"> <a id="v15"></a><div id="T15a" class="txs"><span class="v">15</span><span class="vsp">&nbsp;</span>Kijtouaya Jesús:</div></div>
+<div class="p"><div id="T15b" class="txs">—Ye uajlau on tonajli ijkuak Dios tlamandaros.</div> <div id="T15c" class="txs">Xkajkauakan ika nenkichiuaj on tlen xkuajli,</div> <div id="T15d" class="txs">niman xneltokakan on kuajli tlajtojli yejuan kiteijlia ken Dios temakixtia.</div><span id="bookmarks15"></span></div>
+
+<div class="s"><div id="s6">Jesús okinnots sekimej inomachtijkauan*</div></div>
+<div class="r"><div id="r5">(<span class="reflink"><a href="ngu-30-MAT-004.html#v18">Mt 4.18-22</a></span>; <span class="reflink"><a href="ngu-32-LUK-005.html#v1">Lc 5.1-11</a></span>) </div></div><span id="bookmarks15"></span><a id="v16"></a>
+<div class="p"><div id="T16a" class="txs"><span class="v">16</span><span class="vsp">&nbsp;</span>Se tonajli ijkuak Jesús nejnentiaya itenko on mar itoka Galilea,</div> <div id="T16b" class="txs">okitak Simón iuan Andrés on ikniu.</div> <div id="T16c" class="txs">Yejuamej michajsikej katkaj,</div> <div id="T16d" class="txs">niman konchapaniayaj iminmatlau ipan on mar.</div><span id="bookmarks16"></span> <a id="v17"></a><div id="T17a" class="txs"><span class="v">17</span><span class="vsp">&nbsp;</span>Niman Jesús okinmijlij:</div></div>
+<div class="p"><div id="T17b" class="txs">—Nemejuamej nenkintejtemouaj michimej.</div> <div id="T17c" class="txs">Pero aman xuajuiyan nouan,</div> <div id="T17d" class="txs">niman nenkintejtemoskej tlakamej para nenkinuikaskej itech Dios.</div><span id="bookmarks17"></span></div><span id="bookmarks17"></span><a id="v18"></a>
+<div class="p"><div id="T18a" class="txs"><span class="v">18</span><span class="vsp">&nbsp;</span>Yejuamej nimantsin okajkej inmatlauan,</div> <div id="T18b" class="txs">niman iuan oyajkej.</div><span id="bookmarks18"></span></div><span id="bookmarks18"></span><a id="v19"></a>
+<div class="p"><div id="T19a" class="txs"><span class="v">19</span><span class="vsp">&nbsp;</span>Kemaj Jesús onejnen más tlayakapan,</div> <div id="T19b" class="txs">niman okomintak omemej iknijtin intoka Santiago niman Juan.</div> <div id="T19c" class="txs">Yejuamej ikoneuan Zebedeo.</div> <div id="T19d" class="txs">Nemiyaj ipan sen barco,</div> <div id="T19e" class="txs">niman kintlamanilijtikatkaj on inmatlauan.</div><span id="bookmarks19"></span> <a id="v20"></a><div id="T20a" class="txs"><span class="v">20</span><span class="vsp">&nbsp;</span>Nimantsin okominnots para ma uajuiyan iuan,</div> <div id="T20b" class="txs">niman yejuamej okajtejkej Zebedeo intataj ne ipan on barco inuan itlakeualuan,</div> <div id="T20c" class="txs">niman oyajkej iuan Jesús.</div><span id="bookmarks20"></span></div>
+
+<div class="s"><div id="s7">Jesús okipajtij sen tlakatl, yejuan kipiyaya on xkuajli espíritu</div></div>
+<div class="r"><div id="r6">(<span class="reflink"><a href="ngu-32-LUK-004.html#v31">Lc 4.31-37</a></span>) </div></div><span id="bookmarks20"></span><a id="v21"></a>
+<div class="p"><div id="T21a" class="txs"><span class="v">21</span><span class="vsp">&nbsp;</span>Niman oajsikej ne ipan on kalpan itoka Capernaúm.</div> <div id="T21b" class="txs">Ijkuak oyejkok on tonajli sábado,</div> <div id="T21c" class="txs">Jesús okalak ipan insinagoga* on hebreos*,</div> <div id="T21d" class="txs">niman ompa otemachtij.</div><span id="bookmarks21"></span> <a id="v22"></a><div id="T22a" class="txs"><span class="v">22</span><span class="vsp">&nbsp;</span>Yejua xtemachtiaya ken on temachtijkej ikan itlanauatil Dios,</div> <div id="T22b" class="txs">yej temachtiaya ken se yejuan kipiya ueyi tekiuajyotl.</div> <div id="T22c" class="txs">Yejua ika on tlakamej sanoyej* okintlajtlachaltij.</div><span id="bookmarks22"></span></div><span id="bookmarks22"></span><a id="v23"></a>
+<div class="p"><div id="T23a" class="txs"><span class="v">23</span><span class="vsp">&nbsp;</span>Ne ipan insinagoga* on hebreos* nemiya sen tlakatl yejuan kipiyaya sen xkuajli espíritu.</div> <div id="T23b" class="txs">Niman on tlakatl okitsajtsilij:</div><span id="bookmarks23"></span></div><span id="bookmarks23"></span><a id="v24"></a>
+<div class="p"><div id="T24a" class="txs"><span class="v">24</span><span class="vsp">&nbsp;</span>—¿Tlinon tikchiuas touan,</div> <div id="T24b" class="txs">tejua Jesús de Nazaret?</div> <div id="T24c" class="txs">¿Otiuajlaj para titechxoxotoniko?</div> <div id="T24d" class="txs">Nejua nimitsixmatstikaj,</div> <div id="T24e" class="txs">niman nikmatstikaj ika tejua tiichipajkaKonetsin Dios.</div><span id="bookmarks24"></span></div><span id="bookmarks24"></span><a id="v25"></a>
+<div class="p"><div id="T25a" class="txs"><span class="v">25</span><span class="vsp">&nbsp;</span>Jesús okajuak on xkuajli espíritu,</div> <div id="T25b" class="txs">niman okijlij:</div></div>
+<div class="p"><div id="T25c" class="txs">—¡Maka xnauati!</div> <div id="T25d" class="txs">¡Xkisa ijtik in tlakatl!</div><span id="bookmarks25"></span></div><span id="bookmarks25"></span><a id="v26"></a>
+<div class="p"><div id="T26a" class="txs"><span class="v">26</span><span class="vsp">&nbsp;</span>Niman on xkuajli espíritu sanoyej chikauak okitsejtseloj on tlakatl,</div> <div id="T26b" class="txs">niman otsajtsik chikauak.</div> <div id="T26c" class="txs">Kemaj okis.</div><span id="bookmarks26"></span> <a id="v27"></a><div id="T27a" class="txs"><span class="v">27</span><span class="vsp">&nbsp;</span>Nochimej omojkatlachixkej,</div> <div id="T27b" class="txs">niman nochimej notlajtoltiayaj yejuamej:</div></div>
+<div class="p"><div id="T27c" class="txs">—¿Tlinon in?</div> <div id="T27d" class="txs">In nesi yenkuik tlamachtijli.</div> <div id="T27e" class="txs">Ikan itekiuajyo Dios in tlakatl tlamandaroua,</div> <div id="T27f" class="txs">niman hasta on xkuajkualtin espíritus kitlakamatij.</div><span id="bookmarks27"></span></div><span id="bookmarks27"></span><a id="v28"></a>
+<div class="p"><div id="T28" class="txs"><span class="v">28</span><span class="vsp">&nbsp;</span>Nimantsin omachiyak imanian Galilea on tlinon okichiu Jesús.</div><span id="bookmarks28"></span></div>
+
+<div class="s"><div id="s8">Jesús okipajtij imonan Pedro</div></div>
+<div class="r"><div id="r7">(<span class="reflink"><a href="ngu-30-MAT-008.html#v14">Mt 8.14-15</a></span>; <span class="reflink"><a href="ngu-32-LUK-004.html#v38">Lc 4.38-39</a></span>) </div></div><span id="bookmarks28"></span><a id="v29"></a>
+<div class="p"><div id="T29a" class="txs"><span class="v">29</span><span class="vsp">&nbsp;</span>Kemaj Jesús okis ne ipan insinagoga* on hebreos*,</div> <div id="T29b" class="txs">niman oyaj iuan Santiago niman Juan ne inchan Simón niman Andrés.</div><span id="bookmarks29"></span> <a id="v30"></a><div id="T30a" class="txs"><span class="v">30</span><span class="vsp">&nbsp;</span>Niman imonan Simón ompa onoya ipan tlapechtli.</div> <div id="T30b" class="txs">Yejua kipiyaya totonalistli*.</div> <div id="T30c" class="txs">Kemaj okijlijkej Jesús ika imonan Pedro kualo.</div><span id="bookmarks30"></span> <a id="v31"></a><div id="T31a" class="txs"><span class="v">31</span><span class="vsp">&nbsp;</span>Niman kemaj Jesús okinisiuij,</div> <div id="T31b" class="txs">okontilan ipan ima,</div> <div id="T31c" class="txs">niman okitelkets.</div> <div id="T31d" class="txs">Nimantsin okau on totonalistli*,</div> <div id="T31e" class="txs">niman kemaj okintlakualtij.</div><span id="bookmarks31"></span></div>
+
+<div class="s"><div id="s9">Jesús okipajtij miyek tlakatl</div></div>
+<div class="r"><div id="r8">(<span class="reflink"><a href="ngu-30-MAT-008.html#v16">Mt 8.16-17</a></span>; <span class="reflink"><a href="ngu-32-LUK-004.html#v40">Lc 4.40-41</a></span>) </div></div><span id="bookmarks31"></span><a id="v32"></a>
+<div class="p"><div id="T32a" class="txs"><span class="v">32</span><span class="vsp">&nbsp;</span>Ijkuak yokalak tonaltsintli,</div> <div id="T32b" class="txs">on chanejkej kinuajuikayaj nochimej on kech kualouayaj,</div> <div id="T32c" class="txs">niman on yejuan kipiyayaj on xkuajkualtin espíritus.</div><span id="bookmarks32"></span> <a id="v33"></a><div id="T33" class="txs"><span class="v">33</span><span class="vsp">&nbsp;</span>Niman nochimej on yejuan chantiyaj ipan on ueyikalpan onosentlalijkej ikiauatenko on kajli.</div><span id="bookmarks33"></span> <a id="v34"></a><div id="T34a" class="txs"><span class="v">34</span><span class="vsp">&nbsp;</span>Niman Jesús okimpajtij miyekej on kokoxkej,</div> <div id="T34b" class="txs">yejuan kipiyayaj oksesekneka kualolistin,</div> <div id="T34c" class="txs">niman miyekej okinkixtilij on xkuajkualtin espíritus.</div> <div id="T34d" class="txs">Pero xkinkauiliaya para on xkuajkualtin espíritus ma tlajtokan,</div> <div id="T34e" class="txs">pampa yejuamej kimatstikatkaj akin yejua.</div><span id="bookmarks34"></span></div>
+
+<div class="s"><div id="s10">Jesús otemachtij Galilea</div></div>
+<div class="r"><div id="r9">(<span class="reflink"><a href="ngu-32-LUK-004.html#v42">Lc 4.42-44</a></span>) </div></div><span id="bookmarks34"></span><a id="v35"></a>
+<div class="p"><div id="T35a" class="txs"><span class="v">35</span><span class="vsp">&nbsp;</span>Uajmostla uelipan,</div> <div id="T35b" class="txs">ijkuak sanken* tlayouatok katka,</div> <div id="T35c" class="txs">Jesús onokuiteu,</div> <div id="T35d" class="txs">niman okis de on kalpan,</div> <div id="T35e" class="txs">niman oyaj sekan kampaka xakaj nemi.</div> <div id="T35f" class="txs">Ompa okichiuato oración.</div><span id="bookmarks35"></span> <a id="v36"></a><div id="T36a" class="txs"><span class="v">36</span><span class="vsp">&nbsp;</span>Más sakin*,</div> <div id="T36b" class="txs">Simón niman on oksekimej inomachtijkauan* Jesús oyajkej para okitejtemotoj.</div><span id="bookmarks36"></span> <a id="v37"></a><div id="T37a" class="txs"><span class="v">37</span><span class="vsp">&nbsp;</span>Ijkuak okinextitoj,</div> <div id="T37b" class="txs">okijlijkej:</div></div>
+<div class="p"><div id="T37c" class="txs">—Miyek tlakatl mitstejtemoua.</div><span id="bookmarks37"></span></div><span id="bookmarks37"></span><a id="v38"></a>
+<div class="p"><div id="T38a" class="txs"><span class="v">38</span><span class="vsp">&nbsp;</span>Yejua okinnankijlij:</div></div>
+<div class="p"><div id="T38b" class="txs">—Tiauij oksekan kalpanmej kampaka nisiu para ompa no nitemachtis,</div> <div id="T38c" class="txs">pampa yejua ika oniuajlaj.</div><span id="bookmarks38"></span></div><span id="bookmarks38"></span><a id="v39"></a>
+<div class="p"><div id="T39a" class="txs"><span class="v">39</span><span class="vsp">&nbsp;</span>Kemaj Jesús temachtijtiaya ipan insinagogas* on hebreos nochiuiyan ne imanian Galilea.</div> <div id="T39b" class="txs">No kinkixtiliaya on tlakamej xkuajkualtin espíritus.</div><span id="bookmarks39"></span></div>
+
+<div class="s"><div id="s11">Jesús okipajtij sen tlakatl yejuan kipiyaya lepra*</div></div>
+<div class="r"><div id="r10">(<span class="reflink"><a href="ngu-30-MAT-008.html#v1">Mt 8.1-4</a></span>; <span class="reflink"><a href="ngu-32-LUK-005.html#v12">Lc 5.12-16</a></span>) </div></div><span id="bookmarks39"></span><a id="v40"></a>
+<div class="p"><div id="T40a" class="txs"><span class="v">40</span><span class="vsp">&nbsp;</span>Ouajlaj sen tlakatl itech Jesús yejuan kipiyaya on kualolistli itoka lepra*.</div> <div id="T40b" class="txs">Ixpan onotlakuantelkets niman ijkin okiajmankatlajtlanilij:</div></div>
+<div class="p"><div id="T40c" class="txs">—Tla tikneki,</div> <div id="T40d" class="txs">uelis tinechpajtis.</div><span id="bookmarks40"></span></div><span id="bookmarks40"></span><a id="v41"></a>
+<div class="p"><div id="T41a" class="txs"><span class="v">41</span><span class="vsp">&nbsp;</span>Niman Jesús okiknelij*.</div> <div id="T41b" class="txs">Okimatokak,</div> <div id="T41c" class="txs">niman okijlij:</div></div>
+<div class="p"><div id="T41d" class="txs">—Nikneki.</div> <div id="T41e" class="txs">Aman xpajti.</div><span id="bookmarks41"></span></div><span id="bookmarks41"></span><a id="v42"></a>
+<div class="p"><div id="T42a" class="txs"><span class="v">42</span><span class="vsp">&nbsp;</span>Niman ijkuak Jesús ijkon okijtoj,</div> <div id="T42b" class="txs">on kualolistli nimantsin opopoliu ipan on tlakatl.</div> <div id="T42c" class="txs">Opajtik inakayo.</div><span id="bookmarks42"></span> <a id="v43"></a><div id="T43-44a" class="txs"><span class="v">43-44</span><span class="vsp">&nbsp;</span>Jesús ijkin okichikajkanauatij:</div></div>
+<div class="p"><div id="T43-44b" class="txs">—Xkaki,</div> <div id="T43-44c" class="txs">maka yakaj itlaj xkijli,</div> <div id="T43-44d" class="txs">yej san xuiya,</div> <div id="T43-44e" class="txs">niman xmoteititi itech on tiopixki para mitsitas ika xok tikualo.</div> <div id="T43-44f" class="txs">Niman pampa yotipajtik,</div> <div id="T43-44g" class="txs">xkuentlali on tlen Moisés otlanauatij.</div> <div id="T43-44h" class="txs">Ijkon tej,</div> <div id="T43-44i" class="txs">on tlakamej kitaskej ika tejua yotipajtik.</div><span id="bookmarks43-44"></span></div><span id="bookmarks43-44"></span><a id="v45"></a>
+<div class="p"><div id="T45a" class="txs"><span class="v">45</span><span class="vsp">&nbsp;</span>Pero on tlakatl oyaj niman opeu kitetlajtlajtouilia nochiuiyan on tlen Jesús okichiuilij.</div> <div id="T45b" class="txs">Yejua ika Jesús xok ueliya kalakiya ipan on kalpanmej,</div> <div id="T45c" class="txs">yej san nekaj nemiya kampaka xalpatlajkan,</div> <div id="T45d" class="txs">niman on tlakamej uajlayaj itech de nochiuiyan kalpanmej.</div><span id="bookmarks45"></span></div><div class="footer"><div class="footer-line"><span class="footer"><b>Texto:</b> © 1987, 2009, 2016, 2022, <a href="http://www.Wycliffe.org" class="web-link">Wycliffe Bible Translators, Inc.</a></span></div><div class="footer-line"><span class="footer"><b>Audio:</b> Antiguo Testamento, ℗ 2012, Wycliffe Bible Translators, Inc; Nuevo Testamento, ℗ 2013, <a href="https://live.bible.is/bible/NGUTBL/MAT/1" class="web-link">Hosanna</a></span></div><div class="footer-line"><span class="footer">— Sitio web de náhuatl de Guerrero: <a href="http://www.xtlajtonauatl.org" class="web-link">www.xtlajtonauatl.org</a></span></div><div class="footer-line"><span class="footer">— Visite <a href="http://www.scriptureearth.org/00e-Escrituras_Indice.php?sortby=lang&name=ngu" class="web-link">www.ScriptureEarth.org</a> para más materiales en náhuatl de Guerrero.</span></div></div>
+</div>
+
+<div id="toolbar-bottom">
+<div class="audio-player">
+  <audio id="audio" controls>
+    <source id="audio1" src="https://cloud.faithcomesbyhearing.com/mp3audiobibles2/NGUTBLN2DA/B02___01_San_Marcos__NGUTBLN2DA.mp3" />
+  </audio>
+</div>
+</div>
+
+<script type='text/javascript' src='./pwa-main.js'></script>
+<script>
+var coll = document.getElementsByClassName("collapsible-button");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+        }
+    });
+}
+</script>
+</body>
+</html>

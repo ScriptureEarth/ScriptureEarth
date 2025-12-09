@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ROMANOS 16</title>
+
+<script type='text/javascript' src='js/jquery-1.11.3.min.js'></script>
+<script type='text/javascript' src='js/popcorn-complete.min.js'></script>
+<script type='text/javascript' src='js/jquery.tooltipster.min.js'></script>
+<script type='text/javascript' src='js/app-builder-audio.js'></script>
+<script type='text/javascript' src='js/app-builder-footnotes.js'></script>
+<script type='text/javascript' src='js/app-builder-menus.js'></script>
+<script type='text/javascript' src='js/app-builder-video.js'></script>
+<script type='text/javascript' src='js/book-names.js'></script>
+
+<link rel="stylesheet" type="text/css" href="css/tooltipster.css" />
+<link rel="stylesheet" type="text/css" href="css/sab-stylesheet.css" />
+<link rel="stylesheet" type="text/css" href="css/stylesheet.css" />
+
+<script type="text/javascript">
+
+// Audio
+$(window).load(function() {
+
+var pop = Popcorn("#audio");
+
+var timings = [
+    { label: "1a", start: 3.8, end: 6.55 },
+    { label: "1b", start: 6.8, end: 8.03 },
+    { label: "1c", start: 8.28, end: 14.29 },
+    { label: "2a", start: 14.54, end: 20.99 },
+    { label: "2b", start: 21.24, end: 24.07 },
+    { label: "2c", start: 24.32, end: 28.95 },
+    { label: "3", start: 29.2, end: 36.43 },
+    { label: "4a", start: 36.68, end: 39.07 },
+    { label: "4b", start: 39.32, end: 42.07 },
+    { label: "4c", start: 42.32, end: 45.19 },
+    { label: "4d", start: 45.44, end: 50.07 },
+    { label: "5a", start: 50.32, end: 55.59 },
+    { label: "5b", start: 55.84, end: 61.71 },
+    { label: "6", start: 61.96, end: 65.95 },
+    { label: "7a", start: 66.2, end: 70.87 },
+    { label: "7b", start: 71.12, end: 76.27 },
+    { label: "7c", start: 76.52, end: 79.87 },
+    { label: "8a", start: 80.12, end: 81.73 },
+    { label: "8b", start: 81.98, end: 84.51 },
+    { label: "9a", start: 84.76, end: 90.91 },
+    { label: "9b", start: 91.16, end: 93.93 },
+    { label: "10a", start: 94.18, end: 99.33 },
+    { label: "10b", start: 99.58, end: 102.75 },
+    { label: "11a", start: 103, end: 106.11 },
+    { label: "11b", start: 106.36, end: 109.99 },
+    { label: "12a", start: 110.24, end: 114.99 },
+    { label: "12b", start: 115.24, end: 120.75 },
+    { label: "13a", start: 121, end: 124.75 },
+    { label: "13b", start: 125, end: 127.83 },
+    { label: "14a", start: 128.08, end: 130.23 },
+    { label: "14b", start: 130.48, end: 131.43 },
+    { label: "14c", start: 131.68, end: 132.43 },
+    { label: "14d", start: 132.68, end: 133.71 },
+    { label: "14e", start: 133.96, end: 137.75 },
+    { label: "15a", start: 138, end: 140.71 },
+    { label: "15b", start: 140.96, end: 145.03 },
+    { label: "15c", start: 145.28, end: 150.91 },
+    { label: "16", start: 151.16, end: 159.55 },
+    { label: "17a", start: 159.8, end: 160.55 },
+    { label: "17b", start: 160.8, end: 173.11 },
+    { label: "17c", start: 173.36, end: 174.91 },
+    { label: "18a", start: 175.16, end: 178.43 },
+    { label: "18b", start: 178.68, end: 182.03 },
+    { label: "18c", start: 182.28, end: 189.21 },
+    { label: "19a", start: 189.46, end: 194.39 },
+    { label: "19b", start: 194.64, end: 196.63 },
+    { label: "19c", start: 196.88, end: 200.83 },
+    { label: "19d", start: 201.08, end: 204.03 },
+    { label: "20a", start: 204.28, end: 209.95 },
+    { label: "20b", start: 210.2, end: 214.29 },
+    { label: "21a", start: 214.54, end: 219.47 },
+    { label: "21b", start: 219.72, end: 220.31 },
+    { label: "21c", start: 220.56, end: 221.11 },
+    { label: "21d", start: 221.36, end: 225.87 },
+    { label: "22a", start: 226.12, end: 227.59 },
+    { label: "22b", start: 227.84, end: 232.75 },
+    { label: "22c", start: 233, end: 236.87 },
+    { label: "23a", start: 237.12, end: 240.11 },
+    { label: "23b", start: 240.36, end: 244.19 },
+    { label: "23c", start: 244.44, end: 250.31 },
+    { label: "24a", start: 250.56, end: 253.99 },
+    { label: "24b", start: 254.24, end: 256.03 },
+    { label: "25a", start: 256.28, end: 263.35 },
+    { label: "25b", start: 263.6, end: 272.95 },
+    { label: "25c", start: 273.2, end: 279.49 },
+    { label: "26a", start: 279.74, end: 281.15 },
+    { label: "26b", start: 281.4, end: 291.39 },
+    { label: "26c", start: 291.64, end: 298.31 },
+    { label: "27a", start: 298.56, end: 300.35 },
+    { label: "27b", start: 300.6, end: 304.47 },
+    { label: "27c", start: 304.72, end: 310.47 }
+];
+
+initAudioTimings(pop, timings);
+});
+
+$(document).ready(function() {
+
+// Footnotes and Cross-references
+var footnotes = {
+    "F-0": "<div class=\"footnote-p\"><span class=\"fr\">16.16 </span><span class=\"ft\">Ipan griego* kitoua: “beso santo”.</span></div>"
+};
+
+initFootnotes(footnotes);
+
+});
+
+// Chapters
+var chapters = [ { start: 1, end: 16 }];
+var hasIntro = false;
+var baseRef  = "ngu-46-ROM-";
+
+
+</script>
+</head>
+
+<body class="browser" dir="LTR">
+
+<div id="book-menu"></div>
+<div id="chapter-menu"></div>
+
+<div id="toolbar-top">
+<div class="navigation-top">
+  <span class="button"><a href='ngu-45-ACT-001.html' title='Previous Book'>&nbsp;&lt;&lt;&nbsp;</a></span>
+  <span class="button"><a href='ngu-46-ROM-015.html' title='Previous Chapter'>&nbsp;&nbsp;&lt;&nbsp;&nbsp;</a></span>
+  <span id="book-selector"><a href="#" onclick="toggleBookMenu(); return false;">&nbsp;&nbsp;ROMANOS&nbsp;&nbsp;</a></span>
+<span id="chapter-selector"><a href="#" onclick="toggleChapterMenu(chapters, hasIntro, baseRef); return false;">&nbsp;&nbsp;16&nbsp;&nbsp;</a></span>
+  <span class="button"><a href='ngu-47-1CO-001.html' title='Next Chapter'>&nbsp;&nbsp;&gt;&nbsp;&nbsp;</a></span>
+  <span class="button"><a href='ngu-47-1CO-001.html' title='Next Book'>&nbsp;&gt;&gt;&nbsp;</a></span>
+</div>
+</div>
+
+<div id="content">
+
+
+<div class="s"><div id="s1">Pablo kintlajpaloua on ikniuan itechkopa Cristo </div></div><a id="v1"></a>
+<div class="m">
+<div class="c-drop">16</div> <div id="T1a" class="txs"><span class="v">1</span><span class="txs">&nbsp;</span>Nikneki xmatikan ika in tokniu itoka Febe,</div> <div id="T1b" class="txs">kuajli siuatl.</div> <div id="T1c" class="txs">Yejua kimpaleuiya ipan itekiu Dios on yejuan tlaneltokaj ipan on kalpan itoka Cencrea.</div><span id="bookmarks1"></span> <a id="v2"></a><div id="T2a" class="txs"><span class="v">2</span><span class="txs">&nbsp;</span>Xselikan kuajli ikan itokatsin toTEKO ijkon ken noneki kichiuaskej on yejuan tlaneltokaj itech Dios.</div> <div id="T2b" class="txs">Niman xpaleuikan ika on tlen kipoloua,</div> <div id="T2c" class="txs">pampa yejua miyekej yokimpaleuij niman hasta nejua no yonechpaleuij.</div><span id="bookmarks2"></span></div><span id="bookmarks2"></span><a id="v3"></a>
+<div class="p"><div id="T3" class="txs"><span class="v">3</span><span class="txs">&nbsp;</span>Xkintlajpalokan on tokniuan Priscila niman Aquila yejuan onechpaleuijkej ipan itekiu Cristo Jesús. </div><span id="bookmarks3"></span> <a id="v4"></a><div id="T4a" class="txs"><span class="v">4</span><span class="txs">&nbsp;</span>Yejuamej san para okimanauijkej nonemilis,</div> <div id="T4b" class="txs">yonetemakakaj para mikiskiaj san nopampa.</div> <div id="T4c" class="txs">Niman aman xsan nejua nikinmaka tlaxtlauijli,</div> <div id="T4d" class="txs">yej no kinmakaj tlaxtlauijli nochimej on tlaneltokakej yejuan xhebreos*. </div><span id="bookmarks4"></span> <a id="v5"></a><div id="T5a" class="txs"><span class="v">5</span><span class="txs">&nbsp;</span>No xkintlajpalokan on tokniuan yejuan nosentlaliaj ichan Priscila niman Aquila.</div> <div id="T5b" class="txs">No xtlajpalokan notlajsojkaikniu* Epeneto yejuan achtopa okineltokak Cristo ne Acaya.</div><span id="bookmarks5"></span> <a id="v6"></a><div id="T6" class="txs"><span class="v">6</span><span class="txs">&nbsp;</span>No xtlajpalokan María yejuan sanoyej* yotekit nemotech. </div><span id="bookmarks6"></span> <a id="v7"></a><div id="T7a" class="txs"><span class="v">7</span><span class="txs">&nbsp;</span>No xkintlajpalokan nohebreojikniuan Andróniko niman Junias.</div> <div id="T7b" class="txs">Yejuamej nouan tsakutikatkaj niman on apóstoles* kuajli kintlakaitaj yejuamej.</div> <div id="T7c" class="txs">Yejuamej achtoj okineltokakej Cristo xken nejua.</div><span id="bookmarks7"></span></div><span id="bookmarks7"></span><a id="v8"></a>
+<div class="p"><div id="T8a" class="txs"><span class="v">8</span><span class="txs">&nbsp;</span>Xtlajpalokan Amplias,</div> <div id="T8b" class="txs">notlajsojkaikniu itechkopa toTEKO. </div><span id="bookmarks8"></span> <a id="v9"></a><div id="T9a" class="txs"><span class="v">9</span><span class="txs">&nbsp;</span>Xtlajpalokan Urbano yejuan otekit touan ipan on tekitl yejuan tikchiuaj ipampa Cristo Jesús,</div> <div id="T9b" class="txs">niman on notlajsojkaikniu Estaquis.</div><span id="bookmarks9"></span> <a id="v10"></a><div id="T10a" class="txs"><span class="v">10</span><span class="txs">&nbsp;</span>Xtlajpalokan Apeles yejuan Dios miyekpa okitak ika kineltoka Cristo.</div> <div id="T10b" class="txs">Niman no xtlajpalokan ifamilia Aristóbulo.</div><span id="bookmarks10"></span> <a id="v11"></a><div id="T11a" class="txs"><span class="v">11</span><span class="txs">&nbsp;</span>Xtlajpalokan on nohebreojikniu Herodión,</div> <div id="T11b" class="txs">niman ifamilia Narciso yejuan kineltokaj Cristo.</div><span id="bookmarks11"></span> <a id="v12"></a><div id="T12a" class="txs"><span class="v">12</span><span class="txs">&nbsp;</span>Xtlajpalokan Trifena niman Trifosa yejuan tekitij ipan itekiu toTEKO,</div> <div id="T12b" class="txs">niman on totlajsojkaikniu Pérsida yejuan sanoyej tekiti ipan itekiu toTEKO.</div><span id="bookmarks12"></span> <a id="v13"></a><div id="T13a" class="txs"><span class="v">13</span><span class="txs">&nbsp;</span>Xtlajpalokan Rufo yejuan sanoyej kuajli tlaneltokaketl,</div> <div id="T13b" class="txs">niman inanaj yejuan nechpiya ken ikoneu.</div><span id="bookmarks13"></span> <a id="v14"></a><div id="T14a" class="txs"><span class="v">14</span><span class="txs">&nbsp;</span>Xkintlajpalokan Asíncrito,</div> <div id="T14b" class="txs">Flegonte,</div> <div id="T14c" class="txs">Hermas,</div> <div id="T14d" class="txs">Patrobas,</div> <div id="T14e" class="txs">Hermes niman on tokniuan yejuan ompa inuan nemij. </div><span id="bookmarks14"></span> <a id="v15"></a><div id="T15a" class="txs"><span class="v">15</span><span class="txs">&nbsp;</span>No xkintlajpalokan Filólogo niman Julia.</div> <div id="T15b" class="txs">Niman no xkintlajpalokan Nereo niman on ikniu siuatl.</div> <div id="T15c" class="txs">Xtlajpalokan Olimpas niman nochimej on yolchipajkej itech Dios yejuan ompa inuan nemij. </div><span id="bookmarks15"></span></div><span id="bookmarks15"></span><a id="v16"></a>
+<div class="p"><div id="T16" class="txs"><span class="v">16</span><span class="txs">&nbsp;</span>Kualtsin xmotlajpalokan inuan oksekimej ikan tetlajsojtlalistli*<span class="footnote selectable" id="F-0"><sup>a</sup></span> Nochimej on tlaneltokakej itech Cristo mechtlajpalouaj. </div><span id="bookmarks16"></span></div><span id="bookmarks16"></span><a id="v17"></a>
+<div class="p"><div id="T17a" class="txs"><span class="v">17</span><span class="txs">&nbsp;</span>Nokniuan,</div> <div id="T17b" class="txs">sanoyej nemechtlajtlanilia para xmotakan sano nemejuamej intech on yejuan texexelouaj niman tetlamachilispopolouaj ikan intlaneltok niman kixnamikij on temachtiltin yejuan yonenkiselijkej.</div> <div id="T17c" class="txs">On kenomej xkintlalkauikan</div><span id="bookmarks17"></span> <a id="v18"></a><div id="T18a" class="txs"><span class="v">18</span><span class="txs">&nbsp;</span>pampa yejuamej xkitekipanouaj toTEKO JesuCristo,</div> <div id="T18b" class="txs">yej san kichiuaj ken inxkuajli eleuilis* kineki.</div> <div id="T18c" class="txs">Yejuamej kintlamachilispopolouaj ikan inkualtsin tlajtol niman inyemankatlajtol on tlakamej yejuan xtlamatkej*.</div><span id="bookmarks18"></span> <a id="v19"></a><div id="T19a" class="txs"><span class="v">19</span><span class="txs">&nbsp;</span>Nochi tlakatl kimati ken nenkintlakamatij on temachtijli yejuan yonenkiselijkej,</div> <div id="T19b" class="txs">niman yejua ika on sanoyej nipaki.</div> <div id="T19c" class="txs">Pero nikneki xpiyakan tlamatkilistli para nenkichiuaskej on tlen kuajli,</div> <div id="T19d" class="txs">niman maka para nenkichiuaskej on tlen xkuajli.</div><span id="bookmarks19"></span> <a id="v20"></a><div id="T20a" class="txs"><span class="v">20</span><span class="txs">&nbsp;</span>Niman Dios yejuan kitemaka yolseuilistli saniman kitlajkalis nemokxitlan on Satanás.</div> <div id="T20b" class="txs">Ma toTEKO JesuCristo mechmaka iueyitetlajsojtlalis.</div><span id="bookmarks20"></span></div><span id="bookmarks20"></span><a id="v21"></a>
+<div class="p"><div id="T21a" class="txs"><span class="v">21</span><span class="txs">&nbsp;</span>Timoteo yejuan tekiti nouan ipan in tekitl mechtlajpaloua.</div> <div id="T21b" class="txs">Niman Lucio,</div> <div id="T21c" class="txs">Jasón,</div> <div id="T21d" class="txs">niman Sosípater yejuan nohebreojikniuan no mechtlajpalouaj.</div><span id="bookmarks21"></span></div><span id="bookmarks21"></span><a id="v22"></a>
+<div class="p"><div id="T22a" class="txs"><span class="v">22</span><span class="txs">&nbsp;</span>Nejua Tercio,</div> <div id="T22b" class="txs">yejuan nikijkuilojtikaj in tlajkuilolamatl yejuan Pablo nechijlijtiu,</div> <div id="T22c" class="txs">no nemechtlajpaloua ikan itokatsin toTEKO.</div><span id="bookmarks22"></span> <a id="v23"></a><div id="T23a" class="txs"><span class="v">23</span><span class="txs">&nbsp;</span>Mechtlajpaloua tokniu Gayo yejuan ichan nichanti,</div> <div id="T23b" class="txs">niman no ompa ichan nosentlaliaj in yejuan tlaneltokaj.</div> <div id="T23c" class="txs">Erasto on yejuan tesorero ipan on ueyikalpan niman tokniu Cuarto no mechtlajpalouaj.</div><span id="bookmarks23"></span></div><span id="bookmarks23"></span><a id="v24"></a>
+<div class="p"><div id="T24a" class="txs"><span class="v">24</span><span class="txs">&nbsp;</span>Ma toTEKO JesuCristo nemochimej* ma mechtiochiua ueyi.</div> <div id="T24b" class="txs">Ma ijki nochiua.</div><span id="bookmarks24"></span></div>
+
+<div class="s"><div id="s2">Pablo kiyekteneua Dios</div></div><span id="bookmarks24"></span><a id="v25"></a>
+<div class="p"><div id="T25a" class="txs"><span class="v">25</span><span class="txs">&nbsp;</span>Niman aman ma tikyekteneuakan Dios yejuan uelis mechpaleuis para maka kaman nenkauaskej nemotlaneltok.</div> <div id="T25b" class="txs">Yejua mechpaleuis itechkopa on kuajli tlajtojli yejuan kiteijlia ken Dios temakixtia yejuan nikteijlia niman itechkopa on temachtijli de JesuCristo.</div> <div id="T25c" class="txs">In temachtijli Dios kuajli yokipanextij yejuan achtoj iyantikatka* desde ijkuak xe onkatka in tlaltikpaktli. </div><span id="bookmarks25"></span> <a id="v26"></a><div id="T26a" class="txs"><span class="v">26</span><span class="txs">&nbsp;</span>Pero aman,</div> <div id="T26b" class="txs">nochi yonopanextij niman yomachiyak itechkopa on Yektlajkuilojli yejuan okijkuilojkej on tiotlajtojkej ijkon ken Dios yejuan nochipa nemi otlanauatij ma nochiua.</div> <div id="T26c" class="txs">Ijkin otlanauatij Dios para nochiuiyan niman nochimej on tlakamej ma kineltokakan niman ma kitlakamatikan.</div><span id="bookmarks26"></span></div><span id="bookmarks26"></span><a id="v27"></a>
+<div class="p"><div id="T27a" class="txs"><span class="v">27</span><span class="txs">&nbsp;</span>¡Ma Dios yejuan san iselti tlamatki*,</div> <div id="T27b" class="txs">para nochipa ma kiseli ueyilistli itechkopa JesuCristo!</div> <div id="T27c" class="txs">Ma ijki nochiua.</div><span id="bookmarks27"></span></div><div class="footer"><div class="footer-line"><span class="footer">© 2019, Wycliffe Bible Translators, Inc., Orlando, FL 35862-8200 USA  (<a href="http://www.Wycliffe.org">www.Wycliffe.org</a>) — Audio: <a href="http://www.bible.is/NGUTBL/Matt/1/D">℗ 2013, Hosanna, Bible.is</a> — Sitio web de náhuatl de Guerrero: <a href="http://www.xtlajtonauatl.org">www.xtlajtonauatl.org</a></span></div><div class="footer-line"><span class="footer">— Visite <a href="http://www.scriptureearth.org/00e-Escrituras_Indice.php?sortby=lang&name=ngu">www.ScriptureEarth.org</a> para más recursos en náhuatl de Guerrero.</span></div></div>
+</div>
+
+<div id="toolbar-bottom">
+<div class="audio-player">
+  <audio id="audio" controls>
+    <source id='audio1' src="http://cloud.faithcomesbyhearing.com/mp3audiobibles2/NGUTBLN2DA/B06___16_Romanos_____NGUTBLN2DA.mp3" />
+  </audio>
+</div>
+</div>
+
+</body>
+</html>

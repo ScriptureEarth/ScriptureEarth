@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#6C0000">
+<title>Acts 16</title>
+
+<script type='text/javascript' src='js/jquery-1.11.3.min.js'></script>
+<script type='text/javascript' src='js/popcorn-complete.min.js'></script>
+<script type='text/javascript' src='js/jquery.tooltipster.min.js'></script>
+<script type='text/javascript' src='js/app-builder-audio.js'></script>
+<script type='text/javascript' src='js/app-builder-footnotes.js'></script>
+<script type='text/javascript' src='js/app-builder-menus.js'></script>
+<script type='text/javascript' src='js/app-builder-video.js'></script>
+<script type='text/javascript' src='js/book-names.js'></script>
+
+<link rel="stylesheet" type="text/css" href="css/tooltipster.css" />
+
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+
+<link rel="stylesheet" type="text/css" href="css/sab-stylesheet.css" />
+
+<script type="text/javascript">
+
+// Audio
+$(window).load(function() {
+
+var pop = Popcorn("#audio");
+
+var timings = [
+    { label: "s1", start: 0.44, end: 7.21 },
+    { label: "1a", start: 7.46, end: 13.59 },
+    { label: "1b", start: 13.84, end: 18.33 },
+    { label: "1c", start: 18.58, end: 20.39 },
+    { label: "1d", start: 20.64, end: 22.99 },
+    { label: "1e", start: 23.24, end: 24.55 },
+    { label: "1f", start: 24.8, end: 25.55 },
+    { label: "1g", start: 25.8, end: 27.37 },
+    { label: "2a", start: 27.62, end: 31.15 },
+    { label: "2b", start: 31.4, end: 34.11 },
+    { label: "2c", start: 34.36, end: 38.27 },
+    { label: "3a", start: 38.52, end: 41.69 },
+    { label: "3b", start: 41.94, end: 43.79 },
+    { label: "3c", start: 44.04, end: 45.71 },
+    { label: "3d", start: 45.96, end: 49.55 },
+    { label: "3e", start: 49.8, end: 55.63 },
+    { label: "4a", start: 55.88, end: 68.15 },
+    { label: "4b", start: 68.4, end: 71.95 },
+    { label: "5a", start: 72.2, end: 76.71 },
+    { label: "5b", start: 76.96, end: 79.59 },
+    { label: "5c", start: 79.84, end: 84.41 },
+    { label: "s2", start: 84.66, end: 95.65 },
+    { label: "6a", start: 95.9, end: 105.55 },
+    { label: "6b", start: 105.8, end: 109.21 },
+    { label: "7a", start: 109.46, end: 113.35 },
+    { label: "7b", start: 113.6, end: 118.57 },
+    { label: "7c", start: 118.82, end: 123.33 },
+    { label: "8", start: 123.58, end: 130.15 },
+    { label: "9a", start: 130.4, end: 140.91 },
+    { label: "9b", start: 141.16, end: 146.79 },
+    { label: "9c", start: 147.04, end: 148.01 },
+    { label: "10a", start: 148.26, end: 160.79 },
+    { label: "10b", start: 161.04, end: 163.03 },
+    { label: "10c", start: 163.28, end: 168.37 },
+    { label: "s3", start: 168.62, end: 176.97 },
+    { label: "11a", start: 177.22, end: 182.17 },
+    { label: "11b", start: 182.42, end: 187.07 },
+    { label: "11c", start: 187.32, end: 192.41 },
+    { label: "12a", start: 192.66, end: 197.41 },
+    { label: "12b", start: 197.66, end: 202.69 },
+    { label: "12c", start: 202.94, end: 206.59 },
+    { label: "12d", start: 206.84, end: 212.27 },
+    { label: "13a", start: 212.52, end: 219.95 },
+    { label: "13b", start: 220.2, end: 223.51 },
+    { label: "13c", start: 223.76, end: 230.61 },
+    { label: "14a", start: 230.86, end: 232.39 },
+    { label: "14b", start: 232.64, end: 235.99 },
+    { label: "14c", start: 236.24, end: 238.03 },
+    { label: "14d", start: 238.28, end: 241.73 },
+    { label: "14e", start: 241.98, end: 245.75 },
+    { label: "14f", start: 246, end: 250.75 },
+    { label: "14g", start: 251, end: 256.53 },
+    { label: "15a", start: 256.78, end: 260.35 },
+    { label: "15b", start: 260.6, end: 261.71 },
+    { label: "15c", start: 261.96, end: 264.27 },
+    { label: "15d", start: 264.52, end: 266.59 },
+    { label: "15e", start: 266.84, end: 267.75 },
+    { label: "15f", start: 268, end: 273.95 },
+    { label: "15g", start: 274.2, end: 277.51 },
+    { label: "15h", start: 277.76, end: 282.11 },
+    { label: "s4", start: 282.36, end: 289.87 },
+    { label: "16a", start: 290.12, end: 295.65 },
+    { label: "16b", start: 295.9, end: 297.11 },
+    { label: "16c", start: 297.36, end: 299.59 },
+    { label: "16d", start: 299.84, end: 301.03 },
+    { label: "16e", start: 301.28, end: 308.65 },
+    { label: "16f", start: 308.9, end: 314.33 },
+    { label: "17a", start: 314.58, end: 322.81 },
+    { label: "17b", start: 323.06, end: 328.39 },
+    { label: "17c", start: 328.64, end: 333.85 },
+    { label: "18a", start: 334.1, end: 336.59 },
+    { label: "18b", start: 336.84, end: 340.99 },
+    { label: "18c", start: 341.24, end: 343.51 },
+    { label: "18d", start: 343.76, end: 345.61 },
+    { label: "18e", start: 345.86, end: 349.37 },
+    { label: "18f", start: 349.62, end: 352.09 },
+    { label: "18g", start: 352.34, end: 354.57 },
+    { label: "19a", start: 354.82, end: 361.03 },
+    { label: "19b", start: 361.28, end: 363.33 },
+    { label: "19c", start: 363.58, end: 364.19 },
+    { label: "19d", start: 364.44, end: 368.17 },
+    { label: "19e", start: 368.42, end: 374.09 },
+    { label: "20a", start: 374.34, end: 380.33 },
+    { label: "20b", start: 380.58, end: 383.05 },
+    { label: "20c", start: 383.3, end: 386.73 },
+    { label: "21a", start: 386.98, end: 393.81 },
+    { label: "21b", start: 394.06, end: 401.97 },
+    { label: "22a", start: 402.22, end: 407.17 },
+    { label: "22b", start: 407.42, end: 409.49 },
+    { label: "22c", start: 409.74, end: 418.17 },
+    { label: "23a", start: 418.42, end: 424.19 },
+    { label: "23b", start: 424.44, end: 426.37 },
+    { label: "23c", start: 426.62, end: 427.99 },
+    { label: "23d", start: 428.24, end: 428.39 },
+    { label: "23e", start: 428.64, end: 429.87 },
+    { label: "23f", start: 430.12, end: 431.67 },
+    { label: "24a", start: 431.92, end: 444.71 },
+    { label: "24b", start: 444.96, end: 451.29 },
+    { label: "25a", start: 451.54, end: 453.87 },
+    { label: "25b", start: 454.12, end: 458.65 },
+    { label: "25c", start: 458.9, end: 463.65 },
+    { label: "26a", start: 463.9, end: 469.39 },
+    { label: "26b", start: 469.64, end: 472.85 },
+    { label: "26c", start: 473.1, end: 480.47 },
+    { label: "26d", start: 480.72, end: 483.29 },
+    { label: "27a", start: 483.54, end: 495.31 },
+    { label: "27b", start: 495.56, end: 501.19 },
+    { label: "28a", start: 501.44, end: 504.43 },
+    { label: "28b", start: 504.68, end: 505.11 },
+    { label: "28c", start: 505.36, end: 506.75 },
+    { label: "28d", start: 507, end: 509.63 },
+    { label: "28e", start: 509.88, end: 510.61 },
+    { label: "29a", start: 510.86, end: 519.55 },
+    { label: "29b", start: 519.8, end: 524.07 },
+    { label: "30a", start: 524.32, end: 528.41 },
+    { label: "30b", start: 528.66, end: 531.29 },
+    { label: "30c", start: 531.54, end: 533.47 },
+    { label: "30d", start: 533.72, end: 534.99 },
+    { label: "31a", start: 535.24, end: 537.71 },
+    { label: "31b", start: 537.96, end: 539.89 },
+    { label: "31c", start: 540.14, end: 541.49 },
+    { label: "31d", start: 541.74, end: 544.23 },
+    { label: "31e", start: 544.48, end: 545.21 },
+    { label: "32", start: 545.46, end: 552.07 },
+    { label: "33a", start: 552.32, end: 561.29 },
+    { label: "33b", start: 561.54, end: 564.51 },
+    { label: "33c", start: 564.76, end: 567.91 },
+    { label: "34a", start: 568.16, end: 574.05 },
+    { label: "34b", start: 574.3, end: 579.19 },
+    { label: "34c", start: 579.44, end: 584.17 },
+    { label: "35a", start: 584.42, end: 590.13 },
+    { label: "35b", start: 590.38, end: 593.05 },
+    { label: "35c", start: 593.3, end: 594.73 },
+    { label: "36a", start: 594.98, end: 599.07 },
+    { label: "36b", start: 599.32, end: 602.75 },
+    { label: "36c", start: 603, end: 606.75 },
+    { label: "36d", start: 607, end: 607.29 },
+    { label: "36e", start: 607.54, end: 610.71 },
+    { label: "36f", start: 610.96, end: 611.95 },
+    { label: "37a", start: 612.2, end: 616.13 },
+    { label: "37b", start: 616.38, end: 619.51 },
+    { label: "37c", start: 619.76, end: 623.51 },
+    { label: "37d", start: 623.76, end: 626.71 },
+    { label: "37e", start: 626.96, end: 632.93 },
+    { label: "37f", start: 633.18, end: 633.87 },
+    { label: "37g", start: 634.12, end: 635.97 },
+    { label: "37h", start: 636.22, end: 642.81 },
+    { label: "38a", start: 643.06, end: 648.21 },
+    { label: "38b", start: 648.46, end: 648.75 },
+    { label: "38c", start: 649, end: 654.83 },
+    { label: "39a", start: 655.08, end: 658.69 },
+    { label: "39b", start: 658.94, end: 666.55 },
+    { label: "40a", start: 666.8, end: 667.51 },
+    { label: "40b", start: 667.76, end: 674.43 },
+    { label: "40c", start: 674.68, end: 676.59 },
+    { label: "40d", start: 676.84, end: 676.84 },
+    { label: "40e", start: 677.06, end: 679.41 },
+    { label: "40f", start: 679.66, end: 684.95 }
+];
+
+initAudioTimings(pop, timings);
+});
+
+$(document).ready(function() {
+});
+
+// Chapters
+var chapters = [ { start: 1, end: 28 }];
+var hasIntro = false;
+var baseRef  = "caf-06-ACT-";
+
+
+</script>
+</head>
+
+<body class="browser" dir="LTR" lang="crx">
+
+<div id="book-menu"></div>
+<div id="chapter-menu"></div>
+
+<div id="toolbar-top">
+<div class="navigation-top">
+  <span class="button"><a href='caf-05-JHN-001.html' title='Previous Book'>&nbsp;&lt;&lt;&nbsp;</a></span>
+  <span class="button"><a href='caf-06-ACT-015.html' title='Previous Chapter'>&nbsp;&nbsp;&lt;&nbsp;&nbsp;</a></span>
+  <span id="book-selector"><a href="#" onclick="toggleBookMenu(); return false;">&nbsp;&nbsp;Acts&nbsp;&nbsp;</a></span>
+<span id="chapter-selector"><a href="#" onclick="toggleChapterMenu(chapters, hasIntro, baseRef); return false;">&nbsp;&nbsp;16&nbsp;&nbsp;</a></span>
+  <span class="button"><a href='caf-06-ACT-017.html' title='Next Chapter'>&nbsp;&nbsp;&gt;&nbsp;&nbsp;</a></span>
+  <span class="button"><a href='caf-07-ROM-001.html' title='Next Book'>&nbsp;&gt;&gt;&nbsp;</a></span>
+</div>
+</div>
+
+<div id="content">
+
+
+<div class="s"><div id="Ts1" class="txs">Timothy, 'en Paul Silas hubúlh tez'az</div></div><a id="v1"></a>
+<div class="m">
+<div class="c-drop">16</div> <div id="T1a" class="txs">'Et Paul 'en keyah Derbe 'ink'ez Lystra ts'ih ninya.</div> <div id="T1b" class="txs">Whuz 'ilhunuh dune buba 'alha' hoont'ah Timothy hiyúlhni,</div> <div id="T1c" class="txs">'en hoh whut'en.</div> <div id="T1d" class="txs">Be'ama chah buba 'alha' hoont'ah,</div> <div id="T1e" class="txs">'en Lizwif 'int'ah,</div> <div id="T1f" class="txs">'et be'abá,</div> <div id="T1g" class="txs">'en Greek 'int'ah.</div><span id="bookmarks1"></span> <a id="v2"></a><div id="T2a" class="txs"><span class="v">2</span><span class="vsp">&nbsp;</span>Keyah Lystra 'ink'ez Iconium whut'en,</div> <div id="T2b" class="txs">ndunnah huba 'alha' hoont'ah,</div> <div id="T2c" class="txs">'en Timothy soo highu yalhtuk.</div><span id="bookmarks2"></span> <a id="v3"></a><div id="T3a" class="txs"><span class="v">3</span><span class="vsp">&nbsp;</span>'Et Paul 'en Timothy dulh yutél'us hukwa' ninzun,</div> <div id="T3b" class="txs">'et yuka dune unli,</div> <div id="T3c" class="txs">'i k'ut hiyúzt'us.</div> <div id="T3d" class="txs">'Et ndihiyínla hoh Lizwif hoh whut'en,</div> <div id="T3e" class="txs">'en Timothy be'abá Greek unli t'ehinínzun 'et huwa.</div><span id="bookmarks3"></span> <a id="v4"></a><div id="T4a" class="txs"><span class="v">4</span><span class="vsp">&nbsp;</span>'Et keyah whutuh hedulh hoh 'et huba 'alha' hoont'ah ndai whel'a 'en 'ink'ez dune tsuh whudelhdzulh Jerusalem 'et highu nahezya,</div> <div id="T4b" class="txs">'i zeh k'úne' 'ooht'en hubuhútni.</div><span id="bookmarks4"></span> <a id="v5"></a><div id="T5a" class="txs"><span class="v">5</span><span class="vsp">&nbsp;</span>'Et Sizi Gri bugha 'ilhohuwezdel hoh be 'alha' hoont'ah,</div> <div id="T5b" class="txs">'i be 'o nus hilhtus huzdli,</div> <div id="T5c" class="txs">'ink'ez 'et huwa dzin totsuk nus lhe'huneltsuk.</div><span id="bookmarks5"></span></div>
+
+<div class="s"><div id="Ts2" class="txs">Paul, Ndoni bugha benghan néwhults'ut Macedonia ts'ih yun k'ut tóoya ka</div></div><span id="bookmarks5"></span><a id="v6"></a>
+<div class="p"><div id="T6a" class="txs"><span class="v">6</span><span class="vsp">&nbsp;</span>'Et Phrygia 'ink'ez Galatia yun k'ut wheghah lhuhúzdel hoh Asia yun k'ut 'et Yak'usda bughunek be yáhutelhtuk,</div> <div id="T6b" class="txs">'et Ndoni whuch'a hubunezyoot.</div><span id="bookmarks6"></span> <a id="v7"></a><div id="T7a" class="txs"><span class="v">7</span><span class="vsp">&nbsp;</span>'Aw 'et Mysia yun k'ut wha'az nihúnindel,</div> <div id="T7b" class="txs">Bithynia yun k'ut ts'un hútoodelh hukwa' hut'en,</div> <div id="T7c" class="txs">'et whunts'ih Ndoni 'aw hubugha chahóo'al.</div><span id="bookmarks7"></span> <a id="v8"></a><div id="T8" class="txs"><span class="v">8</span><span class="vsp">&nbsp;</span>'Et Mysia yun k'ut wheghah lhuhúzdel hoh keyah Troas ts'ih hunindel.</div><span id="bookmarks8"></span> <a id="v9"></a><div id="T9a" class="txs"><span class="v">9</span><span class="vsp">&nbsp;</span>'Et 'ulh'ek Paul hoonli bunalh ha whélts'ut hoh dune Macedonia yun k'ut whut'en yunilh'en 'et siyin 'ink'ez yughu tédudlih,</div> <div id="T9b" class="txs">“Macedonia yun k'ut ts'ih nets'ínyalh 'ink'ez nela'ineh!”</div> <div id="T9c" class="txs">yúlhni.</div><span id="bookmarks9"></span> <a id="v10"></a><div id="T10a" class="txs"><span class="v">10</span><span class="vsp">&nbsp;</span>Soo njan bunalh ha whélts'ut ibulh lhazduja Macedonia yun k'uz ts'ih uztekelh 'ink'ez ndunnah 'et whut'en khunek unzoo,</div> <div id="T10b" class="txs">'i be hubulh yats'oolhtuk ka.</div> <div id="T10c" class="txs">NeMoodihti neka dani t'ets'onínzun 'et whuz na'a 'uts'uja.</div><span id="bookmarks10"></span></div>
+
+<div class="s"><div id="Ts3" class="txs">Lydia buba 'alha' hoont'ah suli 'ink'ez too be' 'ulya</div></div><span id="bookmarks10"></span><a id="v11"></a>
+<div class="p"><div id="T11a" class="txs"><span class="v">11</span><span class="vsp">&nbsp;</span>'Et Troas 'et ts'i cho be nus ts'utezki,</div> <div id="T11b" class="txs">'et soo ts'ihyan whuz Samathrace ts'ih yats'úzki,</div> <div id="T11c" class="txs">'ink'ez 'om bun dzin 'et Neapolis ts'ih ts'utezki.</div><span id="bookmarks11"></span> <a id="v12"></a><div id="T12a" class="txs"><span class="v">12</span><span class="vsp">&nbsp;</span>'Et whezdindel hoh keyah Philippi ts'ih ts'unindel.</div> <div id="T12b" class="txs">'I yun k'ut Macedonia 'udechoo keyah whudézti 'et whuz'ai.</div> <div id="T12c" class="txs">'Et Roman keyah be'ilhdzun hoonli ho' hoont'ah.</div> <div id="T12d" class="txs">'Et keyah Philippi lhat dzin 'et na'ts'alh'ai.</div><span id="bookmarks12"></span> <a id="v13"></a><div id="T13a" class="txs"><span class="v">13</span><span class="vsp">&nbsp;</span>'Et Lizwif nats'ulyis dzin hoh keyah whuch'a ts'uzdel 'ink'ez took'oh taba ts'ih ts'unindel.</div> <div id="T13b" class="txs">'Et Lizwif tenahudedli hoonli 'uzninzun,</div> <div id="T13c" class="txs">'et huwa 'et nátl'azdelts'i 'ink'ez ts'ekoo 'ilhohuwezdel 'en bulh yáts'ulhtuk.</div><span id="bookmarks13"></span> <a id="v14"></a><div id="T14a" class="txs"><span class="v">14</span><span class="vsp">&nbsp;</span>'Ilhunuh ts'eke,</div> <div id="T14b" class="txs">Thyatira whut'en Lydia hiyúlhni,</div> <div id="T14c" class="txs">'en chah nedánts'o.</div> <div id="T14d" class="txs">'En naih dulk'un dezti be 'óoket unli,</div> <div id="T14e" class="txs">'ink'ez 'ahoolhyez Yak'usda ts'un teni' nilhdzun.</div> <div id="T14f" class="txs">'Et huwa neMoodihti Paul Yak'usda bughunek ye yálhtuk,</div> <div id="T14g" class="txs">'i soo cho yoozélhts'ai 'ink'ez beni taóodoolts'it yulhtsi.</div><span id="bookmarks14"></span> <a id="v15"></a><div id="T15a" class="txs"><span class="v">15</span><span class="vsp">&nbsp;</span>'Et didut 'ink'ez bukoo hudelhts'i,</div> <div id="T15b" class="txs">bulh dunekah chah,</div> <div id="T15c" class="txs">ts'iyawh too be' hulya.</div> <div id="T15d" class="txs">'Et hukw'elh'az neghunséya,</div> <div id="T15e" class="txs">'ink'ez neundulhni,</div> <div id="T15f" class="txs">“NeMoodihti soo cho but'anunestan nuhwhuba 'alha' hoont'ah t'eh,</div> <div id="T15g" class="txs">'anih sukoo ts'ih suzih doolhúts'i.”</div> <div id="T15h" class="txs">'Ink'ez 'ilhuz 'udeja hoh bulh 'utezdel.</div><span id="bookmarks15"></span></div>
+
+<div class="s"><div id="Ts4" class="txs">Paul, Silas bulh keyah Philippi 'et tsak'ebaha'ai</div></div><span id="bookmarks15"></span><a id="v16"></a>
+<div class="p"><div id="T16a" class="txs"><span class="v">16</span><span class="vsp">&nbsp;</span>'Et 'ilhudzin nts'e tenazdedli ts'ih ts'enindel hoh,</div> <div id="T16b" class="txs">'ilhunuh 'ulhna,</div> <div id="T16c" class="txs">'en ts'eke nedudezya.</div> <div id="T16d" class="txs">'En ntsi' nudúdeh,</div> <div id="T16e" class="txs">'i buyídinda 'i be nus whunilh'en 'ink'ez nus daóotenilh ts'iyawh ndo búlhni.</div> <div id="T16f" class="txs">'Et ndunnah yughunli 'en lhai sooneya hiye 'úlh'en.</div><span id="bookmarks16"></span></div>
+
+<div class="video-block">
+<div class="video-container video-mp4 video-16-9" id="VIDEO0" style="background-image:url('images/ScripSlide21-jailer.jpg');">
+<a href="#" onClick="playVideoFile('VIDEO0', 'https://scriptureearth.org/data/caf/video/caf-Act16.16-40-Jailer_converted.mp4'); return false;"><img src="images/video_play_01.png"/></a>
+</div>
+<div class="video-title"><span class="video-title">The Conversion of the Jailer (Acts 16:16-40)</span></div>
+</div>
+
+<div class="p"> <a id="v17"></a><div id="T17a" class="txs"><span class="v">17</span><span class="vsp">&nbsp;</span>'Et 'ut'en Paul 'ink'ez wheni teh nenunéya 'ink'ez 'alzul hoh utni,</div> <div id="T17b" class="txs">“Ndunnah dune degha nus nduk Yak'usda budune hinli.</div> <div id="T17c" class="txs">Nts'e na'a dutehjih hoh teh nuhwhuba nuhúhuyeh!”</div><span id="bookmarks17"></span> <a id="v18"></a><div id="T18a" class="txs"><span class="v">18</span><span class="vsp">&nbsp;</span>Lhat dzin ndut'en,</div> <div id="T18b" class="txs">'udek'elh'az Paul tube taídeznih,</div> <div id="T18c" class="txs">yuts'un nálhu'a 'ink'ez ntsi' nududeh,</div> <div id="T18d" class="txs">'i njan díyulhni,</div> <div id="T18e" class="txs">“Sizi Gri boozi bugha buyúh hanaindaih!”</div> <div id="T18f" class="txs">'Et 'ahoh ntsi' nududeh,</div> <div id="T18g" class="txs">'i yeyúh hanadede.</div><span id="bookmarks18"></span> <a id="v19"></a><div id="T19a" class="txs"><span class="v">19</span><span class="vsp">&nbsp;</span>'Ink'ez ndunnah ts'eke bumoodih t'ehonanzin ndet hoh sooneya 'uhulh'en,</div> <div id="T19b" class="txs">'ustl'e' 'uhooja,</div> <div id="T19c" class="txs">'et Paul,</div> <div id="T19d" class="txs">Silas bulh hubuhúzgooh 'ink'ez huba' hoont'ah,</div> <div id="T19e" class="txs">'et keyah k'une'nuwhuhul'en hububut nébanilhti.</div><span id="bookmarks19"></span> <a id="v20"></a><div id="T20a" class="txs"><span class="v">20</span><span class="vsp">&nbsp;</span>'Et lhahudughan moodih but nebanilhti 'ink'ez hubuhutni,</div> <div id="T20b" class="txs">“Ndunnah Lizwif 'uhint'ah.</div> <div id="T20c" class="txs">Netah 'ahoolhyez dune tehudule.</div><span id="bookmarks20"></span> <a id="v21"></a><div id="T21a" class="txs"><span class="v">21</span><span class="vsp">&nbsp;</span>Ndet wheni hubugha neba nahesda ts'iyawh whuch'a na'a whubuhodulh'eh.</div> <div id="T21b" class="txs">Wheni Roman 'uts'int'ah 'et huwa 'aw buk'ah ts'ih 'uts'ooneh ghaít'ah 'ink'ez hoh tuné'ts'oot'en ghaít'ah.”</div><span id="bookmarks21"></span> <a id="v22"></a><div id="T22a" class="txs"><span class="v">22</span><span class="vsp">&nbsp;</span>'Et 'ilhuhowezdel ts'iyawh hubuch'a nihúdendel,</div> <div id="T22b" class="txs">nehughan moodih Paul,</div> <div id="T22c" class="txs">Silas bulh hubunaih hubuk'uhidutelhch'ul 'ink'ez hubuholht'ah hubuhútni.</div><span id="bookmarks22"></span> <a id="v23"></a><div id="T23a" class="txs"><span class="v">23</span><span class="vsp">&nbsp;</span>'Et soo tube hubuholht'o hoh nts'e dune tsak'eha'aih,</div> <div id="T23b" class="txs">whuz tsak'ebaha'ai,</div> <div id="T23c" class="txs">'ink'ez ndun huwunli,</div> <div id="T23d" class="txs">'en,</div> <div id="T23e" class="txs">“Hubuch'a dana'doo'alh,”</div> <div id="T23f" class="txs">hiyúlhni.</div><span id="bookmarks23"></span> <a id="v24"></a><div id="T24a" class="txs"><span class="v">24</span><span class="vsp">&nbsp;</span>'Et tsak'edinla ghunli hiyúlhni hoh 'ahoh soo bez tsak'edi'ai 'et tsak'ehiya'ai 'ink'ez duchun dindaz huba' 'int'ah,</div> <div id="T24b" class="txs">'i bukechun ghu níhininla 'ink'ez hiduna'denla.</div><span id="bookmarks24"></span> <a id="v25"></a><div id="T25a" class="txs"><span class="v">25</span><span class="vsp">&nbsp;</span>'Et tuzniz bat'en Paul,</div> <div id="T25b" class="txs">Silas bulh Yak'usda ts'un tenahududli 'ink'ez hujun.</div> <div id="T25c" class="txs">'Et ndunnah tsak'ehudelhts'i hubuhoozélhts'ai.</div><span id="bookmarks25"></span> <a id="v26"></a><div id="T26a" class="txs"><span class="v">26</span><span class="vsp">&nbsp;</span>Khunyaz tube cho yun naghesnai hoh koo tsak'ehudelhts'i,</div> <div id="T26b" class="txs">'et chah ndulhcho noghutnah.</div> <div id="T26c" class="txs">'Et 'uhooja ndati ts'iyawh dá'dutezkat 'ink'ez 'i bulh tes tl'ool hiyelhúghel,</div> <div id="T26d" class="txs">'i hubuts'u háyankat.</div><span id="bookmarks26"></span> <a id="v27"></a><div id="T27a" class="txs"><span class="v">27</span><span class="vsp">&nbsp;</span>'Et tsak'edelhts'i ghunli ts'enandzut hoh ndati ts'iyawh 'udun 'udenla whutelh'en ts'iyawh tsak'ehudelhts'i tinta hulghaz ninzun,</div> <div id="T27b" class="txs">'et dutes cho hayálhtsus 'ink'ez 'aw 'et na'dutuzelghelh.</div><span id="bookmarks27"></span> <a id="v28"></a><div id="T28a" class="txs"><span class="v">28</span><span class="vsp">&nbsp;</span>Paul soo 'ultus 'uyúlhni,</div> <div id="T28b" class="txs">“Dah!</div> <div id="T28c" class="txs">'Udun dóldah gunih,</div> <div id="T28d" class="txs">ts'iyawh 'aw 'et 'uzdélhts'i!”</div> <div id="T28e" class="txs">yúlhni.</div><span id="bookmarks28"></span> <a id="v29"></a><div id="T29a" class="txs"><span class="v">29</span><span class="vsp">&nbsp;</span>'Et tsak'edelhts'i ghunli kwun nult'a ka 'utni hoh koo dálgai 'ink'ez soo dultuz hoh Paul,</div> <div id="T29b" class="txs">Silas bulh hububut nacháneti.</div><span id="bookmarks29"></span> <a id="v30"></a><div id="T30a" class="txs"><span class="v">30</span><span class="vsp">&nbsp;</span>'Et tinábunilhti 'ink'ez huboodulhkut,</div> <div id="T30b" class="txs">“Soo sudutéhnilh,</div> <div id="T30c" class="txs">datésnilh hoh dutesjih?”</div> <div id="T30d" class="txs">hubúlhni.</div><span id="bookmarks30"></span> <a id="v31"></a><div id="T31a" class="txs"><span class="v">31</span><span class="vsp">&nbsp;</span>“Sizi Gri neMoodihti,</div> <div id="T31b" class="txs">'en mba 'alha' 'oot'e,</div> <div id="T31c" class="txs">'et hoh dutanjih,</div> <div id="T31d" class="txs">nyun 'ink'ez nkoo hudelhts'i chah,”</div> <div id="T31e" class="txs">hiyúlhni.</div><span id="bookmarks31"></span> <a id="v32"></a><div id="T32" class="txs"><span class="v">32</span><span class="vsp">&nbsp;</span>'Et neMoodihti bughunek bugha hiyulh yálhtuk 'ink'ez ts'iyawh ndunnah 'et bukoo hudelhts'i chah.</div><span id="bookmarks32"></span> <a id="v33"></a><div id="T33a" class="txs"><span class="v">33</span><span class="vsp">&nbsp;</span>'Et 'ulh'ek soo hoh whegha whezulh hoh tsak'edelhts'i ghunli daóobunilhti 'ink'ez hubuka k'et tináwhuzguz.</div> <div id="T33b" class="txs">'Et didut 'ink'ez bukoo hudelhts'i chah,</div> <div id="T33c" class="txs">ts'iyawh 'ahoh too be' hulya.</div><span id="bookmarks33"></span> <a id="v34"></a><div id="T34a" class="txs"><span class="v">34</span><span class="vsp">&nbsp;</span>'Et Paul Silas bulh bukoo ts'ih nábunilhti 'ink'ez bughu na'unt'ai,</div> <div id="T34b" class="txs">'ink'ez tube cho whunélhnik didut 'ink'ez bukoo hudelhts'i chah,</div> <div id="T34c" class="txs">ts'iyawh Yak'usda huba 'alha' 'int'ah suli 'et huwa.</div><span id="bookmarks34"></span> <a id="v35"></a><div id="T35a" class="txs"><span class="v">35</span><span class="vsp">&nbsp;</span>'Et bundada nehughan moodih nélhghel hubuts'un whebuhalh'a,</div> <div id="T35b" class="txs">“Ndunnah dune hubulanadintnih!”</div> <div id="T35c" class="txs">hubuhútni.</div><span id="bookmarks35"></span> <a id="v36"></a><div id="T36a" class="txs"><span class="v">36</span><span class="vsp">&nbsp;</span>'Et tsak'edelhts'i ghunli Paul 'en 'ídani,</div> <div id="T36b" class="txs">“Nehughan moodih buts'á khunek 'ults'ut,</div> <div id="T36c" class="txs">‘Nyun 'ink'ez Silas bulh nuhlanazdootnih,’</div> <div id="T36d" class="txs">hutni,</div> <div id="T36e" class="txs">'et huwa soo cho khohdle hoh natooht'as,”</div> <div id="T36f" class="txs">hubúlhni.</div><span id="bookmarks36"></span> <a id="v37"></a><div id="T37a" class="txs"><span class="v">37</span><span class="vsp">&nbsp;</span>'Et whunts'ih Paul 'en nélhghel ndo búlhni,</div> <div id="T37b" class="txs">“Hukwa tsak'enhoo'alh hoolah,</div> <div id="T37c" class="txs">'et whunts'ih dune tuz neholhtsus,</div> <div id="T37d" class="txs">nuwheni Roman keyah ts'uwhut'en ho' ts'int'ah,</div> <div id="T37e" class="txs">'et whunts'ih tsak'edelhts'i 'ink'ez k'an whu'iz 'et nanehutoolh'a hukwa' hut'en.</div> <div id="T37f" class="txs">'Awundooh,</div> <div id="T37g" class="txs">'aw nducháhoot'ah ho' hoont'ah!</div> <div id="T37h" class="txs">Nehughan moodih dich'oh whusahóodel 'ink'ez nelanahudootnih huba' hoont'ah.”</div><span id="bookmarks37"></span> <a id="v38"></a><div id="T38a" class="txs"><span class="v">38</span><span class="vsp">&nbsp;</span>'Et nélhghel ndi khunek bugha nehughan moodih hudáni,</div> <div id="T38b" class="txs">'et Paul,</div> <div id="T38c" class="txs">Silas bulh Roman keyah whut'en 'uhint'ah whulh 'úhudants'o hoh tube whehunelhújoot.</div><span id="bookmarks38"></span> <a id="v39"></a><div id="T39a" class="txs"><span class="v">39</span><span class="vsp">&nbsp;</span>'Et ndunnah nehughan moodih,</div> <div id="T39b" class="txs">'en hubuts'un tehududli hoh tsak'ehudelhts'i whuch'a nabuhuzdla 'ink'ez keyah whuch'a nahoodelh hubuhútni.</div><span id="bookmarks39"></span> <a id="v40"></a><div id="T40a" class="txs"><span class="v">40</span><span class="vsp">&nbsp;</span>Paul,</div> <div id="T40b" class="txs">Silas bulh tsak'edelhts'i tináhunt'az 'ink'ez Lydia bukoo ts'ih huni'az.</div> <div id="T40c" class="txs">'Et ndunnah huba 'alha' hoont'ah,</div> <div id="T40d" class="txs">'en chah 'et hudelhts'i.</div> <div id="T40e" class="txs">Khunek be ts'ílhtus,</div> <div id="T40f" class="txs">'i be hubulh yáhalhtuk 'ink'ez whenáhet'az.</div><span id="bookmarks40"></span></div><div class="footer"><div class="footer-line"><span class="footer">© 2002-2015, Wycliffe Bible Translators, Inc., Orlando, FL 35862-8200 USA  (<a href="https://www.Wycliffe.org">www.Wycliffe.org</a>) — Visit <a href="https://www.scriptureearth.org/caf">www.ScriptureEarth.org/caf</a> for more Scripture resources in Southern Carrier.</span></div></div>
+</div>
+
+<div id="toolbar-bottom">
+<div class="audio-player">
+  <audio id="audio" controls>
+    <source id="audio1" src="https://www.scriptureearth.org/data/caf/audio/45-ACTcaf-16.mp3" />
+  </audio>
+</div>
+</div>
+
+<script type='text/javascript' src='./pwa-main.js'></script>
+<script>
+var coll = document.getElementsByClassName("collapsible-button");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+        }
+    });
+}
+</script>
+</body>
+</html>

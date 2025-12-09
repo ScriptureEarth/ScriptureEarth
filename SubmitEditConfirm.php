@@ -277,6 +277,7 @@ function console_log($data) {
 						foreach ($SAB_array as $SAB_record) {															// all HTML files
 							if ($SAB_record == './data/'.$ISO.'/'.$inputs[$SABsubfolder].'index.html') continue;
 							if ($SAB_record == './data/'.$ISO.'/'.$inputs[$SABsubfolder].'about.partial.html') continue;
+							if ($SAB_record == './data/'.$ISO.'/'.$inputs[$SABsubfolder].'200.html') continue;
 							$fDate =  date("Y-m-d H:i", filemtime($SAB_record));										// was last changed; leading 0s; data convert the file date to a string
 							$fDate .= ':00';
 							clearstatcache();																			// Clear cache and check filesize again
@@ -284,13 +285,13 @@ function console_log($data) {
 
 							$SAB_record = substr($SAB_record, strrpos($SAB_record, '/')+1);								// IMPORTANT! Gets rids of directories just before the html name. strrpos - returns the poistion of the last occurrence of the substring
 							if (!preg_match('/(-|^)([0-9]+)-/', $SAB_record, $match)) {									// match the book from the html file
-								echo $SAB_record . ' does not match the book for the html file. DELETEd from SAB table.<br />';
+								echo '"' . $SAB_record . '" in .../' . $ISOPlus . '/ does not match the book for the html file. DELETEd from SAB table.<br />';
 								continue;																				// continue with a new html file
 							}
 							$book_number = (int)$match[2];																// book_number = match
 							
 							if (!preg_match('/-([0-9]+)\.html/', $SAB_record, $match)) {								// match the chapter from the html file
-								echo $SAB_record . ' does not match the chapter for the html file. DELETEd from SAB table.<br />';
+								echo '"' . $SAB_record . '" in .../' . $ISOPlus . '/ does not match the chapter for the html file. DELETEd from SAB table.<br />';
 								continue;																				// continue with a new html file
 							}
 							$chapter = (int)$match[1];																	// chapter = match

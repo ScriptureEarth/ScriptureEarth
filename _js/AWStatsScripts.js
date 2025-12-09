@@ -1,36 +1,16 @@
 // Created by Scott Starker - 8/2024
-// Updated by Scott Starker - 9/2025
+// Updated by Scott Starker - 9/2025, 11/2025
 
 // first js!
 
 // yearMonthChange(year, month)
 // isoChange(langData, month, year)
 
-// Get the HTTP Object
-function getHTTPObject() { // get the AJAX object; it can be used more than once
-    try {
-        // IE 7+, Opera 8.0+, Firefox, Safari
-        return new XMLHttpRequest();
-    } catch (e) {
-        // Internet Explorer browsers
-        try {
-            return new ActiveXObject("Msxml2.XMLHTTP");
-        } catch (e) {
-            try {
-                return new ActiveXObject("Microsoft.XMLHTTP");
-            } catch (e) {
-                // Something went wrong
-                alert("XML HTTP Request is not able to be set. Maybe the version of the web browser is old?");
-                return null;
-            }
-        }
-    }
-}
-
 /*****************************************************************************************************************
-	yearMonthChange.js => AJAX - selectCountries.php (<select> <option>)
-					   => AJAX - yearMonthChange.php (ChartFileType (pie))
-					   => fetch - localesChange.php?m="+month+"&y="+year (ChartLocales (bar))
+	yearMonthChange.js:
+					    => fecth - selectCountries.php (<select> <option>)
+					    => fetch - yearMonthChange.php (ChartFileType (pie))
+					    => fetch - localesChange.php (ChartLocales (bar))
 *****************************************************************************************************************/
 function yearMonthChange(year, month) {										// change the year/month
 	// Destroy exiting Chart.js instance to reuse <canvas> element.
@@ -116,29 +96,21 @@ function yearMonthChange(year, month) {										// change the year/month
 		}
 	}
 	
-	xmlhttpOne = getHTTPObject();											// the ISO object (see JavaScript function getHTTPObject() above)
-    if (xmlhttpOne == null) {
-        return;
-    }
-	
     /****************************************************************************************************************
-    	AJAX - selectCountries.php => <select> <option>
+    	fecth - selectCountries.php => <select> <option>
+		
+		An Immediately Invoked Function Expression (IIFE) is a technique used to execute a function immediately
+		as soon as you define it. This is useful when you need to run the asynchronous function only once.
     ****************************************************************************************************************/
-    let urlTwo = "selectCountries.php";										// displays $country . '^' . $countryCode . '|'
-    urlTwo = urlTwo + "?m=" + month;
-    urlTwo = urlTwo + "&y=" + year;
-    urlTwo = urlTwo + "&sid=" + Math.random();
-    xmlhttpOne.open("GET", urlTwo, true);									// open the AJAX object with livesearch.php
-    xmlhttpOne.send(null);
-    xmlhttpOne.onreadystatechange = function() {							// the function that returns for AJAX object
-        if (xmlhttpOne.readyState == 4) {									// if the readyState = 4 then livesearch is displayed
-            //alert(xmlhttp.responseText);
-			//alert(xmlhttp.responseText.length);
-			if (xmlhttpOne.responseText == "none") {
+    (async function () {
+		try {
+			const responseOne = await fetch("selectCountries.php?m="+month+"&y="+year);
+			const jsonOne = await responseOne.text();
+			if (jsonOne == "none") {
 				sLine.innerHTML = "No " + month.toString() + "/" + year.toString() + " were found."; 
 			}
 			else {
-				let result = xmlhttpOne.responseText;
+				let result = jsonOne;
 				let results = result.split('|');
 				let para = '<select id="countries" onchange="countryChange(document.getElementById(\'countries\').options[document.getElementById(\'countries\').selectedIndex].value, '+month+', '+year+')">';
 				para = para + "<option value='Choose a country...' selected='selected'>Choose a country...</option>";
@@ -155,28 +127,25 @@ function yearMonthChange(year, month) {										// change the year/month
 				sLine.innerHTML = para;
 			}
 		}
-	}
+		catch (error) {
+			console.log(error);
+		}
+	} ) ();
 
-
-    xmlhttp = getHTTPObject();												// the ISO object (see JavaScript function getHTTPObject() above)
-    if (xmlhttp == null) {
-        return;
-    }
-		
     /****************************************************************************************************************
-    	AJAX - yearMonthChange.php => ChartFileType (pie)
+    	fetch - yearMonthChange.php => ChartFileType (pie) (unique visitors, number of visits, pages) & ChartTwo (bar)
+		
+		An Immediately Invoked Function Expression (IIFE) is a technique used to execute a function immediately
+		as soon as you define it. This is useful when you need to run the asynchronous function only once.
     ****************************************************************************************************************/
-    let url = "yearMonthChange.php";
-    url = url + "?m=" + month;
-    url = url + "&y=" + year;
-    url = url + "&sid=" + Math.random();
-    xmlhttp.open("GET", url, true);											// open the AJAX object with livesearch.php
-    xmlhttp.send(null);
-    xmlhttp.onreadystatechange = function() {								// the function that returns for AJAX object
-        if (xmlhttp.readyState == 4) {										// if the readyState = 4 then livesearch is displayed
-            //alert(xmlhttp.responseText);
-			//alert(xmlhttp.responseText.length);
-			if (xmlhttp.responseText == "none") {
+    (async function () {
+		try {
+		alert("Fetching yearMonthChange.php...");
+		alert(month + ' ' + year);
+			const responseTwo = await fetch("yearMonthChange.php?m="+month+"&y="+year);
+		alert("2 Fetching yearMonthChange.php...");
+			const jsonTwo = await responseTwo.text();
+			if (jsonTwo == "@none") {
 				const elem = document.getElementById("firstLine");
 				elem.innerHTML = "No " + month.toString() + "/" + year.toString() + " were found."; 
 			}
@@ -185,7 +154,7 @@ function yearMonthChange(year, month) {										// change the year/month
 				let resultsTwo;
 				let resultsTwoLength = 0;
 				
-				const tempArray = xmlhttp.responseText.split("@");
+				const tempArray = jsonTwo.split("@");
 				let results = JSON.parse(tempArray[0]);						// parse string into JSON array
 				let resultsLength = Object.keys(results).length;
 				
@@ -349,11 +318,13 @@ function yearMonthChange(year, month) {										// change the year/month
 				});
 			}
 		}
-	}
-
+		catch (error) {
+			console.log(error);
+		}
+	} ) ();
 
     /****************************************************************************************************************
-    	fetch - localesChange.php
+    	fetch - localesChange.phpp?m="+month+"&y="+year
 		
 		An Immediately Invoked Function Expression (IIFE) is a technique used to execute a function immediately
 		as soon as you define it. This is useful when you need to run the asynchronous function only once.
@@ -362,8 +333,7 @@ function yearMonthChange(year, month) {										// change the year/month
 	let locales = '';
 	let pages = 0;
 	let bandwidth = 0;
-	
-	// localesChange.php?m="+month+"&y="+year
+
     (async function () {
 		try {
 			const responseThree = await fetch("localesChange.php?m="+month+"&y="+year);
@@ -456,7 +426,7 @@ function yearMonthChange(year, month) {										// change the year/month
 		}
 	} ) ();
 }
-
+	
 
 /*****************************************************************************************************************
 	yearMonthChange.js => fetch - isoChange.php?i=[langArray[1]]&m=MM&y=YYYY
@@ -495,9 +465,11 @@ function isoChange(langData, month, year) {
 		variant = isoArray[3];
 	}
 
-	// isoChange.php?i="+langArray[1]+"&m="+month+"&y="+year)
     /****************************************************************************************************************
-    	fetch - isoChange.php
+    	fetch - isoChange.php?i="+langArray[1]+"&m="+month+"&y="+year)
+		
+		An Immediately Invoked Function Expression (IIFE) is a technique used to execute a function immediately
+		as soon as you define it. This is useful when you need to run the asynchronous function only once.
     ****************************************************************************************************************/
     (async function () {
 		try {

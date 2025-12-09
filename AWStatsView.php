@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta http-equiv="Cache-Control" 			content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" 					content="no-cache" />
+	<meta http-equiv="Expires" 					content="0" />
 	<meta http-equiv="Content-Type"				content="text/html; charset=utf-8" />
 	<meta name="ObjectType" 					content="Document" />
 	<meta http-equiv="Window-target" 			content="_top" />
@@ -33,8 +36,8 @@
 		}
 	</style>
 	<script type="text/javascript" language="javascript" src="_js/jquery-1.12.4.js"></script>
-	<script type="text/javascript" language="javascript" src="_js/AWStatsScripts.js?v=0.1.6"></script>
-	<script type="text/javascript" language="javascript" src="_js/countryChange.js?v=0.1.2"></script>
+	<script type="text/javascript" language="javascript" src="_js/AWStatsScripts.js?v=0.1.7"></script>
+	<script type="text/javascript" language="javascript" src="_js/countryChange.js?v=0.1.3"></script>
 	<script type="text/javascript" language="javascript" src="_js/chart.umd.min.js"></script>				<!-- 2.9.4 -->
 </head>
 <body>

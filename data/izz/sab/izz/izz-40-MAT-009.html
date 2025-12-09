@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#4CAF50">
+<title>Matiyu 9</title>
+
+<script type='text/javascript' src='js/jquery-1.11.3.min.js'></script>
+<script type='text/javascript' src='js/popcorn-complete.min.js'></script>
+<script type='text/javascript' src='js/jquery.tooltipster.min.js'></script>
+<script type='text/javascript' src='js/app-builder-audio.js'></script>
+<script type='text/javascript' src='js/app-builder-footnotes.js'></script>
+<script type='text/javascript' src='js/app-builder-menus.js'></script>
+<script type='text/javascript' src='js/app-builder-video.js'></script>
+<script type='text/javascript' src='js/book-names.js'></script>
+
+<link rel="stylesheet" type="text/css" href="css/tooltipster.css" />
+
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+
+<link rel="stylesheet" type="text/css" href="css/sab-stylesheet.css" />
+
+<script type="text/javascript">
+
+// Audio
+$(window).load(function() {
+
+var pop = Popcorn("#audio");
+
+var timings = [
+    { label: "1a", start: 4.4, end: 4.87 },
+    { label: "1b", start: 5.12, end: 7.61 },
+    { label: "1c", start: 7.86, end: 8.71 },
+    { label: "1d", start: 8.96, end: 10.25 },
+    { label: "2a", start: 10.5, end: 11.03 },
+    { label: "2b", start: 11.28, end: 12.35 },
+    { label: "2c", start: 12.6, end: 14.15 },
+    { label: "2d", start: 14.4, end: 17.75 },
+    { label: "2e", start: 18, end: 19.03 },
+    { label: "2f", start: 19.28, end: 20.61 },
+    { label: "2g", start: 20.86, end: 21.83 },
+    { label: "2h", start: 22.08, end: 22.71 },
+    { label: "2i", start: 22.96, end: 24.35 },
+    { label: "2j", start: 24.6, end: 25.13 },
+    { label: "3a", start: 25.38, end: 26.43 },
+    { label: "3b", start: 26.68, end: 29.31 },
+    { label: "3c", start: 29.56, end: 32.95 },
+    { label: "4a", start: 33.2, end: 33.83 },
+    { label: "4b", start: 34.08, end: 35.07 },
+    { label: "4c", start: 35.32, end: 35.61 },
+    { label: "4d", start: 35.86, end: 39.31 },
+    { label: "5a", start: 39.56, end: 39.97 },
+    { label: "5b", start: 40.22, end: 40.53 },
+    { label: "5c", start: 40.78, end: 41.87 },
+    { label: "5d", start: 42.12, end: 42.12 },
+    { label: "5e", start: 42.36, end: 43.01 },
+    { label: "5f", start: 43.26, end: 44.39 },
+    { label: "5g", start: 44.64, end: 44.95 },
+    { label: "5h", start: 45.2, end: 45.23 },
+    { label: "5i", start: 45.48, end: 45.95 },
+    { label: "5j", start: 46.2, end: 48.09 },
+    { label: "6a", start: 48.34, end: 54.73 },
+    { label: "6b", start: 54.98, end: 56.11 },
+    { label: "6c", start: 56.36, end: 58.75 },
+    { label: "6d", start: 59, end: 59.87 },
+    { label: "6e", start: 60.12, end: 61.81 },
+    { label: "7a", start: 62.06, end: 62.99 },
+    { label: "7b", start: 63.24, end: 64.59 },
+    { label: "8a", start: 64.84, end: 66.43 },
+    { label: "8b", start: 66.68, end: 66.87 },
+    { label: "8c", start: 67.12, end: 67.87 },
+    { label: "8d", start: 68.12, end: 69.59 },
+    { label: "8e", start: 69.84, end: 73.55 },
+    { label: "9a", start: 73.8, end: 76.51 },
+    { label: "9b", start: 76.76, end: 77.77 },
+    { label: "9c", start: 78.02, end: 79.43 },
+    { label: "9d", start: 79.68, end: 81.25 },
+    { label: "9e", start: 81.5, end: 82.33 },
+    { label: "9f", start: 82.58, end: 84.63 },
+    { label: "10a", start: 84.88, end: 87.53 },
+    { label: "10b", start: 87.78, end: 89.61 },
+    { label: "10c", start: 89.86, end: 92.87 },
+    { label: "10d", start: 93.12, end: 95.95 },
+    { label: "11a", start: 96.2, end: 99.15 },
+    { label: "11b", start: 99.4, end: 99.59 },
+    { label: "11c", start: 99.84, end: 101.19 },
+    { label: "11d", start: 101.44, end: 103.79 },
+    { label: "11e", start: 104.04, end: 105.35 },
+    { label: "11f", start: 105.6, end: 108.47 },
+    { label: "12a", start: 108.72, end: 110.07 },
+    { label: "12b", start: 110.32, end: 113.95 },
+    { label: "12c", start: 114.2, end: 116.07 },
+    { label: "13a", start: 116.32, end: 116.61 },
+    { label: "13b", start: 116.86, end: 117.67 },
+    { label: "13c", start: 117.92, end: 118.55 },
+    { label: "13d", start: 118.8, end: 120.09 },
+    { label: "13e", start: 120.34, end: 121.23 },
+    { label: "13f", start: 121.48, end: 122.23 },
+    { label: "13g", start: 122.48, end: 127.81 },
+    { label: "13h", start: 128.06, end: 131.01 },
+    { label: "13i", start: 131.26, end: 134.83 },
+    { label: "13j", start: 135.08, end: 138.03 },
+    { label: "13k", start: 138.28, end: 139.95 },
+    { label: "14a", start: 140.2, end: 141.15 },
+    { label: "14b", start: 141.4, end: 144.51 },
+    { label: "14c", start: 144.76, end: 145.27 },
+    { label: "14d", start: 145.52, end: 149.97 },
+    { label: "14e", start: 150.22, end: 152.71 },
+    { label: "15a", start: 152.96, end: 154.07 },
+    { label: "15b", start: 154.32, end: 154.87 },
+    { label: "15c", start: 155.12, end: 159.99 },
+    { label: "15d", start: 160.24, end: 162.49 },
+    { label: "15e", start: 162.74, end: 164.69 },
+    { label: "15f", start: 164.94, end: 166.39 },
+    { label: "15g", start: 166.64, end: 167.49 },
+    { label: "15h", start: 167.74, end: 169.15 },
+    { label: "16a", start: 169.4, end: 175.63 },
+    { label: "16b", start: 175.88, end: 177.33 },
+    { label: "16c", start: 177.58, end: 181.87 },
+    { label: "17a", start: 182.12, end: 186.45 },
+    { label: "17b", start: 186.7, end: 188.09 },
+    { label: "17c", start: 188.34, end: 189.89 },
+    { label: "17d", start: 190.14, end: 193.19 },
+    { label: "17e", start: 193.44, end: 194.81 },
+    { label: "17f", start: 195.06, end: 197.99 },
+    { label: "17g", start: 198.24, end: 200.53 },
+    { label: "17h", start: 200.78, end: 201.83 },
+    { label: "17i", start: 202.08, end: 205.19 },
+    { label: "18a", start: 205.44, end: 206.71 },
+    { label: "18b", start: 206.96, end: 209.43 },
+    { label: "18c", start: 209.68, end: 214.03 },
+    { label: "18d", start: 214.28, end: 215.71 },
+    { label: "18e", start: 215.96, end: 219.65 },
+    { label: "18f", start: 219.9, end: 222.01 },
+    { label: "19a", start: 222.26, end: 224.79 },
+    { label: "19b", start: 225.04, end: 226.27 },
+    { label: "20a", start: 226.52, end: 227.47 },
+    { label: "20b", start: 227.72, end: 228.51 },
+    { label: "20c", start: 228.76, end: 229.23 },
+    { label: "20d", start: 229.48, end: 232.35 },
+    { label: "20e", start: 232.6, end: 235.59 },
+    { label: "21a", start: 235.84, end: 237.31 },
+    { label: "21b", start: 237.56, end: 241.27 },
+    { label: "22a", start: 241.52, end: 244.27 },
+    { label: "22b", start: 244.52, end: 245.95 },
+    { label: "22c", start: 246.2, end: 246.83 },
+    { label: "22d", start: 247.08, end: 247.67 },
+    { label: "22e", start: 247.92, end: 249.71 },
+    { label: "22f", start: 249.96, end: 251.15 },
+    { label: "22g", start: 251.4, end: 252.67 },
+    { label: "23a", start: 252.92, end: 256.51 },
+    { label: "23b", start: 256.76, end: 257.17 },
+    { label: "23c", start: 257.42, end: 258.55 },
+    { label: "23d", start: 258.8, end: 258.99 },
+    { label: "24a", start: 259.24, end: 261.05 },
+    { label: "24b", start: 261.3, end: 263.47 },
+    { label: "24c", start: 263.72, end: 265.39 },
+    { label: "24d", start: 265.64, end: 267.05 },
+    { label: "24e", start: 267.3, end: 268.51 },
+    { label: "25a", start: 268.76, end: 271.27 },
+    { label: "25b", start: 271.52, end: 274.11 },
+    { label: "25c", start: 274.36, end: 275.37 },
+    { label: "26", start: 275.62, end: 279.41 },
+    { label: "27a", start: 279.66, end: 282.87 },
+    { label: "27b", start: 283.12, end: 283.55 },
+    { label: "27c", start: 283.8, end: 286.19 },
+    { label: "27d", start: 286.44, end: 288.09 },
+    { label: "27e", start: 288.34, end: 290.17 },
+    { label: "28a", start: 290.42, end: 291.75 },
+    { label: "28b", start: 292, end: 292 },
+    { label: "28c", start: 292.24, end: 294.29 },
+    { label: "28d", start: 294.54, end: 295.39 },
+    { label: "28e", start: 295.64, end: 305.64 },
+    { label: "28f", start: 295.64, end: 298.67 },
+    { label: "28g", start: 298.92, end: 300.27 },
+    { label: "28h", start: 300.52, end: 301.23 },
+    { label: "28i", start: 301.48, end: 302.05 },
+    { label: "29a", start: 302.3, end: 303.27 },
+    { label: "29b", start: 303.52, end: 305.23 },
+    { label: "29c", start: 305.48, end: 306.53 },
+    { label: "29d", start: 306.78, end: 308.57 },
+    { label: "30a", start: 308.82, end: 310.19 },
+    { label: "30b", start: 310.44, end: 311.73 },
+    { label: "30c", start: 311.98, end: 316.49 },
+    { label: "31", start: 316.74, end: 321.43 },
+    { label: "32a", start: 321.68, end: 323.53 },
+    { label: "32b", start: 323.78, end: 324.91 },
+    { label: "32c", start: 325.16, end: 327.25 },
+    { label: "33a", start: 327.5, end: 329.17 },
+    { label: "33b", start: 329.42, end: 330.55 },
+    { label: "33c", start: 330.8, end: 333.51 },
+    { label: "33d", start: 333.76, end: 334.75 },
+    { label: "33e", start: 335, end: 336.39 },
+    { label: "33f", start: 336.64, end: 340.07 },
+    { label: "34a", start: 340.32, end: 341.63 },
+    { label: "34b", start: 341.88, end: 341.95 },
+    { label: "34c", start: 342.2, end: 345.79 },
+    { label: "34d", start: 346.04, end: 348.81 },
+    { label: "35a", start: 349.06, end: 350.15 },
+    { label: "35b", start: 350.4, end: 351.03 },
+    { label: "35c", start: 351.28, end: 355.35 },
+    { label: "35d", start: 355.6, end: 358.27 },
+    { label: "35e", start: 358.52, end: 360.83 },
+    { label: "35f", start: 361.08, end: 367.53 },
+    { label: "35g", start: 367.78, end: 368.57 },
+    { label: "36a", start: 368.82, end: 370.69 },
+    { label: "36b", start: 370.94, end: 371.47 },
+    { label: "36c", start: 371.72, end: 371.83 },
+    { label: "36d", start: 372.08, end: 373.35 },
+    { label: "36e", start: 373.6, end: 375.45 },
+    { label: "36f", start: 375.7, end: 377.53 },
+    { label: "36g", start: 377.78, end: 379.01 },
+    { label: "37a", start: 379.26, end: 381.51 },
+    { label: "37b", start: 381.76, end: 382.07 },
+    { label: "37c", start: 382.32, end: 383.97 },
+    { label: "37d", start: 384.22, end: 386.15 },
+    { label: "37e", start: 386.4, end: 387.15 },
+    { label: "37f", start: 387.4, end: 389.03 },
+    { label: "38a", start: 389.28, end: 390.47 },
+    { label: "38b", start: 390.72, end: 390.75 },
+    { label: "38c", start: 391, end: 392.43 },
+    { label: "38d", start: 392.68, end: 395.19 }
+];
+
+initAudioTimings(pop, timings);
+});
+
+$(document).ready(function() {
+
+// Footnotes and Cross-references
+var footnotes = {
+    "F-0": "<div class=\"footnote-p\"><span class=\"fr\">9:13 </span><span class=\"ft\">Gụnaa </span><span class=\"xt\"><span class=\"reflink\"><a href=\"izz-28-HOS-006.html#v6\">Hos 6:6</a></span></span><span class=\"ft\">.</span></div>"
+};
+
+initFootnotes(footnotes);
+
+});
+
+// Chapters
+var chapters = [ { start: 1, end: 28 }];
+var hasIntro = false;
+var baseRef  = "izz-40-MAT-";
+
+
+</script>
+</head>
+
+<body class="browser" dir="LTR">
+
+<div id="book-menu"></div>
+<div id="chapter-menu"></div>
+
+<div id="toolbar-top">
+<div class="navigation-top">
+  <span class="button"><a href='izz-39-MAL-001.html' title='Previous Book'>&nbsp;&lt;&lt;&nbsp;</a></span>
+  <span class="button"><a href='izz-40-MAT-008.html' title='Previous Chapter'>&nbsp;&nbsp;&lt;&nbsp;&nbsp;</a></span>
+  <span id="book-selector"><a href="#" onclick="toggleBookMenu(); return false;">&nbsp;&nbsp;Matiyu&nbsp;&nbsp;</a></span>
+<span id="chapter-selector"><a href="#" onclick="toggleChapterMenu(chapters, hasIntro, baseRef); return false;">&nbsp;&nbsp;9&nbsp;&nbsp;</a></span>
+  <span class="button"><a href='izz-40-MAT-010.html' title='Next Chapter'>&nbsp;&nbsp;&gt;&nbsp;&nbsp;</a></span>
+  <span class="button"><a href='izz-41-MRK-001.html' title='Next Book'>&nbsp;&gt;&gt;&nbsp;</a></span>
+</div>
+</div>
+
+<div id="content">
+
+
+<div class="s"><div id="s1">Nwoke, iphe lọnwuru ibe ẹhu lanụ</div></div>
+<div class="r"><div id="r1">(<span class="reflink"><a href="izz-41-MRK-002.html#v1">Mak 2:1-12</a></span>; <span class="reflink"><a href="izz-42-LUK-005.html#v17">Luk 5:17-26</a></span>)</div></div><a id="v1"></a>
+<div class="m">
+<div class="c-drop">9</div> <div id="T1a" class="txs">Tọbudu iya bụ;</div> <div id="T1b" class="txs">Jizọsu bya abahụ l'ụgbo bya akpọghaa eze-ẹnyimu ono;</div> <div id="T1c" class="txs">ọ bụru iya ala mkpụkpu,</div> <div id="T1d" class="txs">a nọ hefuta iya gẹdegede.</div><span id="bookmarks1"></span> <a id="v2"></a><div id="T2a" class="txs"><span class="v">2</span><span class="vsp">&nbsp;</span>E gude iphe,</div> <div id="T2b" class="txs">aazẹ azẹe vutaru iya nwoke,</div> <div id="T2c" class="txs">iphe lọnwushiru ibe ẹhu lanụ.</div> <div id="T2d" class="txs">Jizọsu hụmaepho g'ẹphe gude kwetaberu lẹ ya a-dụ ike mee g'o jee ije;</div> <div id="T2e" class="txs">ọ sụ nwoke ono,</div> <div id="T2f" class="txs">iphe lọnwushiru ono:</div> <div id="T2g" class="txs">“Nwa mu;</div> <div id="T2h" class="txs">nweru iya obu.</div> <div id="T2i" class="txs">A gụwaru ngu nvụ l'iphe-ẹji,</div> <div id="T2j" class="txs">i meshiru.”</div><span id="bookmarks2"></span></div><span id="bookmarks2"></span><a id="v3"></a>
+<div class="p"><div id="T3a" class="txs"><span class="v">3</span><span class="vsp">&nbsp;</span>Tọbudu iya bụ;</div> <div id="T3b" class="txs">ndu ezije ekemu harụ rịahaa l'ime ọkpoma phẹ sụ:</div> <div id="T3c" class="txs">“Nwoke-a epfubyikwa ẹpha Chileke epfubyi.”</div><span id="bookmarks3"></span></div><span id="bookmarks3"></span><a id="v4"></a>
+<div class="p"><div id="T4a" class="txs"><span class="v">4</span><span class="vsp">&nbsp;</span>Jizọsu maẹrupho iphe,</div> <div id="T4b" class="txs">ẹphe arị bya asụ:</div> <div id="T4c" class="txs">“?Dẹnu g'o gude unu nọdu arị ẹjo ọriri l'obu unu?</div><span id="bookmarks4"></span> <a id="v5"></a><div id="T5a" class="txs"><span class="v">5</span><span class="vsp">&nbsp;</span>Sụ-a;</div><div id="T5b" class="txs">&nbsp;?bụ ole ka nphe epfupfu?</div><div id="T5c" class="txs">&nbsp;?Bụ asụ:</div> <div id="T5d" class="txs">‘A gụwaru ngu nvụ l'iphe-ẹji,</div> <div id="T5e" class="txs">i meshiru?’</div><div id="T5f" class="txs">&nbsp;?Tọo:</div> <div id="T5g" class="txs">‘Gbalihu jeahaa ije?’</div><span id="bookmarks5"></span> <a id="v6"></a><div id="T6a" class="txs"><span class="v">6</span><span class="vsp">&nbsp;</span>Ọle ọo g'unu a-maru lẹ Abụbu-Ndiphe bẹ ike dụ l'ẹka k'agụjeru nemadzụ nvụ l'iphe-ẹji,</div> <div id="T6b" class="txs">o meshiru lẹ mgboko-a.”</div> <div id="T6c" class="txs">Ọ sụ onye ono,</div> <div id="T6d" class="txs">iphe lọnwushiru ibe ẹhu lanụ ono:</div> <div id="T6e" class="txs">“Gbalihu palita iphe-azẹe ngu lashịa ibe ngu.”</div><span id="bookmarks6"></span></div><span id="bookmarks6"></span><a id="v7"></a>
+<div class="p"><div id="T7a" class="txs"><span class="v">7</span><span class="vsp">&nbsp;</span>Nwoke ono kwolihu;</div> <div id="T7b" class="txs">ọ bụru iya ala unuphu.</div><span id="bookmarks7"></span> <a id="v8"></a><div id="T8a" class="txs"><span class="v">8</span><span class="vsp">&nbsp;</span>Ikpoto ndu ono hụmaepho iphe,</div> <div id="T8b" class="txs">meru nụ;</div> <div id="T8c" class="txs">ọ dụ phẹ biribiri.</div> <div id="T8d" class="txs">Ẹphe wata aja Chileke ajaja;</div> <div id="T8e" class="txs">yẹbedua meru gẹ nemadzụ dụ ike mee ẹgube iphe ono.</div><span id="bookmarks8"></span></div>
+
+<div class="s"><div id="s2">Ekuku Matiyu</div></div>
+<div class="r"><div id="r2">(<span class="reflink"><a href="izz-41-MRK-002.html#v13">Mak 2:13-17</a></span>; <span class="reflink"><a href="izz-42-LUK-005.html#v27">Luk 5:27-32</a></span>)</div></div><span id="bookmarks8"></span><a id="v9"></a>
+<div class="p"><div id="T9a" class="txs"><span class="v">9</span><span class="vsp">&nbsp;</span>Gẹ Jizọsu shi l'ẹka ono tụgbua bẹ ọ hụmaru nwoke lanụ,</div> <div id="T9b" class="txs">ẹpha iya bụ Matiyu;</div> <div id="T9c" class="txs">l'ẹka ọ nọ l'ụlo okpoga akịriko.</div> <div id="T9d" class="txs">Ọ sụ iya:</div> <div id="T9e" class="txs">“Tsoru mu.”</div> <div id="T9f" class="txs">Ọ gbalihu tsoru iya.</div><span id="bookmarks9"></span></div><span id="bookmarks9"></span><a id="v10"></a>
+<div class="p"><div id="T10a" class="txs"><span class="v">10</span><span class="vsp">&nbsp;</span>Jizọsu phẹ je eriahaa nri l'ibe Matiyu.</div> <div id="T10b" class="txs">Ndu ana akịriko mẹ ndu ọzo mmanụ,</div> <div id="T10c" class="txs">bụkwapho ndu aamaru ẹjo ẹka tụkokwapho nọdu l'ẹka ono;</div> <div id="T10d" class="txs">ẹphe lẹ Jizọsu mẹ ndu etsoje iya nụ nọdu eri nri.</div><span id="bookmarks10"></span> <a id="v11"></a><div id="T11a" class="txs"><span class="v">11</span><span class="vsp">&nbsp;</span>Ndu Fárisii hụma iya bya asụ ndu etsoje iya nụ:</div> <div id="T11b" class="txs">“?Dẹnu g'o gude onye ezije unu iphe,</div> <div id="T11c" class="txs">ẹphe lẹ ndu ana akịriko;</div> <div id="T11d" class="txs">waa ndu ọzo,</div> <div id="T11e" class="txs">aamakwarụpho ẹjo ẹka nọdu erigba nri?”</div><span id="bookmarks11"></span></div><span id="bookmarks11"></span><a id="v12"></a>
+<div class="p"><div id="T12a" class="txs"><span class="v">12</span><span class="vsp">&nbsp;</span>Jizọsu nụmae ya phọ bya asụ:</div> <div id="T12b" class="txs">“Ọ tọ bụkwa ndu ẹhu dụ ike bẹ eegudeje gbapfu onye eme ọbvu;</div> <div id="T12c" class="txs">ọ kwa ndu iphe eme.</div><span id="bookmarks12"></span> <a id="v13"></a><div id="T13a" class="txs"><span class="v">13</span><span class="vsp">&nbsp;</span>Sụ-a;</div> <div id="T13b" class="txs">unu je anwụa iphe,</div> <div id="T13c" class="txs">opfu ọwa-a,</div> <div id="T13d" class="txs">mu abya epfupfu-a bụ;</div> <div id="T13e" class="txs">lẹ Chileke pfuru sụ:</div> <div id="T13f" class="txs">‘Iphe,</div> <div id="T13g" class="txs">agụ mu nụ ta abụkwa g'unu gwajẹ mu agwagwa;</div> <div id="T13h" class="txs">ọ kwa g'unu phụjeru nemadzụ obu-imemini.</div><div id="T13i" class="txs"><span class="footnote selectable" id="F-0"><sup>a</sup></span>’ Noo kẹle mu ta abyakwaru eku ndu pfụberekoto;</div> <div id="T13j" class="txs">ọ kwa ndu eme iphe-ẹji bẹ mu byaru ekuku;</div> <div id="T13k" class="txs">g'izimanụ lwa phẹ azụ.”</div><span id="bookmarks13"></span></div>
+
+<div class="s"><div id="s3">Aswịru Chileke ẹgu</div></div>
+<div class="r"><div id="r3">(<span class="reflink"><a href="izz-41-MRK-002.html#v18">Mak 2:18-22</a></span>; <span class="reflink"><a href="izz-42-LUK-005.html#v33">Luk 5:33-39</a></span>)</div></div><span id="bookmarks13"></span><a id="v14"></a>
+<div class="p"><div id="T14a" class="txs"><span class="v">14</span><span class="vsp">&nbsp;</span>Tọbudu iya bụ;</div> <div id="T14b" class="txs">ndu etsoje Jiọnu onye emeje baputizimu byapfuta Jizọsu bya asụ iya:</div> <div id="T14c" class="txs">“?Bụ gụnu meru g'o gude anyi lẹ ndu Fárisii nọdu aswịjeru Chileke ẹgu;</div> <div id="T14d" class="txs">ọphu ndu etsoje ngu nụ aswịjedu?”</div><span id="bookmarks14"></span></div><span id="bookmarks14"></span><a id="v15"></a>
+<div class="p"><div id="T15a" class="txs"><span class="v">15</span><span class="vsp">&nbsp;</span>Jizọsu sụ phẹ:</div> <div id="T15b" class="txs">“?Ndu byaru ekele-nwanyị a-gbẹ agụ aphụ l'ẹka ẹphe l'onye eme ekele-nwanyị nọkwadu l'ẹka-a?</div> <div id="T15c" class="txs">Ọle ọ dụkwaru teke ee-mechaa;</div> <div id="T15d" class="txs">l'a bya anafụ phẹ onye ono,</div> <div id="T15e" class="txs">eme ekele-nwanyị ono.</div> <div id="T15f" class="txs">Ọo ya bụ;</div> <div id="T15g" class="txs">ẹphe aswịwaro ẹgu.</div><span id="bookmarks15"></span></div><span id="bookmarks15"></span><a id="v16"></a>
+<div class="p"><div id="T16a" class="txs"><span class="v">16</span><span class="vsp">&nbsp;</span>“E te ewotajẹkwa ẹkwa ọ̀phúú gude gbachia ẹka akahụ ẹkwa lakahụru alakahụ.</div> <div id="T16b" class="txs">Onye meru iya nụ;</div> <div id="T16c" class="txs">ẹkwa ọ̀phúú ono atsụa atsụtsu kabaa alaka akahụ iya phọ.</div><span id="bookmarks16"></span> <a id="v17"></a><div id="T17a" class="txs"><span class="v">17</span><span class="vsp">&nbsp;</span>Ọphu eewojeduru akụru mẹe ọ̀phúú ye l'ugbobele-mẹe,</div> <div id="T17b" class="txs">riwaru phẹripheri.</div> <div id="T17c" class="txs">Onye yeru iya nụ;</div> <div id="T17d" class="txs">mẹe ono agbawashịa ugbobele ono.</div> <div id="T17e" class="txs">Mẹe ono awụshihu;</div> <div id="T17f" class="txs">tẹme ugbobele ono agbakpọhukwapho.</div> <div id="T17g" class="txs">Mẹe ọ̀phúú bẹ eeyeje l'ugbobele ọ̀phúú.</div> <div id="T17h" class="txs">Ọo ya bụ;</div> <div id="T17i" class="txs">ẹphenebo ono atụkokwanu dụ.”</div><span id="bookmarks17"></span></div>
+
+<div class="s"><div id="s4">Nwa Jiayirọsu mẹ nwanyị,  nsọ eme mkpụrumkpuru</div></div>
+<div class="r"><div id="r4">(<span class="reflink"><a href="izz-41-MRK-005.html#v21">Mak 5:21-43</a></span>; <span class="reflink"><a href="izz-42-LUK-008.html#v40">Luk 8:40-56</a></span>)</div></div><span id="bookmarks17"></span><a id="v18"></a>
+<div class="p"><div id="T18a" class="txs"><span class="v">18</span><span class="vsp">&nbsp;</span>Tọbudu iya bụ;</div> <div id="T18b" class="txs">Jizọsu kpụkwaduru-a iphemiphe ono l'ọnu epfuru phẹ;</div> <div id="T18c" class="txs">onye lanụ l'ime ndu-ishi ụlo-ndzukọ byapfuta iya bya abaarụ iya ẹja sụ iya:</div> <div id="T18d" class="txs">“Nwatibe mu kẹ nwanyị bụepho nta-a bẹ ọ nwụhuru.</div> <div id="T18e" class="txs">Ọle ọ bụa g'ị bya ebyia ya ẹka.</div> <div id="T18f" class="txs">I -byiwa iya ẹka bẹ ọo-nọdu-a ndzụ.”</div><span id="bookmarks18"></span></div><span id="bookmarks18"></span><a id="v19"></a>
+<div class="p"><div id="T19a" class="txs"><span class="v">19</span><span class="vsp">&nbsp;</span>Jizọsu yẹle ndu etsoje iya nụ gbẹshi tsoru iya;</div> <div id="T19b" class="txs">ọ bụru phẹ ejeje.</div><span id="bookmarks19"></span></div><span id="bookmarks19"></span><a id="v20"></a>
+<div class="p"><div id="T20a" class="txs"><span class="v">20</span><span class="vsp">&nbsp;</span>Tọbudu iya bụ;</div> <div id="T20b" class="txs">ọ dụru nwanyị,</div> <div id="T20c" class="txs">nọ l'ẹka ono,</div> <div id="T20d" class="txs">nọwaru nsọ ụnwanyi mkpụrumkpuru apha iri l'ẹbo.</div> <div id="T20e" class="txs">O shia Jizọsu azụ pyobata bya edenyi ọnu uwe iya ẹka.</div><span id="bookmarks20"></span> <a id="v21"></a><div id="T21a" class="txs"><span class="v">21</span><span class="vsp">&nbsp;</span>Noo kẹle ọ sụkwanuru onwiya:</div> <div id="T21b" class="txs">“Mu -denyikpọwaa ẹka l'uwe iya bẹ mu a-dụa iche.”</div><span id="bookmarks21"></span></div><span id="bookmarks21"></span><a id="v22"></a>
+<div class="p"><div id="T22a" class="txs"><span class="v">22</span><span class="vsp">&nbsp;</span>Jizọsu ghakọbe bya ahụma iya bya asụ:</div> <div id="T22b" class="txs">“Nwada mu;</div> <div id="T22c" class="txs">g'ọkpoma shihu ngu ike.</div> <div id="T22d" class="txs">Ekweta,</div> <div id="T22e" class="txs">i kwetarụ mewaru g'ị dụ iche.”</div> <div id="T22f" class="txs">E shiẹpho teke ono;</div> <div id="T22g" class="txs">ọ bụru nwanyị ono ewekọrohu.</div><span id="bookmarks22"></span></div><span id="bookmarks22"></span><a id="v23"></a>
+<div class="p"><div id="T23a" class="txs"><span class="v">23</span><span class="vsp">&nbsp;</span>Jizọsu byarwutaẹpho ibe onye-ishi ụlo-ndzukọ ono bya akpovu ụzu,</div> <div id="T23b" class="txs">igwe ọha,</div> <div id="T23c" class="txs">nọ l'ẹka ono atụ;</div> <div id="T23d" class="txs">mẹkpoo ndu aphụ ụpyi.</div><span id="bookmarks23"></span> <a id="v24"></a><div id="T24a" class="txs"><span class="v">24</span><span class="vsp">&nbsp;</span>Ọ sụ phẹ:</div> <div id="T24b" class="txs">“Unu lụfukotachaa g'unu ha.</div> <div id="T24c" class="txs">Kẹle nwamgbọko ọbu ta anwụhukwaru anwụhu.</div> <div id="T24d" class="txs">Ọ kwa mgbẹnya bẹ ooku.”</div></div>
+<div class="p"><div id="T24e" class="txs">Ẹphe ze iya ọchi.</div><span id="bookmarks24"></span> <a id="v25"></a><div id="T25a" class="txs"><span class="v">25</span><span class="vsp">&nbsp;</span>A chịfuchaepho ikpoto ndu ono etezi;</div> <div id="T25b" class="txs">Jizọsu bya abahụ l'ụlo bya eseta nwata ono l'ẹka.</div> <div id="T25c" class="txs">O teta gbalihu.</div><span id="bookmarks25"></span> <a id="v26"></a><div id="T26" class="txs"><span class="v">26</span><span class="vsp">&nbsp;</span>Akọ iya ngakọtawaro uswe iya onoya mgburugburu.</div><span id="bookmarks26"></span></div>
+
+<div class="s"><div id="s5">Ụmadzu ẹbo, l'atsụ ishi,  Jizọsu meru; ẹphe phụahaa ụzo</div></div><span id="bookmarks26"></span><a id="v27"></a>
+<div class="p"><div id="T27a" class="txs"><span class="v">27</span><span class="vsp">&nbsp;</span>Jizọsu parụ ẹka ono haa tụgbua tsoru gbororo eje.</div> <div id="T27b" class="txs">Unwoke labọ,</div> <div id="T27c" class="txs">atsụ ishi tsoru iya echi mkpu asụje:</div> <div id="T27d" class="txs">“Nwa Dévidi;</div> <div id="T27e" class="txs">phụaru anyi obu-imemini!”</div><span id="bookmarks27"></span></div><span id="bookmarks27"></span><a id="v28"></a>
+<div class="p"><div id="T28a" class="txs"><span class="v">28</span><span class="vsp">&nbsp;</span>Jizọsu bahụepho l'ụlo;</div> <div id="T28b" class="txs">ndu ono,</div> <div id="T28c" class="txs">atsụ ishi ono byapfuta iya l'ụlo ono.</div> <div id="T28d" class="txs">Jizọsu sụ phẹ:</div> <div id="T28e" class="txs">“?Unu kwetarụ-a lẹ mu a-dụ ike mee iphe ono?”</div></div>
+<div class="p"><div id="T28f" class="txs">Ẹphe sụ iya:</div> <div id="T28g" class="txs">“Ee-o!</div> <div id="T28h" class="txs">Nnajịuphu.”</div><span id="bookmarks28"></span></div><span id="bookmarks28"></span><a id="v29"></a>
+<div class="p"><div id="T29a" class="txs"><span class="v">29</span><span class="vsp">&nbsp;</span>Ọ bụru iya bụ;</div> <div id="T29b" class="txs">Jizọsu bya ebyichaa phẹ ẹka l'ẹnya ono;</div> <div id="T29c" class="txs">bya asụ phẹ:</div> <div id="T29d" class="txs">“G'ọ dụkwaru unu g'unu kwetaberu.”</div><span id="bookmarks29"></span> <a id="v30"></a><div id="T30a" class="txs"><span class="v">30</span><span class="vsp">&nbsp;</span>Ẹnya sashịhu phẹ.</div> <div id="T30b" class="txs">Ẹphe wata aphụ ụzo.</div> <div id="T30c" class="txs">Jizọsu bya anmashịaru phẹ ọkwa ike sụ phẹ g'ẹphe te emekwa g'ọ dụru onye a-maru nụ.</div><span id="bookmarks30"></span></div><span id="bookmarks30"></span><a id="v31"></a>
+<div class="p"><div id="T31" class="txs"><span class="v">31</span><span class="vsp">&nbsp;</span>Ẹphe tụgbuelaa je epfukashia kẹ Jizọsu l'ọha ono mgburugburu kpọ.</div><span id="bookmarks31"></span></div>
+
+<div class="s"><div id="s6">Onye ete pfudu opfu,  Jizọsu meru o pfuahaa opfu</div></div><span id="bookmarks31"></span><a id="v32"></a>
+<div class="p"><div id="T32a" class="txs"><span class="v">32</span><span class="vsp">&nbsp;</span>Ẹphe tụgbushiepho;</div> <div id="T32b" class="txs">e dutaru Jizọsu nwoke,</div> <div id="T32c" class="txs">ọbvu bu iya l'ẹhu meru ọphu o pfudu opfu.</div><span id="bookmarks32"></span> <a id="v33"></a><div id="T33a" class="txs"><span class="v">33</span><span class="vsp">&nbsp;</span>Jizọsu chịfuepho ọbvu ono;</div> <div id="T33b" class="txs">nwoke ono pfuahaa opfu.</div> <div id="T33c" class="txs">Ọ dụa ikpoto ndu nọ l'ẹka ono biribiri ẹtu.</div> <div id="T33d" class="txs">Ẹphe sụ:</div> <div id="T33e" class="txs">“Ha-oo!</div> <div id="T33f" class="txs">Anyi teke ahụma-swekwaa ẹgube iya ọwa-a l'alị Ízurẹlu!”</div><span id="bookmarks33"></span></div><span id="bookmarks33"></span><a id="v34"></a>
+<div class="p"><div id="T34a" class="txs"><span class="v">34</span><span class="vsp">&nbsp;</span>Ndu Fárisii sụ:</div> <div id="T34b" class="txs">“?A sụru ngu l'ọ tọ bụdu ike k'onye-ishi iphe,</div> <div id="T34c" class="txs">bụkpoo ọbvu bẹ oogudeje achịshi ọbvu ono.”</div><span id="bookmarks34"></span></div>
+
+<div class="s"><div id="s7">Jizọsu aphụru ikpoto nemadzụ  obu-imemini</div></div><span id="bookmarks34"></span><a id="v35"></a>
+<div class="p"><div id="T35a" class="txs"><span class="v">35</span><span class="vsp">&nbsp;</span>Tọbudu iya bụ;</div> <div id="T35b" class="txs">Jizọsu tụko iphe,</div> <div id="T35c" class="txs">bụ mkpụkpu lẹ mkpụkpu jegbabẹ epfu opfu Chileke l'ụlo-ndzukọ ndu Jiu.</div> <div id="T35d" class="txs">Ọ nọdu anọduje ezi ozi-ọma k'abụbu Chileke bụ eze.</div> <div id="T35e" class="txs">Ọ nọdu emeje g'iphe,</div> <div id="T35f" class="txs">bụ ndu ẹhu eme mẹ ndu iphe-ememe mmanụ emegbaa tụko wekọrohukota m'obeta ọ bụru ẹgube iphe-ememe,</div> <div id="T35g" class="txs">dụ ịdagha.</div><span id="bookmarks35"></span> <a id="v36"></a><div id="T36a" class="txs"><span class="v">36</span><span class="vsp">&nbsp;</span>Ọ nọdu abụjeru;</div> <div id="T36b" class="txs">ọ -hụma ndu ono;</div> <div id="T36c" class="txs">imemini phẹ adụ iya;</div> <div id="T36d" class="txs">kẹle ike bvụwaru phẹ ree;</div> <div id="T36e" class="txs">ẹbe ẹphe amahẹdu g'ẹphe e-me iya.</div> <div id="T36f" class="txs">Ẹphe dụgbaepho g'igwerigwe atụru,</div> <div id="T36g" class="txs">enwedu onye eleta iya ẹnya.</div><span id="bookmarks36"></span> <a id="v37"></a><div id="T37a" class="txs"><span class="v">37</span><span class="vsp">&nbsp;</span>Jizọsu sụ ndu etsoje iya nụ:</div> <div id="T37b" class="txs">“Iphe,</div> <div id="T37c" class="txs">e meberu l'alị chashịakwaru.</div> <div id="T37d" class="txs">Ọ kwatakpọkwaru chashịa shii.</div> <div id="T37e" class="txs">Obenu lẹ ndu-ozi,</div> <div id="T37f" class="txs">akpata iya akpata ha nwanshịi.</div><span id="bookmarks37"></span> <a id="v38"></a><div id="T38a" class="txs"><span class="v">38</span><span class="vsp">&nbsp;</span>Unu pfuru nụ Nnajịuphu,</div> <div id="T38b" class="txs">nwe iphe,</div> <div id="T38c" class="txs">e meberu l'alị g'o ye ndu-ozi,</div> <div id="T38d" class="txs">e-je akpata iya nụ.”</div><span id="bookmarks38"></span></div><div class="footer"><div class="footer-line"><span class="footer">© 2014, Wycliffe Bible Translators, Inc., Orlando, FL 35862-8200 USA (<a href="https://www.Wycliffe.org">www.Wycliffe.org</a>); Audio: ℗ 2018, Hosanna (<a href="https://live.bible.is/bible/IZZTBL">Bible.is</a>)   — Visit <a href="https://www.scriptureearth.org/00i-Scripture_Index.php?sortby=lang&name=izz">www.ScriptureEarth.org</a> for Scripture resources in Izii.</span></div></div>
+</div>
+
+<div id="toolbar-bottom">
+<div class="audio-player">
+  <audio id="audio" controls>
+    <source id="audio1" src="//cloud.faithcomesbyhearing.com/mp3audiobibles2/IZZTBLN1DA/B01___09_Matthew_______N1IZZTBL.mp3" />
+  </audio>
+</div>
+</div>
+
+<script type='text/javascript' src='./pwa-main.js'></script>
+</body>
+</html>

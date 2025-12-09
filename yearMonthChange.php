@@ -1,8 +1,11 @@
 <?php
 
 /*
-	AJAX form AWStatsScripts.js => visitors and filetype tables
+	fetch form AWStatsScripts.js => visitors and filetype tables
 */
+//echo '<pre>yearMonthChange.php called with m=' . $_GET['m'] . ' y=' . $_GET['y'] . '</pre>';
+//echo '<pre>REMOTE_ADDR=' . $_SERVER['REMOTE_ADDR'] . '</pre>';
+//exit;
 
 if (isset($_GET['m'])) $month = $_GET['m']; else { die('Hack!'); }
 if (isset($_GET['y'])) $year = $_GET['y']; else { die('Hack!'); }
@@ -10,17 +13,20 @@ if (isset($_GET['y'])) $year = $_GET['y']; else { die('Hack!'); }
 // SELECT WHERE `fileType` NOT IN ('" . implode("','", $notFileTypeArray) . "') [array to string]
 $notFileTypeArray = ['png','jpg','tif','js','php','css','gif','jpeg','ttf','json','ods','odt','docx','doc','msg','tpl','ffs_db','svg','shtml','bak','cgi','sql','bat','sh','jsp','action','aspx','xml','do','ini','jsf','pl','jspa','ashx','cfm','asp','dll','cmd','zgz','cfc','log','esp','mwsl','hsp','me','portal','gch','xhtml','pem','py','dat','axd','md5','conf','bz2','en','local','env','stream','lp','php7','iwc','md','xls','xlsx','exp','online','key','ns','set','yml','zul','index','ehp','rsp','ccp','csv','jsn','lua','mjs','view','web','inc','srf','lst','1','ptx','junk','jnnk','cfg','sty','tex','xdv','id'];
 
-if (substr($_SERVER['REMOTE_ADDR'], 0, 7) == '192.168' || substr($_SERVER['REMOTE_ADDR'], 0, 9) == '127.0.0.1') {	// Is the script local?
+if (substr($_SERVER['REMOTE_ADDR'], 0, 7) == '192.168' || substr($_SERVER['REMOTE_ADDR'], 0, 9) == '127.0.0.1' || substr($_SERVER['REMOTE_ADDR'], 0, 9) == '172.20.0.') {	// Is the script local?
 	$awstats_db = 'awstats_gui_log';
-	$scripture_db = 'scripture';
+	//$scripture_db = 'scripture';
 }
 else {
 	$awstats_db = 'se_awstats_gui_log';
-	$scripture_db = 'se_scripture';
+	//$scripture_db = 'se_scripture';
 }
 
-require_once './include/conn.inc.php';													// connect to the database named 'scripture'
-$db = get_my_db();
+//require_once './include/conn.inc.php';													// connect to the database named 'scripture' or 'se_scripture'
+//$db = get_my_db();
+require_once './include/conn.inc.AWStats.php';											// connect to the AWStats database
+$db = get_my_AWStatsDB();																// connect to the AWStats database named 'awstats_gui_log' or 'se_awstats_gui_log'
+
 	
 if ($month == 13) {																		// a year
 	$query = "SELECT SUM(uniqueVisitors) uniqueVisitors, SUM(numberOfVisits) numberOfVisits, SUM(pages) pages, SUM(hits) hits, SUM(bandwidth) bandwidth FROM $awstats_db.visitors WHERE $awstats_db.visitors.`year` = $year";
@@ -28,10 +34,10 @@ if ($month == 13) {																		// a year
 else {
 	$query = "SELECT uniqueVisitors, numberOfVisits, pages, hits, bandwidth FROM $awstats_db.visitors WHERE $awstats_db.visitors.`month` = $month AND $awstats_db.visitors.`year` = $year";
 }
-$result_YM = $db->query($query) or die('Query failed:  ' . $db->error . '</body></html>');
+$result_YM = $db->query($query) or die('Query failed:  ' . $db->error);
 
 if ($result_YM->num_rows == 0) {
-	echo 'none';
+	echo '@none';
 }
 else {
 	$first = '{';
@@ -68,7 +74,7 @@ else {
 	else {
 		$query="SELECT `fileType`, `description`, `fTHits`, `hFTPercent`, `fTBandwidth`, `bFTPercent` FROM $awstats_db.`filetype` WHERE `month` = $month AND $awstats_db.`filetype`.`year` = $year AND $awstats_db.`filetype`.`fileType` NOT IN ('" . implode("','", $notFileTypeArray) . "') ORDER BY $awstats_db.`filetype`.`fTHits` DESC";
 	}
-	$result_filetype = $db->query($query) or die('Query failed:  ' . $db->error . '</body></html>');
+	$result_filetype = $db->query($query) or die('Query failed:  ' . $db->error);
 	if ($result_filetype->num_rows == 0) {
 		$second = '@none';
 	}
