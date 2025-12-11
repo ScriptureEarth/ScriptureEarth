@@ -36,7 +36,7 @@
 		}
 	</style>
 	<script type="text/javascript" language="javascript" src="_js/jquery-1.12.4.js"></script>
-	<script type="text/javascript" language="javascript" src="_js/AWStatsScripts.js?v=0.1.7"></script>
+	<script type="text/javascript" language="javascript" src="_js/AWStatsScripts.js?v=0.1.8"></script>
 	<script type="text/javascript" language="javascript" src="_js/countryChange.js?v=0.1.3"></script>
 	<script type="text/javascript" language="javascript" src="_js/chart.umd.min.js"></script>			<!-- 2.9.4 -->
 </head>

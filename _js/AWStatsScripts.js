@@ -140,10 +140,10 @@ function yearMonthChange(year, month) {										// change the year/month
     ****************************************************************************************************************/
     (async function () {
 		try {
-		alert("Fetching yearMonthChange.php...");
-		alert(month + ' ' + year);
+		//alert("Fetching yearMonthChange.php...");
+		//alert(month + ' ' + year);
 			const responseTwo = await fetch("yearMonthChange.php?m="+month+"&y="+year);
-		alert("2 Fetching yearMonthChange.php...");
+		//alert("2 Fetching yearMonthChange.php...");
 			const jsonTwo = await responseTwo.text();
 			if (jsonTwo == "@none") {
 				const elem = document.getElementById("firstLine");
