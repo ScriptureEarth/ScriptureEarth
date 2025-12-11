@@ -36,8 +36,10 @@ function showResult(str) { // the AJAX for the live search on the ISO input
         return;
     }
     str = str.toLowerCase(); // ISO to be lower case...
+
     document.getElementById("iso").value = document.getElementById("iso").value.toLowerCase(); // and ISO input
-    document.getElementById("txtLinkURL-1").value = 'https://joshuaproject.net/languages/' + str;
+    //document.getElementById("txtLinkURL-1").value = 'https://joshuaproject.net/languages/' + str;
+
     var re = /[a-z]/;
     var foundArray = re.exec(str.substring(str.length - 1)); // the last character of the ISO
     if (!foundArray) { // is the value of the last character of the ISO isn't a - z then it returns
@@ -50,6 +52,7 @@ function showResult(str) { // the AJAX for the live search on the ISO input
         }
         return;
     }
+
     xmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
     if (xmlhttp === null) {
         return;

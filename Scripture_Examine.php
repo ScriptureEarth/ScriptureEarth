@@ -103,7 +103,7 @@ echo "<a style='float: right; font-size: small; font-weight: normal; vertical-al
  * 
  *************************************************************************************/
 if (isset($_POST['accept'])) {                      // the "Submit" button
-    if (!isset($_POST['iso']) || !isset($_POST['rod']) || !isset($_POST['var']) || !isset($_POST['idx']) || !isset($_POST['type']) || !isset($_POST['email']) || !isset($_POST['projectName']) || !isset($_POST['url']) || !isset($_POST['projectDescription']) || !isset($_POST['subfolder'])) {
+    if (!isset($_POST['iso']) || !isset($_POST['rod']) || !isset($_POST['var']) || !isset($_POST['idx']) || !isset($_POST['type']) || !isset($_POST['email']) || !isset($_POST['projectName']) || !isset($_POST['url']) || !isset($_POST['description']) || !isset($_POST['subfolder'])) {
         /*if (!isset($_POST['add_index'])) echo 'index is not POSTed.<br />';
         if (!isset($_POST['iso'])) echo 'iso is not POSTed.<br />';
         if (!isset($_POST['rod'])) echo 'rod is not POSTed.<br />';
@@ -113,7 +113,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
         if (!isset($_POST['email'])) echo 'email is not POSTed.<br />';
         if (!isset($_POST['projectName'])) echo 'project name is not POSTed.<br />';
         if (!isset($_POST['url'])) echo 'url is not POSTed.<br />';
-        if (!isset($_POST['projectDescription'])) echo 'project desciption is not POSTed.<br />';
+        if (!isset($_POST['description'])) echo 'project desciption is not POSTed.<br />';
         if (!isset($_POST['subfolder'])) echo 'subfolder is not POSTed.<br />';*/
         die('Did you make a mistake?');
     }
@@ -125,22 +125,22 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
     $type = $_POST['type'];                             // sab_html, apk, ios, or google_play: 'sab', 'Android App', 'iOS Asset Package', or 'Google Play Store'
     $email = $_POST['email'];
     $projectName = $_POST['projectName'];
-    $projectDescription = '';
-    if (isset($_POST['projectDescription'])) {
-        $projectDescription = $_POST['projectDescription'];
-        $projectDescription = substr($projectDescription, 0, strpos($projectDescription, ';') - 1);
+    $description = '';
+    if (isset($_POST['description'])) {
+        $description = $_POST['description'];
+        $description = substr($description, 0, strpos($description, ';') - 1);
     }
     $url = $_POST['url'];
     $username = $_POST['username'];
     $organization = $_POST['organization'];
     $subfolder = $_POST['subfolder'];
 
-    //$db->query("INSERT INTO add_resource (`iso`, `rod`, `var`, `idx`, `type`, `url`, `projectName`, `projectDescription`, `username`, `organization`, `subfolder`, `email`) VALUES ('$iso', '$rod', '$var', $idx, '$type', '$url', '$projectName', '$projectDescription', '$username', '$organization', '$sab/ZZZZZZ/', '$email')");
+    //$db->query("INSERT INTO add_resource (`iso`, `rod`, `var`, `idx`, `type`, `url`, `projectName`, `description`, `username`, `organization`, `subfolder`, `email`) VALUES ('$iso', '$rod', '$var', $idx, '$type', '$url', '$projectName', '$description', '$username', '$organization', '$sab/ZZZZZZ/', '$email')");
 
-    //      "sab_html" (SAB_Scirptoria table:  ISO	ROD_Code	Variant_Code	ISO_ROD_index	subfolder = subfolder	description = projectDescription	pre_scriptoria),
+    //      "sab_html" (SAB_Scirptoria table:  ISO	ROD_Code	Variant_Code	ISO_ROD_index	subfolder = subfolder	description = description	pre_scriptoria),
     //      "apk" (CellPhone table: ISO	ROD_Code	Variant_Code	ISO_ROD_index	Cell_Phone_Title = 'Android App'	Cell_Phone_File = url),
     //      "ios" (CellPhone table: ISO	ROD_Code	Variant_Code	ISO_ROD_index	Cell_Phone_Title = 'iOS Asset Package'	Cell_Phone_File = url),
-    //      "google_play" (links table:  ISO	ROD_Code	Variant_Code	ISO_ROD_index	company = 'Google Play Store'   company_title =  projectDescription URL = url	buy	map	BibleIs	YouVersion	Bibles_org	GooglePlay = 1	GRN)
+    //      "google_play" (links table:  ISO	ROD_Code	Variant_Code	ISO_ROD_index	company = 'Google Play Store'   company_title =  description URL = url	buy	map	BibleIs	YouVersion	Bibles_org	GooglePlay = 1	GRN)
 
     /**********************************************************************************
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -173,7 +173,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
             else {
                 echo 'Two or more SAB (Read/Listen/View) are found!<br />Which one do you want to UPDATE with this new one?<br />';
                 echo '<span style="color: darkgreen; font-weight: bold; ">This new one is:<br />';
-                echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$projectDescription</span><br />";
+                echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$description</span><br />";
                 echo "&nbsp;&nbsp;&nbsp;&nbsp;email: <span style='color: darkblue' >$email</span>; organization: <span style='color: darkblue' >$organization</span><br />";
                 echo "&nbsp;&nbsp;&nbsp;&nbsp;subfolder: <span style='color: darkblue' >$subfolder</span><br /></span>";
                 $url = '';                                                                      // no URL
@@ -196,8 +196,8 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                     echo "<option value='$SABIndexArray[$k]'>$num => Description: $SABDescriptionArray[$k]; subfolder: $SABSubfolderArray[$k]</option>";
                 }
                 echo "</select><br /><br />&nbsp;&nbsp;&nbsp;";
-                echo "<input type='button' name='accept' value='UPDATE' onclick='SABUPDATE(\"$projectName\", \"$projectDescription\", $idx, \"$subfolder\", document.getElementById(\"SABSelect\").value, $add_index, \"$iso\")' />&nbsp;&nbsp;&nbsp;";      // document.getElementById(\"SABSelect\").value) = $SABIndexArray[$k] of the selected SABIndexArray = SAB_index
-                echo "<input type='button' name='result' value='INSERT as new SAB' onclick='SABINSERT(\"$projectName\", \"$projectDescription\", $idx, \"$iso\", \"$rod\", \"$var\", \"$subfolder\", $k, $add_index)' />&nbsp;&nbsp;&nbsp;";
+                echo "<input type='button' name='accept' value='UPDATE' onclick='SABUPDATE(\"$projectName\", \"$description\", $idx, \"$subfolder\", document.getElementById(\"SABSelect\").value, $add_index, \"$iso\")' />&nbsp;&nbsp;&nbsp;";      // document.getElementById(\"SABSelect\").value) = $SABIndexArray[$k] of the selected SABIndexArray = SAB_index
+                echo "<input type='button' name='result' value='INSERT as new SAB' onclick='SABINSERT(\"$projectName\", \"$description\", $idx, \"$iso\", \"$rod\", \"$var\", \"$subfolder\", $k, $add_index)' />&nbsp;&nbsp;&nbsp;";
                 echo "<input id='cancel' type='button' value='Cancel' onclick='window.location.href = window.location.href' />";    // No changes made to CellPhone table WHILE $idx AND 'Android App'. So, return to Scripture_Examine.php.
                 echo "</div>";
                 ?>
@@ -205,9 +205,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                     /****************************************************************************************************************
                         fetch - ExamineSubmit.php - UPDATE SAB
                     ****************************************************************************************************************/
-                    async function SABUPDATE(projectName, projectDescription, idx, subfolder, SABIndex, add_index, iso) {
+                    async function SABUPDATE(projectName, description, idx, subfolder, SABIndex, add_index, iso) {
                         try {
-                            const responseSAB = await fetch("ExamineSubmit.php?number=1a&name="+projectName+"&description="+projectDescription+"&idx="+idx+"&subfolder="+subfolder+"&SABIndex="+SABIndex+"&add_index="+add_index+"&iso="+iso);
+                            const responseSAB = await fetch("ExamineSubmit.php?number=1a&name="+projectName+"&description="+description+"&idx="+idx+"&subfolder="+subfolder+"&SABIndex="+SABIndex+"&add_index="+add_index+"&iso="+iso);
                             const textSAB = await responseSAB.text();
                             if (textSAB == "none") {
                                 console.log("1a. Did you make a mistake?");
@@ -225,9 +225,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                     /****************************************************************************************************************
                         fetch - ExamineSubmit.php - INSERT SAB
                     ****************************************************************************************************************/
-                    async function SABINSERT(projectName, projectDescription, idx, iso, rod, variant, subfolder, SAB_number, add_index) {
+                    async function SABINSERT(projectName, description, idx, iso, rod, variant, subfolder, SAB_number, add_index) {
                         try {
-                            const responseSAB = await fetch("ExamineSubmit.php?number=1b&name="+projectName+"&description="+projectDescription+"&idx="+idx+"&iso="+iso+"&rod="+rod+"&var="+variant+"&subfolder="+subfolder+"&SAB_number="+SAB_number+"&add_index="+add_index);
+                            const responseSAB = await fetch("ExamineSubmit.php?number=1b&name="+projectName+"&description="+description+"&idx="+idx+"&iso="+iso+"&rod="+rod+"&var="+variant+"&subfolder="+subfolder+"&SAB_number="+SAB_number+"&add_index="+add_index);
                             const textSAB = await responseSAB.text();
                             if (textSAB == "none") {
                                 console.log("1b. Did you make a mistake?");
@@ -269,7 +269,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
             else {
             echo 'Two or more SAB (Read/Listen/View) are found!<br />Which one do you want to UPDATE with this new one?<br />';
             echo '<span style="color: darkgreen; font-weight: bold; ">This new one is:<br />';
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$projectDescription</span><br />";
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$description</span><br />";
             echo "&nbsp;&nbsp;&nbsp;&nbsp;email: <span style='color: darkblue' >$email</span>; organization: <span style='color: darkblue' >$organization</span><br />";
             echo "&nbsp;&nbsp;&nbsp;&nbsp;URL: <span style='color: darkblue' >$url</span><br /></span>";
             $SABIndexArray = [];								                            // SAB_index
@@ -289,8 +289,8 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 echo "<option value='$SABIndexArray[$k]'>$num => Description: $SABDescriptionArray[$k]; URL: $SABurlArray[$k]</option>";
             }
             echo "</select><br /><br />&nbsp;&nbsp;&nbsp;";
-            echo "<input type='button' name='accept' value='UPDATE' onclick='SABUPDATE2(\"$url\", \"$projectName\", \"$projectDescription\", $idx, document.getElementById(\"SABSelect\").value, $add_index)' />&nbsp;&nbsp;&nbsp;";
-            echo "<input type='button' name='result' value='INSERT as new SAB' onclick='SABINSERT2(\"$url\", \"$projectName\", \"$projectDescription\", $idx, \"$iso\", \"$rod\", \"$var\", $k, $add_index)' />&nbsp;&nbsp;&nbsp;";
+            echo "<input type='button' name='accept' value='UPDATE' onclick='SABUPDATE2(\"$url\", \"$projectName\", \"$description\", $idx, document.getElementById(\"SABSelect\").value, $add_index)' />&nbsp;&nbsp;&nbsp;";
+            echo "<input type='button' name='result' value='INSERT as new SAB' onclick='SABINSERT2(\"$url\", \"$projectName\", \"$description\", $idx, \"$iso\", \"$rod\", \"$var\", $k, $add_index)' />&nbsp;&nbsp;&nbsp;";
             echo "<input id='cancel' type='button' value='Cancel' onclick='window.location.href = window.location.href' />";    // No changes made to CellPhone table WHILE $idx AND 'Android App'. So, return to Scripture_Examine.php.
             echo "</div>";
             ?>
@@ -298,9 +298,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 /****************************************************************************************************************
                     fetch - ExamineSubmit.php - UPDATE SAB with URL
                 ****************************************************************************************************************/
-                async function SABUPDATE2(url, projectName, projectDescription, idx, SABIndex, add_index) {
+                async function SABUPDATE2(url, projectName, description, idx, SABIndex, add_index) {
                     try {
-                        const responseSAB = await fetch("ExamineSubmit.php?number=2a&url="+url+"&name="+projectName+"&description="+projectDescription+"&idx="+idx+"&SABIndex="+SABIndex+"&add_index="+add_index);
+                        const responseSAB = await fetch("ExamineSubmit.php?number=2a&url="+url+"&name="+projectName+"&description="+description+"&idx="+idx+"&SABIndex="+SABIndex+"&add_index="+add_index);
                         const textSAB = await responseSAB.text();
                         if (textSAB == "none") {
                             console.log("2a. Did you make a mistake?");
@@ -317,9 +317,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 /****************************************************************************************************************
                     fetch - ExamineSubmit.php - INSERT SAB with URL
                 ****************************************************************************************************************/
-                async function SABINSERT2(url, projectName, projectDescription, idx, iso, rod, variant, SAB_number, add_index) {
+                async function SABINSERT2(url, projectName, description, idx, iso, rod, variant, SAB_number, add_index) {
                     try {
-                        const responseSAB = await fetch("ExamineSubmit.php?number=2b&url="+url+"&name="+projectName+"&description="+projectDescription+"&idx="+idx+"&iso="+iso+"&rod="+rod+"&var="+variant+"&SAB_number="+SAB_number+"&add_index="+add_index);
+                        const responseSAB = await fetch("ExamineSubmit.php?number=2b&url="+url+"&name="+projectName+"&description="+description+"&idx="+idx+"&iso="+iso+"&rod="+rod+"&var="+variant+"&SAB_number="+SAB_number+"&add_index="+add_index);
                         const textSAB = await responseSAB.text();
                         if (textSAB == "none") {
                             console.log("2b. Did you make a mistake?");
@@ -361,7 +361,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
         else {
             echo 'Two or more APKs found!<br />Which one do you want to UPDATE with this new one?<br />';
             echo '<span style="color: darkgreen; font-weight: bold; ">This new one is:<br />';
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$projectDescription</span><br />";
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$description</span><br />";
             echo "&nbsp;&nbsp;&nbsp;&nbsp;email: <span style='color: darkblue' >$email</span>; organization: <span style='color: darkblue' >$organization</span><br />";
             echo "&nbsp;&nbsp;&nbsp;&nbsp;URL: <span style='color: darkblue' >$url</span><br /></span>";
             $APKIndexArray = [];                                                            // CellPhone_index
@@ -381,8 +381,8 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 echo "<option value='$APKIndexArray[$k]'>$num => Description: $APKDescriptionArray[$k]; Filename: $APKFilenameArray[$k]</option>";
             }
             echo "</select><br /><br />&nbsp;&nbsp;&nbsp;";
-            echo "<input type='button' name='accept' value='UPDATE' onclick='APKUPDATE(\"$url\", \"$projectName\", \"$projectDescription\", $idx, document.getElementById(\"APKSelect\").value, $add_index)' />&nbsp;&nbsp;&nbsp;";      // document.getElementById(\"APKSelect\").value) = $APKIndexArray[$k] of the selected APKIndexArray = CellPhone_index
-            echo "<input type='button' name='result' value='INSERT as new APK' onclick='APKINSERT(\"$url\", \"$projectName\", \"$projectDescription\", $idx, \"$iso\", \"$rod\", \"$var\", $add_index)' />&nbsp;&nbsp;&nbsp;";
+            echo "<input type='button' name='accept' value='UPDATE' onclick='APKUPDATE(\"$url\", \"$projectName\", \"$description\", $idx, document.getElementById(\"APKSelect\").value, $add_index)' />&nbsp;&nbsp;&nbsp;";      // document.getElementById(\"APKSelect\").value) = $APKIndexArray[$k] of the selected APKIndexArray = CellPhone_index
+            echo "<input type='button' name='result' value='INSERT as new APK' onclick='APKINSERT(\"$url\", \"$projectName\", \"$description\", $idx, \"$iso\", \"$rod\", \"$var\", $add_index)' />&nbsp;&nbsp;&nbsp;";
             echo "<input id='cancel' type='button' value='Cancel' onclick='window.location.href = window.location.href' />";    // No changes made to CellPhone table WHILE $idx AND 'Android App'. So, return to Scripture_Examine.php.
             echo "</div>";
             ?>
@@ -390,9 +390,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 /****************************************************************************************************************
                     fetch - ExamineSubmit.php - UPDATE APK
                 ****************************************************************************************************************/
-                async function APKUPDATE(url, projectName, projectDescription, idx, APKIndex, add_index) {
+                async function APKUPDATE(url, projectName, description, idx, APKIndex, add_index) {
                     try {
-                        const responseAPK = await fetch("ExamineSubmit.php?number=3a&url="+url+"&name="+projectName+"&description="+projectDescription+"&idx="+idx+"&APKIndex="+APKIndex+"&add_index="+add_index);
+                        const responseAPK = await fetch("ExamineSubmit.php?number=3a&url="+url+"&name="+projectName+"&description="+description+"&idx="+idx+"&APKIndex="+APKIndex+"&add_index="+add_index);
                         const textAPK = await responseAPK.text();
                         if (textAPK == "none") {
                             console.log("3a. Did you make a mistake?");
@@ -409,9 +409,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 /****************************************************************************************************************
                     fetch - ExamineSubmit.php - INSERT APK
                 ****************************************************************************************************************/
-                async function APKINSERT(url, projectName, projectDescription, idx, iso, rod, variant, add_index) {
+                async function APKINSERT(url, projectName, description, idx, iso, rod, variant, add_index) {
                     try {
-                        const responseAPK = await fetch("ExamineSubmit.php?number=3b&url="+url+"&name="+projectName+"&description="+projectDescription+"&idx="+idx+"&iso="+iso+"&rod="+rod+"&var="+variant+"&add_index="+add_index);
+                        const responseAPK = await fetch("ExamineSubmit.php?number=3b&url="+url+"&name="+projectName+"&description="+description+"&idx="+idx+"&iso="+iso+"&rod="+rod+"&var="+variant+"&add_index="+add_index);
                         const textAPK = await responseAPK.text();
                         if (textAPK == "none") {
                             console.log("3b. Did you make a mistake?");
@@ -452,7 +452,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
         else {
             echo 'Two or more iOS Asset Package are found!<br />Which one do you want to UPDATE with this new one?<br />';
             echo '<span style="color: darkgreen; font-weight: bold; ">This  new one is:<br />';
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$projectDescription</span><br />";
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$description</span><br />";
             echo "&nbsp;&nbsp;&nbsp;&nbsp;email: <span style='color: darkblue' >$email</span>; organization: <span style='color: darkblue' >$organization</span><br />";
             echo "&nbsp;&nbsp;&nbsp;&nbsp;URL: <span style='color: darkblue' >$url</span><br /></span>";
             $iosIndexArray = [];                                                            // CellPhone_index
@@ -473,8 +473,8 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 echo "<option value='$iosIndexArray[$k]'>$num => Description: $iosDescriptionArray[$k]; Filename: $temp...</option>";
             }
             echo "</select><br /><br />&nbsp;&nbsp;&nbsp;";
-            echo "<input type='button' name='accept' value='UPDATE' onclick='iosUPDATE(\"$url\", \"$projectName\", \"$projectDescription\", $idx, document.getElementById(\"iosSelect\").value, $add_index)' />&nbsp;&nbsp;&nbsp;";
-            echo "<input type='button' name='result' value='INSERT as new iOS Asset Package' onclick='iosINSERT(\"$url\", \"$projectName\", \"$projectDescription\", $idx, \"$iso\", \"$rod\", \"$var\", $add_index)' />&nbsp;&nbsp;&nbsp;";
+            echo "<input type='button' name='accept' value='UPDATE' onclick='iosUPDATE(\"$url\", \"$projectName\", \"$description\", $idx, document.getElementById(\"iosSelect\").value, $add_index)' />&nbsp;&nbsp;&nbsp;";
+            echo "<input type='button' name='result' value='INSERT as new iOS Asset Package' onclick='iosINSERT(\"$url\", \"$projectName\", \"$description\", $idx, \"$iso\", \"$rod\", \"$var\", $add_index)' />&nbsp;&nbsp;&nbsp;";
             echo "<input id='cancel' type='button' value='Cancel' onclick='window.location.href = window.location.href' />";    // No changes made to CellPhone table WHILE $idx AND 'iOS Asset Package'. So, return to Scripture_Examine.php.
             echo "</div>";
             ?>
@@ -482,9 +482,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 /****************************************************************************************************************
                     fetch - ExamineSubmit.php - UPDATE iOS Asset Package
                 ****************************************************************************************************************/
-                async function iosUPDATE(url, projectName, projectDescription, idx, iosIndex, add_index) {
+                async function iosUPDATE(url, projectName, description, idx, iosIndex, add_index) {
                     try {
-                        const responseios = await fetch("ExamineSubmit.php?number=4a&url="+url+"&name="+projectName+"&description="+projectDescription+"&idx="+idx+"&iosIndex="+iosIndex+"&add_index="+add_index);
+                        const responseios = await fetch("ExamineSubmit.php?number=4a&url="+url+"&name="+projectName+"&description="+description+"&idx="+idx+"&iosIndex="+iosIndex+"&add_index="+add_index);
                         const textios = await responseios.text();
                         if (textios== "none") {
                             console.log("4a. Did you make a mistake?");
@@ -501,9 +501,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 /****************************************************************************************************************
                     fetch - ExamineSubmit.php - INSERT iOS Asset Package
                 ****************************************************************************************************************/
-                async function iosINSERT(url, projectName, projectDescription, idx, iso, rod, variant, add_index) {
+                async function iosINSERT(url, projectName, description, idx, iso, rod, variant, add_index) {
                     try {
-                        const responseios = await fetch("ExamineSubmit.php?number=4b&url="+url+"&name="+projectName+"&description="+projectDescription+"&idx="+idx+"&iso="+iso+"&rod="+rod+"&var="+variant+"&add_index="+add_index);
+                        const responseios = await fetch("ExamineSubmit.php?number=4b&url="+url+"&name="+projectName+"&description="+description+"&idx="+idx+"&iso="+iso+"&rod="+rod+"&var="+variant+"&add_index="+add_index);
                         const textios = await responseios.text();
                         if (textios == "none") {
                             console.log("4b. Did you make a mistake?");
@@ -545,7 +545,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
         else {
             echo 'Two or more Google Play Store are found!<br />Which one do you want to UPDATE with this new one?<br />';
             echo '<span style="color: darkgreen; font-weight: bold; ">This new one is:<br />';
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$projectDescription</span><br />";
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$description</span><br />";
             echo "&nbsp;&nbsp;&nbsp;&nbsp;email: <span style='color: darkblue' >$email</span>; organization: <span style='color: darkblue' >$organization</span><br />";
             echo "&nbsp;&nbsp;&nbsp;&nbsp;URL: <span style='color: darkblue' >$url</span><br /></span>";
             $LinksIndexArray = [];                                                          // Links_index
@@ -565,8 +565,8 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 echo "<option value='$LinksIndexArray[$k]'>$num => Title: $LinksTitleArray[$k]; URL: $LinksURLArray[$k]</option>";
             }
             echo "</select><br /><br />&nbsp;&nbsp;&nbsp;";
-            echo "<input type='button' name='accept' value='UPDATE' onclick='GPSUPDATE(\"$url\", \"$projectName\", \"$projectDescription\", $idx, document.getElementById(\"GPSSelect\").value, $add_index)' />&nbsp;&nbsp;&nbsp;";
-            echo "<input type='button' name='result' value='INSERT as new Google Play Store' onclick='GPSINSERT(\"$url\", \"$projectName\", \"$projectDescription\", $idx, \"$iso\", \"$rod\", \"$var\", $add_index)' />&nbsp;&nbsp;&nbsp;";
+            echo "<input type='button' name='accept' value='UPDATE' onclick='GPSUPDATE(\"$url\", \"$projectName\", \"$description\", $idx, document.getElementById(\"GPSSelect\").value, $add_index)' />&nbsp;&nbsp;&nbsp;";
+            echo "<input type='button' name='result' value='INSERT as new Google Play Store' onclick='GPSINSERT(\"$url\", \"$projectName\", \"$description\", $idx, \"$iso\", \"$rod\", \"$var\", $add_index)' />&nbsp;&nbsp;&nbsp;";
             echo "<input id='cancel' type='button' value='Cancel' onclick='window.location.href = window.location.href' />";    // No changes made to CellPhone table WHILE $idx AND 'Android App'. So, return to Scripture_Examine.php.
             echo "</div>";
             ?>
@@ -574,9 +574,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 /****************************************************************************************************************
                     fetch - ExamineSubmit.php - UPDATE Google Play Store
                 ****************************************************************************************************************/
-                async function GPSUPDATE(url, projectName, projectDescription, idx, GPSIndex, add_index) {
+                async function GPSUPDATE(url, projectName, description, idx, GPSIndex, add_index) {
                     try {
-                        const responseGPS = await fetch("ExamineSubmit.php?number=5a&url="+url+"&name="+projectName+"&description="+projectDescription+"&idx="+idx+"&GPSIndex="+GPSIndex+"&add_index="+add_index);
+                        const responseGPS = await fetch("ExamineSubmit.php?number=5a&url="+url+"&name="+projectName+"&description="+description+"&idx="+idx+"&GPSIndex="+GPSIndex+"&add_index="+add_index);
                         const textGPS = await responseGPS.text();
                         if (textGPS == "none") {
                             console.log("5a. Did you make a mistake?");
@@ -593,9 +593,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 /****************************************************************************************************************
                     fetch - ExamineSubmit.php - INSERT Google Play Store
                 ****************************************************************************************************************/
-                async function GPSINSERT(url, projectName, projectDescription, idx, iso, rod, variant, add_index) {
+                async function GPSINSERT(url, projectName, description, idx, iso, rod, variant, add_index) {
                     try {
-                        const responseGPS = await fetch("ExamineSubmit.php?number=5b&url="+url+"&name="+projectName+"&description="+projectDescription+"&idx="+idx+"&iso="+iso+"&rod="+rod+"&var="+variant+"&add_index="+add_index);
+                        const responseGPS = await fetch("ExamineSubmit.php?number=5b&url="+url+"&name="+projectName+"&description="+description+"&idx="+idx+"&iso="+iso+"&rod="+rod+"&var="+variant+"&add_index="+add_index);
                         const textGPS = await responseGPS.text();
                         if (textGPS == "none") {
                             console.log("5b. Did you make a mistake?");
@@ -635,7 +635,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 echo "<th width='28%' class='secondHeader'>Email:</th>";
                 echo "<th width='50%' class='secondHeader'>Project Name:</th>";
             echo '</tr>';
-            // add_resource => `iso`, `rod`, `var`, `idx`, `type`, `url`, `projectName`, `projectDescription`, `username`, `organization`, `subfolder`, `email`, `accept`, `reject`, `wait`, `toAdd`
+            // add_resource => `iso`, `rod`, `var`, `idx`, `type`, `url`, `projectName`, `description`, `username`, `organization`, `subfolder`, `email`, `accept`, `reject`, `wait`, `toAdd`
             $query = "SELECT * FROM add_resource WHERE toAdd = 1 OR wait = 1 ORDER BY iso, rod, `var`";
             $result = $db->query($query);
             $num = $result->num_rows;
@@ -655,9 +655,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 $type = $row['type'];
                 $email = $row['email'];
                 $projectName = $row['projectName'];
-                $projectDescription = '';
-                if (isset($row['projectDescription'])) {
-                    $projectDescription = $row['projectDescription'];
+                $description = '';
+                if (isset($row['description'])) {
+                    $description = $row['description'];
                 }
                 $username = $row['username'];
                 $organization = $row['organization'];
@@ -724,9 +724,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
         $type = $row['type'];*/
         $email = trim($row['email']);
         $projectName = trim($row['projectName']);
-        $projectDescription = '';
-        if (isset($row['projectDescription'])) {
-            $projectDescription = trim($row['projectDescription']);
+        $description = '';
+        if (isset($row['description'])) {
+            $description = trim($row['description']);
         }
         $username = trim($row['username']);
         $organization = trim($row['organization']);
@@ -747,8 +747,8 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
             <br />
             type: <?php echo $type; ?><br />
             Project Name: <?php echo $projectName; ?><br />
-            <?php if ($projectDescription != '') { ?>
-                Project Description: <?php echo $projectDescription; ?><br />
+            <?php if ($description != '') { ?>
+                Project Description: <?php echo $description; ?><br />
             <?php } ?>
             URL: <?php echo $url; ?><br />
             User Name: <?php echo $username; ?><br />
@@ -784,7 +784,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
 		<input type='hidden' name='type' id='type' value='<?php echo $type; ?>' />
 		<input type='hidden' name='email' id='email' value='<?php echo $email; ?>' />
 		<input type='hidden' name='projectName' id='projectName' value='<?php echo $projectName; ?>' />
-		<input type='hidden' name='projectDescription' id='projectDescription' value='<?php echo $projectDescription; ?>' />
+		<input type='hidden' name='description' id='description' value='<?php echo $description; ?>' />
         <input type='hidden' name='username' id='username' value='<?php echo $username; ?>' />
         <input type='hidden' name='organization' id='organization' value='<?php echo $organization; ?>' />
 	    <input type='hidden' name='subfolder' id='subfolder' value='<?php echo $subfolder; ?>' />

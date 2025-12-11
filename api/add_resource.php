@@ -52,7 +52,7 @@ $data = json_decode($json, true);
 if (!is_array($data)) { throw new Exception('Received content contained invalid JSON!'); }
 
 $stmt_main = $db->prepare("SELECT ISO, ROD_Code, Variant_Code FROM scripture_main WHERE ISO_ROD_index = ?");
-$stmt_add_resource = $db->prepare("INSERT INTO add_resource (`iso`, `rod`, `var`, `idx`, `type`, `url`, `projectName`, `projectDescription`, `username`, `organization`, `subfolder`, `email`, `createdDate`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE())");
+$stmt_add_resource = $db->prepare("INSERT INTO add_resource (`iso`, `rod`, `var`, `idx`, `type`, `url`, `projectName`, `description`, `username`, `organization`, `subfolder`, `email`, `createdDate`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE())");
 //$stmt_add_resource = $db->prepare("INSERT INTO add_resource (`iso`, `rod`, `var`, `idx`, `type`, `url`, `projectName`, `username`, `organization`, `subfolder`, `email`, `createdDate`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE())");
 
 $message = '';
@@ -65,9 +65,9 @@ foreach ($data as $items => $value) {
     $idx = (int)$data[$items]["idx"];
     $email = $data[$items]["email"];
     $projectName = $data[$items]["projectName"];
-    $projectDescription = '';
-    if (isset($data[$items]["projectDescription"])) {
-        $projectDescription = $data[$items]["projectDescription"];
+    $description = '';
+    if (isset($data[$items]["description"])) {
+        $description = $data[$items]["description"];
     }
     $username = $data[$items]["username"];
     $organization = $data[$items]["organization"];
@@ -86,7 +86,7 @@ foreach ($data as $items => $value) {
 			$result_temp = $db->query($query);
 			if ($result_temp->num_rows >= 1) {
 				$skip++;
-                //$db->query("UPDATE SAB_scriptoria SET `description` = '$projectDescription' WHERE ISO_ROD_index = $idx AND subfolder = 'sab/$subfolder/'");
+                //$db->query("UPDATE SAB_scriptoria SET `description` = '$description' WHERE ISO_ROD_index = $idx AND subfolder = 'sab/$subfolder/'");
 				continue;
 			}
 		}
@@ -98,7 +98,7 @@ foreach ($data as $items => $value) {
 			$result_temp = $db->query($query);
 			if ($result_temp->num_rows >= 1) {
 				$skip++;
-                //$db->query("UPDATE SAB_scriptoria SET `description` = '$projectDescription' WHERE ISO_ROD_index = $idx AND `url` = '$url'");
+                //$db->query("UPDATE SAB_scriptoria SET `description` = '$description' WHERE ISO_ROD_index = $idx AND `url` = '$url'");
 				continue;
 			}
 		}
@@ -108,7 +108,7 @@ foreach ($data as $items => $value) {
 			$result_temp = $db->query($query);
 			if ($result_temp->num_rows >= 1) {
 				$skip++;
-                //$db->query("UPDATE SAB_scriptoria SET `description` = '$projectDescription' WHERE ISO_ROD_index = $idx AND `url` = '$url'");
+                //$db->query("UPDATE SAB_scriptoria SET `description` = '$description' WHERE ISO_ROD_index = $idx AND `url` = '$url'");
 				continue;
 			}
         }
@@ -158,7 +158,7 @@ foreach ($data as $items => $value) {
 	$query = "SELECT ISO FROM add_resource WHERE `idx`='$idx' AND `type`='$type' AND `projectName`='$projectName'";
 	$result=$db->query($query);
 	if ($result->num_rows === 0) {
-		$stmt_add_resource->bind_param('sssissssssss', $iso, $rod, $var, $idx, $type, $url, $projectName, $projectDescription, $username, $organization, $subfolder, $email);	    // bind parameters for markers
+		$stmt_add_resource->bind_param('sssissssssss', $iso, $rod, $var, $idx, $type, $url, $projectName, $description, $username, $organization, $subfolder, $email);	    // bind parameters for markers
 		//$stmt_add_resource->bind_param('sssisssssss', $iso, $rod, $var, $idx, $type, $url, $projectName, $username, $organization, $subfolder, $email);	    // bind parameters for markers
 		$stmt_add_resource->execute();													// execute query for add_resource table
 
@@ -171,7 +171,7 @@ foreach ($data as $items => $value) {
 		<br />
 		Project Name: $projectName
 		<br />
-		Project Description: $projectDescription
+		Description: $description
 		<br />
 		URL: $url
 		<br />
@@ -196,7 +196,7 @@ foreach ($data as $items => $value) {
 		$message .= "<br /><br /><br />";
 	}
 	else {
-		$db->query("UPDATE add_resource SET `url`='$url', projectDescription='$projectDescription', username='$username', organization='$organization', subfolder='$subfolder', email='$email', `updatedDate`=CURDATE() WHERE `idx`='$idx' AND `type`='$type' AND `projectName`='$projectName'");
+		$db->query("UPDATE add_resource SET `url`='$url', description='$description', username='$username', organization='$organization', subfolder='$subfolder', email='$email', `updatedDate`=CURDATE() WHERE `idx`='$idx' AND `type`='$type' AND `projectName`='$projectName'");
 		$skip++;
 	}
 }

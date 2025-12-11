@@ -82,8 +82,8 @@ include ('./NT_Books.php');			// include the books of the NT
 <meta name="Updated-by"                     content="Scott Starker, Lærke Roager" />
 <title>Scripture Add</title>
 <link type="text/css" rel="stylesheet" href="_css/Scripture_Add.css" />
-<script type="text/javascript" language="javascript" src="_js/Scripture_Add.js?v=1.0.3"></script>
-<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.1.9"></script>
+<script type="text/javascript" language="javascript" src="_js/Scripture_Add.js?v=1.0.4"></script>
+<script type="text/javascript" language="javascript" src="_js/AddorChange.js?v=1.2.0"></script>
 <script>
 	//let ALNindex = 1;
 	//let Otherindex = 1;
