@@ -1,33 +1,46 @@
-## **Setting Up and Running Your Application**
+# **ScriptureEarth Application**
 
-To start your application, use the following command: **docker compose up \--build**.
+## **Set Up and Run Your Application**
 
-Your application will be accessible at [**http://localhost:9001**](http://localhost:9001).
+To launch your application, execute the command: **docker compose up \--build**. This has to be done once.
+
+Once initiated, your application will be located at [**http://localhost:9001**](http://localhost:9001).
 
 ---
 
 ## **Development Workflow**
 
-1. Run **docker compose watch**.  
-2. Make changes to your code.  
-3. Refresh your browser to see updates.
+1. **Start Watching for Changes**: Run **docker compose watch** to enable automatic monitoring. If contributors make any changes to the ScriptureEarth GitHub repository, those updates will automatically be reflected in your Docker images and containers.
+2. **Code Modifications**: Make any necessary changes to your application code. This is accomplished in Visual Studio as follows.  
+   1. Navigate to the "main" branch on the left and click on it.
+   2. Create a new branch and give it a name.
+   3. Make your code changes.
+   4. Click on the icon that resembles "double vertical dots with a single dot being merged" on the left side.
+   5. Click on the "Create Pull Request" icon (or click on the "Commit" icon if you want to make additional changes).
+   6. Fill in the MERGE, TITLE, and DESCRIPTION, then click on "Create."
+   7. Follow the subsequent instructions.
+3. **View Updates**: Refresh your web browser to see the changes in real-time.
 
 ---
 
 ## **Database Configuration**
 
-* During the first launch, the MariaDB container will automatically execute any files with the extensions .sql, .sql.gz, or .sh located in the MariaDB directory, as this directory is mounted to **/docker-entrypoint-initdb.d**.  
-* Place your initialization scripts in the MariaDB directory. For this project, **MariaDB/scripture\_structure.sql** will be run to create and populate the schema if the data directory is empty.  
-* To reinitialize the database and rerun the scripts, remove the volume and restart with: **docker compose down \-v && docker compose up \--build**.
+* **Automated Execution on First Launch**: Upon the initial startup, the MariaDB container will automatically run any files it finds with the extensions **.sql**, **.sql.gz**, or **.sh** in the MariaDB directory, as this directory is mounted to **/docker-entrypoint-initdb.d**.  
+* **Initialization Scripts**: Place your database initialization scripts in the MariaDB directory. For this project, **MariaDB/scripture\_structure.sql** will be processed to create and populate the database schema if the data directory is empty.  
+* **Reinitialization**: If you need to reinitialize the database and rerun the scripts, simply remove the existing volume and restart the application with the command: **docker compose down \-v && docker compose up \--build**.
 
-Currently, since the scripts in the MariaDB folder don’t contain any data, the database will be empty. Attempting to access the site will result in an error about missing translations.
+Currently, the scripts in the MariaDB folder do not contain any seed data, which means the database will be empty and ScriptureEarth will not work. (If you attempt to access the site, you will encounter an error regarding missing translations.)
 
 ---
 
 ## **Deploying Your Application to the Cloud**
 
-Begin by building your image using: **docker build \-t myapp ..**. If your cloud provider operates on a different CPU architecture than your local machine (for example, if you’re using a Mac M1 and your cloud provider is amd64), build the image for that specific platform by using: **docker build \--platform=linux/amd64 \-t myapp ..**.
+Start your deployment by building your Docker image with the command: **docker build \-t myapp ..**. If your cloud provider utilizes a different CPU architecture than your local development environment (for instance, if you're working on a Mac M1 and your cloud provider uses amd64), make sure to build the image targeting that architecture by executing: **docker build \--platform=linux/amd64 \-t myapp ..**.
 
-Next, push the image to your registry with: **docker push myregistry.com/myapp**.
+Next, push the built image to your registry using: **docker push myregistry.com/myapp**.
 
-For further details on building and pushing images, refer to Docker’s getting started documentation.
+---
+
+## **To Build and Push Docker Images**
+
+For additional information on building and pushing Docker images, refer to Docker’s comprehensive [getting started](https://docs.docker.com/go/get-started-sharing/).
