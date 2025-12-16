@@ -43,4 +43,4 @@ Next, push the built image to your registry using: **docker push myregistry.com/
 
 ## **To Build and Push Docker Images**
 
-For additional information on building and pushing Docker images, refer to Docker’s comprehensive getting started.
+For additional information on building and pushing Docker images, refer to Docker’s comprehensive [getting started](https://docs.docker.com/go/get-started-sharing/).
