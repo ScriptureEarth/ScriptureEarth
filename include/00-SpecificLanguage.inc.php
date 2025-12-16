@@ -4107,12 +4107,29 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
         }
     }
     function SAB_Scriptoria_Index(subfolder) {
-        //var x = document.getElementById("SAB_Book"+index).selectedIndex;
-        //var y = document.getElementById("SAB_Book"+index).options;
-		//if (y[x].text != "< ?php echo translate('Choose One...', $st, 'sys'); ?>") {
-			//window.open("./data/< ?php echo $ISO; ?>/" + subfolder + "index.html", "SABPage");
-			window.open("./data/<?php echo $ISO; ?>/" + subfolder, "SABPage");
-		//}
+		let iso = "<?php echo $ISO; ?>";
+		let subfolde = subfolder.slice(4, -1);		// get '[ISO]ZZZZ' from 'sab/[ISO]ZZZZ/'
+		console.log(subfolde);
+
+		fetch('./data/'+iso+'/sab/'+subfolde+'_micropi', {
+			method: 'HEAD'
+		})
+		.then(response => {
+			if (!response.ok) {
+				//throw new Error('Network response was not ok');
+				console.log('Response '+response.status+': MicroPi file not found, opening standard page.');
+				window.open("./data/"+iso+"/"+subfolder, "SABPage");
+			}
+			// Access response headers
+			console.log('Response Headers'+response.status+': MicroPi file found, opening MicroPi page.');
+			window.open("./data/"+iso+"/sab/"+subfolde+'_micropi/', "SABPage");
+			//response.headers.forEach((value, name) => {
+			//  console.log(`${name}: ${value}`);
+			//});
+		})
+		.catch(error => {
+			console.error('Error:', error);
+		});
 	}
     function SAB_Scriptoria_Other(url) {
 		window.open(url, "SABLink");
