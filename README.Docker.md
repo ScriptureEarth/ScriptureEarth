@@ -1,3 +1,5 @@
+# **ScriptureEarth Application**
+
 ## **Set Up and Run Your Application**
 
 To launch your application, execute the command: **docker compose up \--build**. This has to be done once.
@@ -37,4 +39,8 @@ Start your deployment by building your Docker image with the command: **docker b
 
 Next, push the built image to your registry using: **docker push myregistry.com/myapp**.
 
-For additional guidance on building and pushing Docker images, refer to Docker’s comprehensive getting started documentation.
+---
+
+## **To Build and Push Docker Images**
+
+For additional information on building and pushing Docker images, refer to Docker’s comprehensive getting started.
