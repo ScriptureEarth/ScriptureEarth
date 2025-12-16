@@ -1,34 +1,33 @@
-### Building and running your application
+## **Setting Up and Running Your Application**
 
-When you're ready, start your application by running:
-`docker compose up --build`.
+To start your application, use the following command: **docker compose up \--build**.
 
-Your application will be available at http://localhost:9001.
+Your application will be accessible at [**http://localhost:9001**](http://localhost:9001).
 
-#### Dev workflow
+---
 
-1. Run `docker compose watch`
-2. edit code
-3. refresh browser
+## **Development Workflow**
 
-#### DB setup
+1. Run **docker compose watch**.  
+2. Make changes to your code.  
+3. Refresh your browser to see updates.
 
-- On first startup, the MariaDB container automatically runs any .sql, .sql.gz, or .sh files found in the MariaDB folder, because it is mounted to /docker-entrypoint-initdb.d.
-- Place your initialization script(s) in MariaDB/. For this project, MariaDB/scripture_structure.sql will be executed to create and seed the schema when the data directory is empty.
-- To force re-initialization (and re-run the scripts), remove the volume and start again: `docker compose down -v && docker compose up --build`.
+---
 
-right now the scripts in the MariaDB folder don't include any data, this means that the database is empty and you'll get an error about missing translations when you try to access the site.
+## **Database Configuration**
 
+* During the first launch, the MariaDB container will automatically execute any files with the extensions .sql, .sql.gz, or .sh located in the MariaDB directory, as this directory is mounted to **/docker-entrypoint-initdb.d**.  
+* Place your initialization scripts in the MariaDB directory. For this project, **MariaDB/scripture\_structure.sql** will be run to create and populate the schema if the data directory is empty.  
+* To reinitialize the database and rerun the scripts, remove the volume and restart with: **docker compose down \-v && docker compose up \--build**.
 
-### Deploying your application to the cloud
+Currently, since the scripts in the MariaDB folder don’t contain any data, the database will be empty. Attempting to access the site will result in an error about missing translations.
 
-First, build your image, e.g.: `docker build -t myapp .`.
-If your cloud uses a different CPU architecture than your development
-machine (e.g., you are on a Mac M1 and your cloud provider is amd64),
-you'll want to build the image for that platform, e.g.:
-`docker build --platform=linux/amd64 -t myapp .`.
+---
 
-Then, push it to your registry, e.g. `docker push myregistry.com/myapp`.
+## **Deploying Your Application to the Cloud**
 
-Consult Docker's [getting started](https://docs.docker.com/go/get-started-sharing/)
-docs for more detail on building and pushing.
+Begin by building your image using: **docker build \-t myapp ..**. If your cloud provider operates on a different CPU architecture than your local machine (for example, if you’re using a Mac M1 and your cloud provider is amd64), build the image for that specific platform by using: **docker build \--platform=linux/amd64 \-t myapp ..**.
+
+Next, push the image to your registry with: **docker push myregistry.com/myapp**.
+
+For further details on building and pushing images, refer to Docker’s getting started documentation.
