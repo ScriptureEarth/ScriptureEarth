@@ -211,9 +211,8 @@ function countryChange(cChange, month, year) {								// change the country
     	fetch - countryChange.php
     ****************************************************************************************************************/
     (async function () {
-		let url = "countryChange.php?cc=" + CCode + "&m=" + month + "&y=" + year;
 		try {
-			const responseCountryChange = await fetch(url);
+			const responseCountryChange = await fetch("countryChange.php?cc=" + CCode + "&m=" + month + "&y=" + year);
 			const results = await responseCountryChange.json();
 			if (results == "none") {
 				document.getElementById("idISO").innerHTML = "No ISOs were found for " + month.toString() + "/" + year.toString() + "."; 
@@ -238,7 +237,8 @@ function countryChange(cChange, month, year) {								// change the country
 					variant = results[i]['var'];
 					idx = results[i]['idx'];
 					LN = results[i]['LN'];
-					para = para + "<option value='" + LN + ':' + idx + ' ' + iso + ' ' + rod + ' ' + variant + "'>" + LN + ' [' + iso + '] (' + rod + ') ' + variant + '</option>';
+					//para = para + "<option value='" + LN + ':' + idx + ' ' + iso + ' ' + rod + ' ' + variant + "'>" + LN + ' [' + iso + '] (' + rod + ') ' + variant + '</option>';
+					para = para + "<option value='" + LN  + '%20' + iso + "'>" + LN + ' [' + iso + '] (' + rod + ') ' + variant + '</option>';
 				}
 
 				para = para + '</select>';
