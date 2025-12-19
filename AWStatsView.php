@@ -13,6 +13,10 @@
 		html {
 			font-family: "helvetica neue", helvetica, arial, sans-serif;
 		}
+		body {
+			background-color: black;
+			color: white;
+		}
 		.linePointer {
 			cursor: pointer;
 			/*display: inline;*/
@@ -21,6 +25,9 @@
 			border-bottom:2px solid red;
 		}
 		.container {
+			margin: 0;
+			padding: 0;
+			width: 100%;
 			/*background-position: center;
 			background-image: url('../images/background_earth.jpg');
 			background-size: 50%;
@@ -30,9 +37,54 @@
 		.lineOne {
 			text-shadow: 0.07em 0.07em 0.05em black;
 		}
-		body {
-			background-color: black;
-			color: white;
+
+		/* Style the tab */
+		.tab {
+			overflow: hidden;
+			/*border: 1px solid #ccc;*/
+			color: #f1f1f1;
+			display: none;
+			text-align: center;
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 40px;
+			margin-bottom: 20px;
+			width: 50%;
+		}
+		/* Style the buttons inside the tab */
+		.tab button {
+			background-color: #bbb;
+			/*float: left;*/
+			border: none;
+			outline: none;
+			cursor: pointer;
+			padding: 4px 14px;
+			transition: 0.3s;
+			font-size: 17px;
+			border-top-left-radius: 14px;
+			border-top-right-radius: 14px;
+			vertical-align: bottom
+		}
+		/* Change background color of buttons on hover */
+		.tab button:hover {
+			background-color: #ddd;
+			padding: 8px 14px;
+		}
+		/* Create an active/current tablink class */
+		.tab button.active {
+			background-color: white;
+			padding: 8px 14px;
+		}
+		/* Style the tab content */
+		.tabcontent {
+			display: none;
+			padding: 6px 12px;
+			border: 1px solid #bbb;
+			border-top: none;
+			margin-left: auto;
+			margin-right: auto;
+			width: 80%;
+			text-align: center;
 		}
 	</style>
 	<script type="text/javascript" language="javascript" src="_js/jquery-1.12.4.js"></script>
@@ -44,15 +96,9 @@
 <?php
 
 /*
-locales: Country Code [[ISO codes]]
-downloads: ISO, study (apk) or PDF or audio (mp3) or video (mp4) or /data/[iso]/sab/[iso]+/timings/*-timing.txt (country) [[country code]]
-html: ISO /data/[iso]/sab/[iso]+/ *.html (country) [[country code]]
-
-This table not used now:
-duration table
-ip table
-browsers table
-os table
+	locales: Country Code [[ISO codes]]
+	downloads: ISO, study (apk) or PDF or audio (mp3) or video (mp4) or /data/[iso]/sab/[iso]+/timings/*-timing.txt (country) [[country code]]
+	html: ISO /data/[iso]/sab/[iso]+/ *.html (country) [[country code]]
 */
 
 //	require_once './include/conn.inc.php';										// connect to the database named 'scripture'
@@ -145,32 +191,98 @@ os table
 	<!-- the lines of the "visitors", "Number of Visits", "Pages", and "Average number of pages per visit" -->
 	<div id="firstLine" style="margin-top: 20px; "></div>
 
-	<!-- The total pie chart for this month -->
-	<div id="pieChartFileType" style="margin-left: auto; margin-right: auto; margin-top: 10px; width: 60%; ">
-		<canvas id="ChartFileType" style="margin: 0; "></canvas>				<!-- pie -->
-	</div>
-	
-	<!-- a bar chart for the Countries -->
-	<div id="barChartLocales" style="margin-left: auto; margin-right: auto; margin-top: 10px; width: 90%; ">
-		<canvas id="ChartLocales" style=""></canvas>							<!-- bar -->
-	</div>
-	
-	<div id="selectLine" style="margin-top: 10px; "></div>
-
-	<!-- a pie chart of the Country for this month -->
-	<div id="barChartTwo" style="margin-left: auto; margin-right: auto; margin-top: 10px; width: 46%; ">
-		<canvas id="ChartTwo" style=""></canvas>								<!-- pie -->
-	</div>
-	
-	<div id="idCountry" style="margin-top: 20px; "></div>
-	
-	<div id="idISO" style="margin-top: 20px; "></div>
-
-	<!-- a pie chart for this ISO (minority language) -->
-	<div id="barChartISO" style="margin-left: auto; margin-right: auto; margin-top: 10px; width: 46%; ">
-		<canvas id="ChartISO" style=""></canvas>								<!-- pie -->
+	<div id="buttonMenu" class="tab">
+		<button class="tablinks" onclick="openStats(event, 'fileTypeLines')" id="defaultOpen">File Types</button>
+		<button class="tablinks" onclick="openStats(event, 'browsersLines')">Browsers</button>
+		<button class="tablinks" onclick="openStats(event, 'osLines')">Operating Systems</button>
+		<button class="tablinks" onclick="openStats(event, 'durationLines')">Durations</button>
+		<button class="tablinks" onclick="openStats(event, 'ipLines')">IP Addresses</button>
 	</div>
 
+	<!-- File Type Lines -->
+	<div id="fileTypeLines" class="tabcontent" style="margin-left: auto; margin-right: auto; width: 80%; ">
+		<!-- The total pie chart for this month -->
+		<div id="pieChartFileType" style="margin-left: auto; margin-right: auto; width: 80%; ">
+			<canvas id="ChartFileType" style="margin: 0; "></canvas>		<!-- pie -->
+		</div>
+		
+		<!-- a bar chart for the Countries -->
+		<div id="barChartLocales" style="margin-left: auto; margin-right: auto; margin-top: 10px; width: 90%; ">
+			<canvas id="ChartLocales"></canvas>								<!-- bar -->
+		</div>
+		
+		<div id="selectLine" style="margin-top: 40px; "></div>
+
+		<!-- a pie chart of the Country for this month -->
+		<div id="barChartTwo" style="margin-left: auto; margin-right: auto; margin-top: 10px; width: 46%; ">
+			<canvas id="ChartTwo"></canvas>									<!-- pie -->
+		</div>
+		
+		<div id="idCountry" style="margin-top: 20px; "></div>
+		<div id="idCountryError" style="margin-top: 20px; "></div>
+		
+		<div id="idISO" style="margin-top: 20px; "></div>
+		<div id="idISOError" style="margin-top: 20px; "></div>
+
+		<!-- a pie chart for this ISO (minority language) -->
+		<div id="barChartISO" style="margin-left: auto; margin-right: auto; margin-top: 10px; width: 46%; ">
+			<canvas id="ChartISO"></canvas>									<!-- pie -->
+		</div>
+	</div>
+
+	<!-- Browsers Lines -->
+	<div id="browsersLines" class="tabcontent">
+		<div id="browsersLineContent">
+			<!-- Browsers content will be dynamically loaded here -->
+		</div>
+		<canvas id="ChartBrowsers"></canvas>								<!-- bar -->
+	</div>
+
+	<!-- OS Lines -->
+	<div id="osLines" class="tabcontent">
+		<div id="osLinesContent">
+			<!-- OS content will be dynamically loaded here -->
+		</div>
+		<canvas id="ChartOSs"></canvas>										<!-- bar -->
+	</div>
+
+	<!-- Duration Lines -->
+	<div id="durationLines" class="tabcontent">
+		<div id="durationLineContent">
+			<!-- Duration content will be dynamically loaded here -->
+		</div>
+		<canvas id="ChartDurations"></canvas>								<!-- bar -->
+	</div>
+
+	<!-- IP Lines -->
+	<div id="ipLines" class="tabcontent">
+		<div id="ipLinesContent">
+			<!-- IP content will be dynamically loaded here -->
+		</div>
+		<canvas id="ChartIPs"></canvas>										<!-- bar -->
+	</div>
 </div>
+
+<script>
+	function openStats(evt, statsName) {									// tab buttons: class="tablinks"
+		var i, tabcontent, tablinks;
+
+		tabcontent = document.getElementsByClassName("tabcontent");
+		for (i = 0; i < tabcontent.length; i++) {
+			tabcontent[i].style.display = "none";							// hide all tabcontent buttons
+		}
+
+		tablinks = document.getElementsByClassName("tablinks");
+		for (i = 0; i < tablinks.length; i++) {
+			tablinks[i].className = tablinks[i].className.replace(" active", "");	// remove "active" class from all tablinks
+		}
+
+		document.getElementById(statsName).style.display = "block";			// set the current tab display = "block"
+		evt.currentTarget.className += " active";							// add an "active" class to the button that opened the tab
+	}
+
+	document.getElementById("defaultOpen").click();							// Get the element with id="defaultOpen" and click on it
+</script>
+
 </body>
 </html>

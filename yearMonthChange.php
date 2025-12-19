@@ -1,14 +1,17 @@
 <?php
-
+// Created by Scott Starker - 8/2024
+// Updated by Scott Starker - 9/2025, 11/2025
 /*
 	fetch form AWStatsScripts.js => visitors and filetype tables
 */
-//echo '<pre>yearMonthChange.php called with m=' . $_GET['m'] . ' y=' . $_GET['y'] . '</pre>';
+//echo '<pre>yearMonthChange.php?m=' . $_GET['m'] . '&y=' . $_GET['y'] . '</pre>';
 //echo '<pre>REMOTE_ADDR=' . $_SERVER['REMOTE_ADDR'] . '</pre>';
 //exit;
 
-if (isset($_GET['m'])) $month = $_GET['m']; else { die('Hack!'); }
-if (isset($_GET['y'])) $year = $_GET['y']; else { die('Hack!'); }
+if (isset($_GET['m'])) $month = (int)$_GET['m']; else { die('Did you make a mistake?'); }
+if ($month != 1 && $month != 2 && $month != 3 && $month != 4 && $month != 5 && $month != 6 && $month != 7 && $month != 8 && $month != 9 && $month != 10 && $month != 11 && $month != 12 && $month != 13) { die('Did you make a mistake?'); }	// only months 1-12 or 13 (year) are allowed
+if (isset($_GET['y'])) $year = (int)$_GET['y']; else { die('Did you make a mistake?'); }
+if ($year < 2010 || $year > 2100) { die('Did you make a mistake?'); }														// only years 2000-2100 are allowed
 
 // SELECT WHERE `fileType` NOT IN ('" . implode("','", $notFileTypeArray) . "') [array to string]
 $notFileTypeArray = ['png','jpg','tif','js','php','css','gif','jpeg','ttf','json','ods','odt','docx','doc','msg','tpl','ffs_db','svg','shtml','bak','cgi','sql','bat','sh','jsp','action','aspx','xml','do','ini','jsf','pl','jspa','ashx','cfm','asp','dll','cmd','zgz','cfc','log','esp','mwsl','hsp','me','portal','gch','xhtml','pem','py','dat','axd','md5','conf','bz2','en','local','env','stream','lp','php7','iwc','md','xls','xlsx','exp','online','key','ns','set','yml','zul','index','ehp','rsp','ccp','csv','jsn','lua','mjs','view','web','inc','srf','lst','1','ptx','junk','jnnk','cfg','sty','tex','xdv','id'];
@@ -101,9 +104,6 @@ else {
 		//$json_string = json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 		$json_stringTwo = json_encode($marksTwo, JSON_UNESCAPED_UNICODE);				// JSON array into string in order to pass it to the js
 	}
-	
-	//	echo $second;
-	//	exit;
 	
 	if ($second != '@none') {
 		$json_string = $json_string . '@' . $json_stringTwo;
