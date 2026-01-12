@@ -1,9 +1,15 @@
 <?php
+/******************************************************************************************************** 
+	fetch form AWStatsScripts.js when the user changes the year or month select box.
+
+	yearMonthChange.php -- Returns JSON string with:
+		uniqueVisitors, numberOfVisits, pages from visitors table, 
+		and fileType, description, and hits from filetype table.
+********************************************************************************************************/
+
 // Created by Scott Starker - 8/2024
 // Updated by Scott Starker - 9/2025, 11/2025
-/*
-	fetch form AWStatsScripts.js => visitors and filetype tables
-*/
+
 //echo '<pre>yearMonthChange.php?m=' . $_GET['m'] . '&y=' . $_GET['y'] . '</pre>';
 //echo '<pre>REMOTE_ADDR=' . $_SERVER['REMOTE_ADDR'] . '</pre>';
 //exit;

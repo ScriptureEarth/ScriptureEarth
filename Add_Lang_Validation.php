@@ -590,7 +590,7 @@
 
 // links: buy, map, GooglePlay, and Kalamm
   			$i = 1;
-			//$inputs["links"] = 0;
+			$inputs["links"] = 0;
 			while (isset($_POST["txtLinkCompany-".(string)$i])) {
 				if (check_input($_POST["txtLinkCompany-".(string)$i]) != "") $inputs["links"] = 1;
 				if (empty($_POST["txtLinkCompany-".(string)$i])) {

@@ -1,53 +1,59 @@
+// Called from AWStatsView.php: AWStatsScripts.js
+
 // Created by Scott Starker - 8/2024
 // Updated by Scott Starker - 9/2025, 11/2025
 
-// yearMonthChange(year, month)
-// isoChange(langData, month, year)
-
 /*****************************************************************************************************************
-	yearMonthChange.js:
-					    => fecth - selectCountries.php (<select> <option>)
-					    => fetch - yearMonthChange.php (ChartFileType (pie))
-					    => fetch - localesChange.php (ChartLocales (bar))
-						=> fetch - AWStatsSections.php?s=1 (ChartBrowsers (bar))
-						=> fetch - AWStatsSections.php?s=2 (ChartDurations (bar))
-						=> fetch - AWStatsSections.php?s=3 (ChartIPs (bar))
-						=> fetch - AWStatsSections.php?s=4 (ChartOSs (bar))
+	AWStatsScripts.js:
+		function yearMonthChange(year, month):
+				=> fetch - selectCountries.php => 'Choose a country...'
+				=> fetches - yearMonthChange.php (ChartFileType (pie)) (returns text: unique visitors, number of visits, pages) and
+					localesChange.php (ChartLocales (bar)) (returns monthly or yearly data: pages and bandwidth)
+			initially hidden => buttonMenu.style.display = "none";
+				=> fetch - AWStatsSections.php?s=1 (ChartBrowsers (bar))
+				=> fetch - AWStatsSections.php?s=2 (ChartDurations (bar))
+				=> fetch - AWStatsSections.php?s=3 (ChartIPs (bar))
+				=> fetch - AWStatsSections.php?s=4 (ChartOSs (bar))
+
+		function isoChange(langData [LN and ISO], month, year):
+				=> fetch - isoChange.php("+iso+"&m="+month+"&y="+year)) => ChartISO (pie)
+				Returns JSON file for a specific language/ISO code within a selected country.
 *****************************************************************************************************************/
+
 function yearMonthChange(year, month) {										// change the year/month
 	// Destroy exiting Chart.js instance to reuse <canvas> element.
 
 	let pieFileType = document.getElementById('pieChartFileType');			// <!-- pie -->
 	pieFileType.innerHTML = '';
-	$('#pieChartFileType').append('<canvas id="ChartFileType"><canvas>');	// add <canvas> element
+	$('#pieChartFileType').append('<canvas id="ChartFileType"><canvas>');	// add <canvas> element for ChartFileType
 
 	let barLocales = document.getElementById("barChartLocales");			// <!-- bar -->
 	barLocales.innerHTML = '';
-	$('#barChartLocales').append('<canvas id="ChartLocales"><canvas>');		// add <canvas> element
+	$('#barChartLocales').append('<canvas id="ChartLocales"><canvas>');		// add <canvas> element for ChartLocales
 	
 	let barTwo = document.getElementById("barChartTwo");					// <!-- pie -->
 	barTwo.innerHTML = '';
-	$('#barChartTwo').append('<canvas id="ChartTwo"><canvas>');				// add <canvas> element
+	$('#barChartTwo').append('<canvas id="ChartTwo"><canvas>');				// add <canvas> element for ChartTwo
 
 	let barOne = document.getElementById("barChartISO");					// <!-- pie -->
 	barOne.innerHTML = '';
-	$('#barChartISO').append('<canvas id="ChartISO"><canvas>');				// add <canvas> element
+	$('#barChartISO').append('<canvas id="ChartISO"><canvas>');				// add <canvas> element for ChartISO
 
 	let bowser = document.getElementById("browsersLines");					// <!-- bar -->
 	bowser.innerHTML = '<div id="browsersLinesContent"></div>';
-	$('#browsersLines').append('<canvas id="ChartBrowsers"></canvas>');		// add <canvas> element
+	$('#browsersLines').append('<canvas id="ChartBrowsers"></canvas>');		// add <canvas> element for ChartBrowsers
 
 	let duration = document.getElementById("durationLines");				// <!-- bar -->
 	duration.innerHTML = '<div id="durationLinesContent"></div>';
-	$('#durationLines').append('<canvas id="ChartDurations"></canvas>');	// add <canvas> element
+	$('#durationLines').append('<canvas id="ChartDurations"></canvas>');	// add <canvas> element for ChartDurations
 
 	let ip = document.getElementById("ipLines");							// <!-- bar -->
 	ip.innerHTML = '<div id="ipLinesContent"></div>';
-	$('#ipLines').append('<canvas id="ChartIPs"></canvas>');				// add <canvas> element
+	$('#ipLines').append('<canvas id="ChartIPs"></canvas>');				// add <canvas> element for ChartIPs
 
 	let os = document.getElementById("osLines");							// <!-- bar -->
 	os.innerHTML = '<div id="osLinesContent"></div>';
-	$('#osLines').append('<canvas id="ChartOSs"></canvas>');				// add <canvas> element
+	$('#osLines').append('<canvas id="ChartOSs"></canvas>');				// add <canvas> element for ChartOSs
 
 	document.getElementById("idCountry").innerHTML = "";
 	
@@ -60,14 +66,14 @@ function yearMonthChange(year, month) {										// change the year/month
 	sLine.innerHTML = "";
 
 	// end of destroying existing charts
-
-	if (year == "Choose a year...") {
+//alert("Year/Month change to " + month.toString() + "/" + year.toString());
+	if (year.toString() == "Choose a year...") {
 		return;
 	}
-	if (month == "Choose a month...") {
+	if (month.toString() == "Choose a month...") {
 		return;
 	}
-	if (month == 13) {														// Year
+	if (month == 13) {														// whole year
 	}
 	else {
 		if (year == 2020 && month < 8) {
@@ -102,17 +108,30 @@ function yearMonthChange(year, month) {										// change the year/month
 				Javascript code:
 					var javascript_date = new Date("<?php echo $formatted_date; ?>");
 		*/
-		let dateTime = new Date();
-		if (year > dateTime.getFullYear()) {
-			alert("The InMotion Hosting server for SE.org can't go beyond "+year+".");
-			return;
-		}
-		if (year == dateTime.getFullYear() && (month - 1) == -1) {
-			alert("The InMotion Hosting server for SE.org can't go beyond December, "+year-1+".");
-			return;
-		}
-		else if (year == dateTime.getFullYear() && dateTime.month > (month - 2)) {			// PHP and JS months!!
-			alert("The InMotion Hosting server for SE.org can't go beyond "+month+".");
+
+		let date1 = new Date(month+'/1/'+year);
+		let dateYear1 = date1.getFullYear();
+		let dateMonth1 = date1.getMonth();
+
+		let date2 = new Date();														// current date
+		let dateYear2 = date2.getFullYear();
+		//date2.setMonth(date2.getMonth() - 1);										// set to previous month
+		let dateMonth2 = date2.getMonth();
+
+		//alert("Checking date: " + dateMonth1 + '/' + dateYear1 + ' vs. ' + dateMonth2 + '/' + dateYear2);
+
+		if (dateYear1 < dateYear2) {
+			console.log("year: do it");
+			}
+		else if ((dateYear1 == dateYear2) && (dateMonth1 < dateMonth2)) {
+			console.log("month: do it");
+		} 
+		else {
+			console.log(`do not do it`);
+			date2.setMonth(date2.getMonth() - 1);									// set to previous month
+			let tempMonth = date2.getMonth() + 1;									// set month to previous month
+			let tempYear = date2.getFullYear();										// set year to current year
+			alert("The InMotion Hosting server for SE.org can't go beyond "+tempMonth+"/"+tempYear+".");
 			return;
 		}
 	}
@@ -140,7 +159,7 @@ function yearMonthChange(year, month) {										// change the year/month
 				let para = '<select id="countries" onchange="countryChange(document.getElementById(\'countries\').options[document.getElementById(\'countries\').selectedIndex].value, '+month+', '+year+')">';
 				para = para + "<option value='Choose a country...' selected='selected'>Choose a country...</option>";
 				let fields = [];
-				let field = [];
+				//let field = [];
 				for (let items of results.values()) {
 					fields = items.split("^");
 					//field = fields.values();
@@ -159,7 +178,8 @@ function yearMonthChange(year, month) {										// change the year/month
 	} ) ();
 
     /****************************************************************************************************************
-    	fetch - yearMonthChange.php => ChartFileType (pie) (unique visitors, number of visits, pages) & ChartTwo (bar)
+    	fetch - yearMonthChange.php => ChartFileType (pie) (unique visitors, number of visits, pages) and
+			 localesChange.php => ChartTwo (bar) (monthly or yearly data: pages and bandwidth)
 		
 		An Immediately Invoked Function Expression (IIFE) is a technique used to execute a function immediately
 		as soon as you define it. This is useful when you need to run the asynchronous function only once.
@@ -182,7 +202,7 @@ function yearMonthChange(year, month) {										// change the year/month
 				
 				const tempArray = jsonTwo.split("@");
 				let results = JSON.parse(tempArray[0]);						// parse string into JSON array
-				let resultsLength = Object.keys(results).length;
+				//let resultsLength = Object.keys(results).length;
 				
 				if (tempArray[1] !== undefined) {							// if tempArray[1] does not exist
 					resultsTwo = JSON.parse(tempArray[1]);					// parse string into JSON array
@@ -351,7 +371,7 @@ function yearMonthChange(year, month) {										// change the year/month
 	} ) ();
 
     /****************************************************************************************************************
-    	fetch - localesChange.php?m="+month+"&y="+year			bar chart
+    	fetch - localesChange.php?m="+month+"&y="+year (returns monthly or yearly data: pages and bandwidth)	bar chart
 		
 		An Immediately Invoked Function Expression (IIFE) is a technique used to execute a function immediately
 		as soon as you define it. This is useful when you need to run the asynchronous function only once.
@@ -701,8 +721,8 @@ function yearMonthChange(year, month) {										// change the year/month
 			}
 		}
 		catch (e) {
-			const delem = document.getElementById("durationsLinesContent");
-			delem.innerHTML = "No duration was found.";
+			const belem = document.getElementById("durationLinesContent");
+			belem.innerHTML = "No duration was found.";
 		}
 	} ) ();
 
@@ -816,7 +836,7 @@ function yearMonthChange(year, month) {										// change the year/month
 			}
 		}
 		catch (e) {
-			const belem = document.getElementById("IPsLinesContent");
+			const belem = document.getElementById("ipLinesContent");
 			belem.innerHTML = "No IP was found.";
 		}
 	} ) ();
@@ -932,9 +952,264 @@ function yearMonthChange(year, month) {										// change the year/month
 } // End of yearMonthChange()
 
 /*****************************************************************************************************************
-	countryChange(countryData, month, year)		pie chart
-		isoChange(langData, month, year)
-			fetch - isoChange.php?i=[langArray[1]]&m=MM&y=YYYY
+	countryChange.js => fetch - allCountry.php(cChange, month, year) (ChartTwo - pie) and
+					 => fetch - countryChange.php (<select> <option>) 'Choose a language...'
+*****************************************************************************************************************/
+function countryChange(cChange, month, year) {								// change the country
+ 	const fullCountry = cChange.substring(0, (cChange.length)-3);
+	const CCode = cChange.substring((cChange.length)-2);
+	
+	// Destroy exiting Chart.js instance to reuse <canvas> element.
+	document.getElementById('barChartTwo').innerHTML = '&nbsp;';
+	$('#barChartTwo').append('<canvas id="ChartTwo"><canvas>');
+	
+	document.getElementById('barChartISO').innerHTML = '&nbsp;';
+	$('#barChartISO').append('<canvas id="ChartISO"><canvas>');
+
+	document.getElementById("idCountry").innerHTML = "";
+
+    //let Scriptname = window.location.href;
+    //Scriptname = Scriptname.substr(0, Scriptname.indexOf('?'));     		// my computer localhost? Not used yet.
+
+    /****************************************************************************************************************
+    	fetch - allCountry.php(cChange, month, year) returns a text file		pie chart
+	
+		An Immediately Invoked Function Expression (IIFE) is a technique used to execute a function immediately
+		as soon as you define it. This is useful when you need to run the asynchronous function only once.
+    ****************************************************************************************************************/
+    (async function () {
+		try {
+			const responseAllCountry = await fetch("allCountry.php?cc="+CCode+"&m="+month+"&y="+year);
+			const textAllCountry = await responseAllCountry.text();
+//console.log(textAllCountry);
+			if (textAllCountry == "@none" || textAllCountry == "none") {
+				const elem = document.getElementById("idCountry");
+				elem.innerHTML = "No country was found."; 
+			}
+			else {
+				let onlyTwo = 0;
+				let resultsTwo = [];
+				let resultsTwoLength = 0;
+				
+				const tempArray = textAllCountry.split("@");
+				let results = JSON.parse(tempArray[0]);						// parse string into JSON array
+				//let resultsLength = Object.keys(results).length;
+				
+				let xValues = [];
+				let yValues = [];
+				
+				let extension = '';
+				let numOfHits = '';
+				
+				let description = '';
+				let extensionTwo = '';
+				let sumView = 0;
+				
+				if (tempArray[1] !== undefined) {							// if tempArray[1] does not exist
+					resultsTwo = JSON.parse(tempArray[1]);					// parse string into JSON array
+					resultsTwoLength = Object.keys(resultsTwo).length;
+					onlyTwo = 1;
+				}
+				
+				// m = month
+				// y = year
+				
+				const barColors = [
+					"#b91d47",
+					"#00aba9",
+					"#2b5797",
+					"#e8c3b9",
+					"#1e7145",
+					"#ffadad",
+					"#ffd6a5",
+					"#fdffb6",
+					"#caffbf",
+					"#9bf6ff",
+					"#a0c4ff",
+					"#bdb2ff",
+					"#ffc6ff"
+				];
+				
+				//const xValues = ["Italy", "France", "Spain", "USA", "Argentina", "UK"];
+				//const yValues = [55, 49, 44, 24, 15, 9];
+				for (let i in results) {
+					extension = results[i]['extension'];
+					if (extension.trim() == '') {
+						continue;
+					}
+					numOfHits = results[i]['numOfHits'];
+					//numOfBandwidth = results[i]['numOfBandwidth'];
+					switch(extension) {
+						case 'htm':
+							description = 'SE.org map files';
+							break;
+						case 'pdf':
+							description = 'PDF files';
+							break;
+						case 'txt':
+							description = 'Playlist (audio/video) files';
+							break;
+						case 'txt|':
+							extension = 'txt';
+							description = 'SAB HTML (PWA) Read/Listen/View';
+							break;
+						case 'apk':
+							description = 'Android apps';
+							break;
+						case 'srt':
+							description = 'Subtitles for video files';
+							break;
+						case 'mp3':
+						case 'pkf':
+							description = 'Audio files';
+							break;
+						case 'mp4':
+							description = 'Video files';
+							break;
+						case 'sfm':
+							description = 'Standard Format Marker (Viewer)';
+							break;
+						case 'usfm':
+							description = 'Unified Standard Format Marker (Viewer)';
+							break;
+						case 'exe':
+							description = 'theWord app downloads';
+							break;
+						case 'twm':
+						case 'ont':
+						case 'ot':
+						case 'nt':
+						case 'ontx':
+						case 'otx':
+						case 'ntx':
+						case 'twzip':
+							description = 'theWord app downloads';
+							break;
+						case 'jad':
+							description = 'MySword (Android) app downloads';
+							break;
+						case 'jar':
+							description = 'GoBible (Java) app downloads';
+							break;
+						case 'map':
+							description = 'Progressive web app (PWAs) files';
+							break;
+						case '3gp':
+							description = 'Audio files';
+							break;
+						case 'wasm':
+							description = 'WebAssembly codes';
+							break;
+						default:
+					}
+					extension = description + ' (' + extension + ')';
+					xValues.push(extension);
+					yValues.push(numOfHits);
+				}
+				if (onlyTwo == 1) {
+					for (let i in resultsTwo) {
+						extensionTwo = resultsTwo[i]['extension'];
+						sumView = resultsTwo[i]['sumView'];
+						extensionTwo = 'SAB HTML (PWA) Read/Listen/View' + ' (' + extensionTwo + ')';
+						xValues.push(extensionTwo);
+						yValues.push(sumView);
+					}
+				}
+				
+				new Chart("ChartTwo", {
+					type: "pie",
+					data: {
+						labels: xValues,
+						datasets: [{
+							backgroundColor: barColors,
+							data: yValues
+						}]
+					},
+					options: {
+						plugins: {
+							title: {
+								display: true,
+								text: fullCountry,
+								color: 'white',
+								font: {
+									family: 'Arial',
+									size: 24,      
+									style: 'normal',
+									weight: 'normal',  
+									lineHeight: 1.2 
+								}
+							},
+							legend: {
+								display: true,
+								position: 'right',
+								labels: {
+									color: 'white',
+									font: {
+										size: 13
+									}
+								}
+							}
+						}
+					}
+				});
+			}
+		}
+		catch (error) {
+			console.log(error);
+		}
+	} ) ();	
+	
+    /****************************************************************************************************************
+    	fetch - countryChange.php display a <select> <option> 'Choose a language...'
+		
+		An Immediately Invoked Function Expression (IIFE) is a technique used to execute a function immediately
+		as soon as you define it. This is useful when you need to run the asynchronous function only once.
+    ****************************************************************************************************************/
+    (async function () {
+		try {
+			const responseCountryChange = await fetch("countryChange.php?cc=" + CCode + "&m=" + month + "&y=" + year);
+			const results = await responseCountryChange.json();
+			if (results == "none") {
+				document.getElementById("idISO").innerHTML = "No ISOs were found for " + month.toString() + "/" + year.toString() + "."; 
+			}
+			else {
+				//let resultsLength = Object.keys(results).length;
+				// country = full country
+				// CCode = country code [CC]
+				// m = month
+				// y = year
+				let iso = "";
+				let rod = "";
+				let variant = "";
+				let idx = "";
+				let LN = "";
+				let para = '<select id="iso" onchange="isoChange(document.getElementById(\'iso\').options[document.getElementById(\'iso\').selectedIndex].value, '+month+', '+year+')"><br />';
+
+				para = para + "<option value='Choose a language...' selected='selected'>Choose a language...</option><br />";
+				for (let i in results) {
+					iso = results[i]['iso'];
+					rod = results[i]['rod'];
+					variant = results[i]['var'];
+					idx = results[i]['idx'];
+					LN = results[i]['LN'];
+					//para = para + "<option value='" + LN + ':' + idx + ' ' + iso + ' ' + rod + ' ' + variant + "'>" + LN + ' [' + iso + '] (' + rod + ') ' + variant + '</option>';
+					para = para + "<option value='" + LN  + '%20' + iso + "'>" + LN + ' [' + iso + '] (' + rod + ') ' + variant + '</option>';
+				}
+
+				para = para + '</select>';
+
+				document.getElementById("idISO").innerHTML = para;
+			}
+        }
+		catch (error) {
+			console.log(error);
+		}
+	} ) ();	
+}
+
+/*****************************************************************************************************************
+	isoChange(langData, month, year) => ChartISO (pie)
+		fetch - isoChange.php?i=[langArray[1]]&m=MM&y=YYYY
 *****************************************************************************************************************/
 function isoChange(langData, month, year) {
 	// Destroy exiting Chart.js instance to reuse <canvas> element.

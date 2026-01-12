@@ -142,10 +142,10 @@ elseif ($section == 3) {																	// ip table
             ip table
     *********************************************************************/
     if ($month == 13) {																		// a year				
-        $query="SELECT `ip`, `ipPages`, `ipBandwidth` FROM $awstats_db.`ip` WHERE $awstats_db.`ip`.`year` = $year GROUP BY $awstats_db.`ip`.`ip` ORDER BY $awstats_db.`ip`.`ipBandwidth` DESC";
+        $query="SELECT `ip`, `ipPages`, `ipBandwidth` FROM $awstats_db.`ip` WHERE $awstats_db.`ip`.`year` = $year GROUP BY $awstats_db.`ip`.`ip` ORDER BY $awstats_db.`ip`.`ipBandwidth` DESC LIMIT 30";
     }
     else {
-        $query="SELECT `ip`, `ipPages`, `ipBandwidth` FROM $awstats_db.`ip` WHERE $awstats_db.`ip`.`month` = $month AND $awstats_db.`ip`.`year` = $year ORDER BY $awstats_db.`ip`.`ipBandwidth` DESC";
+        $query="SELECT `ip`, `ipPages`, `ipBandwidth` FROM $awstats_db.`ip` WHERE $awstats_db.`ip`.`month` = $month AND $awstats_db.`ip`.`year` = $year ORDER BY $awstats_db.`ip`.`ipBandwidth` DESC LIMIT 30";
     }
     $result_ip = $db->query($query) or die('Query failed:  ' . $db->error . '</body></html>');
 

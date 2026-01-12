@@ -4117,15 +4117,17 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		.then(response => {
 			if (!response.ok) {
 				//throw new Error('Network response was not ok');
-				console.log('Response '+response.status+': MicroPi file not found, opening standard page.');
+				console.log('Response headers '+response.status+': MicroPi file not found, opening standard page.');
 				window.open("./data/"+iso+"/"+subfolder, "SABPage");
 			}
-			// Access response headers
-			console.log('Response Headers'+response.status+': MicroPi file found, opening MicroPi page.');
-			window.open("./data/"+iso+"/sab/"+subfolde+'_micropi/', "SABPage");
-			//response.headers.forEach((value, name) => {
-			//  console.log(`${name}: ${value}`);
-			//});
+			else {
+				// Access response headers
+				console.log('Response headers '+response.status+': MicroPi file found, opening MicroPi page.');
+				window.open("./data/"+iso+"/sab/"+subfolde+'_micropi/', "SABPage");
+				//response.headers.forEach((value, name) => {
+				//  console.log(`${name}: ${value}`);
+				//});
+			}
 		})
 		.catch(error => {
 			console.error('Error:', error);

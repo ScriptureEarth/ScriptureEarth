@@ -2,7 +2,7 @@
 // Created by Scott Starker - 8/2024
 // Updated by Scott Starker - 9/2025, 11/2025
 /*
-	fetch form countryChaange.js - downloads, ISO_countries, and html tables => 
+	fetch form countryChaange.js - downloads, ISO_countries, and html tables => allCountry.php?cc=$_GET['cc']&m=(int)$_GET&y=(int)$_GET
 	
 	SELECTs FROM downloads table
 		extension

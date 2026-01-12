@@ -53,7 +53,7 @@ else {
 	$queryHTML="SELECT `extension`, SUM(`view`) `Hits` FROM `$awstats_db`.`html` WHERE `$awstats_db`.`html`.`iso` = '$iso' AND `$awstats_db`.`html`.`month` = $month AND `$awstats_db`.`html`.`year` = $year GROUP BY `$awstats_db`.`html`.`extension` ORDER BY `$awstats_db`.`html`.`view`";
 }
 
-$result_txt = $db->query($queryTXT) or die('Query failed:  ' . $db->error . '</body></html>');
+$result_txt = $db->query($queryTXT) or die('Query failed:  ' . $db->error . '</body></html>');		// txt + timing
 $result_iso = $db->query($queryISO) or die('Query failed:  ' . $db->error . '</body></html>');
 $result_html = $db->query($queryHTML) or die('Query failed:  ' . $db->error . '</body></html>');
 
@@ -68,15 +68,17 @@ if ($result_iso->num_rows === 0 && $result_txt->num_rows === 0 && $result_html->
 }
 else {
 	/*
-		apk
-		docx
-		epub
-		jar
-		mp3
-		mp4
-		pdf
-		txt
-		webm
+		possible extensions:
+			apk
+			docx
+			epub
+			jar
+			mp3
+			mp4
+			pdf
+			txt
+			webm
+			...
 	*/
 	//echo $result_iso->num_rows . ' ' . $result_txt->num_rows . "\n";
 
