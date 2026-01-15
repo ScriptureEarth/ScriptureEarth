@@ -5,7 +5,7 @@
 	// ISO (iso), RODCode (Frod), ChangeCode (Trod), CountryCode, Language, Dialect, Location
 	
 	/*
-		FromRODCode to ToRODCode UPDATED (9/2017):
+		FromRODCode to ToRODCode UPDATED (1/2026):
 			scripture_main
 			nav_ln
 			ROD_Dialect

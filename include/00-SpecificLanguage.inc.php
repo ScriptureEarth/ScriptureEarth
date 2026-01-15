@@ -4107,31 +4107,81 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
         }
     }
     function SAB_Scriptoria_Index(subfolder) {
+		// A temporary fix (Ha!) for SAB Scriptoria Read/Listen/View not working right.
+		// Need to check the version number from version.json to see if it is new enough (JSON => version: 1768322736214). Chris Hubbard 2026-01-13
+		// If it is new enough, open the standard [ISO+] (not [ISO+]_micropi) index.html.
 		let iso = "<?php echo $ISO; ?>";
-		let subfolde = subfolder.slice(4, -1);		// get '[ISO]ZZZZ' from 'sab/[ISO]ZZZZ/'
+		let subfolde = subfolder.slice(4, -1);										// get '[ISO]ZZZZ' from 'sab/[ISO]ZZZZ/'
 		console.log(subfolde);
 
-		fetch('./data/'+iso+'/sab/'+subfolde+'_micropi', {
-			method: 'HEAD'
-		})
-		.then(response => {
-			if (!response.ok) {
-				//throw new Error('Network response was not ok');
-				console.log('Response headers '+response.status+': MicroPi file not found, opening standard page.');
-				window.open("./data/"+iso+"/"+subfolder, "SABPage");
+		(async function () {
+			try {
+				const response = await fetch('./data/'+iso+'/sab/'+subfolde+'/_app/version.json');
+				const data = await response.json();
+				//console.log('data: '+data);
+				const appVersion = data.version;									// get the version number
+				console.log('appVersion: '+appVersion);
+				if (appVersion.includes("-")) {										// if version number contains a dash "-"
+					const version_compare = appVersion.split("-");					// split into two parts based on the dash "-"
+					appVersion = version_compare[1];								// use the second part only
+				}
+				if (appVersion >= "1768322736214") {								// {"version":"13.3.2-1768335298356"}
+					console.log('App version '+appVersion+' detected, opening '+subfolder+' index.html.');
+					window.open("./data/"+iso+"/sab/"+subfolde+"/index.html", "SABPage");
+				}
+				else {
+					//window.open("./data/"+iso+"/sab/"+subfolde+'_micropi/', "SABPage");
+					//console.log('App version '+appVersion+' detected, opening '+subfolder+'_micropi index.html.');
+					//window.open("./data/"+iso+"/sab/"+subfolde+"_micropi/index.html", "SABPage");
+					fetch('./data/'+iso+'/sab/'+subfolde+'_micropi', {
+						method: 'HEAD'												// check if MicroPi folder exists
+					})
+					.then(response => {
+						if (!response.ok) {
+							//throw new Error('Network response was not ok');
+							console.log('Response headers '+response.status+': MicroPi file not found, opening standard page.');
+							alert('Temporarily unavailable—please try the Read/Listen/View feature again later.');
+							//window.open("./data/"+iso+"/sab/"+subfolder+"/", "SABPage");
+						}
+						else {
+							// Access response headers
+							console.log('Response headers '+response.status+': MicroPi file found, opening MicroPi page.');
+							window.open("./data/"+iso+"/sab/"+subfolde+'_micropi/', "SABPage");
+							//response.headers.forEach((value, name) => {
+							//  console.log(`${name}: ${value}`);
+							//});
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+					});
 			}
-			else {
-				// Access response headers
-				console.log('Response headers '+response.status+': MicroPi file found, opening MicroPi page.');
-				window.open("./data/"+iso+"/sab/"+subfolde+'_micropi/', "SABPage");
-				//response.headers.forEach((value, name) => {
-				//  console.log(`${name}: ${value}`);
-				//});
 			}
-		})
-		.catch(error => {
-			console.error('Error:', error);
-		});
+			catch (error) {
+				console.error('Error:', error);
+				console.log('Opening standard page.');
+				//window.open("./data/"+iso+"/sab/"+subfolde+"_micropi/", "SABPage");
+				fetch('./data/'+iso+'/sab/'+subfolde+'_micropi', {
+					method: 'HEAD'													// check if MicroPi folder exists
+				})
+				.then(response => {
+					if (!response.ok) {
+						//throw new Error('Network response was not ok');
+						console.log('Response headers '+response.status+': MicroPi file not found, opening standard page.');
+						alert('Temporarily unavailable—please try the Read/Listen/View feature again later.');
+						//window.open("./data/"+iso+"/sab/"+subfolder+"/", "SABPage");
+					}
+					else {
+						// Access response headers
+						console.log('Response headers '+response.status+': MicroPi file found, opening MicroPi page.');
+						window.open("./data/"+iso+"/sab/"+subfolde+'_micropi/', "SABPage");
+					}
+				})
+				.catch(error => {
+					console.error('Error:', error);
+				});
+			}
+		})();
 	}
     function SAB_Scriptoria_Other(url) {
 		window.open(url, "SABLink");
