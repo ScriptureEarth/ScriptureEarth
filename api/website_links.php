@@ -49,8 +49,8 @@ else {
 		$stmt_links->bind_param('ss', $iso, $var);												// bind parameters for markers
 	}
 	elseif ($var == 'ALL') {
-			$stmt_links = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `company`, `company_title`, `URL` FROM `links` WHERE `ISO` = ? AND `ROD_Code` = ? AND map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 AND `email` = 0 AND Kalaam = 0 AND `AppleStore` = 0 ORDER BY `ISO`, `ROD_Code`, `Variant_Code`");
-			$stmt_links->bind_param('ss', $iso, $rod);											// bind parameters for markers
+		$stmt_links = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `company`, `company_title`, `URL` FROM `links` WHERE `ISO` = ? AND `ROD_Code` = ? AND map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 AND `email` = 0 AND Kalaam = 0 AND `AppleStore` = 0 ORDER BY `ISO`, `ROD_Code`, `Variant_Code`");
+		$stmt_links->bind_param('ss', $iso, $rod);											// bind parameters for markers
 	}
 	else {
 		$stmt_links = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `company`, `company_title`, `URL` FROM `links` WHERE `ISO` = ? AND `ROD_Code` = ? AND `Variant_Code` = ? AND map = 0 AND buy = 0 AND BibleIs = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 AND `email` = 0 AND Kalaam = 0 AND `AppleStore` = 0 ORDER BY `ISO`, `ROD_Code`, `Variant_Code`");
