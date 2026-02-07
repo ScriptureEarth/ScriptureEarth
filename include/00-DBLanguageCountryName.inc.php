@@ -85,7 +85,11 @@ else {												// points directly to $MajorLanguage
 		$LN=$row_temp["$MajorLanguage"];
 	}
 	else {
-		echo ("Error: $MajorLanguage; ISO ROD index: $ISO_ROD_index. Is there any national language name tables entry??<br />");
+		$query="SELECT `LN_English` FROM `LN_English` WHERE ISO_ROD_index = '$ISO_ROD_index'";	// fallback to English
+		$result_LN=$db->query($query) or die('Error querying database.');
+		$row_temp=$result_LN->fetch_assoc();
+		$LN=$row_temp["LN_English"];
+		//echo "<script>console.log('Error: {$MajorLanguage}; ISO ROD index: {$ISO_ROD_index}. Is there any navigational language name tables entry??');</script>";
 	}
 }
 ?>

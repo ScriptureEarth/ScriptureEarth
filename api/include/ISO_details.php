@@ -120,6 +120,9 @@ $BibleIs = 0;
 $BibleIsGospelFilm = 0;
 $YouVersion = 0;
 $GooglePlay = 0;																		// GooglePlay!
+$Kalaam = 0;
+$email = 0;
+$AppleStore = 0;
 $GRN = 0;
 $websites = 0;
 if ($links == 1) {
@@ -135,6 +138,9 @@ if ($links == 1) {
 		$YouVersion_temp = $row_temp['YouVersion'];
 		$GooglePlay_temp = $row_temp['GooglePlay'];
 		$GRN_temp = $row_temp['GRN'];
+		$email_temp = $row_temp['email'];
+		$Kalaam_temp = $row_temp['Kalaam'];
+		$AppleStore_temp = $row_temp['AppleStore'];
 		$company_temp = $row_temp['company_temp'];
 		if ($map_temp >= 1) {
 			$map++;
@@ -153,6 +159,15 @@ if ($links == 1) {
 		}
 		if ($GRN_temp >= 1) {
 			$GRN++;
+		}
+		if ($email_temp >= 1) {
+			$email++;
+		}
+		if ($Kalaam_temp >= 1) {
+			$Kalaam++;
+		}
+		if ($AppleStore_temp >= 1) {
+			$AppleStore++;
 		}
 		if ($company_temp == "website" || $company_temp == "webpage") {
 			$websites++;

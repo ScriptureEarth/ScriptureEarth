@@ -104,12 +104,15 @@
 		$first .= '"Bible.is_Gospel_Film":	'.$BibleIsGospelFilm.',';
 		$first .= '"YouVersion":		'.$YouVersion.',';
 		$first .= '"eBible":			'.$eBible.',';
+		$first .= '"Kalaam_websites":	'.$Kalaam.',';
+		$first .= '"other_websites":	'.$websites.',';
+		$first .= '"AppleStore":		'.$AppleStore.',';
+		$first .= '"email":				'.$email.',';
 		$first .= '"GRN":				'.$GRN;
 		$first .= '},';
 		$first .= '"buy":				'.$buy.',';
 		$first .= '"maps":				'.$map.',';
 		$first .= '"watch":				'.$watch.',';
-		$first .= '"websites":			'.$websites.',';
 		$first .= '"other_titles":		'.$other_titles.',';
 		$first .= '"SIL_link":			'.$SILlink;
 		$first .= '}},';

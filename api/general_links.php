@@ -58,6 +58,8 @@ $stmt_BibleIs = $db->prepare("SELECT * FROM links WHERE ISO_ROD_index = ? AND NO
 $stmt_BibleIsGospelFilm = $db->prepare("SELECT * FROM links WHERE ISO_ROD_index = ? AND BibleIsGospelFilm = 1");
 $stmt_YouVersion = $db->prepare("SELECT * FROM links WHERE ISO_ROD_index = ? AND YouVersion = 1");
 $stmt_Bibles_org = $db->prepare("SELECT * FROM links WHERE ISO_ROD_index = ? AND `Bibles_org` = 1");
+$stmt_GooglePlay = $db->prepare("SELECT * FROM links WHERE ISO_ROD_index = ? AND GooglePlay = 1");
+$stmt_AppleStore = $db->prepare("SELECT * FROM links WHERE ISO_ROD_index = ? AND AppleStore = 1");
 $stmt_GRN = $db->prepare("SELECT * FROM links WHERE ISO_ROD_index = ? AND GRN = 1");
 $stmt_eBible = $db->prepare("SELECT homeDomain, translationId FROM eBible_list WHERE ISO_ROD_index = ?");
 $stmt_watch = $db->prepare("SELECT * FROM watch WHERE ISO_ROD_index = ? ORDER BY organization, watch_what, JesusFilm, YouTube");
@@ -88,8 +90,8 @@ while ($row_main = $result_main->fetch_assoc()) {
     $stmt_BibleIs->bind_param('i', $idx);													    // bind parameters for markers
     $stmt_BibleIs->execute();																    // execute query
     $result_BibleIs = $stmt_BibleIs->get_result();
-    $stmt_BibleIsGospelFilm->bind_param('i', $idx);													    // bind parameters for markers
-    $stmt_BibleIsGospelFilm->execute();																    // execute query
+    $stmt_BibleIsGospelFilm->bind_param('i', $idx);												// bind parameters for markers
+    $stmt_BibleIsGospelFilm->execute();															// execute query
     $result_BibleIsGospelFilm = $stmt_BibleIsGospelFilm->get_result();
     $stmt_YouVersion->bind_param('i', $idx);													// bind parameters for markers
     $stmt_YouVersion->execute();																// execute query
@@ -97,6 +99,12 @@ while ($row_main = $result_main->fetch_assoc()) {
     $stmt_Bibles_org->bind_param('i', $idx);													// bind parameters for markers
     $stmt_Bibles_org->execute();																// execute query
     $result_Bibles_org = $stmt_Bibles_org->get_result();
+    $stmt_GooglePlay->bind_param('i', $idx);													// bind parameters for markers
+    $stmt_GooglePlay->execute();																// execute query
+    $result_GooglePlay = $stmt_GooglePlay->get_result();
+    $stmt_AppleStore->bind_param('i', $idx);													// bind parameters for markers
+    $stmt_AppleStore->execute();																// execute query
+    $result_AppleStore = $stmt_AppleStore->get_result();
     $stmt_GRN->bind_param('i', $idx);													        // bind parameters for markers
     $stmt_GRN->execute();																        // execute query
     $result_GRN = $stmt_GRN->get_result();
@@ -262,6 +270,50 @@ while ($row_main = $result_main->fetch_assoc()) {
             $first .= '},';
         }
     }
+    $n=0;
+
+//   if ($GooglePlay) {
+        //$num=mysql_num_rows($result_YouVersion);
+        if ($result_GooglePlay->num_rows > 0) {
+            $first .= '"Google Play": {';
+        }
+        while ($r2 = $result_GooglePlay->fetch_array(MYSQLI_ASSOC)) {
+            $URL=trim($r2['URL']);
+            $organization=trim($r2['company_title']);
+            $organization = preg_replace('/[^-)]*[-)] (.*)/', '$1', $organization);     // remove the text including ) or -
+            $organization = ltrim($organization, '- ');                                 // just in case
+            $first .= '"'.$n++.'":	{';
+            $first .= '"title":                         "'.$organization.'",';
+            $first .= '"URL":                           "'.$URL.'"';
+            $first .= '},';
+        }
+        if ($result_GooglePlay->num_rows > 0) {
+            $first = rtrim($first, ',');
+            $first .= '},';
+        }
+//    }
+    $n=0;
+
+//   if ($AppleStore) {
+        //$num=mysql_num_rows($result_YouVersion);
+        if ($result_AppleStore->num_rows > 0) {
+            $first .= '"Apple Store": {';
+        }
+        while ($r2 = $result_AppleStore->fetch_array(MYSQLI_ASSOC)) {
+            $URL=trim($r2['URL']);
+            $organization=trim($r2['company_title']);
+            $organization = preg_replace('/[^-)]*[-)] (.*)/', '$1', $organization);     // remove the text including ) or -
+            $organization = ltrim($organization, '- ');                                 // just in case
+            $first .= '"'.$n++.'":	{';
+            $first .= '"title":                         "'.$organization.'",';
+            $first .= '"URL":                           "'.$URL.'"';
+            $first .= '},';
+        }
+        if ($result_AppleStore->num_rows > 0) {
+            $first = rtrim($first, ',');
+            $first .= '},';
+        }
+//    }
     $n=0;
 
     if ($GRN) {

@@ -1,11 +1,11 @@
 <?php
-	// This script cannot be accessed directly.
+// This script cannot be accessed directly.
 	if ( ! (defined('RIGHT_ON') && RIGHT_ON === true)) {
 		@include_once '403.php';
 		exit;
 	}
 	 
-	// The number of failed validations
+// The number of failed validations
 	$count_failed = 0;
 	$inputs['iso'] = check_input($_POST["iso"]);
 	$inputs['rod'] = check_input($_POST["rod"]);
@@ -32,7 +32,7 @@
 	}
 
 // Specific Language Names for the navigational Language Names
-//		"No Language Names are found."
+// "No Language Names are found."
 	$no_ln_missing = 0;
 	foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		$inputs[$array[1].'_lang_name'] = check_input($_POST[$array[1]."_lang_name"]);
@@ -49,7 +49,7 @@
 		$messages[] = "No Language Names are found.";
 	}
 
-//		"The Country isn't found: ".$temp
+// "The Country isn't found: ".$temp
 	$z = 1;
 	if ($inputs['Eng_country-1'] != '') {
 		$db->query('set names utf8');
@@ -72,13 +72,14 @@
 		$inputs['ISO_countries'] = --$z;
 	}
 
-//		"The ENGLISH Language Name is empty."
+// "The ENGLISH Language Name is empty."
 	if (!$inputs['LN_'.$_SESSION['nav_ln_array']['en'][1].'Bool']) {
 		$count_failed++;
 		$messages[] = "The ENGLISH Language Name is empty.";
 	}
 
-//		"The ".$array[1]." default language is not associated with the ".$array[1]." Metadata language name."
+// Navigational Language Names
+	// "The ".$array[1]." default language is not associated with the ".$array[1]." Metadata language name."
 	$DefaultLang = $_POST["DefaultLang"];
 	foreach ($_SESSION['nav_ln_array'] as $code => $array){
 		if ($DefaultLang == $array[1]."Lang") {
@@ -634,6 +635,26 @@
 		$inputs['linksMap'] = 1;
 	}
 
+// links: Apple Store
+	$inputs['linksAppleStore'] = 0;
+	$i = 1;
+	for (; isset($_POST["txtLinkCompany-$i"]); $i++) {
+		if ($_POST["linksIcon-".(string)$i] != 'linksAppleStore-'.$i) continue;
+		// Web Source = Company; Resource Description = CompanyTitle
+		if (check_input($_POST["txtLinkCompany-$i"]) != "") $inputs["links"] = 1;
+		if (empty($_POST["txtLinkCompany-$i"])) {
+			if ((check_input($_POST["txtLinkCompanyTitle-$i"]) != "") || (check_input($_POST["txtLinkURL-$i"]) != "")) {
+				$count_failed++;
+				$messages[] = "Apple Store Link #" . $i . " is blank.";
+			}
+		}
+		$inputs["txtLinkCompany-$i"] = check_input($_POST["txtLinkCompany-$i"]);
+		$inputs["txtLinkCompanyTitle-$i"] = check_input($_POST["txtLinkCompanyTitle-$i"]);
+		$inputs["txtLinkURL-$i"] = check_input($_POST["txtLinkURL-$i"]);
+		$inputs["linksAppleStore-$i"] = 1;
+		$inputs['linksAppleStore'] = 1;
+	}
+
 // links: GooglePlay
 	$inputs['linksGooglePlay'] = 0;
 	$i = 1;
@@ -653,6 +674,7 @@
 		$inputs["linksGooglePlay-$i"] = 1;
 		$inputs['linksGooglePlay'] = 1;
 	}
+
 // links: Kalaam
 	$inputs['linksKalaam'] = 0;
 	$i = 1;

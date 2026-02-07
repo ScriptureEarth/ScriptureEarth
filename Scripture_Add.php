@@ -1522,7 +1522,7 @@ include ('./NT_Books.php');			// include the books of the NT
 					$i++;
 				}
 /************************************************
-	Links
+	links: other, map, AppleStore, GooglePlay, and Kalamm
 *************************************************/
 			?>
         </tbody>
@@ -1553,6 +1553,7 @@ include ('./NT_Books.php');			// include the books of the NT
 			if ($_POST['linksIcon-1'] == 'linksOther-1') $_POST['linksOther-1']=1; else $_POST['linksOther-1']=0;
 			//if ($_POST['linksIcon-1'] == 'linksBuy-1') $_POST['linksBuy-1']=1; else $_POST['linksBuy-1']=0;
 			if ($_POST['linksIcon-1'] == 'linksMap-1') $_POST['linksMap-1']=1; else $_POST['linksMap-1']=0;
+			if ($_POST['linksIcon-1'] == 'linksAppleStore-1') $_POST['linksAppleStore-1']=1; else $_POST['linksAppleStore-1']=0;
 			if ($_POST['linksIcon-1'] == 'linksGooglePlay-1') $_POST['linksGooglePlay-1']=1; else $_POST['linksGooglePlay-1']=0;
 			if ($_POST['linksIcon-1'] == 'linksKalaam-1') $_POST['linksKalaam-1']=1; else $_POST['linksKalaam-1']=0;
 		}
@@ -1560,6 +1561,7 @@ include ('./NT_Books.php');			// include the books of the NT
 			${'linksOther-1'}=0;
 			//${'linksBuy-1'}=0;
 			${'linksMap-1'}=0;
+			${'linksAppleStore-1'}=0;
 			${'linksGooglePlay-1'}=0;
 			${'linksKalaam-1'}=0;
 		}
@@ -1600,6 +1602,7 @@ include ('./NT_Books.php');			// include the books of the NT
 							if (isset($_POST['linksIcon-1'])) {
 								if ($_POST['linksIcon-1'] == 'linksOther-1') ${'linksOther-1'}=1; else ${'linksOther-1'}=0;
 								if ($_POST['linksIcon-1'] == 'linksMap-1') ${'linksMap-1'}=1; else ${'linksMap-1'}=0;
+								if ($_POST['linksIcon-1'] == 'linksAppleStore-1') ${'linksAppleStore-1'}=1; else ${'linksAppleStore-1'}=0;
 								if ($_POST['linksIcon-1'] == 'linksGooglePlay-1') ${'linksGooglePlay-1'}=1; else ${'linksGooglePlay-1'}=0;
 								if ($_POST['linksIcon-1'] == 'linksKalaam-1') ${'linksKalaam-1'}=1; else ${'linksKalaam-1'}=0;
 							}
@@ -1607,12 +1610,14 @@ include ('./NT_Books.php');			// include the books of the NT
 								${'linksIcon-1'} = 0;
 								${'linksOther-1'} = 0;
 								${'linksMap-1'} = 0;
+								${'linksAppleStore-1'} = 0;
 								${'linksGooglePlay-1'} = 0;
 								${'linksKalaam-1'} = 0;
 							}
 							?>	
 							<option value="linksOther-1" <?php echo ( isset($_POST['linksIcon-1']) ? ($_POST['linksOther-1'] == 1 ? " selected='selected'" : '') : '') ?>>Other</option>
 							<option value="linksMap-1" <?php echo ( isset($_POST['linksIcon-1']) ? ($_POST['linksMap-1'] == 1 ? " selected='selected'" : '') : '') ?>>Map</option>
+							<option value="linksAppleStore-1" <?php echo ( isset($_POST['linksIcon-1']) ? ($_POST['linksAppleStore-1'] == 1 ? " selected='selected'" : '') : '') ?>>Apple Store</option>
 							<option value="linksGooglePlay-1" <?php echo ( isset($_POST['linksIcon-1']) ? ($_POST['linksGooglePlay-1'] == 1 ? " selected='selected'" : '') : " selected='selected'") ?>>Google Play</option>
 							<option value="linksKalaam-1" <?php echo ( isset($_POST['linksIcon-1']) ? ($_POST['linksKalaam-1'] == 1 ? " selected='selected'" : '') : '') ?>>Kalaam Media</option>
                        </select>
@@ -1645,6 +1650,7 @@ include ('./NT_Books.php');			// include the books of the NT
 						if ($_POST['linksIcon-'.(string)$i] == 'linksOther-'.$i) ${'linksOther-$i'}=1; else ${'linksOther-$i'}=0;
 						//if ($_POST['linksIcon-'.(string)$i] == 'linksBuy-'.$i) ${'linksBuy-$i'}=1; else ${'linksBuy-$i'}=0;
 						if ($_POST['linksIcon-'.(string)$i] == 'linksMap-'.$i) ${'linksMap-$i'}=1; else ${'linksMap-$i'}=0;
+						if ($_POST['linksIcon-'.(string)$i] == 'linksAppleStore-'.$i) ${'linksAppleStore-$i'}=1; else ${'linksAppleStore-$i'}=0;
 						if ($_POST['linksIcon-'.(string)$i] == 'linksGooglePlay-'.$i) ${'linksGooglePlay-$i'}=1; else ${'linksGooglePlay-$i'}=0;
 						if ($_POST['linksIcon-'.(string)$i] == 'linksKalaam-'.$i) ${'linksKalaam-$i'}=1; else ${'linksKalaam-$i'}=0;
 						?>
@@ -1653,6 +1659,7 @@ include ('./NT_Books.php');			// include the books of the NT
 								<option value="linksOther-<?php echo $i ?>" <?php echo ( isset($_POST['linksOther-'.(string)$i]) ? ($_POST['linksOther-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksOther-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Other</option>
 								<!--option value="linksBuy-< ?php echo $i ?>" < ?php echo ( isset($_POST['linksBuy-'.(string)$i]) ? ($_POST['linksBuy-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksBuy-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Buy</option-->
 								<option value="linksMap-<?php echo $i ?>" <?php echo ( isset($_POST['linksMap-'.(string)$i]) ? ($_POST['linksMap-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksMap-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Map</option>
+								<option value="linksAppleStore-<?php echo $i ?>" <?php echo ( isset($_POST['linksAppleStore-'.(string)$i]) ? ($_POST['linksAppleStore-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksAppleStore-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Apple Store</option>
 								<option value="linksGooglePlay-<?php echo $i ?>" <?php echo ( isset($_POST['linksGooglePlay-'.(string)$i]) ? ($_POST['linksGooglePlay-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksGooglePlay-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Google Play</option>
 								<option value="linksKalaam-<?php echo $i ?>" <?php echo ( isset($_POST['linksKalaam-'.(string)$i]) ? ($_POST['linksKalaam-'.(string)$i] == 1 ? " selected='selected'" : '') : (${'linksKalaam-$i'}==1 ? " selected='selected'" : '' ) ) ?>>Kalaam Media</option>
 							</select>

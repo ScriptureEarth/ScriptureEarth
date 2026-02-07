@@ -361,6 +361,10 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	$linksMaps = 0;
 	$linksEmail = 0;
 	if ($links) {
+		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND AppleStore = 1";
+		$result_AS=$db->query($query);
+		$AppleStore = $result_AS->num_rows;					// number of rows
+
 		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND GooglePlay = 1";
 		$result_GP=$db->query($query);
 		$GooglePlay = $result_GP->num_rows;					// number of rows
@@ -374,7 +378,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		$iTunes = $result_iTunes->num_rows;					// number of rows
 
 		// onestory, itunes, facebook, deaf\.?bible, and anything else
-		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND company <> 'iTunes Play Store' AND email = 0 AND map = 0 AND buy = 0 AND BibleIs = 0 AND BibleIsGospelFilm = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 AND `Kalaam` = 0 ORDER BY `URL`";
+		$query="SELECT * FROM links WHERE ISO_ROD_index = '$ISO_ROD_index' AND company <> 'iTunes Play Store' AND email = 0 AND map = 0 AND buy = 0 AND BibleIs = 0 AND BibleIsGospelFilm = 0 AND YouVersion = 0 AND `Bibles_org` = 0 AND `AppleStore` = 0 AND `GooglePlay` = 0 AND `GRN` = 0 AND `Kalaam` = 0 ORDER BY `URL`";
 		$result_moreLinks=$db->query($query);
 		$moreLinks = $result_moreLinks->num_rows;			// number of rows
 
@@ -487,10 +491,10 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	const DisplayText = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_BibleIsReadVideo': <?php echo $BibleIsReadVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_otherTitles': <?php echo $otherTitles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>};
 	const DisplayAudio = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsAudioVideo': <?php echo $BibleIsAudioVideo; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_other_titles': <?php echo $other_titles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
 	const DisplayVideo = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_BibleIsAudioVideo': <?php echo $BibleIsAudioVideo; ?>, 'Dis_BibleIsReadVideo': <?php echo $BibleIsReadVideo; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
-	const DisplayApp = {'Dis_App': <?php echo $App; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>};
+	const DisplayApp = {'Dis_App': <?php echo $App; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_AppleStore': <?php echo $AppleStore; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>};
 	const DisplayOther = {'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_Kalaam': <?php echo $Kalaam; ?>};
 	const DisplayMap = {'Dis_Map': <?php echo $SE_Map; ?>};
-	const DisplayAll = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsReadVideo': <?php echo $BibleIsReadVideo; ?>, 'Dis_BibleIsAudioVideo': <?php echo $BibleIsAudioVideo; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_otherTitles': <?php echo $other_titles; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_links': <?php echo $links; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_App': <?php echo $App; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_Kalaam': <?php echo $Kalaam; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>};
+	const DisplayAll = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsReadVideo': <?php echo $BibleIsReadVideo; ?>, 'Dis_BibleIsAudioVideo': <?php echo $BibleIsAudioVideo; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_otherTitles': <?php echo $other_titles; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_links': <?php echo $links; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_App': <?php echo $App; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_AppleStore': <?php echo $AppleStore; ?>, 'Dis_Kalaam': <?php echo $Kalaam; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>};
 
 	// set display = "table" for all "DisplayZZZZZZ" Object.entries()
 	function menuEnableText() {
@@ -564,7 +568,9 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				}
 			}
 		}
-		document.getElementById("Dis_Map").style.display = "none";
+		if (document.getElementById("Dis_Map")) {
+			document.getElementById("Dis_Map").style.display = "none";
+		}
 	}
 
 	// set the icons for the largest size
@@ -812,6 +818,9 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 			<?php if ($ISO != 'qqq') { ?>
 				<div class='languageCode'><?php echo translate('Language Code', $st, 'sys'); ?>:&nbsp;<a href='https://www.ethnologue.com/language/<?php echo $ISO; ?>/' target='_blank'><?php echo $ISO; ?></a><br />
 				&nbsp;&nbsp;&nbsp;&nbsp;<span style='font-size: 90%; font-weight: normal; color: white; '>(<?php echo translate('Index', $st, 'sys'); ?>:&nbsp;<?php echo $ISO_ROD_index; ?>)</span></div>
+			<?php } else { ?>
+				<div class='SLI'>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo translate('SLI', $st, 'sys'); ?>:&nbsp;<?php echo $ROD_Code; ?><br />
+				&nbsp;&nbsp;&nbsp;<span style='font-size: 90%; font-weight: normal; color: white; '>(<?php echo translate('Index', $st, 'sys'); ?>:&nbsp;<?php echo $ISO_ROD_index; ?>)</span></div>
 			<?php } ?>
 		</div>
 	</h2>
@@ -1393,6 +1402,38 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					else {
 						echo "&nbsp;$other:&nbsp;$other_title</div>";
 					}
+					?>
+				</td>
+			</tr>
+			<?php
+		}
+		echo '</table>';
+	}
+
+/*
+	*************************************************************************************************************
+		Is it AppleStore? (links table)
+	*************************************************************************************************************
+*/
+	if ($AppleStore && $Internet) {
+		echo '<table id="Dis_AppleStore">';
+		while ($r2 = $result_AS->fetch_array(MYSQLI_ASSOC)) {
+			$company_title=trim($r2['company_title']);
+			$company=trim($r2['company']);
+			$URL=trim($r2['URL']);
+			?>
+			<tr>
+				<td style='width: 45px; '>
+					<?php
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\"><img class='iconActions' src='../images/iOS_App.jpg' alt='".translate('Apple Store', $st, 'sys')."' /></div>";
+				echo "</td>";
+				echo "<td>";
+					echo "<div class='linePointer' onclick=\"window.open('$URL')\">".translate('Link', $st, 'sys')." : ";
+					echo $company;
+					if ($company_title != '' && !is_null($company_title)) {
+						echo ' ' . $company_title;
+					}
+					echo '</div>';
 					?>
 				</td>
 			</tr>
@@ -4036,8 +4077,9 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				<div style='width: 92%; margin-left: auto; margin-right: auto; '>
 					<div class="CCtab" style="text-align: center; ">
 						<?php
+						$ISOorROD = $ISO != 'qqq' ? $ISO : $ROD_Code;
 						foreach ($CC_countries as $countryKey => $countryValue) {
-							echo '<button class="CCtablinks" onclick="CCCountry(\''.$countryKey.'\',\''.$ISO.'\',\''.$countryValue.'\')" value="'.$countryKey.'">'.$countryValue.'</button>';
+							echo '<button class="CCtablinks" onclick="CCCountry(\''.$countryKey.'\',\''.$ISOorROD.'\',\''.$countryValue.'\')" value="'.$countryKey.'">'.$countryValue.'</button>';
 						}
 						?>
 					</div>
@@ -4119,15 +4161,16 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				const response = await fetch('./data/'+iso+'/sab/'+subfolde+'/_app/version.json');
 				const data = await response.json();
 				//console.log('data: '+data);
-				const appVersion = data.version;									// get the version number
+				let appVersion = data.version;									// get the version number
 				console.log('appVersion: '+appVersion);
 				if (appVersion.includes("-")) {										// if version number contains a dash "-"
-					const version_compare = appVersion.split("-");					// split into two parts based on the dash "-"
+					let version_compare = appVersion.split("-");					// split into two parts based on the dash "-"
 					appVersion = version_compare[1];								// use the second part only
+					console.log('appVersion changed to: '+appVersion);
 				}
-				if (appVersion >= "1768322736214") {								// {"version":"13.3.2-1768335298356"}
-					console.log('App version '+appVersion+' detected, opening '+subfolder+' index.html.');
-					window.open("./data/"+iso+"/sab/"+subfolde+"/index.html", "SABPage");
+				if (appVersion >= "1770141784340") {								// {"version":"13.3.2-1770141784340"} 2026-02-3
+					console.log('App version '+appVersion+' detected, opening '+subfolder+'index.html.');
+					window.open("./data/"+iso+"/sab/"+subfolde+"/", "SABPage");
 				}
 				else {
 					//window.open("./data/"+iso+"/sab/"+subfolde+'_micropi/', "SABPage");
@@ -4155,7 +4198,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					.catch(error => {
 						console.error('Error:', error);
 					});
-			}
+				}
 			}
 			catch (error) {
 				console.error('Error:', error);
@@ -4319,18 +4362,21 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		country map
 	*************************************************************************************************************
 */
-	function CCCountry(countryKey, ISO, countryValue) {
+	function CCCountry(countryKey, ISOorROD, countryValue) {
 		var x = document.getElementById("CC_c");
-		x.src = "./maps/" + countryKey + "/" + ISO + ".htm";
+		x.src = "./maps/" + countryKey + "/" + ISOorROD + ".htm";
 		var y = document.getElementById("countryLabel");
 		y.innerHTML = countryValue;
 	}
 
 	$(function() {
-		CCCountry("<?php echo array_keys($CC_countries)[0]; ?>", "<?php echo $ISO; ?>", "<?php echo array_values($CC_countries)[0]; ?>");
+		<?php
+			$ISOorROD = $ISO != 'qqq' ? $ISO : $ROD_Code;
+		?>
+		CCCountry("<?php echo array_keys($CC_countries)[0]; ?>", "<?php echo $ISOorROD; ?>", "<?php echo array_values($CC_countries)[0]; ?>");
 	});
 // end
 
 </script>
 
-<script type='text/javascript' language='javascript' src='_js/user_events.js'></script>
+<!--script type='text/javascript' language='javascript' src='_js/user_events.js'></script-->

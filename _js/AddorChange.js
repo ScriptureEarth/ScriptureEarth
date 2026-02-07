@@ -406,6 +406,13 @@ function addLinksRowToTable() {
     //el.options.add(objOption);
     el.appendChild(objOption);
 
+    objOption = document.createElement('option');  
+    objOption.text = "Apple Store";
+    //objOption.appendChild(document.createTextNode('AppleStore'));
+    objOption.value = "linksAppleStore-" + iteration;
+    //el.options.add(objOption);
+    el.appendChild(objOption);
+
     objOption = document.createElement('option');
     objOption.text = "Google Play";
     //objOption.appendChild(document.createTextNode('GooglePlay'));

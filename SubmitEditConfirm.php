@@ -781,6 +781,28 @@ function console_log($data) {
 		$stmt_links->close();
 	}
 
+// links: AppleStore
+	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND AppleStore = 1";
+	$result=$db->query($query);
+	if ($inputs['linksAppleStore']) {
+		$i = 1;
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, AppleStore) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $inputs[idx], ?, ?, ?, 1)";
+		$stmt_links=$db->prepare($query);
+		//while (isset($inputs["txtLinkCompany-$i"]) && $inputs["linksAppleStore-$i"]) {
+		for (; isset($inputs["txtLinkCompany-$i"]); $i++) {
+			if (!isset($inputs["linksAppleStore-$i"])) continue;	// || $inputs["linksAppleStore-$i"] == 0 Bill ????
+			$temp1 = "txtLinkCompany-$i";
+			$temp2 = "txtLinkCompanyTitle-$i";
+			$temp3 = "txtLinkURL-$i";
+			$stmt_links->bind_param("sss", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3]);		// bind parameters for markers
+			$result=$stmt_links->execute();															// execute query
+			if (!$result) {
+				echo 'Could not insert the data "links Apple Store": ' . $db->error;
+			}
+		}
+		$stmt_links->close();
+	}
+
 // links: GooglePlay
 	$query="DELETE FROM links WHERE ISO_ROD_index = $inputs[idx] AND GooglePlay = 1";
 	$result=$db->query($query);

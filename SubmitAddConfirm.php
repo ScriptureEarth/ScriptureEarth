@@ -580,10 +580,10 @@
 		$stmt_buy->close();
 	}
 
-// links: map, GooglePlay, and Kalaam
+// links: other, map, AppleStore, GooglePlay, and Kalaam
 	if ($inputs['links']) {
 		$i = 1;
-		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, buy, map, GooglePlay, Kalaam) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, 0, ?, ?, ?)";
+		$query="INSERT INTO links (ISO, ROD_Code, Variant_Code, ISO_ROD_index, company, company_title, `URL`, buy, map, GooglePlay, Kalaam, AppleStore) VALUES ('$inputs[iso]', '$inputs[rod]', '$inputs[var]', $idx, ?, ?, ?, 0, ?, ?, ?, ?)";
 		$stmt_links=$db->prepare($query);
 		while (isset($inputs["txtLinkCompany-".(string)$i])) {
 			$temp1 = "txtLinkCompany-".(string)$i;
@@ -593,7 +593,8 @@
 			$temp5 = "linksMap-$i";
 			$temp6 = "linksGooglePlay-$i";
 			$temp7 = "linksKalaam-$i";
-			$stmt_links->bind_param("sssiii", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3], $inputs[$temp5], $inputs[$temp6], $inputs[$temp7]);		// bind parameters for markers
+			$temp8 = "linksAppleStore-$i";
+			$stmt_links->bind_param("sssiiii", $inputs[$temp1], $inputs[$temp2], $inputs[$temp3], $inputs[$temp5], $inputs[$temp6], $inputs[$temp7], $inputs[$temp8]);		// bind parameters for markers
 			$result=$stmt_links->execute();														// execute query
 			if (!$result) {
 				echo 'Could not insert the data "links": ' . $db->error;

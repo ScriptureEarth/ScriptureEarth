@@ -33,7 +33,7 @@ $stmt_NT_PDF = $db->prepare("SELECT COUNT(*) AS NT_PDF_temp FROM NT_PDF_Media WH
 $stmt_OT_Audio = $db->prepare("SELECT COUNT(*) AS OT_Audio_temp FROM OT_Audio_Media WHERE ISO_ROD_index = ?");
 $stmt_NT_Audio = $db->prepare("SELECT COUNT(*) AS NT_Audio_temp FROM NT_Audio_Media WHERE ISO_ROD_index = ?");
 $stmt_SAB = $db->prepare("SELECT COUNT(*) AS SAB_temp FROM SAB WHERE ISO_ROD_index = ? AND SAB_Audio = ?");
-$stmt_links = $db->prepare("SELECT LOWER(company) AS company_temp, map, BibleIs, BibleIsGospelFilm, YouVersion, GooglePlay, GRN, email, Kalaam FROM links WHERE ISO_ROD_index = ? AND (map >= 1 OR BibleIs >= 1 OR BibleIsGospelFilm >= 1 OR GRN >= 1 OR email >= 1 OR Kalaam >= 1 OR YouVersion >= 1 OR GooglePlay >= 1 OR company = 'website' OR company = 'webpage')");
+$stmt_links = $db->prepare("SELECT LOWER(company) AS company_temp, map, BibleIs, BibleIsGospelFilm, YouVersion, GooglePlay, GRN, email, Kalaam, AppleStore FROM links WHERE ISO_ROD_index = ? AND (map >= 1 OR BibleIs >= 1 OR BibleIsGospelFilm >= 1 OR GRN >= 1 OR email >= 1 OR Kalaam >= 1 OR YouVersion >= 1 OR GooglePlay >= 1 OR company = 'website' OR company = 'webpage' OR AppleStore >= 1)");
 $stmt_CellPhone = $db->prepare("SELECT Cell_Phone_Title FROM CellPhone WHERE ISO_ROD_index = ?");
 $stmt_PlaylistVideo = $db->prepare("SELECT PlaylistVideoDownload FROM PlaylistVideo WHERE ISO_ROD_index = ?");
 $stmt_other_titles = $db->prepare("SELECT COUNT(*) AS ePub FROM other_titles WHERE ISO_ROD_index = ? AND other_PDF LIKE '%.epub'");
