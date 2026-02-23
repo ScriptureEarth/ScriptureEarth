@@ -13,7 +13,10 @@ include 'include/v.key.php';																	// get v and key
 include 'include/idx.iso.php';																	// get idx or iso
 
 if ($index == 0) {
-	die ('HACK!');
+	$marks = json_decode('{"error": "The index does not found."}');
+	header('Content-Type: application/json');
+	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
 }
 
 //echo $index . '<br />';
@@ -68,7 +71,10 @@ $m=0;
 
 $main_rows = $result_main->num_rows;                                                            // number of rows for PDF OT
 if ($main_rows == 0) {
-    die ('idx or iso does not exist in SE.');
+	$marks = json_decode('{"error": "idx or iso does not exist in ScriptureEarth.org."}');
+	header('Content-Type: application/json');
+	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
 }
 
 $first = '{';

@@ -1500,4 +1500,4 @@ if (isset($_GET['asset'])) {
 	</script>
 
 	<?php // This script HAS to be down here for the major language dropdown box to work! ?>
-	<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.3.7"></script>
+	<script type="text/javascript" language="javascript" src="_js/LangSearch.js?v=1.3.9"></script>

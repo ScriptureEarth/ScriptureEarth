@@ -21,7 +21,21 @@ $stmt_SAB = $db->prepare("SELECT COUNT(*) AS SAB_temp FROM SAB WHERE ISO_ROD_ind
 $stmt_links = $db->prepare("SELECT LOWER(company) as company_temp, map, BibleIs, BibleIsGospelFilm, YouVersion, GooglePlay, GRN, Kalaam, email, AppleStore FROM links WHERE ISO_ROD_index = ? AND (map >= 1 OR YouVersion >= 1 OR GooglePlay >= 1 OR Kalaam >= 1 OR email >= 1 OR AppleStore >= 1 OR company = 'website' OR company = 'webpage')");
 $stmt_CellPhone = $db->prepare("SELECT Cell_Phone_Title FROM CellPhone WHERE ISO_ROD_index = ?");
 $stmt_PlaylistVideo = $db->prepare("SELECT PlaylistVideoDownload FROM PlaylistVideo WHERE ISO_ROD_index = ?");
-$stmt_English = $db->prepare("SELECT LN_English FROM LN_English WHERE ISO_ROD_index = ?");
+
+/*************************************************************************************************************
+            get major language names
+**************************************************************************************************************/
+//$LNames = ["English","Spanish","Portuguese","Dutch","French","German","Chinese","Korean","Russian","Arabic",etc.];
+$LNames = [];																		// save all of the LN_... navigatianal language names
+$res=$db->query("SHOW COLUMNS FROM nav_ln WHERE `Field` LIKE 'LN_%'");										// the following values are ['Field'], ['Type'], ['Collation'], ['Null'], and ['Key']
+while ($row_LN = $res->fetch_assoc()) {
+    $LNames[] = substr($row_LN['Field'], 3);									    // Language Names - 'LN_'
+    $full_LN = $row_LN['Field'];													// Language Names - full
+    $mines_LN = substr($row_LN['Field'], 3);									    // Language Names
+    ${"stmt_$mines_LN"} = $db->prepare("SELECT $full_LN FROM $full_LN WHERE ISO_ROD_index = ?");     // prepare statements for all of the LN_... navigatianal language names
+}
+
+/*$stmt_English = $db->prepare("SELECT LN_English FROM LN_English WHERE ISO_ROD_index = ?");
 $stmt_Spanish = $db->prepare("SELECT LN_Spanish FROM LN_Spanish WHERE ISO_ROD_index = ?");
 $stmt_Portuguese = $db->prepare("SELECT LN_Portuguese FROM LN_Portuguese WHERE ISO_ROD_index = ?");
 $stmt_French = $db->prepare("SELECT LN_French FROM LN_French WHERE ISO_ROD_index = ?");
@@ -30,14 +44,17 @@ $stmt_Chinese = $db->prepare("SELECT LN_Chinese FROM LN_Chinese WHERE ISO_ROD_in
 $stmt_German = $db->prepare("SELECT LN_German FROM LN_German WHERE ISO_ROD_index = ?");
 $stmt_Korean = $db->prepare("SELECT LN_Korean FROM LN_Korean WHERE ISO_ROD_index = ?");
 $stmt_Russian = $db->prepare("SELECT LN_Russian FROM LN_Russian WHERE ISO_ROD_index = ?");
-$stmt_Arabic = $db->prepare("SELECT LN_Arabic FROM LN_Arabic WHERE ISO_ROD_index = ?");
+$stmt_Arabic = $db->prepare("SELECT LN_Arabic FROM LN_Arabic WHERE ISO_ROD_index = ?");*/
 //$stmt_iso_languages = $db->prepare("SELECT * FROM scripture_main ORDER BY ISO");
 
 $stmt_iso->execute();															                // execute query
 $result_iso = $stmt_iso->get_result();
 
-if ($result_iso->num_rows <= 0) {
-	die ('scripture_main table does not exixt.');
+if ($result_iso->num_rows == 0) {
+    $marks = json_decode('{"error": "scripture_main table does not exixt."}');
+    header('Content-Type: application/json');
+    echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    exit;
 }
 
 $m=0;

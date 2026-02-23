@@ -12,11 +12,17 @@ $LN = '';
 if (isset($_GET['ln'])) {
 	$LN = $_GET['ln'];
 	if (strlen($LN) < 3) {
-		die ('Language name is less that four letters');
+        $marks = json_decode('{"error": "Language name is less that four letters."}');
+        header('Content-Type: application/json');
+        echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        exit;
 	}
 }
 else {
-    die ('HACK!');
+	$marks = json_decode('{"error": "Please provide a partial language name."}');
+	header('Content-Type: application/json');
+	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
 }
 
 $stmt_iso = $db->prepare("SELECT * FROM scripture_main ORDER BY ISO, ROD_Code, Variant_Code");
@@ -37,7 +43,10 @@ $stmt_iso->execute();															            // execute query
 $result_iso = $stmt_iso->get_result();
 
 if ($result_iso->num_rows <= 0) {
-	die ('scripture_main table does not exixt.');
+	$marks = json_decode('{"error": "The scripture_main table does not exist."}');
+	header('Content-Type: application/json');
+	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
 }
 
 $m=0;

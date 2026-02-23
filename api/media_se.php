@@ -13,7 +13,10 @@ include 'include/v.key.php';																	// get v and key
 include 'include/idx.iso.php';																	// get idx or iso
 
 if ($index == 0) {
-	die ('HACK!');
+	$marks = json_decode('{"error": "Please provide an ISO/ROD index or an ISO language code in the URL. For example, if you want to pull the record for the ISO/ROD index 123, you can use \'?idx=123\'. If you want to pull the record for the ISO language code \'ngu\', you can use \'?iso=ngu\'." }');
+	header('Content-Type: application/json');
+	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
 }
 
 if ($index == 1) {
@@ -106,7 +109,14 @@ function cmp($a, $b) {
     }
     else {
         $test = preg_match('/[- _][A-Za-z]+([0-9_]+[a-c]?-[0-9_]+[a-c]?)(-[A-Za-z]|-640.mp4$|.mp4$)/', $a, $match);
-        $chapter_a = $match[1];
+        if ($test) {
+            $chapter_a = $match[1];
+        }
+        else {
+            $test = preg_match('/[A-Z]{3}[- _]([-0-9\.]+)\.mp4/', $a, $match);
+            $chapter_a = $match[1];
+            // echo 'a= ' . $a . '; chapter_a= ' . $chapter_a . '<br />';
+        } 
     }
 
     $chapter_b = '';
@@ -116,7 +126,14 @@ function cmp($a, $b) {
     }
     else {
         $test = preg_match('/[- _][A-Za-z]+([0-9_]+[a-c]?-[0-9_]+[a-c]?)(-[A-Za-z]|-640.mp4$|.mp4$)/', $b, $match);
-        $chapter_b = $match[1];
+        if ($test) {
+            $chapter_b = $match[1];
+        }
+        else {
+            $test = preg_match('/[A-Z]{3}[- _]([-0-9\.]+)\.mp4/', $b, $match);
+            $chapter_b = $match[1];
+            //echo 'b= ' . $b . '; chapter_b= ' . $chapter_b . '<br />';
+        }
     }
 
     return (($book_a . $chapter_a) < ($book_b . $chapter_b)) ? -1 : 1;

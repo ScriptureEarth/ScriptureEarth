@@ -23,12 +23,18 @@ if ($index == 0) {																				// or language language and alternate lang
 		if (isset($_GET['rel'])) {																// rel = 'ios' or 'android'
 			$rel = strtolower(trim($_GET['rel']));
 			if ($rel != 'ios' && $rel != 'android') {
-				die ('You made a mistake.');
+				$marks = json_decode('{"error": "The value of the parameter \'rel\' should be either \'ios\' or \'android\'."}');
+				header('Content-Type: application/json');
+				echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+				exit;
 			}
 		}
 	}
 	else {
-		die ('Suspicious activity!');
+		$marks = json_decode('{"error": "Please provide a country code in the URL. For example, if you want to pull the record(s) for the Mexico, you can use \'?cc=MX\'."}');
+		header('Content-Type: application/json');
+		echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+		exit;
 	}
 }
 
@@ -48,9 +54,12 @@ $stmt_English = $db->prepare("SELECT LN_English FROM LN_English WHERE ISO_ROD_in
 
 if ($index == 1) {																			// idx
 	$query = "SELECT * FROM scripture_main, nav_ln WHERE `scripture_main`.`ISO_ROD_index` = $idx AND `scripture_main`.`ISO_ROD_index` = `nav_ln`.`ISO_ROD_index`";
-	$result=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
+	$result=$db->query($query) or die ('Query failed: ' . $db->error);
 	if ($result->num_rows === 0) {
-		die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The ISO/ROD index is not found.</div></body></html>');
+		$marks = json_decode('{"error": "The ISO/ROD index is not found."}');
+		header('Content-Type: application/json');
+		echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+		exit;
 	}
 	$row = $result->fetch_array();
 
@@ -110,9 +119,12 @@ if ($index == 1) {																			// idx
 }
 elseif ($index == 2) {																		// iso/rod/var
 	$query = "SELECT * FROM scripture_main, nav_ln WHERE scripture_main.ISO = '$iso' " . ($rod == 'ALL' ? '' : "AND scripture_main.ROD_Code = '$rod' ") . ($var == 'ALL' ? '' : "AND scripture_main.Variant_Code = '$var'") . " AND `scripture_main`.`ISO_ROD_index` = `nav_ln`.`ISO_ROD_index`";
-	$result=$db->query($query) or die ('Query failed:' . $db->error . '</body></html>');
+	$result=$db->query($query) or die ('Query failed:' . $db->error);
 	if ($result->num_rows === 0) {
-		die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The ISO language code is not found.</div></body></html>');
+		$marks = json_decode('{"error": "The ISO language code is not found."}');
+		header('Content-Type: application/json');
+		echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+		exit;
 	}
 
 	$m = 0;

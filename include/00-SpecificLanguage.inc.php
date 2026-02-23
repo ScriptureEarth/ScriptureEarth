@@ -354,6 +354,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		}
 	}
 
+	$AppleStore = 0;
 	$GooglePlay = 0;
 	$Kalaam = 0;
 	$iTunes = 0;
@@ -488,7 +489,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 			$BibleIsLink = 8: Read and View				$BibleIsReadVideo
 		*/
 	// Object.entries() takes an object like { a: 1, b: 2, c: 3 } and turns it into an array of key-value pairs: [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ].
-	const DisplayText = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_BibleIsReadVideo': <?php echo $BibleIsReadVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_otherTitles': <?php echo $otherTitles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>};
+	const DisplayText = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_BibleIsReadVideo': <?php echo $BibleIsReadVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_otherTitles': <?php echo $otherTitles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>};
 	const DisplayAudio = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsAudioVideo': <?php echo $BibleIsAudioVideo; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_other_titles': <?php echo $other_titles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
 	const DisplayVideo = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_BibleIsAudioVideo': <?php echo $BibleIsAudioVideo; ?>, 'Dis_BibleIsReadVideo': <?php echo $BibleIsReadVideo; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
 	const DisplayApp = {'Dis_App': <?php echo $App; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_AppleStore': <?php echo $AppleStore; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>};
@@ -4155,20 +4156,26 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		let iso = "<?php echo $ISO; ?>";
 		let subfolde = subfolder.slice(4, -1);										// get '[ISO]ZZZZ' from 'sab/[ISO]ZZZZ/'
 		console.log(subfolde);
+		window.open("./data/"+iso+"/sab/"+subfolde+"/", "SABPage");
 
-		(async function () {
+		/*(async function () {
 			try {
 				const response = await fetch('./data/'+iso+'/sab/'+subfolde+'/_app/version.json');
 				const data = await response.json();
 				//console.log('data: '+data);
-				let appVersion = data.version;									// get the version number
+				let appVersion = data.version;										// get the version number
 				console.log('appVersion: '+appVersion);
 				if (appVersion.includes("-")) {										// if version number contains a dash "-"
 					let version_compare = appVersion.split("-");					// split into two parts based on the dash "-"
 					appVersion = version_compare[1];								// use the second part only
 					console.log('appVersion changed to: '+appVersion);
 				}
-				if (appVersion >= "1770141784340") {								// {"version":"13.3.2-1770141784340"} 2026-02-3
+				/***************************************************************************************************
+					If the version number is new enough, open the standard [ISO+] (not [ISO+]_micropi) index.html.
+					If the version number is not new enough, check if the [ISO+]_micropi folder exists.
+					If it does, open the [ISO+]_micropi index.html. If it doesn't, display an error message.
+				 **************************************************************************************************
+				if (appVersion >= "1768322736214") {								// {"version":"13.3.2-1770141784340"} 2026-02-3
 					console.log('App version '+appVersion+' detected, opening '+subfolder+'index.html.');
 					window.open("./data/"+iso+"/sab/"+subfolde+"/", "SABPage");
 				}
@@ -4177,7 +4184,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					//console.log('App version '+appVersion+' detected, opening '+subfolder+'_micropi index.html.');
 					//window.open("./data/"+iso+"/sab/"+subfolde+"_micropi/index.html", "SABPage");
 					fetch('./data/'+iso+'/sab/'+subfolde+'_micropi', {
-						method: 'HEAD'												// check if MicroPi folder exists
+						method: 'HEAD'												// check if [ISO+]_micropi folder exists
 					})
 					.then(response => {
 						if (!response.ok) {
@@ -4224,7 +4231,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					console.error('Error:', error);
 				});
 			}
-		})();
+		})();*/
 	}
     function SAB_Scriptoria_Other(url) {
 		window.open(url, "SABLink");

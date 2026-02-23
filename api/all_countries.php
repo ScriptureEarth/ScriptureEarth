@@ -11,11 +11,23 @@ include 'include/v.key.php';																	// get v and key
 $SpecificCountry = 'English';
 if (isset($_GET['ml'])) {
 	$SpecificCountry = $_GET['ml'];
+    /*************************************************************************************************************
+                get major language names
+    **************************************************************************************************************/
+    //$LNames = ["English","Spanish","Portuguese","Dutch","French","German","Chinese","Korean","Russian","Arabic",etc.];
+    $LNames = [];																		// save all of the LN_... natianal language names
+    $res=$db->query("SHOW COLUMNS FROM nav_ln WHERE `Field` LIKE 'LN_%'");										// the following values are ['Field'], ['Type'], ['Collation'], ['Null'], and ['Key']
+    while ($row_LN = $res->fetch_assoc()) {
+        $LNames[] = substr($row_LN['Field'], 3);									    // Language Names - 'LN_'
+    }
     // ISO_Country
-	if ($SpecificCountry == 'English' || $SpecificCountry == 'Spanish' || $SpecificCountry == 'Portuguese' || $SpecificCountry == 'French' || $SpecificCountry == 'Dutch' || $SpecificCountry == 'German' || $SpecificCountry == 'Chinese' || $SpecificCountry == 'Korean' || $SpecificCountry == 'Russian' || $SpecificCountry == 'Arabic') {
+	if (in_array($SpecificCountry, $LNames, true)) {
 	}
     else {
-		die ('You made a mistake.');
+		$marks = json_decode('{"error": "A navigational language is not found."}');
+		header('Content-Type: application/json');
+		echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+		exit;
     }
 }
 
@@ -24,7 +36,10 @@ if (isset($_GET['rel'])) {
     // Country code
     $rel = strtolower(trim($_GET['rel']));
     if ($rel != 'ios' && $rel != 'android') {
-        die ('You made a mistake.');
+		$marks = json_decode('{"error": "The value of the parameter \'rel\' should be either \'ios\' or \'android\'. Please check your URL and try again."}');
+		header('Content-Type: application/json');
+		echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+		exit;
     }
 }
 
@@ -38,7 +53,7 @@ else {
     $query = "SELECT DISTINCT `ISO_Country`, $SpecificCountry FROM `countries`, `ISO_countries` WHERE `countries`.`ISO_Country` = `ISO_countries`.`ISO_countries` ORDER BY $SpecificCountry";	// create a prepared statement
 }
 
-$result=$db->query($query) or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
+$result=$db->query($query) or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error);
 
 $m=1;
 $first = '{';

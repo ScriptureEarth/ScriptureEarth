@@ -12,35 +12,44 @@ $cc = '';
 $country = '';
 if (isset($_GET['country'])) {
 	$country = $_GET['country'];
-	//if ($country != ) {
-	//	die ('HACK!');
-	//}
 }
 elseif (isset($_GET['cc'])) {
     $cc = $_GET['cc'];
     if (preg_match('/^[A-Z][A-Z]$/', $cc)) {
     }
     else {
-        die ('HACK!');
+        $marks = json_decode('{"error": "The country code does not exixt."}');
+        header('Content-Type: application/json');
+        echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        exit;
     }
 }
 else {
-    die ('HACK!');
+    $marks = json_decode('{"error": "Please provide a country code or a country name in the URL. For example, if you want to pull the record(s) for the Mexico, you can use either \'?cc=MX\' or \'?country=Mexico\'."}');
+    header('Content-Type: application/json');
+    echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    exit;
 }
 
 $query = "SELECT ISO_country, English FROM countries WHERE English = '$country' OR ISO_Country = '$cc'";
-$result=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
+$result=$db->query($query) or die ('Query failed: ' . $db->error);
 if ($result->num_rows <= 0) {
-    die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The '.$country.' is not found.</div></body></html>');
+    $marks = json_decode('{"error": "The '.$country.' is not found."}');
+    header('Content-Type: application/json');
+    echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    exit;
 }
 $r = $result->fetch_assoc();
 $iso_countries = $r['ISO_country'];
 $Eng_country = $r['English'];
 
 $query = "SELECT * FROM ISO_countries WHERE ISO_countries = '$iso_countries' ORDER BY ISO, ROD_Code, Variant_Code";
-$result=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
+$result=$db->query($query) or die ('Query failed: ' . $db->error);
 if ($result->num_rows <= 0) {
-    die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The '.$iso_countries.' index is not found.</div></body></html>');
+    $marks = json_decode('{"error": "The '.$iso_countries.' index is not found."}');
+    header('Content-Type: application/json');
+    echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    exit;
 }
 
 $stmt_English = $db->prepare("SELECT LN_English FROM LN_English WHERE ISO_ROD_index = ?");
@@ -82,7 +91,10 @@ while ($row = $result->fetch_assoc()) {
 	$stmt_English->execute();													                // execute query
 	$result_LN = $stmt_English->get_result();
     if ($result_LN->num_rows <= 0) {
-        die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The '.$iso.' is not found.</div></body></html>');
+        $marks = json_decode('{"error": "The ['.$iso.'] is not found."}');
+        header('Content-Type: application/json');
+        echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        exit;
     }
     $row_LN = $result_LN->fetch_assoc();
     $LN_English = $row_LN['LN_English'];

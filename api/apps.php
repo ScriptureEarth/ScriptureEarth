@@ -20,7 +20,10 @@ if ($index == 0) {
 	if (isset($_GET['cc']) || isset($_GET['country'])) {
 	}
 	else {
-		die ('You made a mistake.');
+		$marks = json_decode('{"error": "Please provide a country code or a country name in the URL. For example, if you want to pull the record(s) for the Mexico, you can use either \'?cc=MX\' or \'?country=Mexico\'."}');
+		header('Content-Type: application/json');
+		echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+		exit;
 	}
 }
 
@@ -67,7 +70,7 @@ elseif ($index == 1) {
 else {
 	if ($iso == 'ALL') {
 		$stmt_app = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `Cell_Phone_Title`, `Cell_Phone_File`, `optional` FROM `CellPhone` WHERE (`Cell_Phone_Title` = 'iOS Asset Package' OR `Cell_Phone_Title` = 'Android App') ORDER BY `ISO`, `ROD_Code`, `Variant_Code`, `Cell_Phone_Title`");
-		$stmt_app->bind_param();																// bind parameters for markers
+//		$stmt_app->bind_param();																// bind parameters for markers
 	}
 	elseif ($rod == 'ALL' && $var == 'ALL') {
 		$stmt_app = $db->prepare("SELECT `ISO`, `ROD_Code`, `Variant_Code`, ISO_ROD_index, `Cell_Phone_Title`, `Cell_Phone_File`, `optional` FROM `CellPhone` WHERE `ISO` = ? AND (`Cell_Phone_Title` = 'iOS Asset Package' OR `Cell_Phone_Title` = 'Android App') ORDER BY `ROD_Code`, `Variant_Code`, `Cell_Phone_Title`");
@@ -91,7 +94,10 @@ $stmt_app->execute();															        		// execute query
 $result_app = $stmt_app->get_result();
 
 if ($result_app->num_rows == 0) {
-	die ('The record(s) in the App does not exist. Try a different iso or idx or cc or country.');
+    $marks = json_decode('{"error": "The record(s) in the App does not exist. Try a different iso or idx or cc or country."}');
+    header('Content-Type: application/json');
+    echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    exit;
 }
 
 $stmt_var = $db->prepare("SELECT Variant_Eng FROM Variants WHERE Variant_Code = ?");

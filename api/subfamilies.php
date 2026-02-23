@@ -40,16 +40,19 @@ if (isset($_GET['all'])) {
 	if ($all == 'justsubfamilies') {
 		$index = 1;
 		$stmt_subfamilies = $db->prepare("SELECT `subfamily`, `multipleCountries`, `countryCodes` FROM `subfamilies` WHERE `ISO` = '' ORDER BY `subfamily`");
-		$stmt_subfamilies->execute();															// execute query
+		$stmt_subfamilies->execute();														// execute query
 		$result_subfamilies = $stmt_subfamilies->get_result();
 	}
-	elseif ($all == 'subfamilies') {															// all subfamilies
+	elseif ($all == 'subfamilies') {														// all subfamilies
 		$index = 3;
 		$stmt_subfamilies = $db->prepare("SELECT `subfamily`, `multipleCountries`, `countryCodes` FROM `subfamilies` WHERE `ISO` = '' ORDER BY `subfamily`");
-		$stmt_subfamilies->execute();															// execute query
+		$stmt_subfamilies->execute();														// execute query
 		$result_subfamilies = $stmt_subfamilies->get_result();
 		if ($result_subfamilies->num_rows === 0) {
-			die('subfamilies table does not have empty ISO\'s.');
+			$marks = json_decode('{"error": "The subfamilies table does not have empty ISO\'s."}');
+			header('Content-Type: application/json');
+			echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+			exit;
 		}
 		$stmt_subfamily = $db->prepare("SELECT ISO, ROD_Code, Variant_Code, ISO_ROD_index, `subfamily`, LN_English, multipleCountries, countryCodes FROM `subfamilies` WHERE  `subfamily` = ? AND LN_English <> '' ORDER BY `subfamily`, `ISO`, `ROD_Code`");
 		//$stmt_countries = $db->prepare("SELECT countries.English FROM countries, ISO_Lang_Countries WHERE countries.ISO_Country = ISO_Lang_Countries.ISO_Country AND ISO_Lang_Countries.ISO = ?");
@@ -57,19 +60,27 @@ if (isset($_GET['all'])) {
 		$stmt_var = $db->prepare("SELECT Variant_Eng FROM Variants WHERE Variant_Code = ?");
 	}
 	else {
-		die('Suspicious activity!');
+		$marks = json_decode('{"error": "A value for all is not found."}');
+		header('Content-Type: application/json');
+		echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+		exit;
 	}
 }
-elseif (isset($_GET['subfamily'])) {															// a subfamily
+elseif (isset($_GET['subfamily'])) {														// a subfamily
 	$subfamily = $_GET['subfamily'];
 	$index = 2;
-	$stmt_subfamilies = $db->prepare("SELECT `multipleCountries`, `countryCodes` FROM `subfamilies` WHERE `subfamily` = '$subfamily' AND `ISO` = '' ORDER BY `subfamily`");
-	$stmt_subfamilies->execute();																// execute query
+	$stmt_subfamilies = $db->prepare("SELECT `multipleCountries`, `countryCodes` FROM `subfamilies` WHERE `subfamily` = ? AND `ISO` = '' ORDER BY `subfamily`");
+	$stmt_subfamilies->bind_param('s', $subfamily);											// bind parameters for markers
+	$stmt_subfamilies->execute();															// execute query
 	$result_subfamilies = $stmt_subfamilies->get_result();
 	if ($result_subfamilies->num_rows === 0) {
-		die('subfamilies table does not have empty ISO\'s within the '.$subfamily.' subfamily.');
+		$marks = json_decode('{"error": "The subfamilies table does not have empty ISO\'s within the '.$subfamily.' subfamily."}');
+		header('Content-Type: application/json');
+		echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+		exit;
 	}
-	$stmt_subfamily = $db->prepare("SELECT ISO, ROD_Code, Variant_Code, ISO_ROD_index, LN_English, multipleCountries, countryCodes FROM `subfamilies` WHERE `subfamily` = '$subfamily' AND LN_English <> '' ORDER BY `ISO`, `ROD_Code`");
+	$stmt_subfamily = $db->prepare("SELECT ISO, ROD_Code, Variant_Code, ISO_ROD_index, LN_English, multipleCountries, countryCodes FROM `subfamilies` WHERE `subfamily` = ? AND LN_English <> '' ORDER BY `ISO`, `ROD_Code`");
+	$stmt_subfamily->bind_param('s', $subfamily);											// bind parameters for markers
 	$stmt_subfamily->execute();																// execute query
 	$result_subfamily = $stmt_subfamily->get_result();
 	//$stmt_countries = $db->prepare("SELECT countries.English FROM countries, ISO_Lang_Countries WHERE countries.ISO_Country = ISO_Lang_Countries.ISO_Country AND ISO_Lang_Countries.ISO = ?");
@@ -77,7 +88,10 @@ elseif (isset($_GET['subfamily'])) {															// a subfamily
 	$stmt_var = $db->prepare("SELECT Variant_Eng FROM Variants WHERE Variant_Code = ?");
 }
 else {
-	die('Suspicious activity!');
+	$marks = json_decode('{"error": "Please provide a subfamily or all. For example, if you want to pull the record(s) for the Náhuatl subfamily, you can use \'?subfamily=Nahuatl\'. If you want to pull the record(s) for all of the subfamilies, you can use \'?all=subfamilies\'."}');
+	header('Content-Type: application/json');
+	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
 }
 
 if ($index == 1) {																			// just subfamilies

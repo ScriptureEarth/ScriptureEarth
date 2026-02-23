@@ -9,29 +9,44 @@ $db = get_my_db();
 if (isset($_GET['key'])) {																		// key
 	$key = $_GET['key'];
 	$query="SELECT * FROM api_users WHERE `key` = '$key'";
-	$result=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
+	$result=$db->query($query) or die ('Query failed: ' . $db->error);
 	if ($result->num_rows <= 0) {
-		die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-left: 200px; margin-top: 200px; ">The key is in error.</div></body></html>');
+        $marks = json_decode('{"error": "The key is in error."}');
+        header('Content-Type: application/json');
+        echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        exit;
 	}
 }
 else {
-    die ('HACK!');
+	$marks = json_decode('{"error": "The key is missing."}');
+	header('Content-Type: application/json');
+	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
 }
 if (isset($_GET['v'])) {																		// version
 	$v = (float)$_GET['v'];
 	if ($v != .5) {																				// version = 1
-		die ('HACK!');
+        $marks = json_decode('{"error": "The version is not supported."}');
+        header('Content-Type: application/json');
+        echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        exit;
 	}
 }
 else {
-    die ('HACK!');
+	$marks = json_decode('{"error": "The version is missing."}');
+	header('Content-Type: application/json');
+	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
 }
 if (isset($_GET['cc'])) {																		// country code
 	$cc = trim($_GET['cc']);
 	if (preg_match('/^[A-Z][A-Z]$/', $cc)) {
 	}
 	else {
-		die ('HACK!');
+        $marks = json_decode('{"error": "The country code is not valid."}');
+        header('Content-Type: application/json');
+        echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        exit;
 	}
 }
 else {
@@ -51,9 +66,12 @@ if ($cc != '') {
 else {
 	$query="SELECT distinct ISO_countries FROM ISO_countries ORDER BY ISO_countries";
 }
-$result=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
+$result=$db->query($query) or die ('Query failed: ' . $db->error);
 if ($result->num_rows <= 0) {
-	die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The ISO/ROD index is not found.</div></body></html>');
+	$marks = json_decode('{"error": "The ISO/ROD index is not found."}');
+	header('Content-Type: application/json');
+	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
 }
 while ($row = $result->fetch_array()) {
 	$m++;

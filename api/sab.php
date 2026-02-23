@@ -13,7 +13,10 @@ include 'include/v.key.php';																	// get v and key
 include 'include/idx.iso.php';																	// get idx or iso
 
 if ($index == 0) {
-	die ('HACK!');
+	$marks = json_decode('{"error": "The index is not found."}');
+	header('Content-Type: application/json');
+	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
 }
 
 if ($index== 1) {
@@ -48,7 +51,10 @@ $result_Scriptoria = $stmt_Scriptoria->get_result();
 
 $Scriptoria_rows = $result_Scriptoria->num_rows;
 if ($Scriptoria_rows == 0) {
-	die ('The SAB HTML in the Scriptoria table does not exist. Try a different iso or idx.');
+	$marks = json_decode('{"error": "The SAB HTML in the Scriptoria table does not exist. Try a different iso or idx."}');
+	header('Content-Type: application/json');
+	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
 }
 
 $stmt_var = $db->prepare("SELECT Variant_Eng FROM Variants WHERE Variant_Code = ?");
@@ -169,6 +175,13 @@ $first .= '}';
 
 //echo $first;
 //exit;
+
+if ($first == '{}') {
+	$marks = json_decode('{"error": "Either there is no path or there is no html files in that path."}');
+	header('Content-Type: application/json');
+	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
+}
 
 $marks = [];
 $marks = json_decode($first);

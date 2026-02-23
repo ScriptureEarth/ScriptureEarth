@@ -34,16 +34,9 @@
 		$first .= '"idx":		        '.$idx.',';
         $first .= '"idx_query_string":	"idx='.$idx.'",';
 		$first .= '"language_name": {';
-		$first .= '"English":			"'.$LN_English.'",';
-		$first .= '"Spanish":			"'.$LN_Spanish.'",';
-		$first .= '"Portuguese":		"'.$LN_Portuguese.'",';
-		$first .= '"French":			"'.$LN_French.'",';
-		$first .= '"Dutch":				"'.$LN_Dutch.'",';
-		$first .= '"German":			"'.$LN_German.'",';
-		$first .= '"Chinese":			"'.$LN_Chinese.'",';
-		$first .= '"Korean":			"'.$LN_Korean.'",';
-		$first .= '"Russian":			"'.$LN_Russian.'",';
-		$first .= '"Arabic":			"'.$LN_Arabic.'",';
+		foreach ($LNames as $LN) {
+			$first .= '"'.$LN.'":			"'.${'LN_'.$LN}.'",';
+		}
 		$first .= '"minority":			""';
 		$first .= '},';
 		$first .= '"alternate_language_count":		'.$alt_ln.',';                              // how many

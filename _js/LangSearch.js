@@ -70,11 +70,11 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
     }
    else {
         // saltillo: ꞌ = U+A78C
-        let re = /[-. ,'?()a-záéíóúàèìòùÑñçãõâêîôûäëöüïǃǂǁǀ!|]/ui;          // the '-' has to go first
+        let re = /[-. ,'\u{a78c}?()a-záéíóúàèìòùÑñçãõâêîôûäëöüïǃǂǁǀ!|]/ui;  // the '-' has to go first
         let foundArray = re.test(str.substring(str.length - 1));            // the last character of the str
-        if (!foundArray) {                                                  // is the value of the last character of the str isn't A-Za - z then it returns
+        if (!foundArray) {                                                  // is the value of the last character of the str isn't A-Za-z then it returns
             document.getElementById("ID").value = document.getElementById("ID").value.substring(0, document.getElementById("ID").value.length - 1);
-            alert(str.substring(str.length - 1) + " is an invalid character. Use an alphabetic character or - , ' ?[saltillo] ( )  [space]");
+            alert(str.substring(str.length - 1) + " is an invalid character. Use an alphabetic character or - . , ' [saltillo] ( ) [space]");
             str = str.substring(0, str.length - 1);
             if (str.length == 0) {
                 document.getElementById("ID").innerHTML = '';

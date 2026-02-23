@@ -37,6 +37,7 @@ $stmt_links = $db->prepare("SELECT LOWER(company) AS company_temp, map, BibleIs,
 $stmt_CellPhone = $db->prepare("SELECT Cell_Phone_Title FROM CellPhone WHERE ISO_ROD_index = ?");
 $stmt_PlaylistVideo = $db->prepare("SELECT PlaylistVideoDownload FROM PlaylistVideo WHERE ISO_ROD_index = ?");
 $stmt_other_titles = $db->prepare("SELECT COUNT(*) AS ePub FROM other_titles WHERE ISO_ROD_index = ? AND other_PDF LIKE '%.epub'");
+
 $stmt_English = $db->prepare("SELECT LN_English FROM LN_English WHERE ISO_ROD_index = ?");
 $stmt_Spanish = $db->prepare("SELECT LN_Spanish FROM LN_Spanish WHERE ISO_ROD_index = ?");
 $stmt_Portuguese = $db->prepare("SELECT LN_Portuguese FROM LN_Portuguese WHERE ISO_ROD_index = ?");
@@ -53,12 +54,13 @@ if ($index == 1) {					// idx
 	$query = "SELECT * FROM scripture_main, nav_ln WHERE `scripture_main`.`ISO_ROD_index` = $idx AND `scripture_main`.`ISO_ROD_index` = `nav_ln`.`ISO_ROD_index`";
 	$result=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
 	if ($result->num_rows === 0) {
-		die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The ISO/ROD index is not found.</div></body></html>');
+		$marks = json_decode('{"error": "The ISO 639-3/ROD index is not found."}');
+		header('Content-Type: application/json');
+		echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+		exit;
 	}
 	$row = $result->fetch_array();
-
 	include("include/ISO_details.php");
-
 	include('include/LN_details.php');	
 	// Author: 'ChickenFeet'
 	//$LN_[the language name] = CheckLetters($LN_[the language name]);							// diacritic removal
@@ -81,7 +83,10 @@ elseif ($index == 2) {						// iso/rod/var
 	$query = "SELECT * FROM scripture_main, nav_ln WHERE scripture_main.ISO = '$iso' " . ($rod == 'ALL' ? '' : "AND scripture_main.ROD_Code = '$rod' ") . ($var == 'ALL' ? '' : "AND scripture_main.Variant_Code = '$var'") . " AND `scripture_main`.`ISO_ROD_index` = `nav_ln`.`ISO_ROD_index`";
 	$result=$db->query($query) or die ('Query failed:' . $db->error . '</body></html>');
 	if ($result->num_rows === 0) {
-		die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The ISO language code is not found.</div></body></html>');
+		$marks = json_decode('{"error": "The ISO 639-3 code [' . $iso . '] is not found."}');
+		header('Content-Type: application/json');
+		echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+		exit;
 	}
 
 	//$temp_array = [];
@@ -91,9 +96,7 @@ elseif ($index == 2) {						// iso/rod/var
 	$first = '{';
 	while ($row = $result->fetch_array()) {
 		$m++;
-
 		include("include/ISO_details.php");
-
 		include('include/LN_details.php');
 		// Author: 'ChickenFeet'
 		//$LN_[the language name] = CheckLetters([the language name]);							// diacritic removal
@@ -121,7 +124,10 @@ else {										// part of the language/alternate names
 	$query="SELECT * FROM `scripture_main`, `nav_ln` WHERE `scripture_main`.`ISO_ROD_index` = `nav_ln`.`ISO_ROD_index` ORDER BY `scripture_main`.`ISO`";
 	if ($result = $db->query($query)) {
 		if ($result->num_rows <= 0) {
-			die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The language name is not found.</div></body></html>');
+			$marks = json_decode('{"error": "The language name is not found."}');
+			header('Content-Type: application/json');
+			echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+			exit;
 		}
 		$LN = [];
 		$m = 0;
@@ -148,7 +154,10 @@ else {										// part of the language/alternate names
 				$stmt_main->execute();															// execute query
 				if ($result_temp = $stmt_main->get_result()) {
 					if ($result_temp->num_rows <= 0) {
-						die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The language name is not found.</div></body></html>');
+						$marks = json_decode('{"error": "The language name is not found."}');
+						header('Content-Type: application/json');
+						echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+						exit;
 					}
 
 					//$alt = '';

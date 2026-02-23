@@ -28,7 +28,10 @@ include 'include/v.key.php';																	// get v and key
 include 'include/idx.iso.php';																	// get idx or iso
 
 if ($index == 0) {
-	die ('HACK!');
+	$marks = json_decode('{"error": "The index is not found."}');
+	header('Content-Type: application/json');
+	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
 }
 
 if ($index== 1) {
@@ -63,7 +66,10 @@ $result_links = $stmt_links->get_result();
 
 $links_rows = $result_links->num_rows;
 if ($links_rows == 0) {
-	die ('The links table does not exist for website links. Try a different iso or idx.');
+	$marks = json_decode('{"error": "The links table does not exist for website links. Try a different iso or idx."}');
+	header('Content-Type: application/json');
+	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
 }
 
 $stmt_var = $db->prepare("SELECT Variant_Eng FROM Variants WHERE Variant_Code = ?");

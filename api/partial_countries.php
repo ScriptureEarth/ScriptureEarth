@@ -12,11 +12,17 @@ $country = '';
 if (isset($_GET['pc'])) {
 	$country = $_GET['pc'];
 	if (strlen($country) < 2) {
-		die ('country is less that three letters');
+        $marks = json_decode('{"error": "country is less that three letters."}');
+        header('Content-Type: application/json');
+        echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        exit;
 	}
 }
 else {
-    die ('HACK!');
+	$marks = json_decode('{"error": "Please provide a partial country name. For example, if you want to pull the record(s) for the Mexico, you can use \'?pc=Mex\'."}');
+	header('Content-Type: application/json');
+	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
 }
 
 $SpecificCountry = 'English';
@@ -26,14 +32,20 @@ if (isset($_GET['ml'])) {
 	if ($SpecificCountry == 'English' || $SpecificCountry == 'Spanish' || $SpecificCountry == 'Portuguese' || $SpecificCountry == 'French' || $SpecificCountry == 'Dutch' || $SpecificCountry == 'German' || $SpecificCountry == 'Chinese' || $SpecificCountry == 'Korean' || $SpecificCountry == 'Russian' || $SpecificCountry == 'Arabic') {
 	}
     else {
-		die ('HACK!');
+        $marks = json_decode('{"error": "A navigational language is not found."}');
+        header('Content-Type: application/json');
+        echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        exit;
     }
 }
 
 $query="SELECT ISO_Country, ISO_ROD_index, ISO, ROD_Code, Variant_Code, $SpecificCountry FROM countries, ISO_countries WHERE countries.ISO_Country = ISO_countries.ISO_countries AND countries.$SpecificCountry RLIKE '(^|[- \(]+)$country' ORDER BY $SpecificCountry";		// create a prepared statement; RLIKE '(^|[- \(]+)$country' equals REGEX the parial $country at the beggining of the line OR the line with -, "space", ")" at the beginning a of word.
-$result=$db->query($query) or die ('Query failed: ' . $db->error . '</body></html>');
+$result=$db->query($query) or die ('Query failed: ' . $db->error);
 if ($result->num_rows <= 0) {
-    die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The partial "'.$country.'" could not be found.</div></body></html>');
+	$marks = json_decode('{"error": "The partial "'.$country.'" could not be found."}');
+	header('Content-Type: application/json');
+	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	exit;
 }
 
 $stmt = $db->prepare("SELECT LN_English FROM LN_English WHERE ISO_ROD_index = ?");
@@ -75,7 +87,10 @@ while ($row = $result->fetch_assoc()) {
 	$stmt->execute();													                        // execute query
 	$result_LN = $stmt->get_result();
     if ($result_LN->num_rows <= 0) {
-        die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The idx "'.$idx.'" for iso "'.$iso.'" is not found.</div></body></html>');
+    	$marks = json_decode('{"error": "The idx "'.$idx.'" for iso "'.$iso.'" is not found."}');
+        header('Content-Type: application/json');
+        echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        exit;
     }
     $row_LN = $result_LN->fetch_assoc();
     $LN = $row_LN["LN_English"];
