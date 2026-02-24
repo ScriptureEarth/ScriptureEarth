@@ -19,6 +19,18 @@ if (!$retval) {
 /****************************************************************************************************************
     GET variables
 ****************************************************************************************************************/
+    /*
+        1a -> SABUPDATE(projectName, description, idx, subfolder, SABIndex, add_index, iso)
+        1b -> SABINSERT(projectName, description, idx, subfolder, iso, rod, variant, SAB_number, add_index)
+        2a -> SABUPDATE2(url, projectName, description, idx, SABIndex, add_index, iso)
+        2b -> SABINSERT2(url, projectName, description, idx, iso, rod, variant, SAB_number, add_index)
+        3a -> APKUPDATE(url, projectName, description, idx, APKIndex, add_index, iso)
+        3b -> APKINSERT(url, projectName, description, idx, iso, rod, variant, add_index)
+        4a -> iosUPDATE(url, projectName, description, idx, iosIndex, add_index, iso)
+        4b -> iosINSERT(url, projectName, description, idx, iso, rod, variant, add_index)
+        5a -> GPSUPDATE(url, projectName, description, idx, GPSIndex, add_index, iso)
+        5b -> GPSINSERT(url, projectName, description, idx, iso, rod, variant, add_index)
+    */
     if (isset($_GET['number'])) $number = $_GET['number']; else { die('none'); }                    // 1a - 5b
     if (preg_match('/^[1-5][ab]$/', $number) == 0) { die('none'); }			                        // only one number and lower case letter allowed
     if (isset($_GET['name'])) $name = $_GET['name']; else { die('none'); }                          // projectName from add_resource table

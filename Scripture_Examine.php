@@ -289,7 +289,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 echo "<option value='$SABIndexArray[$k]'>$num => Description: $SABDescriptionArray[$k]; URL: $SABurlArray[$k]</option>";
             }
             echo "</select><br /><br />&nbsp;&nbsp;&nbsp;";
-            echo "<input type='button' name='accept' value='UPDATE' onclick='SABUPDATE2(\"$url\", \"$projectName\", \"$description\", $idx, document.getElementById(\"SABSelect\").value, $add_index)' />&nbsp;&nbsp;&nbsp;";
+            echo "<input type='button' name='accept' value='UPDATE' onclick='SABUPDATE2(\"$url\", \"$projectName\", \"$description\", $idx, document.getElementById(\"SABSelect\").value, $add_index, \"$iso\")' />&nbsp;&nbsp;&nbsp;";
             echo "<input type='button' name='result' value='INSERT as new SAB' onclick='SABINSERT2(\"$url\", \"$projectName\", \"$description\", $idx, \"$iso\", \"$rod\", \"$var\", $k, $add_index)' />&nbsp;&nbsp;&nbsp;";
             echo "<input id='cancel' type='button' value='Cancel' onclick='window.location.href = window.location.href' />";    // No changes made to CellPhone table WHILE $idx AND 'Android App'. So, return to Scripture_Examine.php.
             echo "</div>";
@@ -298,9 +298,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 /****************************************************************************************************************
                     fetch - ExamineSubmit.php - UPDATE SAB with URL
                 ****************************************************************************************************************/
-                async function SABUPDATE2(url, projectName, description, idx, SABIndex, add_index) {
+                async function SABUPDATE2(url, projectName, description, idx, SABIndex, add_index, iso) {
                     try {
-                        const responseSAB = await fetch("ExamineSubmit.php?number=2a&url="+url+"&name="+projectName+"&description="+description+"&idx="+idx+"&SABIndex="+SABIndex+"&add_index="+add_index);
+                        const responseSAB = await fetch("ExamineSubmit.php?number=2a&url="+url+"&name="+projectName+"&description="+description+"&idx="+idx+"&SABIndex="+SABIndex+"&add_index="+add_index+"&iso="+iso);
                         const textSAB = await responseSAB.text();
                         if (textSAB == "none") {
                             console.log("2a. Did you make a mistake?");
@@ -378,10 +378,10 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
             $k=0;
             for ($k=0; $k < count($APKIndexArray); $k++) {
                 $num = $k + 1;
-                echo "<option value='$APKIndexArray[$k]'>$num => Description: $APKDescriptionArray[$k]; Filename: $APKFilenameArray[$k]</option>";
+                echo "<option value='$APKIndexArray[$k]'>$num => Description: $APKDescriptionArray[$k]; URL/Filename: $APKFilenameArray[$k]</option>";
             }
             echo "</select><br /><br />&nbsp;&nbsp;&nbsp;";
-            echo "<input type='button' name='accept' value='UPDATE' onclick='APKUPDATE(\"$url\", \"$projectName\", \"$description\", $idx, document.getElementById(\"APKSelect\").value, $add_index)' />&nbsp;&nbsp;&nbsp;";      // document.getElementById(\"APKSelect\").value) = $APKIndexArray[$k] of the selected APKIndexArray = CellPhone_index
+            echo "<input type='button' name='accept' value='UPDATE' onclick='APKUPDATE(\"$url\", \"$projectName\", \"$description\", $idx, document.getElementById(\"APKSelect\").value, $add_index, \"$iso\")' />&nbsp;&nbsp;&nbsp;";      // document.getElementById(\"APKSelect\").value) = $APKIndexArray[$k] of the selected APKIndexArray = CellPhone_index
             echo "<input type='button' name='result' value='INSERT as new APK' onclick='APKINSERT(\"$url\", \"$projectName\", \"$description\", $idx, \"$iso\", \"$rod\", \"$var\", $add_index)' />&nbsp;&nbsp;&nbsp;";
             echo "<input id='cancel' type='button' value='Cancel' onclick='window.location.href = window.location.href' />";    // No changes made to CellPhone table WHILE $idx AND 'Android App'. So, return to Scripture_Examine.php.
             echo "</div>";
@@ -390,9 +390,10 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 /****************************************************************************************************************
                     fetch - ExamineSubmit.php - UPDATE APK
                 ****************************************************************************************************************/
-                async function APKUPDATE(url, projectName, description, idx, APKIndex, add_index) {
+                async function APKUPDATE(url, projectName, description, idx, APKIndex, add_index, iso) {
                     try {
-                        const responseAPK = await fetch("ExamineSubmit.php?number=3a&url="+url+"&name="+projectName+"&description="+description+"&idx="+idx+"&APKIndex="+APKIndex+"&add_index="+add_index);
+    alert("url: " + url + "\nprojectName: " + projectName + "\ndescription: " + description + "\nidx: " + idx + "\nAPKIndex: " + APKIndex + "\nadd_index: " + add_index + "\niso: " + iso);
+                        const responseAPK = await fetch("ExamineSubmit.php?number=3a&url="+url+"&name="+projectName+"&description="+description+"&idx="+idx+"&APKIndex="+APKIndex+"&add_index="+add_index+"&iso="+iso);
                         const textAPK = await responseAPK.text();
                         if (textAPK == "none") {
                             console.log("3a. Did you make a mistake?");
@@ -473,7 +474,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 echo "<option value='$iosIndexArray[$k]'>$num => Description: $iosDescriptionArray[$k]; Filename: $temp...</option>";
             }
             echo "</select><br /><br />&nbsp;&nbsp;&nbsp;";
-            echo "<input type='button' name='accept' value='UPDATE' onclick='iosUPDATE(\"$url\", \"$projectName\", \"$description\", $idx, document.getElementById(\"iosSelect\").value, $add_index)' />&nbsp;&nbsp;&nbsp;";
+            echo "<input type='button' name='accept' value='UPDATE' onclick='iosUPDATE(\"$url\", \"$projectName\", \"$description\", $idx, document.getElementById(\"iosSelect\").value, $add_index, \"$iso\")' />&nbsp;&nbsp;&nbsp;";
             echo "<input type='button' name='result' value='INSERT as new iOS Asset Package' onclick='iosINSERT(\"$url\", \"$projectName\", \"$description\", $idx, \"$iso\", \"$rod\", \"$var\", $add_index)' />&nbsp;&nbsp;&nbsp;";
             echo "<input id='cancel' type='button' value='Cancel' onclick='window.location.href = window.location.href' />";    // No changes made to CellPhone table WHILE $idx AND 'iOS Asset Package'. So, return to Scripture_Examine.php.
             echo "</div>";
@@ -482,9 +483,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 /****************************************************************************************************************
                     fetch - ExamineSubmit.php - UPDATE iOS Asset Package
                 ****************************************************************************************************************/
-                async function iosUPDATE(url, projectName, description, idx, iosIndex, add_index) {
+                async function iosUPDATE(url, projectName, description, idx, iosIndex, add_index, iso) {
                     try {
-                        const responseios = await fetch("ExamineSubmit.php?number=4a&url="+url+"&name="+projectName+"&description="+description+"&idx="+idx+"&iosIndex="+iosIndex+"&add_index="+add_index);
+                        const responseios = await fetch("ExamineSubmit.php?number=4a&url="+url+"&name="+projectName+"&description="+description+"&idx="+idx+"&iosIndex="+iosIndex+"&add_index="+add_index+"&iso="+iso);
                         const textios = await responseios.text();
                         if (textios== "none") {
                             console.log("4a. Did you make a mistake?");
@@ -565,7 +566,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 echo "<option value='$LinksIndexArray[$k]'>$num => Title: $LinksTitleArray[$k]; URL: $LinksURLArray[$k]</option>";
             }
             echo "</select><br /><br />&nbsp;&nbsp;&nbsp;";
-            echo "<input type='button' name='accept' value='UPDATE' onclick='GPSUPDATE(\"$url\", \"$projectName\", \"$description\", $idx, document.getElementById(\"GPSSelect\").value, $add_index)' />&nbsp;&nbsp;&nbsp;";
+            echo "<input type='button' name='accept' value='UPDATE' onclick='GPSUPDATE(\"$url\", \"$projectName\", \"$description\", $idx, document.getElementById(\"GPSSelect\").value, $add_index, \"$iso\")' />&nbsp;&nbsp;&nbsp;";
             echo "<input type='button' name='result' value='INSERT as new Google Play Store' onclick='GPSINSERT(\"$url\", \"$projectName\", \"$description\", $idx, \"$iso\", \"$rod\", \"$var\", $add_index)' />&nbsp;&nbsp;&nbsp;";
             echo "<input id='cancel' type='button' value='Cancel' onclick='window.location.href = window.location.href' />";    // No changes made to CellPhone table WHILE $idx AND 'Android App'. So, return to Scripture_Examine.php.
             echo "</div>";
@@ -574,9 +575,9 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 /****************************************************************************************************************
                     fetch - ExamineSubmit.php - UPDATE Google Play Store
                 ****************************************************************************************************************/
-                async function GPSUPDATE(url, projectName, description, idx, GPSIndex, add_index) {
+                async function GPSUPDATE(url, projectName, description, idx, GPSIndex, add_index, iso) {
                     try {
-                        const responseGPS = await fetch("ExamineSubmit.php?number=5a&url="+url+"&name="+projectName+"&description="+description+"&idx="+idx+"&GPSIndex="+GPSIndex+"&add_index="+add_index);
+                        const responseGPS = await fetch("ExamineSubmit.php?number=5a&url="+url+"&name="+projectName+"&description="+description+"&idx="+idx+"&GPSIndex="+GPSIndex+"&add_index="+add_index+"&iso="+iso);
                         const textGPS = await responseGPS.text();
                         if (textGPS == "none") {
                             console.log("5a. Did you make a mistake?");
