@@ -298,11 +298,12 @@ indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre H
           	  <div id='aclick' style='text-align: center; position: relative; top: 12px; left: 0px; width: 153px; height: 19px; font-size: 9pt; font-weight: bold; color: #B60000; '>
               	click to enter
               </div>
-              <?php 
+              <?php
+					echo "<script>console.log('Debug: " . $_SESSION['nav_ln_array'][0][1] . "');</script>";
 			  		foreach ($_SESSION['nav_ln_array'] as $code => $array){
-						echo '<div style="margin: 13px 0px; ">
-						<a id="a'.$array[1].'" class="alink '.$array[0].'" href="'.$array[2].'" onMouseOver="hover(\''.$array[0].'\', \'' . translate('click to enter', $array[0], 'sys') . '\')">'.translate($array[1], $array[0], 'sys'). ($asset == 1 ? '?asset=1' : '' ).'</a>
-						</div>';
+						echo '<div style="margin: 13px 0px; ">';
+						echo '<a id="a'.$array[1].'" class="alink '.$array[0].'" href="'.$array[2].'" onMouseOver="hover(\''.$array[0].'\', \'' . translate('click to enter', $array[0], 'sys') . '\')">'.translate($array[1], $array[0], 'sys'). ($asset == 1 ? '?asset=1' : '' ).'</a>';
+						echo '</div>';
 					}
 			  ?>
           </div>
@@ -314,11 +315,11 @@ indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre H
           <a href="metadata/metadata.htm" style="text-decoration: none; display: none; "></a>
 			<?php
 				foreach ($_SESSION['nav_ln_array'] as $code => $array){
-					echo '<div id="hover'.$array[1].'" class="hover '.$array[0].'">
-					<div class="middleText">
-						'.$Dummy_Data[$array[3]].'
-					</div>
-				  </div>';
+					echo '<div id="hover'.$array[1].'" class="hover '.$array[0].'">';
+					echo '<div class="middleText">';
+						echo $Dummy_Data[$array[3]];
+					echo '</div>';
+				  echo '</div>';
 				}
 			?>
         </div>
@@ -335,22 +336,22 @@ indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre H
 				echo Counter2();
 			?>
 			<?php
-				foreach ($_SESSION['nav_ln_array'] as $code => $array){
+				foreach ($_SESSION['nav_ln_array'] as $code => $array) {
 					echo '<div class="visit '.$array[0].'" style="display: none; "> '.translate('visits', $array[0], 'sys').'</div>';
 				}
 			?>
         </div>
 		<?php
 			foreach ($_SESSION['nav_ln_array'] as $code => $array){
-				echo '<ul id="ul'.$array[1].'" class="list '.$array[0].'">
-				<li class="bottomBannerText"><a class="bottomBannerWord" href="#" onMouseUp="loadIFrame(\''.$array[4].'\', \'CR\')">'.translate('Copyright', $array[0], 'sys').'</a></li>
-				<li class="bottomBannerText">|</li>
-				<li class="bottomBannerText"><a class="bottomBannerWord" href="#" onMouseUp="loadIFrame(\''.$array[4].'\', \'TC\')">'.translate('Terms and Conditions', $array[0], 'sys').'</a></li>
-				<li class="bottomBannerText">|</li>
-				<li class="bottomBannerText"><a class="bottomBannerWord" href="#" onMouseUp="loadIFrame(\''.$array[4].'\', \'P\')">'.translate('Privacy', $array[0], 'sys').'</a></li>
-				<li class="bottomBannerText">|</li>
-				<li class="bottomBannerText"><a class="bottomBannerWord" href="#" onMouseUp="loadIFrame(\''.$array[4].'\', \'CU\')">'.translate('Contact/Links', $array[0], 'sys').'</a></li>
-			</ul>';
+				echo '<ul id="ul'.$array[1].'" class="list '.$array[0].'">';
+					echo '<li class="bottomBannerText"><a class="bottomBannerWord" href="#" onMouseUp="loadIFrame(\''.$array[4].'\', \'CR\')">'.translate('Copyright', $array[0], 'sys').'</a></li>';
+					echo '<li class="bottomBannerText">|</li>';
+					echo '<li class="bottomBannerText"><a class="bottomBannerWord" href="#" onMouseUp="loadIFrame(\''.$array[4].'\', \'TC\')">'.translate('Terms and Conditions', $array[0], 'sys').'</a></li>';
+					echo '<li class="bottomBannerText">|</li>';
+					echo '<li class="bottomBannerText"><a class="bottomBannerWord" href="#" onMouseUp="loadIFrame(\''.$array[4].'\', \'P\')">'.translate('Privacy', $array[0], 'sys').'</a></li>';
+					echo '<li class="bottomBannerText">|</li>';
+					echo '<li class="bottomBannerText"><a class="bottomBannerWord" href="#" onMouseUp="loadIFrame(\''.$array[4].'\', \'CU\')">'.translate('Contact/Links', $array[0], 'sys').'</a></li>';
+				echo '</ul>';
 			}
 				// <li class="bottomBannerText"><a class="bottomBannerWord" href="#" onMouseUp="loadIFrame(\''.$array[4].'\', \'H\')"'.translate('Help', $array[0], 'sys').'></a></li>
 				// <li class="bottomBannerText">|</li>

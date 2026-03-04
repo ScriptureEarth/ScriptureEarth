@@ -34,9 +34,11 @@
 		$first .= '"idx":		        '.$idx.',';
         $first .= '"idx_query_string":	"idx='.$idx.'",';
 		$first .= '"language_name": {';
-		foreach ($LNames as $LN) {
-			$first .= '"'.$LN.'":			"'.${'LN_'.$LN}.'",';
+
+		foreach ($LNames as $key => $LName) {
+			$first .= '"'.$key.'":			"'.$LName.'",';										// e.g., '"English":	"[English Language Name]",'
 		}
+
 		$first .= '"minority":			""';
 		$first .= '},';
 		$first .= '"alternate_language_count":		'.$alt_ln.',';                              // how many

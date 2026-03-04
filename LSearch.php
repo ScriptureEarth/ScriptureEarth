@@ -321,7 +321,9 @@ if (strlen($TryLanguage) > 2) {
 					$bool = 0;
 					while ($row_alt = $result_alt->fetch_assoc()) {
 						$alt_temp = $row_alt['alt_lang_name'];
-						if (preg_match_all("/(\s|-|^)".$TryLanguage."/ui", mb_strtolower($alt_temp))) {
+						$find_temp = array("(",")");
+						$alt_temp_temp = str_replace($find_temp, '', $alt_temp);
+						if (preg_match_all("/(\s|-|^)".$TryLanguage."/ui", mb_strtolower($alt_temp_temp))) {
 							if ($bool == 0) {
 								$alt = $alt_temp;
 								$bool = 1;

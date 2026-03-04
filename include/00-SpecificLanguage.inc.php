@@ -2375,7 +2375,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 								echo "<td style='width: {$width}px; vertical-align: top; '>";
 									// $single[0] = text name
 									// $single[1] = filename
-									$temp = filesize($single[1]);
+									$temp = filesize("$single[1]");		// the file is on the same server as the PHP script
 									$temp = intval($temp/1024);			// MB
 									$ZipFile = round($temp/1024, 2);
 									$ZipFile = round($ZipFile, 1);
@@ -4049,7 +4049,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					echo "<img class='iconActions' src='../images/email-icon.jpg' alt='Email' title='Email' />";
 				echo "</td>";
 				echo "<td>";
-					if (strpos('+()0123456789 ', substr($URL, 0, 1) !== false)) {									// if string contains the first character in $URL
+					if (strpos('+()0123456789 ', substr($URL, 0, 1)) !== false) {									// if string contains the first character in $URL
 						echo "<div class='linePointer'>$company_title : $URL</div>";
 					}
 					else {

@@ -13,13 +13,16 @@ include 'include/v.key.php';																	// get v and key
 include 'include/idx.iso.php';																	// get idx or iso
 
 if ($index == 0) {																				// or language language and alternate language names
-	// retrieve all of the language names
+	// retrieve all of the partial language names
 	if (isset($_GET['pln'])) {
 		$languageName = $_GET['pln'];
 		$index = 3;																				// $index = 3;
 	}
 	else {
-		die ('HACK!');
+		$marks = json_decode('{"error": "Did you make a mistake?"}');
+		header('Content-Type: application/json');
+		echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+		exit;
 	}
 }
 
@@ -38,16 +41,17 @@ $stmt_CellPhone = $db->prepare("SELECT Cell_Phone_Title FROM CellPhone WHERE ISO
 $stmt_PlaylistVideo = $db->prepare("SELECT PlaylistVideoDownload FROM PlaylistVideo WHERE ISO_ROD_index = ?");
 $stmt_other_titles = $db->prepare("SELECT COUNT(*) AS ePub FROM other_titles WHERE ISO_ROD_index = ? AND other_PDF LIKE '%.epub'");
 
-$stmt_English = $db->prepare("SELECT LN_English FROM LN_English WHERE ISO_ROD_index = ?");
-$stmt_Spanish = $db->prepare("SELECT LN_Spanish FROM LN_Spanish WHERE ISO_ROD_index = ?");
-$stmt_Portuguese = $db->prepare("SELECT LN_Portuguese FROM LN_Portuguese WHERE ISO_ROD_index = ?");
-$stmt_French = $db->prepare("SELECT LN_French FROM LN_French WHERE ISO_ROD_index = ?");
-$stmt_Dutch = $db->prepare("SELECT LN_Dutch FROM LN_Dutch WHERE ISO_ROD_index = ?");
-$stmt_German = $db->prepare("SELECT LN_German FROM LN_German WHERE ISO_ROD_index = ?");
-$stmt_Chinese = $db->prepare("SELECT LN_Chinese FROM LN_Chinese WHERE ISO_ROD_index = ?");
-$stmt_Korean = $db->prepare("SELECT LN_Korean FROM LN_Korean WHERE ISO_ROD_index = ?");
-$stmt_Russian = $db->prepare("SELECT LN_Russian FROM LN_Russian WHERE ISO_ROD_index = ?");
-$stmt_Arabic = $db->prepare("SELECT LN_Arabic FROM LN_Arabic WHERE ISO_ROD_index = ?");
+$LNames = [];
+$key = '';
+$fullLName = '';
+$res=$db->query("SHOW COLUMNS FROM nav_ln WHERE `Field` LIKE 'LN_%'");	// the following values are ['Field'], ['Type'], ['Collation'], ['Null'], and ['Key']
+while ($row_temp = $res->fetch_assoc()) {
+	$fullLName = $row_temp['Field'];									// Language Names - full 
+	$key = substr($fullLName, 3);						    			// Language Names - 'LN_'
+	$LNames[$key] = '';
+	${"stmt_".$key} = $db->prepare("SELECT " . $fullLName . " FROM " . $fullLName . " WHERE ISO_ROD_index = ?");
+}
+
 //$stmt_iso_languages = $db->prepare("SELECT * FROM scripture_main ORDER BY ISO");
 
 if ($index == 1) {					// idx
@@ -61,7 +65,11 @@ if ($index == 1) {					// idx
 	}
 	$row = $result->fetch_array();
 	include("include/ISO_details.php");
+
 	include('include/LN_details.php');	
+
+	$LN_string = implode(', ', $LNames);														// Convert Array To String
+
 	// Author: 'ChickenFeet'
 	//$LN_[the language name] = CheckLetters($LN_[the language name]);							// diacritic removal
 
@@ -97,7 +105,11 @@ elseif ($index == 2) {						// iso/rod/var
 	while ($row = $result->fetch_array()) {
 		$m++;
 		include("include/ISO_details.php");
+
 		include('include/LN_details.php');
+
+		$LN_string = implode(', ', $LNames);													// Convert Array To String
+
 		// Author: 'ChickenFeet'
 		//$LN_[the language name] = CheckLetters([the language name]);							// diacritic removal
 
@@ -118,6 +130,7 @@ elseif ($index == 2) {						// iso/rod/var
 	$marks = json_decode($first);
 //var_dump($marks);
 }
+// This doesn't work because the index only goes up to 2.
 else {										// part of the language/alternate names
 	//$query = "SELECT * FROM scripture_main WHERE ISO_ROD_index = $iso_rod_index";
 	//$result=$db->query($query) or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
@@ -129,16 +142,17 @@ else {										// part of the language/alternate names
 			echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 			exit;
 		}
-		$LN = [];
+		$LNames = [];
 		$m = 0;
 		$first = '{';
 		while ($row = $result->fetch_array()) {													// "SELECT * FROM scripture_main ORDER BY ISO"
 
 			include('include/alt_LN_details.php');												// reads record row
 			
-			$LN = array_unique($LN);															// removes duplicate values from an array
+			$LNames = array_unique($LNames);													// removes duplicate values from an array
 
 			$LN_string = implode(', ', $LN);													// Convert Array To String
+echo '3) ' . $LN_string . '<br />';
 
 			// Author: 'ChickenFeet'
 			$temp_LN = CheckLetters($LN_string);												// diacritic removal
@@ -147,7 +161,7 @@ else {										// part of the language/alternate names
 
 			//echo $languageName . ': ' . $ALN . ': ' . $row['ISO'] . '<br /><br />';
 			
-			$test = preg_match("/\b".$languageName.'(\t|,|$)/ui', $ALN, $match);						// match the beginning of the word(s) with TryLanguage from the user
+			$test = preg_match("/\b".$languageName.'(\t|,|$)/ui', $ALN, $match);				// match the beginning of the word(s) with TryLanguage from the user
 			if ($test == 1) {
 				//$query="SELECT * FROM scripture_main WHERE ISO_ROD_index = $idx";
 				$stmt_main->bind_param('i', $idx);												// bind parameters for markers
@@ -163,11 +177,11 @@ else {										// part of the language/alternate names
 					//$alt = '';
 					//$alt_ln = 0;
 					//$query="SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = $idx";
-					//$stmt_alt->bind_param('i', $idx);									// bind parameters for markers
+					//$stmt_alt->bind_param('i', $idx);											// bind parameters for markers
 					//$stmt_alt->execute();														// execute query
 					//if ($result_alt = $stmt_alt->get_result()) {
 					//	if ($result_alt->num_rows > 0) {
-					//		$alt_ln = $result_alt->num_rows;													// 0 or 1
+					//		$alt_ln = $result_alt->num_rows;									// 0 or 1
 					//		while ($row_alt = $result_alt->fetch_assoc()) {						// alternate language names
 					//			$alt .= $row_alt['alt_lang_name'] . ', ';
 					//		}
@@ -186,7 +200,7 @@ else {										// part of the language/alternate names
 
 					// "LN"=>$temp_LN, 
 					//$temp_array = ["Partial Language Name"=>$languageName, "Language Name"=>$temp_LN, "Alternate"=>$alt, "ISO_ROD_index"=>$idx, "ISO"=>$ISO, "ROD code"=>$ROD_Code, "variant code"=>$Variant_Code, "ISO_ROD_index"=>$idx, "OT PDF"=>$OT_PDF, "NT PDF"=>$NT_PDF, "OT Audio"=>$OT_Audio, "NT Audio"=>$NT_Audio, "links"=>$links, "other titles"=>$other_titles, "watch"=>$watch, "buy"=>$buy, "study"=>$study, "viewer"=>$viewer, "Cell Phone"=>$CellPhone, "Bible.is"=>$BibleIs, "You Version"=>$YouVersion, "Bibles.org"=>$Bibles_org, "Playlist Audio"=>$PlaylistAudio, "Playlist Video"=>$PlaylistVideo, "SAB Audio"=>$SAB_Audio, "SAB Text"=>$SAB_Text, "eBible"=>$eBible, "SIL link"=>$SILlink, "GRN"=>$GRN];
-					//$marks[] = $temp_array;														// add an array to another array
+					//$marks[] = $temp_array;													// add an array to another array
 					$langISOrod[] = $idx;
 					//echo '<br /><br />';
 					//print_r($marks);
@@ -194,7 +208,7 @@ else {										// part of the language/alternate names
 					//$temp_array = [];
 				}
 			}
-			$LN = [];
+			$LNames = [];
 		}
 	}
 
@@ -218,18 +232,18 @@ else {										// part of the language/alternate names
 			$idx = $r['ISO_ROD_index'];
 			//$query="SELECT * FROM scripture_main WHERE ISO_ROD_index = $idx";
 			//if ($result_SM = $db->query($query)) {
-			$stmt_main->bind_param('i', $idx);										// bind parameters for markers
+			$stmt_main->bind_param('i', $idx);													// bind parameters for markers
 			$stmt_main->execute();																// execute query
 			if ($result_SM = $stmt_main->get_result()) {
 				if ($row = $result_SM->fetch_assoc()) {
 					//$query="SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = $idx";
-					$stmt_alt->bind_param('i', $idx);									// bind parameters for markers
+					$stmt_alt->bind_param('i', $idx);											// bind parameters for markers
 					$stmt_alt->execute();														// execute query
 					if ($result_alt = $stmt_alt->get_result()) {
 						if ($result_alt->num_rows > 0) {
 							$m++;
 							//$alt = '';
-							//while ($row_alt = $result_alt->fetch_assoc()) {						// alternate language names
+							//while ($row_alt = $result_alt->fetch_assoc()) {					// alternate language names
 							//	$alt .= $row_alt['alt_lang_name'] . ', ';
 							//}
 							//$alt = rtrim($alt, ', ');
