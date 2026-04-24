@@ -171,7 +171,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 <?php
             }
             else {
-                echo 'Two or more SAB (Read/Listen/View) are found!<br />Which one do you want to UPDATE with this new one?<br />';
+                echo 'More SAB (Read/Listen/View) are found (including the one that you clicked on and is displayed below)!<br />Which one do you want to UPDATE with this new one?<br />';
                 echo '<span style="color: darkgreen; font-weight: bold; ">This new one is:<br />';
                 echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$description</span><br />";
                 echo "&nbsp;&nbsp;&nbsp;&nbsp;email: <span style='color: darkblue' >$email</span>; organization: <span style='color: darkblue' >$organization</span><br />";
@@ -267,7 +267,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
                 <?php
             }
             else {
-            echo 'Two or more SAB (Read/Listen/View) are found!<br />Which one do you want to UPDATE with this new one?<br />';
+            echo 'More SAB (Read/Listen/View) are found (including the one that you clicked on and is displayed below)!<br />Which one do you want to UPDATE with this new one?<br />';
             echo '<span style="color: darkgreen; font-weight: bold; ">This new one is:<br />';
             echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$description</span><br />";
             echo "&nbsp;&nbsp;&nbsp;&nbsp;email: <span style='color: darkblue' >$email</span>; organization: <span style='color: darkblue' >$organization</span><br />";
@@ -359,7 +359,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
             <?php
         }
         else {
-            echo 'Two or more APKs found!<br />Which one do you want to UPDATE with this new one?<br />';
+            echo 'More APKs are found (include the one that you clicked on and is displayed below)!<br />Which one do you want to UPDATE with this new one?<br />';
             echo '<span style="color: darkgreen; font-weight: bold; ">This new one is:<br />';
             echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$description</span><br />";
             echo "&nbsp;&nbsp;&nbsp;&nbsp;email: <span style='color: darkblue' >$email</span>; organization: <span style='color: darkblue' >$organization</span><br />";
@@ -451,7 +451,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
             <?php
         }
         else {
-            echo 'Two or more iOS Asset Package are found!<br />Which one do you want to UPDATE with this new one?<br />';
+            echo 'More iOS Assets are found (include the one that you clicked on and is displayed below)!<br />Which one do you want to UPDATE with this new one?<br />';
             echo '<span style="color: darkgreen; font-weight: bold; ">This  new one is:<br />';
             echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$description</span><br />";
             echo "&nbsp;&nbsp;&nbsp;&nbsp;email: <span style='color: darkblue' >$email</span>; organization: <span style='color: darkblue' >$organization</span><br />";
@@ -544,7 +544,7 @@ if (isset($_POST['accept'])) {                      // the "Submit" button
             <?php
         }
         else {
-            echo 'Two or more Google Play Store are found!<br />Which one do you want to UPDATE with this new one?<br />';
+            echo 'More Google Play Store are found (including the one that you clicked on and is displayed below)!<br />Which one do you want to UPDATE with this new one?<br />';
             echo '<span style="color: darkgreen; font-weight: bold; ">This new one is:<br />';
             echo "&nbsp;&nbsp;&nbsp;&nbsp;username: <span style='color: darkblue' >$username</span>; projectName: <span style='color: darkblue' >$projectName</span>; Description: <span style='color: darkblue' >$description</span><br />";
             echo "&nbsp;&nbsp;&nbsp;&nbsp;email: <span style='color: darkblue' >$email</span>; organization: <span style='color: darkblue' >$organization</span><br />";
