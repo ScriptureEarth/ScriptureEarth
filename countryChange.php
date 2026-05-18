@@ -72,10 +72,13 @@ else {
 	}
 
 	while ($row_html = $result_HTML->fetch_assoc()) {
+		$ISO_ROD_index = (int) $row_html['ISO_ROD_index'];
+		if (preg_match("/\"idx\":[\t\s]+$ISO_ROD_index}/", $first)) {					// if there already is the language, do not display it 
+			continue;																	// substring found
+		}
 		$ISO = $row_html['ISO'];
 		$ROD_Code = $row_html['ROD_Code'];
 		$Variant_Code = $row_html['Variant_Code'];
-		$ISO_ROD_index = (int) $row_html['ISO_ROD_index'];
 		$LN_English_stmt->bind_param("i", $ISO_ROD_index);
 		$LN_English_stmt->execute();
 		$result_LN_English = $LN_English_stmt->get_result();
@@ -97,7 +100,14 @@ else {
 	//exit;
 
 	$marks = [];
-	$marks = json_decode($first);														// string to JSON array
+	$marks = json_decode($first, true);													// string to JSON array not object
+
+	usort($marks, function($a, $b) {													// usort to sort the array for language name (LN)
+	    if ($a['LN'] == $b['LN']) {
+        	return 0;
+		}
+		return ($a['LN'] < $b['LN']) ? -1 : 1; 
+	});
 
 	//header('Content-Type: application/json');											// instead of <pre></pre>
 	// An associative array

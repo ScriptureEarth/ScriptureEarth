@@ -119,7 +119,11 @@ else {
 	$first .= '}';
 
 	$marks = [];
-	$marks = json_decode($first);										// string to JSON array
+	$marks = json_decode($first, true);									// string to JSON array
+
+	usort($marks, function($a, $b) {									// usort to sort the array for accesses
+		return ($a['accesses'] < $b['accesses']) ? 1 : 0; 
+	});
 	
 	// An associative array
 	//$json_string = json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

@@ -1,3 +1,13 @@
+<?php
+/*
+	plus:
+		AWStatsSections.php
+		isoChange.php
+		localesChange.php
+		selectCountries.php
+		yearMonthChange.php
+*/
+?>
 <!DOCTYPE html>
 <html>
 <head>

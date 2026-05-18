@@ -4095,7 +4095,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				}
 				echo '<div class="mapKey">';
 					echo '<p><span style="color: #a8226d; font-weight: bold; ">'.translate('red: language you have selected', $st, 'sys').'</span></p>';
-					echo '<p><span style="color: #4d25c5; font-weight: bold; ">'.translate('purple: subfamily for this language', $st, 'sys').'</span></p>';
+					echo '<p><span style="color: #4d25c5; font-weight: bold; ">'.translate('purple: subgroup for this language', $st, 'sys').'</span></p>';
 					echo '<p><span style="color: #2a83cb; font-weight: bold; ">'.translate('blue: other languages spoken in this country', $st, 'sys').'</span></p>';
 				echo '</div>';
 				?>

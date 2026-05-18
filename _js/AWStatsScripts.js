@@ -1279,6 +1279,9 @@ function isoChange(langData, month, year) {
 				let yValues = [];
 				for (let i in textTwo) {
 					extension = textTwo[i]['extension'];
+					if (extension == '') {
+						extension = 'pdf';
+					}
 					accesses = textTwo[i]['accesses'];
 					switch (extension) {
 						case 'html':
@@ -1305,6 +1308,7 @@ function isoChange(langData, month, year) {
 							break;
 						case 'mp3':
 						case 'pkf':
+						case '3gp':
 							description = 'Audio files';
 							break;
 						case 'mp4':
@@ -1337,9 +1341,6 @@ function isoChange(langData, month, year) {
 							break;
 						case 'map':
 							description = 'Progressive web app (PWA) files';
-							break;
-						case '3gp':
-							description = 'Audio files';
 							break;
 						case 'wasm':
 							description = 'WebAssembly codes';
