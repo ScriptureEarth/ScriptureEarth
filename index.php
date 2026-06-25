@@ -1,10 +1,16 @@
 <?php
 session_start();															// Start the session
 
-// by Jesse Skinner modified by Scott Starker; Parse Accept-Language to detect a user's language; May 2008
-// Updated by Scott Starker, Lærke Roager
+// PHP script by Jesse Skinner
+// Modified by Scott Starker; Parse Accept-Language to detect a user's language (May 2008)
+// Updated by Scott Starker, Lærke Roager (July 2022)
+// Updated by Scott Starker
 
-session_destroy();															// destroy entire session 
+//session_unset();																// will unset all session variables (deletes the variable names)
+
+//session_destroy();															// destroy entire session. session variables ARE available to be used!
+
+//session_write_close();														// Write session data and end session. usually at the end of the script
 
 $langs = [];
 
@@ -12,17 +18,17 @@ $asset = 0;
 if (isset($_GET['asset'])) {
 	$asset = $_GET['asset'];
 	if (!preg_match('/^(0|1)$/', $asset)) {
-		die("hack!");
+		die("Did you make a mistake?");
 	}
 }
 
 include './translate/functions.php';                           		 		// translation function
 
 if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbreviated language
-    // break up string into pieces (languages and q factors)
-    preg_match_all('/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $lang_parse);
-    if (count($lang_parse[1])) {
-        $langs = array_combine($lang_parse[1], $lang_parse[4]);				// create a list like "en" => 0.8
+    // divide the string into segments (languages and q factors)
+    preg_match_all('/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $lang_parse);		// e.g., en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7
+    if (count($lang_parse[1])) {											// counts all elements in an array (e.g., $lang_parse[1] = 4)
+        $langs = array_combine($lang_parse[1], $lang_parse[4]);				// create a list like "en" => 0.8	// creats an array by using one array for keys and another for its values, but both arrays must have the same number of elements. If the number of elements does not match, it will return false. 
         foreach ($langs as $lang => $val) {									// set default to 1 for any without q factor
             if ($val === '') $langs[$lang] = 1;
         }
@@ -39,8 +45,8 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbr
 		$_SESSION['nav_ln_array'] = [];
 		$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `translation_code`";
 		$ln_result=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
-		if ($ln_result->num_rows == 0) {
-			die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The translation_code is not found.</div></body></html>');
+		if ($ln_result->num_rows === 0) {
+			die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">No translation is found.</div></body></html>');
 		}
 		while ($ln_row = $ln_result->fetch_array()){
 			$ln_temp[0] = $ln_row['translation_code'];						// [iso] for the navigational langauges
@@ -48,25 +54,25 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbr
 			$ln_temp[2] = $ln_row['nav_fileName'];							// 00eng.php, 00spa.php, etc.
 			$ln_temp[3] = $ln_row['ln_number'];								// based on the number of languages; 1 to 9 now; English being 1, etc.
 			$ln_temp[4] = $ln_row['ln_abbreviation'];						// SE.org abbrevigations for language names; 1 to 3 letters; English being "e"; Chinese being "cmn'
-			$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;
+			$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;		// e.g., nav_ln_array['en'] = [$ln_temp[0], $ln_temp[1], ..., $ln_temp[4]]
 		}
 	}
 
-	$redirectTo = '';
 	$nav_iso = '';
+	$redirectTo = '';
 	foreach($langs as $lang => $val) {
-		$lang_code = explode("-", $lang)[0];
-		if (array_key_exists($lang_code, $_SESSION['nav_ln_array'])) {
-			$redirectTo = $_SESSION['nav_ln_array'][$lang_code][2];			// assigns the matching site to the language found
-			$nav_iso = $_SESSION['nav_ln_array'][$lang_code][0];			// assigns the language code to a variable for later use
+		$lang_code = explode("-", $lang)[0];								// takes a string and assign it to an array using "-" (en-US becomes en)
+		if (array_key_exists($lang_code, $_SESSION['nav_ln_array'])) {		// does $lang_code = e.g., en, zh, ...?
+			$nav_iso = $_SESSION['nav_ln_array'][$lang_code][0];			// [iso] for the navigational langauges (for later use)
+			$redirectTo = $_SESSION['nav_ln_array'][$lang_code][2];			// 00eng.php, 00spa.php, etc.
 			break;
 		}
 	}
-
-	if ($redirectTo == '') {
-		die('location is empty.');
+	if ($nav_iso == '') {
+		$nav_iso = 'spa';
+		$redirectTo = '00spa.php';
 	}
-	
+
 	if (!isset($_GET['name']) && !isset($_GET['iso'])) {					// this is normal 
 		header('Location: ' . $redirectTo . ($asset == 1 ? '?asset=1' : ''), true);		// Redirect to target
 		exit;
@@ -115,12 +121,12 @@ if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {								// detects a browsers abbr
 	}
 }
 
-if (isset($_GET['name']) || isset($_GET['iso'])) {							// not the 5 major languages but 'name' is used
+if (isset($_GET['name']) || isset($_GET['iso'])) {							// not the 10 major languages but 'name' is used
 	$redirectTo = "00spa.php";
 	$temp = '';
 	$temp = isset($_GET['name']) ? '?sortby=lang&name='.$_GET['name'].'&ROD_Code='.$_GET['ROD_Code'].'&Variant_Code='.$_GET['Variant_Code'] : '?iso='.$_GET['iso'].(isset($_GET['rod']) ? '&rod='.$_GET['rod'] : '&rod=').(isset($_GET['var']) ? '&var='.$_GET['var'] : '&var=');
 	$redirectTo .= $temp;
-	header('Location: ' . $redirectTo. ($asset == 1 ? '?asset=1' : '' ), true); 		// Redirect to target
+	header('Location: ' . $redirectTo . ($asset == 1 ? '?asset=1' : '' ), true); 		// Redirect to target
 	exit;
 }
 
@@ -136,28 +142,28 @@ $Dummy_Data = [1 => "About half of the 7,400 languages in use today have at leas
 Translation still continues for many of the “limited Scripture” languages, and projects are beginning every month
 for languages still in need.<br /><br />We dedicate this website to the glory of God and to those who have spent
 their lives serving these people in the task of providing God’s Word in the languages that speak to their heart.",
-2 => "Actualmente en las Américas se hablan casi 3000 idiomas indígenas. Muchos de estos idiomas ya tienen un proyecto de traducción
+2 => "Actualmente en las Américas se hablan casi 4000 idiomas indígenas. Muchos de estos idiomas ya tienen un proyecto de traducción
 en progreso. Cuando las traducciones esten disponibles, esperamos que usted pueda
 encontrarlos en este sitio web.<br /><br />Dedicamos este sitio a la gloria de Dios y
 a los que han dado sus vidas sirviendo a los hablantes de estos idiomas al traducir
 la Palabra de Dios al idioma que habla mejor a su corazón.",
-3 => "Há aproximadamente 3000 línguas nativas faladas hoje nas Américass.
+3 => "Há aproximadamente 4000 línguas nativas faladas hoje nas Américass.
 Muitas delas têm trabalhos de tradução da Bíblia em andamento.<br /><br />Dedicamos este site para a glória de Deus
 e para aqueles que têm gasto suas vidas servindo a estes povos na tarefa de prover a Palavra de Deus nas línguas
 que falam aos seus corações.",
-4 => "Plus de 3000 langues autochtones vernaculaires sont parlées aujourd'hui. Beaucoup de ces langues ont un travail de traduction
+4 => "Plus de 4000 langues autochtones vernaculaires sont parlées aujourd'hui. Beaucoup de ces langues ont un travail de traduction
 de la Bible en cours.<br /><br />Nous consacrons ce site à la gloire de Dieu et à ceux qui ont passé leur vie à servir ces personnes
 dans l’espoir de fournir la Parole de Dieu dans une langue qui parle à leur coeur.",
-5 => "Er bestaan bijna 3000 inheemse gesproken talen in Noord-, Midden- en Zuid-Amerika.
+5 => "Er bestaan bijna 4000 inheemse gesproken talen in Noord-, Midden- en Zuid-Amerika.
 In veel van deze talen wordt of is Bijbelvertaalwerk gedaan.<br /><br />
 We dragen deze website op aan de glorie van God en aan degenen die hun leven gewijd hebben
 aan de taak Gods Woord beschikbaar te maken in de taal van het hart.",
-6 => "Es werden heutzutage über 3.000 indigene Sprachen gesprochen. In vielen dieser Sprachen wird die Bibel zur Zeit übersetzt.<br /><br />
+6 => "Es werden heutzutage über 4.000 indigene Sprachen gesprochen. In vielen dieser Sprachen wird die Bibel zur Zeit übersetzt.<br /><br />
 Wir haben diese Webseite der Ehre Gotes gewidmet sowie denen, die ihr Leben diesen Menschen gewidmet haben,
 indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre Herzen am besten erreicht.",
 7 => "今天有2900多种土著语言。 这些语言中有许多正在进行圣经翻译工作。 我们将这个网站奉献给上帝的荣耀，并献给那些毕生为这些人服务的人们，他们的任务是用他们心中的语言来传达上帝的话语。",
-8 => "오늘날 3,000개 이상의 토착 언어가 사용되고 있습니다. 이러한 언어들 중 다수는 성서 번역 작업이 진행 중입니다. 우리는 이 웹사이트를 하나님의 영광을 위해, 그리고 이들을 위해 일생을 바친 사람들에게 바칩니다 자신의 마음에 와 닿는 언어로 하나님의 말씀을 제공하는 임무를 맡은 사람들.",
-9 => "Сегодня говорят на более чем 3000 ограниченных языках. Хотя на многие языки уже переведено Писание, многие все еще находятся в процессе.<br /><br />
+8 => "오늘날 4,000개 이상의 토착 언어가 사용되고 있습니다. 이러한 언어들 중 다수는 성서 번역 작업이 진행 중입니다. 우리는 이 웹사이트를 하나님의 영광을 위해, 그리고 이들을 위해 일생을 바친 사람들에게 바칩니다 자신의 마음에 와 닿는 언어로 하나님의 말씀을 제공하는 임무를 맡은 사람들.",
+9 => "Сегодня говорят на более чем 4000 ограниченных языках. Хотя на многие языки уже переведено Писание, многие все еще находятся в процессе.<br /><br />
 Мы посвящаем этот сайт славе Бога и тем, кто посвятил свою жизнь служению этим людям в задаче предоставления
 Слова Божьего на языке, который говорит с их сердцем.",
 10 => "تُرجم الكتاب المقدس أو أجزاء منه إلى ما لا يقل عن نصف اللغات  المتداولة في العالم اليوم، والتي يبلغ عددها 7400 لغة. ولا تزال الترجمة جارية إلى العديد من اللغات التي لم تحظ سوى بترجمة ”أسفار محدودة“ من المكتاب المقدس. وكل شهر يشهد بداية مشروعات ترجمة جديدة لأجزاء من الكتاب المقدس للغات لا تزال تحتاج إلى هذه الترجمات. ولهذا، نحن نكرس هذا الموقع لمجد الله ونهديه لأولئك الذين خصصوا حياتهم لترجمة الكتاب المقدس بلغات مختلفة وإتاحته باللغات الأقرب لكل شعب من شعوب العالم."];
@@ -167,12 +173,12 @@ indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre H
 <html>
 <head>
 <meta property="og:url" 					content="https://scriptureearth.org/" />
-<meta property="og:title" 					content="Language page of Scripture Earth" />
+<meta property="og:title" 					content="Language page for Scripture Earth" />
 <meta property="og:type" 					content="website" />
 <meta property="og:image"			 		content="images/SEThumbnail.jpg" />
 <meta http-equiv="Content-Type" 			content="text/html; charset=utf-8" />
 <meta name="robots" 						content="noindex" />
-<title>Splash page of Scripture Earth</title>
+<title>Splash page for Scripture Earth</title>
 <style type="text/css">
 	body {
 		font: 100% Verdana, Arial, Helvetica, sans-serif;
@@ -290,16 +296,39 @@ indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre H
 <div id="lblValues"></div>
 <div id="all">
     <div id="container">
-        <img src="images/topBannerCompSplash.jpg" style='position: relative; top: 0px; z-index: 1; width: 100%;' />
+        <img src="images/00eng-ScriptureEarth_header.jpg" style='position: relative; top: 0px; z-index: 1; width: 100%;' />
         <div style="display: inline; clear: both; margin: 0; width: 100%; ">
           <!--img src="images/shadowRt.png" width="17" height="448" style="float: right; position: relative; bottom: 138px; right: -19px; z-index: 2; border-left: solid 2px black; " /-->
           <img style="float: left; " src="images/picHome.jpg" width="152" height="223" />
           <div style="float: left; width: 155px; margin: 0; ">
           	  <div id='aclick' style='text-align: center; position: relative; top: 12px; left: 0px; width: 153px; height: 19px; font-size: 9pt; font-weight: bold; color: #B60000; '>
-              	click to enter
+              	click/tap to enter
               </div>
               <?php
 					echo "<script>console.log('Debug: " . $_SESSION['nav_ln_array'][0][1] . "');</script>";
+					/*
+						$array[0]		// [iso] for the navigational langauges
+						$array[1]		// English name of the navigational langauges
+						$array[2]		// 00eng.php, 00spa.php, etc.
+						$array[3]		// based on the number of languages; 1 to 10 now; English being 1, etc.
+						$array[4]		// SE.org abbrevigations for language names; 1 to 3 letters; English being "e"; Chinese being "cmn'
+					*/
+					if (!isset($_SESSION['nav_ln_array'])) {
+						$_SESSION['nav_ln_array'] = [];
+						$ln_query = "SELECT `translation_code`, `name`, `nav_fileName`, `ln_number`, `language_code`, `ln_abbreviation` FROM `translations` ORDER BY `translation_code`";
+						$ln_result=$db->query($ln_query) or die ('Query failed:  ' . $db->error . '</body></html>');
+						if ($ln_result->num_rows == 0) {
+							die ('<div style="background-color: white; color: red; font-size: 16pt; padding-top: 20px; padding-bottom: 20px; margin-top: 200px; ">The translation_code is not found.</div></body></html>');
+						}
+						while ($ln_row = $ln_result->fetch_array()){
+							$ln_temp[0] = $ln_row['translation_code'];						// [iso] for the navigational langauges
+							$ln_temp[1] = $ln_row['name'];									// English name of the navigational langauges
+							$ln_temp[2] = $ln_row['nav_fileName'];							// 00eng.php, 00spa.php, etc.
+							$ln_temp[3] = $ln_row['ln_number'];								// based on the number of languages; 1 to 10 now; English being 1, etc.
+							$ln_temp[4] = $ln_row['ln_abbreviation'];						// SE.org abbrevigations for language names; 1 to 3 letters; English being "e"; Chinese being "cmn'
+							$_SESSION['nav_ln_array'][$ln_row['language_code']] = $ln_temp;		// e.g., nav_ln_array['en'] = [$ln_temp[0], $ln_temp[1], ..., $ln_temp[4]]
+						}
+					}
 			  		foreach ($_SESSION['nav_ln_array'] as $code => $array){
 						echo '<div style="margin: 13px 0px; ">';
 						echo '<a id="a'.$array[1].'" class="alink '.$array[0].'" href="'.$array[2].'" onMouseOver="hover(\''.$array[0].'\', \'' . translate('click to enter', $array[0], 'sys') . '\')">'.translate($array[1], $array[0], 'sys'). ($asset == 1 ? '?asset=1' : '' ).'</a>';
@@ -307,7 +336,7 @@ indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre H
 					}
 			  ?>
           </div>
-      	  <iframe id="canvas" src='#' style="display: none; float: left; margin-top: 20px; margin-left: 35px; width: 600px; height: 350px; ">
+      	  <iframe loading="lazy" id="canvas" src='#' style="display: none; float: left; margin-top: 20px; margin-left: 35px; width: 600px; height: 350px; ">
              <ilayer id='canvas' src='#' style='display: none; float: left; margin-top: 20px; margin-left: 35px; width: 600px; height: 350px; '>
                <p>Your browser does not support iframes/ilayer.</p>
              </ilayer>
@@ -317,7 +346,7 @@ indem sie ihnen Gottes Wort in der Sprache zugänglich gemacht haben, die ihre H
 				foreach ($_SESSION['nav_ln_array'] as $code => $array){
 					echo '<div id="hover'.$array[1].'" class="hover '.$array[0].'">';
 					echo '<div class="middleText">';
-						echo $Dummy_Data[$array[3]];
+						echo $Dummy_Data[$array[3]];								// based on the number of languages; 1 to 10 now; English being 1, etc.
 					echo '</div>';
 				  echo '</div>';
 				}

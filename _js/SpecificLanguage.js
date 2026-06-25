@@ -191,7 +191,7 @@ function iOSLanguage(st, idx, LN, assetURL) {
             const link = document.createElement("a");
             //			link.href = 'data:application/zip,'+assetURL;
             link.href = assetURL;
-            link.download = asssetURL.substr(assetURL.lastIndexOf('/') + 1);
+            link.download = assetURL.substr(assetURL.lastIndexOf('/') + 1);
             link.click();
         } else {
             window.open(assetURL, '_blank');

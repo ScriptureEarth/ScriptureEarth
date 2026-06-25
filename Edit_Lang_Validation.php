@@ -4,7 +4,7 @@
 		@include_once '403.php';
 		exit;
 	}
-	 
+
 // The number of failed validations
 	$count_failed = 0;
 	$inputs['iso'] = check_input($_POST["iso"]);
@@ -12,7 +12,7 @@
 	$inputs['var'] = check_input($_POST["var"]);
 	$inputs['idx'] = check_input($_POST["idx"]);
 	$inputs["links"] = 0;
-	
+
 // Countries
 	$inputs['English_lang_name'] = check_input($_POST["English_lang_name"]);
 	$inputs['Eng_country-1'] = check_input($_POST["Eng_country-1"]);
@@ -191,14 +191,14 @@
 		if (isset($_POST["txtSABsubfolder-".(string)$i]) && (trim($_POST["txtSABsubfolder-".(string)$i]) != '')) {
 			$inputs["txtSABurl-".(string)$i] = '';
 			$inputs["txtSABdescription-".(string)$i] = check_input($_POST["txtSABdescription-".(string)$i]);
-			
+
 //			if (isset($_POST["txtSABpreScriptoria-".(string)$i])) {
 //				$inputs["txtSABpreScriptoria-".(string)$i] = check_input($_POST["txtSABpreScriptoria-".(string)$i]);
 //			}
 //			else {
 //				$inputs["txtSABpreScriptoria-".(string)$i] = '';
 //			}
-			
+
 //			if ($inputs["txtSABpreScriptoria-".(string)$i] !== '') {
 //				$inputs["txtSABsubfolder-".(string)$i] = 'sab/'.$inputs["txtSABpreScriptoria-".(string)$i];
 //				$inputs["txtSABsubFirstPath-".(string)$i] = '';
@@ -217,7 +217,7 @@
 		}
 		$i++;
 	}
-	
+
 // whole Bible PDF
 	$inputs["Bible_PDF"] = 0;
 	if (check_input($_POST["whole_Bible"]) != "") {
@@ -340,7 +340,7 @@
 		$messages[] = "Check box NT PDF for 'NT Glossary' is blank.";
 	}
 	$inputs["NT_PDF_Filename_glossary"] = check_input($_POST["NT_PDF_Filename_glossary"]);
-	
+
 // OT_Audio
 	$inputs["OT_Audio"] = 0;
 	for ($i = 0; $i < 39; $i++) {					// number of books in the OT
@@ -384,7 +384,7 @@
 			$inputs["NT_Audio_Filename-".$i."-".$z] = $_POST["NT_Audio_Filename-".$i."-".$z];
 		}
 	}
-	
+
 // YouVersion
 	$i = 1;
 	$YouVersionIndex = 1;
@@ -595,124 +595,60 @@
 		$i++;
 	}
 
-// links: buy
+// links: buy, map, Apple Store, GooglePlay, Kalaam, and other
 	$inputs['linksBuy'] = 0;
-	$i = 1;
-	for (; isset($_POST["txtLinkCompany-$i"]); $i++) {
-		if ($_POST["linksIcon-".(string)$i] != 'linksBuy-'.$i) continue;
-		// Web Source = Company; Resource Description = CompanyTitle
-		if (check_input($_POST["txtLinkCompany-$i"]) != "") $inputs["links"] = 1;
-		if (empty($_POST["txtLinkCompany-$i"])) {
-			if ((check_input($_POST["txtLinkCompanyTitle-$i"]) != "") || (check_input($_POST["txtLinkURL-$i"]) != "")) {
-				$count_failed++;
-				$messages[] = "Buy Link #" . $i . " is blank.";
-			}
-		}
-		$inputs["txtLinkCompany-$i"] = check_input($_POST["txtLinkCompany-$i"]);
-		$inputs["txtLinkCompanyTitle-$i"] = check_input($_POST["txtLinkCompanyTitle-$i"]);
-		$inputs["txtLinkURL-$i"] = check_input($_POST["txtLinkURL-$i"]);
-		$inputs["linksBuy-$i"] = 1;
-		$inputs['linksBuy'] = 1;
-	}
-
-// links: map
 	$inputs['linksMap'] = 0;
-	$i = 1;
-	for (; isset($_POST["txtLinkCompany-$i"]); $i++) {
-		if ($_POST["linksIcon-".(string)$i] != 'linksMap-'.$i) continue;
-		// Web Source = Company; Resource Description = CompanyTitle
-		if (check_input($_POST["txtLinkCompany-$i"]) != "") $inputs["links"] = 1;
-		if (empty($_POST["txtLinkCompany-$i"])) {
-			if ((check_input($_POST["txtLinkCompanyTitle-$i"]) != "") || (check_input($_POST["txtLinkURL-$i"]) != "")) {
-				$count_failed++;
-				$messages[] = "Map Link #" . $i . " is blank.";
-			}
-		}
-		$inputs["txtLinkCompany-$i"] = check_input($_POST["txtLinkCompany-$i"]);
-		$inputs["txtLinkCompanyTitle-$i"] = check_input($_POST["txtLinkCompanyTitle-$i"]);
-		$inputs["txtLinkURL-$i"] = check_input($_POST["txtLinkURL-$i"]);
-		$inputs["linksMap-$i"] = 1;
-		$inputs['linksMap'] = 1;
-	}
-
-// links: Apple Store
 	$inputs['linksAppleStore'] = 0;
-	$i = 1;
-	for (; isset($_POST["txtLinkCompany-$i"]); $i++) {
-		if ($_POST["linksIcon-".(string)$i] != 'linksAppleStore-'.$i) continue;
-		// Web Source = Company; Resource Description = CompanyTitle
-		if (check_input($_POST["txtLinkCompany-$i"]) != "") $inputs["links"] = 1;
-		if (empty($_POST["txtLinkCompany-$i"])) {
-			if ((check_input($_POST["txtLinkCompanyTitle-$i"]) != "") || (check_input($_POST["txtLinkURL-$i"]) != "")) {
-				$count_failed++;
-				$messages[] = "Apple Store Link #" . $i . " is blank.";
-			}
-		}
-		$inputs["txtLinkCompany-$i"] = check_input($_POST["txtLinkCompany-$i"]);
-		$inputs["txtLinkCompanyTitle-$i"] = check_input($_POST["txtLinkCompanyTitle-$i"]);
-		$inputs["txtLinkURL-$i"] = check_input($_POST["txtLinkURL-$i"]);
-		$inputs["linksAppleStore-$i"] = 1;
-		$inputs['linksAppleStore'] = 1;
-	}
-
-// links: GooglePlay
 	$inputs['linksGooglePlay'] = 0;
-	$i = 1;
-	for (; isset($_POST["txtLinkCompany-$i"]); $i++) {
-		if ($_POST["linksIcon-".(string)$i] != 'linksGooglePlay-'.$i) continue;
-		// Web Source = Company; Resource Description = CompanyTitle
-		if (check_input($_POST["txtLinkCompany-$i"]) != "") $inputs["links"] = 1;
-		if (empty($_POST["txtLinkCompany-$i"])) {
-			if ((check_input($_POST["txtLinkCompanyTitle-$i"]) != "") || (check_input($_POST["txtLinkURL-$i"]) != "")) {
-				$count_failed++;
-				$messages[] = "Google Play Link #" . $i . " is blank.";
-			}
-		}
-		$inputs["txtLinkCompany-$i"] = check_input($_POST["txtLinkCompany-$i"]);
-		$inputs["txtLinkCompanyTitle-$i"] = check_input($_POST["txtLinkCompanyTitle-$i"]);
-		$inputs["txtLinkURL-$i"] = check_input($_POST["txtLinkURL-$i"]);
-		$inputs["linksGooglePlay-$i"] = 1;
-		$inputs['linksGooglePlay'] = 1;
-	}
-
-// links: Kalaam
 	$inputs['linksKalaam'] = 0;
-	$i = 1;
-	for (; isset($_POST["txtLinkCompany-$i"]); $i++) {
-		if ($_POST["linksIcon-".(string)$i] != 'linksKalaam-'.$i) continue;
-		// Web Source = Company; Resource Description = CompanyTitle
-		if (check_input($_POST["txtLinkCompany-$i"]) != "") $inputs["links"] = 1;
-		if (empty($_POST["txtLinkCompany-$i"])) {
-			if ((check_input($_POST["txtLinkCompanyTitle-$i"]) != "") || (check_input($_POST["txtLinkURL-$i"]) != "")) {
-				$count_failed++;
-				$messages[] = "Kalaam Media Link #" . $i . " is blank.";
-			}
-		}
-		$inputs["txtLinkCompany-$i"] = check_input($_POST["txtLinkCompany-$i"]);
-		$inputs["txtLinkCompanyTitle-$i"] = check_input($_POST["txtLinkCompanyTitle-$i"]);
-		$inputs["txtLinkURL-$i"] = check_input($_POST["txtLinkURL-$i"]);
-		$inputs["linksKalaam-$i"] = 1;
-		$inputs['linksKalaam'] = 1;
-	}
-
-// links: other
 	$inputs['linksOther'] = 0;
-	$i = 1;
-	for (; isset($_POST["txtLinkCompany-$i"]); $i++) {
-		if ($_POST["linksIcon-".(string)$i] != 'linksOther-'.$i) continue;
+	$mes = '';
+	for ($i = 1; isset($_POST["txtLinkCompany-$i"]); $i++) {
+		switch ($_POST["linksIcon-".(string)$i]) {
+			case 'linksBuy-'.$i;
+				$mes = 'Buy';
+				$inputs["linksBuy-$i"] = 1;
+				$inputs['linksBuy'] = 1;
+				break;
+			case 'linksMap-'.$i:
+				$mes = 'Map';
+				$inputs["linksMap-$i"] = 1;
+				$inputs['linksMap'] = 1;
+				break;
+			case 'linksAppleStore-'.$i:
+				$mes = 'Apple Store';
+				$inputs["linksAppleStore-$i"] = 1;
+				$inputs['linksAppleStore'] = 1;
+				break;
+			case 'linksGooglePlay-'.$i:
+				$mes = 'Google Play';
+				$inputs["linksGooglePlay-$i"] = 1;
+				$inputs['linksGooglePlay'] = 1;
+				break;
+			case 'linksKalaam-'.$i:
+				$mes = 'Kalaam Media';
+				$inputs["linksKalaam-$i"] = 1;
+				$inputs['linksKalaam'] = 1;
+				break;
+			case 'linksOther-'.$i:
+				$mes = 'Other';
+				$inputs["linksOther-$i"] = 1;
+				$inputs['linksOther'] = 1;
+				break;
+			default:
+				echo 'This should happen!<br />';
+		}
 		// Web Source = Company; Resource Description = CompanyTitle
 		if (check_input($_POST["txtLinkCompany-$i"]) != "") $inputs["links"] = 1;
 		if (empty($_POST["txtLinkCompany-$i"])) {
 			if ((check_input($_POST["txtLinkCompanyTitle-$i"]) != "") || (check_input($_POST["txtLinkURL-$i"]) != "")) {
 				$count_failed++;
-				$messages[] = "Other Link #" . $i . " is blank.";
+				$messages[] = $mes . " Link #" . $i . " is blank.";
 			}
 		}
 		$inputs["txtLinkCompany-$i"] = check_input($_POST["txtLinkCompany-$i"]);
 		$inputs["txtLinkCompanyTitle-$i"] = check_input($_POST["txtLinkCompanyTitle-$i"]);
 		$inputs["txtLinkURL-$i"] = check_input($_POST["txtLinkURL-$i"]);
-		$inputs["linksOther-$i"] = 1;
-		$inputs['linksOther'] = 1;
 	}
 
 	/*echo 'Web Source = Company			Resource Description = CompanyTitle<br />';

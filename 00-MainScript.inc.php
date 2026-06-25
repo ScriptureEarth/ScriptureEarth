@@ -66,7 +66,7 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 <script type="text/javascript" language="javascript" src="_js/jquery.jplayer-2.9.2.min.js"></script>
 <script type="text/javascript" language="javascript" src="_js/jplayer.playlist.min.js"></script>
 <script type="text/javascript" language="javascript" src="_js/user_events.js?v=1.0.3"></script>
-<script type="text/javascript" language="javascript" src="_js/SpecificLanguage.js?v=1.0.7"></script>
+<script type="text/javascript" language="javascript" src="_js/SpecificLanguage.js?v=1.0.8"></script>
 <script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.9"></script>
 <!--script type='text/javascript' language='javascript'	src="_js/LangSearch.js?v=1.0.3"></script-->
 <!--link rel='stylesheet' type='text/css' 	href='_css/boilerplate.css' /-->
@@ -647,6 +647,7 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 			margin-left: 84px;
 			margin-bottom: 8px;
 		}
+		div.autonymLanguageNames,
 		div.alternativeLanguageNames,
 		div.Country,
 		div.languageCode {
@@ -696,6 +697,7 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 			margin-right: 34px;
 			margin-bottom: 8px;
 		}
+		div.autonymLanguageNames,
 		div.alternativeLanguageNames,
 		div.Country,
 		div.languageCode {
@@ -1385,7 +1387,7 @@ if (isset($_GET['asset'])) {
 
 						<?php /* -----------------------------------------------------------------------------------
 								AJAX is down 2 lines here (showLanguage()).
-								showLanguage(this.value) in autoLanguage.js and myFuncttranslate('Home', $st, 'sys')ion(this.value, '$st') in autoLanguage.js -->
+								showLanguage(this.value) in LangSearch.js
 								after 3 letter display the languages/alternate languages/ISO button
                     	-------------------------------------------------------------------------------------------- */ ?>
 						<div id="showLanguageID" name="showLanguageID">

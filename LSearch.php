@@ -19,7 +19,7 @@ You must ensure that all parties (your app, mysql connection, your table or colu
 
 /**
  * @param {string} language - 'try language'
- * @param {string} st = eng, spa, por, fre, ndl, deu, cmn, kor, rus, or arb
+ * @param {string} st = eng, spa, por, fra, ndl, deu, cmn, kor, rus, or arb
  //* @param {string} nav_ln_line - navigational languages separated by ', '
  * @param {string} Variant_major - Variant_Eng, etc.
  * @param {string} SpecificCountry - English, etc.
@@ -57,7 +57,7 @@ else {
 	 return;
 }
 
-if (strlen($TryLanguage) > 2) {
+if (strlen($TryLanguage) >= 3) {
 	$response = '';
 	$ln_result = '';
 
@@ -216,7 +216,7 @@ if (strlen($TryLanguage) > 2) {
 		$TryLanguage = strtr($TryLanguage, $RD);												// PHP: strtr - Translate characters ($addr = strtr($addr, "???", "aao");)
 	}
 	
-	$TryLanguage = str_replace("'", "\'", $TryLanguage);
+//	$TryLanguage = str_replace("'", "\'", $TryLanguage);
 
 	/******************************************************************************
 		Try languages names
@@ -229,18 +229,19 @@ if (strlen($TryLanguage) > 2) {
 			include './include/00-DBLanguageCountryName.inc.php';								// returns $LN (navigational langename name)
 			// Author: 'ChickenFeet'
 			$temp_LN = CheckLetters($LN);														// diacritic removal
-			
 			$temp_LN = mb_strtolower($temp_LN);													// lower case language name without the diacritics
 			
 			$temp_TL = str_replace('(', '\(', $TryLanguage);
 			$temp_TL = str_replace(')', '\)', $temp_TL);
 			$temp_TL = str_replace('.', '\.', $temp_TL);
+			$temp_TL = str_replace('/', '\/', $temp_TL);
+			
+			$ISO = $row['ISO'];
+			//echo 'ISO_ROD_index: ' . $ISO_ROD_index . '; ' . 'ISO: ' . $ISO . '; ISO_only: ' . $ISO_only. '; TryLanguage: ' . $TryLanguage . '; temp_TL: ' . $temp_TL. '; temp_LN: ' . $temp_LN.'<br />';
+			if (strlen($TryLanguage) == 3 && $ISO == $ISO_only) {								// if the length of $TryLanguage is 3 and the top section is there
+				continue;
+			}
 			if (preg_match("/\b".$temp_TL.'/ui', $temp_LN, $match)) {							// match the beginning of the word(s) with TryLanguage from the user
-				$ISO = $row['ISO'];
-				//echo 'ISO_ROD_index: ' . $ISO_ROD_index . '; ' . 'ISO: ' . $ISO . '; ISO_only: ' . $ISO_only. '; TryLanguage: ' . $TryLanguage . '; temp_TL: ' . $temp_TL. '; temp_TL: ' . $temp_TL.'<br />';
-				if (strlen($TryLanguage) == 3 && $ISO == $ISO_only) {							// if the length of $TryLanguage is 3 and the top section is there
-					continue;
-				}
 				$ROD_Code = $row['ROD_Code'];
 				$Variant_Code = $row['Variant_Code'];
 				

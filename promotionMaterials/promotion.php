@@ -116,51 +116,51 @@
 			<figure>Jim McCabe - 3 minute video</figure>
 		</div>
 		<div class='contacts'>
-			<img src='SE.org%20card%20-%20globe%20-%20QR.jpg' alt='ScriptureEarth.org card - globe - QR' />
+			<img loading='lazy' src='SE.org%20card%20-%20globe%20-%20QR.jpg' alt='ScriptureEarth.org card - globe - QR' />
 			<figure>ScriptureEarth.org card - globe - QR</figure>
 		</div>
 	</div>
 
 	<div class='clearfix'>
 		<div class='contacts'>
-			<img src='SE.org%20card%20-%20globe.jpg' alt='ScriptureEarth.org card - globe' />
+			<img loading='lazy' src='SE.org%20card%20-%20globe.jpg' alt='ScriptureEarth.org card - globe' />
 			<figure>ScriptureEarth.org card - globe</figure>
 		</div>
 		<div class='contacts'>
-			<img src='SE.org%20card%20-%20LUMO.jpg' alt='ScriptureEarth.org card - LUMO' />
+			<img  loading='lazy' src='SE.org%20card%20-%20LUMO.jpg' alt='ScriptureEarth.org card - LUMO' />
 			<figure>ScriptureEarth.org card - LUMO</figure>
 		</div>
 	</div>
 
 	<div class='clearfix'>
 		<div class='contacts'>
-			<img src='SE.org%20card%20-%20Share%20it%20-%20front.jpg' alt='SE.org card from Deb &amp; Ramón Padilla - front' />
+			<img loading='lazy' src='SE.org%20card%20-%20Share%20it%20-%20front.jpg' alt='SE.org card from Deb &amp; Ramón Padilla - front' />
 			<figure>SE.org card from Deb &amp; Ramón Padilla - front</figure>
 		</div>
 		<div class='contacts'>
-			<img src='SE.org%20card%20-%20Share%20it%20-%20back.jpg' alt='SE.org card from Deb &amp; Ramón Padilla - back' />
+			<img loading='lazy' src='SE.org%20card%20-%20Share%20it%20-%20back.jpg' alt='SE.org card from Deb &amp; Ramón Padilla - back' />
 			<figure>SE.org card from Deb &amp; Ramón Padilla - back</figure>
 		</div>
 	</div>
 
 	<div class='clearfix'>
 		<div class='contacts'>
-			<img src='SE.org - man poster - take cards.jpg' alt='ScriptureEarth.org - man poster - take cards' />
+			<img loading='lazy' src='SE.org - man poster - take cards.jpg' alt='ScriptureEarth.org - man poster - take cards' />
 			<figure>ScriptureEarth.org - man poster - take cards</figure>
 		</div>
 		<div class='contacts'>
-			<img src='SE.org - women poster - QR.jpg' alt='ScriptureEarth.org - women poster - QR' />
+			<img loading='lazy' src='SE.org - women poster - QR.jpg' alt='ScriptureEarth.org - women poster - QR' />
 			<figure>ScriptureEarth.org - women poster - QR</figure>
 		</div>
 	</div>
 
 	<div class='clearfix'>
 		<div class='contacts'>
-			<img src='SE.org - women poster - take cards.jpg' alt='ScriptureEarth.org - women poster - take cards' />
+			<img loading='lazy' src='SE.org - women poster - take cards.jpg' alt='ScriptureEarth.org - women poster - take cards' />
 			<figure>ScriptureEarth.org - women poster - take cards</figire>
 		</div>
 		<div class='contacts'>
-			<img src='SE.org%20-%20QR.png' alt='ScriptureEarth.org - QR' />
+			<img loading='lazy' src='SE.org%20-%20QR.png' alt='ScriptureEarth.org - QR' />
 			<figure>ScriptureEarth.org - QR</figure>
 		</div>
 	</div>
@@ -171,11 +171,11 @@
 
 	<div class='clearfix'>
 		<div class='contacts'>
-			<img src='Tarjeta-FRENTE.jpg' alt='Tarjeta-FRENTE' />
+			<img loading='lazy' src='Tarjeta-FRENTE.jpg' alt='Tarjeta-FRENTE' />
 			<figure>Tarjeta - FRENTE</figure>
 		</div>
 		<div class='contacts'>
-			<img src='Tarjeta-REVERSO.jpg' alt='Tarjeta-REVERSO' />
+			<img loading='lazy' src='Tarjeta-REVERSO.jpg' alt='Tarjeta-REVERSO' />
 			<figure>Tarjeta - REVERSO</figure>
 		</div>
 	</div>

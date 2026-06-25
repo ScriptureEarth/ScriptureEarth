@@ -64,7 +64,7 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 			$query="SELECT DISTINCT LN_Temp.LN, scripture_main.* FROM LN_Temp, scripture_main WHERE scripture_main.ISO_ROD_index = LN_Temp.idx AND LN_Temp.LN LIKE '$Beg%' ORDER BY LN_Temp.LN";
 	}
 	$resultSwitch=$db->query($query);
-	$numSwitch=$resultSwitch->num_rows;										// see 'Total languages are' at the end of this script
+	$numSwitch=$resultSwitch->num_rows;														// see 'Total languages are' at the end of this script
 
 	$query="SELECT Variant_Eng FROM Variants WHERE Variant_Code = ?";						// Variants table
 	$stmt_Var = $db->prepare($query);														// create a prepared statement
@@ -72,7 +72,7 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 	$stmt_ISO_countries = $db->prepare($query);												// create a prepared statement
 	$query='SELECT alt_lang_name FROM alt_lang_names WHERE ISO_ROD_index = ?';				// alt_lang_names table
 	$stmt_alt = $db->prepare($query);														// create a prepared statement
-	echo "<div id='CT'><table id='CountryTable'>";							// <div id='CT'> required for IE because it can't handle tables!
+	echo "<div id='CT'><table id='CountryTable'>";											// <div id='CT'> required for IE because it can't handle tables!
 	$i=0;
 	while ($r = $resultSwitch->fetch_assoc()) {
 		if ($i % 2)
@@ -89,7 +89,7 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 		$var = $r['Variant_Code'];
 		$VD = '';
 		if (!is_null($var) && $var != '') {
-			$stmt_Var->bind_param('s', $var);												// bind parameters for markers								// 
+			$stmt_Var->bind_param('s', $var);												// bind parameters for markers
 			$stmt_Var->execute();															// execute query
 			$resultVar = $stmt_Var->get_result();											// instead of bind_result (used for only 1 record):
 			if ($resultVar) {
@@ -97,7 +97,7 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 				$VD = $r_temp['Variant_Eng'];
 			}
 		}		
-		$stmt_ISO_countries->bind_param('i', $idx);								// bind parameters for markers								// 
+		$stmt_ISO_countries->bind_param('i', $idx);											// bind parameters for markers
 		$stmt_ISO_countries->execute();														// execute query
 		$result_ISO_countries = $stmt_ISO_countries->get_result();							// instead of bind_result (used for only 1 record):
 		// $SpecificCountry = the past dot $counterName	
@@ -109,7 +109,7 @@ function check_input($value) {						// used for ' and " that find it in the inpu
 		echo "<tr style='background-color: #". $color . "; '>";
 		echo "<td width='6%' style='cursor: pointer; '><img style='margin-bottom: 3px; margin-left: 13px; cursor: hand; ' onclick='parent.location=\"Scripture_Edit.php?idx=$idx\"' src='images/pencil_edit.png' /></td>";
 		echo "<td width='28%' style='padding: 3px 5px 3px 5px; '>$LN</td>";
-		$stmt_alt->bind_param('i', $idx);											// bind parameters for markers								// 
+		$stmt_alt->bind_param('i', $idx);													// bind parameters for markers
 		$stmt_alt->execute();																// execute query
 		$result_alt = $stmt_alt->get_result();												// instead of bind_result (used for only 1 record):
 		$alt_lang_names = '';
