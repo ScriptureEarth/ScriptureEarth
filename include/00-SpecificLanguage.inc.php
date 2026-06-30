@@ -728,7 +728,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		?>
 		<br />
 		<h2 id='<?php echo $ISO; ?>_1'>
-			<div class='autonymLanguageNames' style='width: 100%; '><?php echo translate('Self-designation of the speakers language:', $st, 'sys'); ?>
+			<div class='autonymLanguageNames' style='width: 100%; '><?php echo translate('Self-designation of the speakers’ language:', $st, 'sys'); ?>
 				<span class='autonymLanguageName'>
 				<?php
 				// display autonym language names
@@ -4121,9 +4121,9 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 					echo '<iframe loading="lazy" id="CC_c" name="iframe_a" title="Iframe" class="mapIframe" src="../maps/'.$temp_CC.'/'.$ISO.'_'.$ROD_Code.'.htm"></iframe>';
 				}
 				else {
-					echo '<iframe loading="lazy" id="CC_c" name="iframe_a" title="Iframe" class="mapIframe" src=""></iframe>';
+					echo '<iframe loading="lazy" style="display: none; " id="CC_c" name="iframe_a" title="Iframe" class="mapIframe" src=""></iframe>';
 				}
-				echo '<div class="mapKey">';
+				echo '<div id="mapKey" style="display: none; " class="mapKey">';
 					echo '<p><span style="color: #a8226d; font-weight: bold; ">'.translate('red: language you have selected', $st, 'sys').'</span></p>';
 					echo '<p><span style="color: #4d25c5; font-weight: bold; ">'.translate('purple: subgroup for this language', $st, 'sys').'</span></p>';
 					echo '<p><span style="color: #2a83cb; font-weight: bold; ">'.translate('blue: other languages spoken in this country', $st, 'sys').'</span></p>';
@@ -4400,10 +4400,30 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	*************************************************************************************************************
 */
 	function CCCountry(countryKey, ISOorROD, countryValue) {
-		var x = document.getElementById("CC_c");
-		x.src = "./maps/" + countryKey + "/" + ISOorROD + ".htm";
-		var y = document.getElementById("countryLabel");
-		y.innerHTML = countryValue;
+		// if-url-exist
+		function ifUrlExist(url) {
+			var http = new XMLHttpRequest();
+			http.open('HEAD', url, false);										// get back "HEAD"
+			http.send();
+			return http.status != 404;											// returns true of false
+		}
+
+		const hasUrl = ifUrlExist('/maps/'+countryKey+'/'+ISOorROD+'.htm');
+		console.log(hasUrl);
+
+		if (hasUrl) {															// true or false
+			var x = document.getElementById("CC_c");
+			x.src = "./maps/" + countryKey + "/" + ISOorROD + ".htm";
+			x.style.display = "inline-block";
+			var mapKey = document.getElementById("mapKey");
+			mapKey.style.display = "inline-block";
+			var y = document.getElementById("countryLabel");
+			y.innerHTML = countryValue;
+		}
+		else {
+			var y = document.getElementById("countryLabel");
+			y.innerHTML = "<?php echo translate('Could this language be in more than one location or is it a marco langauge?', $st, 'sys'); ?>";
+		}
 	}
 
 	$(function() {
