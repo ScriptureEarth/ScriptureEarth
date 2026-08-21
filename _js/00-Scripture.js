@@ -671,3 +671,383 @@ function DownloadAllVideoPlaylistClick(VideoPlaylistGroupIndex, AllText, NoText)
         eval('ZipFilesVideoDownload_' + VideoPlaylistGroupIndex + ' = 0'); // Set ZFVD to assign a variable + variable (because of the + sign)
     }
 }
+
+/*
+	*************************************************************************************************************
+		Before it was SpecificLanguage.js
+	*************************************************************************************************************
+*/
+
+let ZipFilesOT = 0;
+function OTAudioClick(a_index, Books) { // check box name, the book
+    if (document.getElementById("OT_audio_" + a_index).checked) {
+        ZipFilesOT += Books;
+    } else {
+        ZipFilesOT -= Books;
+    }
+    ZipFilesOT = Math.round(ZipFilesOT * 100) / 100; // rounded just does integers!
+    if (ZipFilesOT <= 0.049) {
+        $("#OT_Download_MB").hide();
+    } else {
+        $("#OT_Download_MB").show();
+        document.getElementById("OT_Download_MB").innerHTML = "~" + ZipFilesOT + " MB&nbsp;";
+    }
+}
+
+let ZipFilesNT = 0;
+function NTAudioClick(a_index, Books) { // check box name, the book
+    if (document.getElementById("NT_audio_" + a_index).checked) {
+        ZipFilesNT += Books;
+    } else {
+        ZipFilesNT -= Books;
+    }
+    ZipFilesNT = Math.round(ZipFilesNT * 100) / 100; // rounded just does integers!
+    if (ZipFilesNT <= 0.049) {
+        $("#NT_Download_MB").hide();
+    } else {
+        $("#NT_Download_MB").show();
+        document.getElementById("NT_Download_MB").innerHTML = "~" + ZipFilesNT + " MB&nbsp;";
+    }
+}
+
+function getHTTPObject() { // get the AJAX object; it can be used more than once
+    try {
+        // IE 7+, Opera 8.0+, Firefox, Safari
+        return new XMLHttpRequest();
+    } catch (e) {
+        // Internet Explorer browsers
+        try {
+            return new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            try {
+                return new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (e) {
+                // Something went wrong
+                alert("XML HTTP Request is not able to be set. Maybe the version of the web browser is old?");
+                return null;
+            }
+        }
+    }
+}
+
+function send(sel, GN) {
+    //SwitchArray = sel.options[sel.selectedIndex].value.split("|");
+    //number = SwitchArray[1];
+    //BegLetter = SwitchArray[2];
+    // hack! The best way to the Beg in js so it can be passed from JavaScript function Send(zzz, zzz) in SpecificLanguage.js called by 00-MainScript.inc.php.
+    let Beg = document.getElementById('myBeg').innerHTML;
+    // languageName = 'block'; which = 2
+    // languageCode = 'block'; which = 1
+    let which = 0;
+    if (document.getElementById('languageCode').style.display == 'block') {
+        which = 1;
+    } else {
+        which = 2;
+    }
+
+    lnxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
+    if (lnxmlhttp == null) {
+        return;
+    }
+    Scriptname = '';
+
+    lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + sel.options[sel.selectedIndex].value, true)
+    lnxmlhttp.send(null)
+    lnxmlhttp.onreadystatechange = function() {
+        if (lnxmlhttp.readyState == 3) {
+            // Get hold of the array and change scriptname?
+            window.open(lnxmlhttp.responseText + "?sortby=country&name=" + GN + "&number=" + which + "&Beg=" + Beg, "_self");
+        }
+    }
+}
+
+function langSend(sel, iso, rod, variant) {
+    lnxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
+    if (lnxmlhttp == null) {
+        return;
+    }
+    Scriptname = '';
+
+    lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + sel.options[sel.selectedIndex].value, true)
+    lnxmlhttp.send(null)
+    lnxmlhttp.onreadystatechange = function() {
+        if (lnxmlhttp.readyState == 3) {
+            // Get hold of the array and change scriptname?
+            window.open(lnxmlhttp.responseText + "?sortby=lang&iso=" + iso + "&rod=" + rod + "&var=" + variant, "_self");
+        }
+    }
+}
+
+function sendCountries_m(sel) {
+    lnxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
+    if (lnxmlhttp == null) {
+        return;
+    }
+    Scriptname = '';
+
+    lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + sel.options[sel.selectedIndex].value, true)
+    lnxmlhttp.send(null)
+    lnxmlhttp.onreadystatechange = function() {
+        if (lnxmlhttp.readyState == 3) {
+            // Get hold of the array and change scriptname?
+            window.open(lnxmlhttp.responseText, "_self");
+        }
+    }
+}
+
+function sendCountry_m(sel, GN) {
+    let which = 0;
+    if (document.getElementById('languageCode').style.display == 'block') {
+        which = 1;
+    } else {
+        which = 2;
+    }
+
+    lnxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
+    if (lnxmlhttp == null) {
+        return;
+    }
+    Scriptname = '';
+
+    lnxmlhttp.open("GET", "../include/nav_ln_array.php?q=" + sel.options[sel.selectedIndex].value, true)
+    lnxmlhttp.send(null)
+    lnxmlhttp.onreadystatechange = function() {
+        if (lnxmlhttp.readyState == 4) {
+            // Get hold of the array and change scriptname?
+            window.open(lnxmlhttp.responseText + "?sortby=country&name=" + GN + "&number=" + which, "_self");
+        }
+    }
+}
+
+let FCBHVisible = 0;
+function FCBHClick(FCBHnumOfiframes) {
+    FCBHnumOfiframes = typeof(FCBHnumOfiframes) != 'undefined' ? FCBHnumOfiframes : 1;
+    let divHeight = 0;
+    if (FCBHVisible == 0) {
+        $("#FCBHb").show();
+        FCBHVisible = 1;
+    } else {
+        $("#FCBHb").hide();
+        FCBHVisible = 0;
+    }
+}
+
+let OTTableVisible = 0;
+function OTTableClick() {
+    let divHeight = 0;
+    if (OTTableVisible == 0) {
+        $("#OTTable").show();
+        OTTableVisible = 1;
+    } else {
+        $("#OTTable").hide();
+        OTTableVisible = 0;
+    }
+}
+
+let NTTableVisible = 0;
+function NTTableClick() {
+    //let intElemScrollTop = $(window).scrollTop();
+    let divHeight = 0;
+    if (NTTableVisible == 0) {
+        //$("#NTTable").show(0, function() {			// 0 is to simulate display="block" immediatley
+        // your codes to scrolltop comes here
+        //$(window).scrollTop(intElemScrollTop);
+        //});
+        $("#NTTable").show();
+        NTTableVisible = 1;
+    } else {
+        $("#NTTable").hide();
+        NTTableVisible = 0;
+    }
+}
+
+function iOSLanguage(st, idx, LN, assetURL) {
+    if (assetURL.startsWith("http://") || assetURL.startsWith("https://") || assetURL.startsWith("asset://")) {
+        const link = document.createElement("a");
+        link.href = assetURL;
+        link.download = assetURL.substr(assetURL.lastIndexOf('/') + 1);
+        link.click();
+    }
+    else {
+        alert('This isnt suppose to happen! (LangSearch.js function iOSLanguage)');
+    }
+
+    Scriptname = window.location.pathname;
+
+    return;
+}
+
+/*
+	*************************************************************************************************************
+		Display the Text, Audio, Video, App, Other, and All buttons.
+	*************************************************************************************************************
+*/
+
+// Is it a mobile device?
+var isMobile = {
+    Android: function() {return navigator.userAgent.match(/Android/i);},
+    iOS: function() {return navigator.userAgent.match(/iPhone|iPad|iPod/i);},
+    //any: function() {return (isMobile.Android() || isMobile.iOS()}
+    smartPhone: function() {return navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i);}
+};
+// if (isMobile.smartPhone()) {}  		// mobile device
+// if (!isMobile.smartPhone()) {} 		// desktop computer
+
+/*
+    $BibleIsLink = 1: Read and Listen			$BibleIsReadAudio
+    $BibleIsLink = 2: Read						$BibleIsRead
+    $BibleIsLink = 3: Read and Listen			$BibleIsReadAudio
+    $BibleIsLink = 4: Read, Listen, and View	$BibleIsReadAudioVideo
+    $BibleIsLink = 5: Listen					$BibleIsAudio
+    $BibleIsLink = 6: Listen and View			$BibleIsAudioVideo
+    $BibleIsLink = 7: View						$BibleIsVideo
+    $BibleIsLink = 8: Read and View				$BibleIsReadVideo
+*/
+
+// set display = "table" for all "DisplayZZZZZZ" Object.entries()
+function menuEnableText() {
+    for (let [ dis_key, dis_value ] of Object.entries(DisplayText)) {
+        if (document.getElementById(dis_key)) {
+            if (dis_value != 0) {
+                document.getElementById(dis_key).style.display = "table";
+            }
+        }
+    }
+}
+function menuEnableAudio() {
+    for (let [ dis_key, dis_value ] of Object.entries(DisplayAudio)) {
+        if (document.getElementById(dis_key)) {
+            if (dis_value != 0) {
+                document.getElementById(dis_key).style.display = "table";
+            }
+        }
+    }
+}
+function menuEnableVideo() {
+    for (let [ dis_key, dis_value ] of Object.entries(DisplayVideo)) {
+        if (document.getElementById(dis_key)) {
+            if (dis_value != 0) {
+                document.getElementById(dis_key).style.display = "table";
+            }
+        }
+    }
+}
+function menuEnableApp() {
+    for (let [ dis_key, dis_value ] of Object.entries(DisplayApp)) {
+        if (document.getElementById(dis_key)) {
+            if (dis_value != 0) {
+                document.getElementById(dis_key).style.display = "table";
+            }
+        }
+    }
+}
+function menuEnableOther() {
+    for (let [ dis_key, dis_value ] of Object.entries(DisplayOther)) {
+        if (document.getElementById(dis_key)) {
+            if (dis_value != 0) {
+                document.getElementById(dis_key).style.display = "table";
+            }
+        }
+    }
+}
+function menuEnableMap() {
+    for (let [ dis_key, dis_value ] of Object.entries(DisplayMap)) {
+        if (document.getElementById(dis_key)) {
+            if (dis_value != 0) {
+                document.getElementById(dis_key).style.display = "table";
+            }
+        }
+    }
+}
+function menuEnableAll() {
+    for (let [ dis_key, dis_value ] of Object.entries(DisplayAll)) {
+        if (document.getElementById(dis_key)) {
+            if (dis_value != 0) {
+                document.getElementById(dis_key).style.display = "table";
+            }
+        }
+    }
+}
+function menuDisableAll() {
+    for (let [ dis_key, dis_value ] of Object.entries(DisplayAll)) {
+        if (document.getElementById(dis_key)) {
+            if (dis_value != 0) {
+                document.getElementById(dis_key).style.display = "none";
+            }
+        }
+    }
+    if (document.getElementById("Dis_Map")) {
+        document.getElementById("Dis_Map").style.display = "none";
+    }
+}
+
+// all function iconEnableText, 
+
+// Display the "DisplayZZZZZ" Object.entries()
+function openMenuTab(evt, menuTabName) {
+    // return if count = 0
+    if (menuTabName == 'Text' && textCount === 0) {
+        return;
+    }
+    if (menuTabName == 'Audio' && audioCount === 0) {
+        return;
+    }
+    if (menuTabName == 'Video' && videoCount === 0) {
+        return;
+    }
+    if (menuTabName == 'App' && appCount === 0) {
+        return;
+    }
+    if (menuTabName == 'Other' && otherCount === 0) {
+        return;
+    }
+    if (menuTabName == 'Map' && mapCount === 0) {
+        return;
+    }
+
+    // set none to "tablinks" class names and set the "event" class name to "active"
+    let tablinks;
+    tablinks = document.getElementsByClassName("tablinks");							// Get all elements with class="tablinks" and remove the class "active"
+    for (let i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    evt.currentTarget.className += " active";										// change the "active" class to the button that opened the tab
+
+    // set all of the "DisplayZZZZZ" Object.entries()
+    if (menuTabName != 'All') {
+        menuDisableAll();
+    }
+    iconDisableAll();
+    switch (menuTabName) {
+        case 'Text':
+            menuEnableText();
+            iconEnableText();
+            break;
+        case 'Audio':
+            menuEnableAudio();
+            iconEnableAudio();
+            break;
+        case 'Video':
+            menuEnableVideo();
+            iconEnableVideo();
+            break;
+        case 'App':
+            menuEnableApp();
+            iconEnableAppt();
+            break;
+        case 'Other':
+            menuEnableOther();
+            iconEnableOther();
+            break;
+        case 'Map':
+            menuEnableMap();
+            iconEnableMap();
+            break;
+        case 'All':
+            menuEnableAll();
+            iconEnableAll();
+            break;
+        default:
+            document.write('<p>This is\'t supposed to happen! (menu tabs)</p>');
+    }
+}

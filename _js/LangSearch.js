@@ -38,6 +38,7 @@ function getHTTPObject() {                                                  // g
 /*****************************************************************************************************************
 	showLanguage()
 *****************************************************************************************************************/
+//showLanguage("تون", "arb", 1, "LN_Arabic", "Arabic_Ara", "Arabic", 0)
 function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificCountry, asset) { // get the names of the languages
     if (str.length == 0) {
         document.getElementById("LangSearch").innerHTML = '';
@@ -210,7 +211,111 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
             }
             table += "<br /><br />";
             if (asset == 0) {
-                table += "<div style='color: #777; font-size: .8em; '>ScriptureEarth.org</div><br />";
+                table += "<div style='color: #777; font-size: .8em; '>SIL Global</div><br />";
+            }
+            table += "</div>";
+            document.getElementById("LangSearch").innerHTML = table;
+        }
+    }
+}
+/*****************************************************************************************************************
+	iOS -- showiOSLanguage() (the function are called by LangSearch.js by showLanguaage() function)
+*****************************************************************************************************************/
+function showiOSLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificCountry, asset, nonLatinScript) { // get the names of the languages
+    if (Internet == 0) {
+        alert('ScriptureEarth.org is offline. Therefore, iOS app is not avaiable.');
+        return;
+    }
+    xmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
+    if (xmlhttp == null) {
+        return;
+    }
+    var color = '';
+    var table = '';
+    var Country_Total = [];
+
+    //Scriptname = window.location.pathname;
+
+    /****************************************************************************************************************
+        	AJAX - LiOSSearch.php
+    ****************************************************************************************************************/
+    var url = "LiOSSearch.php";
+    url = url + "?language=" + str;
+    if ((st == 'cmn' || st == 'kor' || st == 'arb') && nonLatinScript == 0) { // test to see if st = Chinese or Korean and if it's Latin
+        url = url + "&st=eng";
+        url = url + "&SpecificCountry=English";
+    } else {
+        url = url + "&st=" + st;
+        url = url + "&SpecificCountry=" + SpecificCountry;
+    }
+    url = url + "&MajorLanguage=" + MajorLanguage;
+    url = url + "&Variant_major=" + Variant_major;
+    url = url + "&sid=" + Math.random();
+    xmlhttp.open("GET", url, true); // open the AJAX object with livesearch.php
+    xmlhttp.send(null);
+    xmlhttp.onreadystatechange = function() { // the function that returns for AJAX object
+        if (xmlhttp.readyState == 4) { // if the readyState = 4 then livesearch is displayed
+            var splits = xmlhttp.responseText.split('<br />'); // Display all of the languages that have 'language' as a part of it.
+            document.getElementById("LangSearch").innerHTML = '';
+            document.getElementById("CountSearch").innerHTML = '';
+            if (splits.length == 1 && splits[0].indexOf('@') === -1) {
+                langNotFound = splits[0];
+                document.getElementById("LangSearch").innerHTML = '<div style="display: inline; padding: 10px; margin-left: auto; margin-right: auto; color: red; background-color: white; font-size: 1.3em; "> ' + langNotFound + '</div>';
+                document.getElementById("CountrySearch").innerHTML = '';
+                $("#showSearchCountry").hide();
+                return;
+            }
+            $("#feedback").hide();
+            $("#copyright").hide();
+            // the 'table' is caused by a buy in Firefox 63.0.1 (11/7/2018) thus I added the last 3 items
+            colCountry = splits[splits.length - 1]; // subtract 1 from splits.length
+            colCode = splits[splits.length - 2]; // subtract 1 from splits.length
+            colAlt = splits[splits.length - 3]; // subtract 1 from splits.length
+            colLN = splits[splits.length - 4]; // subtract 1 from splits.length
+            table = '<div class="langCol">';
+            table += '<div class="colFirst">';
+            table += '<p class="colLN1">' + colLN + '</p>';
+            table += '<p class="colCountry1">' + colCountry + '</p>';
+            table += '<p class="colCode1">' + colCode + '</p>';
+            table += '<p class="colAlt1">' + colAlt + '</p>';
+            table += '</div>';
+            for (var i = 0; i < splits.length - 4; i++) {
+                table += "<p style='line-height: 2px; '>&nbsp;</p>"; // empty line between records
+                var firstSplit = splits[i].split('@');
+                // $LN.'@'.$alt.'@'.$iso.'@'.$country.'@'.$rod.'@'.$VD.'@'.$idx;
+                var LN = firstSplit[0];
+                var alt = firstSplit[1];
+                var iso = firstSplit[2];
+                var country = firstSplit[3];
+                var rod = firstSplit[4];
+                var VD = firstSplit[5];
+                var idx = firstSplit[6];
+                var URL = firstSplit[7];
+                // Cross Site Scripting (XSS) attack happens where client side code (usually JavaScript) gets injected into the output of your PHP script. The next line cleans it up.
+                table += "<div class='colSecond'>";
+                // here - check
+                table += "<div class='colLN2' onclick='iOSLanguage(\"" + st + "\"," + idx + ",\"" + LN + "\",\"" + URL + "\")'>" + LN;
+                if (VD != '') { table += "<div>(" + VD + ")</div>" };
+                table += "</div>";
+                table += "<p class='colCountry2'>";
+                var countrySplit = country.split(', '); // full country name : ZZ abbreviated country name
+                for (var k = 0; k < countrySplit.length; k++) {
+                    var tempCountry = countrySplit[k].substring(0, countrySplit[k].length - 3); // full country name (split ':')
+                    var tempAbbCountry = countrySplit[k].substring(countrySplit[k].length - 2); // ZZ abbreviated country name (split ':')
+                    // here - check
+                    table += tempCountry + ', ';
+                }
+                table = table.substring(0, table.length - 2); // take out the last ', '
+                table += "</p>";
+                // here - check
+                table += "<div class='colCode2' onclick='iOSLanguage(\"" + st + "\"," + idx + ",\"" + LN + "\",\"" + URL + "\")'>" + iso + "</div>";
+                // here - check
+                table += "<div class='colAlt2' onclick='iOSLanguage(\"" + st + "\"," + idx + ",\"" + LN + "\",\"" + URL + "\")'>" + alt + "</div>";
+                table += "</div>";
+            }
+            table += "<br /><br />";
+            if (asset == 0) {
+                table += "<div style='color: #777; font-size: .8em; '>SIL Global</div><br />";
             }
             table += "</div>";
             document.getElementById("LangSearch").innerHTML = table;
@@ -218,23 +323,10 @@ function showLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificC
     }
 }
 
-//showLanguage("تون", "arb", 1, "LN_Arabic", "Arabic_Ara", "Arabic", 0)
-
-// send
-function send(sel) {
-    // languageName = 'block'; which = 2
-    // languageCode = 'block'; which = 1
-    var which = 0;
-    try {
-        window.open("LangSearch.php?st=" + sel.options[sel.selectedIndex].value.toLowerCase(), "_self");
-    } catch (err) {
-        window.open("LangSearch.php?st=eng", "_self");
-    }
-}
-
 /*****************************************************************************************************************
 	showCountry()
 *****************************************************************************************************************/
+//showCountry("أث", "arb", 1, "Arabic", 0);
 function showCountry(str, st, Internet, SpecificCountry, asset) {           // get the names of the country
     if (str.length == 0) {
         document.getElementById("CountSearch").innerHTML = '';
@@ -348,8 +440,62 @@ function showCountry(str, st, Internet, SpecificCountry, asset) {           // g
         }
     }
 }
+/*****************************************************************************************************************
+	iOS -- showiOSCountry() (the function are called by LangSearch.js by showCountry() function)
+*****************************************************************************************************************/
+function showiOSCountry(str, st, Internet, SpecificCountry, asset, nonLatinScript) { // get the names of the country
+    if (Internet == 0) {
+        alert('ScriptureEarth in not online. iOS app is not avaiable.');
+        return;
+    }
+    Countryxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
+    if (Countryxmlhttp == null) {
+        return;
+    }
 
-//showCountry("أث", "arb", 1, "Arabic", 0);
+    Scriptname = window.location.pathname;
+
+    /****************************************************************************************************************
+    	AJAX - CiOSSearch.php
+    ****************************************************************************************************************/
+    var url = "CiOSSearch.php";
+    url = url + "?country=" + str;
+    if ((st == 'cmn' || st == 'kor' || st == 'arb') && nonLatinScript == 0) { // test to see if st = Chinese or Korean and if it's Latin
+        url = url + "&st=eng";
+        url = url + "&SpecificCountry=English";
+    } else {
+        url = url + "&st=" + st;
+        url = url + "&SpecificCountry=" + SpecificCountry;
+    }
+    url = url + "&asset=" + asset;
+    url = url + "&sid=" + Math.random();
+    Countryxmlhttp.open("GET", url, true); // open the AJAX object
+    Countryxmlhttp.send(null);
+    Countryxmlhttp.onreadystatechange = function() { // the function that returns for AJAX object
+        if (Countryxmlhttp.readyState == 4) { // if the readyState = 4 then livesearch is displayed
+            var splits = Countryxmlhttp.responseText.split('<br />'); // Display all of the languages that have 'language' as a part of it.
+            document.getElementById("LangSearch").innerHTML = '';
+            document.getElementById("CountrySearch").innerHTML = '';
+            if (splits.length == 1 && splits[0].indexOf('|') === -1) {
+                countryNotFound = splits[0];
+                document.getElementById("CountSearch").innerHTML = '<div style="display: inline; padding: 10px; margin-left: auto; margin-right: auto; color: red; background-color: white; font-size: 1.2em; "> ' + countryNotFound + '</div>';
+                return;
+            }
+            var Country_Total = '';
+            colCountries = splits[splits.length - 1]; // subtract 1 from splits.length
+            Country_Total = '<div class="countryTitle"><div class="countryTitleLine">' + colCountries + ':</div>';
+            for (var i = 0; i < splits.length - 1; i++) {
+                var firstSplit = splits[i].split('|'); // split the 2: specific country and two uppercase code for the country
+                var Country = firstSplit[0];
+                var ISO_Country = firstSplit[1];
+                // here - check
+                Country_Total += '<div class="pickCountry" onclick="window.open(\'' + Scriptname + '?sortby=country&asset=1&name=' + ISO_Country + '\', \'_self\')">' + Country + '</div>';
+            }
+            Country_Total += '</div>';
+            document.getElementById("CountSearch").innerHTML = Country_Total;
+        }
+    }
+}
 
 /*****************************************************************************************************************
 	AllCountries()
@@ -405,6 +551,64 @@ function AllCountries(Scriptname, st, SpecificCountry, Internet, asset) {	// get
     $("#listCountriesID").show();
     $(".homeAllCountries").show();
 }
+/*****************************************************************************************************************
+	iOS -- AlliOSCountries() (the function are called by LangSearch.js by AllCountries() function)
+*****************************************************************************************************************/
+function AlliOSCountries(Scriptname, st, SpecificCountry, Internet) {
+    if (Internet == 0) {
+        alert('ScriptureEarth in not online. iOS app is not avaiable.');
+        return;
+    }
+    AllCountriesxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
+    if (AllCountriesxmlhttp == null) {
+        return;
+    }
+    /****************************************************************************************************************
+    	AJAX - AlliOSCountries.php
+    ****************************************************************************************************************/
+    var url = "AlliOSCountries.php";
+    url = url + "?SpecificCountry=" + SpecificCountry;
+    url = url + "&st=" + st;
+    url = url + "&sid=" + Math.random();
+    AllCountriesxmlhttp.open("GET", url, true); // open the AJAX object
+    AllCountriesxmlhttp.send(null);
+    AllCountriesxmlhttp.onreadystatechange = function() { // the function that returns for AJAX object
+        if (AllCountriesxmlhttp.readyState == 4) { // if the readyState = 4 then livesearch is displayed
+            var splits = AllCountriesxmlhttp.responseText.split('<br />'); // Display all of the languages that have 'language' as a part of it.
+            document.getElementById("countryList").innerHTML = '';
+            if (splits.length == 1 && splits[0].indexOf('|') === -1) {
+                countryNotFound = splits[0];
+                document.getElementById("countryList").innerHTML = '<div style="display: inline; padding: 10px; margin-left: auto; margin-right: auto; color: red; background-color: white; font-size: 1.2em; "> ' + countryNotFound + '</div>';
+                return;
+            }
+            var AllCountries_Total = '';
+            for (var i = 0; i < splits.length - 1; i++) {
+                var firstSplit = splits[i].split('|'); // split the 2: specific country and two uppercase code for the country
+                var Country = firstSplit[0];
+                var ISO_Country = firstSplit[1];
+                // here - check
+                AllCountries_Total += '<div class="pickCountry" onclick="window.open(\'./' + Scriptname + '?sortby=country&asset=1&name=' + ISO_Country + '\', \'_self\')">' + Country + '</div>';
+            }
+            AllCountries_Total += '</div>';
+            document.getElementById("countryList").innerHTML = AllCountries_Total;
+        }
+    }
+    $("#countryList").show();
+    $("#listCountriesID").show();
+    $(".homeAllCountries").show();
+}
+
+// send
+function send(sel) {
+    // languageName = 'block'; which = 2
+    // languageCode = 'block'; which = 1
+    var which = 0;
+    try {
+        window.open("LangSearch.php?st=" + sel.options[sel.selectedIndex].value.toLowerCase(), "_self");
+    } catch (err) {
+        window.open("LangSearch.php?st=eng", "_self");
+    }
+}
 
 // Web Workers API
 var NavLang = "";
@@ -439,10 +643,6 @@ function about(st) {
         document.getElementById("results").innerHTML = event.data;
     };
 }
-
-/*function aboutLang(st) {
-    window.open("include/aboutLang.inc.php?st=" + st, "_self");
-}*/
 
 function loadWindow(ml, CTPHC, Window) {
     window.open("00" + ml + "-CTPHC.php?I=" + CTPHC + "&Window=" + Window);
@@ -491,7 +691,6 @@ function RemoveAccents(str) {
     }
     return str.join('');
 }
-
 
 // var without_accents = makeSortString("wïthêüÄTrèsBïgüeAk100t");
 makeSortString = (function() {
@@ -569,213 +768,3 @@ makeSortString = (function() {
         return (s.replace(translate_re, function(match) { return translate[match]; }));
     }
 })();
-
-
-/*****************************************************************************************************************
-	iOS -- showiOSLanguage() (the function are called by LangSearch.js by showLanguaage() function)
-*****************************************************************************************************************/
-function showiOSLanguage(str, st, Internet, MajorLanguage, Variant_major, SpecificCountry, asset, nonLatinScript) { // get the names of the languages
-    if (Internet == 0) {
-        alert('ScriptureEarth.org is offline. Therefore, iOS app is not avaiable.');
-        return;
-    }
-    xmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
-    if (xmlhttp == null) {
-        return;
-    }
-    var color = '';
-    var table = '';
-    var Country_Total = [];
-
-    //Scriptname = window.location.pathname;
-
-    /****************************************************************************************************************
-        	AJAX - LiOSSearch.php
-    ****************************************************************************************************************/
-    var url = "LiOSSearch.php";
-    url = url + "?language=" + str;
-    if ((st == 'cmn' || st == 'kor' || st == 'arb') && nonLatinScript == 0) { // test to see if st = Chinese or Korean and if it's Latin
-        url = url + "&st=eng";
-        url = url + "&SpecificCountry=English";
-    } else {
-        url = url + "&st=" + st;
-        url = url + "&SpecificCountry=" + SpecificCountry;
-    }
-    url = url + "&MajorLanguage=" + MajorLanguage;
-    url = url + "&Variant_major=" + Variant_major;
-    url = url + "&sid=" + Math.random();
-    xmlhttp.open("GET", url, true); // open the AJAX object with livesearch.php
-    xmlhttp.send(null);
-    xmlhttp.onreadystatechange = function() { // the function that returns for AJAX object
-        if (xmlhttp.readyState == 4) { // if the readyState = 4 then livesearch is displayed
-            var splits = xmlhttp.responseText.split('<br />'); // Display all of the languages that have 'language' as a part of it.
-            document.getElementById("LangSearch").innerHTML = '';
-            document.getElementById("CountSearch").innerHTML = '';
-            if (splits.length == 1 && splits[0].indexOf('@') === -1) {
-                langNotFound = splits[0];
-                document.getElementById("LangSearch").innerHTML = '<div style="display: inline; padding: 10px; margin-left: auto; margin-right: auto; color: red; background-color: white; font-size: 1.3em; "> ' + langNotFound + '</div>';
-                document.getElementById("CountrySearch").innerHTML = '';
-                $("#showSearchCountry").hide();
-                return;
-            }
-            $("#feedback").hide();
-            $("#copyright").hide();
-            // the 'table' is caused by a buy in Firefox 63.0.1 (11/7/2018) thus I added the last 3 items
-            colCountry = splits[splits.length - 1]; // subtract 1 from splits.length
-            colCode = splits[splits.length - 2]; // subtract 1 from splits.length
-            colAlt = splits[splits.length - 3]; // subtract 1 from splits.length
-            colLN = splits[splits.length - 4]; // subtract 1 from splits.length
-            table = '<div class="langCol">';
-            table += '<div class="colFirst">';
-            table += '<p class="colLN1">' + colLN + '</p>';
-            table += '<p class="colCountry1">' + colCountry + '</p>';
-            table += '<p class="colCode1">' + colCode + '</p>';
-            table += '<p class="colAlt1">' + colAlt + '</p>';
-            table += '</div>';
-            for (var i = 0; i < splits.length - 4; i++) {
-                table += "<p style='line-height: 2px; '>&nbsp;</p>"; // empty line between records
-                var firstSplit = splits[i].split('@');
-                // $LN.'@'.$alt.'@'.$iso.'@'.$country.'@'.$rod.'@'.$VD.'@'.$idx;
-                var LN = firstSplit[0];
-                var alt = firstSplit[1];
-                var iso = firstSplit[2];
-                var country = firstSplit[3];
-                var rod = firstSplit[4];
-                var VD = firstSplit[5];
-                var idx = firstSplit[6];
-                var URL = firstSplit[7];
-                // Cross Site Scripting (XSS) attack happens where client side code (usually JavaScript) gets injected into the output of your PHP script. The next line cleans it up.
-                table += "<div class='colSecond'>";
-                // here - check
-                table += "<div class='colLN2' onclick='iOSLanguage(\"" + st + "\"," + idx + ",\"" + LN + "\",\"" + URL + "\")'>" + LN;
-                if (VD != '') { table += "<div>(" + VD + ")</div>" };
-                table += "</div>";
-                table += "<p class='colCountry2'>";
-                var countrySplit = country.split(', '); // full country name : ZZ abbreviated country name
-                for (var k = 0; k < countrySplit.length; k++) {
-                    var tempCountry = countrySplit[k].substring(0, countrySplit[k].length - 3); // full country name (split ':')
-                    var tempAbbCountry = countrySplit[k].substring(countrySplit[k].length - 2); // ZZ abbreviated country name (split ':')
-                    // here - check
-                    table += tempCountry + ', ';
-                }
-                table = table.substring(0, table.length - 2); // take out the last ', '
-                table += "</p>";
-                // here - check
-                table += "<div class='colCode2' onclick='iOSLanguage(\"" + st + "\"," + idx + ",\"" + LN + "\",\"" + URL + "\")'>" + iso + "</div>";
-                // here - check
-                table += "<div class='colAlt2' onclick='iOSLanguage(\"" + st + "\"," + idx + ",\"" + LN + "\",\"" + URL + "\")'>" + alt + "</div>";
-                table += "</div>";
-            }
-            table += "<br /><br />";
-            if (asset == 0) {
-                table += "<div style='color: #777; font-size: .8em; '>ScriptureEarth.org</div><br />";
-            }
-            table += "</div>";
-            document.getElementById("LangSearch").innerHTML = table;
-        }
-    }
-}
-
-/*****************************************************************************************************************
-	iOS -- showiOSCountry() (the function are called by LangSearch.js by showCountry() function)
-*****************************************************************************************************************/
-function showiOSCountry(str, st, Internet, SpecificCountry, asset, nonLatinScript) { // get the names of the country
-    if (Internet == 0) {
-        alert('ScriptureEarth in not online. iOS app is not avaiable.');
-        return;
-    }
-    Countryxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
-    if (Countryxmlhttp == null) {
-        return;
-    }
-
-    Scriptname = window.location.pathname;
-
-    /****************************************************************************************************************
-    	AJAX - CiOSSearch.php
-    ****************************************************************************************************************/
-    var url = "CiOSSearch.php";
-    url = url + "?country=" + str;
-    if ((st == 'cmn' || st == 'kor' || st == 'arb') && nonLatinScript == 0) { // test to see if st = Chinese or Korean and if it's Latin
-        url = url + "&st=eng";
-        url = url + "&SpecificCountry=English";
-    } else {
-        url = url + "&st=" + st;
-        url = url + "&SpecificCountry=" + SpecificCountry;
-    }
-    url = url + "&asset=" + asset;
-    url = url + "&sid=" + Math.random();
-    Countryxmlhttp.open("GET", url, true); // open the AJAX object
-    Countryxmlhttp.send(null);
-    Countryxmlhttp.onreadystatechange = function() { // the function that returns for AJAX object
-        if (Countryxmlhttp.readyState == 4) { // if the readyState = 4 then livesearch is displayed
-            var splits = Countryxmlhttp.responseText.split('<br />'); // Display all of the languages that have 'language' as a part of it.
-            document.getElementById("LangSearch").innerHTML = '';
-            document.getElementById("CountrySearch").innerHTML = '';
-            if (splits.length == 1 && splits[0].indexOf('|') === -1) {
-                countryNotFound = splits[0];
-                document.getElementById("CountSearch").innerHTML = '<div style="display: inline; padding: 10px; margin-left: auto; margin-right: auto; color: red; background-color: white; font-size: 1.2em; "> ' + countryNotFound + '</div>';
-                return;
-            }
-            var Country_Total = '';
-            colCountries = splits[splits.length - 1]; // subtract 1 from splits.length
-            Country_Total = '<div class="countryTitle"><div class="countryTitleLine">' + colCountries + ':</div>';
-            for (var i = 0; i < splits.length - 1; i++) {
-                var firstSplit = splits[i].split('|'); // split the 2: specific country and two uppercase code for the country
-                var Country = firstSplit[0];
-                var ISO_Country = firstSplit[1];
-                // here - check
-                Country_Total += '<div class="pickCountry" onclick="window.open(\'' + Scriptname + '?sortby=country&asset=1&name=' + ISO_Country + '\', \'_self\')">' + Country + '</div>';
-            }
-            Country_Total += '</div>';
-            document.getElementById("CountSearch").innerHTML = Country_Total;
-        }
-    }
-}
-
-/*****************************************************************************************************************
-	iOS -- AlliOSCountries() (the function are called by LangSearch.js by AllCountries() function)
-*****************************************************************************************************************/
-function AlliOSCountries(Scriptname, st, SpecificCountry, Internet) {
-    if (Internet == 0) {
-        alert('ScriptureEarth in not online. iOS app is not avaiable.');
-        return;
-    }
-    AllCountriesxmlhttp = getHTTPObject(); // the ISO object (see JavaScript function getHTTPObject() above)
-    if (AllCountriesxmlhttp == null) {
-        return;
-    }
-    /****************************************************************************************************************
-    	AJAX - AlliOSCountries.php
-    ****************************************************************************************************************/
-    var url = "AlliOSCountries.php";
-    url = url + "?SpecificCountry=" + SpecificCountry;
-    url = url + "&st=" + st;
-    url = url + "&sid=" + Math.random();
-    AllCountriesxmlhttp.open("GET", url, true); // open the AJAX object
-    AllCountriesxmlhttp.send(null);
-    AllCountriesxmlhttp.onreadystatechange = function() { // the function that returns for AJAX object
-        if (AllCountriesxmlhttp.readyState == 4) { // if the readyState = 4 then livesearch is displayed
-            var splits = AllCountriesxmlhttp.responseText.split('<br />'); // Display all of the languages that have 'language' as a part of it.
-            document.getElementById("countryList").innerHTML = '';
-            if (splits.length == 1 && splits[0].indexOf('|') === -1) {
-                countryNotFound = splits[0];
-                document.getElementById("countryList").innerHTML = '<div style="display: inline; padding: 10px; margin-left: auto; margin-right: auto; color: red; background-color: white; font-size: 1.2em; "> ' + countryNotFound + '</div>';
-                return;
-            }
-            var AllCountries_Total = '';
-            for (var i = 0; i < splits.length - 1; i++) {
-                var firstSplit = splits[i].split('|'); // split the 2: specific country and two uppercase code for the country
-                var Country = firstSplit[0];
-                var ISO_Country = firstSplit[1];
-                // here - check
-                AllCountries_Total += '<div class="pickCountry" onclick="window.open(\'./' + Scriptname + '?sortby=country&asset=1&name=' + ISO_Country + '\', \'_self\')">' + Country + '</div>';
-            }
-            AllCountries_Total += '</div>';
-            document.getElementById("countryList").innerHTML = AllCountries_Total;
-        }
-    }
-    $("#countryList").show();
-    $("#listCountriesID").show();
-    $(".homeAllCountries").show();
-}

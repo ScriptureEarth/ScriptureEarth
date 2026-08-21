@@ -32,15 +32,6 @@
 	body {
 		background-color: white;
 	}
-	a {
-		color: navy;
-		text-decoration: none;
-		/*margin-left: 10px;*/
-	}
-	tr, td {
-		margin: 0;
-		padding: 0;
-	}
 
 	li.aboutText {
 		display: block;
@@ -53,106 +44,6 @@
 	}
 	a.aboutWord:hover {
 		color: red;
-	}
-	img.iconActions {
-		margin-top: 4px;
-		margin-bottom: 4px;
-		padding: 0;
-		vertical-align: middle;
-		border-style: none;
-		width: 30px;
-		height: 30px;
-		min-width: 30px;
-		margin-right: 4px;
-	}
-	div.linePointer {
-		cursor: pointer;
-		display: inline;
-	}
-	div.linePointer:hover {
-		border-bottom: 2px solid red;
-	}
-
-	/* for the tables */
-	#Dis_BibleIsReadAudio, #Dis_BibleIsRead, #Dis_BibleIsReadAudioVideo, #Dis_BibleIsAudio, #Dis_BibleIsAudioVideo,
-	#Dis_BibleIsVideo, #Dis_BibleIsReadVideo,
-	#Dis_SAB, #Dis_BibleIs, #Dis_viewer, #Dis_OT_PDF, #Dis_NT_PDF, #Dis_OT_Audio, #Dis_NT_Audio, #Dis_PlaylistAudio, #Dis_BibleIsGospelFilm,
-	#Dis_PlaylistVideo, #Dis_watch, #Dis_YouVersion, #Dis_buy, #Dis_GRN, #Dis_study, #Dis_otherTitles, #Dis_otherTitles_download,
-	#Dis_links, #Dis_eBible, #Dis_SILlink, #Dis_SB, #Dis_GooglePlay, #Dis_All, #Dis_PlaylistVideo, #Dis_PlaylistVideo_download, #Dis_App,
-	#Dis_BibleIsSAB, #Dis_BibleIsGospelFilmSAB, #Dis_YouVersion, #Dis_NotAndroidiOS, #Dis_moreLinks, #Dis_maps, #Dis_OT_Audio_download,
-	#Dis_NT_Audio_download, #Dis_otherTitles_videoDownload, #Dis_Map {
-		display: none;
-	}
-	
-	 /* style the tab */
-	.tab, .CCtab {
-		/*overflow: hidden;*/
-		border: 1px solid #ccc;
-		background-color: #f1f1f1;
-	}
-	/* style the buttons that are used to open the tab content */
-	.tab button {
-		background-color: inherit;
-		float: left;
-		border: none;
-		outline: none;
-		cursor: pointer;
-		padding-top: 34px;
-		padding-bottom: 12px;
-		transition: 0.4s;
-	}
-	.CCtab button {
-		background-color: inherit;
-		/*float: left;
-		border: none;
-		outline: none;*/
-		font-size: .9em;
-		cursor: pointer;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 10px;
-		padding-right: 10px;
-		margin-left: 10px;
-		margin-right: 10px;
-		/*transition: 0.4s;*/
-	}
-	/* change background color of buttons on hover */
-	.tab button:hover, .CCtab button:hover {
-		background-color: #ddd;
-	}
-	/* create an active/current tablink class */
-	.tab button.active, .CCtab button.active {
-		background-color: #ccc;
-	}
-	/* tab icon width */
-	.tablinks {
-		width: 14.28%;
-	}
-	.CCtablinks {
-	}
-	/* individual width and height of the icons */
-	#tabText, #tabAudio, #tabVideo, #tabApp, #tabOther, #tabMap, #tabAll {
-		width: 60px;
-		height: 60px;
-		margin-top: 21px;
-	}
-	/* text to the icons */
-	figcaption {
-		font-size: 130%;
-		text-align: center;
-	}
-
-	@media only screen and (max-width: 480px) {
-		/* reddraw the mobile icons */
-		.tab button {
-			padding-top: 2px;
-			margin-bottom: 20px;
-			height: 86px;
-		}
-		/* text to the icons */
-		figcaption {
-			font-size: 90%;
-		}
 	}
 </style>
 
@@ -434,7 +325,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 
 /*
 	*************************************************************************************************************
-		Get the Language name to display AND display the Text, Audio, Video, App, Other and All bottons.
+		Get the Language name to display.
 	*************************************************************************************************************
 */
 	?>
@@ -464,30 +355,16 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		}
 		?>
 	</h1>
-
+<?php
+/*
+	*************************************************************************************************************
+		Display the Text, Audio, Video, App, Other, and All buttons.
+	*************************************************************************************************************
+*/
+?>
 <script>
 	setTitle("<?php echo ($whichBible == '' ? '' : $whichBible . ' ') . $LN . ($ISO == 'qqq' ? '' : '['.$ISO.']'); ?>");		// qqq equals Deaf
 
-	// Is it a mobile device?
-	var isMobile = {
-		Android: function() {return navigator.userAgent.match(/Android/i);},
-		iOS: function() {return navigator.userAgent.match(/iPhone|iPad|iPod/i);},
-		//any: function() {return (isMobile.Android() || isMobile.iOS()}
-		smartPhone: function() {return navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i);}
-	};
-	// if (isMobile.smartPhone()) {}  		// mobile device
-	// if (!isMobile.smartPhone()) {} 		// desktop computer
-
-	/*
-			$BibleIsLink = 1: Read and Listen			$BibleIsReadAudio
-			$BibleIsLink = 2: Read						$BibleIsRead
-			$BibleIsLink = 3: Read and Listen			$BibleIsReadAudio
-			$BibleIsLink = 4: Read, Listen, and View	$BibleIsReadAudioVideo
-			$BibleIsLink = 5: Listen					$BibleIsAudio
-			$BibleIsLink = 6: Listen and View			$BibleIsAudioVideo
-			$BibleIsLink = 7: View						$BibleIsVideo
-			$BibleIsLink = 8: Read and View				$BibleIsReadVideo
-		*/
 	// Object.entries() takes an object like { a: 1, b: 2, c: 3 } and turns it into an array of key-value pairs: [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ].
 	const DisplayText = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_BibleIsReadVideo': <?php echo $BibleIsReadVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_otherTitles': <?php echo $otherTitles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>};
 	const DisplayAudio = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsAudioVideo': <?php echo $BibleIsAudioVideo; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_other_titles': <?php echo $other_titles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
@@ -496,83 +373,6 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	const DisplayOther = {'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_Kalaam': <?php echo $Kalaam; ?>};
 	const DisplayMap = {'Dis_Map': <?php echo $SE_Map; ?>};
 	const DisplayAll = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsReadVideo': <?php echo $BibleIsReadVideo; ?>, 'Dis_BibleIsAudioVideo': <?php echo $BibleIsAudioVideo; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_otherTitles': <?php echo $other_titles; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_links': <?php echo $links; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_App': <?php echo $App; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_AppleStore': <?php echo $AppleStore; ?>, 'Dis_Kalaam': <?php echo $Kalaam; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>};
-
-	// set display = "table" for all "DisplayZZZZZZ" Object.entries()
-	function menuEnableText() {
-		for (let [ dis_key, dis_value ] of Object.entries(DisplayText)) {
-			if (document.getElementById(dis_key)) {
-				if (dis_value != 0) {
-					document.getElementById(dis_key).style.display = "table";
-				}
-			}
-		}
-	}
-	function menuEnableAudio() {
-		for (let [ dis_key, dis_value ] of Object.entries(DisplayAudio)) {
-			if (document.getElementById(dis_key)) {
-				if (dis_value != 0) {
-					document.getElementById(dis_key).style.display = "table";
-				}
-			}
-		}
-	}
-	function menuEnableVideo() {
-		for (let [ dis_key, dis_value ] of Object.entries(DisplayVideo)) {
-			if (document.getElementById(dis_key)) {
-				if (dis_value != 0) {
-					document.getElementById(dis_key).style.display = "table";
-				}
-			}
-		}
-	}
-	function menuEnableApp() {
-		for (let [ dis_key, dis_value ] of Object.entries(DisplayApp)) {
-			if (document.getElementById(dis_key)) {
-				if (dis_value != 0) {
-					document.getElementById(dis_key).style.display = "table";
-				}
-			}
-		}
-	}
-	function menuEnableOther() {
-		for (let [ dis_key, dis_value ] of Object.entries(DisplayOther)) {
-			if (document.getElementById(dis_key)) {
-				if (dis_value != 0) {
-					document.getElementById(dis_key).style.display = "table";
-				}
-			}
-		}
-	}
-	function menuEnableMap() {
-		for (let [ dis_key, dis_value ] of Object.entries(DisplayMap)) {
-			if (document.getElementById(dis_key)) {
-				if (dis_value != 0) {
-					document.getElementById(dis_key).style.display = "table";
-				}
-			}
-		}
-	}
-	function menuEnableAll() {
-		for (let [ dis_key, dis_value ] of Object.entries(DisplayAll)) {
-			if (document.getElementById(dis_key)) {
-				if (dis_value != 0) {
-					document.getElementById(dis_key).style.display = "table";
-				}
-			}
-		}
-	}
-	function menuDisableAll() {
-		for (let [ dis_key, dis_value ] of Object.entries(DisplayAll)) {
-			if (document.getElementById(dis_key)) {
-				if (dis_value != 0) {
-					document.getElementById(dis_key).style.display = "none";
-				}
-			}
-		}
-		if (document.getElementById("Dis_Map")) {
-			document.getElementById("Dis_Map").style.display = "none";
-		}
-	}
 
 	// set the icons for the largest size
 
@@ -640,75 +440,6 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		document.getElementById('tabAll').style.width = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
 		document.getElementById('tabAll').style.height = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
 		document.getElementById('tabAll').style.marginTop = "21px";
-	}
-			
-	// Display the "DisplayZZZZZ" Object.entries()
-	function openMenuTab(evt, menuTabName) {
-		// return if count = 0
-		if (menuTabName == 'Text' && textCount === 0) {
-			return;
-		}
-		if (menuTabName == 'Audio' && audioCount === 0) {
-			return;
-		}
-		if (menuTabName == 'Video' && videoCount === 0) {
-			return;
-		}
-		if (menuTabName == 'App' && appCount === 0) {
-			return;
-		}
-		if (menuTabName == 'Other' && otherCount === 0) {
-			return;
-		}
-		if (menuTabName == 'Map' && mapCount === 0) {
-			return;
-		}
-
-		// set none to "tablinks" class names and set the "event" class name to "active"
-		let tablinks;
-		tablinks = document.getElementsByClassName("tablinks");							// Get all elements with class="tablinks" and remove the class "active"
-		for (let i = 0; i < tablinks.length; i++) {
-			tablinks[i].className = tablinks[i].className.replace(" active", "");
-		}
-		evt.currentTarget.className += " active";										// change the "active" class to the button that opened the tab
-
-		// set all of the "DisplayZZZZZ" Object.entries()
-		if (menuTabName != 'All') {
-			menuDisableAll();
-		}
-		iconDisableAll();
-		switch (menuTabName) {
-			case 'Text':
-				menuEnableText();
-				iconEnableText();
-				break;
-			case 'Audio':
-				menuEnableAudio();
-				iconEnableAudio();
-				break;
-			case 'Video':
-				menuEnableVideo();
-				iconEnableVideo();
-				break;
-			case 'App':
-				menuEnableApp();
-				iconEnableAppt();
-				break;
-			case 'Other':
-				menuEnableOther();
-				iconEnableOther();
-				break;
-			case 'Map':
-				menuEnableMap();
-				iconEnableMap();
-				break;
-			case 'All':
-				menuEnableAll();
-				iconEnableAll();
-				break;
-			default:
-				document.write('<p>This is\'t supposed to happen! (menu tabs)</p>');
-		}
 	}
 </script>
 
@@ -4099,7 +3830,6 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 	*************************************************************************************************************
 */
 	if ($Internet && $SE_Map) {
-		$temp_CC = $ISO_Country;
 		echo '<table id="Dis_Map" style="width: 100%; margin-top: 0px; ">';
 		?>
 		<tr>
@@ -4108,8 +3838,9 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				<div style='width: 92%; margin-left: auto; margin-right: auto; '>
 					<div class="CCtab" style="text-align: center; ">
 						<?php
-						$ISOorROD = $ISO != 'qqq' ? $ISO : $ROD_Code;
+						$ISOorROD = $ISO == 'qqq' ? $ROD_Code : ($ROD_Code == '00000' ? $ISO : $ISO.'_'.$ROD_Code);
 						foreach ($CC_countries as $countryKey => $countryValue) {
+							// the CCCountry function is down below (see SE map country)
 							echo '<button class="CCtablinks" onclick="CCCountry(\''.$countryKey.'\',\''.$ISOorROD.'\',\''.$countryValue.'\')" value="'.$countryKey.'">'.$countryValue.'</button>';
 						}
 						?>
@@ -4117,12 +3848,8 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 				<h3 id='countryLabel' style='font-size: 1.3em; margin-top: 40px; text-align: center; '></h3>
 				</div>
 				<?php
-				if ($ISO == 'azb' && $ROD_Code == '07458') {
-					echo '<iframe loading="lazy" id="CC_c" name="iframe_a" title="Iframe" class="mapIframe" src="../maps/'.$temp_CC.'/'.$ISO.'_'.$ROD_Code.'.htm"></iframe>';
-				}
-				else {
-					echo '<iframe loading="lazy" style="display: none; " id="CC_c" name="iframe_a" title="Iframe" class="mapIframe" src=""></iframe>';
-				}
+				// document.getElementById("CC_c") is in function CCCountry (see SE map country)
+				echo '<iframe loading="lazy" style="display: none; " id="CC_c" name="iframe_a" title="Iframe" class="mapIframe" src=""></iframe>';
 				echo '<div id="mapKey" style="display: none; " class="mapKey">';
 					echo '<p><span style="color: #a8226d; font-weight: bold; ">'.translate('red: language you have selected', $st, 'sys').'</span></p>';
 					echo '<p><span style="color: #4d25c5; font-weight: bold; ">'.translate('purple: subgroup for this language', $st, 'sys').'</span></p>';
@@ -4143,19 +3870,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 
 <script>
 	function iOSAssetPackage(URL) {
-		if (URL.startsWith("http://") || URL.startsWith("https://")) {
-			if (URL.endsWith(".zip")) {
-				const link = document.createElement("a");
-				link.href = URL;
-				link.download = URL.substr(URL.lastIndexOf('/')+1);
-				link.click();
-			}
-			else {
-				window.open(URL, '_blank');
-			}
-		}
-		else if (URL.startsWith("asset://")) {
-			//			URL = URL.replace("asset://", "https://");
+		if (URL.startsWith("http://") || URL.startsWith("https://") || URL.startsWith("asset://")) {
 			const link = document.createElement("a");
 			link.href = URL;
 			link.download = URL.substr(URL.lastIndexOf('/')+1);
@@ -4180,88 +3895,10 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
         }
     }
     function SAB_Scriptoria_Index(subfolder) {
-		// A temporary fix (Ha!) for SAB Scriptoria Read/Listen/View not working right.
-		// Need to check the version number from version.json to see if it is new enough (JSON => version: 1768322736214). Chris Hubbard 2026-01-13
-		// If it is new enough, open the standard [ISO+] (not [ISO+]_micropi) index.html.
 		let iso = "<?php echo $ISO; ?>";
 		let subfolde = subfolder.slice(4, -1);										// get '[ISO]ZZZZ' from 'sab/[ISO]ZZZZ/'
 		console.log(subfolde);
 		window.open("./data/"+iso+"/sab/"+subfolde+"/", "SABPage");
-
-		/*(async function () {
-			try {
-				const response = await fetch('./data/'+iso+'/sab/'+subfolde+'/_app/version.json');
-				const data = await response.json();
-				//console.log('data: '+data);
-				let appVersion = data.version;										// get the version number
-				console.log('appVersion: '+appVersion);
-				if (appVersion.includes("-")) {										// if version number contains a dash "-"
-					let version_compare = appVersion.split("-");					// split into two parts based on the dash "-"
-					appVersion = version_compare[1];								// use the second part only
-					console.log('appVersion changed to: '+appVersion);
-				}
-				/***************************************************************************************************
-					If the version number is new enough, open the standard [ISO+] (not [ISO+]_micropi) index.html.
-					If the version number is not new enough, check if the [ISO+]_micropi folder exists.
-					If it does, open the [ISO+]_micropi index.html. If it doesn't, display an error message.
-				 **************************************************************************************************
-				if (appVersion >= "1768322736214") {								// {"version":"13.3.2-1770141784340"} 2026-02-3
-					console.log('App version '+appVersion+' detected, opening '+subfolder+'index.html.');
-					window.open("./data/"+iso+"/sab/"+subfolde+"/", "SABPage");
-				}
-				else {
-					//window.open("./data/"+iso+"/sab/"+subfolde+'_micropi/', "SABPage");
-					//console.log('App version '+appVersion+' detected, opening '+subfolder+'_micropi index.html.');
-					//window.open("./data/"+iso+"/sab/"+subfolde+"_micropi/index.html", "SABPage");
-					fetch('./data/'+iso+'/sab/'+subfolde+'_micropi', {
-						method: 'HEAD'												// check if [ISO+]_micropi folder exists
-					})
-					.then(response => {
-						if (!response.ok) {
-							//throw new Error('Network response was not ok');
-							console.log('Response headers '+response.status+': MicroPi file not found, opening standard page.');
-							alert('Temporarily unavailable—please try the Read/Listen/View feature again later.');
-							//window.open("./data/"+iso+"/sab/"+subfolder+"/", "SABPage");
-						}
-						else {
-							// Access response headers
-							console.log('Response headers '+response.status+': MicroPi file found, opening MicroPi page.');
-							window.open("./data/"+iso+"/sab/"+subfolde+'_micropi/', "SABPage");
-							//response.headers.forEach((value, name) => {
-							//  console.log(`${name}: ${value}`);
-							//});
-						}
-					})
-					.catch(error => {
-						console.error('Error:', error);
-					});
-				}
-			}
-			catch (error) {
-				console.error('Error:', error);
-				console.log('Opening standard page.');
-				//window.open("./data/"+iso+"/sab/"+subfolde+"_micropi/", "SABPage");
-				fetch('./data/'+iso+'/sab/'+subfolde+'_micropi', {
-					method: 'HEAD'													// check if MicroPi folder exists
-				})
-				.then(response => {
-					if (!response.ok) {
-						//throw new Error('Network response was not ok');
-						console.log('Response headers '+response.status+': MicroPi file not found, opening standard page.');
-						alert('Temporarily unavailable—please try the Read/Listen/View feature again later.');
-						//window.open("./data/"+iso+"/sab/"+subfolder+"/", "SABPage");
-					}
-					else {
-						// Access response headers
-						console.log('Response headers '+response.status+': MicroPi file found, opening MicroPi page.');
-						window.open("./data/"+iso+"/sab/"+subfolde+'_micropi/', "SABPage");
-					}
-				})
-				.catch(error => {
-					console.error('Error:', error);
-				});
-			}
-		})();*/
 	}
     function SAB_Scriptoria_Other(url) {
 		window.open(url, "SABLink");
@@ -4276,164 +3913,168 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 			window.open("./data/<?php echo $ISO; ?>/" + subfolder + "index.html", "SABPage");
 		}
 	}
-/*
-	*************************************************************************************************************
-		Set the counts for individual const "DisplayZZZZ" Object.entries().
-	*************************************************************************************************************
-*/
-	textCount = 0;
-	for (let [dis_key, dis_value] of Object.entries(DisplayText)) {
-		if (document.getElementById(dis_key)) {
-			if (dis_value != 0) {
-				textCount = 1;
-				break;
+	/*
+		*************************************************************************************************************
+			Set the counts for individual const "DisplayZZZZ" Object.entries().
+		*************************************************************************************************************
+	*/
+		textCount = 0;
+		for (let [dis_key, dis_value] of Object.entries(DisplayText)) {
+			if (document.getElementById(dis_key)) {
+				if (dis_value != 0) {
+					textCount = 1;
+					break;
+				}
 			}
 		}
-	}
-	audioCount = 0;
-	for (let [dis_key, dis_value] of Object.entries(DisplayAudio)) {
-		if (document.getElementById(dis_key)) {
-			if (dis_value != 0) {
-				audioCount = 1;
-				break;
+		audioCount = 0;
+		for (let [dis_key, dis_value] of Object.entries(DisplayAudio)) {
+			if (document.getElementById(dis_key)) {
+				if (dis_value != 0) {
+					audioCount = 1;
+					break;
+				}
 			}
 		}
-	}
-	videoCount = 0;
-	for (let [dis_key, dis_value] of Object.entries(DisplayVideo)) {
-		if (document.getElementById(dis_key)) {
-			if (dis_value != 0) {
-				videoCount = 1;
-				break;
+		videoCount = 0;
+		for (let [dis_key, dis_value] of Object.entries(DisplayVideo)) {
+			if (document.getElementById(dis_key)) {
+				if (dis_value != 0) {
+					videoCount = 1;
+					break;
+				}
 			}
 		}
-	}
-	appCount = 0;
-	for (let [dis_key, dis_value] of Object.entries(DisplayApp)) {
-		if (document.getElementById(dis_key)) {
-			if (dis_value != 0) {
-				appCount = 1;
-				break;
+		appCount = 0;
+		for (let [dis_key, dis_value] of Object.entries(DisplayApp)) {
+			if (document.getElementById(dis_key)) {
+				if (dis_value != 0) {
+					appCount = 1;
+					break;
+				}
 			}
 		}
-	}
-	otherCount = 0;
-	for (let [dis_key, dis_value] of Object.entries(DisplayOther)) {
-		if (document.getElementById(dis_key)) {
-			if (dis_value != 0) {
-				otherCount = 1;
-				break;
+		otherCount = 0;
+		for (let [dis_key, dis_value] of Object.entries(DisplayOther)) {
+			if (document.getElementById(dis_key)) {
+				if (dis_value != 0) {
+					otherCount = 1;
+					break;
+				}
 			}
 		}
-	}
-	mapCount = 0;
-	for (let [dis_key, dis_value] of Object.entries(DisplayMap)) {
-		if (document.getElementById(dis_key)) {
-			if (dis_value != 0) {
-				mapCount = 1;
-				break;
+		mapCount = 0;
+		for (let [dis_key, dis_value] of Object.entries(DisplayMap)) {
+			if (document.getElementById(dis_key)) {
+				if (dis_value != 0) {
+					mapCount = 1;
+					break;
+				}
 			}
-		}
-	}
-
-/*
-	*************************************************************************************************************
-		If the count is 0 then gray with icon.
-	*************************************************************************************************************
-*/
-	if (textCount === 0) {
-		document.getElementById('tabText').style.cursor = 'none';
-		//document.getElementById('tabApp').style.filter = "contrast(30%) brightness(40%)";
-		document.getElementById('tabText').style.filter = "opacity(20%) grayscale(100%)";
-	}
-	if (audioCount === 0) {
-		document.getElementById('tabAudio').style.cursor = 'none';
-		document.getElementById('tabAudio').style.filter = "opacity(20%) grayscale(100%)";
-	}
-	if (videoCount === 0) {
-		document.getElementById('tabVideo').style.cursor = 'none';
-		document.getElementById('tabVideo').style.filter = "opacity(20%) grayscale(100%)";
-	}
-	if (appCount === 0) {
-		document.getElementById('tabApp').style.cursor = 'auto';
-		document.getElementById('tabApp').style.filter = "opacity(20%) grayscale(100%)";
-	}
-	if (otherCount === 0) {
-		document.getElementById('tabOther').style.cursor = 'auto';
-		document.getElementById('tabOther').style.filter = "opacity(20%) grayscale(100%)";
-	}
-	if (mapCount === 0) {
-		document.getElementById('tabMap').style.cursor = 'auto';
-		document.getElementById('tabMap').style.filter = "opacity(20%) grayscale(100%)";
-	}
-
-/*
-	*************************************************************************************************************
-		If the count is 1 display a larger icon and start first with "Text".
-	*************************************************************************************************************
-*/
-	if (textCount == 1) {
-		document.getElementById("tabText").click();
-	}
-	else if (audioCount == 1) {
-		document.getElementById("tabAudio").click();
-	}
-	else if (videoCount == 1) {
-		document.getElementById("tabVideo").click();
-	}
-	else if (appCount == 1) {
-		document.getElementById("tabApp").click();
-	}
-	else if (otherCount == 1) {
-		document.getElementById("tabOther").click();
-	}
-	else if (mapCount == 1) {
-		document.getElementById("tabMap").click();
-	}
-	else { // (allCount == 1)
-		document.getElementById("tabAll").click();
-	}
-
-/*
-	*************************************************************************************************************
-		country map
-	*************************************************************************************************************
-*/
-	function CCCountry(countryKey, ISOorROD, countryValue) {
-		// if-url-exist
-		function ifUrlExist(url) {
-			var http = new XMLHttpRequest();
-			http.open('HEAD', url, false);										// get back "HEAD"
-			http.send();
-			return http.status != 404;											// returns true of false
 		}
 
-		const hasUrl = ifUrlExist('/maps/'+countryKey+'/'+ISOorROD+'.htm');
-		console.log(hasUrl);
+	/*
+		*************************************************************************************************************
+			If the count is 0 then gray with icon.
+		*************************************************************************************************************
+	*/
+		if (textCount === 0) {
+			document.getElementById('tabText').style.cursor = 'none';
+			//document.getElementById('tabApp').style.filter = "contrast(30%) brightness(40%)";
+			document.getElementById('tabText').style.filter = "opacity(20%) grayscale(100%)";
+		}
+		if (audioCount === 0) {
+			document.getElementById('tabAudio').style.cursor = 'none';
+			document.getElementById('tabAudio').style.filter = "opacity(20%) grayscale(100%)";
+		}
+		if (videoCount === 0) {
+			document.getElementById('tabVideo').style.cursor = 'none';
+			document.getElementById('tabVideo').style.filter = "opacity(20%) grayscale(100%)";
+		}
+		if (appCount === 0) {
+			document.getElementById('tabApp').style.cursor = 'auto';
+			document.getElementById('tabApp').style.filter = "opacity(20%) grayscale(100%)";
+		}
+		if (otherCount === 0) {
+			document.getElementById('tabOther').style.cursor = 'auto';
+			document.getElementById('tabOther').style.filter = "opacity(20%) grayscale(100%)";
+		}
+		if (mapCount === 0) {
+			document.getElementById('tabMap').style.cursor = 'auto';
+			document.getElementById('tabMap').style.filter = "opacity(20%) grayscale(100%)";
+		}
 
-		if (hasUrl) {															// true or false
-			var x = document.getElementById("CC_c");
-			x.src = "./maps/" + countryKey + "/" + ISOorROD + ".htm";
-			x.style.display = "inline-block";
-			var mapKey = document.getElementById("mapKey");
-			mapKey.style.display = "inline-block";
+	/*
+		*************************************************************************************************************
+			If the count is 1 display a larger icon and start first with "Text".
+		*************************************************************************************************************
+	*/
+		if (textCount == 1) {
+			document.getElementById("tabText").click();
+		}
+		else if (audioCount == 1) {
+			document.getElementById("tabAudio").click();
+		}
+		else if (videoCount == 1) {
+			document.getElementById("tabVideo").click();
+		}
+		else if (appCount == 1) {
+			document.getElementById("tabApp").click();
+		}
+		else if (otherCount == 1) {
+			document.getElementById("tabOther").click();
+		}
+		else if (mapCount == 1) {
+			document.getElementById("tabMap").click();
+		}
+		else { // (allCount == 1)
+			document.getElementById("tabAll").click();
+		}
+
+	/*
+		*************************************************************************************************************
+			SE map country
+		*************************************************************************************************************
+	*/
+		function CCCountry(countryKey, ISOorROD, countryValue) {
+			// if-url-exist
+			function ifUrlExist(url) {
+				var http = new XMLHttpRequest();
+				http.open('HEAD', url, false);										// get back "HEAD"
+				http.send();
+				return http.status != 404;											// returns true of false
+			}
+
+			const hasUrl = ifUrlExist('/maps/'+countryKey+'/'+ISOorROD+'.htm');
+			console.log(hasUrl);
+
 			var y = document.getElementById("countryLabel");
-			y.innerHTML = countryValue;
+			if (hasUrl) {															// true or false
+				// macrolanguage string (see 00-MainScript.ini.php)
+				if (macroLanguage.includes(ISOorROD.substring(0, 3))) {
+					//this is a macrolanguage
+					y.innerHTML = countryValue + ": <?php echo translate('is a macro language.', $st, 'sys'); ?>";
+				}
+				else {
+					y.innerHTML = countryValue;
+				}
+				var x = document.getElementById("CC_c");
+				x.src = "./maps/" + countryKey + "/" + ISOorROD + ".htm";
+				x.style.display = "inline-block";
+				var mapKey = document.getElementById("mapKey");
+				mapKey.style.display = "inline-block";
+			}
+			else {
+				y.innerHTML = "<?php echo translate('Could this language be in more than one location?', $st, 'sys'); ?>";
+			}
 		}
-		else {
-			var y = document.getElementById("countryLabel");
-			y.innerHTML = "<?php echo translate('Could this language be in more than one location or is it a marco langauge?', $st, 'sys'); ?>";
-		}
-	}
 
-	$(function() {
-		<?php
-			$ISOorROD = $ISO != 'qqq' ? $ISO : $ROD_Code;
-		?>
-		CCCountry("<?php echo array_keys($CC_countries)[0]; ?>", "<?php echo $ISOorROD; ?>", "<?php echo array_values($CC_countries)[0]; ?>");
-	});
-// end
-
+		$(function() {
+			<?php
+				$ISOorROD = $ISO == 'qqq' ? $ROD_Code : (($ROD_Code == '00000' || $ROD_Code == '') ? $ISO : $ISO.'_'.$ROD_Code);
+			?>
+			CCCountry("<?php echo array_keys($CC_countries)[0]; ?>", "<?php echo $ISOorROD; ?>", "<?php echo array_values($CC_countries)[0]; ?>");
+		});
 </script>
 
 <!--script type='text/javascript' language='javascript' src='_js/user_events.js'></script-->

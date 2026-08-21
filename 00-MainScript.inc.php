@@ -66,7 +66,7 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 <script type="text/javascript" language="javascript" src="_js/jquery.jplayer-2.9.2.min.js"></script>
 <script type="text/javascript" language="javascript" src="_js/jplayer.playlist.min.js"></script>
 <script type="text/javascript" language="javascript" src="_js/user_events.js?v=1.0.3"></script>
-<script type="text/javascript" language="javascript" src="_js/SpecificLanguage.js?v=1.0.8"></script>
+<script type="text/javascript" language="javascript" src="_js/SpecificLanguage.js?v=1.1.3"></script>
 <script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.9"></script>
 <!--script type='text/javascript' language='javascript'	src="_js/LangSearch.js?v=1.0.3"></script-->
 <!--link rel='stylesheet' type='text/css' 	href='_css/boilerplate.css' /-->
@@ -1247,7 +1247,7 @@ if (isset($_GET['asset'])) {
 											</div>
 											<li><a href='#' onclick="menuSet = 0; window.open('./Feedback/Feedback.php?st=<?php echo $st; ?>')"><?php echo translate('Contact Us', $st, 'sys'); ?></a></li>
 											<?php if ($st == 'eng') { ?>
-												<li><a href='#' onclick="menuSet = 0; window.open('https://give.sil.org/give/531194/#!/donation/checkout')"><?php echo translate('Donate', $st, 'sys'); ?></a></li>
+												<li><a href='#' onclick="menuSet = 0; window.open('https://give.sil.org/campaign/814239/donate')"><?php echo translate('Donate', $st, 'sys'); ?></a></li>
 											<?php }
 											if ($st == 'eng' || $st == 'spa') { ?>
 												<li><a href='#' onclick="menuSet = 0; window.open('./promotionMaterials/promotion.php?st=<?php echo $st; ?>')"><?php echo translate('Promotion Materials', $st, 'sys'); ?></a></li>

@@ -1,23 +1,43 @@
 @charset "utf-8";
 
-/* 00-Scripturee.css
-	Scripture css
+/*
+    00-Scripturee.css
 	Created by Scott Starker
-	March 2019
 */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/**************************************************************
+    begin jQuery
+**************************************************************/
+table {
+    width: 100%;
+	font-size: 1em;
+}
+
+.ui-draggable, .ui-droppable {
+	background-position: top;
+}
+/**************************************************************
+    end jQuery
+**************************************************************/
 
 body {
     background-color: black;
-    margin: 0;
     /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
+    margin: 0;
     padding: 0;
-    text-align: center;
     /* this centers the container in IE 5* browsers. The text is then set to the left aligned default in the #container selector */
+    text-align: center;
+    height: 100%;
+    width: 100vw;
     /*background-image: url('images/00i-BackgroundFistPage.jpg');*/
     /*height: 700px;  You must set a specified height */
     /*background-position: center;  Center the image */
-    /* background-repeat: no-repeat; Do not repeat the image */
-    height: 100%;
+    /*background-repeat: no-repeat; Do not repeat the image */
 }
 
 h1 {
@@ -43,6 +63,11 @@ p {
     padding: 0;
 }
 
+input,
+button {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 fieldset {
     border: 0;
 }
@@ -52,16 +77,46 @@ label {
     margin: 30px 0 0 0;
 }
 
+select {
+    color: black;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 0.3rem;
+    margin-top: 10px;
+}
+
 /*select {
     width: 50px;
     width: auto;
     height: auto;
-}
+}*/
 
 option {
+    color: black;
+    background-color: white;
+    font-family: Chivo, 'Gill Sans', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: normal;
+    font-size: 11pt;
+    /*border: 1px solid #e4e4e4;*/
+    /* safari: */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /*box-shadow: inset 20px 20px #f00;
+    text-align-last: left;*/
+}
+
+/*option {
     text-align: left;
     margin: 0;
     font-size: .8em;
+}*/
+
+/*option:checked, option:hover {		 doesn't work for firefox
+    background-color: white;
+    /* color: #c0c0c0; * /
+    cursor: pointer;
+    /*border: 1px solid red;* /
+    /*box-shadow: inset 20px 20px #00f;* /
 }*/
 
 textarea {
@@ -72,6 +127,211 @@ textarea {
     border: none;
     background-color: white;
 }
+
+/* ************************************************************************
+
+        begin hamburger
+        
+************************************************************************* */
+.toggler {
+    /* ALWAYS KEEPING THE TOGGLER OR THE CHECKBOX ON TOP OF EVERYTHING :  */
+    position: absolute;
+    z-index: 10;
+    /* Can't see it though. So, use the "Tools" from the menu of the browse, click on "Browser Tools", click on "Web Developer Tools". */
+    /* On the bottom menu click on "Inspector". Find <input id"togglerID" class="toggler" type="checkbox">. */
+    top: 2px;									/* top position */
+    width: 30px;								/* width of position */
+    right: 26px;								/* right position */
+    height: 30px;								/* height of position */
+    opacity: 0;									/* invisible! */
+    cursor: pointer;
+}
+.toggleLanguage {								/* Importent! .toggleLanguage goes AFTER .toggle! */
+    top: 85px;
+    right: 149px;
+}
+
+.hamburger {
+    position: absolute;
+    top: 8px;									/* top of hamburger */
+    right: -62px;								/* right of hamburger */
+    height: 40px;
+    width: 40px;
+    padding: 0.6rem 0.3rem;
+    /* FOR DISPLAYING EVERY ELEMENT IN THE CENTER : */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 68px;
+    margin-top: -9px;
+    z-index: 5;
+}
+
+/* CREATING THE MIDDLE LINE OF THE HAMBURGER : */
+.hamburger>div {
+    /* postition of hamburger */
+    position: relative;
+    top: -13px;
+    right: 4px;									/* right of lines */
+    left: -10px;								/* left of lines */
+    background-color: white;					/* color of the middle line */
+    height: 2px;								/* height of the middle line */
+    width: 60%;									/* width  of the three lines */
+    transition: all 0.4s ease;
+}
+
+/* CREATING THE TOP AND BOTTOM LINES : TOP AT -10PX ABOVE THE MIDDLE ONE AND BOTTOM ONE IS 10PX BELOW THE MIDDLE: */
+.hamburger>div::before,
+.hamburger>div::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: 0;
+    background-color: white;					/* color of the top and bottoms lines */
+    width: 100%;								/* width of the top and bottom lines */
+    height: 2px;
+    transition: all 0.4s ease;
+}
+
+.hamburger>div::after {
+    top: 10px;
+    right: 0;
+}
+
+/* IF THE TOGGLER IS IN ITS CHECKED STATE, THEN SETTING THE BACKGROUND OF THE MIDDLE LAYER TO COMPLETE BLACK AND OPAQUE :  */
+/* A toggled state! No JavaScript! */
+/* If the .toggler:checked is checked the label '.hamburger>div' the CSS gets executed includeing ::before and ::after. */
+.toggler:checked+.hamburger>div {
+    background: rgba(0, 0, 0, 0);				/* black so it is invisible */
+}
+
+.toggler:checked+.hamburger>div::before {
+    top: 0;
+    transform: rotate(45deg);
+    /* background: black; */
+    /* half of the color of "X" 
+    background: white;*/
+}
+
+/* AND ROTATING THE TOP AND BOTTOM LINES :  */
+.toggler:checked+.hamburger>div::after {
+    top: 0;
+    transform: rotate(135deg);
+    /*background: black;*/
+    /* half of the color of "X" 
+    background: white;*/
+}
+
+/* MAIN MENU WITH THE WHITE BACKGROUND AND THE TEXT :  */
+.menu {
+    position: absolute;
+    z-index: 5;
+    /*left: -48px;
+    background: white;*/
+    /*background-color: rgba(0, 0, 0, 0.7);*/
+    /*position: relative;*/
+    /*margin-left: auto;
+    margin-right: 0;							 right hand side */
+    /*width: 20%;									/* what this the width for??? */
+    /*height: 100vh;								/* what this the height for??? */
+    /* APPLYING TRANSITION TO THE MENU : */
+    /*transition: all 0.4s ease;*/
+}
+
+/* IF THE TOGGLER IS CHECKED, THEN INCREASE THE WIDTH OF THE MENU TO 30% , CREATING A SMOOTH EFFECT :  */
+.toggler:checked~.menu {
+    width: 30%;									/* width of menu */
+    /* width: 300px; */
+    /* height: 600px;								height: 100vh;*/
+}
+
+/* STYLING THE LIST :  */
+.menu>div>ul {
+    background-color: rgba(0, 0, 0, 0.7);
+    /* APPLYING TRANSITION TO THE MENU :  */
+    /*transition: all 0.4s ease;*/
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 116px;
+    right: 70px;								/* text menu to the right */
+    /*padding-left: 20px;*/
+    width: 340px;								/* position of hambuger menu texts */
+    height: 100vh;
+    margin-top: -5px;							/* position of hambuger menu texts */
+    padding-top: 5px;
+    /* over from left side */
+    /* HIDDEN INITIALLY  :  */
+    visibility: hidden;
+}
+.menuDivUlLanguage {							/* Importent! .menuDivUlLanguage goes AFTER .menu>div>ul! */
+    margin-top: -18px;							/* position of hambuger menu texts */
+}
+
+.menu>div>ul>li {
+    display: inline flow;
+    list-style: none;
+    padding: 0.3rem;
+    /* line height */
+    margin-left: 30px;
+    /*margin-right: -100px;*/
+    text-align: left;
+}
+
+.menu>div>ul>li>a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-family: Chivo, 'Gill Sans', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* WHEN THE TOGGLER IS CHECKED, CHANGE THE VISIBILITY TO VISIBLE :  */
+.toggler:checked~.menu>div>ul {
+    transition: visibility 0.4s ease;
+    transition-delay: 0.1s;
+    visibility: visible;
+}
+
+.toggler:checked~.menu>div>ul>li>a:hover {
+    /*color: orange;*/
+    color: #d36355;
+    /* 400 = normal; 700 = bold */
+    font-weight: 600;
+}
+
+.toggler:checked~.menu>div>ul>li>a:after {
+    /* won't work */
+    background-color: #101010;
+}
+
+.menu>div>ul>div>li {
+    margin-right: -100px;
+}
+
+.menu>div>ul>div>li>a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-family: Chivo, 'Gill Sans', Tahoma, Geneva, Verdana, sans-serif;
+    margin-left: -26px;
+}
+
+.toggler:checked~.menu>div>ul>div>li>a:hover {
+    color: #d36355;
+    /* 400 = normal; 700 = bold */
+    font-weight: 600;
+}
+
+.toggler:checked~.menu>div>ul>div>li>a:after {
+    /* won't work */
+    background-color: #101010;
+}
+/* ************************************************************************
+
+        end hamburger
+
+************************************************************************* */
 
 ::placeholder {
     color: #ccc;
@@ -89,6 +349,133 @@ textarea {
     color: #ccc;
 }
 
+/****************************************************************
+    menu begin
+****************************************************************/
+/* 3 menu "select"s */
+/* navigational languages drop-down */
+
+#sL, #sC, #navLang {
+    /* "select" tag: #sL = "select Language"; #sC = "select Country"; #navLang = "select nothing" */
+    position: absolute;
+    z-index: 5;
+    top: -6px;
+    /*right: 101px;*/
+    left: -48px;									/* left for the select nav. lang. */
+    /*color: #4079b0; */
+    color: white;
+    /* background-color: white;*/
+    font-size: 100%;
+    border-style: none;
+    padding: 3px;
+    padding-left: 16px;
+}
+#navLang {
+    margin-left: -7px;
+}
+
+.helpSelection {
+    position: relative;
+    z-index: 5;
+    margin-left: 5px;
+    margin-right: -8px;
+    margin-bottom: -10px;
+}
+
+/* .menu (up above) */
+/* end  */
+
+.selectOption {
+    /* none "navigational language" "select" tag; from 00-Scripture.css */
+    color: black;
+    /* background-color: #e4e4e4; 
+    background-color: white;*/
+    border: 1px solid #111;
+    font-weight: normal;
+    font-size: 12pt;
+    padding: 3px;
+    padding-left: 10px;
+    margin: 0;
+}
+
+#background_header {
+    /* position of icon and text for "country" and "nothing" search sections; from 00-Scripture.css */
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    /*background-position: top left 100px;			/* top of page */
+    background-repeat: no-repeat;					/* Do not repeat the image */
+    background-size: 460px;
+    height: 190px;
+    margin-top: -4px;
+}
+#empty {
+    margin-left: 5px;
+    min-width: 440px;							/* this works along side of #background_header width */
+    height: 80px;
+}
+
+#background {
+    /* position of earth; from 00-Scripture.css */
+    position: relative;
+    z-index: -20;
+    top: 100px;
+    background-position: top;					/* top of page */
+    background-repeat: no-repeat;				/* Do not repeat the image */
+    background-size: 740px;
+    /*height: auto;*/
+    height: 840px;
+    /*width: 720px;*/
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+
+#copyright {
+    position: relative;
+    top: 270px;
+    line-height: 0px;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+#copyright div {
+    color: #777;
+    font-size: .8em;
+}
+
+.mapIframe {
+    width: 835px;
+    height: 620px;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    border: 5px solid #00B1F2;
+}
+.mapKey {
+    font-size: smaller;
+    margin-top: 8px;
+}
+.formNavAndHelp {
+    position: absolute;							/* position of the "select navigational language" and "Help" */
+    top: 80px;
+    right: 0px;
+    width: 170px;
+    display: block;
+}
+.countryBlackTopImage {
+    background-color: black;
+    height: 120px;
+    position: absolute;
+    left: 0;
+    width: 100%;
+}
+/****************************************************************
+    menu end
+****************************************************************/
+
 div.countryCounter {
     position: relative;
     top: -680px;
@@ -99,14 +486,221 @@ div.countryCounter {
     background-color: lightgray;
 }
 
-#background {
+#aboutLang {
+    cursor: pointer;
+}
+
+#aboutLang:hover {
+    color: light-gray;
+    font-weight: bold;
+    font-size: .9em;
+    color: #36F;
+}
+
+#FCBHb,
+#OTTable,
+#NTTable {
+    display: none;
+}
+
+/*#OTListenNow,
+#NTListenNow {
+    display: none;
+}*/
+
+#individualLanguage {
+    margin-left: 4px;
+    margin: 0 auto;
+    color: white;
+    width: 90%;
+    border: 1px solid gray;
+    padding: 10px;
+}
+
+#individualLanguage tr {
+    vertical-align: middle;
+}
+
+#individualLanguage td {
+    font-size: 1.1em;
+    /*font-weight: bold;*/
+    color: navy;
+}
+
+#OTTable,
+#NTTable {
+    clear: both;
+    width: 775px;
+    margin: 5px auto 0 auto;
+    /*font-weight: bold;*/
+    font-size: 11pt;
+}
+
+#eBibleClick {
+    display: none;
+}
+
+
+/* red audio bar */
+
+div.ourFlashPlayer {
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    /*font-weight: bold;*/
+    font-size: 12pt;
+    /*display: inline;*/
+    display: inline-block;
+    background-color: #600000;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 30px;
+    border-radius: 16px;
+    box-shadow: 16px;
+    margin-left: 75px;
+    /* the left space of the main bar of the jp audio player */
+    height: 28px;
+    /* the height of the main bar of the jp audio player */
+    margin-top: 11px;
+    /* the top space of the main bar of the jp audio player */
+    margin-bottom: 100px;
+    /* doesn't do anything */
+}
+
+div.autonymLanguageNames,
+div.alternativeLanguageNames,
+div.Country,
+div.languageCode {
+    color: black;
+    font-size: 1.1em;
+    /*font-weight: bold;*/
+}
+
+span.autonymLanguageName,
+span.alternativeLanguageName,
+span.Country,
+span.languageCode {
+    color: navy;
+    font-size: 1.1em;
+    font-weight: normal;
+}
+
+div.autonymLanguageNames,
+div.alternativeLanguageNames,
+span.autonymLanguageName,
+span.alternativeLanguageName {
+    font-size: 1.2em;
+}
+
+div.FCBH {
+    float: right;
+    margin: 0px;
+    padding: 0px;
+}
+
+div.OTAudio,
+div.NTAudio {
+    color: navy;
+    font-size: 1em;
+    /*font-weight: bold;*/
+    /*margin-top: 10px;*/
+}
+
+div.ourListenNow {
+    display: none;
+    clear: both;
+    height: 18px;
+    margin-left: 290px;
+    margin-bottom: 20px;
+    padding-top: 5px;
+    /* IE 8 */
+    margin-top: 30px;
+    padding-bottom: 12px;
+    /* Portuguese and Dutch and Spanish:
+	margin-left: 170px;
+	margin-top: 40px;
+	*/
+}
+
+div.ourPlaylistAudioNow {
+    display: none;
+    clear: both;
+    margin-left: 40px;
+}
+
+div.lineCategories {
+    clear: both;
+    padding: 0;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 10px;
+}
+
+.lineItem {
+    font-size: 12pt;
+    /*font-weight: bold;*/
+    color: navy;
+    margin: 0px;
+}
+
+span.lineItem:link,
+span.lineItem:visited,
+span.lineItem:active {
+    text-decoration: none;
+}
+
+span.lineItem:hover {
+    text-decoration: underline;
+}
+
+span.lineAction {
+    /*color: crimson;*/
+    color: navy;
+}
+
+span.lineAction,
+span.lineAction:link,
+span.lineAction:visited,
+span.lineAction:active {
+    text-decoration: none;
+}
+
+span.lineAction:hover {
+    text-decoration: underline;
+}
+
+a,
+a:link,
+a:visited,
+a:active {
+    text-decoration: none;
+    color: navy;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img.BlueBar {
+    padding-left: 0px;
+    clear: both;
+    width: 800px;
+    /* sets the iframe correctly */
+    height: 13px;
+}
+
+p.TheWordText {
+    display: inline-block;
+    vertical-align: middle;
+    width: 730px;
+    /*font-weight: bold;*/
+    color: navy;
+    font-size: 1em;
 }
 
 
 /********************************************************************************
  		Begin default 3 input text lines from 00-MainScript.inc.php
 ********************************************************************************/
-
 
 /*
 		first section
@@ -151,6 +745,7 @@ div.countryCounter {
     background-repeat: no-repeat;
     padding: 12px 20px 12px 20px;
 }
+
 
 input[type=text] {
     border: solid 2px #33628d;
@@ -310,20 +905,6 @@ img.myShadow {
     box-shadow: 16px;
 }
 
-#copyright {
-    position: relative;
-    top: -520px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-bottom: 30px;
-}
-
-#copyright div {
-    color: #777;
-    font-size: .8em;
-}
-
-
 /********************************************************************************
  		End default 3 input text lines from 00-MainScript.inc.php
 ********************************************************************************/
@@ -468,9 +1049,6 @@ div.FormCountry {
     margin: 0;
 }
 
-#sC {
-}
-
 
 /********************************************************************
 		End one Country from 00-MainScript.inc.php
@@ -519,12 +1097,6 @@ div.MajorLanguages button {
     font-size: 100%;
     cursor: pointer;
     display: inline;
-}
-
-
-/* navigational languages drop-down */
-
-#sL {
 }
 
 
@@ -853,7 +1425,6 @@ img.langHeader {
     height: 200px;
 }
 
-
 /*table.langTable {
 	width: 80%;
 	margin-left: auto;
@@ -863,4 +1434,95 @@ img.langHeader {
 	display: table;
 	height: 100px;
 	min-height: 100px;
-}*
+}*/
+
+/***********************************************************************
+    Specific Language
+***********************************************************************/
+img.iconActions {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding: 0;
+    vertical-align: middle;
+    border-style: none;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    margin-right: 4px;
+}
+div.linePointer {
+    cursor: pointer;
+    display: inline;
+}
+div.linePointer:hover {
+    border-bottom: 2px solid red;
+}
+
+/* for the tables */
+#Dis_BibleIsReadAudio, #Dis_BibleIsRead, #Dis_BibleIsReadAudioVideo, #Dis_BibleIsAudio, #Dis_BibleIsAudioVideo,
+#Dis_BibleIsVideo, #Dis_BibleIsReadVideo,
+#Dis_SAB, #Dis_BibleIs, #Dis_viewer, #Dis_OT_PDF, #Dis_NT_PDF, #Dis_OT_Audio, #Dis_NT_Audio, #Dis_PlaylistAudio, #Dis_BibleIsGospelFilm,
+#Dis_PlaylistVideo, #Dis_watch, #Dis_YouVersion, #Dis_buy, #Dis_GRN, #Dis_study, #Dis_otherTitles, #Dis_otherTitles_download,
+#Dis_links, #Dis_eBible, #Dis_SILlink, #Dis_SB, #Dis_GooglePlay, #Dis_All, #Dis_PlaylistVideo, #Dis_PlaylistVideo_download, #Dis_App,
+#Dis_BibleIsSAB, #Dis_BibleIsGospelFilmSAB, #Dis_YouVersion, #Dis_NotAndroidiOS, #Dis_moreLinks, #Dis_maps, #Dis_OT_Audio_download,
+#Dis_NT_Audio_download, #Dis_otherTitles_videoDownload, #Dis_Map {
+    display: none;
+}
+
+/* style the tab */
+.tab, .CCtab {
+    /*overflow: hidden;*/
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+/* style the buttons that are used to open the tab content */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding-top: 34px;
+    padding-bottom: 12px;
+    transition: 0.4s;
+}
+.CCtab button {
+    background-color: inherit;
+    /*float: left;
+    border: none;
+    outline: none;*/
+    font-size: .9em;
+    cursor: pointer;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    /*transition: 0.4s;*/
+}
+/* change background color of buttons on hover */
+.tab button:hover, .CCtab button:hover {
+    background-color: #ddd;
+}
+/* create an active/current tablink class */
+.tab button.active, .CCtab button.active {
+    background-color: #ccc;
+}
+/* tab icon width */
+.tablinks {
+    width: 14.28%;
+}
+.CCtablinks {
+}
+/* individual width and height of the icons */
+#tabText, #tabAudio, #tabVideo, #tabApp, #tabOther, #tabMap, #tabAll {
+    width: 60px;
+    height: 60px;
+    margin-top: 21px;
+}
+/* text to the icons */
+figcaption {
+    font-size: 130%;
+    text-align: center;
+}
