@@ -4039,23 +4039,30 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 						}
 						?>
 					</div>
-				<h3 id='countryLabel' style='font-size: 1.3em; margin-top: 40px; text-align: center; '></h3>
+					<h3 id='countryLabel' style='font-size: 1.3em; margin-top: 40px; text-align: center; '></h3>
 				</div>
-				<?php
-				// document.getElementById("CC_c") is in function CCCountry (see SE map country)
-				echo '<iframe loading="lazy" style="display: none; " id="CC_c" name="iframe_a" title="Iframe" class="mapIframe" src=""></iframe>';
-				echo '<div id="mapKey" style="display: none; " class="mapKey">';
-					echo '<p><span style="color: #a8226d; font-weight: bold; ">'.translate('red: language you have selected', $st, 'sys').'</span></p>';
-					echo '<p><span style="color: #4d25c5; font-weight: bold; ">'.translate('purple: subgroup for this language', $st, 'sys').'</span></p>';
-					echo '<p><span style="color: #2a83cb; font-weight: bold; ">'.translate('blue: other languages spoken in this country', $st, 'sys').'</span></p>';
-				echo '</div>';
-				?>
+				<!-- Map container -->
+				<div id="mapid" style="display: none; width: 100%; max-width: 880px; height: min(580px, 72vh); margin-left: auto; margin-right: auto;"></div>
+				<div id="mapKey" style="display: none; text-align: center; " class="mapKey">
+					<fieldset style="display: inline-block; text-align: left; line-height: 1.4; border: 2px solid #4d25c5; border-radius: 6px; padding: 8px 16px 10px 16px; margin: 12px auto 0 auto; ">
+						<div style="display:block;margin:6px 0;color:#cc0000;font-weight:bold;white-space:nowrap;">
+							<label style="display:inline;vertical-align:middle; margin-left: 20px; "><span style="color: #a8226d; font-weight: bold; "><?php echo translate('red: language you have selected', $st, 'sys'); ?></span></label>
+						</div>
+						<div style="display:block;margin:6px 0;white-space:nowrap;">
+							<input type="checkbox" name="chkPurple" id="chkPurple" checked="checked" style="display:inline;vertical-align:middle;" />
+							<label for="chkPurple" style="display:inline;vertical-align:middle;"><span style="color: #4d25c5; font-weight: bold; "><?php echo translate('purple: subgroup for this language', $st, 'sys'); ?></span></label>
+						</div>
+						<div style="display:block;margin:6px 0;white-space:nowrap;">
+							<input type="checkbox" name="chkBlue" id="chkBlue" style="display:inline;vertical-align:middle;" />
+							<label for="chkBlue" style="display:inline;vertical-align:middle;"><span style="color: #2a83cb; font-weight: bold; "><?php echo translate('blue: other languages spoken in this country', $st, 'sys'); ?></span></label>
+						</div>
+					</fieldset>
+				</div>
 			</td>
 		</tr>
 		<?php
 		echo '</table>';
 	}
-
 ?>
 </div>
 <br />
@@ -4308,45 +4315,123 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 			SE map country
 		*************************************************************************************************************
 	*/
-		function CCCountry(countryKey, ISOorROD, countryValue) {
-			// if-url-exist
-			function ifUrlExist(url) {
-				var http = new XMLHttpRequest();
-				http.open('HEAD', url, false);										// get back "HEAD"
-				http.send();
-				return http.status != 404;											// returns true of false
-			}
+	var mymap = null, blueLayer = null, purpleLayer = null, redMarker = null;
+	var myRedIcon, myPurpleIcon;
 
-			const hasUrl = ifUrlExist('/maps/'+countryKey+'/'+ISOorROD+'.htm');
-			console.log(hasUrl);
+	function initMap() {
+		mymap = L.map('mapid');
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 16,
+			attribution: 'language names: <a href="https://www.scriptureearth.org/00eng.php">Scripture Earth</a>, ' +
+				'map data: &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
+		}).addTo(mymap);
 
-			var y = document.getElementById("countryLabel");
-			if (hasUrl) {															// true or false
-				// macrolanguage string (see 00-MainScript.ini.php)
-				if (macroLanguage.includes(ISOorROD.substring(0, 3))) {
-					//this is a macrolanguage
-					y.innerHTML = countryValue + ": <?php echo translate('is a macro language.', $st, 'sys'); ?>";
-				}
-				else {
-					y.innerHTML = countryValue;
-				}
-				var x = document.getElementById("CC_c");
-				x.src = "./maps/" + countryKey + "/" + ISOorROD + ".htm";
-				x.style.display = "inline-block";
-				var mapKey = document.getElementById("mapKey");
-				mapKey.style.display = "inline-block";
+		// Fullscreen control (top-left)
+		L.control.fullscreen({
+			position: 'topleft',
+			title: { 'false': 'View Fullscreen', 'true': 'Exit Fullscreen' },
+			titleSeparator: ' '
+		}).addTo(mymap);
+
+		// Keep an open red-marker popup glued to its marker whenever
+		// the map size changes (first display, window resize, etc.)
+		mymap.on('resize', function() {
+			if (redMarker && redMarker.isPopupOpen()) {
+				redMarker.openPopup();   										// recompute position against the new size
 			}
-			else {
-				y.innerHTML = "<?php echo translate('Could this language be in more than one location?', $st, 'sys'); ?>";
+		});
+
+		// popupAnchor here (per our earlier fix) so the red popup
+		// centers over the large 38x55 icon; iconAnchor seats the marker tip.
+		myRedIcon = L.icon({
+			iconUrl: './images/myRedIcon.png',
+			shadowUrl: './images/marker-shadow.png',
+			iconSize: [30, 50],
+			iconAnchor: [15, 50],          										// bottom tip of the teardrop
+			popupAnchor: [0, -52],          									// popup anchored above the icon
+			shadowSize: [38, 30]
+		});
+		myPurpleIcon = L.icon({ iconUrl: './images/myPurpleIcon.png', shadowUrl: './images/marker-shadow.png' });
+	}
+
+	async function CCCountry(countryKey, ISOorROD, countryValue) {
+		// if-url-exist — fetch-based (async), replaces the old sync XHR HEAD check
+		async function ifUrlExist(url) {
+			try {
+				const resp = await fetch(url, { method: 'HEAD' });
+				return resp.ok;													// true only for 2xx
+			} catch (e) {
+				return false;													// network error — treat as missing
 			}
 		}
 
-		$(function() {
-			<?php
-				$ISOorROD = $ISO == 'qqq' ? $ROD_Code : (($ROD_Code == '00000' || $ROD_Code == '') ? $ISO : $ISO.'_'.$ROD_Code);
-			?>
-			CCCountry("<?php echo array_keys($CC_countries)[0]; ?>", "<?php echo $ISOorROD; ?>", "<?php echo array_values($CC_countries)[0]; ?>");
+		var y = document.getElementById("countryLabel");
+		const hasUrl = await ifUrlExist('./maps/' + countryKey + '/' + ISOorROD + '.js');
+		//console.log(hasUrl);
+		if (hasUrl) {															// true or false
+			// macrolanguage string (see 00-MainScript.ini.php for macrolanguage define)
+			if (macroLanguage.includes(ISOorROD.substring(0, 3))) {
+				//this is a macrolanguage
+				y.innerHTML = countryValue + ": <?php echo translate('is a macro language.', $st, 'sys'); ?>";
+			}
+			else {
+				y.innerHTML = countryValue;
+			}
+			// document.getElementById("mapKey").style.display = "inline-block";
+		}
+		else {
+			y.innerHTML = "<?php echo translate('Could this language be in more than one location?', $st, 'sys'); ?>";
+		}
+
+		document.getElementById('mapid').style.display = 'block';
+		document.getElementById("mapKey").style.display = 'block';
+
+		// clear previous country's layers
+		if (blueLayer)   { mymap.removeLayer(blueLayer);   blueLayer   = null; }
+		if (purpleLayer) { mymap.removeLayer(purpleLayer); purpleLayer = null; }
+		if (redMarker) { mymap.removeLayer(redMarker); 	   redMarker   = null; }
+
+		// swap in the country's marker script
+		var old = document.getElementById('mapScript');						// remove JavaScript called #mapScript
+		if (old) old.parentNode.removeChild(old);
+		var s = document.createElement('script');							// create JavaScript called #mapScript
+		s.id = 'mapScript';
+		s.src = './maps/' + countryKey + '/' + ISOorROD + '.js?v=3';   		// bump ?v when you edit map files (?v=2)
+		s.onload = function() {
+			syncFilter();
+			if (redMarker) {
+				redMarker.openPopup();   									// opens after size/layout has settled
+			}
+		};           														// apply checkbox state to the new map
+		document.head.appendChild(s);
+	}
+
+	function filterIcons(showBlue, showPurple) {
+		if (blueLayer)   { if (showBlue)   { mymap.addLayer(blueLayer);   } else { mymap.removeLayer(blueLayer);   } }
+		if (purpleLayer) { if (showPurple) { mymap.addLayer(purpleLayer); } else { mymap.removeLayer(purpleLayer); } }
+	}
+
+	function syncFilter() {
+		filterIcons(document.getElementById('chkBlue').checked,
+					document.getElementById('chkPurple').checked);
+	}
+
+	$(function() {
+		initMap();															// map initialization
+		<?php
+			$ISOorROD = $ISO == 'qqq' ? $ROD_Code : (($ROD_Code == '00000' || $ROD_Code == '') ? $ISO : $ISO.'_'.$ROD_Code);
+		?>
+		CCCountry("<?php echo array_keys($CC_countries)[0]; ?>", "<?php echo $ISOorROD; ?>", "<?php echo array_values($CC_countries)[0]; ?>");	// main function above
+
+		// Register checkbox listeners after DOM is ready
+		document.getElementById('chkBlue').addEventListener('change', syncFilter);
+		document.getElementById('chkPurple').addEventListener('change', syncFilter);
+
+		var ro = new ResizeObserver(function() {							// ResizeObserver used instead of setTimeout()
+			if (mymap) mymap.invalidateSize();
 		});
+		ro.observe(document.getElementById('mapid'));
+	});
 </script>
 
 <!--script type='text/javascript' language='javascript' src='_js/user_events.js'></script-->

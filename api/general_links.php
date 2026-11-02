@@ -1,61 +1,46 @@
 <?php
+/*
+	PHP script by Scott Starker and Lumo AI
+*/
 
 $index = 0;
-$first = '';
-$marks = [];
-$json_string = '';
 
-require_once '../include/conn.inc.php';															// connect to the database named 'scripture'
+require_once '../include/conn.inc.php';													// connect to the database named 'scripture'
 $db = get_my_db();
 
-include 'include/v.key.php';																	// get v and key
+include 'include/v.key.php';															// get v and key
 
-include 'include/idx.iso.php';																	// get idx or iso
+include 'include/idx.iso.php';															// get idx or iso
 
 if ($index == 0) {
-	$marks = json_decode('{"error": "The index does not found."}');
-	header('Content-Type: application/json');
-	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-	exit;
+	die ('HACK!');
 }
-
-//echo $index . '<br />';
-//echo  $iso . '; rod=' . $rod . '; var=' . $var . '<br />';
 
 if ($index == 1) {
     $stmt_main = $db->prepare("SELECT * FROM `scripture_main` WHERE ISO_ROD_index = ? AND (BibleIs != 0 OR YouVersion = 1 OR `Bibles_org` = 1 OR GRN = 1 OR eBible = 1 OR watch = 1)");
-    $stmt_main->bind_param('i', $idx);															// bind parameters for markers
+    $stmt_main->bind_param('i', $idx);
 }
 else {
 	if ($rod == 'ALL' && $var == 'ALL') {
 		$stmt_main = $db->prepare("SELECT * FROM `scripture_main` WHERE `ISO` = ? AND (BibleIs != 0 OR YouVersion = 1 OR `Bibles_org` = 1 OR GRN = 1 OR eBible = 1 OR watch = 1) ORDER BY `ROD_Code`, `Variant_Code`");
-		$stmt_main->bind_param('s', $iso);														// bind parameters for markers
+		$stmt_main->bind_param('s', $iso);
 	}
 	elseif ($rod == 'ALL') {
 		$stmt_main = $db->prepare("SELECT * FROM `scripture_main` WHERE `ISO` = ? AND `Variant_Code` = ? AND (BibleIs != 0 OR YouVersion = 1 OR Bibles_org = 1 OR GRN = 1 OR eBible = 1 OR watch = 1) ORDER BY `ROD_Code`, `Variant_Code`");
-		$stmt_main->bind_param('ss', $iso, $var);												// bind parameters for markers
+		$stmt_main->bind_param('ss', $iso, $var);
 	}
 	elseif ($var == 'ALL') {
-			$stmt_main = $db->prepare("SELECT * FROM `scripture_main` WHERE `ISO` = ? AND `ROD_Code` = ? AND (BibleIs != 0 OR YouVersion = 1 OR Bibles_org = 1 OR GRN = 1 OR eBible = 1 OR watch = 1) ORDER BY `ROD_Code`, `Variant_Code`");
-			$stmt_main->bind_param('ss', $iso, $rod);											// bind parameters for markers
+		$stmt_main = $db->prepare("SELECT * FROM `scripture_main` WHERE `ISO` = ? AND `ROD_Code` = ? AND (BibleIs != 0 OR YouVersion = 1 OR Bibles_org = 1 OR GRN = 1 OR eBible = 1 OR watch = 1) ORDER BY `ROD_Code`, `Variant_Code`");
+		$stmt_main->bind_param('ss', $iso, $rod);
 	}
 	else {
 		$stmt_main = $db->prepare("SELECT * FROM `scripture_main` WHERE `ISO` = ? AND `ROD_Code` = ? AND `Variant_Code` = ? AND (BibleIs != 0 OR YouVersion = 1 OR Bibles_org = 1 OR GRN = 1 OR eBible = 1 OR watch = 1) ORDER BY `ROD_Code`, `Variant_Code`");
-		$stmt_main->bind_param('sss', $iso, $rod, $var);										// bind parameters for markers
+		$stmt_main->bind_param('sss', $iso, $rod, $var);
 	}
 }
 
-$stmt_main->execute();															        		// execute query
+$stmt_main->execute();
 $result_main = $stmt_main->get_result();
-
-/*
-Bible.is: URL, company_title ($BibleIsVersion), BibleIs
-Bible.com (YouVersion): URL, company_title ($organization), YouVersion
-Bibles.org: URL, company_title ($BiblesComVersion), company ($organization), Bibles_org
-GRN: URL, GRN
-eBible_list: homeDomain, translationId
-watch: organization, watch_what, URL, JesusFilm (0 or 1), YouTube (0 or 1)
-*/
 
 $stmt_BibleIs = $db->prepare("SELECT * FROM links WHERE ISO_ROD_index = ? AND NOT BibleIs = 0 ORDER BY BibleIs");
 $stmt_BibleIsGospelFilm = $db->prepare("SELECT * FROM links WHERE ISO_ROD_index = ? AND BibleIsGospelFilm = 1");
@@ -66,391 +51,229 @@ $stmt_AppleStore = $db->prepare("SELECT * FROM links WHERE ISO_ROD_index = ? AND
 $stmt_GRN = $db->prepare("SELECT * FROM links WHERE ISO_ROD_index = ? AND GRN = 1");
 $stmt_eBible = $db->prepare("SELECT homeDomain, translationId FROM eBible_list WHERE ISO_ROD_index = ?");
 $stmt_watch = $db->prepare("SELECT * FROM watch WHERE ISO_ROD_index = ? ORDER BY organization, watch_what, JesusFilm, YouTube");
+$stmt_var = $db->prepare("SELECT Variant_Eng FROM Variants WHERE Variant_Code = ?");
 
-$m=0;
-
-$main_rows = $result_main->num_rows;                                                            // number of rows for PDF OT
+$main_rows = $result_main->num_rows;
 if ($main_rows == 0) {
-	$marks = json_decode('{"error": "idx or iso does not exist in ScriptureEarth.org."}');
-	header('Content-Type: application/json');
-	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-	exit;
+    die ('idx or iso does not exist in SE.');
 }
 
-$first = '{';
-//echo $main_rows . '<br />';
+// Clean up prefixes like "- " and "(something) " from titles
+function se_clean_title($s) {
+    $s = trim($s);
+    $s = preg_replace('/[^-)]*[-)] (.*)/', '$1', $s);		// remove text up to and including ) or -
+    $s = ltrim($s, '- ');
+    return trim($s);
+}
+
+$out = [];													// build as a PHP array; json_encode handles all syntax
+$m = 0;
+
 while ($row_main = $result_main->fetch_assoc()) {
     $iso = $row_main['ISO'];
     $rod = $row_main['ROD_Code'];
     $var = $row_main['Variant_Code'];
     $Variant_name = '';
     if ($var != '') {
-        $stmt_var->bind_param('s', $var);													    // bind parameters for markers
-        $stmt_var->execute();																    // execute query
+        $stmt_var->bind_param('s', $var);
+        $stmt_var->execute();
         $result_temp = $stmt_var->get_result();
-        $row_temp = $result_temp->fetch_assoc();
-        $Variant_name = $row_temp['Variant_Eng'];
+        if ($row_temp = $result_temp->fetch_assoc()) {
+            $Variant_name = $row_temp['Variant_Eng'];
+        }
     }
     $idx = (int)$row_main['ISO_ROD_index'];
 
-    $stmt_BibleIs->bind_param('i', $idx);													    // bind parameters for markers
-    $stmt_BibleIs->execute();																    // execute query
+    $stmt_BibleIs->bind_param('i', $idx);
+    $stmt_BibleIs->execute();
     $result_BibleIs = $stmt_BibleIs->get_result();
-    $stmt_BibleIsGospelFilm->bind_param('i', $idx);												// bind parameters for markers
-    $stmt_BibleIsGospelFilm->execute();															// execute query
+    $stmt_BibleIsGospelFilm->bind_param('i', $idx);
+    $stmt_BibleIsGospelFilm->execute();
     $result_BibleIsGospelFilm = $stmt_BibleIsGospelFilm->get_result();
-    $stmt_YouVersion->bind_param('i', $idx);													// bind parameters for markers
-    $stmt_YouVersion->execute();																// execute query
+    $stmt_YouVersion->bind_param('i', $idx);
+    $stmt_YouVersion->execute();
     $result_YouVersion = $stmt_YouVersion->get_result();
-    $stmt_Bibles_org->bind_param('i', $idx);													// bind parameters for markers
-    $stmt_Bibles_org->execute();																// execute query
+    $stmt_Bibles_org->bind_param('i', $idx);
+    $stmt_Bibles_org->execute();
     $result_Bibles_org = $stmt_Bibles_org->get_result();
-    $stmt_GooglePlay->bind_param('i', $idx);													// bind parameters for markers
-    $stmt_GooglePlay->execute();																// execute query
+    $stmt_GooglePlay->bind_param('i', $idx);
+    $stmt_GooglePlay->execute();
     $result_GooglePlay = $stmt_GooglePlay->get_result();
-    $stmt_AppleStore->bind_param('i', $idx);													// bind parameters for markers
-    $stmt_AppleStore->execute();																// execute query
+    $stmt_AppleStore->bind_param('i', $idx);
+    $stmt_AppleStore->execute();
     $result_AppleStore = $stmt_AppleStore->get_result();
-    $stmt_GRN->bind_param('i', $idx);													        // bind parameters for markers
-    $stmt_GRN->execute();																        // execute query
+    $stmt_GRN->bind_param('i', $idx);
+    $stmt_GRN->execute();
     $result_GRN = $stmt_GRN->get_result();
-    $stmt_eBible->bind_param('i', $idx);													    // bind parameters for markers
-    $stmt_eBible->execute();																    // execute query
+    $stmt_eBible->bind_param('i', $idx);
+    $stmt_eBible->execute();
     $result_eBible = $stmt_eBible->get_result();
-    $stmt_watch->bind_param('i', $idx);													        // bind parameters for markers
-    $stmt_watch->execute();																        // execute query
+    $stmt_watch->bind_param('i', $idx);
+    $stmt_watch->execute();
     $result_watch = $stmt_watch->get_result();
 
-    $BibleIs=$row_main['BibleIs'];						// boolean
-    $BibleIsGospelFilm=$row_main['BibleIsGospelFilm'];	// boolean
-    $YouVersion=$row_main['YouVersion'];				// boolean
-    $Biblesorg=$row_main['Bibles_org'];			    	// boolean
-    $GRN=$row_main['GRN'];								// boolean
-    $eBible = $row_main['eBible'];						// boolean
-    $watch=$row_main['watch'];							// boolean
-    //$links=$row_main['links'];							// boolean
+    $m++;
 
-    $m++;																					    // id
-    $first .= '"'.($m-1).'": ';
-    $first .= '{"type":                     "General Links",';
-    $first .= '"id":                        "'.$m.'",';
-    $first .= '"attributes": {';
-    $first .= '"iso":                       "'.$iso.'",';
-    $first .= '"rod":				        "'.$rod.'",';
-    $first .= '"var_code":		    	    "'.$var.'",';
-    $first .= '"var_name":					"'.$Variant_name.'",';
-    $first .= '"iso_query_string":	        "iso='.$iso;
-    if ($rod != '00000') {
-        $first .= '&rod='.$rod;
-    }
-    if ($var != '') {
-        $first .= '&var='.$var;
-    }
-    $first .= '",';
-    $first .= '"idx":		                '.$idx.',';
-    $first .= '"idx_query_string":          "idx='.$idx.'"';	
-    $first .= '},';
-    $first .= '"relationships": {';
+    // attributes
+    $iso_q = 'iso=' . $iso;
+    if ($rod != '00000') { $iso_q .= '&rod=' . $rod; }
+    if ($var != '')       { $iso_q .= '&var=' . $var; }
 
-    $n = 0;
-    if ($BibleIs) {
-        $BibleIsLinkTemp = 0;
-        //$num=$result_BibleIs->num_rows;
-        if ($result_BibleIs->num_rows > 0) {
-            $first .= '"Bible.Is": {';
-        }
-        while ($r_links=$result_BibleIs->fetch_array(MYSQLI_ASSOC)) {
-            $URL=trim($r_links['URL']);
-            if (preg_match('/^(.*\/)[a-zA-Z0-9][a-zA-Z]{2}\/[0-9]+$/', $URL, $matches)) {		// remove e.g. Mat/1
-                $URL=$matches[1];
+    $rec = [
+        'type' => 'General_Links',
+        'id' => (string)$m,
+        'attributes' => [
+            'iso' => $iso,
+            'rod' => $rod,
+            'var_code' => $var,
+            'var_name' => $Variant_name,
+            'iso_query_string' => $iso_q,
+            'idx' => $idx,
+            'idx_query_string' => 'idx=' . $idx,
+        ],
+        'relationships' => [],
+    ];
+    $rels = &$rec['relationships'];
+
+    // ---- Bible.Is: group by action; multiple versions become an ARRAY (no duplicate-key collisions)
+    if ($row_main['BibleIs'] && $result_BibleIs->num_rows > 0) {
+        $actMap = [
+            1 => 'Read_Listen',
+            2 => 'Read',
+            3 => 'Read_Listen',
+            4 => 'Read_Listen_View',
+			5 => 'Listen',
+			6 => 'Listen_View',
+			7 => 'View',
+			8 => 'Read_View',
+        ];
+        while ($r = $result_BibleIs->fetch_assoc()) {
+            $URL = trim($r['URL']);
+            if (preg_match('/^(.*\/)[a-zA-Z0-9][a-zA-Z]{2}\/[09]+$/', $URL, $matches)) {	// remove e.g. Mat/1
+                $URL = $matches[1];
             }
-            $BibleIsVersion=trim($r_links['company_title']);
-            $BibleIsLink=$r_links['BibleIs'];
-            $BibleIsActText = '';
-            switch ($BibleIsLink) {
-                case 1:
-                    $BibleIsActText = 'Read and Listen';
-                    break;
-                case 2:
-                    $BibleIsActText = 'Read';
-                    break;			
-                case 3:
-                    $BibleIsActText = 'Read and Listen';
-                    break;			
-                case 4:
-                    $BibleIsActText = 'Read, Listen, and View';
-                    break;			
-                default:
-                    break;
-            }
-            
-            if ($BibleIsLink != $BibleIsLinkTemp) {                                     // 
-                if ($n != 0) {
-                    $first = rtrim($first, ',');
-                    $first .= '},'; 
-                }
-                $n = 0;
-                $first .= '"'.$BibleIsActText.'": {';
-            }
-            $first .= '"'.$n++.'":	{';
-            $first .= '"URL":                           "'.$URL.'",';
-            $first .= '"version":                       "'.$BibleIsVersion.'"';
-            $first .= '},';
-            if ($BibleIsLink != $BibleIsLinkTemp) {                                     // 
-                if ($BibleIsLinkTemp != 0) {
-                    $first = rtrim($first, ',');
-                    $first .= '}}},';
-                }
-                $BibleIsLink = $BibleIsLinkTemp;
-            }
-        }
-        if ($result_BibleIs->num_rows > 0) {
-            $first = rtrim($first, ',');
-            $first .= '}},';
+            $act = $actMap[(int)$r['BibleIs']] ?? null;
+            if ($act === null) { continue; }
+            $rels['Bible.Is'][$act][] = [
+                'URL' => $URL,
+                'version' => trim($r['company_title']),
+            ];
         }
     }
-    $n=0;
 
-    if ($BibleIsGospelFilm) {
-        //$num=mysql_num_rows($result_YouVersion);
-        if ($result_BibleIsGospelFilm->num_rows > 0) {
-            $first .= '"Bible.is Gospel Film": {';
-        }
-        while ($r2 = $result_BibleIsGospelFilm->fetch_array(MYSQLI_ASSOC)) {
-            $URL=trim($r2['URL']);
-            //$organization=trim($r2['company']);
-            $BibleIsGospel=trim($r2['company_title']);
-            $BibleIsGospel= preg_replace('/^ ?-? ?(.*)/', '$1', $BibleIsGospel);     // remove the text including  -
-            $first .= '"'.$n++.'":	{';
-            //$first .= '"organization":                  "'.$organization.'",';
-            $first .= '"Which Gospel":                  "'.$BibleIsGospel.'",';
-            $first .= '"URL":                           "'.$URL.'"';
-            $first .= '},';
-        }
-        if ($result_BibleIsGospelFilm->num_rows > 0) {
-            $first = rtrim($first, ',');
-            $first .= '},';
+    // ---- Bible.is Gospel Film
+    if ($row_main['BibleIsGospelFilm'] && $result_BibleIsGospelFilm->num_rows > 0) {
+        while ($r = $result_BibleIsGospelFilm->fetch_assoc()) {
+            $rels['LUMO_Gospel_Film'][] = [
+                'Which_Gospel' => preg_replace('/^ ?-? ?(.*)/', '$1', trim($r['company_title'])),
+                'URL' => trim($r['URL']),
+            ];
         }
     }
-    $n=0;
 
-   if ($YouVersion) {
-        //$num=mysql_num_rows($result_YouVersion);
-        if ($result_YouVersion->num_rows > 0) {
-            $first .= '"YouVersion": {';
-        }
-        while ($r2 = $result_YouVersion->fetch_array(MYSQLI_ASSOC)) {
-            $URL=trim($r2['URL']);
-            $organization=trim($r2['company_title']);
-            $organization = preg_replace('/[^-)]*[-)] (.*)/', '$1', $organization);     // remove the text including ) or -
-            $organization = ltrim($organization, '- ');                                 // just in case
-            $first .= '"'.$n++.'":	{';
-            $first .= '"title":                         "'.$organization.'",';
-            $first .= '"URL":                           "'.$URL.'"';
-            $first .= '},';
-        }
-        if ($result_YouVersion->num_rows > 0) {
-            $first = rtrim($first, ',');
-            $first .= '},';
+    // ---- YouVersion
+    if ($row_main['YouVersion'] && $result_YouVersion->num_rows > 0) {
+        while ($r = $result_YouVersion->fetch_assoc()) {
+            $rels['YouVersion'][] = [
+                'title' => se_clean_title($r['company_title']),
+                'URL' => trim($r['URL']),
+            ];
         }
     }
-    $n=0;
 
-    if ($Biblesorg) {
-        //$num=mysql_num_rows($result_Bibles_org);
-        if ($result_Bibles_org->num_rows > 0) {
-            $first .= '"Bibles.org": {';
-        }
-        while ($r2 = $result_Bibles_org->fetch_array(MYSQLI_ASSOC)) {
-            $URL=trim($r2['URL']);
-            $organization=trim($r2['company']);
-            $BiblesComVersion=trim($r_links['company_title']);
-            $first .= '"'.$n++.'":	{';
-            $first .= '"organization":                  "'.$organization.'",';
-            $first .= '"version":                       "'.$BiblesComVersion.'",';
-            $first .= '"URL":                           "'.$URL.'"';
-            $first .= '},';
-        }
-        if ($result_Bibles_org->num_rows > 0) {
-            $first = rtrim($first, ',');
-            $first .= '},';
+    // ---- Bibles.org
+    if ($row_main['Bibles_org'] && $result_Bibles_org->num_rows > 0) {
+        while ($r = $result_Bibles_org->fetch_assoc()) {
+            $rels['Bibles.org'][] = [
+                'organization' => trim($r['company']),			// FIX: was leftover $r_links
+                'version' => trim($r['company_title']),			// FIX: was leftover $r_links
+                'URL' => trim($r['URL']),
+            ];
         }
     }
-    $n=0;
 
-//   if ($GooglePlay) {
-        //$num=mysql_num_rows($result_YouVersion);
-        if ($result_GooglePlay->num_rows > 0) {
-            $first .= '"Google Play": {';
-        }
-        while ($r2 = $result_GooglePlay->fetch_array(MYSQLI_ASSOC)) {
-            $URL=trim($r2['URL']);
-            $organization=trim($r2['company_title']);
-            $organization = preg_replace('/[^-)]*[-)] (.*)/', '$1', $organization);     // remove the text including ) or -
-            $organization = ltrim($organization, '- ');                                 // just in case
-            $first .= '"'.$n++.'":	{';
-            $first .= '"title":                         "'.$organization.'",';
-            $first .= '"URL":                           "'.$URL.'"';
-            $first .= '},';
-        }
-        if ($result_GooglePlay->num_rows > 0) {
-            $first = rtrim($first, ',');
-            $first .= '},';
-        }
-//    }
-    $n=0;
-
-//   if ($AppleStore) {
-        //$num=mysql_num_rows($result_YouVersion);
-        if ($result_AppleStore->num_rows > 0) {
-            $first .= '"Apple Store": {';
-        }
-        while ($r2 = $result_AppleStore->fetch_array(MYSQLI_ASSOC)) {
-            $URL=trim($r2['URL']);
-            $organization=trim($r2['company_title']);
-            $organization = preg_replace('/[^-)]*[-)] (.*)/', '$1', $organization);     // remove the text including ) or -
-            $organization = ltrim($organization, '- ');                                 // just in case
-            $first .= '"'.$n++.'":	{';
-            $first .= '"title":                         "'.$organization.'",';
-            $first .= '"URL":                           "'.$URL.'"';
-            $first .= '},';
-        }
-        if ($result_AppleStore->num_rows > 0) {
-            $first = rtrim($first, ',');
-            $first .= '},';
-        }
-//    }
-    $n=0;
-
-    if ($GRN) {
-        //$num=mysql_num_rows($result_GRN);
-        if ($result_GRN->num_rows > 0) {
-            $first .= '"GRN": {';
-        }
-        while ($r2 = $result_GRN->fetch_array(MYSQLI_ASSOC)) {
-            $URL=trim($r2['URL']);
-            //$organization=trim($r2['company']);
-            $first .= '"'.$n++.'":	{';
-            $first .= '"URL":                           "'.$URL.'"';
-            $first .= '},';
-        }
-        if ($result_GRN->num_rows > 0) {
-            $first = rtrim($first, ',');
-            $first .= '},';
+    // ---- Google Play
+    if ($result_GooglePlay->num_rows > 0) {
+        while ($r = $result_GooglePlay->fetch_assoc()) {
+            $rels['Google_Play'][] = [
+                'title' => se_clean_title($r['company_title']),
+                'URL' => trim($r['URL']),
+            ];
         }
     }
-    $n=0;
 
-    if ($eBible) {
-        //$num2=$result_eBible->num_rows;
-        if ($result_eBible->num_rows > 0) {
-            $first .= '"eBible": {';
+    // ---- Apple Store
+    if ($result_AppleStore->num_rows > 0) {
+        while ($r = $result_AppleStore->fetch_assoc()) {
+            $rels['Apple_Store'][] = [
+                'title' => se_clean_title($r['company_title']),
+                'URL' => trim($r['URL']),
+            ];
         }
-        if ($r2 = $result_eBible->fetch_array(MYSQLI_ASSOC)) {
-            $homeDomain=trim($r2['homeDomain']);
-            $translationId=trim($r2['translationId']);
+    }
+
+    // ---- GRN
+    if ($row_main['GRN'] && $result_GRN->num_rows > 0) {
+        while ($r = $result_GRN->fetch_assoc()) {
+            $rels['GRN'][] = ['URL' => trim($r['URL'])];
+        }
+    }
+
+    // ---- eBible
+    if ($row_main['eBible'] && $result_eBible->num_rows > 0) {
+        while ($r = $result_eBible->fetch_assoc()) {
+            $homeDomain = trim($r['homeDomain']);
+            $translationId = trim($r['translationId']);
             if ($homeDomain == 'inscript.org') {
-                $publicationURL='eBible.org/find/details.php?id=' . $translationId;
+                $publicationURL = 'eBible.org/find/details.php?id=' . $translationId;
             }
             else {
-                $publicationURL=$homeDomain . '/' . $translationId;
+                $publicationURL = $homeDomain . '/' . $translationId;
             }
-            $first .= '"'.$n++.'":	{';
-            $first .= '"URL":                           "http://'.$publicationURL.'"';
-            $first .= '},';
-        }
-        if ($result_eBible->num_rows > 0) {
-            $first = rtrim($first, ',');
-            $first .= '},';
+            $rels['eBible'][] = ['URL' => 'https://' . $publicationURL];
         }
     }
-    $n=0;
 
-    if ($watch) {
-        //$num2=$result_watch->num_rows;
-        $y=0;
-        $o=0;
-        while ($r2 = $result_watch->fetch_array(MYSQLI_ASSOC)) {
-            $URL=trim($r2['URL']);
-            $organization=trim($r2['organization']);
-            $title=trim($r2['watch_what']);
-            $JesusFilm=trim($r2['JesusFilm']);							// booleon
-            $YouTube=trim($r2['YouTube']);								// booleon
+    // ---- watch: JesusFilm / YouTube / other_videos
+    if ($row_main['watch'] && $result_watch->num_rows > 0) {
+        while ($r = $result_watch->fetch_assoc()) {
+            $URL = trim($r['URL']);
+            $organization = trim($r['organization']);
+            $title = trim($r['watch_what']);
+            $JesusFilm = (bool)$r['JesusFilm'];
+            $YouTube = (bool)$r['YouTube'];
+
             if ($JesusFilm) {
-                if ($n == 0) {
-                    $first .= '"JesusFilm": {';
-                }
-                $first .= '"'.$n++.'":	{';
                 // JESUS Film
-                $first .= '"title":                     "'.$title.'",';
-                if (substr($URL, 0, strlen("http://api.arclight.org/videoPlayerUrl")) == "http://api.arclight.org/videoPlayerUrl") {
-                    $first .= '"URL":                       "JESUSFilmView.php?'.$URL.'"';
+                if (strncmp($URL, "https://api.arclight.org/videoPlayerUrl", 40) === 0) {
+                    $URL = 'JESUSFilmView.php?' . $URL;
                 }
-                else {
-                    $first .= '"URL":                   "'.$URL.'"';
-                }
+                $rels['JesusFilm'][] = [
+                    'title' => $title,
+                    'URL' => $URL,
+                ];
             }
             elseif ($YouTube) {
-                if ($n > 0 && $y == 0) {
-                    $first = rtrim($first, ',');
-                    $first .= '},';
-                }
-                if ($y == 0) {
-                    $first .= '"YouTube": {';
-                }
-                $first .= '"'.$y++.'": {';
-                // YouTube
-                $first .= '"organization":              "'.$organization.'",';
-                $first .= '"title":                     "'.$title.'",';
-                $first .= '"URL":                       "'.$URL.'"';
-                $first .= '},';
+                $rels['YouTube'][] = [
+                    'organization' => $organization,
+                    'title' => $title,
+                    'URL' => $URL,
+                ];
             }
             else {
-                if ($n > 0 || $y > 0 && $o == 0) {
-                    $first = rtrim($first, ',');
-                    $first .= '},';
-                }
-                if ($o == 0) {
-                    $first .= '"other_videos": {';
-                }
-                $first .= '"'.$o++.'": {';
-                $first .= '"organization":              "'.$organization.'",';
-                $first .= '"title":                     "'.$title.'",';
-                $first .= '"URL":                       "'.$URL.'"';
-                $first .= '},';
+                $rels['other_videos'][] = [
+                    'organization' => $organization,
+                    'title' => $title,
+                    'URL' => $URL,
+                ];
             }
         }
-        if ($result_watch->num_rows > 0) {
-            $first = rtrim($first, ',');
-            $first .= '},';
-        }
     }
-    $n=0;
 
-    if ($m < $main_rows) {
-        $first = rtrim($first, ',');
-        $first .= '}},';
-    }
+    $out[] = $rec;
+    unset($rec, $rels);
 }
-    
-$first = rtrim($first, ',');
-$first .= '}}}';
 
-//echo $first;
-//exit;
-
-$marks = json_decode($first, true, 4096, JSON_INVALID_UTF8_IGNORE);
-
-//foreach ($marks as $mark) {
-//    echo $mark . '<br />';
-//}
-//var_dump($marks);
-//exit;
-
-header('Content-Type: application/json');														// instead of <pre></pre>
-// An associative array
-$json_string = json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-//echo '<pre>'.$json_string.'</pre>';
-echo $json_string;
-
+header('Content-Type: application/json; charset=utf-8');
+echo json_encode($out, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
 ?>

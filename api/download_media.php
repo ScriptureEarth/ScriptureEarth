@@ -52,10 +52,7 @@ include 'include/v.key.php';																	// get v and key
 include 'include/idx.iso.php';																	// get idx or iso
 
 if ($index == 0) {
-	$marks = json_decode('{"error": "The index is not found."}');
-	header('Content-Type: application/json');
-	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-	exit;
+	die ('HACK!');
 }
 
 //echo $index . '<br />';
@@ -93,15 +90,13 @@ $stmt_PlaylistAudio = $db->prepare("SELECT `PlaylistAudioTitle`, `PlaylistAudioF
 $stmt_PlaylistVideo = $db->prepare("SELECT `PlaylistVideoTitle`, `PlaylistVideoFilename` FROM PlaylistVideo WHERE ISO_ROD_index = ? AND `PlaylistVideoDownload` = 1");
 $stmt_other_titles = $db->prepare("SELECT other, other_title, other_PDF, other_audio FROM other_titles WHERE ISO_ROD_index = ? AND (download_video IS NOT NULL AND download_video <> '')");
 $stmt_study = $db->prepare("SELECT Testament, alphabet, ScriptureURL, othersiteURL FROM study WHERE ISO_ROD_index = ?");
+$stmt_var = $db->prepare("SELECT Variant_Eng FROM Variants WHERE Variant_Code = ?");
 
 $m=0;
 
 $main_rows = $result_main->num_rows;                                                            // number of rows for PDF OT
 if ($main_rows == 0) {
-	$marks = json_decode('{"error": "idx or iso does not exist in ScriptureEarth.org."}');
-	header('Content-Type: application/json');
-	echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-	exit;
+    die ('idx or iso does not exist in SE.');
 }
 
 $first = '{';
@@ -110,6 +105,7 @@ while ($row_main = $result_main->fetch_assoc()) {
     $rod = $row_main['ROD_Code'];
     $var = $row_main['Variant_Code'];
     $Variant_name = '';
+
     if ($var != '') {
         $stmt_var->bind_param('s', $var);													    // bind parameters for markers
         $stmt_var->execute();																    // execute query
@@ -183,10 +179,7 @@ while ($row_main = $result_main->fetch_assoc()) {
                 $BookText = $matches[1];
             }
             else {
-                $marks = json_decode('{"error": "The OT book cannot be located: '.$OT_Audio_Filename.'"}');
-                header('Content-Type: application/json');
-                echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-                exit;
+                die('The OT book cannot be located: '.$OT_Audio_Filename);
             }
             
             if ($OT_Audio_Book != $OT_Audio_Book_Temp) {
@@ -229,10 +222,7 @@ while ($row_main = $result_main->fetch_assoc()) {
                 $BookText = $matches[1];
             }
             else {
-                $marks = json_decode('{"error": "The NT book cannot be located: '.$NT_Audio_Filename.'"}');
-                header('Content-Type: application/json');
-                echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-                exit;
+                die('The NT book cannot be located: '.$NT_Audio_Filename);
             }
             
             if ($NT_Audio_Book != $NT_Audio_Book_Temp) {

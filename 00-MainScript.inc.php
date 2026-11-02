@@ -49,570 +49,24 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 <meta name="apple-mobile-web-app-title" content="Scripture Earth" />						<!-- title for iOS mobile icon -->
 <link rel="icon" sizes="192x192" 		href="icons/nice-highres.png" />					<!-- Android mobile icon -->
 <meta name="application-name" 			content="Scripture Earth" />						<!-- title for Android mobile icon -->
-<!--link rel="stylesheet" type='text/css'		href="button.css" /-->
-<link rel="stylesheet" type='text/css' href="JQuery/css/style.css" />
-<!-- link rel="stylesheet" type="text/css" 	href="_css/Scripture_Index.css" /-->
-<link rel="stylesheet" type="text/css" href="_css/SpecificLanguage.css?v=0.0.4" />
-<link rel='stylesheet' type='text/css' href='_css/00-Scripture.css?v=1.1.2' />
-<link rel='stylesheet' type='text/css' href='_css/00-SEmobile.css?v=0.0.7' />
-<!--link rel='stylesheet' type='text/css' 	href='_css/CountryTable.css' /-->
-<!--link rel='stylesheet' type='text/css' href='_css/jplayer.BlueMonday.css' /-->
+<link rel='stylesheet' type='text/css' href='_css/00-Scripture.css?v=1.1.3' />
+<link rel='stylesheet' type='text/css' href='_css/00-SEmobile.css?v=0.0.8' />
 <link rel='stylesheet' type='text/css' href='_css/jplayer.blue.monday.min.css?v=0.0.3' />	<!-- Playlist Video -->
 <link rel='stylesheet' type='text/css' href='_css/jplayer.playlist.BlueMonday.css' />		<!-- Playlist Audio -->
 <link rel="stylesheet" type='text/css' href="JQuery/css/jquery-ui-1.12.1.css" />
-<!--script type="text/javascript" language="javascript" src="_js/jquery-1.10.1.min.js"></script-->
+<link rel="stylesheet" type='text/css' href="./_css/leaflet.css" />
+<link rel="stylesheet" type='text/css' href="./_css/leaflet.fullscreen.css" />
+<script type="text/javascript" language="javascript" src="./_js/leaflet.min.js"></script>
+<script type="text/javascript" language="javascript" src="./_js/Leaflet.fullscreen.min.js"></script>
 <script type="text/javascript" language="javascript" src="JQuery/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" language="javascript" src="JQuery/js/jquery-ui-1.12.1.min.js"></script>
 <script type="text/javascript" language="javascript" src="_js/jquery.jplayer-2.9.2.min.js"></script>
 <script type="text/javascript" language="javascript" src="_js/jplayer.playlist.min.js"></script>
 <script type="text/javascript" language="javascript" src="_js/user_events.js?v=1.0.3"></script>
-<script type="text/javascript" language="javascript" src="_js/SpecificLanguage.js?v=1.1.3"></script>
-<script type='text/javascript' language='javascript1.2' src="_js/00-SpecificLanguage.js?v=1.0.9"></script>
+<script type='text/javascript' language='javascript1.2' src="_js/00-Scripture.js?v=0.0.3"></script>
 <!--script type='text/javascript' language='javascript'	src="_js/LangSearch.js?v=1.0.3"></script-->
-<!--link rel='stylesheet' type='text/css' 	href='_css/boilerplate.css' /-->
 <link rel='stylesheet' type='text/css' href='_css/FGL.css' />
 <link rel='stylesheet' type='text/css' href='_css/jplayer-m.css' />
-<!--link rel='stylesheet' type='text/css' href='_css/CountryLangIndivlang-m.css' /-->
-
-<style>
-	* {
-		margin: 0;
-		padding: 0;
-	}
-
-	body {
-		/*background: #333;*/
-		/*background: black;*/
-		height: 100vh;
-		width: 100vw;
-		margin: 0;
-		padding: 0;
-	}
-
-	/* ************************************************************************
-			begin hamburger css
-	************************************************************************* */
-	.toggler {
-		/* ALWAYS KEEPING THE TOGGLER OR THE CHECKBOX ON TOP OF EVERYTHING :  */
-		position: absolute;
-		z-index: 10;
-		/* Can't see it though. So, use the "Tools" from the menu of the browse, click on "Browser Tools", click on "Web Developer Tools". */
-		/* On the bottom menu click on "Inspector". Find <input id"togglerID" class="toggler" type="checkbox">. */
-		top: 2px;									/* top position */
-		width: 30px;								/* width of position */
-		right: 26px;								/* right position */
-		height: 30px;								/* height of position */
-		opacity: 0;									/* invisible! */
-		cursor: pointer;
-	}
-	.toggleLanguage {								/* Importent! .toggleLanguage goes AFTER .toggle! */
-		top: 85px;
-		right: 149px;
-	}
-
-	.hamburger {
-		position: absolute;
-		top: 8px;									/* top of hamburger */
-		right: -62px;								/* right of hamburger */
-		height: 40px;
-		width: 40px;
-		padding: 0.6rem 0.3rem;
-		/* FOR DISPLAYING EVERY ELEMENT IN THE CENTER : */
-		display: flex;
-		align-items: center;
-		justify-content: center;
-
-		margin-right: 68px;
-		margin-top: -9px;
-		z-index: 5;
-	}
-
-	/* CREATING THE MIDDLE LINE OF THE HAMBURGER : */
-	.hamburger>div {
-		/* postition of hamburger */
-		position: relative;
-		top: -13px;
-		right: 4px;									/* right of lines */
-		left: -10px;								/* left of lines */
-		background-color: white;					/* color of the middle line */
-		height: 2px;								/* height of the middle line */
-		width: 60%;									/* width  of the three lines */
-		transition: all 0.4s ease;
-	}
-
-	/* CREATING THE TOP AND BOTTOM LINES : TOP AT -10PX ABOVE THE MIDDLE ONE AND BOTTOM ONE IS 10PX BELOW THE MIDDLE: */
-	.hamburger>div::before,
-	.hamburger>div::after {
-		content: '';
-		position: absolute;
-		top: -10px;
-		right: 0;
-		background-color: white;					/* color of the top and bottoms lines */
-		width: 100%;								/* width of the top and bottom lines */
-		height: 2px;
-		transition: all 0.4s ease;
-	}
-
-	.hamburger>div::after {
-		top: 10px;
-		right: 0;
-	}
-
-	/* IF THE TOGGLER IS IN ITS CHECKED STATE, THEN SETTING THE BACKGROUND OF THE MIDDLE LAYER TO COMPLETE BLACK AND OPAQUE :  */
-	/* A toggled state! No JavaScript! */
-	/* If the .toggler:checked is checked the label '.hamburger>div' the CSS gets executed includeing ::before and ::after. */
-	.toggler:checked+.hamburger>div {
-		background: rgba(0, 0, 0, 0);				/* black so it is invisible */
-	}
-
-	.toggler:checked+.hamburger>div::before {
-		top: 0;
-		transform: rotate(45deg);
-		/* background: black; */
-		/* half of the color of "X" 
-		background: white;*/
-	}
-
-	/* AND ROTATING THE TOP AND BOTTOM LINES :  */
-	.toggler:checked+.hamburger>div::after {
-		top: 0;
-		transform: rotate(135deg);
-		/*background: black;*/
-		/* half of the color of "X" 
-		background: white;*/
-	}
-
-	/* MAIN MENU WITH THE WHITE BACKGROUND AND THE TEXT :  */
-	.menu {
-		position: absolute;
-		z-index: 5;
-		/*left: -48px;
-		background: white;*/
-		/*background-color: rgba(0, 0, 0, 0.7);*/
-		/*position: relative;*/
-		/*margin-left: auto;
-		margin-right: 0;							 right hand side */
-		/*width: 20%;									/* what this the width for??? */
-		/*height: 100vh;								/* what this the height for??? */
-		/* APPLYING TRANSITION TO THE MENU : */
-		/*transition: all 0.4s ease;*/
-	}
-
-	/* IF THE TOGGLER IS CHECKED, THEN INCREASE THE WIDTH OF THE MENU TO 30% , CREATING A SMOOTH EFFECT :  */
-	.toggler:checked~.menu {
-		width: 30%;									/* width of menu */
-		/* width: 300px; */
-		/* height: 600px;								height: 100vh;*/
-	}
-
-	/* STYLING THE LIST :  */
-	.menu>div>ul {
-		background-color: rgba(0, 0, 0, 0.7);
-		/* APPLYING TRANSITION TO THE MENU :  */
-		/*transition: all 0.4s ease;*/
-		display: flex;
-		flex-direction: column;
-		position: fixed;
-		top: 116px;
-		right: 70px;								/* text menu to the right */
-		/*padding-left: 20px;*/
-		width: 340px;								/* position of hambuger menu texts */
-		height: 100vh;
-		margin-top: -5px;							/* position of hambuger menu texts */
-		padding-top: 5px;
-		/* over from left side */
-		/* HIDDEN INITIALLY  :  */
-		visibility: hidden;
-	}
-	.menuDivUlLanguage {							/* Importent! .menuDivUlLanguage goes AFTER .menu>div>ul! */
-		margin-top: -18px;							/* position of hambuger menu texts */
-	}
-
-	.menu>div>ul>li {
-		display: inline flow;
-		list-style: none;
-		padding: 0.3rem;
-		/* line height */
-		margin-left: 30px;
-		/*margin-right: -100px;*/
-		text-align: left;
-	}
-
-	.menu>div>ul>li>a {
-		color: white;
-		text-decoration: none;
-		font-size: 1.2rem;
-		font-family: Chivo, 'Gill Sans', Tahoma, Geneva, Verdana, sans-serif;
-	}
-
-	/* WHEN THE TOGGLER IS CHECKED, CHANGE THE VISIBILITY TO VISIBLE :  */
-	.toggler:checked~.menu>div>ul {
-		transition: visibility 0.4s ease;
-		transition-delay: 0.1s;
-		visibility: visible;
-	}
-
-	.toggler:checked~.menu>div>ul>li>a:hover {
-		/*color: orange;*/
-		color: #d36355;
-		/* 400 = normal; 700 = bold */
-		font-weight: 600;
-	}
-
-	.toggler:checked~.menu>div>ul>li>a:after {
-		/* won't work */
-		background-color: #101010;
-	}
-
-	.menu>div>ul>div>li {
-		margin-right: -100px;
-	}
-
-	.menu>div>ul>div>li>a {
-		color: white;
-		text-decoration: none;
-		font-size: 1.1em;
-		font-family: Chivo, 'Gill Sans', Tahoma, Geneva, Verdana, sans-serif;
-		margin-left: -26px;
-	}
-
-	.toggler:checked~.menu>div>ul>div>li>a:hover {
-		color: #d36355;
-		/* 400 = normal; 700 = bold */
-		font-weight: 600;
-	}
-
-	.toggler:checked~.menu>div>ul>div>li>a:after {
-		/* won't work */
-		background-color: #101010;
-	}
-	/* ************************************************************************
-			end hamburger css
-	************************************************************************* */
-
-	/*.threeMenus {										/* minimum width of the three menus * /
-		position: absolute;
-		top: -20px;
-		right: 80px;
-		min-width: 300px;
-	}*/
-
-	/* 3 menu "select"s */
-	#sL, #sC, #navLang {
-		/* "select" tag: #sL = "select Language"; $sC = "select Country"; #navLang = "select nothing" */
-		position: absolute;
-		z-index: 5;
-		top: -6px;
-		/*right: 101px;*/
-		left: -48px;									/* left for the select nav. lang. */
-		/*color: #4079b0; */
-		color: white;
-		/* background-color: white;*/
-		font-size: 100%;
-		border-style: none;
-		padding: 3px;
-		padding-left: 16px;
-	}
-	#navLang {
-		margin-left: -7px;
-	}
-
-	.helpSelection {
-		position: relative;
-		z-index: 5;
-		margin-left: 5px;
-		margin-right: -8px;
-		margin-bottom: -10px;
-	}
-
-	/* .menu (up above) */
-	/* end  */
-
-	select {
-		color: black;
-		background-color: rgba(255, 255, 255, 0.6);
-		border-radius: 0.3rem;
-		margin-top: 10px;
-	}
-
-	option {
-		color: black;
-		background-color: white;
-		font-family: Chivo, 'Gill Sans', Tahoma, Geneva, Verdana, sans-serif;
-		font-weight: normal;
-		font-size: 11pt;
-		/*border: 1px solid #e4e4e4;*/
-		/* safari */
-		appearance: none;
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		/*box-shadow: inset 20px 20px #f00;
-		text-align-last: left;*/
-	}
-
-	/*option:checked,
-	option:hover {		 doesn't work for firefox
-		background-color: white;
-		/* color: #c0c0c0; * /
-		cursor: pointer;
-		/*border: 1px solid red;* /
-		/*box-shadow: inset 20px 20px #00f;* /
-	}*/
-
-	.selectOption {
-		/* none "navigational language" "select" tag; from 00-Scripture.css */
-		color: black;
-		/* background-color: #e4e4e4; 
-		background-color: white;*/
-		border: 1px solid #111;
-		font-weight: normal;
-		font-size: 12pt;
-		padding: 3px;
-		padding-left: 10px;
-		margin: 0;
-	}
-
-	#background_header {
-		/* position of icon and text for "country" and "nothing" search sections; from 00-Scripture.css */
-		position: absolute;
-		z-index: 5;
-		top: 0;
-		/*background-position: top left 100px;			/* top of page */
-		background-repeat: no-repeat;					/* Do not repeat the image */
-		background-size: 460px;
-		height: 190px;
-		margin-top: -4px;
-	}
-	#empty {
-		margin-left: 5px;
-		min-width: 440px;							/* this works along side of #background_header width */
-		height: 80px;
-	}
-
-	#background {
-		/* position of earth; from 00-Scripture.css */
-		position: relative;
-		z-index: -20;
-		top: 100px;
-		background-position: top;					/* top of page */
-		background-repeat: no-repeat;				/* Do not repeat the image */
-		background-size: 740px;
-		/*height: auto;*/
-		height: 840px;
-		/*width: 720px;*/
-		width: 100%;
-		margin: 0;
-		padding: 0;
-		overflow: auto;
-	}
-
-	#copyright {
-		/* copyright from 00-Scripture.css */
-		top: 316px;
-		line-height: 0px;
-		border: none;
-		margin: 0;
-		padding: 0;
-	}
-
-	.mapIframe {
-		width: 835px;
-		height: 620px;
-		margin: 0;
-		padding: 0;
-		background-color: white;
-		border: 5px solid #00B1F2;
-	}
-	.mapKey {
-		font-size: smaller;
-		margin-top: 8px;
-	}
-	.formNavAndHelp {
-		position: absolute;							/* position of the "select navigational language" and "Help" */
-		top: 80px;
-		right: 0px;
-		width: 170px;
-		display: block;
-	}
-	.countryBlackTopImage {
-		background-color: black;
-		height: 120px;
-		position: absolute;
-		left: 0;
-		width: 100%;
-	}
-
-
-	@media only screen and (max-width: 1250px) {
-		#langBackground {
-			/* position of icon and text for the "specific language" section; from 00-Scripture.css */
-			padding-bottom: 24px;
-		}
-	}
-
-	@media only screen and (min-width: 841px) and (max-width: 1100px) {
-		/*.threeMenus {
-			min-width: 320px;						/* minimum width of the three menus * /
-		}*/
-		#background {
-			/* position of earth; from 00-Scripture.css */
-			/*background-position: top left 90px;*/
-			background-size: 740px;					/* height of 3 input lines */
-			margin-top: 30px;						/* top margin of both earth and 3 input lines */
-		}
-		#copyright {
-			/* position of earth; from 00-Scripture.css */
-			top: 296px;
-		}
-	}
-
-	@media only screen and (min-width: 721px) and (max-width: 840px) {
-		/*.threeMenus {
-			min-width: 290px;						/* minimum width of the three menus * /
-		}*/
-		#background {
-			/* position of earth; from 00-Scripture.css */
-			background-size: 680px;					/* size of earth */
-			height: 820px;							/* height of 3 input lines */
-			margin-top: 40px;						/* top margin of both earth and 3 input lines */
-		}
-		#background_header {
-			background-size: 440px;					/* size of icon Scipture Earth text */
-		}
-	}
-
-	@media only screen and (min-width: 601px) and (max-width: 720px) {
-		/*.threeMenus {
-			top: -20px;
-			left: 280px;
-		}*/
-		#background {
-			/* position of earth; from 00-Scripture.css */
-			background-size: 600px;					/* size of earth */
-			height: 800px;							/* height of 3 input lines */
-			margin-top: 60px;						/* top margin of both earth and 3 input lines */
-		}
-		#background_header {
-			background-size: 440px;					/* size of icon Scipture Earth text */
-		}
-	}
-
-	@media only screen and (min-width: 481px) and (max-width: 600px) {
-		/*.threeMenus {
-			min-width: 240px;						/* minimum width of the three menus * /
-		}*/
-		#background_header {
-			/* position of icon and text; from 00-Scripture.css */
-			/*background-position: top left 20px;*/
-			/*margin-top: -6px;						/* top margin of icon Scipture Earth text */
-			background-size: 420px;					/* size of icon Scipture Earth text */
-			margin-left: -6px;
-		}
-		#empty {
-			width: 200px;							/* this works along side of #background_header width */
-			height: 82px;
-		}
-		#background {
-			/* position of earth; from 00-Scripture.css */
-			background-position: top;
-			background-size: 480px;					/* size of earth */
-			height: 757px;							/* height of 3 input lines */								/* move to 00-Scripture.css */
-			margin-top: 90px;						/* top margin of both earth and 3 input lines */
-		}
-		#background_header {
-			background-size: 440px;					/* size of icon Scipture Earth text */
-		}
-	}
-
-	@media only screen and (max-width: 480px) {
-		/*.threeMenus {
-			min-width: 230px;						/* minimum width of the three menus * /
-			top: -20px;
-			left: 100px;							/* left position of the three menus * /
-			right: 0;
-			margin-right: -100px;
-			padding-right: -100px;
-			float: right;
-			width: 100%;							/* width of the three menus * /
-			text-align: right;						/* right align the three menus
-		} */
-		.toggler {
-			/* Can't see it though. So, use the "Tools" from the menu of the browse, click on "Browser Tools", click on "Web Developer Tools". */
-			/* On the bottom menu click on "Inspector". Find <input id"togglerID" class="toggler" type="checkbox">. */
-			right: 2px;								/* right position */
-		}
-		.hamburger {
-			right: -86px;							/* right of hamburger */
-		}
-		.formNavAndHelp {							/* position of the "select navigational language" and "Help" */
-			right: 10px;
-		}
-
-		#background_header {
-			/* position of icon and text; from 00-Scripture.css */
-			background-position: top -7px left;
-			background-size: 400px;					/* size of icon Scipture Earth text */
-			margin-left: -6px;
-		}
-		#empty {
-			margin-left: -50px;
-			width: 100px;							/* this works along side of #background_header width */
-		}
-		#background {								/* move to 00-SEmobile.css */
-			/* position of earth; from 00-Scripture.css
-			background-position:  top 70px left 78px;*/
-			background-size: 420px;					/* size of the earth */
-			height: 670px;							/* height of 3 blue input lines */
-			margin-top: 80px;						/* top margin of both earth and 3 input lines */
-		}
-		#copyright {
-			/* copyright from 00-Scripture.css */
-			top: 160px;
-			bottom: 0;
-			font-size: 80%;
-		}
-
-		/* 3 menu "select"s */
-		#sL {										/* select specific Language */								/* move to 00-SEmobile.css */
-			left: 0;								/* navigational language selector */
-			margin-left: 10px;						/* nav lang select */
-			padding-left: 6px;
-			font-size: 80%;
-		}
-		#sC {
-			left: 0;								/* select Country */										/* move to 00-SEmobile.css */
-			margin-left: -12px;						/* nav lang select */
-			padding-left: 10px;
-			margin-top: 8px;
-		}
-		#navLang {									/* navigational language selector */						/* move to 00-SEmobile.css */
-			left: -30px;
-			margin-left: 18px;						/* nav lang select */
-			padding-left: 6px;
-			margin-top: 8px;
-		}
-
-		.helpSelection {																						/* help */
-			margin-left: 106px;																					/* move to 00-SEmobile.css */
-			margin-right: 40px;
-		}
-
-		/* .menu (up above) */
-		/* end */
-
-		.mapIframe {																							/* move to 00-SEmobile.css */
-			width: 390px;
-			height: 520px;
-			border: 1px solid #00B1F2;
-		}
-
-		.countryBlackTopImage {
-			width: 100%;
-			margin-left: auto;
-			margin-right: auto;
-		}
-	}
-</style>
 
 <style>
 	<?php
@@ -713,6 +167,22 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 		<?php
 	}
 	?>
+	.leaflet-popup-content { white-space: nowrap; width: auto !important; }
+	/* Center text and remove popup arrow for cleaner look */
+	.leaflet-popup-content-wrapper {
+		text-align: center;
+	}
+	.centered-tooltip .leaflet-tooltip-text {
+		text-align: center;
+		font-weight: normal;
+	}
+	/* Center text and remove popup arrow for cleaner look */
+	.leaflet-popup-content-wrapper {
+		text-align: center;
+	}
+	.leaflet-popup-tip {
+		opacity: 0; /* hides the triangle pointer */
+	}
 </style>
 
 <?php
@@ -818,6 +288,8 @@ if (isset($_GET['asset'])) {
 	function setTitle(text) {
 		document.title = 'Scripture Earth: ' + text;
 	}
+
+	let macroLanguage = 'ara, aym, aze, bal, bua, bik, bnc, chm, cre, den, din, doi, est, fas, ful, gba, gon, grb, grn, hai, hbs, hmn, iku, ipk, jrb, kau, kln, kok, kom, kon, kpe, kur, lah, lav, luy, man, mlg, mon, msa, mwr, nep, ori, orm, pus, que, raj, rom, sqi, srd, swa, syr, tmh, uzb, zap, zha, zho, zza';
 </script>
 
 </head>
@@ -826,14 +298,14 @@ if (isset($_GET['asset'])) {
 	<div class="gridContainer clearfix">
 		<div id="div1" class="fluid">
 			<?php
-			/**************************************************************************************************************
+			/*************************************************************************************************************
             	Main program
-            ***************************************************************************************************************/
+            *************************************************************************************************************/
 			if (isset($_GET['sortby']) && (isset($_GET['name'])) || isset($_GET['iso']) || isset($_GET['ISO_ROD_index']) || isset($_GET['idx'])) {		// if (sortby and name (or iso)) or search
-				/*  *****************************************************************************************************
-				/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
-					sortby = "lang" and iso/name = [ISO] or idx/ISO_ROD_index = [0-9]{1,5}
-				/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+				/*  ******************************************************************************************************
+				/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+					(sortby = "lang" && iso/name = [ISO]) || idx/ISO_ROD_index = [0-9]{1,5}
+				/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 				******************************************************************************************************  */
 				if ((isset($_GET['sortby']) && $_GET['sortby'] == 'lang') || isset($_GET['iso']) || isset($_GET['ISO_ROD_index']) || isset($_GET['idx'])) {
 					if (!isset($_GET['name']) && !isset($_GET['iso']) && !isset($_GET['ISO_ROD_index']) && !isset($_GET['idx'])) {
@@ -1129,10 +601,10 @@ if (isset($_GET['asset'])) {
 						<?php
 					}
 				}
-				/*  *****************************************************************************************************
-				/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+				/*  ******************************************************************************************************
+				/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 					sortby = country
-				/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+				/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 				******************************************************************************************************  */
 				if (isset($_GET['sortby']) && $_GET['sortby'] == 'country') {
 					?>
@@ -1289,11 +761,11 @@ if (isset($_GET['asset'])) {
 					}
 				}
 			}
-			/*  *******************************************************************************************************
-			/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+			/*  *********************************************************************************************************
+			/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
 					"nothing" so start over
-			/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
-			******************************************************************************************************** */
+			/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+			********************************************************************************************************** */
 			else {
 				if ($asset === 0) {
 				?>
@@ -1434,7 +906,7 @@ if (isset($_GET['asset'])) {
 
 				<?php // display copyright
 				if ($asset === 0) {
-					echo '<div id="copyright"><div>ScriptureEarth.org</div></div>';
+					echo '<div id="copyright"><div>SIL Global</div></div>';
 				}
 			}
 			?>
@@ -1442,7 +914,7 @@ if (isset($_GET['asset'])) {
 	</div>
 
 	<script>
-		menuSet = 0;
+		let menuSet = 0;
 
 		function menuChange(idx = null) {			// idx = number or 2 charcter uppercase of country
 			let Scriptname = document.getElementById("navLang").value;

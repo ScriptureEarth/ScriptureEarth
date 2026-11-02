@@ -30,6 +30,7 @@ div + p {                       /* div followed immediately by p  */
 <h2 style="color: #900 ">Intro</h2>
 <p>Welcome to the ScriptureEarth.org (SE) Application Programming Interface (API) specification. This API will retrieve an SE JSON that serves as a bridge, enabling SE to communicate with another application. The SE API exposes the application's data to anyone who has a key.</p>
 <p>You will need a version number and your SE key. The available version numbers are now 1 or 2. You will need to email Scott Starker to obtain your key. This email only   needs to be sent once, but you will need to enter the key each time you   make an SE API request. His email address is <a href="mailto:scott_starker@sil.org">scott_starker@sil.org</a>.</p>
+<p>ScriptureEarth.org reserves the right to discontinue the API service and/or functionality at its discretion.</p>
 <p>A request is called by &quot;https://www.ScriptureEarth.org/api/[the request]?v=[version]&amp;key=[your key]&quot;. You will need to type the request. The requests are display in green below. Depending on the request you will need to type &quot;&amp;[iso=[ISO 639-3 code[&amp;rod=[ROD code][&amp;var=[variant code]]&quot;, <b>or</b> &quot;&amp;idx=[index number]&quot;, <b>or</b> &quot;&amp;pln=[language name and alternate language name]&quot;, <b>or</b> &quot;&amp;cc=[country code]&quot;, <b>or</b> &quot;&amp;country=[country name]]”.</p>
 <h2 style="color: #900 ">Summary</h2>
 <p>SE API has these requests now:</p>
