@@ -29,6 +29,15 @@
 		}
 	}
 
+	$autonym = '';
+	${"stmt_autonym"}->bind_param('i', $idx);								// bind parameters for markers
+	${"stmt_autonym"}->execute();											// execute query
+	$result_autonym = ${"stmt_autonym"}->get_result();
+	if ($result_autonym->num_rows > 0) {
+		$row_temp=$result_autonym->fetch_assoc();
+		$autonym = trim($row_temp['autonym']);
+	}
+
 	// e.g., if ($row['LN_English'] == 1) {
 	//			$stmt_English = $db->prepare("SELECT LN_English FROM LN_English WHERE ISO_ROD_index = ?");	// create a prepared statement
 	//			$stmt_English->bind_param('i', $idx);							// bind parameters for markers

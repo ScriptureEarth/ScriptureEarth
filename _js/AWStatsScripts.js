@@ -20,6 +20,9 @@
 				Returns JSON file for a specific language/ISO code within a selected country.
 *****************************************************************************************************************/
 
+let ipPage = 0;
+let ipVisits = 0;
+
 function yearMonthChange(year, month) {										// change the year/month
 	// Destroy exiting Chart.js instance to reuse <canvas> element.
 
@@ -189,8 +192,14 @@ function yearMonthChange(year, month) {										// change the year/month
 		//alert("Fetching yearMonthChange.php...");
 		//alert(month + ' ' + year);
 			const responseTwo = await fetch("yearMonthChange.php?m="+month+"&y="+year);
-		//alert("2 Fetching yearMonthChange.php...");
-			const jsonTwo = await responseTwo.text();
+			//alert("2 Fetching yearMonthChange.php...");
+			// $ipPages.'^'.$numOfVisits.'^'.$json_string;
+			const textTwo = await responseTwo.text();
+			const myTextArray = textTwo.split("^");
+			const ipPage = myTextArray[0];
+			const ipVisits = myTextArray[1];
+			const jsonTwo = myTextArray[2];
+			
 			if (jsonTwo == "@none") {
 				const elem = document.getElementById("firstLine");
 				elem.innerHTML = "No " + month.toString() + "/" + year.toString() + " were found."; 
@@ -212,9 +221,17 @@ function yearMonthChange(year, month) {										// change the year/month
 				
 				const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+				// vistors view
 				uniqueVisitors = results[0]['uniqueVisitors'];
 				numberOfVisits = results[0]['numberOfVisits'];
+				numberOfVisits = numberOfVisits - ipVisits;
+console.log('Visits: ' + numberOfVisits);
+console.log('2 ipVisits: ' + ipVisits);
 				pages = results[0]['pages'];
+console.log('pages: ' + pages);
+console.log('2 ipPage: ' + ipPage);
+				pages = pages - ipPage;
+
 				let temp = pages/numberOfVisits;
 				temp = temp.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1, });
 				let para = '<div class="lineOne" style="text-align: center; margin-left: auto; margin-right: auto; width: 100%; font-size: 14pt; ">';
@@ -771,13 +788,7 @@ function yearMonthChange(year, month) {										// change the year/month
 				//let yValuesipLastVisit = [];
 				for (let i in jsonIP) {
 					ipBandwidth = jsonIP[i]['bandwidth'];				// bandwidth of ip. This has the number of " MB" (AWStatsSections.php).
-					if (ipBandwidth < 600) {							// skip IPs with less than 600 MB bandwidth
-						continue;
-					}
 					ip = jsonIP[i]['ip'];
-					if (ip == 'Others') {								// skip 'Others' IPs
-						continue;
-					}
 					ipPages = jsonIP[i]['pages'];						// ip table ORDER BY number of pages
 					//ipHits = jsonIP[i]['ipHits'];
 					//ipLastVisit = jsonIP[i]['ipLastVisit'];
@@ -887,6 +898,11 @@ function yearMonthChange(year, month) {										// change the year/month
 				for (let i in jsonOS) {
 					os = jsonOS[i]['os'];
 					osPages = jsonOS[i]['pages'];						// os table ORDER BY number of pages
+					if (os == "Linux") {
+console.log('osPages: ' + osPages);
+						osPages = osPages - ipPage;
+console.log('3 ipPage: ' + ipPage);
+					}
 					osPercentOne = jsonOS[i]['percent'];				// percentage of osPages. This should a number with % sign off.
 					//osHits = jsonOS[i]['osHits'];
 					//osPercentTwo = jsonOS[i]['osPercentTwo'];

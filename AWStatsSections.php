@@ -142,10 +142,10 @@ elseif ($section == 3) {																	// ip table
             ip table
     *********************************************************************/
     if ($month == 13) {																		// a year				
-        $query="SELECT `ip`, `ipPages`, `ipBandwidth` FROM $awstats_db.`ip` WHERE $awstats_db.`ip`.`year` = $year GROUP BY $awstats_db.`ip`.`ip` ORDER BY $awstats_db.`ip`.`ipBandwidth` DESC LIMIT 30";
+        $query="SELECT `ip`, `ipPages`, `ipBandwidth` FROM $awstats_db.`ip` WHERE $awstats_db.`ip`.`year` = $year GROUP BY $awstats_db.`ip`.`ip` ORDER BY $awstats_db.`ip`.`ipBandwidth` DESC";
     }
     else {
-        $query="SELECT `ip`, `ipPages`, `ipBandwidth` FROM $awstats_db.`ip` WHERE $awstats_db.`ip`.`month` = $month AND $awstats_db.`ip`.`year` = $year ORDER BY $awstats_db.`ip`.`ipBandwidth` DESC LIMIT 30";
+        $query="SELECT `ip`, `ipPages`, `ipBandwidth` FROM $awstats_db.`ip` WHERE $awstats_db.`ip`.`month` = $month AND $awstats_db.`ip`.`year` = $year ORDER BY $awstats_db.`ip`.`ipBandwidth` DESC";
     }
     $result_ip = $db->query($query) or die('Query failed:  ' . $db->error . '</body></html>');
 
@@ -156,16 +156,62 @@ elseif ($section == 3) {																	// ip table
         $ipChange = '{';
         $n = 0;
         while ($row_ip = $result_ip->fetch_assoc()) {
-            $n++;
             $ip = $row_ip['ip'];
+//echo 'ip = ' . $ip . '<br />';
+            if ($ip == 'Others') {								// skip 'Others' IPs
+                continue;
+            }
+            /*******************************************************
+             * 	ip China or Google then skip!
+             * *****************************************************/
+            if (str_starts_with($ip, "114.119.") || str_starts_with($ip, "72.14.") || str_starts_with($ip, "74.125.")) {
+                continue;
+            }
+            $testIParray = explode('.', $ip);
+            $testIPzero = (int)$testIParray[0];
+            $testIPone = (int)$testIParray[1];
+            $testIPtwo= (int)$testIParray[2];
+            $testIPthree = (int)$testIParray[3];
+            // [34.4.5.0 - 34.191.255.255]
+            if ($testIPzero == 34) {
+                if ($testIPone >= 4  && $testIPone <= 191) {
+                    continue;
+                }
+            }
+            // [35.252.0.0 - 35.255.255.255]
+            if ($testIPzero == 35) {
+                if ($testIPone >= 252 && $testIPone <= 255) {
+                    continue;
+                }
+            }
+            // [66.249.64.0 - 66.249.95.255]
+            if ($testIPzero == 66 && $testIPone == 249) {
+                if ($testIPtwo >=64  && $testIPtwo <= 95) {
+                    continue;
+                }
+            }
+            // [136.112.0.0 - 136.127.255.255])
+            if ($testIPzero == 136) {
+                if ($testIPone >= 112 && $testIPone <= 127) {
+                    continue;
+                }
+            }
+
             $ipPages = (int) $row_ip['ipPages'];
+//echo '2 ip = ' . $ip . '<br />';
+            //if ($ipPages < 1000) {								// skip IPPages with less than 1000 pages
+            //    continue;
+            //}
+//echo 'ipPages: '.$ipPages.'<br />'; // Debug: print the IP pages being processed
             $ipBandwidth = (int) $row_ip['ipBandwidth'];
             $ipBandwidth = (int) ($ipBandwidth / 1048576);									// convert bytes to MB
 
+            $n++;
             $ipChange .= '"'.($n-1).'": {';
             $ipChange .= '"ip":                       	        "'.$ip.'",';
             $ipChange .= '"pages":				        	    '.$ipPages.',';
             $ipChange .= '"bandwidth":		    	            '.$ipBandwidth.'},';
+			if ($n == 30) break;
         }
         $ipChange = rtrim($ipChange, ',');
         $ipChange .= '}';

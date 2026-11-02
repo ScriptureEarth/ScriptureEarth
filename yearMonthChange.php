@@ -36,6 +36,81 @@ else {
 require_once './include/conn.inc.AWStats.php';											// connect to the AWStats database
 $db = get_my_AWStatsDB();																// connect to the AWStats database named 'awstats_gui_log' or 'se_awstats_gui_log'
 
+
+$numOfVisits = 0;
+$ipPages = 0;
+	
+if ($month == 13) {																			// a year				
+	$query = "SELECT `ip`, `ipPages`, `ipBandwidth` FROM $awstats_db.`ip` WHERE $awstats_db.`ip`.`year` = $year GROUP BY $awstats_db.`ip`.`ip`";
+}
+else {
+	$query = "SELECT `ip`, `ipPages`, `ipBandwidth` FROM $awstats_db.`ip` WHERE $awstats_db.`ip`.`month` = $month AND $awstats_db.`ip`.`year` = $year";
+}
+$result_ipPages = $db->query($query) or die('Query failed:  ' . $db->error);
+//echo 'num: '.$result_ipPages->num_rows . '<br />';; // Debug: print the query being executed
+if ($result_ipPages->num_rows == 0) {
+	$ipPages = 0;
+}
+else {
+	while ($row_ipPages = $result_ipPages->fetch_assoc()) {
+		$ip = $row_ipPages['ip'];
+		if ($ip == 'Others') {								// skip 'Others' IPs
+			$ipPages = $ipPages + $row_ipPages['ipPages'];
+			$numOfVisits++;
+			continue;
+		}
+//echo 'Processing IP: '.$ip.'<br />'; // Debug: print the IP being processed
+		/*******************************************************
+		 * 	ip China or Google then skip!
+		 * *****************************************************/
+		if (str_starts_with($ip, "114.119.") || str_starts_with($ip, "72.14.") || str_starts_with($ip, "74.125.")) {
+			$ipPages = $ipPages + $row_ipPages['ipPages'];
+			$numOfVisits++;
+			continue;
+		}
+		$testIParray = explode('.', $ip);
+		$testIPzero = (int)$testIParray[0];
+		$testIPone = (int)$testIParray[1];
+		$testIPtwo= (int)$testIParray[2];
+		$testIPthree = (int)$testIParray[3];
+		// [34.4.5.0 - 34.191.255.255]
+		if ($testIPzero == 34) {
+			if ($testIPone >= 4 && $testIPone <= 191) {
+				$ipPages = $ipPages + $row_ipPages['ipPages'];
+				$numOfVisits++;
+				continue;
+			}
+		}
+		// [35.252.0.0 - 35.255.255.255]
+		if ($testIPzero == 35) {
+			if ($testIPone >= 252 && $testIPone <= 255) {
+				$ipPages = $ipPages + $row_ipPages['ipPages'];
+				$numOfVisits++;
+				continue;
+			}
+		}
+		// [66.249.64.0 - 66.249.95.255]
+		if ($testIPzero == 66 && $testIPone == 249) {
+			if ($testIPtwo >= 64 && $testIPtwo <= 95) {
+				$ipPages = $ipPages + $row_ipPages['ipPages'];
+				$numOfVisits++;
+				continue;
+			}
+		}
+		// [136.112.0.0 - 136.127.255.255])
+		if ($testIPzero == 136) {
+			if ($testIPone >= 112 && $testIPone <= 127) {
+				$ipPages = $ipPages + $row_ipPages['ipPages'];
+				$numOfVisits++;
+				continue;
+			}
+		}
+		//$ipBandwidth = (int)$row_ipPages['ipBandwidth'];
+	}
+}
+//echo $ipPages.'^'.$numOfVisits.'^';
+
+
 	
 if ($month == 13) {																		// a year
 	$query = "SELECT SUM(uniqueVisitors) uniqueVisitors, SUM(numberOfVisits) numberOfVisits, SUM(pages) pages, SUM(hits) hits, SUM(bandwidth) bandwidth FROM $awstats_db.visitors WHERE $awstats_db.visitors.`year` = $year";
@@ -119,6 +194,6 @@ else {
 	
 	//header('Content-Type: application/json');											// instead of <pre></pre>
 	//echo '<pre>'.$json_string.'</pre>';
-	echo $json_string;
+	echo $ipPages.'^'.$numOfVisits.'^'.$json_string;
 }
 ?>

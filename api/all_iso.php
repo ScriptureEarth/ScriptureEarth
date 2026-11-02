@@ -39,7 +39,7 @@ $stmt_iso->execute();															                // execute query
 $result_iso = $stmt_iso->get_result();
 
 if ($result_iso->num_rows == 0) {
-    $marks = json_decode('{"error": "scripture_main table does not exixt."}');
+    $marks = json_decode('{"error": "scripture_main table does not exist."}');
     header('Content-Type: application/json');
     echo json_encode($marks, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     exit;
@@ -51,18 +51,18 @@ $first = '{';
 
 while ($row = $result_iso->fetch_assoc()) {
     /*
-bdg	00000		4
-mvn	00000		16
-tuk	Iran		16
-zaw	matat		16
-aaz	00000		48
-mkn	00000		48
-plu	00000		48
+    bdg	00000		4
+    mvn	00000		16
+    tuk	Iran		16
+    zaw	matat		16
+    aaz	00000		48
+    mkn	00000		48
+    plu	00000		48
 
-$iso = $row['ISO'];
-if ($iso == 'bdg' || $iso == 'mvn' || $iso == 'tuk' || $iso == 'zaw' || $iso == 'aaz' || $iso == 'mkn' || $iso == 'plu') {
-    continue;																	// skip these languages
-}*/
+    $iso = $row['ISO'];
+    if ($iso == 'bdg' || $iso == 'mvn' || $iso == 'tuk' || $iso == 'zaw' || $iso == 'aaz' || $iso == 'mkn' || $iso == 'plu') {
+        continue;																	// skip these languages
+    }*/
     $m++;
 
     include('include/ISO_details.php');

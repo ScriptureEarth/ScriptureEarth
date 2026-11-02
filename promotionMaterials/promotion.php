@@ -103,7 +103,7 @@
 
 	<hr style='width: 80%; margin-top: 50px; margin-bottom: 50px; '>
 
-	<h2 style='text-align: center; margin-top: 40px; margin-bottom: 40px; '>English Items</h2>
+	<h2 style='text-align: center; margin-top: 40px; margin-bottom: 40px; '>English Promotion Materials</h2>
 
 	<h3 style='color: darkgreen; text-align: center; margin-bottom: 40px; font-weight: normal; '>One of the promotion materials: <a href="https://outreach.ca/article/ArticleId/3937/Scripture-Earth-One-of-the-largest-repositories-of-Bible-resources-available" target="_blank">A blog from Deb &amp; Ramón Padilla</a></h3>
 	
@@ -149,15 +149,15 @@
 			<figure>ScriptureEarth.org - man poster - take cards</figure>
 		</div>
 		<div class='contacts'>
-			<img loading='lazy' src='SE.org - women poster - QR.jpg' alt='ScriptureEarth.org - women poster - QR' />
-			<figure>ScriptureEarth.org - women poster - QR</figure>
+			<img loading='lazy' src='SE.org - women poster - QR.jpg' alt='ScriptureEarth.org - woman poster - QR' />
+			<figure>ScriptureEarth.org - woman poster - QR</figure>
 		</div>
 	</div>
 
 	<div class='clearfix'>
 		<div class='contacts'>
-			<img loading='lazy' src='SE.org - women poster - take cards.jpg' alt='ScriptureEarth.org - women poster - take cards' />
-			<figure>ScriptureEarth.org - women poster - take cards</figire>
+			<img loading='lazy' src='SE.org - women poster - take cards.jpg' alt='ScriptureEarth.org - woman poster - take cards' />
+			<figure>ScriptureEarth.org - woman poster - take cards</figire>
 		</div>
 		<div class='contacts'>
 			<img loading='lazy' src='SE.org%20-%20QR.png' alt='ScriptureEarth.org - QR' />
@@ -167,7 +167,22 @@
 
 	<hr style="width: 80%; margin-top: 10px; margin-bottom: 50px; ">
 
-	<h2 style='text-align: center; margin-bottom: 40px; '>Artículos en Español</h2>
+	<h2 style='text-align: center; margin-bottom: 40px; '>Matériel promotionnel en français</h2>
+
+	<div class='clearfix'>
+		<div class='contacts'>
+			<img loading='lazy' src='Biblesdumonde.png' alt='ScriptureEarth.org - French card' />
+			<figure>BiblesDuMonde.org - cartes de visite</figire>
+		</div>
+		<div class='contacts'>
+			<!-- img loading='lazy' src='SE.org%20-%20QR.png' alt='ScriptureEarth.org - QR' style='width: 500px; height: auto; ' /-->
+			<figure>&nbsp;</figure>
+		</div>
+	</div>
+
+	<hr style="width: 80%; margin-top: 10px; margin-bottom: 50px; ">
+
+	<h2 style='text-align: center; margin-bottom: 40px; '>Materiales promocionales en español</h2>
 
 	<div class='clearfix'>
 		<div class='contacts'>

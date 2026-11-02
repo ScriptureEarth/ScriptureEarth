@@ -323,6 +323,15 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 
 	$SE_Map = 1;											// SE map
 
+	$Nigeria = '';
+	$Nig = 0;
+	$N = array('bom','bwr','cla','ego','fuv','gbr','guw','hau','ibo','idu','igl','iri','jab','tiv','yor');
+	if (in_array($ISO, $N)) {
+		$Nig = 1;
+		$Nigeria = $N[array_search($ISO, $N)];
+//echo '<div style="margin-top: 150px; margin-bottom: -140px; color: red; font-size: 2em;">#'.$Nigeria.'#</div>';
+	}
+
 /*
 	*************************************************************************************************************
 		Get the Language name to display.
@@ -365,14 +374,101 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 <script>
 	setTitle("<?php echo ($whichBible == '' ? '' : $whichBible . ' ') . $LN . ($ISO == 'qqq' ? '' : '['.$ISO.']'); ?>");		// qqq equals Deaf
 
+	// Is it a mobile device?
+	var isMobile = {
+		Android: function() {return navigator.userAgent.match(/Android/i);},
+		iOS: function() {return navigator.userAgent.match(/iPhone|iPad|iPod/i);},
+		//any: function() {return (isMobile.Android() || isMobile.iOS()}
+		smartPhone: function() {return navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i);}
+	};
+	// if (isMobile.smartPhone()) {}  		// mobile device
+	// if (!isMobile.smartPhone()) {} 		// desktop computer
+
 	// Object.entries() takes an object like { a: 1, b: 2, c: 3 } and turns it into an array of key-value pairs: [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ].
 	const DisplayText = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_BibleIsReadVideo': <?php echo $BibleIsReadVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_otherTitles': <?php echo $otherTitles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>};
 	const DisplayAudio = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsAudioVideo': <?php echo $BibleIsAudioVideo; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_other_titles': <?php echo $other_titles; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
 	const DisplayVideo = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_BibleIsAudioVideo': <?php echo $BibleIsAudioVideo; ?>, 'Dis_BibleIsReadVideo': <?php echo $BibleIsReadVideo; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>};
 	const DisplayApp = {'Dis_App': <?php echo $App; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_AppleStore': <?php echo $AppleStore; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>};
-	const DisplayOther = {'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_Kalaam': <?php echo $Kalaam; ?>};
+	const DisplayOther = {'Dis_Nigeria': <?php echo $Nig; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_Kalaam': <?php echo $Kalaam; ?>};
 	const DisplayMap = {'Dis_Map': <?php echo $SE_Map; ?>};
-	const DisplayAll = {'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsReadVideo': <?php echo $BibleIsReadVideo; ?>, 'Dis_BibleIsAudioVideo': <?php echo $BibleIsAudioVideo; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_otherTitles': <?php echo $other_titles; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_links': <?php echo $links; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_App': <?php echo $App; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_AppleStore': <?php echo $AppleStore; ?>, 'Dis_Kalaam': <?php echo $Kalaam; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>};
+	const DisplayAll = {'Dis_Nigeria': <?php echo $Nig; ?>, 'Dis_SAB': <?php echo $SAB; ?>, 'Dis_BibleIsRead': <?php echo $BibleIsRead; ?>, 'Dis_BibleIsAudio': <?php echo $BibleIsAudio; ?>, 'Dis_BibleIsVideo': <?php echo $BibleIsVideo; ?>, 'Dis_BibleIsReadAudio': <?php echo $BibleIsReadAudio; ?>, 'Dis_BibleIsReadVideo': <?php echo $BibleIsReadVideo; ?>, 'Dis_BibleIsAudioVideo': <?php echo $BibleIsAudioVideo; ?>, 'Dis_BibleIsReadAudioVideo': <?php echo $BibleIsReadAudioVideo; ?>, 'Dis_viewer': <?php echo $viewer; ?>, 'Dis_OT_PDF': <?php echo $OT_PDF; ?>, 'Dis_NT_PDF': <?php echo $NT_PDF; ?>, 'Dis_OT_Audio': <?php echo $OT_Audio; ?>, 'Dis_NT_Audio': <?php echo $NT_Audio; ?>, 'Dis_PlaylistAudio': <?php echo $PlaylistAudio; ?>, 'Dis_BibleIsGospelFilm': <?php echo $BibleIsGospelFilm; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_watch': <?php echo $watch; ?>, 'Dis_YouVersion': <?php echo $YouVersion; ?>, 'Dis_buy': <?php echo $buy; ?>, 'Dis_GRN': <?php echo $GRN; ?>, 'Dis_study': <?php echo $study; ?>, 'Dis_otherTitles': <?php echo $other_titles; ?>, 'Dis_otherTitles_videoDownload': <?php echo $otherTitles_videoDownload; ?>, 'Dis_links': <?php echo $links; ?>, 'Dis_linksEmail':  <?php echo $linksEmail; ?>, 'Dis_eBible': <?php echo $eBible; ?>, 'Dis_SILlink': <?php echo $SILlink; ?>, 'Dis_SB': <?php echo $SB_PDF; ?>, 'Dis_App': <?php echo $App; ?>, 'Dis_iTunes': <?php echo $iTunes; ?>, 'Dis_GooglePlay': <?php echo $GooglePlay; ?>, 'Dis_AppleStore': <?php echo $AppleStore; ?>, 'Dis_Kalaam': <?php echo $Kalaam; ?>, 'Dis_PlaylistVideo': <?php echo $PlaylistVideo; ?>, 'Dis_PlaylistVideo_download': <?php echo $PlaylistVideo_download; ?>, 'Dis_BibleIsSAB': <?php echo $BibleIsSAB; ?>, 'Dis_BibleIsGospelFilmSAB': <?php echo $BibleIsGospelFilmSAB; ?>, 'Dis_NotAndroidiOS': <?php echo $NotAndroidiOS; ?>, 'Dis_moreLinks': <?php echo $moreLinks; ?>, 'Dis_linksMaps': <?php echo $linksMaps; ?>, 'Dis_OT_Audio_download': <?php echo $OT_Audio_download; ?>, 'Dis_NT_Audio_download': <?php echo $NT_Audio_download; ?>};
+
+	// set display = "table" for all "DisplayZZZZZZ" Object.entries()
+	function menuEnableText() {
+		for (let [ dis_key, dis_value ] of Object.entries(DisplayText)) {
+			if (document.getElementById(dis_key)) {
+				if (dis_value != 0) {
+					document.getElementById(dis_key).style.display = "table";
+				}
+			}
+		}
+	}
+	function menuEnableAudio() {
+		for (let [ dis_key, dis_value ] of Object.entries(DisplayAudio)) {
+			if (document.getElementById(dis_key)) {
+				if (dis_value != 0) {
+					document.getElementById(dis_key).style.display = "table";
+				}
+			}
+		}
+	}
+	function menuEnableVideo() {
+		for (let [ dis_key, dis_value ] of Object.entries(DisplayVideo)) {
+			if (document.getElementById(dis_key)) {
+				if (dis_value != 0) {
+					document.getElementById(dis_key).style.display = "table";
+				}
+			}
+		}
+	}
+	function menuEnableApp() {
+		for (let [ dis_key, dis_value ] of Object.entries(DisplayApp)) {
+			if (document.getElementById(dis_key)) {
+				if (dis_value != 0) {
+					document.getElementById(dis_key).style.display = "table";
+				}
+			}
+		}
+	}
+	function menuEnableOther() {
+		for (let [ dis_key, dis_value ] of Object.entries(DisplayOther)) {
+			if (document.getElementById(dis_key)) {
+				if (dis_value != 0) {
+					document.getElementById(dis_key).style.display = "table";
+				}
+			}
+		}
+	}
+	function menuEnableMap() {
+		for (let [ dis_key, dis_value ] of Object.entries(DisplayMap)) {
+			if (document.getElementById(dis_key)) {
+				if (dis_value != 0) {
+					document.getElementById(dis_key).style.display = "table";
+				}
+			}
+		}
+	}
+	function menuEnableAll() {
+		for (let [ dis_key, dis_value ] of Object.entries(DisplayAll)) {
+			if (document.getElementById(dis_key)) {
+				if (dis_value != 0) {
+					document.getElementById(dis_key).style.display = "table";
+				}
+			}
+		}
+	}
+	function menuDisableAll() {
+		for (let [ dis_key, dis_value ] of Object.entries(DisplayAll)) {
+			if (document.getElementById(dis_key)) {
+				if (dis_value != 0) {
+					document.getElementById(dis_key).style.display = "none";
+				}
+			}
+		}
+		if (document.getElementById("Dis_Map")) {
+			document.getElementById("Dis_Map").style.display = "none";
+		}
+	}
 
 	// set the icons for the largest size
 
@@ -441,6 +537,75 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		document.getElementById('tabAll').style.height = '<?php echo $smartPhone == 0 ? "65px" : "35px"; ?>';
 		document.getElementById('tabAll').style.marginTop = "21px";
 	}
+			
+	// Display the "DisplayZZZZZ" Object.entries()
+	function openMenuTab(evt, menuTabName) {
+		// return if count = 0
+		if (menuTabName == 'Text' && textCount === 0) {
+			return;
+		}
+		if (menuTabName == 'Audio' && audioCount === 0) {
+			return;
+		}
+		if (menuTabName == 'Video' && videoCount === 0) {
+			return;
+		}
+		if (menuTabName == 'App' && appCount === 0) {
+			return;
+		}
+		if (menuTabName == 'Other' && otherCount === 0) {
+			return;
+		}
+		if (menuTabName == 'Map' && mapCount === 0) {
+			return;
+		}
+
+		// set none to "tablinks" class names and set the "event" class name to "active"
+		let tablinks;
+		tablinks = document.getElementsByClassName("tablinks");							// Get all elements with class="tablinks" and remove the class "active"
+		for (let i = 0; i < tablinks.length; i++) {
+			tablinks[i].className = tablinks[i].className.replace(" active", "");
+		}
+		evt.currentTarget.className += " active";										// change the "active" class to the button that opened the tab
+
+		// set all of the "DisplayZZZZZ" Object.entries()
+		if (menuTabName != 'All') {
+			menuDisableAll();
+		}
+		iconDisableAll();
+		switch (menuTabName) {
+			case 'Text':
+				menuEnableText();
+				iconEnableText();
+				break;
+			case 'Audio':
+				menuEnableAudio();
+				iconEnableAudio();
+				break;
+			case 'Video':
+				menuEnableVideo();
+				iconEnableVideo();
+				break;
+			case 'App':
+				menuEnableApp();
+				iconEnableAppt();
+				break;
+			case 'Other':
+				menuEnableOther();
+				iconEnableOther();
+				break;
+			case 'Map':
+				menuEnableMap();
+				iconEnableMap();
+				break;
+			case 'All':
+				menuEnableAll();
+				iconEnableAll();
+				break;
+			default:
+				document.write('<p>This is\'t supposed to happen! (menu tabs)</p>');
+		}
+	}
 </script>
 
 <div style='position: relative; top: 90px; display: inline; clear: both; '>
@@ -460,7 +625,7 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		<br />
 		<h2 id='<?php echo $ISO; ?>_1'>
 			<div class='autonymLanguageNames' style='width: 100%; '><?php echo translate('Self-designation of the speakers’ language:', $st, 'sys'); ?>
-				<span class='autonymLanguageName'>
+				<span class='autonymLanguageName' style='font-family: font/CharisSILCompact-R.woff2; '>
 				<?php
 				// display autonym language names
 				$r_autonym = $result_autonym->fetch_array(MYSQLI_ASSOC);
@@ -3405,6 +3570,35 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
 		}
 		echo '</table>';
 	}
+/*
+	*************************************************************************************************************
+		Can it be displayed by Nigeria?
+	*************************************************************************************************************
+*/
+	if ($Nigeria != '' && $Internet) {
+		echo '<table id="Dis_Nigeria">';
+		// Add your Nigeria-specific content here
+		$query = "SELECT LN, publication, `URL` FROM nigeria WHERE ISO = '$ISO'";
+		$result_nigeria=$db->query($query) or die (translate('Query failed:', $st, 'sys') . ' ' . $db->error . '</body></html>');
+		while ($row_nigeria = $result_nigeria->fetch_array(MYSQLI_ASSOC)) {
+			$nigeria_LN = $row_nigeria['LN'];
+			$nigeria_publication= $row_nigeria['publication'];
+			$nigeria_URL = $row_nigeria['URL'];
+			?>
+			<tr style='margin-top: -2px; '>
+				<td style='width: 45px; '>
+				<?php
+				echo "<div class='linePointer' onclick=\"window.open('".$nigeria_URL."')\"><img loading='lazy' class='iconActions' src='../images/BibleShowIcon.png' /></div>";
+				echo "</td>";
+				echo "<td>";
+				echo "<div class='linePointer' onclick=\"window.open('".$nigeria_URL."')\">" . $nigeria_LN . ' - ' . $nigeria_publication . ' - for projecting with a Windows computer, after installing BibleShow.net</div>';
+				?>
+				</td>
+			</tr>
+			<?php
+		}
+		echo '</table>';
+	}
 
 /*
 	*************************************************************************************************************
@@ -3895,10 +4089,88 @@ $SynchronizedTextAndAudio = 0;								// in SAB below
         }
     }
     function SAB_Scriptoria_Index(subfolder) {
+		// A temporary fix (Ha!) for SAB Scriptoria Read/Listen/View not working right.
+		// Need to check the version number from version.json to see if it is new enough (JSON => version: 1768322736214). Chris Hubbard 2026-01-13
+		// If it is new enough, open the standard [ISO+] (not [ISO+]_micropi) index.html.
 		let iso = "<?php echo $ISO; ?>";
 		let subfolde = subfolder.slice(4, -1);										// get '[ISO]ZZZZ' from 'sab/[ISO]ZZZZ/'
 		console.log(subfolde);
 		window.open("./data/"+iso+"/sab/"+subfolde+"/", "SABPage");
+
+		/*(async function () {
+			try {
+				const response = await fetch('./data/'+iso+'/sab/'+subfolde+'/_app/version.json');
+				const data = await response.json();
+				//console.log('data: '+data);
+				let appVersion = data.version;										// get the version number
+				console.log('appVersion: '+appVersion);
+				if (appVersion.includes("-")) {										// if version number contains a dash "-"
+					let version_compare = appVersion.split("-");					// split into two parts based on the dash "-"
+					appVersion = version_compare[1];								// use the second part only
+					console.log('appVersion changed to: '+appVersion);
+				}
+				/***************************************************************************************************
+					If the version number is new enough, open the standard [ISO+] (not [ISO+]_micropi) index.html.
+					If the version number is not new enough, check if the [ISO+]_micropi folder exists.
+					If it does, open the [ISO+]_micropi index.html. If it doesn't, display an error message.
+				 **************************************************************************************************
+				if (appVersion >= "1768322736214") {								// {"version":"13.3.2-1770141784340"} 2026-02-3
+					console.log('App version '+appVersion+' detected, opening '+subfolder+'index.html.');
+					window.open("./data/"+iso+"/sab/"+subfolde+"/", "SABPage");
+				}
+				else {
+					//window.open("./data/"+iso+"/sab/"+subfolde+'_micropi/', "SABPage");
+					//console.log('App version '+appVersion+' detected, opening '+subfolder+'_micropi index.html.');
+					//window.open("./data/"+iso+"/sab/"+subfolde+"_micropi/index.html", "SABPage");
+					fetch('./data/'+iso+'/sab/'+subfolde+'_micropi', {
+						method: 'HEAD'												// check if [ISO+]_micropi folder exists
+					})
+					.then(response => {
+						if (!response.ok) {
+							//throw new Error('Network response was not ok');
+							console.log('Response headers '+response.status+': MicroPi file not found, opening standard page.');
+							alert('Temporarily unavailable—please try the Read/Listen/View feature again later.');
+							//window.open("./data/"+iso+"/sab/"+subfolder+"/", "SABPage");
+						}
+						else {
+							// Access response headers
+							console.log('Response headers '+response.status+': MicroPi file found, opening MicroPi page.');
+							window.open("./data/"+iso+"/sab/"+subfolde+'_micropi/', "SABPage");
+							//response.headers.forEach((value, name) => {
+							//  console.log(`${name}: ${value}`);
+							//});
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+					});
+				}
+			}
+			catch (error) {
+				console.error('Error:', error);
+				console.log('Opening standard page.');
+				//window.open("./data/"+iso+"/sab/"+subfolde+"_micropi/", "SABPage");
+				fetch('./data/'+iso+'/sab/'+subfolde+'_micropi', {
+					method: 'HEAD'													// check if MicroPi folder exists
+				})
+				.then(response => {
+					if (!response.ok) {
+						//throw new Error('Network response was not ok');
+						console.log('Response headers '+response.status+': MicroPi file not found, opening standard page.');
+						alert('Temporarily unavailable—please try the Read/Listen/View feature again later.');
+						//window.open("./data/"+iso+"/sab/"+subfolder+"/", "SABPage");
+					}
+					else {
+						// Access response headers
+						console.log('Response headers '+response.status+': MicroPi file found, opening MicroPi page.');
+						window.open("./data/"+iso+"/sab/"+subfolde+'_micropi/', "SABPage");
+					}
+				})
+				.catch(error => {
+					console.error('Error:', error);
+				});
+			}
+		})();*/
 	}
     function SAB_Scriptoria_Other(url) {
 		window.open(url, "SABLink");

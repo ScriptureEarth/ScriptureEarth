@@ -53,8 +53,8 @@ if (session_status() === PHP_SESSION_NONE) @session_start();
 <link rel="stylesheet" type='text/css' href="JQuery/css/style.css" />
 <!-- link rel="stylesheet" type="text/css" 	href="_css/Scripture_Index.css" /-->
 <link rel="stylesheet" type="text/css" href="_css/SpecificLanguage.css?v=0.0.4" />
-<link rel='stylesheet' type='text/css' href='_css/00-Scripture.css?v=1.0.6' />
-<link rel='stylesheet' type='text/css' href='_css/00-SEmobile.css?v=0.0.3' />
+<link rel='stylesheet' type='text/css' href='_css/00-Scripture.css?v=1.1.2' />
+<link rel='stylesheet' type='text/css' href='_css/00-SEmobile.css?v=0.0.7' />
 <!--link rel='stylesheet' type='text/css' 	href='_css/CountryTable.css' /-->
 <!--link rel='stylesheet' type='text/css' href='_css/jplayer.BlueMonday.css' /-->
 <link rel='stylesheet' type='text/css' href='_css/jplayer.blue.monday.min.css?v=0.0.3' />	<!-- Playlist Video -->

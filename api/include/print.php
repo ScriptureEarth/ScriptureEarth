@@ -39,7 +39,7 @@
 			$first .= '"'.$key.'":			"'.$LName.'",';										// e.g., '"English":	"[English Language Name]",'
 		}
 
-		$first .= '"minority":			""';
+		$first .= '"autonym(s)":			"'.$autonym.'",';
 		$first .= '},';
 		$first .= '"alternate_language_count":		'.$alt_ln.',';                              // how many
 		$r=0;
