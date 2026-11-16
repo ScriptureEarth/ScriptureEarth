@@ -2,7 +2,7 @@
 # Slug strategy (B): the detail slug IS the legacy vanity string <iso>[-<rod>][-<var>],
 # so ~3,779 legacy per-entry Redirect 301 lines collapse to 3 placeholder rules.
 # Query-string deep links (?iso=/?name=/?idx=/?sortby=country&name=) can't be matched
-# here (_redirects is path-only) — they are handled by functions/index.php.js.
+# here (_redirects is path-only) — they are handled by the functions/*.php.js routes.
 #
 # ---------------------------------------------------------------------------
 # L1  HTTP->HTTPS and www->apex are NOT expressible reliably in _redirects.
@@ -45,9 +45,12 @@
 /se-logo.png       /se-logo.png              200
 
 # === L3/L4/L5  Locale homepages + localized alias index files -> / + ?lang= ==
-# Plain (no query) hits only; deep-link queries on these paths are caught by the
-# Function first. Target is "/" pending ticket-04 landing decision (flip to
-# /browse/ is a one-line change). /index.php stays 302 while landing is provisional.
+# Every row in this block has a matching functions/<name>.php.js route, which runs FIRST and
+# answers both the deep-link queries (?iso=, ?idx=, ?sortby=country) and the plain
+# hit, so these rows are a backstop and the readable record of path -> locale.
+# Adding a row? Add its route file too (functions-lib/legacy-redirect.test.mjs checks).
+# Target is "/" pending ticket-04 landing decision (flip to /browse/ here and in
+# functions-lib/legacy-redirect.js).
 /index.php                  /                 302
 /00eng.php                  /?lang=eng        301
 /00spa.php                  /?lang=spa        301

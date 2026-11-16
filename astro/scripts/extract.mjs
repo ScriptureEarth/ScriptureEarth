@@ -676,7 +676,7 @@ console.error('writing content/...');
 dump('languages.json', languages);
 dump('countries.json', countriesOut);
 dump('search-index.json', search);
-// Legacy-URL resolver map for functions/index.php.js (bundled into the Pages Function at
+// Legacy-URL resolver map for functions-lib/route.js (bundled into the Pages Functions at
 // deploy time). idx -> slug for ?idx= deep links; iso -> slug for ISOs with exactly one
 // entry; multi = ISOs shared by several entries (the /language/ chooser page handles those).
 {

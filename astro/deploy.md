@@ -54,10 +54,12 @@ First-time only, if recreating the project:
 ## What ships alongside the pages
 - **`public/_redirects`** (in `dist/`) — legacy path redirects: `00<loc>.php` → `/?lang=<loc>`, and the
   vanity `/‹iso›[-rod[-var]]` → `/language/‹slug›/` collapse (see `REDIRECTS.md`).
-- **`functions/index.php.js`** — handles the legacy **query-string** deep links (`?iso=`, `?idx=`,
-  `?sortby=country`) that `_redirects` can't read, resolving `idx`/`iso` through `content/lang-map.json`
-  (written by the extract step, bundled by wrangler). It is **scoped to `/index.php` only**, so every other
-  path is served as a pure static file and is not counted as a Functions invocation.
+- **`functions/*.php.js`** — one route per legacy entry point (`/index.php`, the ten `00<loc>.php` pages,
+  the six alias index files such as `00i-Scripture_Index.php`). They handle the legacy **query-string**
+  deep links (`?iso=`, `?idx=`, `?sortby=country`) that `_redirects` can't read, resolving `idx`/`iso`
+  through `content/lang-map.json` (written by the extract step, bundled by wrangler). Shared logic is in
+  `functions-lib/`. Functions are **scoped to those 17 paths**, so every other path is served as a pure
+  static file and is not counted as a Functions invocation.
 - **`public/_headers`** — immutable caching for `/_astro/*` and `/i18n/*`; `precompress_dist.mjs` appends
   the `Content-Encoding: br` rule for the search index.
 

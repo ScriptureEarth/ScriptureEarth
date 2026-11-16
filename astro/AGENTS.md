@@ -29,7 +29,7 @@ content/countries.json + scripts/data/ne_110m_countries.geojson + map-points.jso
 
 **i18n:** sync boot in `src/layouts/Base.astro` (`?lang=` → `localStorage se-loc` → first supported entry of `navigator.languages`, matched on the primary subtag like the legacy PHP's Accept-Language walk → `eng`). Bundled `src/scripts/i18n.js` fetches `/i18n/chrome.<loc>.json`, `names.<loc>.json`, `autonyms.json` with `?v=` from `src/lib/i18nVersion.ts`. Name chain: locale names → autonyms → baked English. The 15 locales come from `public/i18n/locales.json`, imported by both `Base.astro` and `i18n.js`. RTL: `arb`, `fas`.
 
-**Redirects:** `public/_redirects` (path-only, first-match-wins) + `functions/index.php.js` (query-string `/index.php` only; imports the generated `content/lang-map.json` for `?idx=`/`?iso=` lookups — extract before deploy). Functions run **before** `_redirects`. Shared-ISO `?iso=` → `/language/` chooser page. Vanity `/:iso` → `/language/<same>/` 301. Guard `200` rewrites for real routes/assets **above** the ISO catch-all. HTTP/www: Cloudflare dashboard, not this repo. Details: `REDIRECTS.md`.
+**Redirects:** `public/_redirects` (path-only, first-match-wins) + `functions/*.php.js` (one route per legacy entry point: `/index.php`, `00<loc>.php`, alias index files like `00i-Scripture_Index.php`; query-string deep links; logic in `functions-lib/legacy-redirect.js`, which `functions-lib/route.js` binds to the generated `content/lang-map.json` for `?idx=`/`?iso=` lookups — extract before deploy). Locale entry points carry `?lang=<loc>` onto the target. Every `.php` row in `_redirects` that targets the home page needs a route file. Functions run **before** `_redirects`. Shared-ISO `?iso=` → `/language/` chooser page. Vanity `/:iso` → `/language/<same>/` 301. Guard `200` rewrites for real routes/assets **above** the ISO catch-all. HTTP/www: Cloudflare dashboard, not this repo. Details: `REDIRECTS.md`.
 
 ## Key Directories
 
@@ -43,7 +43,8 @@ content/countries.json + scripts/data/ne_110m_countries.geojson + map-points.jso
 | `src/content.config.ts` | File loaders over `content/*.json` — no Zod |
 | `scripts/` | Projector (`extract.mjs`), dump fetch, search-index encoder, precompress, size bench, i18n/geo generators |
 | `public/i18n/` | Chrome + names catalogs (committed) |
-| `functions/` | Pages Function for `/index.php` |
+| `functions/` | Pages Function routes for the legacy `.php` entry points |
+| `functions-lib/` | Shared legacy-redirect resolver + its `node:test` tests (`pnpm run test:redirects`) |
 | `bench/` | Search-index encoding bake-off + `SIZE-BENCH-SPEC.md` |
 | `content/` | Generated catalog JSON (gitignored) |
 
@@ -117,7 +118,7 @@ CI: three workflows share the composite action `.github/actions/build-site` (pnp
 | `scripts/gen_map.mjs` | `content/countries.json` → `content/world-map.svg` (home map; run by `extract`, or `pnpm run gen:map`) |
 | `scripts/precompress_dist.mjs` | In-place brotli on `dist/search-index.txt` + `_headers` |
 | `scripts/build_sizes.mjs`, `scripts/check_sizes.mjs` | Size-regression gate (`bench/SIZE-BENCH-SPEC.md`) |
-| `public/_redirects`, `functions/index.php.js`, `src/pages/language/index.astro` | Legacy URL map (+ bundled `content/lang-map.json`, + shared-ISO chooser) |
+| `public/_redirects`, `functions/*.php.js`, `functions-lib/`, `src/pages/language/index.astro` | Legacy URL map (+ bundled `content/lang-map.json`, + shared-ISO chooser) |
 | `public/_headers` | Long-cache `/_astro/*` and `/i18n/*` only |
 
 Known gaps / fidelity notes live in `CURRENT-ISSUES.md`; outstanding asks to the API developer in `DUMP-API-REQUESTS.md`. Other docs: `README.md`, `deploy.md`, `REDIRECTS.md`, `bench/README.md`.
@@ -142,4 +143,4 @@ pnpm run bench:size           # cold-load size diff vs production sizes.json (ne
 SE_STRICT=1 pnpm run extract  # dump-shape audit; not in CI
 ```
 
-Untested in-repo: pages/components, i18n.js, `_redirects` / Pages Function, precompress fallback path, slug collision logic.
+Untested in-repo: pages/components, i18n.js, `_redirects` ordering and Pages routing (the resolver itself is tested: `pnpm run test:redirects`), precompress fallback path, slug collision logic.

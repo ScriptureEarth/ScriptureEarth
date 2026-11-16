@@ -49,7 +49,7 @@ pnpm run preview             # serve dist/
   client bundles (search, i18n localizer, browse facets, geo hint), stylesheet.
 - `public/` — static assets: `_headers`, `_redirects`, logos, favicon, and **`i18n/*.json`** (see below).
   `search-index.txt` is generated (git-ignored).
-- `functions/index.php.js` + `public/_redirects` — Cloudflare legacy-URL redirects (see `REDIRECTS.md`).
+- `functions/*.php.js` (logic in `functions-lib/`, tests: `pnpm run test:redirects`) + `public/_redirects` — Cloudflare legacy-URL redirects (see `REDIRECTS.md`).
 - `scripts/` — `fetch_dump.mjs` (dump API → `data/scripture.json`), `extract.mjs` (projector → content JSON),
   `build_search_index.mjs`, `precompress_dist.mjs`, `build_sizes.mjs`/`check_sizes.mjs`, i18n/geo generators.
 - `content/`, `data/`, `public/search-index.txt`, `dist/` — **generated / local; git-ignored.**
