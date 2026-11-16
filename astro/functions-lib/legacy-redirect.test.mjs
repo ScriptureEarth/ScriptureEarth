@@ -11,8 +11,8 @@ const map = {
   multi: ['acr', 'tzo'],
 };
 const go = (query, lang) => {
-  const { path, status } = resolveLegacy(new URLSearchParams(query), map, lang);
-  return `${status} ${path}`;
+  const r = resolveLegacy(new URLSearchParams(query), map, lang);
+  return r.notFound ? '404' : `${r.status} ${r.path}`;
 };
 
 test('the three reported 00i-Scripture_Index.php links', () => {
@@ -35,9 +35,7 @@ test('no recognized query goes home in the entry point locale', () => {
 
 test('iso edge cases', () => {
   assert.equal(go('iso=NGU', 'eng'), '301 /language/ngu/?lang=eng'); // case-insensitive
-  assert.equal(go('iso=ngu&rod=99999', 'eng'), '301 /language/ngu/?lang=eng'); // stale rod -> bare iso
-  assert.equal(go('iso=tzo&rod=2641', 'eng'), '302 /language/?iso=tzo&lang=eng'); // unpadded rod never worked
-  assert.equal(go('iso=zzz', 'eng'), '302 /language/?iso=zzz&lang=eng'); // unknown -> not-found page
+  assert.equal(go('iso=ngu&rod=00000&var=', 'eng'), '301 /language/ngu/?lang=eng'); // the old site's own link form
   assert.equal(go('iso=acr&var=a', 'eng'), '301 /language/acr-00000-a/?lang=eng'); // var implies rod 00000
   assert.equal(go('name=tzo&ROD_Code=02641', 'spa'), '301 /language/tzo-02641/?lang=spa'); // verbose synonyms
 });
@@ -45,13 +43,37 @@ test('iso edge cases', () => {
 test('idx and country deep links', () => {
   assert.equal(go('idx=533', 'eng'), '301 /language/tzo-02641/?lang=eng');
   assert.equal(go('ISO_ROD_index=113'), '301 /language/ngu/');
-  assert.equal(go('idx=99999', 'eng'), '302 /language/?idx=99999&lang=eng');
   assert.equal(go('sortby=country&name=mx', 'eng'), '301 /country/MX/?lang=eng');
   assert.equal(go('sortby=country&name=all', 'fra'), '301 /browse/?lang=fra');
 });
 
-test('handler returns a redirect response', () => {
-  const res = makeHandler(map, 'eng')({
+// The old site answered these with "The ISO language code is not found"; a redirect to the
+// home page or a nearby language would hide the broken link.
+test('links to a language the catalog does not have are 404, not a redirect', () => {
+  assert.equal(go('iso=zzz', 'eng'), '404'); // unknown ISO
+  assert.equal(go('iso=ngu&rod=99999', 'eng'), '404'); // ROD that does not exist for a known ISO
+  assert.equal(go('iso=tzo&rod=2641', 'eng'), '404'); // unpadded ROD never worked
+  assert.equal(go('iso=tzo&rod=00000', 'eng'), '302 /language/?iso=tzo&lang=eng'); // default ROD = bare ISO
+  assert.equal(go('iso=acr&var=z', 'eng'), '404'); // unknown variant
+  assert.equal(go('idx=99999', 'eng'), '404');
+  assert.equal(go('idx=abc'), '404');
+});
+
+test('handler serves the 404 page with a 404 status', async () => {
+  const asked = [];
+  const env = { ASSETS: { fetch: async (u) => (asked.push(String(u)), new Response('<h2>Page not found</h2>')) } };
+  const res = await makeHandler(map, 'eng')({
+    request: new Request('https://scriptureearth.org/00i-Scripture_Index.php?iso=zzz'),
+    env,
+  });
+  assert.equal(res.status, 404);
+  assert.equal(res.headers.get('Location'), null);
+  assert.deepEqual(asked, ['https://scriptureearth.org/legacy/not-found/']);
+  assert.match(await res.text(), /Page not found/);
+});
+
+test('handler returns a redirect response', async () => {
+  const res = await makeHandler(map, 'eng')({
     request: new Request('https://scriptureearth.org/00i-Scripture_Index.php?iso=tzo&rod=02641'),
   });
   assert.equal(res.status, 301);

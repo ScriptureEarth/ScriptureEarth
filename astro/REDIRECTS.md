@@ -30,9 +30,15 @@ alias files just 302'd to `00<loc>.php` with the same query string, so both get 
 
 The resolver (`functions-lib/legacy-redirect.js`, bound to the map by `functions-lib/route.js`) maps:
 - `?sortby=country&name=<CC>` → `/country/<CC>/` (301); `name=all`/empty → `/browse/` (301).  *(L7)*
-- `?idx=` / `?ISO_ROD_index=<n>` → `/language/<slug>/` (301) via the bundled idx→slug map; unknown idx → `/language/?idx=<n>` (302, not-found page).  *(L6 idx-form)*
-- `?iso=`/`?name=` (+ `rod`/`ROD_Code`, `var`/`Variant_Code`) → `/language/<slug>/` (301) when that slug exists; bare `?iso=` with one entry → its slug (301); an ISO shared by several entries → `/language/?iso=<iso>` (302, chooser page); unknown → same page, not-found.  *(L3/L6 iso-form)*
-- no recognized query → `/` (301).
+- `?idx=` / `?ISO_ROD_index=<n>` → `/language/<slug>/` (301) via the bundled idx→slug map; unknown idx → **404**.  *(L6 idx-form)*
+- `?iso=`/`?name=` (+ `rod`/`ROD_Code`, `var`/`Variant_Code`) → `/language/<slug>/` (301) when that slug exists, **404** when a ROD/variant is given that the ISO doesn't have (default ROD `00000` counts as no ROD); bare `?iso=` with one entry → its slug (301); an ISO shared by several entries → `/language/?iso=<iso>` (302, chooser page); unknown ISO → **404**.  *(L3/L6 iso-form)*
+- no recognized query → `/` (301). That URL was the old home page, and it still is with unrelated
+  params (`?fbclid=`, `?utm_*=`), so this is not a fallback for broken links.
+
+**Broken links are 404, never a redirect.** A link naming a language the catalog doesn't have used to
+get "The ISO language code is not found" on the old site. Here the Function answers it in place with
+the site's 404 page (`src/pages/404.astro`) and a 404 status, so it shows up in logs and to crawlers
+instead of being hidden behind the home page or a neighbouring language.
 
 **Interface language:** a locale entry point appends `lang=<loc>` to whatever target it resolves, so
 `/00i-Scripture_Index.php?iso=tzo&rod=02641` → `/language/tzo-02641/?lang=eng` and a plain
@@ -85,7 +91,7 @@ Pages); the Function answers every hit on those paths itself, so the static `.ph
    Functions invocations. A new legacy entry point needs a `_redirects` row *and* a route file.
 6. **`?st=<iso>`** ("start at", L4) is not mapped (it lands on the locale home), and niche `.php`
    (`iso_direct.php`) have no rule at all. An unpadded ROD (`rod=2641`) never
-   worked on the old site either; it falls back to bare-ISO resolution. Add a final `/*.php / 302` safety net only if
+   worked on the old site either; it is a 404. Add a final `/*.php / 302` safety net only if
    server-log sweep shows meaningful traffic (§5.6).
    The legacy site-menu pages are mapped path-only: `00<loc>-CTPHC.php` (any `?I=` section) → `/about/`,
    `/Feedback/Feedback.php` → `/contact/`, `/promotionMaterials/promotion.php` → `/promotion/`. Not the rest of
