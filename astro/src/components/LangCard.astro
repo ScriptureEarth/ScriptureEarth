@@ -6,7 +6,7 @@ const { d } = Astro.props;
 const rights = Object.keys(d.availability).filter((k) => d.availability[k]).join(' ');
 ---
 <a class="lang" href={`/language/${d.identity.slug}/`} data-r={rights}>
-  <div class="top"><span class="code">{d.identity.iso}</span><span class="nm" data-i18n-name={String(d.idx)}>{d.names.localized.eng}</span></div>
+  <div class="top"><span class="code">{d.identity.code ?? d.identity.iso}</span><span class="nm" data-i18n-name={String(d.idx)}>{d.names.localized.eng}</span></div>
   {d.identity.variant_name && <div class="variant">{d.identity.variant_name}</div>}
   {d.countries.length > 0 && <div class="where">{d.countries.map((c: any, i: number) => (<>{i > 0 && ', '}<span data-i18n-country={c.code}>{c.name_eng}</span></>))}</div>}
   <div class="pills">{PILLS.filter((p) => d.availability[p.key]).map((p) => (

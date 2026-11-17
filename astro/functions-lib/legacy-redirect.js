@@ -50,12 +50,14 @@ export function resolveLegacy(q, map, lang = null) {
   // L6/L3 — iso-keyed deep links (canonical ?iso=&rod=&var= and verbose synonyms).
   const iso = (q.get('iso') || q.get('name') || '').trim().toLowerCase();
   if (iso) {
-    const rod = (q.get('rod') || q.get('ROD_Code') || '').trim();
+    const rod = (q.get('rod') || q.get('ROD_Code') || '').trim().toLowerCase(); // slugs are lowercase
     const varc = (q.get('var') || q.get('Variant_Code') || '').trim().toLowerCase();
     // Same slug rule as makeSlug() in scripts/extract.mjs: the default ROD 00000 is left
     // out unless a variant follows it.
     if (varc || (rod && rod !== '00000')) {
-      const slug = varc ? `${iso}-${rod || '00000'}-${varc}` : `${iso}-${rod}`;
+      // Deaf languages with the placeholder ISO qqq live at sgn-<rod> (see extract.mjs).
+      const base = iso === 'qqq' ? 'sgn' : iso;
+      const slug = varc ? `${base}-${rod || '00000'}-${varc}` : `${base}-${rod}`;
       return isSlug(map, slug) ? to(`/language/${slug}/`, 301) : NOT_FOUND;
     }
     if (rod && isSlug(map, iso)) return to(`/language/${iso}/`, 301); // explicit default ROD

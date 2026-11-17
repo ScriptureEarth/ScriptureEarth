@@ -522,7 +522,12 @@ for (const e of entries) {
   }
   const alt = [...new Set(vals(r.alternate_language_names))]; // the DB repeats some names
   const countries = countriesOf(r);
-  const slug = makeSlug(iso, r.rod, r.var_code, idx);
+  // Deaf languages without an ISO 639-3 code carry the placeholder ISO "qqq"; show their
+  // ROD code instead, as the Sign Language Indicator (SLI), e.g. "AO84" (AO = country).
+  // Their slug swaps qqq for sgn (ISO 639-2's sign-language group): /language/sgn-ao84/.
+  const sli = iso.toLowerCase() === 'qqq' && s(r.rod) ? s(r.rod) : '';
+  const code = sli || iso;
+  const slug = makeSlug(sli ? 'sgn' : iso, r.rod, r.var_code, idx);
 
   languages.push({
     idx,
@@ -530,6 +535,8 @@ for (const e of entries) {
       iso,
       slug,
       rod: r.rod,
+      code,
+      code_kind: sli ? 'sli' : 'iso',
       variant_code: r.var_code || '',
       variant_name: r.var_name || '',
       iso_query: `iso=${iso}`,
@@ -544,7 +551,7 @@ for (const e of entries) {
   search.push({
     idx,
     slug,
-    code: iso,
+    code,
     nm: name,
     vn: r.var_name || '',
     auto: null,

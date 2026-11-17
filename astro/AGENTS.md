@@ -23,7 +23,7 @@ content/countries.json + scripts/data/ne_110m_countries.geojson + map-points.jso
 
 **Source of truth = the consolidated JSON dump** (`data/scripture.json`), one pre-joined object from the API (see `scripts/README-dump.md`). Top-level keys are row ordinals; the real language key is `relationships.idx`. `extract.mjs` (the projector) builds asset URLs from basenames as `scriptureearth.org/data/<iso>/<PDF|audio|video>/<file>`. The dump's shape has changed several times; the projector tolerates every shape seen so far (`linkRows()`, `playlistItems()`), and `SE_STRICT=1` audits a new dump.
 
-**Build:** `getCollection('languages'|'countries')` → English HTML. Language `id` = `String(idx)`; country `id` = `code`. Internal key is `idx`; vanity slug is `iso[-rod[-var]]` (ISO is not unique; dump may suffix `-{idx}`).
+**Build:** `getCollection('languages'|'countries')` → English HTML. Language `id` = `String(idx)`; country `id` = `code`. Internal key is `idx`; vanity slug is `iso[-rod[-var]]`, lowercase (ISO is not unique; dump may suffix `-{idx}`). Deaf languages with the placeholder ISO `qqq` show their ROD code as the SLI (Sign Language Indicator, `identity.code`) and use slug `sgn-<rod>`.
 
 **Client search (home only):** lazy MiniSearch on first query, 120ms debounce, fetch `/search-index.txt` (columnar `\x1f` / tab / newline). Decode looks wrong (`length < 100`) → `/search-index.fallback.txt`. Prefix + fuzzy 0.2 + AND, cap 300. Then `window.__seApplyI18n(results)`. Header form `GET /?q=` is **not** read; only `#q` on the hero form searches.
 

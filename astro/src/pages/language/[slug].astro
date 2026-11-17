@@ -22,7 +22,9 @@ const legacyUrl = `https://www.scriptureearth.org/00eng.php?idx=${d.idx}`;
       <div>
         <div class="rec-head"><h1 data-i18n-name={String(d.idx)}>{name}</h1>{d.identity.variant_name && <span class="muted">{d.identity.variant_name}</span>}</div>
         <div class="rec-meta">
-          <span class="chip"><span data-i18n="meta.iso">ISO</span> <a class="iso-link" href={`https://www.ethnologue.com/language/${d.identity.iso}/`} target="_blank" rel="noopener noreferrer" title="Ethnologue"><code>{d.identity.iso}</code></a></span>
+          {d.identity.code_kind === 'sli'
+            ? <span class="chip" title="Sign Language Indicator">SLI <code>{d.identity.code}</code></span>
+            : <span class="chip"><span data-i18n="meta.iso">ISO</span> <a class="iso-link" href={`https://www.ethnologue.com/language/${d.identity.iso}/`} target="_blank" rel="noopener noreferrer" title="Ethnologue"><code>{d.identity.iso}</code></a></span>}
           {d.countries.length > 0 && <span class="chip chip-text">{d.countries.map((c: any, i: number) => (<>{i > 0 && ' · '}<span data-i18n-country={c.code}>{c.name_eng}</span></>))}</span>}
         </div>
         {d.names.alt_names.length > 0 && <p class="alt-names"><span data-i18n="meta.also">Also:</span> {d.names.alt_names.join(', ')}</p>}

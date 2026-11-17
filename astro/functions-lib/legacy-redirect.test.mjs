@@ -6,9 +6,9 @@ import { makeHandler, resolveLegacy } from './legacy-redirect.js';
 
 // Shape of content/lang-map.json: ngu has one entry, tzo is shared by five.
 const map = {
-  idx: { 113: 'ngu', 178: 'tzo-00060', 181: 'tzo-01204', 182: 'tzo-02443', 533: 'tzo-02641', 220: 'tzo-02681', 9: 'acr-00000-a' },
+  idx: { 113: 'ngu', 178: 'tzo-00060', 181: 'tzo-01204', 182: 'tzo-02443', 533: 'tzo-02641', 220: 'tzo-02681', 9: 'acr-00000-a', 77: 'aed-ar74', 4325: 'sgn-ao84', 4316: 'sgn-az47' },
   iso: { ngu: 'ngu' },
-  multi: ['acr', 'tzo'],
+  multi: ['acr', 'qqq', 'tzo'],
 };
 const go = (query, lang) => {
   const r = resolveLegacy(new URLSearchParams(query), map, lang);
@@ -38,6 +38,17 @@ test('iso edge cases', () => {
   assert.equal(go('iso=ngu&rod=00000&var=', 'eng'), '301 /language/ngu/?lang=eng'); // the old site's own link form
   assert.equal(go('iso=acr&var=a', 'eng'), '301 /language/acr-00000-a/?lang=eng'); // var implies rod 00000
   assert.equal(go('name=tzo&ROD_Code=02641', 'spa'), '301 /language/tzo-02641/?lang=spa'); // verbose synonyms
+});
+
+test('Deaf languages with ISO qqq live at sgn-<rod>', () => {
+  assert.equal(go('iso=qqq&rod=AO84', 'eng'), '301 /language/sgn-ao84/?lang=eng');
+  assert.equal(go('iso=qqq&rod=ao84'), '301 /language/sgn-ao84/');
+  assert.equal(go('iso=qqq&rod=SSSL', 'eng'), '404'); // retired ROD
+  assert.equal(go('iso=qqq'), '302 /language/?iso=qqq');
+});
+
+test('rod matches case-insensitively', () => {
+  assert.equal(go('iso=aed&rod=AR74'), '301 /language/aed-ar74/');
 });
 
 test('idx and country deep links', () => {

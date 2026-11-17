@@ -7,7 +7,9 @@ Implements the resolved URL-scheme decision (`issues/08-url-scheme-redirect-map.
 - **`functions/*.php.js`** — one Function route per legacy `.php` entry point (17), for query-string deep links `_redirects` can't read. Shared logic: `functions-lib/legacy-redirect.js`.
 
 Assumes **slug strategy (B)**: the language-detail slug *is* the legacy vanity string
-`<iso>[-<rod>][-<var>]`, so `/language/kek/`, `/language/abt-3053/`, `/language/acr-00000-a/`.
+`<iso>[-<rod>][-<var>]`, so `/language/kek/`, `/language/abt-3053/`, `/language/acr-00000-a/`. Exception: Deaf languages with the placeholder ISO `qqq` use `sgn-<rod>`
+(`/language/sgn-ao84/`); `?iso=qqq&rod=` resolves there. The legacy `/qqq-<rod>` vanity rows
+all name retired RODs, so they 404 like any other missing language.
 This is what collapses ~3,779 legacy rows to 3 rules and removes the iso→idx lookup entirely.
 
 ## What each rule group does
@@ -18,7 +20,7 @@ This is what collapses ~3,779 legacy rows to 3 rules and removes the iso→idx l
 | L1 HTTP→HTTPS / www→apex | 0 | **Not in this file** — handled by CF "Always Use HTTPS" + one www→apex Redirect Rule (see below). |
 | Precedence guards | 10 | Reserved dirs (`/assets/ /browse/ /country/ /language/ /i18n/`) + the 5 known top-level dotted assets. `200` = serve-in-place, stops matching, so the `/:iso` catch-all can't shadow them. |
 | L3/L4/L5 homepages + aliases | 17 | 10 `00<loc>.php` + 6 localized alias index files → `/?lang=<loc>` (301); `/index.php` → `/` (302, provisional). |
-| L2 vanity → detail | 3 | `/:iso-:rod-:var`, `/:iso-:rod`, `/:iso` → `/language/<same>/` (301). Most-specific first. Replaces all 3,779 legacy `Redirect 301` lines 1:1, no lookup. |
+| L2 vanity → detail | 3 | `/:iso-:rod-:var`, `/:iso-:rod`, `/:iso` → `/language/<same>/` (301). Most-specific first. Replaces the 3,779 legacy `Redirect 301` lines 1:1, no lookup, except the 5 with an uppercase ROD (`/ncj-C`, `/tuk-Iran`…): Pages matches paths case-sensitively and slugs are lowercase, so each has its own row above these. |
 
 ### `functions/*.php.js` (query-string deep links)
 Pages routes a file named `functions/<name>.php.js` to `/<name>.php` only. There is one per legacy entry
