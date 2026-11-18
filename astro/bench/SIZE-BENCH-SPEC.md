@@ -313,7 +313,7 @@ comment step 403s. If external-fork PRs must be supported, switch to the
 PRs, the above is sufficient. (This is a GitHub platform limit, not action-specific.)
 
 The build step above is what shipped as `.github/actions/build-site` (fetch JSON dump →
-`extract.mjs` → `astro build`), shared by `deploy.yml`, `preview.yml` and `size-benchmark.yml`.
+`extract.mjs` → `astro build`), shared by `deploy.yml` and `preview.yml` (the size benchmark now runs inside `preview.yml`, reusing its build).
 
 ---
 

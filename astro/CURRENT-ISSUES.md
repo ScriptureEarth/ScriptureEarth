@@ -103,14 +103,6 @@ re-verify against a fresh dump if resources go missing again.
 
 ## CI
 
-### 6. preview and size-benchmark each rebuild the site on a PR
-`preview.yml` and `size-benchmark.yml` both run the shared `.github/actions/build-site`
-(fetch + extract + build, ~1.5 min) in parallel on every PR that touches `astro/**`. They
-could be consolidated (preview uploads `dist/assets/sizes.json` as an artifact; a
-`workflow_run`-triggered size job consumes it), but preview self-gates without secrets and
-size-benchmark should still run when it does, so it can't fully piggyback. Deferred; the
-duplicated run is cheap.
-
 ### 7. Cloudflare Pages project is still named `se-proto-en`
 Pages projects can't be renamed. Moving to a better name means creating a new project,
 deploying once, and moving the custom domain. The name is referenced in `package.json`

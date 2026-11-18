@@ -1,19 +1,26 @@
 name: Preview
 
-# Cloudflare Pages *preview* deployment for pull requests targeting main that touch
-# the site. Same from-scratch build as deploy.yml, but deployed with
-# --branch <pr-branch> so Cloudflare mints a per-branch preview URL, which is
-# posted back as a sticky PR comment.
+# One build per PR to main that touches the site, feeding two consumers:
+#   1. Size benchmark (astro/bench/SIZE-BENCH-SPEC.md): sizes.json diffed against the
+#      one deployed to production, sticky PR comment, fails on a budget breach.
+#   2. Cloudflare Pages *preview* deployment with --branch <pr-branch>, so Cloudflare
+#      mints a per-branch preview URL, posted back as a sticky PR comment.
+# Both share the single build so a PR fetches the ScriptureEarth dump once.
 #
-# The job self-gates: until every prerequisite is configured it skips (green) with
-# a notice, so PRs are not blocked by a red check. Required configuration:
-#   secrets.SE_KEY                 API key for the dump endpoint
+# Configuration:
+#   secrets.SE_KEY                 API key for the dump endpoint. Absent → the whole
+#                                  build skips (green) with a notice.
 #   secrets.CLOUDFLARE_API_TOKEN   token with Account · Cloudflare Pages · Edit
-#   secrets.CLOUDFLARE_ACCOUNT_ID  Cloudflare account id
+#   secrets.CLOUDFLARE_ACCOUNT_ID  Cloudflare account id. Either absent → the size
+#                                  benchmark still runs; only the preview deploy skips.
 #   vars.SE_BASE / vars.SE_DUMP_PATH  (optional) endpoint overrides
+#   vars.SIZE_BENCH_BASELINE_URL      (optional) baseline sizes.json URL
+#                                     (default: prod origin /assets/sizes.json)
 #
 # Fork-PR caveat: on a pull_request from a fork, secrets are unavailable, so the
 # gate skips. Same-repo branches work as-is.
+#
+# workflow_dispatch runs the build + size benchmark only (no preview, no comments).
 
 on:
   pull_request:
@@ -22,13 +29,14 @@ on:
       - 'astro/**'
       - '.github/workflows/preview.yml'
       - '.github/actions/**'
+  workflow_dispatch:
 
 permissions:
   contents: read
   pull-requests: write
 
 concurrency:
-  group: preview-${{ github.event.pull_request.number }}
+  group: preview-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -57,22 +65,32 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       ready: ${{ steps.check.outputs.ready }}
+      deploy: ${{ steps.check.outputs.deploy }}
     steps:
-      - name: Check preview prerequisites
+      - name: Check prerequisites
         id: check
         env:
           SE_KEY: ${{ secrets.SE_KEY }}
           CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          EVENT: ${{ github.event_name }}
         run: |
-          if [ -n "$SE_KEY" ] && [ -n "$CF_TOKEN" ] && [ -n "$CF_ACCOUNT" ]; then
+          if [ -n "$SE_KEY" ]; then
             echo "ready=true" >> "$GITHUB_OUTPUT"
           else
             echo "ready=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::Preview skipped — set secrets.SE_KEY, secrets.CLOUDFLARE_API_TOKEN and secrets.CLOUDFLARE_ACCOUNT_ID to enable Cloudflare PR previews."
+            echo "::notice::Build skipped — set secrets.SE_KEY to enable the size benchmark and Cloudflare PR previews."
+          fi
+          if [ "$EVENT" = "pull_request" ] && [ -n "$CF_TOKEN" ] && [ -n "$CF_ACCOUNT" ]; then
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+            if [ "$EVENT" = "pull_request" ]; then
+              echo "::notice::Preview deploy skipped — set secrets.CLOUDFLARE_API_TOKEN and secrets.CLOUDFLARE_ACCOUNT_ID to enable Cloudflare PR previews."
+            fi
           fi
 
-  preview:
+  build:
     needs: gate
     if: needs.gate.outputs.ready == 'true'
     runs-on: ubuntu-latest
@@ -94,12 +112,38 @@ jobs:
         working-directory: astro
         run: node scripts/dump_fields.mjs
 
-      - name: Precompress dist
+      # --- Size benchmark -------------------------------------------------------
+      # build_sizes.mjs sizes the PRE-brotli dist/, so it runs before precompress.
+      - name: Produce sizes.json
         working-directory: astro
-        run: pnpm run predeploy
+        run: node scripts/build_sizes.mjs
+
+      # Diff vs the prod baseline; render the markdown report + verdict. With --verdict
+      # the script exits 0 on a breach so the comment below still posts; the last step
+      # enforces. A missing/404 baseline is report-only (spec §4).
+      - name: Compare against baseline
+        working-directory: astro
+        run: node scripts/check_sizes.mjs --report size-report.md --verdict size-verdict.txt
+        env:
+          SIZE_BENCH_BASELINE_URL: ${{ vars.SIZE_BENCH_BASELINE_URL }}
+
+      - name: Post size comment
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v3
+        with:
+          header: size-benchmark
+          path: astro/size-report.md
+
+      # --- Preview deploy ---------------------------------------------------------
+      # Same as `pnpm run predeploy` minus build_sizes.mjs, which already ran above.
+      - name: Precompress dist
+        if: needs.gate.outputs.deploy == 'true'
+        working-directory: astro
+        run: node scripts/precompress_dist.mjs
 
       - name: Deploy preview to Cloudflare Pages
         id: deploy
+        if: needs.gate.outputs.deploy == 'true'
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -109,7 +153,7 @@ jobs:
           command: pages deploy dist --project-name=se-proto-en --branch=${{ github.head_ref }}
 
       - name: Comment preview URL
-        if: steps.deploy.outputs.deployment-url != ''
+        if: needs.gate.outputs.deploy == 'true' && steps.deploy.outputs.deployment-url != ''
         uses: actions/github-script@v9
         env:
           PREVIEW_URL: ${{ steps.deploy.outputs.deployment-url }}
@@ -117,9 +161,10 @@ jobs:
         with:
           script: |
             const marker = '<!-- cf-preview -->';
-            const lines = [marker, '### ⚡ Cloudflare preview', '', `**Latest:** ${process.env.PREVIEW_URL}`];
-            if (process.env.ALIAS_URL) lines.push(`**Branch alias:** ${process.env.ALIAS_URL}`);
-            lines.push('', `_Updated for ${context.sha.slice(0, 7)} · redeploys on each push._`);
+            // The branch alias always serves the newest deploy. Fall back to the
+            // per-commit URL only if Cloudflare didn't return an alias.
+            const url = process.env.ALIAS_URL || process.env.PREVIEW_URL;
+            const lines = [marker, '### ⚡ Cloudflare preview', '', url, '', '_Redeploys on each push._'];
             const body = lines.join('\n');
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
@@ -136,3 +181,12 @@ jobs:
                 owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, body,
               });
             }
+
+      # Last, so the size comment and the preview are both out before a breach fails the job.
+      - name: Enforce size budget
+        working-directory: astro
+        run: |
+          if [ "$(cat size-verdict.txt)" = "fail" ]; then
+            echo "::error::Cold-load size exceeds the fail-band budget"
+            exit 1
+          fi

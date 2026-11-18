@@ -83,10 +83,9 @@ pnpm run deploy:dump     # extract + build + precompress + wrangler pages deploy
 pnpm run deploy          # current dist/ only (still runs predeploy)
 ```
 
-CI: three workflows share the composite action `.github/actions/build-site` (pnpm install → `fetch:dump` → `build:dump`).
+CI: two workflows share the composite action `.github/actions/build-site` (pnpm install → `fetch:dump` → `build:dump`).
 - `deploy.yml` — push to `main`: build, then publish to Cloudflare Pages **only if** `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` secrets exist (else build-only).
-- `preview.yml` — PRs to `main` touching `astro/**`: per-branch Pages preview + PR comment; self-gates on secrets. Also runs `dump_fields.mjs` (unused dump fields → job summary + warnings) and its tests.
-- `size-benchmark.yml` — PRs to `main` touching `astro/**`: size regression gate + sticky comment.
+- `preview.yml` — PRs to `main` touching `astro/**`: ONE build feeding the size regression gate (sticky comment) and the per-branch Pages preview (PR comment); self-gates on secrets (no `SE_KEY` → skip; no Cloudflare secrets → size gate only). Also runs `dump_fields.mjs` (unused dump fields → job summary + warnings) and its tests. Keep it to one `build-site` call per run: each one hits the SE dump API.
 
 `secrets.SE_KEY` is all that's required for a build — the endpoint (`/api/db_dump.php` on `www.scriptureearth.org`, `v=1`) is the built-in default; `vars.SE_DUMP_PATH`/`vars.SE_BASE`/`vars.SE_DUMP_URL` are optional overrides. See `deploy.md` and `scripts/README-dump.md`. Key is env-only (`SE_KEY`); never cached.
 

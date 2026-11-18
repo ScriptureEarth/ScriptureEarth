@@ -14,10 +14,9 @@ is always run from this `astro/` dir so it picks up `functions/` alongside `dist
 |---|---|---|
 | push to `main` | `.github/workflows/deploy.yml` | fetch dump → build → `pnpm run deploy` → **production** |
 | manual | `.github/workflows/deploy.yml` (Run workflow) | same |
-| PR to `main` touching `astro/**` | `.github/workflows/preview.yml` | same build, `wrangler pages deploy --branch <pr-branch>` → per-branch **preview URL** posted as a PR comment |
-| PR to `main` touching `astro/**` | `.github/workflows/size-benchmark.yml` | build, diff `dist/assets/sizes.json` against production, sticky comment, fail on budget breach |
+| PR to `main` touching `astro/**` | `.github/workflows/preview.yml` | one build, then: diff `dist/assets/sizes.json` against production (sticky comment, fail on budget breach) and `wrangler pages deploy --branch <pr-branch>` → per-branch **preview URL** posted as a PR comment |
 
-All three share `.github/actions/build-site` (pnpm install → `fetch:dump` → `build:dump`).
+Each run fetches the dump once. Both share `.github/actions/build-site` (pnpm install → `fetch:dump` → `build:dump`).
 
 Repository configuration (Settings → Secrets and variables → Actions):
 
@@ -30,7 +29,8 @@ Repository configuration (Settings → Secrets and variables → Actions):
 | `SIZE_BENCH_BASELINE_URL` | variable | no | override the size-benchmark baseline URL |
 
 Without the two Cloudflare secrets, `deploy.yml` still builds (and fails on data problems) but skips
-the publish step; `preview.yml` skips entirely with a notice.
+the publish step; `preview.yml` still runs the size benchmark but skips the preview deploy.
+Without `SE_KEY`, `preview.yml` skips the build entirely with a notice.
 
 ## Manual
 
