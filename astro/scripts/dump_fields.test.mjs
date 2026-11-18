@@ -26,7 +26,7 @@ test('reports a new link type and a new column on a known group', () => {
       links_media: {
         YouVersion: { 0: { url: 'https://bible.com/x', title: 'NT' } },
         Wycliffe_Studio: { 0: { url: 'https://example.org/s', title: 'Studio' } },
-        eBible: { 0: { url: 'https://ebible.org/x', title: 'NT', description: 'New Testament' } },
+        eBible: { 0: { url: 'https://ebible.org/x', title: 'NT', copyright: 'CC BY-SA' } },
       },
     }),
     2: entry({ links_media: { YouVersion: { 0: { url: 'https://bible.com/y' } } } }),
@@ -35,7 +35,7 @@ test('reports a new link type and a new column on a known group', () => {
   assert.deepEqual(paths, [
     'relationships.links_media.Wycliffe_Studio.#.title',
     'relationships.links_media.Wycliffe_Studio.#.url',
-    'relationships.links_media.eBible.#.description',
+    'relationships.links_media.eBible.#.copyright',
   ]);
   assert.equal(r.unclassified[1].withData, 1);
   assert.equal(r.unclassified[1].sample, 'https://example.org/s');

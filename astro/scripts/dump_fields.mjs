@@ -73,7 +73,7 @@ export const FIELDS = [
   ignored('download copies', [`${R}.se_download_media.text.*.#`, `${R}.se_download_media.audio.*.#`], 'duplicate of se_media.text/audio'),
   used('iso', ['attributes.iso']),
   used('identity', [`${R}.idx`, `${R}.rod`, `${R}.var_code`, `${R}.var_name`]),
-  used('names', [`${R}.language_name.English`, ...['Spanish', 'Portuguese', 'French', 'Dutch', 'German', 'Chinese', 'Korean', 'Russian', 'Arabic'].map((l) => `${R}.language_name.${l}`)]),
+  used('names', [`${R}.language_name.English`, `${R}.language_name["autonym(s)"]`, ...['Spanish', 'Portuguese', 'French', 'Dutch', 'German', 'Chinese', 'Korean', 'Russian', 'Arabic'].map((l) => `${R}.language_name.${l}`)]),
   used('alt names', [`${R}.alternate_language_names.#`]),
   used('countries', [`${R}.countries_codes.#`, `${R}.countries_names.#`]),
 
@@ -83,6 +83,9 @@ export const FIELDS = [
   used('audio playlists', playlist(`${R}.se_media.playlist_audio`)),
   used('video playlists', playlist(`${R}.se_media.playlist_video`)),
   used('download playlists', playlist(`${R}.se_download_media.playlist_video`)),
+  // Verified 2026-11-16: identical to se_media.playlist_audio in every entry, and every audio
+  // playlist already gets a "download whole playlist" zip (audioZipUrl in extract.mjs).
+  ignored('audio download playlists', playlist(`${R}.se_download_media.playlist_audio`), 'duplicate of se_media.playlist_audio'),
   used('other text', linkGroup(`${R}.se_media.other_text`, ['title', 'summary'])),
   used('other audio', linkGroup(`${R}.se_media.other_audio`, ['title', 'summary'])),
   used('other video', linkGroup(`${R}.se_download_media.other_video_download`, ['title', 'summary'])),
@@ -95,8 +98,11 @@ export const FIELDS = [
   used('Bible.is', linkGroup(`${R}.links_media["Bible.is"]`, ['title', 'media_type'])),
   used('Bible.is Gospel Film', linkGroup(`${R}.links_media["Bible.is_Gospel_Film"]`, ['title'])),
   used('YouVersion', linkGroup(`${R}.links_media.YouVersion`, ['title'])),
-  used('eBible', linkGroup(`${R}.links_media.eBible`, ['title'])),
+  used('eBible', linkGroup(`${R}.links_media.eBible`, ['title', 'description'])),
+  used('BibleShow.net', linkGroup(`${R}.links_media["BibleShow.net"]`, ['publication', 'title'])),
   used('GRN', linkGroup(`${R}.links_media.GRN`, ['title'])),
+  ignored('GRN label', [`${R}.links_media.GRN.#.grn`], 'always "Global Recordings Network", already the source line'),
+  ignored('AppleStore label', [`${R}.links_media.AppleStore.#.apple_store`], 'free-text store name ("iTunes", "Apple app store", …); the row already says App Store'),
   used('Kalaam', linkGroup(`${R}.links_media.Kalaam_websites`, ['title', 'organization'])),
   used('other websites', linkGroup(`${R}.links_media.other_websites`, ['title', 'organization'])),
   used('contact', linkGroup(`${R}.links_media.email`, ['title'])),
@@ -110,6 +116,7 @@ export const FIELDS = [
   used('iPhone', linkGroup(`${R}.se_iPhone`, ['title'])),
   used('GoBible', linkGroup(`${R}.se_other_software.GoBible`, ['title'])),
   used('MySword', linkGroup(`${R}.se_other_software.MySword`, ['title'])),
+  ignored('theWord description', [`${R}.se_other_software.theWord.#.description`], 'generic ("Download the New Testament"); the label is built from testament + alphabet'),
   used('theWord', ['filename', 'url', 'testament', 'alphabet'].map((f) => `${R}.se_other_software.theWord.#.${f}`)),
 
   used('maps', [`${R}.maps.#`]),

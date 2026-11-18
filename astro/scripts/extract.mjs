@@ -229,6 +229,8 @@ function res(group, kind, fmt, name, source, url, external, meta = {}) {
   if (cleaned.missing) { out.missing = cleaned.missing; delete cleaned.missing; }
   else if (!url && !cleaned.books) out.missing = cleaned.playlistFile ? 'playlist' : 'link';
   if (cleaned.zipMissing) { out.zipMissing = true; delete cleaned.zipMissing; }
+  // A longer description shown as its own line under the name (e.g. eBible's summary).
+  if (cleaned.desc) { out.desc = cleaned.desc; delete cleaned.desc; }
   return out;
 }
 
@@ -474,7 +476,12 @@ for (const e of entries) {
     const title = t(String(l.title || '').replace(/^\s*(Bible\.com\s*\(YouVersion\)|YouVersion(\.com)?)\s*/i, ''));
     R.read.push(res('read', 'web', 'Web', title ? L(title) : { name: 'YouVersion' }, 'Bible.com (YouVersion)', url(l), ext(url(l))));
   }
-  for (const l of linkRows(lm.eBible)) R.read.push(res('read', 'web', 'Web', L(l.title, 'res.ebible'), 'eBible.org', url(l), ext(url(l))));
+  // eBible: title is usually the vernacular publication name; description is an English
+  // summary ("The New Testament in the … language"), shown as a line under it.
+  for (const l of linkRows(lm.eBible)) {
+    const nm = L(l.title, 'res.ebible'), desc = t(l.description);
+    R.read.push(res('read', 'web', 'Web', nm, 'eBible.org', url(l), ext(url(l)), { desc: desc && desc !== nm.name ? desc : null }));
+  }
   for (const w of linkRows(r.watch)) {
     const jf = String(w.JesusFilm) === '1', yt = String(w.YouTube) === '1';
     const nm = L(w.watch_what, jf ? 'res.jesusFilm' : 'res.video');
@@ -499,6 +506,11 @@ for (const e of entries) {
   const sw = r.se_other_software || {};
   for (const l of linkRows(sw.GoBible)) R.app.push(res('app', 'download', 'Java', L(l.title, 'res.gobible'), 'GoBible', asset(iso, 'study', url(l)), false));
   for (const l of linkRows(sw.MySword)) R.app.push(res('app', 'download', 'MySword', L(l.title, 'res.mysword'), 'MySword', asset(iso, 'study', url(l)), false));
+  // BibleShow.net: a Windows Bible program per publication ({ publication, url } → get.php?file=….exe).
+  for (const l of linkRows(lm['BibleShow.net'])) {
+    const nm = L(l.publication || l.title);
+    R.app.push(res('app', 'download', 'Windows', nm.name ? nm : { name: 'BibleShow' }, 'BibleShow.net', url(l), ext(url(l))));
+  }
 
   // buy: the buy table, then links rows flagged buy (e.g. multilanguagemedia.org).
   for (const b of linkRows(r.buy)) R.buy.push(res('buy', 'buy', 'Buy', L(t(b.title) || t(b.testament) || t(b.buy_what), 'res.printed'), s(b.organization) || en('src.pod'), url(b), ext(url(b))));
@@ -547,6 +559,9 @@ for (const e of entries) {
     if (typeof v === 'string' && v.trim()) localizedNames.push(v.trim());
   }
   const alt = [...new Set(vals(r.alternate_language_names))]; // the DB repeats some names
+  // The language's own name(s), as curated in the SE database (may list several, with romanizations).
+  const autonym = t(ln[AUTONYM_KEY]) || null;
+  if (autonym && autonym.toLowerCase() !== name.toLowerCase()) localizedNames.push(autonym);
   const countries = countriesOf(r);
   // Deaf languages without an ISO 639-3 code carry the placeholder ISO "qqq"; show their
   // ROD code instead, as the Sign Language Indicator (SLI), e.g. "AO84" (AO = country).
@@ -568,7 +583,7 @@ for (const e of entries) {
       iso_query: `iso=${iso}`,
       idx_query: `idx=${idx}`,
     },
-    names: { default_locale: 'eng', localized: { eng: name }, autonym: null, alt_names: alt },
+    names: { default_locale: 'eng', localized: { eng: name }, autonym, alt_names: alt },
     countries,
     availability: avail,
     resources: R,
@@ -649,6 +664,8 @@ function auditData(ents, langs) {
     ['links.YouVersion', (r) => linkRows(r.links_media?.YouVersion).length, (d) => some(d.resources.read, (x) => x.source === 'Bible.com (YouVersion)')],
     ['links.eBible',     (r) => linkRows(r.links_media?.eBible).length, (d) => some(d.resources.read, (x) => x.source === 'eBible.org')],
     ['links.Bible.is',   (r) => linkRows(r.links_media?.['Bible.is']).length, (d) => some([...d.resources.read, ...d.resources.listen, ...d.resources.watch], (x) => x.source === 'Faith Comes By Hearing' && x.name !== 'Bible.is Gospel Film')],
+    ['links.BibleShow',  (r) => linkRows(r.links_media?.['BibleShow.net']).length, (d) => some(d.resources.app, (x) => x.source === 'BibleShow.net')],
+    ['autonym',          (r) => s(r.language_name?.[AUTONYM_KEY]), (d) => !!d.names.autonym],
     ['links.GRN',        (r) => linkRows(r.links_media?.GRN).length, (d) => some(d.resources.other, (x) => x.source === 'Global Recordings Network')],
     ['links.Kalaam',     (r) => linkRows(r.links_media?.Kalaam_websites).length, (d) => d.resources.other.length > 0],
     ['SIL_link',         (r) => s(r.SIL_link), (d) => some(d.resources.other, (x) => x.source === 'SIL')],

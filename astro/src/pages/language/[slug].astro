@@ -21,6 +21,7 @@ const legacyUrl = `https://www.scriptureearth.org/00eng.php?idx=${d.idx}`;
     <div class="with-side">
       <div>
         <div class="rec-head"><h1 data-i18n-name={String(d.idx)}>{name}</h1>{d.identity.variant_name && <span class="muted">{d.identity.variant_name}</span>}</div>
+        {d.names.autonym && d.names.autonym.toLowerCase() !== name.toLowerCase() && <p class="autonym" lang={d.identity.iso} dir="auto">{d.names.autonym}</p>}
         <div class="rec-meta">
           {d.identity.code_kind === 'sli'
             ? <span class="chip" title="Sign Language Indicator">SLI <code>{d.identity.code}</code></span>
