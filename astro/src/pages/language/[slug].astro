@@ -2,14 +2,30 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ResourceRow from '../../components/ResourceRow.astro';
+import LangCard from '../../components/LangCard.astro';
 import { GROUPS } from '../../lib/ui';
 
 export async function getStaticPaths() {
   const langs = await getCollection('languages');
-  return langs.map((l) => ({ params: { slug: l.data.identity.slug }, props: { d: l.data } }));
+  // "Similar languages": entries sharing this ISO code (dialects, scripts, editions of one
+  // language). ISO 639-3 private-use codes (qaa–qtz) are placeholders — `qqq` holds 18
+  // unrelated sign languages — so they never group.
+  const byIso: Record<string, any[]> = {};
+  for (const l of langs) {
+    const iso = String(l.data.identity.iso).toLowerCase();
+    if (!/^q[a-t][a-z]$/.test(iso)) (byIso[iso] ??= []).push(l.data);
+  }
+  for (const list of Object.values(byIso)) list.sort((a, b) => a.identity.slug.localeCompare(b.identity.slug));
+  return langs.map((l) => ({
+    params: { slug: l.data.identity.slug },
+    props: {
+      d: l.data,
+      versions: (byIso[String(l.data.identity.iso).toLowerCase()] || []).filter((v) => v.idx !== l.data.idx),
+    },
+  }));
 }
 
-const { d } = Astro.props;
+const { d, versions } = Astro.props;
 const name = d.names.localized.eng;
 const activeGroups = GROUPS.filter((g) => (d.resources[g.key] || []).length > 0);
 // idx is the legacy site's unique key (iso alone can match several entries).
@@ -37,12 +53,20 @@ const legacyUrl = `https://www.scriptureearth.org/00eng.php?idx=${d.idx}`;
             {d.resources[g.key].map((r: any) => <ResourceRow group={g.key} r={r} />)}
           </div>
         ))}
+
+        {versions.length > 0 && (
+          <div class="similar" id="similar">
+            <h2 data-i18n="detail.similarLanguages">Similar languages</h2>
+            <div class="lang-grid">{versions.map((v: any) => <LangCard d={v} />)}</div>
+          </div>
+        )}
       </div>
 
       <aside class="side">
         <h4 data-i18n="detail.onthispage">On this page</h4>
         <div class="toc">
           {activeGroups.map((g) => (<a href={`#${g.key}`}><span class={`ic ic-${g.key}`} data-r={g.key} aria-hidden="true"></span><span data-i18n={`group.${g.key}`}>{g.label}</span><span class="c tnum">{d.resources[g.key].length}</span></a>))}
+          {versions.length > 0 && <a href="#similar"><span class="ic ic-locale" aria-hidden="true"></span><span data-i18n="detail.similarLanguages">Similar languages</span><span class="c tnum">{versions.length}</span></a>}
         </div>
         {d.countries.length > 0 && (
           <>
