@@ -49,6 +49,10 @@ jobs:
         working-directory: astro
         run: node --test "functions-lib/*.test.mjs"
 
+      - name: Test dump field report
+        working-directory: astro
+        run: node --test scripts/dump_fields.test.mjs
+
   gate:
     runs-on: ubuntu-latest
     outputs:
@@ -82,6 +86,13 @@ jobs:
           se-key: ${{ secrets.SE_KEY }}
           se-base: ${{ vars.SE_BASE }}
           se-dump-path: ${{ vars.SE_DUMP_PATH }}
+
+      # Lists dump fields extract.mjs doesn't read (new link types, new columns) in the
+      # job summary, with a warning annotation each. Informational: never blocks the preview.
+      - name: Report unused dump fields
+        continue-on-error: true
+        working-directory: astro
+        run: node scripts/dump_fields.mjs
 
       - name: Precompress dist
         working-directory: astro

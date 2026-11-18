@@ -66,6 +66,8 @@ pnpm run setup:data
 SE_KEY=… pnpm run build:fresh   # fetch:dump → extract (project) → astro build
 #   or step by step:
 SE_KEY=… pnpm run fetch:dump    # www.scriptureearth.org/api/db_dump.php?v=1&key=… → data/scripture.json
+#   (or put SE_KEY=… uncommented in <se.datadir>/config.env and drop the prefix)
+pnpm run audit:fields           # dump fields extract.mjs doesn't read (new link types etc.)
 pnpm run build:dump             # extract.mjs && build_search_index.mjs, then astro build
 
 # Build from an existing data/scripture.json (skip fetch)
@@ -83,7 +85,7 @@ pnpm run deploy          # current dist/ only (still runs predeploy)
 
 CI: three workflows share the composite action `.github/actions/build-site` (pnpm install → `fetch:dump` → `build:dump`).
 - `deploy.yml` — push to `main`: build, then publish to Cloudflare Pages **only if** `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` secrets exist (else build-only).
-- `preview.yml` — PRs to `main` touching `astro/**`: per-branch Pages preview + PR comment; self-gates on secrets.
+- `preview.yml` — PRs to `main` touching `astro/**`: per-branch Pages preview + PR comment; self-gates on secrets. Also runs `dump_fields.mjs` (unused dump fields → job summary + warnings) and its tests.
 - `size-benchmark.yml` — PRs to `main` touching `astro/**`: size regression gate + sticky comment.
 
 `secrets.SE_KEY` is all that's required for a build — the endpoint (`/api/db_dump.php` on `www.scriptureearth.org`, `v=1`) is the built-in default; `vars.SE_DUMP_PATH`/`vars.SE_BASE`/`vars.SE_DUMP_URL` are optional overrides. See `deploy.md` and `scripts/README-dump.md`. Key is env-only (`SE_KEY`); never cached.
@@ -141,6 +143,7 @@ Automated gates:
 pnpm run bench:search-index   # encoding bake-off; hash mismatch → exit 1 (needs content/search-index.json)
 pnpm run bench:size           # cold-load size diff vs production sizes.json (needs dist/)
 SE_STRICT=1 pnpm run extract  # dump-shape audit; not in CI
+pnpm run audit:fields         # unused/new dump fields; when extract.mjs starts reading a field, add it to FIELDS in scripts/dump_fields.mjs
 ```
 
 Untested in-repo: pages/components, i18n.js, `_redirects` ordering and Pages routing (the resolver itself is tested: `pnpm run test:redirects`), precompress fallback path, slug collision logic.

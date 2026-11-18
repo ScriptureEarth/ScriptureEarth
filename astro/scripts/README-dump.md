@@ -8,6 +8,17 @@ https://www.scriptureearth.org/api/db_dump.php?v=1&key=<your key>
 ```
 
 `<your key>` is a row in the server's `api_users` table (same key the rest of `/api/` uses).
+
+## Get the latest dump (quick reference)
+
+1. Put your key in `config.env` in the shared data folder (`git config se.datadir`, e.g.
+   `C:/dev/ScriptureEarth/astro/data/config.env`; gitignored), as an **uncommented** line:
+   `SE_KEY=your-api-key`. Or pass it inline each time: `SE_KEY=… pnpm run fetch:dump`.
+2. From `astro/`: `pnpm run fetch:dump`. This overwrites `scripture.json` in the shared folder,
+   so every worktree sees it.
+3. Check it: `pnpm run audit:fields` lists fields the projector doesn't read yet (new link
+   types, new columns), then `SE_STRICT=1 pnpm run extract` checks nothing it does read broke.
+
 Two steps, then the normal build:
 
 ```
@@ -36,6 +47,23 @@ tolerates both.) `se_sab` is `{ "0": { path, url, description } }` — one row p
 reader (`path` = SE-hosted folder URL, `url` = external reader); older captures had
 `{ text:{}, audio:{} }` file lists, still tolerated. The dump format has changed more than
 once, so if resources vanish, re-probe a fresh dump before assuming a build bug.
+
+## Unused-field report (`pnpm run audit:fields`)
+
+`dump_fields.mjs` walks every entry, turns each value into a path (numeric keys become `#`, e.g.
+`relationships.links_media.YouVersion.#.title`) and checks it against the `FIELDS` list at the
+top of the script. Each path is either **used** (extract.mjs reads it), **ignored** (known and
+deliberately unused, with a reason), or **unclassified**. Unclassified paths with data are the
+report's point: new link types or new columns the site doesn't show yet. It also lists `FIELDS`
+groups the dump no longer has, which usually means a rename or reshape.
+
+`FIELDS` is kept by hand. When `extract.mjs` starts reading a field, add it there as `used`; when
+you decide not to use one, add it as `ignored` with a reason, so it stops being reported.
+
+In CI, `preview.yml` runs it after the build: the report goes into the job summary and each
+unused field becomes a warning annotation on the PR. It never fails the job. Locally,
+`--strict` exits 1 when unclassified fields exist, and `--markdown <file>` / `--json <file>`
+save the report.
 
 ## Worktrees: share one data folder (`pnpm run setup:data`)
 
@@ -124,7 +152,7 @@ curl -s -o /dev/null -w '%{http_code}\n' \
 | `SE_DUMP_OUT` | `<data dir>/scripture.json` | Where the dump is written / read. |
 | `SE_JSON` | `<data dir>/scripture.json` | Dump path read by `extract.mjs`. |
 | `SE_SKIP_PLAYLISTS` | *(unset)* | `1` → `extract.mjs` skips fetching playlist `.txt` listings. **Dev only** — drops video-playlist rows; never deploy such a build. |
-| `SE_STRICT` | *(unset)* | `1` → `extract.mjs` runs a data audit and exits non-zero (without writing) if a dump field has data but nothing was projected (shape change), or `watch`/`buy` titles are absent. Audit tool — not wired into CI. See `DUMP-API-REQUESTS.md`. |
+| `SE_STRICT` | *(unset)* | `1` → `extract.mjs` runs a data audit and exits non-zero (without writing) if a dump field has data but nothing was projected (shape change), a field group the projector reads has no data anywhere (renamed or moved; uses `dump_fields.mjs`), or `watch`/`buy` titles are absent. Audit tool — not wired into CI. See `DUMP-API-REQUESTS.md`. |
 | `SE_MIN_LANGS` | `4000` | Strict-mode floor: fail if fewer than this many languages projected. |
 | `SE_DATA_DIR` | *(unset)* | Override the shared data dir for one command (else `git config se.datadir`, else `<package>/data`). Also the folder `config.env` is read from. |
 | `SE_JSON_URL` | *(Drive link)* | `setup:data`: prebuilt dump download URL — a zip of `scripture.json`, or a raw `.json`. |
@@ -139,4 +167,5 @@ curl -s -o /dev/null -w '%{http_code}\n' \
 | `download.mjs` | Helpers for `setup-data.mjs`: streaming `download()`, `driveUrl()`, and a dependency-free ZIP extractor (`unzipInto()`, stored + deflate, zip-slip guarded). |
 | `fetch_dump.mjs` | Download the JSON dump (same `?v=&key=` auth as the rest of `/api/`). Detects gzip; validates it's the language dump; saves an inspectable `scripture.unexpected.*` on a surprise. |
 | `extract.mjs` | **Projector** — reads `data/scripture.json` → `content/{languages,countries,search-index,lang-map}.json`. Fetches playlist `.txt` listings for video clip URLs. |
+| `dump_fields.mjs` | `pnpm run audit:fields` — reports dump fields `extract.mjs` doesn't read (see above). Tests: `pnpm run test:fields`. |
 | `playlistTxt.mjs` | Resolves PlaylistVideo `.txt` listings to clip URLs (cached under `playlist-txt-cache/`). |

@@ -22,6 +22,11 @@ The dump keys entries by a row ordinal (the real key is `relationships.idx`); th
 URLs as `scriptureearth.org/data/<iso>/<PDF|audio|video>/<file>`. Details + how to test your key:
 [`scripts/README-dump.md`](scripts/README-dump.md).
 
+**Refreshing your local dump:** put `SE_KEY=…` (uncommented) in `config.env` in the shared data
+folder (`git config se.datadir`), then `pnpm run fetch:dump`. `pnpm run audit:fields` then lists
+any dump fields the site doesn't use yet. See
+[Get the latest dump](scripts/README-dump.md#get-the-latest-dump-quick-reference).
+
 ## Build & run
 ```bash
 pnpm install
