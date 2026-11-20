@@ -42,22 +42,30 @@ function Counter($c, $display = false) {				// $c = AllCounter or ... counter
 	if (preg_match("/^(All|AllML|EnglishML|SpanishML|PortugueseML|DutchML|FrenchML|GermanML|ChineseML|KoreanML|RussianML|ArabicML)_?([A-Z]{2}_[a-z]{3}|[A-Z]{2}|[a-z]{3}|[A-Z]{2}[0-9]{2}|[A-Z]{2}_[A-Z]{2}[0-9]{2}|)_?Counter/", $c)) {		// => ZZ_zzz or zzz or ZZ99 or empty
 		$filename = "counter/" . $c . ".dat";
 		if (file_exists($filename)) {
-			$count = file($filename);					// doesn't need fclose. reading an array.
-			settype($count[0], "integer");				// string to integer
-			$count[0]++;								// add a 1
-			settype($count[0], "string");				// integer to string
-			$exist_count = fopen($filename, "w");
-			fputs($exist_count, $count[0]);
-			fclose($exist_count);
-			if ($display)
-				echo ("<div class='counter_Scripture'>" . $count[0] . '&nbsp;' . translate('visits', $st, 'sys') . "</div>");
+			clearstatcache(true, $filename);
+			$count = fopen($filename, "r+");
+			//echo '1 !'.$filename.'!<br />';
+			flock($count, LOCK_EX);
+			$count_value = (int) fread($count, 1024);
+			$count_value++;
+			rewind($count);
+			fwrite($count, (string) $count_value);
+			fflush($count);
+			flock($count, LOCK_UN);
+			fclose($count);
+			if ($display) {
+				//echo (string) $count_value . '<br />';
+				echo "<div class='counter_Scripture'>" . $count_value . '&nbsp;' . translate('visits', $st, 'sys') . "</div>";
+			}
 		}
 		else {
 			$new_file = fopen($filename, "w");
-			fputs($new_file, "1");
+			//echo '2 !'.$filename.'!<br />';
+			fwrite($new_file, "1");
 			fclose($new_file);
-			if ($display)
-				echo ("<div class='counter_Scripture'>" . translate('1 visit', $st, 'sys') . "</div>");
+			if ($display) {
+				echo "<div class='counter_Scripture'>" . translate('1 visit', $st, 'sys') . "</div>";
+			}
 		}
 	}
 	else {

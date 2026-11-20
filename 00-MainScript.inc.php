@@ -562,17 +562,17 @@ if (isset($_GET['asset'])) {
 							$ISOorROD = $ISO != 'qqq' ? $ISO : $ROD_Code;
 							echo "<script>console.log('ISO: $ISO, counterName: $counterName, GetName: $GetName, ISOorROD: $ISOorROD');</script>";
 							Counter('AllCounter', false);									// Total website counter, don't display
-							Counter('AllMLCounter', false);									// All of the major languages counter, don't display
-							Counter('All_' . $ISOorROD . '_Counter', false);						// All of the ISO counter, don't display
+							Counter('AllMLCounter', false);									// All of the navigation languages counter, don't display
+							Counter('All_' . $ISOorROD . '_Counter', false);				// All of the ISO counter, don't display
 							Counter('All_' . $GetName . '_' . $ISOorROD . '_Counter', false);	// All of the Country and the varient language counter, don't display
-							Counter($counterName . 'MLCounter', false);						// All of the major language counter, don't display
-							Counter($counterName . 'ML_' . $GetName . '_Counter', false);	// All of the major language and the Country counter, don't display
+							Counter($counterName . 'MLCounter', false);						// All of the navigation language counter, don't display
+							Counter($counterName . 'ML_' . $GetName . '_Counter', false);	// All of the navigation language and the Country counter, don't display
 						?>
 
 						<div style="position: relative; top: 90px; ">
 							<div class="langCounter">
 								<?php
-								Counter($counterName . "ML_" . $GetName . "_" . $ISOorROD . "_Counter", true);		// All of the major language and the Country and the varient language counter, display
+								Counter($counterName . "ML_" . $GetName . "_" . $ISOorROD . "_Counter", true);		// All of the navigation language and the Country and the variant language counter, display
 								?>
 							</div>
 
