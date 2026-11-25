@@ -86,18 +86,29 @@ encodes two source-level facts:
   content-hashed `/_astro/world-map.<hash>.svg` named in the home page's `data-map-url` —
   fetched **when the map section scrolls near the viewport**, only on `home`.
 
-Recipe shape (all archetypes get the i18n triad in deferred; `home` also gets the
-search index and the world map):
+- **install icon** (`public/manifest.webmanifest`): Chrome fetches the manifest and then
+  **one manifest icon after every cold page load**, with no interaction, to decide
+  whether the site is installable (seen in a desktop Chrome network log, 2026-11-25:
+  `manifest.webmanifest` + `app-icons/icon-192.png`). It does not block rendering, so it
+  is DEFERRED on every archetype. Which icon depends on the device, so the recipe takes
+  the **heaviest manifest icon below 512px**; the 512px icons load only at install time.
+  The manifest itself is an `href` in the HTML and counts as STRICT.
+  `<link rel="apple-touch-icon">` is skipped by the HTML scan: no browser fetches it on
+  page load.
+
+Recipe shape (all archetypes get the i18n triad and the install icon in deferred;
+`home` also gets the search index and the world map):
 
 ```js
 const I18N_TRIAD = (loc) => [`/i18n/chrome.${loc}.json`, `/i18n/names.${loc}.json`, '/i18n/autonyms.json'];
 const WORST_LOCALE = 'spa';           // pick the largest triad at build time; see §7
+const ALL = [...I18N_TRIAD(WORST_LOCALE), INSTALL_ICON /* heaviest manifest icon < 512px */];
 const RECIPE = {
-  home:      { deferred: ['/search-index.txt', MAP_SVG /* from data-map-url */, ...I18N_TRIAD(WORST_LOCALE)] },
-  browse:    { deferred: [...I18N_TRIAD(WORST_LOCALE)] },
-  countries: { deferred: [...I18N_TRIAD(WORST_LOCALE)] },
-  country:   { deferred: [...I18N_TRIAD(WORST_LOCALE)] },
-  language:  { deferred: [...I18N_TRIAD(WORST_LOCALE)] },
+  home:      { deferred: ['/search-index.txt', MAP_SVG /* from data-map-url */, ...ALL] },
+  browse:    { deferred: ALL },
+  countries: { deferred: ALL },
+  country:   { deferred: ALL },
+  language:  { deferred: ALL },
 };
 ```
 

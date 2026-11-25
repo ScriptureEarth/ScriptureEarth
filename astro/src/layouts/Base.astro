@@ -53,6 +53,13 @@ const buildDate = buildTimestamp.slice(0, 10);
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
   <link rel="icon" href="/favicon.ico" sizes="any" />
+  {/* Home-screen install (Android "Install app", iOS "Add to Home Screen"). Manifest
+      + icons only: no service worker, so nothing is cached offline. Chrome fetches the
+      manifest and a 192px icon after every cold load, so keep app-icons/ small. */}
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/app-icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="ScriptureEarth" />
+  <meta name="theme-color" content="#ffffff" />
   <script>import '../scripts/i18n.js';</script>
 </head>
 <body>

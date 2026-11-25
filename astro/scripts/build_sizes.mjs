@@ -59,8 +59,10 @@ function size(file, pinned = false) {
 // asset file under dist/ (navigational <a href> to directories are dropped).
 // A <picture> counts only its first <source> (what a current browser fetches);
 // the later sources and the <img> fallback are for older browsers.
+// <link rel="apple-touch-icon"> is dropped: browsers fetch it only when the user
+// adds the site to a home screen, never on page load.
 function scanHtml(htmlFile) {
-  const html = readFileSync(htmlFile, 'utf8').replace(/<picture\b[^>]*>([\s\S]*?)<\/picture>/g, (block, inner) => {
+  const html = readFileSync(htmlFile, 'utf8').replace(/<link\b[^>]*\brel="apple-touch-icon[^>]*>/g, '').replace(/<picture\b[^>]*>([\s\S]*?)<\/picture>/g, (block, inner) => {
     const first = inner.match(/<source\b[^>]*>/);
     return first ? first[0] : inner;
   });
@@ -144,6 +146,22 @@ function pickWorstLocale() {
     if (!best || wire > best.wire) best = { loc, wire };
   }
   return best?.loc || null;
+}
+
+// --- install icon: the manifest icon Chrome fetches after load (spec §1.4) ----
+// Chrome reads the manifest (in the HTML, so STRICT) and then downloads one icon to
+// decide whether the site is installable. Which one depends on the device, so model
+// the heaviest icon below 512px; the 512s are only fetched at install time.
+function installIcon() {
+  const file = path.join(DIST, 'manifest.webmanifest');
+  if (!existsSync(file)) return null;
+  let best = null;
+  for (const icon of JSON.parse(readFileSync(file, 'utf8')).icons || []) {
+    if (parseInt(icon.sizes, 10) >= 512) continue;
+    const wire = size(toFile(icon.src))?.wire || 0;
+    if (!best || wire > best.wire) best = { ref: icon.src, wire };
+  }
+  return best?.ref || null;
 }
 
 // --- shared per-type buckets + total site, over ALL of dist/ -----------------
@@ -231,15 +249,17 @@ function main() {
   const homeHtml = path.join(DIST, 'index.html');
   const mapRef = existsSync(homeHtml) ? /data-map-url="([^"]+)"/.exec(readFileSync(homeHtml, 'utf8'))?.[1] : null;
 
-  // Recipe: every archetype defers the worst-case i18n triad; home also defers
-  // the lazily-fetched search index and world map.
+  // Recipe: every archetype defers the worst-case i18n triad and the install icon;
+  // home also defers the lazily-fetched search index and world map.
   // (See spec §1.4 / src/scripts/{i18n,search,world-map}.js.)
+  const icon = installIcon();
+  const all = [...triad, ...(icon ? [icon] : [])];
   const RECIPE = {
-    home: ['/search-index.txt', ...(mapRef ? [mapRef] : []), ...triad],
-    browse: [...triad],
-    countries: [...triad],
-    country: [...triad],
-    language: [...triad],
+    home: ['/search-index.txt', ...(mapRef ? [mapRef] : []), ...all],
+    browse: all,
+    countries: all,
+    country: all,
+    language: all,
   };
 
   const country = representativeCountry();
