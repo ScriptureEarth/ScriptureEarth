@@ -1,7 +1,6 @@
 ---
 import locales from '../../public/i18n/locales.json';
 import { I18N_VERSION } from '../lib/i18nVersion';
-import { DEFAULT_SET, ICON_SETS } from '../lib/icons.mjs';
 import SiteMenu from '../components/SiteMenu.astro';
 import { ABOUT_LINKS, CONTACT, DONATE, HELP, PROMOTION } from '../lib/siteLinks';
 import '../styles/site.css';
@@ -14,9 +13,6 @@ const { title, lang = 'en', dir = 'ltr' } = Astro.props;
 // attribute so a dev can hover to see exactly when the deployed build ran.
 const buildTimestamp = new Date().toISOString();
 const buildDate = buildTimestamp.slice(0, 10);
-// Icon-set switch (temporary, while we pick a set): the default set is in the bundled
-// CSS; the others load from /icons/<set>.css once chosen. See src/lib/icons.mjs.
-const iconSets = Object.keys(ICON_SETS);
 ---
 <!doctype html>
 <html lang={lang} dir={dir}>
@@ -51,25 +47,6 @@ const iconSets = Object.keys(ICON_SETS);
         el.setAttribute('data-i18n-pending', '1');
         setTimeout(function () { el.removeAttribute('data-i18n-pending'); }, 1500);
       }
-    })();
-  </script>
-  <!-- Apply a saved icon-set choice before paint. -->
-  <script is:inline define:vars={{ iconSets, defaultIconSet: DEFAULT_SET }}>
-    (function () {
-      var el = document.documentElement;
-      window.__seSetIcons = function (set) {
-        if (iconSets.indexOf(set) === -1) set = defaultIconSet;
-        if (set !== defaultIconSet && !document.getElementById('ic-set-' + set)) {
-          var l = document.createElement('link');
-          l.rel = 'stylesheet'; l.id = 'ic-set-' + set; l.href = '/icons/' + set + '.css';
-          document.head.appendChild(l);
-        }
-        el.setAttribute('data-icons', set);
-        return set;
-      };
-      var saved = null;
-      try { saved = localStorage.getItem('se-icons'); } catch (e) {}
-      window.__seSetIcons(saved || defaultIconSet);
     })();
   </script>
   <style is:global>[data-i18n-pending] [data-i18n],[data-i18n-pending] [data-i18n-name]{visibility:hidden}</style>
@@ -112,12 +89,6 @@ const iconSets = Object.keys(ICON_SETS);
         <a href={PROMOTION.href}><span data-i18n={PROMOTION.key}>{PROMOTION.label}</span></a></div>
       <div class="fcol"><b data-i18n="footer.about">About</b><span class="muted" data-i18n="footer.ministry">A ministry of SIL Global</span>
         {ABOUT_LINKS.map((l) => <a href={l.href}><span data-i18n={l.key}>{l.label}</span></a>)}</div>
-      <div class="fcol icon-switch"><b id="icon-set-label">Icon set</b>
-        <select id="icon-set-picker" aria-labelledby="icon-set-label">
-          {iconSets.map((id) => <option value={id}>{ICON_SETS[id].label}</option>)}
-        </select>
-        <span class="demo" aria-hidden="true"><span class="ic ic-read"></span><span class="ic ic-listen"></span><span class="ic ic-watch"></span><span class="ic ic-app"></span><span class="ic ic-download"></span><span class="ic ic-youtube"></span></span>
-      </div>
     </div>
     <div class="cc">
       <picture>
@@ -129,15 +100,5 @@ const iconSets = Object.keys(ICON_SETS);
       <span class="updated" title={buildTimestamp}><span data-i18n="footer.updated">Last updated</span> <time datetime={buildDate}>{buildDate}</time></span>
     </div>
   </div></footer>
-  <script is:inline>
-    (function () {
-      var pick = document.getElementById('icon-set-picker');
-      pick.value = document.documentElement.getAttribute('data-icons');
-      pick.addEventListener('change', function () {
-        var set = window.__seSetIcons(pick.value);
-        try { localStorage.setItem('se-icons', set); } catch (e) {}
-      });
-    })();
-  </script>
 </body>
 </html>

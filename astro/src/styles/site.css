@@ -515,7 +515,10 @@ section.block {
   border: 1px solid var(--border);
   color: var(--muted);
 }
-.pill .ic {
+/* The pill's icon is a pseudo-element picked by data-r (rules in icons.css): no icon
+   <span> per pill, which is ~14k elements on the browse page. */
+.pill::before {
+  content: "";
   font-size: 1rem;
 }
 .pill[data-r="read"] {
@@ -1202,19 +1205,4 @@ footer.site {
   @view-transition {
     navigation: none;
   }
-}
-
-/* Footer icon-set switch (temporary; see src/lib/icons.mjs) */
-footer.site .icon-switch select {
-  font: inherit;
-  color: var(--sil-navy);
-  border-radius: 4px;
-  padding: 0.15rem 0.3rem;
-  align-self: flex-start;
-}
-footer.site .icon-switch .demo {
-  display: flex;
-  gap: 0.5rem;
-  font-size: 1.1rem;
-  color: #fff;
 }

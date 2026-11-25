@@ -60,12 +60,15 @@ pnpm run preview             # serve dist/
 - `content/`, `data/`, `public/search-index.txt`, `dist/` — **generated / local; git-ignored.**
 
 ## Icons
-Labels carry a [Material Symbols](https://icon-sets.iconify.design/material-symbols/) icon (Apache-2.0) so the
-site stays navigable for people who can't read the text; brand marks Material lacks (YouTube, Google Play, Apple)
-come from [mdi](https://icon-sets.iconify.design/mdi/) (Apache-2.0). To keep bandwidth low there is **no icon font and no
+Labels carry a [Fluent UI Color](https://icon-sets.iconify.design/fluent-color/) icon (Microsoft, MIT) so the
+site stays navigable for people who can't read the text. The colour set is small: gaps fall back to mono
+[fluent](https://icon-sets.iconify.design/fluent/) icons (same family, MIT) and brand marks (YouTube, Google Play, Apple)
+come from [logos](https://icon-sets.iconify.design/logos/) (CC0). To keep bandwidth low there is **no icon font and no
 extra request**: `scripts/gen_icons.mjs` pulls just the icons named in `src/lib/icons.mjs` from the Iconify API and
-writes them into `src/styles/icons.css` with `@iconify/utils` as CSS `mask-image` data URIs (~2 KB brotli, cached with the site CSS).
-Use one as `<span class="ic ic-<name>" aria-hidden="true"></span>`; it sizes to `1em` and inherits `color`.
+writes them into `src/styles/icons.css` with `@iconify/utils` as SVGO-minified CSS data URIs (~5 KB brotli, cached with the site CSS).
+Use one as `<span class="ic ic-<name>" aria-hidden="true"></span>`; it sizes to `1em`. Colour icons draw in their
+own colours; the mono fallbacks inherit `color`. Card pills need no icon element: `.pill[data-r]` draws its icon as
+a `::before` (saves ~14k elements on the browse page).
 The generated CSS is committed — rerun `pnpm run gen:icons` only when the list changes.
 
 ## i18n

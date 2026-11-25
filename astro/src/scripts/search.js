@@ -75,7 +75,7 @@ function tokenize(text) {
 
 function card(r) {
   const pills = (r.r || [])
-    .map((k) => `<span class="pill" data-r="${k}"><span class="ic ic-${k}" aria-hidden="true"></span><span data-i18n="pill.${k}">${PILL_LABEL[k]}</span></span>`)
+    .map((k) => `<span class="pill" data-r="${k}"><span data-i18n="pill.${k}">${PILL_LABEL[k]}</span></span>`)
     .join('');
   return (
     `<a class="lang" href="/language/${r.slug}/">` +
