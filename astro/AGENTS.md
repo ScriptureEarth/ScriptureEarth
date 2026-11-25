@@ -45,6 +45,7 @@ content/countries.json + scripts/data/ne_110m_countries.geojson + map-points.jso
 | `public/i18n/` | Chrome + names catalogs (committed) |
 | `functions/` | Pages Function routes for the legacy `.php` entry points |
 | `functions-lib/` | Shared legacy-redirect resolver + its `node:test` tests (`pnpm run test:redirects`) |
+| `preview/` | Live one-language preview server for database editors (Node + Dockerfile; not part of the site build). See `preview/README.md` |
 | `bench/` | Search-index encoding bake-off + `SIZE-BENCH-SPEC.md` |
 | `content/` | Generated catalog JSON (gitignored) |
 
