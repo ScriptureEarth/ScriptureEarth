@@ -130,7 +130,10 @@ window.__seApplyI18n = function (root) {
   }
 };
 
-localize(window.__seLoc || 'eng');
+// The HTML is baked in English, so an English first load has nothing to undo. Skipping
+// toEnglish here avoids ~24k no-op textContent writes (and a full relayout) on /browse/.
+if ((window.__seLoc || 'eng') === 'eng') document.documentElement.removeAttribute('data-i18n-pending');
+else localize(window.__seLoc);
 
 const sel = document.getElementById('locale-picker');
 if (sel) {
