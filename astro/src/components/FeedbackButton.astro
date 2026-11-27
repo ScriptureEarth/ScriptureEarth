@@ -1,0 +1,46 @@
+---
+// Soft-launch feedback: a floating button (bottom inline-end corner). Only the button is baked
+// into every page; the dialog, its CSS and its logic load on the first click
+// (src/scripts/feedback-dialog.js, a lazy Vite chunk), so cold-load size barely moves.
+// The form POSTs JSON to FEEDBACK.endpoint (functions/api/feedback.js → Google Sheet). If that fails
+// (sheet not set up yet, offline), the dialog shows the contact email with the message
+// pre-filled in a mailto link. Turn the button off with FEEDBACK.enabled in siteLinks.ts.
+import { CONTACT_EMAIL, FEEDBACK } from '../lib/siteLinks';
+---
+{FEEDBACK.enabled && (
+  <button type="button" class="fb-open" id="fb-open" aria-haspopup="dialog" data-endpoint={FEEDBACK.endpoint} data-mail={CONTACT_EMAIL}>
+    <span class="ic ic-feedback" aria-hidden="true"></span>
+    <span data-i18n="feedback.button">Feedback</span>
+  </button>
+)}
+<script>
+  const btn = document.getElementById('fb-open');
+  if (btn) btn.addEventListener('click', () => import('../scripts/feedback-dialog.js').then((m) => m.openFeedback(btn)));
+</script>
+
+<style is:global>
+.fb-open {
+  position: fixed;
+  inset-block-end: var(--s4);
+  inset-inline-end: var(--s4);
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s2) var(--s4);
+  border: 0;
+  border-radius: var(--pill);
+  background: var(--cta);
+  color: var(--cta-text);
+  font: 600 var(--t-sm) / 1.2 var(--font);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+}
+.fb-open:hover { background: var(--accent-hover); }
+.fb-open:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
+.fb-open .ic { font-size: 1.25rem; }
+@media (max-width: 760px) {
+  .fb-open { inset-block-end: var(--s3); inset-inline-end: var(--s3); padding: var(--s2) var(--s3); }
+}
+@media print { .fb-open { display: none; } }
+</style>

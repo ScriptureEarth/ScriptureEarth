@@ -37,14 +37,15 @@ content/countries.json + scripts/data/ne_110m_countries.geojson + map-points.jso
 |---|---|
 | `src/pages/` | Routes: `/`, `/browse/`, `/language/[slug]/`, `/countries/`, `/country/[code]/`; site-menu pages `/help/`, `/about/` (+ `partners/`, `terms/`, `privacy/`), `/contact/`, `/promotion/` (layout `src/layouts/Prose.astro`, English bodies) |
 | `src/layouts/Base.astro` | Chrome, locale boot, header search |
-| `src/components/` | `LangCard.astro`, `ResourceRow.astro`, `WorldMap.astro` (home map; its CSS lives here, not `site.css`), `SiteMenu.astro` (header ☰: a `<details>` disclosure, works without JS; a tiny inline script adds light-dismiss; links from `src/lib/siteLinks.ts`, shared with the footer) |
+| `src/components/` | `FeedbackButton.astro` (soft-launch floating button + `<dialog>`, on every page via `Base.astro`; switch: `FEEDBACK` in `siteLinks.ts`), `LangCard.astro`, `ResourceRow.astro`, `WorldMap.astro` (home map; its CSS lives here, not `site.css`), `SiteMenu.astro` (header ☰: a `<details>` disclosure, works without JS; a tiny inline script adds light-dismiss; links from `src/lib/siteLinks.ts`, shared with the footer) |
 | `src/lib/ui.ts` | Shared vocab: `GROUPS` vs `PILLS`, action labels |
 | `src/scripts/` | Client bundles: `search.js`, `i18n.js`, `browse.js`, `geo-suggest.js`, `world-map.js` (hashed Vite bundles; never inline) |
 | `src/content.config.ts` | File loaders over `content/*.json` — no Zod |
 | `scripts/` | Projector (`extract.mjs`), dump fetch, search-index encoder, precompress, size bench, i18n/geo generators |
 | `public/i18n/` | Chrome + names catalogs (committed) |
-| `functions/` | Pages Function routes for the legacy `.php` entry points |
-| `functions-lib/` | Shared legacy-redirect resolver + its `node:test` tests (`pnpm run test:redirects`) |
+| `functions/` | Pages Function routes for the legacy `.php` entry points, plus `api/feedback.js` (Feedback button → Google Sheet via the Apps Script in `feedback-sheet/`) |
+| `functions-lib/` | Shared legacy-redirect resolver, feedback validation + sheet hand-off (`feedback.js`) + their `node:test` tests (`pnpm run test:redirects`) |
+| `feedback-sheet/` | Apps Script (`Code.gs`) for the feedback Google Sheet + setup and Workspace test steps (`README.md`) |
 | `preview/` | Live one-language preview server for database editors (Node + Dockerfile; not part of the site build). See `preview/README.md` |
 | `bench/` | Search-index encoding bake-off + `SIZE-BENCH-SPEC.md` |
 | `content/` | Generated catalog JSON (gitignored) |

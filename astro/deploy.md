@@ -58,10 +58,28 @@ First-time only, if recreating the project:
   the six alias index files such as `00i-Scripture_Index.php`). They handle the legacy **query-string**
   deep links (`?iso=`, `?idx=`, `?sortby=country`) that `_redirects` can't read, resolving `idx`/`iso`
   through `content/lang-map.json` (written by the extract step, bundled by wrangler). Shared logic is in
-  `functions-lib/`. Functions are **scoped to those 17 paths**, so every other path is served as a pure
-  static file and is not counted as a Functions invocation.
+  `functions-lib/`. Functions are **scoped to those 17 paths** plus `/api/feedback` (below), so every
+  other path is served as a pure static file and is not counted as a Functions invocation.
+- **`functions/api/feedback.js`** — `POST /api/feedback` from the floating **Feedback** button (soft
+  launch). Sends each message to a Google Sheet through an Apps Script web app. See "Feedback sheet" below.
 - **`public/_headers`** — immutable caching for `/_astro/*` and `/i18n/*`; `precompress_dist.mjs` appends
   the `Content-Encoding: br` rule for the search index.
+
+## Feedback sheet (one-time setup)
+
+The floating **Feedback** button (`src/components/FeedbackButton.astro`, on every page) posts to
+`/api/feedback`. The Function sends each message to an Apps Script web app that adds a row to a Google
+Sheet. It needs two Pages variables (Settings → Variables and Secrets):
+
+| name | kind | value |
+|---|---|---|
+| `FEEDBACK_SHEET_URL` | plain text | the web app's `/exec` URL |
+| `FEEDBACK_SHEET_SECRET` | secret | the script property `SECRET` |
+
+Until both exist the endpoint answers 503 and the dialog shows the contact email with the message
+pre-filled, so it is safe to deploy first. Script, setup and the Workspace test steps:
+`feedback-sheet/README.md`. To remove the button, set `FEEDBACK.enabled = false` in
+`src/lib/siteLinks.ts`.
 
 ## Go-live checklist (Cloudflare dashboard, not this repo)
 - Add the custom domain to the Pages project (Pages → Custom domains).

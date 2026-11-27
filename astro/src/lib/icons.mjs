@@ -38,6 +38,8 @@ export const ICONS = {
   googleplay: 'logos:google-play-icon',
   apple: 'logos:apple',
   print: 'fluent:print-24-regular',
+  // floating Feedback button (src/components/FeedbackButton.astro)
+  feedback: 'comment-24',
 };
 
 /**

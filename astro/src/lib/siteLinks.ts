@@ -27,5 +27,10 @@ export const PROMOTION: SiteLink = { href: '/promotion/', key: 'nav.promotion', 
 
 export const CONTACT_EMAIL = 'info@ScriptureEarth.org';
 
+// Floating "Feedback" button for the soft launch (src/components/FeedbackButton.astro).
+// Set enabled: false to remove it from every page. The endpoint is the Pages Function
+// functions/api/feedback.js, which appends a row to a Google Sheet (feedback-sheet/README.md).
+export const FEEDBACK = { enabled: true, endpoint: '/api/feedback' };
+
 /** True when `href` is the page at `path` (both trailing-slash paths). */
 export const isCurrent = (href: string, path: string) => href === path;
